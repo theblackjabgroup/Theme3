@@ -13,7 +13,7 @@ jobs:
         uses: shopify/lighthouse-ci-action@v1
         with:
           access_token: ${{ secrets.APIKEY }}
-          store: 'https://theme3testing.myshopify.com/'
+          store: 'theme3testing.myshopify.com'
           lhci_min_score_accessibility: 0.9
           lhci_min_score_performance: 0.7
           password: 'blackbytt'
