@@ -6,41 +6,89 @@
         "item_1": {
           "type": "card",
           "settings": {
-            "heading": "Feature Item",
-            "column_span": "5",
-            "row_span": "5"
+            "heading": "Card 1",
+            "column_span": "1",
+            "row_span": "1"
           }
         },
         "item_2": {
           "type": "card",
           "settings": {
-            "heading": "Side Item 1",
-            "column_span": "2",
-            "row_span": "2"
+            "heading": "Card 2",
+            "column_span": "1",
+            "row_span": "1"
           }
         },
         "item_3": {
           "type": "card",
           "settings": {
-            "heading": "Side Item 2",
-            "column_span": "3",
-            "row_span": "3"
+            "heading": "Card 3",
+            "column_span": "2",
+            "row_span": "2"
           }
         },
         "item_4": {
           "type": "card",
           "settings": {
-            "heading": "Wide Item",
-            "column_span": "5",
-            "row_span": "2"
+            "heading": "Card 4",
+            "column_span": "1",
+            "row_span": "4"
           }
         },
         "item_5": {
           "type": "card",
           "settings": {
-            "heading": "Bottom Item",
-            "column_span": "10",
+            "heading": "Card 5",
+            "column_span": "3",
             "row_span": "3"
+          }
+        },
+        "item_6": {
+          "type": "card",
+          "settings": {
+            "heading": "Card 6",
+            "column_span": "2",
+            "row_span": "2"
+          }
+        },
+        "item_7": {
+          "type": "card",
+          "settings": {
+            "heading": "Card 7",
+            "column_span": "2",
+            "row_span": "1"
+          }
+        },
+        "item_8": {
+          "type": "card",
+          "settings": {
+            "heading": "Card 8",
+            "column_span": "1",
+            "row_span": "1"
+          }
+        },
+        "item_9": {
+          "type": "card",
+          "settings": {
+            "heading": "Card 9",
+            "column_span": "3",
+            "row_span": "1"
+          }
+        },
+        "item_10": {
+          "type": "card",
+          "settings": {
+            "heading": "Card 10",
+            "column_span": "1",
+            "row_span": "1"
+          }
+        },
+        "item_11": {
+          "type": "card",
+          "settings": {
+            "heading": "Card 11",
+            "column_span": "2",
+            "row_span": "1"
           }
         }
       },
@@ -49,7 +97,13 @@
         "item_2",
         "item_3",
         "item_4",
-        "item_5"
+        "item_5",
+        "item_6",
+        "item_7",
+        "item_8",
+        "item_9",
+        "item_10",
+        "item_11"
       ],
       "settings": {
         "heading": "Bento Grid",

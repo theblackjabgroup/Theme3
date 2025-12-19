@@ -28,10 +28,94 @@
     <nav class="header__nav">
       <ul class="header__menu">
         {%- for link in section.settings.menu.links -%}
-          <li>
-            <a href="{{ link.url }}" class="header__menu-item {% if link.active %}active{% endif %}">
-              {{ link.title }}
-            </a>
+          <li class="header__menu-item-wrapper">
+            {%- if link.links != blank -%}
+              {%- assign matching_block = null -%}
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'mega_menu' and block.settings.link_name == link.title -%}
+                  {%- assign matching_block = block -%}
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+
+              <button
+                class="header__menu-item header__menu-item--has-children"
+                aria-expanded="false"
+                aria-controls="MegaMenu-{{ forloop.index }}"
+                data-mega-menu-trigger
+              >
+                {{ link.title }}
+                <svg
+                  viewBox="0 0 10 6"
+                  aria-hidden="true"
+                  focusable="false"
+                  class="icon icon-caret"
+                >
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor">
+                </svg>
+              </button>
+
+              <div id="MegaMenu-{{ forloop.index }}" class="mega-menu-modal" data-mega-menu>
+                <div class="mega-menu-modal__inner">
+                  <div class="mega-menu-modal__nav">
+                    <ul class="mega-menu-modal__list">
+                      {%- for childlink in link.links -%}
+                        <li class="mega-menu-modal__item">
+                          <a href="{{ childlink.url }}" class="mega-menu-modal__link">
+                            {{ childlink.title }}
+                          </a>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  </div>
+                  <div class="mega-menu-modal__featured">
+                    {%- if matching_block != null -%}
+                      <div class="mega-menu-featured-grid">
+                        {%- for i in (1..4) -%}
+                          {%- assign img_key = 'image_' | append: i -%}
+                          {%- assign label_key = 'label_' | append: i -%}
+                          {%- assign link_key = 'link_' | append: i -%}
+                          {%- assign img = matching_block.settings[img_key] -%}
+                          {%- assign label = matching_block.settings[label_key] -%}
+                          {%- assign url = matching_block.settings[link_key] -%}
+
+                          {%- if img != blank -%}
+                            {%- assign product_count = null -%}
+                            {%- if url contains '/collections/' -%}
+                              {%- assign url_parts = url | split: '/' -%}
+                              {%- assign collection_handle = url_parts | last | split: '?' | first -%}
+                              {%- assign product_count = collections[collection_handle].products_count -%}
+                            {%- endif -%}
+
+                            <a href="{{ url | default: '#' }}" class="mega-menu-featured-item">
+                              <div class="mega-menu-featured-image-wrapper">
+                                {{
+                                  img
+                                  | image_url: width: 400
+                                  | image_tag: loading: 'lazy', class: 'mega-menu-featured-image'
+                                }}
+                              </div>
+                              {%- if label != blank -%}
+                                <div class="mega-menu-featured-label">
+                                  {{ label }}
+                                  {%- if product_count != null -%}
+                                    <span class="mega-menu-featured-count">({{ product_count }})</span>
+                                  {%- endif -%}
+                                </div>
+                              {%- endif -%}
+                            </a>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </div>
+                    {%- endif -%}
+                  </div>
+                </div>
+              </div>
+            {%- else -%}
+              <a href="{{ link.url }}" class="header__menu-item {% if link.active %}active{% endif %}">
+                {{ link.title }}
+              </a>
+            {%- endif -%}
           </li>
         {%- else -%}
           <!-- Fallback links based on image if menu is empty -->
@@ -43,7 +127,9 @@
           <li><a href="#" class="header__menu-item">SHOP</a></li>
         {%- endfor -%}
       </ul>
+      <div class="header__nav-underline" aria-hidden="true"></div>
     </nav>
+    <script src="{{ 'mega-menu.js' | asset_url }}" defer="defer"></script>
 
     <!-- Icons -->
     <div class="header__icons">
@@ -94,6 +180,96 @@
       "id": "menu",
       "default": "main-menu",
       "label": "Menu"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "mega_menu",
+      "name": "Mega Menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "link_name",
+          "label": "Menu Item Title",
+          "info": "Case-sensitive match with the menu item title (e.g., 'SHOP')"
+        },
+        {
+          "type": "header",
+          "content": "Image 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_1",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "label_1",
+          "label": "Label"
+        },
+        {
+          "type": "url",
+          "id": "link_1",
+          "label": "Link"
+        },
+        {
+          "type": "header",
+          "content": "Image 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_2",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "label_2",
+          "label": "Label"
+        },
+        {
+          "type": "url",
+          "id": "link_2",
+          "label": "Link"
+        },
+        {
+          "type": "header",
+          "content": "Image 3"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_3",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "label_3",
+          "label": "Label"
+        },
+        {
+          "type": "url",
+          "id": "link_3",
+          "label": "Link"
+        },
+        {
+          "type": "header",
+          "content": "Image 4"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_4",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "label_4",
+          "label": "Label"
+        },
+        {
+          "type": "url",
+          "id": "link_4",
+          "label": "Link"
+        }
+      ]
     }
   ]
 }
