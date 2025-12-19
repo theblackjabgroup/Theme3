@@ -49,12 +49,19 @@
           {%- endfor -%}
         </div>
       {%- else -%}
-        {%- comment -%} Fallback to single static/slider if needed, but keeping it simple for now {%- endcomment -%}
         <div class="announcement-bar__static">
           {%- for block in section.blocks limit: 1 -%}
             <p class="announcement-bar__message h5">{{ block.settings.text | escape }}</p>
           {%- endfor -%}
         </div>
+      {%- endif -%}
+
+      {%- if section.settings.show_close_button -%}
+        <button type="button" class="announcement-bar__close" aria-label="Close">
+          <svg viewBox="0 0 24 24" width="16" height="16">
+            <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
       {%- endif -%}
     </div>
   </announcement-bar>

@@ -55,7 +55,14 @@ class AnnouncementBar extends HTMLElement {
       };
 
       update();
-      setInterval(update, 1000);
+      const intervalId = setInterval(() => {
+        update();
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+        if (distance < 0) {
+          clearInterval(intervalId);
+        }
+      }, 1000);
     });
   }
 }
