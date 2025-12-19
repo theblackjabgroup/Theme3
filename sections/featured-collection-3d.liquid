@@ -1,0 +1,144 @@
+{{ 'section-featured-collection-3d.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'section-featured-collection-3d.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign featured_collection = section.settings.collection
+  assign products_to_show = section.settings.products_to_show | default: 9
+-%}
+
+<section class="fc3d" data-fc3d-section data-section-id="{{ section.id }}">
+  <div class="fc3d__container">
+    <div class="fc3d__header">
+      {%- if section.settings.title != blank -%}
+        <h2 class="fc3d__title">{{ section.settings.title }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.show_shop_all and featured_collection != blank and featured_collection.url != blank -%}
+        <a class="fc3d__shop-all" href="{{ featured_collection.url }}">
+          {{ section.settings.shop_all_label | default: 'Shop all' }}
+        </a>
+      {%- endif -%}
+    </div>
+
+    <div class="fc3d__viewport" data-fc3d-viewport>
+      <div class="fc3d__rail" data-fc3d-rail role="list">
+        {%- if featured_collection != blank and featured_collection.products_count > 0 -%}
+          {%- for product in featured_collection.products limit: products_to_show -%}
+            <div class="fc3d-card" data-fc3d-card role="listitem">
+              <div class="fc3d-card__inner">
+                <div class="fc3d-card__face fc3d-card__face--front">
+                  <a class="fc3d-card__link" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+                    {%- if product.featured_media != blank -%}
+                      {{
+                        product.featured_media
+                        | image_url: width: 900
+                        | image_tag:
+                          class: 'fc3d-card__image',
+                          widths: '300, 450, 600, 900',
+                          loading: 'lazy'
+                      }}
+                    {%- else -%}
+                      {{ 'product-1' | placeholder_svg_tag: 'fc3d-card__image fc3d-card__image--placeholder' }}
+                    {%- endif -%}
+
+                    <div class="fc3d-card__front-overlay">
+                      <div class="fc3d-card__front-title">{{ product.title }}</div>
+                    </div>
+                  </a>
+                </div>
+
+                <div class="fc3d-card__face fc3d-card__face--back" aria-hidden="true">
+                  <div class="fc3d-card__back-content">
+                    <div class="fc3d-card__back-title">{{ product.title }}</div>
+                    <div class="fc3d-card__back-price">{{ product.price | money }}</div>
+                    {%- if product.description != blank -%}
+                      <div class="fc3d-card__back-text">{{ product.description | strip_html | truncate: 120 }}</div>
+                    {%- endif -%}
+                    <a class="fc3d-card__back-cta" href="{{ product.url }}">View product</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        {%- else -%}
+          {%- for i in (1..products_to_show) -%}
+            <div class="fc3d-card" data-fc3d-card role="listitem">
+              <div class="fc3d-card__inner">
+                <div class="fc3d-card__face fc3d-card__face--front">
+                  <div class="fc3d-card__link" role="link" aria-label="Placeholder product">
+                    {{ 'product-1' | placeholder_svg_tag: 'fc3d-card__image fc3d-card__image--placeholder' }}
+                    <div class="fc3d-card__front-overlay">
+                      <div class="fc3d-card__front-title">Name of the product</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="fc3d-card__face fc3d-card__face--back" aria-hidden="true">
+                  <div class="fc3d-card__back-content">
+                    <div class="fc3d-card__back-title">Back side content</div>
+                    <div class="fc3d-card__back-text">Add a collection in the section settings to show real products.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="fc3d__controls">
+      <button class="fc3d__nav fc3d__nav--prev" type="button" data-fc3d-prev aria-label="Previous">
+        <span aria-hidden="true">←</span>
+      </button>
+      <button class="fc3d__nav fc3d__nav--next" type="button" data-fc3d-next aria-label="Next">
+        <span aria-hidden="true">→</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured collection 3D",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "Heading",
+      "default": "Featured collection"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 3,
+      "max": 15,
+      "step": 1,
+      "default": 9,
+      "label": "Products to show"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_shop_all",
+      "label": "Show Shop all link",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "shop_all_label",
+      "label": "Shop all label",
+      "default": "Shop all"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured collection 3D"
+    }
+  ]
+}
+{% endschema %}

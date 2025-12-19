@@ -1,0 +1,110 @@
+:root {
+    /* Color Tokens */
+    /* Primary Colors */
+    --color-white: #FFFFFF;
+    --color-red: #FF0000;
+    --color-cyan-teal: #00BCD4;
+    --color-pink: #FF69B4;
+    --color-black: #000000;
+    /* Gray variations - Placeholders as not specified */
+    --color-gray-100: #F5F5F5;
+    --color-gray-300: #E0E0E0;
+    --color-gray-500: #9E9E9E;
+    --color-gray-700: #616161;
+    --color-gray-900: #212121;
+
+    /* Semantic Colors */
+    --color-success: #00CC00;
+    --color-error: #FF0000;
+    --color-danger: #FF0000;
+    --color-warning: #FFA500;
+    --color-info: #0066CC;
+
+    /* Typography / Font Tokens */
+    --font-family-primary: Arial, sans-serif;
+    --font-family-fallback: sans-serif;
+
+    /* Heading Styles */
+    --h1-size: 32px;
+    --h2-size: 24px;
+    --h3-size: 18px;
+    --h4-size: 16px;
+    --heading-weight: bold;
+    --heading-color: #000000;
+
+    /* Body Text */
+    --body-text-regular: 14px;
+    --body-text-small: 12px;
+    --body-text-large: 16px;
+    --body-color: #000000;
+
+    /* Button Text */
+    --button-text-size: 14px;
+    --button-text-weight: 500; /* Medium */
+    --button-text-color: #FFFFFF;
+
+    /* Spacing Tokens */
+    --spacing-xs: 4px;
+    --spacing-s: 8px;
+    --spacing-m: 16px;
+    --spacing-l: 24px;
+    --spacing-xl: 32px;
+    --spacing-xxl: 48px;
+    --spacing-xxxl: 64px;
+
+    /* Padding */
+    --padding-small: 8px;
+    --padding-medium: 16px;
+    --padding-large: 24px;
+    --padding-extra-large: 32px;
+
+    /* Margin */
+    --margin-small: 8px;
+    --margin-medium: 16px;
+    --margin-large: 24px;
+    --margin-extra-large: 32px;
+
+    /* Gap */
+    --gap-component: 8px;
+    --gap-section: 24px;
+    --gap-page: 48px;
+
+    /* Sizing Tokens */
+    /* Container Sizes */
+    --container-desktop: 1280px;
+    --container-tablet: 768px;
+    --container-mobile: 375px;
+    --container-height: 832px;
+
+    /* Component Sizes */
+    --height-button: 48px;
+    --height-input: 40px;
+    --icon-size-small: 16px;
+    --icon-size-medium: 24px;
+    --icon-size-large: 32px;
+
+    /* Border & Radius Tokens */
+    /* Border Radius */
+    --radius-small: 4px;
+    --radius-medium: 8px;
+    --radius-large: 25px;
+    --radius-pill: 9999px;
+
+    /* Border Width */
+    --border-width-thin: 1px;
+    --border-width-medium: 2px;
+    --border-width-thick: 4px;
+
+    /* Shadow Tokens */
+    /* Elevation System - Estimated values as specific rgba not provided */
+    --shadow-elevation-1: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    --shadow-elevation-2: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    --shadow-elevation-3: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+
+    /* Opacity Tokens */
+    --opacity-full: 1;
+    --opacity-75: 0.75;
+    --opacity-50: 0.5;
+    --opacity-25: 0.25;
+    --opacity-disabled: 0.5;
+}

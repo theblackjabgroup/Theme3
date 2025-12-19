@@ -1,0 +1,256 @@
+/* Featured Collection (3D flip) */
+
+.fc3d {
+  width: 100%;
+  padding: var(--spacing-xxl) 0;
+  background: var(--color-white);
+  color: var(--color-black);
+}
+.fc3d {
+  overflow-y: hidden;
+}
+.fc3d__container::-webkit-scrollbar{
+   display:none !important;
+}
+
+.fc3d__container {
+  margin: 0 auto;
+}
+
+.fc3d__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-section);
+  margin-bottom: var(--spacing-xl);
+  padding: 0 var(--padding-large);}
+
+.fc3d__title {
+  margin: 0;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  text-transform: uppercase;
+}
+
+.fc3d__shop-all {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--height-button);
+  padding: 0 var(--padding-large);
+  border-radius: var(--radius-pill);
+  background: var(--color-red);
+  color: var(--color-white);
+  text-decoration: none;
+  font-weight: 800;
+  text-transform: uppercase;
+  border: var(--border-width-medium) solid var(--color-black);
+  box-shadow: var(--shadow-elevation-1);
+}
+
+.fc3d__shop-all:hover {
+  filter: brightness(0.95);
+}
+
+.fc3d__viewport {
+  position: relative;
+}
+
+.fc3d__rail {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-section);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 25vw;
+  padding: var(--spacing-l) 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.fc3d__rail::-webkit-scrollbar {
+  height: 8px;
+}
+
+.fc3d__rail::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 99px;
+}
+
+.fc3d-card {
+  flex: 0 0 auto;
+  width: clamp(220px, 22vw, 320px);
+  aspect-ratio: 3 / 4;
+  scroll-snap-align: center;
+  perspective: 1200px;
+  position: relative;
+}
+
+.fc3d-card__inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 650ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.fc3d-card__face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: var(--radius-large);
+  overflow: hidden;
+  border: var(--border-width-medium) solid var(--color-black);
+  box-shadow: var(--shadow-elevation-2);
+  background: var(--color-white);
+}
+
+.fc3d-card__face--back {
+  transform: rotateY(180deg);
+}
+
+.fc3d-card__link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+}
+
+.fc3d-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.fc3d-card__image--placeholder {
+  width: 100%;
+  height: 100%;
+}
+
+.fc3d-card__front-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--padding-large);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.65));
+}
+
+.fc3d-card__front-title {
+  font-size: clamp(22px, 2vw, 42px);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 0.95;
+}
+
+.fc3d-card__back-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: var(--gap-component);
+  padding: var(--padding-large);
+}
+
+.fc3d-card__back-title {
+  font-size: clamp(18px, 1.5vw, 26px);
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.fc3d-card__back-price {
+  font-weight: 800;
+}
+
+.fc3d-card__back-text {
+  font-size: var(--body-text-regular);
+  max-width: 40ch;
+}
+
+.fc3d-card__back-cta {
+  margin-top: var(--spacing-s);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--height-button);
+  padding: 0 var(--padding-large);
+  border-radius: var(--radius-pill);
+  border: var(--border-width-medium) solid var(--color-black);
+  background: var(--color-black);
+  color: var(--color-white);
+  text-decoration: none;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+/* Only the center card flips */
+.fc3d-card.is-center:hover .fc3d-card__inner,
+.fc3d-card.is-center:focus-within .fc3d-card__inner,
+.fc3d-card.is-center.is-flipped .fc3d-card__inner {
+  transform: rotateY(180deg);
+}
+
+/* Optional visual emphasis for center */
+.fc3d-card.is-center {
+  z-index: 2;
+}
+
+.fc3d-card.is-center .fc3d-card__face {
+  box-shadow: var(--shadow-elevation-3);
+}
+
+.fc3d__controls {
+  display: flex;
+  justify-content: center;
+  gap: var(--gap-component);
+  margin-top: var(--spacing-m);
+}
+
+.fc3d__nav {
+  width: 64px;
+  height: 56px;
+  border-radius: var(--radius-pill);
+  border: var(--border-width-medium) solid var(--color-black);
+  background: var(--color-red);
+  color: var(--color-white);
+  font-weight: 900;
+  line-height: 1;
+  box-shadow: var(--shadow-elevation-2);
+}
+
+.fc3d__nav:hover {
+  filter: brightness(0.95);
+}
+
+.fc3d__nav:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fc3d-card__inner {
+    transition: none;
+  }
+  .fc3d__rail {
+    scroll-behavior: auto;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .fc3d__container {
+    padding: 0 var(--padding-medium);
+  }
+  .fc3d__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .fc3d__rail {
+    scroll-padding: 20vw;
+  }
+}
