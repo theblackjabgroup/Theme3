@@ -205,7 +205,7 @@
 
         {%- if section.settings.show_newsletter -%}
           <div class="ef-form-wrapper">
-            {% form 'customer', class: 'ef-newsletter-form' %}
+            {% form 'customer', id: 'EditorialFooterNewsletter', class: 'ef-newsletter-form' %}
               <input type="hidden" name="contact[tags]" value="newsletter">
 
               <div class="ef-form-inner">
