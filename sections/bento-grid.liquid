@@ -47,15 +47,13 @@
               </div>
 
             {%- when 'tag_card' -%}
-              <div class="bento-item__tag-layout bento-item__tag-layout--{{ block.settings.layout_direction }}">
-                <div class="bento-item__tag-text-side">
-                  {%- if block.settings.tag_text != blank -%}
-                    <span class="bento-item__tag-pill">{{ block.settings.tag_text }}</span>
-                  {%- endif -%}
-                  {%- if block.settings.heading != blank -%}
-                    <h3 class="bento-item__heading bento-item__heading--static">{{ block.settings.heading }}</h3>
-                  {%- endif -%}
-                </div>
+              <div class="bento-item__tag-layout bento-item__tag-layout--{{ block.settings.layout_direction }} bento-item__tag-layout--align-{{ block.settings.content_alignment }} bento-item__tag-layout--justify-{{ block.settings.content_justification }}">
+                {%- if block.settings.tag_text != blank -%}
+                  <span class="bento-item__tag-pill">{{ block.settings.tag_text }}</span>
+                {%- endif -%}
+                {%- if block.settings.heading != blank -%}
+                  <h3 class="bento-item__heading bento-item__heading--static">{{ block.settings.heading }}</h3>
+                {%- endif -%}
                 <div class="bento-item__image-container bento-item__image-container--relative">
                   {%- if block.settings.image != blank -%}
                     {{
@@ -345,6 +343,29 @@
             { "value": "column-reverse", "label": "Column Reverse" }
           ],
           "default": "row"
+        },
+        {
+          "type": "select",
+          "id": "content_alignment",
+          "label": "Content Alignment (Cross Axis)",
+          "options": [
+            { "value": "start", "label": "Start" },
+            { "value": "center", "label": "Center" },
+            { "value": "end", "label": "End" }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "select",
+          "id": "content_justification",
+          "label": "Content Justification (Main Axis)",
+          "options": [
+            { "value": "start", "label": "Start" },
+            { "value": "center", "label": "Center" },
+            { "value": "end", "label": "End" },
+            { "value": "between", "label": "Space Between" }
+          ],
+          "default": "center"
         },
         {
           "type": "url",

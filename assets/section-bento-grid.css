@@ -90,7 +90,7 @@
    z-index: -1;
 }
 
-.bento-item::after {
+.bento-item:not(.bento-item--text_card):not(.bento-item--tag_card)::after {
   content: '';
   position: absolute;
   top: 0;
@@ -187,12 +187,19 @@
 .bento-item__tag-layout--column { flex-direction: column; }
 .bento-item__tag-layout--column-reverse { flex-direction: column-reverse; }
 
-.bento-item__tag-text-side {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 10px;
+/* Align Items (Cross Axis) */
+.bento-item__tag-layout--align-start { align-items: flex-start; }
+.bento-item__tag-layout--align-center { align-items: center; }
+.bento-item__tag-layout--align-end { align-items: flex-end; }
+
+/* Justify Content (Main Axis) */
+.bento-item__tag-layout--justify-start { justify-content: flex-start; }
+.bento-item__tag-layout--justify-center { justify-content: center; }
+.bento-item__tag-layout--justify-end { justify-content: flex-end; }
+.bento-item__tag-layout--justify-between { justify-content: space-between; }
+
+.bento-item__tag-layout .bento-item__heading {
+    margin: 0;
 }
 
 .bento-item__tag-pill {
@@ -209,9 +216,14 @@
 
 .bento-item__image-container--relative {
   position: relative;
-  flex: 1;
   border-radius: var(--radius-medium);
   overflow: hidden;
+  max-width: 50%; /* Prevent image from dominating in row layouts */
+}
+
+.bento-item__tag-layout--column .bento-item__image-container--relative,
+.bento-item__tag-layout--column-reverse .bento-item__image-container--relative {
+    max-width: 100%;
 }
 
 /* Video Card */
