@@ -30,11 +30,3 @@ button {
     height: var(--height-button);
     cursor: pointer;
 }
-:root {
-  --font-mono: Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-}
-
-html,
-body {
-  font-family: var(--font-mono);
-}
