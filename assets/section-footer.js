@@ -2,19 +2,25 @@ document.addEventListener('DOMContentLoaded', function () {
   const form = document.getElementById('EditorialFooterNewsletter');
   if (!form) return;
 
+  // Fix: Use a submission flag to prevent race conditions (e.g. double Enter key)
+  let isSubmitting = false;
+
   form.addEventListener('submit', function (e) {
+    if (isSubmitting) {
+      e.preventDefault();
+      return;
+    }
+
     e.preventDefault();
+    isSubmitting = true;
 
     const submitBtn = form.querySelector('.ef-submit');
-    const originalBtnContent = submitBtn.innerHTML;
     const input = form.querySelector('.ef-input');
-    const messageContainer = form.querySelector('.ef-form-inner'); // We'll append messages here or handle them
 
     // Clear previous messages
     const existingMessages = form.querySelectorAll('.ef-message');
     existingMessages.forEach((el) => el.remove());
 
-    // Disable button to prevent double submit
     submitBtn.disabled = true;
 
     const formData = new FormData(form);
@@ -38,36 +44,40 @@ document.addEventListener('DOMContentLoaded', function () {
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
 
-        // Check for success or errors in the returned HTML
+        // Fix: Strict check for success/error elements. Do NOT assume success if missing.
         const successMessage = doc.querySelector('.ef-message--success');
-        const errorMessage = doc.querySelector('.ef-message--error');
+        const errorMessage = doc.querySelector('.ef-message--error') || doc.querySelector('.errors');
 
         if (successMessage) {
-          // Success
+          // Genuine Success
           input.value = '';
           form.appendChild(successMessage);
         } else if (errorMessage) {
-          // Error
+          // Genuine Error
+          if (!errorMessage.classList.contains('ef-message')) {
+            errorMessage.className = 'ef-message ef-message--error';
+          }
           form.appendChild(errorMessage);
         } else {
-          // Fallback check if standard Shopify posted param checks failed to render our class
-          // Alternatively, check if the URL *would* have posted successfully
-          const newSuccess = document.createElement('div');
-          newSuccess.className = 'ef-message ef-message--success';
-          newSuccess.textContent = 'Thanks for subscribing!';
-          form.appendChild(newSuccess);
-          input.value = '';
+          // Unknown state - DO NOT show "Thanks for subscribing".
+          // This handles cases like 500 errors or malformed responses.
+          console.error('Newsletter submission returned unknown response format.');
+          const unknownErr = document.createElement('div');
+          unknownErr.className = 'ef-message ef-message--error';
+          unknownErr.textContent = 'Unable to subscribe at this moment. Please try again later.';
+          form.appendChild(unknownErr);
         }
       })
       .catch((error) => {
         console.error('Error:', error);
         const errDiv = document.createElement('div');
         errDiv.className = 'ef-message ef-message--error';
-        errDiv.textContent = 'Something went wrong. Please try again.';
+        errDiv.textContent = 'Something went wrong. Please check your connection and try again.';
         form.appendChild(errDiv);
       })
       .finally(() => {
         submitBtn.disabled = false;
+        isSubmitting = false;
       });
   });
 });
