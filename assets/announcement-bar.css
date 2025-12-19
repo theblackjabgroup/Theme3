@@ -1,0 +1,119 @@
+/* Announcement Bar  Styles */
+.announcement-bar {
+  position: relative;
+  overflow: hidden;
+  padding: 8px 0;
+  background: var(--color-black);
+  color: var(--color-white);
+  font-family: var(--font-family-primary);
+  font-size: var(--body-text-small);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.announcement-bar.is-sticky {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.announcement-bar[hidden] {
+  display: none;
+  opacity: 0;
+  transform: translateY(-100%);
+}
+
+.announcement-bar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+}
+
+/* Marquee Style */
+.announcement-bar--marquee {
+  display: flex;
+  overflow: hidden;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.marquee-content {
+  display: flex;
+  width: max-content;
+  animation: marquee var(--marquee-speed, 20s) linear infinite;
+}
+
+.marquee-content:hover {
+  animation-play-state: paused;
+}
+
+.marquee-item {
+  font-size: var(--body-text-large);
+  padding: 0 40px;
+  flex-shrink: 0;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Countdown Styles */
+.announcement-countdown {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-weight: bold;
+}
+
+.countdown-box {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 6px;
+  border-radius: var(--radius-small);
+  min-width: 24px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+
+/* Micro-animations */
+.announcement-bar__link {
+  color: inherit;
+  text-decoration: none;
+  position: relative;
+  display: inline-block;
+}
+
+.announcement-bar__link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.announcement-bar__link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+@media screen and (max-width: 749px) {
+  .announcement-bar__inner {
+    padding-right: 40px;
+  }
+}

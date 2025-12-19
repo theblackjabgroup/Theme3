@@ -37,7 +37,7 @@ class MegaMenu {
     }
 
     document.addEventListener('click', (e) => {
-      if (!e.target.closest('.header__menu-item-wrapper')) {
+      if (!e.target.closest('.header__menu-item-wrapper') && !e.target.closest('.mobile-menu-modal')) {
         this.closeAll();
       }
     });
@@ -48,8 +48,48 @@ class MegaMenu {
       }
     });
 
+    // Mobile Menu Toggle
+    this.mobileToggle = document.querySelector('[data-mobile-menu-toggle]');
+    this.mobileClose = document.querySelector('[data-mobile-menu-close]');
+    this.mobileMenu = document.querySelector('[data-mobile-menu]');
+    this.mobileSecondaryList = document.querySelector('[data-mobile-secondary-list]');
+    this.mobilePrimaryLinks = document.querySelectorAll('[data-mobile-primary-link]');
+
+    if (this.mobileToggle) {
+      this.mobileToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.toggleMobileMenu();
+      });
+    }
+
+    if (this.mobileClose) {
+      this.mobileClose.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.closeMobileMenu();
+      });
+    }
+
     // Initial underline check (if an item is open)
     this.resetUnderline();
+  }
+
+  toggleMobileMenu() {
+    const isOpen = this.body.classList.contains('mobile-menu-open');
+    if (isOpen) {
+      this.closeMobileMenu();
+    } else {
+      this.openMobileMenu();
+    }
+  }
+
+  openMobileMenu() {
+    this.body.classList.add('mobile-menu-open');
+    this.body.style.overflow = 'hidden';
+  }
+
+  closeMobileMenu() {
+    this.body.classList.remove('mobile-menu-open');
+    this.body.style.overflow = '';
   }
 
   moveUnderline(element) {
@@ -90,6 +130,7 @@ class MegaMenu {
     this.triggers.forEach((t) => t.setAttribute('aria-expanded', 'false'));
     this.modals.forEach((m) => m.classList.remove('is-open'));
     this.body.classList.remove('mega-menu-open');
+    this.closeMobileMenu();
     this.resetUnderline();
   }
 }

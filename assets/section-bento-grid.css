@@ -12,7 +12,7 @@
 .bento-grid {
   display: grid;
   grid-template-columns: repeat(8, 1fr); /* 8 cols for finer control */
-  grid-auto-rows: minmax(130px, auto); /* Finer row control */
+  grid-auto-rows: 130px; /* Force fixed height based on span units */
   gap: var(--gap-component);
 }
 
@@ -141,28 +141,140 @@
 .bento-row-span-9 { grid-row: span 9; }
 .bento-row-span-10 { grid-row: span 10; }
 
+/* New Card Variations */
+
+/* Text Card */
+.bento-item--text_card {
+  background-color: var(--color-black);
+  justify-content: flex-start;
+}
+
+.bento-item__text-container {
+  padding: var(--padding-large);
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.bento-item__heading--static {
+  text-shadow: none;
+  margin-bottom: var(--padding-small);
+  flex-shrink: 0;
+}
+
+.bento-item__text-content {
+  color: #8c8c88;
+  font-size: var(--body-text-medium);
+  line-height: 1.6;
+}
+
+/* Tag Card */
+.bento-item--tag_card {
+  background-color: #2a2a24;
+}
+
+.bento-item__tag-layout {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  padding: var(--padding-medium);
+  gap: var(--gap-component);
+}
+
+.bento-item__tag-layout--row { flex-direction: row; }
+.bento-item__tag-layout--row-reverse { flex-direction: row-reverse; }
+.bento-item__tag-layout--column { flex-direction: column; }
+.bento-item__tag-layout--column-reverse { flex-direction: column-reverse; }
+
+.bento-item__tag-text-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.bento-item__tag-pill {
+  display: inline-block;
+  padding: 4px 10px;
+  background-color: var(--color-red);
+  color: var(--color-white);
+  font-size: 10px;
+  text-transform: uppercase;
+  font-weight: 700;
+  border-radius: var(--radius-pill);
+  width: fit-content;
+}
+
+.bento-item__image-container--relative {
+  position: relative;
+  flex: 1;
+  border-radius: var(--radius-medium);
+  overflow: hidden;
+}
+
+/* Video Card */
+.bento-item__video-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.bento-item__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Blog/Product Shared */
+.bento-item__label {
+  display: block;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-red);
+  margin-bottom: 4px;
+}
+
+/* Custom Scrollbar for Text Cards */
+.bento-custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.bento-custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.bento-custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--color-white, #ffffff);
+  border-radius: 10px;
+}
+
+/* Responsive Resets */
 @media screen and (max-width: 1200px) {
   .bento-grid {
-    grid-template-columns: repeat(5, 1fr); /* 5 cols for tablet landscape */
+    grid-template-columns: repeat(5, 1fr);
   }
 }
 
 @media screen and (max-width: 900px) {
   .bento-grid {
-    grid-template-columns: repeat(2, 1fr); /* 2 cols tablet portrait */
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media screen and (max-width: 600px) {
   .bento-grid {
-    grid-template-columns: 1fr; /* 1 col mobile */
+    grid-template-columns: 1fr;
   }
-  /* Reset spans on mobile to full width usually handled by CSS grid flow but strict classes might force spans, 
-     so we should ideally reset them. For now, rely on grid-template-columns: 1fr overriding behavior or just letting items flow.
-     Ideally spans should be localized to media queries if we want responsiveness, 
-     but user asked for exact 10x10 control so we assume desktop focus for the main grid.
-  */
   [class*="bento-col-span-"] {
       grid-column: span 1 !important;
+  }
+  
+  .bento-item__tag-layout {
+      flex-direction: column !important;
   }
 }
