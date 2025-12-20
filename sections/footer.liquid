@@ -41,7 +41,12 @@
       "type": "text",
       "id": "links_heading",
       "label": "Links Heading",
-      "default": "Also →"
+      "default": "Also"
+    },
+    {
+      "type": "image_picker",
+      "id": "links_icon",
+      "label": "Custom Icon"
     },
     {
       "type": "header",
@@ -88,6 +93,12 @@
       "id": "accent_color",
       "label": "Accent Color",
       "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "links_hover_color",
+      "label": "Links Hover Color",
+      "default": "#ff0000"
     },
     {
       "type": "range",
@@ -177,6 +188,7 @@
   #shopify-section-{{ section.id }} {
     --bg-color: {{ section.settings.bg_color }};
     --accent-color: {{ section.settings.accent_color }};
+    --links-hover-color: {{ section.settings.links_hover_color }};
     --padding-top: {{ section.settings.padding_top }}px;
     --padding-bottom: {{ section.settings.padding_bottom }}px;
     --logo-spacing-top: {{ section.settings.logo_spacing_top }}px;
@@ -254,13 +266,35 @@
       <!-- RIGHT -->
       <div class="ef-links-col">
         {%- if section.settings.links_heading != blank -%}
-          <div class="ef-links-title">{{ section.settings.links_heading }}</div>
+          <div class="ef-links-title">
+            {{ section.settings.links_heading }}
+            {%- if section.settings.links_icon != blank -%}
+              {{
+                section.settings.links_icon
+                | image_url: width: 200
+                | image_tag: class: 'ef-links-icon', loading: 'lazy'
+              }}
+            {%- else -%}
+              <svg
+                viewBox="0 0 14 10"
+                fill="none"
+                aria-hidden="true"
+                focusable="false"
+                role="presentation"
+                class="icon icon-arrow ef-links-icon"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.537.808a.5.5 0 01.817-.162l4 4a.5.5 0 010 .708l-4 4a.5.5 0 11-.708-.708L11.793 5.5H1a.5.5 0 010-1h10.793L8.646 1.354a.5.5 0 01-.109-.546z" fill="currentColor"/>
+              </svg>
+            {%- endif -%}
+          </div>
         {%- endif -%}
-
         <ul class="ef-links-list">
           {%- for link in linklists[section.settings.menu].links -%}
             <li class="ef-link-item">
-              <a href="{{ link.url }}">{{ link.title }}</a>
+              <a href="{{ link.url }}" data-text="{{ link.title | escape }}">
+                <span class="ef-link-text">{{ link.title }}</span>
+              </a>
             </li>
           {%- endfor -%}
         </ul>

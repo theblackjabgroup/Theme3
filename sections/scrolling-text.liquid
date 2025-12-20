@@ -18,13 +18,26 @@
       if block.settings.direction == 'right'
         assign direction_val = 'reverse'
       endif
+
+      assign margin_left = 'auto'
+      assign margin_right = 'auto'
+      if block.settings.alignment == 'left'
+        assign margin_left = '0'
+      elsif block.settings.alignment == 'right'
+        assign margin_right = '0'
+      endif
+
+      assign bg_color_val = block.settings.bg_color
+      if block.settings.transparent_background
+        assign bg_color_val = 'transparent'
+      endif
     -%}
 
     <div
       class="scrolling-text-strip"
       {{ block.shopify_attributes }}
       style="
-        --bg-color: {{ block.settings.bg_color }};
+        --bg-color: {{ bg_color_val }};
         --text-color: {{ block.settings.text_color }};
         --speed: {{ block.settings.speed }}s;
         --angle: {{ angle_val }}deg;
@@ -33,6 +46,9 @@
         --tilt-margin: {{ tilt_margin }}px;
         --item-gap: {{ block.settings.text_gap }}px;
         --strip-padding: {{ block.settings.padding }}px;
+        --strip-width: {{ block.settings.strip_width }}%;
+        --margin-left: {{ margin_left }};
+        --margin-right: {{ margin_right }};
       "
     >
       <div class="scrolling-text-inner">
@@ -130,6 +146,27 @@
         },
         {
           "type": "range",
+          "id": "strip_width",
+          "min": 20,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Strip Width",
+          "default": 100
+        },
+        {
+          "type": "select",
+          "id": "alignment",
+          "label": "Strip Alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "range",
           "id": "padding",
           "min": 5,
           "max": 100,
@@ -151,6 +188,12 @@
         {
           "type": "header",
           "content": "Appearance"
+        },
+        {
+          "type": "checkbox",
+          "id": "transparent_background",
+          "label": "Transparent Background",
+          "default": false
         },
         {
           "type": "color",

@@ -21,8 +21,8 @@
     --color-info: #0066CC;
 
     /* Typography / Font Tokens */
-    --font-family-primary: Arial, sans-serif;
-    --font-family-fallback: sans-serif;
+    --font-family-primary: 'Anonymous Pro', monospace;
+    --font-family-fallback: monospace;
 
     /* Heading Styles */
     --h1-size: 32px;
