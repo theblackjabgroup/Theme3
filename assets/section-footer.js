@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const form = document.getElementById('EditorialFooterNewsletter');
   if (!form) return;
 
-  // Fix: Use a submission flag to prevent race conditions (e.g. double Enter key)
   let isSubmitting = false;
 
   form.addEventListener('submit', function (e) {
@@ -16,8 +15,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const submitBtn = form.querySelector('.ef-submit');
     const input = form.querySelector('.ef-input');
-
-    // Clear previous messages
     const existingMessages = form.querySelectorAll('.ef-message');
     existingMessages.forEach((el) => el.remove());
 
@@ -31,7 +28,6 @@ document.addEventListener('DOMContentLoaded', function () {
       body: formData,
     })
       .then((response) => {
-        // If Shopify redirects to a challenge (captcha), we must follow it
         if (response.url.includes('/challenge')) {
           window.location.href = response.url;
           return;
@@ -44,23 +40,18 @@ document.addEventListener('DOMContentLoaded', function () {
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
 
-        // Fix: Strict check for success/error elements. Do NOT assume success if missing.
         const successMessage = doc.querySelector('.ef-message--success');
         const errorMessage = doc.querySelector('.ef-message--error') || doc.querySelector('.errors');
 
         if (successMessage) {
-          // Genuine Success
           input.value = '';
           form.appendChild(successMessage);
         } else if (errorMessage) {
-          // Genuine Error
           if (!errorMessage.classList.contains('ef-message')) {
             errorMessage.className = 'ef-message ef-message--error';
           }
           form.appendChild(errorMessage);
         } else {
-          // Unknown state - DO NOT show "Thanks for subscribing".
-          // This handles cases like 500 errors or malformed responses.
           console.error('Newsletter submission returned unknown response format.');
           const unknownErr = document.createElement('div');
           unknownErr.className = 'ef-message ef-message--error';

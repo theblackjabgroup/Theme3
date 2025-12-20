@@ -1,0 +1,230 @@
+{{ 'section-scrolling-text.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .scrolling-text-section {
+    --section-gap: {{ section.settings.vertical_gap }}px;
+    --section-gap-mobile: {{ section.settings.vertical_gap_mobile }}px;
+  }
+{%- endstyle -%}
+
+<div class="scrolling-text-section">
+  {%- for block in section.blocks -%}
+    {%- liquid
+      assign angle_val = block.settings.angle
+      assign abs_angle = angle_val | abs
+      assign tilt_margin = abs_angle | times: 3 | plus: 10
+
+      assign direction_val = 'normal'
+      if block.settings.direction == 'right'
+        assign direction_val = 'reverse'
+      endif
+    -%}
+
+    <div
+      class="scrolling-text-strip"
+      {{ block.shopify_attributes }}
+      style="
+        --bg-color: {{ block.settings.bg_color }};
+        --text-color: {{ block.settings.text_color }};
+        --speed: {{ block.settings.speed }}s;
+        --angle: {{ angle_val }}deg;
+        --item-font-size: {{ block.settings.font_size }}px;
+        --direction: {{ direction_val }};
+        --tilt-margin: {{ tilt_margin }}px;
+        --item-gap: {{ block.settings.text_gap }}px;
+        --strip-padding: {{ block.settings.padding }}px;
+      "
+    >
+      <div class="scrolling-text-inner">
+        {%- for i in (1..15) -%}
+          <div class="scrolling-text-track" aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}">
+            <div class="scrolling-text-item">
+              {%- if block.settings.link != blank -%}
+                <a href="{{ block.settings.link }}">
+              {%- endif -%}
+
+              {{ block.settings.text }}
+
+              <div class="scrolling-text-icon" style="display: inline-flex; vertical-align: middle;">
+                {%- if block.settings.icon != blank -%}
+                  {{ block.settings.icon | image_url: width: block.settings.icon_width | image_tag: loading: 'lazy' }}
+                {%- else -%}
+                  <img
+                    src="{{ 'icon-star.svg' | asset_url }}"
+                    width="{{ block.settings.icon_width }}"
+                    height="{{ block.settings.icon_width }}"
+                    loading="lazy"
+                    alt=""
+                    style="width: {{ block.settings.icon_width }}px; height: auto;"
+                  >
+                {%- endif -%}
+              </div>
+
+              {%- if block.settings.link != blank -%}
+                </a>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endfor -%}
+</div>
+
+{% schema %}
+{
+  "name": "Scrolling Text",
+  "settings": [
+    {
+      "type": "range",
+      "id": "vertical_gap",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Vertical Gap between Strips",
+      "default": 35
+    },
+    {
+      "type": "range",
+      "id": "vertical_gap_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Vertical Gap (Mobile)",
+      "default": 15
+    }
+  ],
+  "max_blocks": 3,
+  "blocks": [
+    {
+      "type": "scrolling_strip",
+      "name": "Scrolling Strip",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Write your text here</p>"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon/SVG (Optional)"
+        },
+        {
+          "type": "range",
+          "id": "icon_width",
+          "min": 10,
+          "max": 100,
+          "step": 2,
+          "unit": "px",
+          "label": "Icon Width",
+          "default": 30
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "range",
+          "id": "padding",
+          "min": 5,
+          "max": 100,
+          "step": 5,
+          "unit": "px",
+          "label": "Strip Vertical Padding",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "text_gap",
+          "min": 10,
+          "max": 150,
+          "step": 5,
+          "unit": "px",
+          "label": "Gap Space",
+          "default": 50
+        },
+        {
+          "type": "header",
+          "content": "Appearance"
+        },
+        {
+          "type": "color",
+          "id": "bg_color",
+          "label": "Background Color",
+          "default": "#FCC0D8"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text Color",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "font_size",
+          "min": 12,
+          "max": 100,
+          "step": 2,
+          "unit": "px",
+          "label": "Font Size",
+          "default": 26
+        },
+        {
+          "type": "header",
+          "content": "Animation"
+        },
+        {
+          "type": "select",
+          "id": "direction",
+          "label": "Direction",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "range",
+          "id": "speed",
+          "min": 5,
+          "max": 100,
+          "step": 1,
+          "unit": "s",
+          "label": "Speed",
+          "default": 20
+        },
+        {
+          "type": "range",
+          "id": "angle",
+          "min": -15,
+          "max": 15,
+          "step": 1,
+          "unit": "deg",
+          "label": "Tilt Angle",
+          "default": 0
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Scrolling Text",
+      "blocks": [
+        {
+          "type": "scrolling_strip",
+          "settings": { "angle": 0, "direction": "left", "bg_color": "#FCC0D8" }
+        },
+        {
+          "type": "scrolling_strip",
+          "settings": { "angle": -3, "direction": "right", "bg_color": "#FCC0D8" }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
