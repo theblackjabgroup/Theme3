@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "name": "t:sections.header.name",
   "type": "header",
@@ -9,31 +18,46 @@
           "type": "announcement",
           "settings": {
             "text": "Welcome to our store",
-            "text_alignment": "center",
-            "color_scheme": "scheme-1",
             "link": ""
           }
         }
       },
       "block_order": [
         "announcement-bar-0"
-      ]
+      ],
+      "settings": {
+        "layout_mode": "marquee",
+        "marquee_speed": 5,
+        "color_scheme": "",
+        "sticky": true,
+        "show_close_button": true
+      }
     },
     "header": {
       "type": "header",
+      "blocks": {
+        "mega_menu_KCC3jE": {
+          "type": "mega_menu",
+          "settings": {
+            "link_name": "SHOP",
+            "image_1": "shopify://shop_images/pants.png",
+            "label_1": "",
+            "link_1": "",
+            "label_2": "",
+            "link_2": "",
+            "label_3": "",
+            "link_3": "",
+            "label_4": "",
+            "link_4": ""
+          }
+        }
+      },
+      "block_order": [
+        "mega_menu_KCC3jE"
+      ],
       "settings": {
-        "color_scheme": "scheme-1",
-        "logo_position": "middle-left",
-        "menu": "main-menu",
-        "menu_type_desktop": "dropdown",
-        "sticky_header_type": "on-scroll-up",
-        "show_line_separator": true,
-        "enable_country_selector": true,
-        "enable_language_selector": true,
-        "mobile_logo_position": "center",
-        "margin_bottom": 0,
-        "padding_top": 20,
-        "padding_bottom": 20
+        "logo_width": 100,
+        "menu": "main-menu"
       }
     }
   },

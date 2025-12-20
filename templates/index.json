@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "bento_grid": {
@@ -6,7 +15,10 @@
         "item_1": {
           "type": "card",
           "settings": {
+            "external_image_url": "",
             "heading": "Card 1",
+            "link": "",
+            "card_shape": "rectangle",
             "column_span": "1",
             "row_span": "1"
           }
@@ -14,7 +26,10 @@
         "item_2": {
           "type": "card",
           "settings": {
+            "external_image_url": "",
             "heading": "Card 2",
+            "link": "",
+            "card_shape": "rectangle",
             "column_span": "1",
             "row_span": "1"
           }
@@ -22,7 +37,10 @@
         "item_3": {
           "type": "card",
           "settings": {
+            "external_image_url": "",
             "heading": "Card 3",
+            "link": "",
+            "card_shape": "rectangle",
             "column_span": "2",
             "row_span": "2"
           }
@@ -30,7 +48,10 @@
         "item_4": {
           "type": "card",
           "settings": {
+            "external_image_url": "",
             "heading": "Card 4",
+            "link": "",
+            "card_shape": "rectangle",
             "column_span": "1",
             "row_span": "4"
           }
@@ -38,7 +59,10 @@
         "item_5": {
           "type": "card",
           "settings": {
+            "external_image_url": "",
             "heading": "Card 5",
+            "link": "",
+            "card_shape": "rectangle",
             "column_span": "3",
             "row_span": "3"
           }
@@ -46,48 +70,33 @@
         "item_6": {
           "type": "card",
           "settings": {
+            "external_image_url": "",
             "heading": "Card 6",
+            "link": "",
+            "card_shape": "rectangle",
             "column_span": "2",
             "row_span": "2"
-          }
-        },
-        "item_7": {
-          "type": "card",
-          "settings": {
-            "heading": "Card 7",
-            "column_span": "2",
-            "row_span": "1"
           }
         },
         "item_8": {
           "type": "card",
           "settings": {
+            "external_image_url": "",
             "heading": "Card 8",
+            "link": "",
+            "card_shape": "rectangle",
             "column_span": "1",
-            "row_span": "1"
-          }
-        },
-        "item_9": {
-          "type": "card",
-          "settings": {
-            "heading": "Card 9",
-            "column_span": "3",
             "row_span": "1"
           }
         },
         "item_10": {
           "type": "card",
           "settings": {
+            "external_image_url": "",
             "heading": "Card 10",
+            "link": "",
+            "card_shape": "rectangle",
             "column_span": "1",
-            "row_span": "1"
-          }
-        },
-        "item_11": {
-          "type": "card",
-          "settings": {
-            "heading": "Card 11",
-            "column_span": "2",
             "row_span": "1"
           }
         }
@@ -99,11 +108,8 @@
         "item_4",
         "item_5",
         "item_6",
-        "item_7",
         "item_8",
-        "item_9",
-        "item_10",
-        "item_11"
+        "item_10"
       ],
       "settings": {
         "heading": "Bento Grid",
@@ -114,6 +120,7 @@
       "type": "featured-collection-3d",
       "settings": {
         "title": "Featured collection",
+        "collection": "",
         "products_to_show": 9,
         "show_shop_all": true,
         "shop_all_label": "Shop all"
