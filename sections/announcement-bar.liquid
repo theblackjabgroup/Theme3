@@ -12,11 +12,15 @@
   {%- liquid
     assign speed = section.settings.marquee_speed | default: 5
     assign duration = 11 | minus: speed | times: 10
+    assign scheme = section.settings.color_scheme
+    if scheme == blank
+      assign scheme = settings.color_schemes | first
+    endif
   -%}
   <announcement-bar
-    class="announcement-bar announcement-bar--{{ section.settings.layout_mode }} color-{{ section.settings.color_scheme }}{% if section.settings.sticky %} is-sticky{% endif %}"
+    class="announcement-bar announcement-bar--{{ section.settings.layout_mode }} color-{{ scheme.id }}{% if section.settings.sticky %} is-sticky{% endif %}"
     id="section-{{ section.id }}"
-    style="--marquee-speed: {{ duration }}s;"
+    style="--marquee-speed: {{ duration }}s; background-color: {{ scheme.settings.background }}; color: {{ scheme.settings.text }};"
   >
     <div class="announcement-bar__inner">
       {%- if section.settings.layout_mode == 'marquee' -%}

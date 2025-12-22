@@ -18,7 +18,7 @@
 
 .bento-item {
   position: relative;
-  background-color: #f5f5f5;
+  background-color: var(--color-background);
   border-radius: var(--radius-large);
   overflow: hidden;
   display: flex;
@@ -26,7 +26,7 @@
   justify-content: flex-end;
   height: 100%;
   min-height: 100px; /* Reduced min-height */
-  border: 1px solid rgba(0,0,0,0.05);
+  border: 1px solid var(--color-borders, rgba(0,0,0,0.05));
 }
 
 .bento-item:hover {
@@ -86,7 +86,7 @@
    content: '';
    position: absolute;
    top: 0; left: 0; right: 0; bottom: 0;
-   background-color: #f5f5f5;
+   background-color: var(--color-background);
    z-index: -1;
 }
 
@@ -110,7 +110,7 @@
 }
 
 .bento-item__heading {
-  color: var(--color-white);
+  color: var(--color-headings);
   font-size: var(--h3-size);
   font-weight: 700;
   margin: 0;
@@ -145,7 +145,7 @@
 
 /* Text Card */
 .bento-item--text_card {
-  background-color: var(--color-black);
+  background-color: var(--color-background);
   justify-content: flex-start;
 }
 
@@ -164,14 +164,14 @@
 }
 
 .bento-item__text-content {
-  color: #8c8c88;
+  color: var(--color-text);
   font-size: var(--body-text-medium);
   line-height: 1.6;
 }
 
 /* Tag Card */
 .bento-item--tag_card {
-  background-color: #2a2a24;
+  background-color: var(--color-background);
 }
 
 .bento-item__tag-layout {

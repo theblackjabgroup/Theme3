@@ -116,8 +116,8 @@
         "grid_gap": 24
       }
     },
-    "featured_collection_3d": {
-      "type": "featured-collection-3d",
+    "featured_collection": {
+      "type": "featured-collection",
       "settings": {
         "title": "Featured collection",
         "collection": "",
@@ -129,6 +129,6 @@
   },
   "order": [
     "bento_grid",
-    "featured_collection_3d"
+    "featured_collection"
   ]
 }

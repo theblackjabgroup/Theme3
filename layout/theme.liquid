@@ -48,7 +48,162 @@
 
     {{ content_for_header }}
 
-    {{ 'design-tokens.css' | asset_url | stylesheet_tag }}
+    <style>
+      :root {
+        /* Essential Static Tokens (Inlined from design-tokens.css) */
+        --color-white: #FFFFFF;
+        --color-black: #000000;
+        --color-red: #FF0000;
+        --gap-section: 24px;
+        --gap-component: 8px;
+        --padding-medium: 16px;
+        --padding-large: 24px;
+        --h3-size: 18px;
+        --body-text-regular: 14px;
+        --body-text-small: 12px;
+        --body-text-large: 16px;
+        --radius-small: 4px;
+        --radius-medium: 8px;
+        --radius-large: 25px;
+        --radius-pill: 9999px;
+        --height-button: 48px;
+        --border-width-medium: 2px;
+        --shadow-elevation-1: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        --shadow-elevation-2: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+        --shadow-elevation-3: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+
+        /* Default Color Scheme (from first scheme) */
+        {%- liquid
+          assign default_scheme = settings.color_schemes | first
+        -%}
+
+        --color-background: {{ default_scheme.settings.background }};
+        --color-headings: {{ default_scheme.settings.headings }};
+        --color-text: {{ default_scheme.settings.text }};
+        --color-links: {{ default_scheme.settings.links }};
+        --color-links-hover: {{ default_scheme.settings.links_hover }};
+        --color-borders: {{ default_scheme.settings.borders }};
+        --color-shadow: {{ default_scheme.settings.shadow }};
+
+        /* Primary Button */
+        --color-primary-button-bg: {{ default_scheme.settings.primary_button_bg }};
+        --color-primary-button-text: {{ default_scheme.settings.primary_button_text }};
+        --color-primary-button-border: {{ default_scheme.settings.primary_button_border }};
+        --color-primary-button-hover-bg: {{ default_scheme.settings.primary_button_hover_bg }};
+        --color-primary-button-hover-text: {{ default_scheme.settings.primary_button_hover_text }};
+        --color-primary-button-hover-border: {{ default_scheme.settings.primary_button_hover_border }};
+
+        /* Secondary Button */
+        --color-secondary-button-bg: {{ default_scheme.settings.secondary_button_bg }};
+        --color-secondary-button-text: {{ default_scheme.settings.secondary_button_text }};
+        --color-secondary-button-border: {{ default_scheme.settings.secondary_button_border }};
+        --color-secondary-button-hover-bg: {{ default_scheme.settings.secondary_button_hover_bg }};
+        --color-secondary-button-hover-text: {{ default_scheme.settings.secondary_button_hover_text }};
+        --color-secondary-button-hover-border: {{ default_scheme.settings.secondary_button_hover_border }};
+
+        /* Inputs */
+        --color-input-bg: {{ default_scheme.settings.input_bg }};
+        --color-input-text: {{ default_scheme.settings.input_text }};
+        --color-input-border: {{ default_scheme.settings.input_border }};
+        --color-input-hover-bg: {{ default_scheme.settings.input_hover_bg }};
+
+        /* Variants */
+        --color-variant-bg: {{ default_scheme.settings.variant_bg }};
+        --color-variant-text: {{ default_scheme.settings.variant_text }};
+        --color-variant-border: {{ default_scheme.settings.variant_border }};
+        --color-variant-hover-bg: {{ default_scheme.settings.variant_hover_bg }};
+        --color-variant-hover-text: {{ default_scheme.settings.variant_hover_text }};
+        --color-variant-hover-border: {{ default_scheme.settings.variant_hover_border }};
+
+        /* Selected Variants */
+        --color-variant-selected-bg: {{ default_scheme.settings.selected_variant_bg }};
+        --color-variant-selected-text: {{ default_scheme.settings.selected_variant_text }};
+        --color-variant-selected-border: {{ default_scheme.settings.selected_variant_border }};
+        --color-variant-selected-hover-bg: {{ default_scheme.settings.selected_variant_hover_bg }};
+        --color-variant-selected-hover-text: {{ default_scheme.settings.selected_variant_hover_text }};
+        --color-variant-selected-hover-border: {{ default_scheme.settings.selected_variant_hover_border }};
+
+        /* Font Variables */
+        --font-family-primary: 'Anonymous Pro', monospace;
+        --font-body-size: 16px;
+        --font-body-weight: 400;
+        --font-heading-weight: 700;
+
+        /* Spacing Variables */
+        --spacing-xs: 4px;
+        --spacing-s: 8px;
+        --spacing-m: 16px;
+        --spacing-l: 24px;
+        --spacing-xl: 32px;
+        --spacing-xxl: 48px;
+
+        /* Border Radius */
+        --border-radius-s: 4px;
+        --border-radius-m: 8px;
+        --border-radius-l: 16px;
+        --border-radius-pill: 100px;
+        --icon-size-medium: 20px;
+        --border-width-thin: 1px;
+
+        /* Transitions */
+        --transition-short: 0.2s ease;
+        --transition-medium: 0.3s ease;
+        --transition-long: 0.5s ease;
+      }
+
+      {%- for scheme in settings.color_schemes -%}
+        .color-{{ scheme.id }},
+        .color-{{ scheme.id }} p,
+        .color-{{ scheme.id }} span,
+        .color-{{ scheme.id }} div,
+        .color-{{ scheme.id }} a {
+          --color-background: {{ scheme.settings.background }};
+          --color-headings: {{ scheme.settings.headings }};
+          --color-text: {{ scheme.settings.text }};
+          --color-links: {{ scheme.settings.links }};
+          --color-links-hover: {{ scheme.settings.links_hover }};
+          --color-borders: {{ scheme.settings.borders }};
+          --color-shadow: {{ scheme.settings.shadow }};
+
+          --color-primary-button-bg: {{ scheme.settings.primary_button_bg }};
+          --color-primary-button-text: {{ scheme.settings.primary_button_text }};
+          --color-primary-button-border: {{ scheme.settings.primary_button_border }};
+          --color-primary-button-hover-bg: {{ scheme.settings.primary_button_hover_bg }};
+          --color-primary-button-hover-text: {{ scheme.settings.primary_button_hover_text }};
+          --color-primary-button-hover-border: {{ scheme.settings.primary_button_hover_border }};
+
+          --color-secondary-button-bg: {{ scheme.settings.secondary_button_bg }};
+          --color-secondary-button-text: {{ scheme.settings.secondary_button_text }};
+          --color-secondary-button-border: {{ scheme.settings.secondary_button_border }};
+          --color-secondary-button-hover-bg: {{ scheme.settings.secondary_button_hover_bg }};
+          --color-secondary-button-hover-text: {{ scheme.settings.secondary_button_hover_text }};
+          --color-secondary-button-hover-border: {{ scheme.settings.secondary_button_hover_border }};
+
+          --color-input-bg: {{ scheme.settings.input_bg }};
+          --color-input-text: {{ scheme.settings.input_text }};
+          --color-input-border: {{ scheme.settings.input_border }};
+          --color-input-hover-bg: {{ scheme.settings.input_hover_bg }};
+
+          --color-variant-bg: {{ scheme.settings.variant_bg }};
+          --color-variant-text: {{ scheme.settings.variant_text }};
+          --color-variant-border: {{ scheme.settings.variant_border }};
+          --color-variant-hover-bg: {{ scheme.settings.variant_hover_bg }};
+          --color-variant-hover-text: {{ scheme.settings.variant_hover_text }};
+          --color-variant-hover-border: {{ scheme.settings.variant_hover_border }};
+
+          --color-variant-selected-bg: {{ scheme.settings.selected_variant_bg }};
+          --color-variant-selected-text: {{ scheme.settings.selected_variant_text }};
+          --color-variant-selected-border: {{ scheme.settings.selected_variant_border }};
+          --color-variant-selected-hover-bg: {{ scheme.settings.selected_variant_hover_bg }};
+          --color-variant-selected-hover-text: {{ scheme.settings.selected_variant_hover_text }};
+          --color-variant-selected-hover-border: {{ scheme.settings.selected_variant_hover_border }};
+
+          background-color: var(--color-background);
+          color: var(--color-text);
+        }
+      {%- endfor -%}
+    </style>
+
     {{ 'base.css' | asset_url | stylesheet_tag }}
 
     {%- if localization.available_countries.size > 1 or localization.available_languages.size > 1 -%}
