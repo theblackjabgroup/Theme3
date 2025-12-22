@@ -33,6 +33,22 @@
       endif
     -%}
 
+    {%- style -%}
+      {{ block.settings.text_font | font_face: font_display: 'swap' }}
+      {{ block.settings.text_2_font | font_face: font_display: 'swap' }}
+
+      .scrolling-text-item-{{ block.id }}-1 {
+        font-family: {{ block.settings.text_font.family }}, {{ block.settings.text_font.fallback_families }};
+        font-weight: {{ block.settings.text_font.weight }};
+        font-style: {{ block.settings.text_font.style }};
+      }
+      .scrolling-text-item-{{ block.id }}-2 {
+        font-family: {{ block.settings.text_2_font.family }}, {{ block.settings.text_2_font.fallback_families }};
+        font-weight: {{ block.settings.text_2_font.weight }};
+        font-style: {{ block.settings.text_2_font.style }};
+      }
+    {%- endstyle -%}
+
     <div
       class="scrolling-text-strip"
       {{ block.shopify_attributes }}
@@ -54,7 +70,7 @@
       <div class="scrolling-text-inner">
         {%- for i in (1..15) -%}
           <div class="scrolling-text-track" aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}">
-            <div class="scrolling-text-item">
+            <div class="scrolling-text-item scrolling-text-item-{{ block.id }}-1">
               {%- if block.settings.link != blank -%}
                 <a href="{{ block.settings.link }}">
               {%- endif -%}
@@ -80,6 +96,35 @@
                 </a>
               {%- endif -%}
             </div>
+
+            {%- if block.settings.text_2 != blank -%}
+              <div class="scrolling-text-item scrolling-text-item-{{ block.id }}-2">
+                {%- if block.settings.link != blank -%}
+                  <a href="{{ block.settings.link }}">
+                {%- endif -%}
+
+                {{ block.settings.text_2 }}
+
+                <div class="scrolling-text-icon" style="display: inline-flex; vertical-align: middle;">
+                  {%- if block.settings.icon != blank -%}
+                    {{ block.settings.icon | image_url: width: block.settings.icon_width | image_tag: loading: 'lazy' }}
+                  {%- else -%}
+                    <img
+                      src="{{ 'icon-star.svg' | asset_url }}"
+                      width="{{ block.settings.icon_width }}"
+                      height="{{ block.settings.icon_width }}"
+                      loading="lazy"
+                      alt=""
+                      style="width: {{ block.settings.icon_width }}px; height: auto;"
+                    >
+                  {%- endif -%}
+                </div>
+
+                {%- if block.settings.link != blank -%}
+                  </a>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
           </div>
         {%- endfor -%}
       </div>
@@ -138,6 +183,32 @@
           "unit": "px",
           "label": "Icon Width",
           "default": 30
+        },
+        {
+          "type": "font_picker",
+          "id": "text_font",
+          "label": "Text 1 Font",
+          "default": "assistant_n4"
+        },
+        {
+          "type": "header",
+          "content": "Second Text (Optional)"
+        },
+        {
+          "type": "richtext",
+          "id": "text_2",
+          "label": "Text 2",
+          "info": "Leave blank to just repeat the main text."
+        },
+        {
+          "type": "font_picker",
+          "id": "text_2_font",
+          "label": "Text 2 Font",
+          "default": "assistant_n4"
+        },
+        {
+          "type": "header",
+          "content": "Settings"
         },
         {
           "type": "url",
