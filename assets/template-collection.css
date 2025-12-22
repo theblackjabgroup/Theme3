@@ -1,0 +1,13 @@
+/* CSS for collection page and search results */
+.collection {
+  position: relative;
+}
+
+.collection--empty {
+  padding: 4rem 0;
+  text-align: center;
+}
+
+.product-grid-container {
+  position: relative;
+}
