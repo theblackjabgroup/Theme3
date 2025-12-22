@@ -3,8 +3,8 @@
   position: relative;
   overflow: hidden;
   padding: 8px 0;
-  background: var(--color-black);
-  color: var(--color-white);
+  background: var(--color-background);
+  color: var(--color-text);
   font-family: var(--font-family-primary);
   font-size: var(--body-text-small);
   display: flex;

@@ -6,5 +6,767 @@
     "theme_author": "Antigravity",
     "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
     "theme_support_url": "https://support.shopify.com/"
+  },
+
+  {
+    "name": "Logo and favicon",
+    "settings": [
+      {
+        "type": "range",
+        "id": "logo_width",
+        "label": "Logo width",
+        "min": 40,
+        "max":100,
+        "step": 2,
+        "unit": "px",
+        "default": 90
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      }
+    ]
+  },
+
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "color_scheme_group",
+        "id": "color_schemes",
+        "definition": [
+          {
+            "type": "color",
+            "id": "background",
+            "label": "Background",
+            "default": "#FFFFFF",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "headings",
+            "label": "Headings",
+            "default": "#000000",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "text",
+            "label": "Text",
+            "default": "#121212",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "links",
+            "label": "Links",
+            "default": "#121212",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "links_hover",
+            "label": "Hover links",
+            "default": "#000000",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "borders",
+            "label": "Borders",
+            "default": "#000000",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "shadow",
+            "label": "Shadow",
+            "default": "#121212",
+            "alpha": true
+          },
+          {
+            "type": "header",
+            "content": "Primary Button"
+          },
+          {
+            "type": "color",
+            "id": "primary_button_bg",
+            "label": "Background",
+            "default": "#000000",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "primary_button_text",
+            "label": "Text",
+            "default": "#FFFFFF",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "primary_button_border",
+            "label": "Borders",
+            "default": "#000000",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "primary_button_hover_bg",
+            "label": "Hover background",
+            "default": "#333333",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "primary_button_hover_text",
+            "label": "Hover text",
+            "default": "#FFFFFF",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "primary_button_hover_border",
+            "label": "Hover borders",
+            "default": "#000000",
+            "alpha": true
+          },
+          {
+            "type": "header",
+            "content": "Secondary Button"
+          },
+          {
+            "type": "color",
+            "id": "secondary_button_bg",
+            "label": "Background",
+            "default": "rgba(0,0,0,0)",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "secondary_button_text",
+            "label": "Text",
+            "default": "#000000",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "secondary_button_border",
+            "label": "Borders",
+            "default": "#000000",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "secondary_button_hover_bg",
+            "label": "Hover background",
+            "default": "#FAFAFA",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "secondary_button_hover_text",
+            "label": "Hover text",
+            "default": "#333333",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "secondary_button_hover_border",
+            "label": "Hover borders",
+            "default": "#333333",
+            "alpha": true
+          },
+          {
+            "type": "header",
+            "content": "Inputs"
+          },
+          {
+            "type": "color",
+            "id": "input_bg",
+            "label": "Background",
+            "default": "#FFFFFF",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "input_text",
+            "label": "Text",
+            "default": "#333333",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "input_border",
+            "label": "Borders",
+            "default": "#DFDFDF",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "input_hover_bg",
+            "label": "Hover background",
+            "default": "rgba(0,0,0,0.01)",
+            "alpha": true
+          },
+          {
+            "type": "header",
+            "content": "Variants"
+          },
+          {
+            "type": "color",
+            "id": "variant_bg",
+            "label": "Background",
+            "default": "#FFFFFF",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "variant_text",
+            "label": "Text",
+            "default": "#000000",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "variant_border",
+            "label": "Borders",
+            "default": "#000000",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "variant_hover_bg",
+            "label": "Hover background",
+            "default": "#F5F5F5",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "variant_hover_text",
+            "label": "Hover text",
+            "default": "#000000",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "variant_hover_border",
+            "label": "Hover borders",
+            "default": "#E6E6E6",
+            "alpha": true
+          },
+          {
+            "type": "header",
+            "content": "Selected Variants"
+          },
+          {
+            "type": "color",
+            "id": "selected_variant_bg",
+            "label": "Background",
+            "default": "#000000",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "selected_variant_text",
+            "label": "Text",
+            "default": "#FFFFFF",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "selected_variant_border",
+            "label": "Borders",
+            "default": "#000000",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "selected_variant_hover_bg",
+            "label": "Hover background",
+            "default": "#1A1A1A",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "selected_variant_hover_text",
+            "label": "Hover text",
+            "default": "#FFFFFF",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "selected_variant_hover_border",
+            "label": "Hover borders",
+            "default": "#1A1A1A",
+            "alpha": true
+          }
+        ],
+        "role": {
+          "text": "text",
+          "background": "background",
+          "links": "links",
+          "icons": "text",
+          "primary_button": "primary_button_bg",
+          "on_primary_button": "primary_button_text",
+          "primary_button_border": "primary_button_border",
+          "secondary_button": "secondary_button_bg",
+          "on_secondary_button": "secondary_button_text",
+          "secondary_button_border": "secondary_button_border"
+        }
+      }
+    ]
+  },
+
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "select",
+        "id": "font_family_primary_token",
+        "label": "Base font family",
+        "options": [
+          { "value": "primary", "label": "Primary (font-family-primary)" },
+          { "value": "fallback", "label": "Fallback (font-family-fallback)" }
+        ],
+        "default": "primary"
+      },
+      {
+        "type": "select",
+        "id": "body_size_token",
+        "label": "Body text size",
+        "options": [
+          { "value": "body_small", "label": "Small (body-text-small)" },
+          { "value": "body_regular", "label": "Regular (body-text-regular)" },
+          { "value": "body_large", "label": "Large (body-text-large)" }
+        ],
+        "default": "body_regular"
+      },
+      {
+        "type": "select",
+        "id": "heading_scale_token",
+        "label": "Heading scale",
+        "options": [
+          { "value": "compact", "label": "Compact (smaller tokens)" },
+          { "value": "standard", "label": "Standard (h1–h4 tokens)" },
+          { "value": "expanded", "label": "Expanded (larger tokens)" }
+        ],
+        "default": "standard"
+      },
+      {
+        "type": "select",
+        "id": "heading_weight_token",
+        "label": "Heading weight",
+        "options": [
+          { "value": "normal", "label": "Normal" },
+          { "value": "bold", "label": "Bold (heading-weight)" }
+        ],
+        "default": "bold"
+      }
+    ]
+  },
+
+  {
+    "name": "Page layout",
+    "settings": [
+      {
+        "type": "select",
+        "id": "container_width_token",
+        "label": "Page width",
+        "options": [
+          { "value": "desktop", "label": "Desktop (container-desktop)" },
+          { "value": "tablet", "label": "Tablet (container-tablet)" },
+          { "value": "mobile", "label": "Mobile (container-mobile)" }
+        ],
+        "default": "desktop"
+      },
+      {
+        "type": "select",
+        "id": "section_spacing_token",
+        "label": "Vertical spacing between sections",
+        "options": [
+          { "value": "spacing_s", "label": "XS / S" },
+          { "value": "spacing_m", "label": "Medium" },
+          { "value": "spacing_l", "label": "Large" },
+          { "value": "spacing_xl", "label": "XL+" }
+        ],
+        "default": "spacing_l"
+      },
+      {
+        "type": "select",
+        "id": "page_gap_token",
+        "label": "Page gap",
+        "options": [
+          { "value": "gap_component", "label": "Component (gap-component)" },
+          { "value": "gap_section", "label": "Section (gap-section)" },
+          { "value": "gap_page", "label": "Page (gap-page)" }
+        ],
+        "default": "gap_section"
+      }
+    ]
+  },
+
+  {
+    "name": "Animations",
+    "settings": [
+      {
+        "type": "range",
+        "id": "animation_duration_in_ms",
+        "label": "Base animation duration",
+        "min": 80,
+        "max": 600,
+        "step": 20,
+        "unit": "ms",
+        "default": 200
+      },
+      {
+        "type": "range",
+        "id": "animation_easing_opacity",
+        "label": "Opacity emphasis (0–1, uses opacity tokens in CSS)",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "%",
+        "default": 75
+      }
+    ]
+  },
+
+  {
+    "name": "Badges",
+    "settings": [
+      {
+        "type": "select",
+        "id": "badge_radius_token",
+        "label": "Badge corner radius",
+        "options": [
+          { "value": "radius_small", "label": "Small (radius-small)" },
+          { "value": "radius_medium", "label": "Medium (radius-medium)" },
+          { "value": "radius_large", "label": "Large (radius-large)" },
+          { "value": "radius_pill", "label": "Pill (radius-pill)" }
+        ],
+        "default": "radius_pill"
+      },
+      {
+        "type": "select",
+        "id": "badge_shadow_token",
+        "label": "Badge shadow",
+        "options": [
+          { "value": "none", "label": "None" },
+          { "value": "shadow_1", "label": "Elevation 1" },
+          { "value": "shadow_2", "label": "Elevation 2" }
+        ],
+        "default": "none"
+      }
+    ]
+  },
+
+  {
+    "name": "Buttons",
+    "settings": [
+      {
+        "type": "select",
+        "id": "button_height_token",
+        "label": "Button height",
+        "options": [
+          { "value": "height_button", "label": "Default (height-button)" },
+          { "value": "height_input", "label": "Match input height" }
+        ],
+        "default": "height_button"
+      },
+      {
+        "type": "select",
+        "id": "button_radius_token",
+        "label": "Button corner radius",
+        "options": [
+          { "value": "radius_small", "label": "Small" },
+          { "value": "radius_medium", "label": "Medium" },
+          { "value": "radius_large", "label": "Large" },
+          { "value": "radius_pill", "label": "Pill" }
+        ],
+        "default": "radius_large"
+      },
+      {
+        "type": "select",
+        "id": "button_shadow_token",
+        "label": "Button shadow",
+        "options": [
+          { "value": "none", "label": "None" },
+          { "value": "shadow_1", "label": "Elevation 1" },
+          { "value": "shadow_2", "label": "Elevation 2" },
+          { "value": "shadow_3", "label": "Elevation 3" }
+        ],
+        "default": "shadow_1"
+      },
+      {
+        "type": "select",
+        "id": "button_text_size_token",
+        "label": "Button text size",
+        "options": [
+          { "value": "body_small", "label": "Small (body-text-small)" },
+          { "value": "body_regular", "label": "Regular (body-text-regular)" },
+          { "value": "body_large", "label": "Large (body-text-large)" }
+        ],
+        "default": "body_regular"
+      }
+    ]
+  },
+
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "select",
+        "id": "cart_type",
+        "label": "Cart type",
+        "options": [
+          { "value": "notification", "label": "Notification" },
+          { "value": "drawer", "label": "Drawer" },
+          { "value": "page", "label": "Full page" }
+        ],
+        "default": "notification"
+      }
+    ]
+  },
+
+  {
+    "name": "Drawers",
+    "settings": [
+      {
+        "type": "select",
+        "id": "drawer_background_token",
+        "label": "Drawer background color",
+        "options": [
+          { "value": "gray_900", "label": "Dark (color-gray-900)" },
+          { "value": "gray_700", "label": "Medium (color-gray-700)" },
+          { "value": "white", "label": "Light (color-white)" }
+        ],
+        "default": "gray_900"
+      },
+      {
+        "type": "select",
+        "id": "drawer_radius_token",
+        "label": "Drawer corner radius",
+        "options": [
+          { "value": "radius_small", "label": "Small" },
+          { "value": "radius_medium", "label": "Medium" },
+          { "value": "radius_large", "label": "Large" }
+        ],
+        "default": "radius_medium"
+      },
+      {
+        "type": "select",
+        "id": "drawer_shadow_token",
+        "label": "Drawer shadow",
+        "options": [
+          { "value": "shadow_1", "label": "Elevation 1" },
+          { "value": "shadow_2", "label": "Elevation 2" },
+          { "value": "shadow_3", "label": "Elevation 3" }
+        ],
+        "default": "shadow_2"
+      }
+    ]
+  },
+
+  {
+    "name": "Icons",
+    "settings": [
+      {
+        "type": "select",
+        "id": "icon_size_token",
+        "label": "Base icon size",
+        "options": [
+          { "value": "icon_small", "label": "Small (icon-size-small)" },
+          { "value": "icon_medium", "label": "Medium (icon-size-medium)" },
+          { "value": "icon_large", "label": "Large (icon-size-large)" }
+        ],
+        "default": "icon_medium"
+      }
+    ]
+  },
+
+  {
+    "name": "Input fields",
+    "settings": [
+      {
+        "type": "select",
+        "id": "input_height_token",
+        "label": "Input height",
+        "options": [
+          { "value": "height_input", "label": "Default (height-input)" },
+          { "value": "height_button", "label": "Match button height" }
+        ],
+        "default": "height_input"
+      },
+      {
+        "type": "select",
+        "id": "input_radius_token",
+        "label": "Input corner radius",
+        "options": [
+          { "value": "radius_small", "label": "Small" },
+          { "value": "radius_medium", "label": "Medium" },
+          { "value": "radius_large", "label": "Large" }
+        ],
+        "default": "radius_small"
+      },
+      {
+        "type": "select",
+        "id": "input_border_width_token",
+        "label": "Input border thickness",
+        "options": [
+          { "value": "border_thin", "label": "Thin (border-width-thin)" },
+          { "value": "border_medium", "label": "Medium (border-width-medium)" },
+          { "value": "border_thick", "label": "Thick (border-width-thick)" }
+        ],
+        "default": "border_thin"
+      }
+    ]
+  },
+
+  {
+    "name": "Popovers and modals",
+    "settings": [
+      {
+        "type": "select",
+        "id": "popup_radius_token",
+        "label": "Popover/modal corner radius",
+        "options": [
+          { "value": "radius_small", "label": "Small" },
+          { "value": "radius_medium", "label": "Medium" },
+          { "value": "radius_large", "label": "Large" }
+        ],
+        "default": "radius_medium"
+      },
+      {
+        "type": "select",
+        "id": "popup_shadow_token",
+        "label": "Popover/modal shadow",
+        "options": [
+          { "value": "none", "label": "None" },
+          { "value": "shadow_1", "label": "Elevation 1" },
+          { "value": "shadow_2", "label": "Elevation 2" }
+        ],
+        "default": "shadow_1"
+      }
+    ]
+  },
+
+  {
+    "name": "Prices",
+    "settings": [
+      {
+        "type": "select",
+        "id": "price_emphasis_token",
+        "label": "Price emphasis color",
+        "options": [
+          { "value": "accent", "label": "Accent color token" },
+          { "value": "text", "label": "Text color token" }
+        ],
+        "default": "text"
+      }
+    ]
+  },
+
+  {
+    "name": "Product cards",
+    "settings": [
+      {
+        "type": "select",
+        "id": "product_card_radius_token",
+        "label": "Card corner radius",
+        "options": [
+          { "value": "radius_small", "label": "Small" },
+          { "value": "radius_medium", "label": "Medium" },
+          { "value": "radius_large", "label": "Large" }
+        ],
+        "default": "radius_small"
+      },
+      {
+        "type": "select",
+        "id": "product_card_shadow_token",
+        "label": "Card shadow",
+        "options": [
+          { "value": "none", "label": "None" },
+          { "value": "shadow_1", "label": "Elevation 1" },
+          { "value": "shadow_2", "label": "Elevation 2" }
+        ],
+        "default": "none"
+      }
+    ]
+  },
+
+  {
+    "name": "Search",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "predictive_search_enabled",
+        "label": "Enable predictive search",
+        "default": true
+      }
+    ]
+  },
+
+  {
+    "name": "Swatches",
+    "settings": [
+      {
+        "type": "select",
+        "id": "swatch_shape_token",
+        "label": "Swatch shape",
+        "options": [
+          { "value": "radius_small", "label": "Square (small radius)" },
+          { "value": "radius_pill", "label": "Pill / circle" }
+        ],
+        "default": "radius_small"
+      }
+    ]
+  },
+
+  {
+    "name": "Variant pickers",
+    "settings": [
+      {
+        "type": "select",
+        "id": "variant_pill_radius_token",
+        "label": "Variant pill radius",
+        "options": [
+          { "value": "radius_small", "label": "Small" },
+          { "value": "radius_medium", "label": "Medium" },
+          { "value": "radius_large", "label": "Large" },
+          { "value": "radius_pill", "label": "Pill" }
+        ],
+        "default": "radius_pill"
+      }
+    ]
+  },
+
+  {
+    "name": "Custom CSS",
+    "settings": [
+      {
+        "type": "textarea",
+        "id": "custom_css",
+        "label": "Additional CSS",
+        "info": "Use CSS that targets the design token variables."
+      }
+    ]
+  },
+
+  {
+    "name": "Theme style",
+    "settings": [
+      {
+        "type": "select",
+        "id": "theme_style",
+        "label": "Theme style preset",
+        "options": [
+          { "value": "light", "label": "Light" },
+          { "value": "dark", "label": "Dark" },
+          { "value": "contrast", "label": "High contrast" }
+        ],
+        "default": "light"
+      }
+    ]
   }
 ]

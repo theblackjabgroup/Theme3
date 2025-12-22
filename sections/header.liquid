@@ -1,7 +1,31 @@
 <link rel="stylesheet" href="{{ 'section-header.css' | asset_url }}" media="print" onload="this.media='all'">
 <noscript>{{ 'section-header.css' | asset_url | stylesheet_tag }}</noscript>
 
-<header class="section-header">
+{%- liquid
+  assign scheme = section.settings.color_scheme
+  if scheme == blank
+    assign scheme = settings.color_schemes | first
+  endif
+
+  assign is_transparent = false
+  if template == 'index' and section.settings.transparent_home
+    assign is_transparent = true
+  elsif template == 'product' and section.settings.transparent_product
+    assign is_transparent = true
+  elsif template == 'collection' and section.settings.transparent_collection
+    assign is_transparent = true
+  endif
+-%}
+
+<header
+  class="section-header color-{{ scheme.id }}{% if is_transparent %} header-transparent{% endif %}{% if section.settings.sticky_header == 'always' %} sticky-header{% endif %}{% if section.settings.sticky_header == 'on_scroll' %} sticky-header-on-scroll{% endif %}"
+  style="
+    background-color: {% if is_transparent %}transparent{% else %}{{ scheme.settings.background }}{% endif %};
+    color: {{ scheme.settings.text }};
+    --header-height: {% if section.settings.height == 'compact' %}60px{% else %}80px{% endif %};
+    --header-border-thickness: {{ section.settings.border_thickness }}px;
+  "
+>
   <div class="header-wrapper">
     <!-- Hamburger Button (Mobile Only) -->
     <button class="header__hamburger medium-hide large-up-hide" aria-label="Menu" data-mobile-menu-toggle>
@@ -12,7 +36,11 @@
 
     <!-- Logo -->
     <div class="header__logo">
-      <a href="{{ routes.root_url }}" class="header__logo-link">
+      <a
+        href="{{ routes.root_url }}"
+        class="header__logo-link"
+        style="color: {{ scheme.settings.text }};"
+      >
         <img
           src="{{ 'bb-logo.svg' | asset_url }}"
           alt="{{ shop.name }}"
@@ -250,6 +278,81 @@
 {
   "name": "Header",
   "settings": [
+    {
+      "type": "select",
+      "id": "height",
+      "options": [
+        { "value": "compact", "label": "Compact" },
+        { "value": "standard", "label": "Standard" }
+      ],
+      "default": "standard",
+      "label": "Height"
+    },
+    {
+      "type": "select",
+      "id": "sticky_header",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "on_scroll", "label": "On scroll" },
+        { "value": "always", "label": "Always" }
+      ],
+      "default": "always",
+      "label": "Sticky header"
+    },
+    {
+      "type": "range",
+      "id": "border_thickness",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Border thickness",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Default",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Home page"
+    },
+    {
+      "type": "checkbox",
+      "id": "transparent_home",
+      "default": false,
+      "label": "Transparent background"
+    },
+    {
+      "type": "header",
+      "content": "Product page"
+    },
+    {
+      "type": "checkbox",
+      "id": "transparent_product",
+      "default": false,
+      "label": "Transparent background"
+    },
+    {
+      "type": "header",
+      "content": "Collection page"
+    },
+    {
+      "type": "checkbox",
+      "id": "transparent_collection",
+      "default": false,
+      "label": "Transparent background"
+    },
+    {
+      "type": "header",
+      "content": "Logo"
+    },
     {
       "type": "image_picker",
       "id": "logo",

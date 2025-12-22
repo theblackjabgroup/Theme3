@@ -3,8 +3,8 @@
 .fc3d {
   width: 100%;
   padding: var(--spacing-xxl) 0;
-  background: var(--color-white);
-  color: var(--color-black);
+  background: var(--color-background);
+  color: var(--color-text);
 }
 .fc3d {
   overflow-y: hidden;
@@ -27,6 +27,7 @@
 
 .fc3d__title {
   margin: 0;
+  color: var(--color-headings);
   font-weight: 900;
   letter-spacing: -0.5px;
   text-transform: uppercase;
@@ -39,17 +40,19 @@
   height: var(--height-button);
   padding: 0 var(--padding-large);
   border-radius: var(--radius-pill);
-  background: var(--color-red);
-  color: var(--color-white);
+  background: var(--color-primary-button-bg);
+  color: var(--color-primary-button-text);
   text-decoration: none;
   font-weight: 800;
   text-transform: uppercase;
-  border: var(--border-width-medium) solid var(--color-black);
+  border: var(--border-width-medium) solid var(--color-primary-button-border);
   box-shadow: var(--shadow-elevation-1);
 }
 
 .fc3d__shop-all:hover {
-  filter: brightness(0.95);
+  background: var(--color-primary-button-hover-bg);
+  color: var(--color-primary-button-hover-text);
+  border-color: var(--color-primary-button-hover-border);
 }
 
 .fc3d__viewport {
@@ -100,9 +103,9 @@
   backface-visibility: hidden;
   border-radius: var(--radius-large);
   overflow: hidden;
-  border: var(--border-width-medium) solid var(--color-black);
+  border: var(--border-width-medium) solid var(--color-borders);
   box-shadow: var(--shadow-elevation-2);
-  background: var(--color-white);
+  background: var(--color-background);
 }
 
 .fc3d-card__face--back {
@@ -181,9 +184,9 @@
   height: var(--height-button);
   padding: 0 var(--padding-large);
   border-radius: var(--radius-pill);
-  border: var(--border-width-medium) solid var(--color-black);
-  background: var(--color-black);
-  color: var(--color-white);
+  border: var(--border-width-medium) solid var(--color-primary-button-border);
+  background: var(--color-primary-button-bg);
+  color: var(--color-primary-button-text);
   text-decoration: none;
   text-transform: uppercase;
   font-weight: 800;
@@ -216,16 +219,18 @@
   width: 64px;
   height: 56px;
   border-radius: var(--radius-pill);
-  border: var(--border-width-medium) solid var(--color-black);
-  background: var(--color-red);
-  color: var(--color-white);
+  border: var(--border-width-medium) solid var(--color-primary-button-border);
+  background: var(--color-primary-button-bg);
+  color: var(--color-primary-button-text);
   font-weight: 900;
   line-height: 1;
   box-shadow: var(--shadow-elevation-2);
 }
 
 .fc3d__nav:hover {
-  filter: brightness(0.95);
+  background: var(--color-primary-button-hover-bg);
+  color: var(--color-primary-button-hover-text);
+  border-color: var(--color-primary-button-hover-border);
 }
 
 .fc3d__nav:disabled {

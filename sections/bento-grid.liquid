@@ -1,6 +1,16 @@
 {{ 'section-bento-grid.css' | asset_url | stylesheet_tag }}
 
-<div class="section-bento-grid">
+{%- liquid
+  assign scheme = section.settings.color_scheme
+  if scheme == blank
+    assign scheme = settings.color_schemes | first
+  endif
+-%}
+
+<div
+  class="section-bento-grid color-{{ scheme.id }}"
+  style="background-color: {{ scheme.settings.background }}; color: {{ scheme.settings.text }};"
+>
   <div class="bento-grid-wrapper page-width">
     <div class="bento-grid" style="gap: {{ section.settings.grid_gap }}px;">
       {%- for block in section.blocks -%}
@@ -160,6 +170,12 @@
       "type": "text",
       "id": "heading",
       "label": "Heading"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
     },
     {
       "type": "range",
