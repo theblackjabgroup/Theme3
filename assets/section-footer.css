@@ -89,6 +89,7 @@
   font-size: 0.9rem;
   outline: none;
   box-sizing: border-box;
+  font-family: inherit;
 }
 
 .ef-input::placeholder {
@@ -232,6 +233,11 @@
   }
   .ef-link-item a::after {
     transition: none;
+  }
+  .ef-link-text,
+  .ef-link-item a::before {
+    transition: none !important;
+    transform: none !important;
   }
 }
 
