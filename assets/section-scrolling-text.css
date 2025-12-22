@@ -10,7 +10,7 @@
 
 .scrolling-text-strip {
   position: relative;
-  width: 100%;
+  width: var(--strip-width, 100%);
   padding: var(--strip-padding, 20px) 0;
   background-color: var(--bg-color);
   color: var(--text-color);
@@ -18,8 +18,7 @@
   transform-origin: center;
   transition: transform 0.3s ease;
   z-index: 1; 
-  margin: var(--tilt-margin, 0) 0;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+  margin: var(--tilt-margin, 0) var(--margin-right, auto) var(--tilt-margin, 0) var(--margin-left, auto);
 }
 
 .scrolling-text-inner {
