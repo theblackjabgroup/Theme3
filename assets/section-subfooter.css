@@ -1,0 +1,153 @@
+/* Subfooter Section Styles */
+.subfooter-section {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  padding-top: var(--padding-vertical);
+  padding-bottom: var(--padding-vertical);
+  width: 100%;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.subfooter-container {
+  width: 100%;
+  margin: 0;
+  padding: 0 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+/* Left: Currency / Localization */
+.subfooter-left {
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+  min-width: 200px;
+}
+
+/* Center: Socials & Text */
+.subfooter-center {
+  flex: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  text-align: center;
+  min-width: 300px;
+}
+
+.sf-social-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.sf-social-link {
+  color: inherit;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  transition: opacity 0.2s;
+}
+
+.sf-social-link:hover {
+  opacity: 0.7;
+}
+
+.sf-social-link svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.sf-center-text p {
+  margin: 0;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.sf-center-text a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Right: Payment Icons */
+.subfooter-right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-width: 200px;
+}
+
+.sf-payment-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.sf-payment-item svg {
+  height: 24px;
+  width: auto;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .subfooter-container {
+    display: grid;
+    grid-template-areas:
+      "payment payment"
+      "currency social"
+      "text text";
+    padding: 10px;
+    gap: 0px;
+    text-align: left;
+  }
+
+  .subfooter-center {
+    display: contents; 
+  }
+
+  .subfooter-right {
+    grid-area: payment;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .subfooter-left {
+    grid-area: currency;
+    justify-content: flex-start;
+    width: auto;
+    min-width: 0;
+  }
+  
+  .sf-social-list {
+    grid-area: social;
+    justify-content: flex-end;
+  }
+  .sf-center-text {
+    grid-area: text;
+    text-align: center;
+    width: 100%;
+  }
+
+  .subfooter-left,
+  .subfooter-right,
+  .sf-social-list {
+    flex: unset;
+  }
+  
+  .sf-payment-list {
+    justify-content: center;
+  }
+}

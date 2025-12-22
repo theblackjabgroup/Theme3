@@ -17,6 +17,38 @@
     {{ 'icon-caret.svg' | inline_asset_content }}
   </button>
   <div class="disclosure__list-wrapper language-selector" hidden>
+    <div class="country-filter">
+      <div class="field">
+        <input
+          class="country-filter__input field__input"
+          id="language-filter-input"
+          type="search"
+          name="language_filter"
+          value=""
+          placeholder="{{ 'localization.search' | t }}"
+          role="combobox"
+          aria-owns="language-results"
+          aria-controls="language-results"
+          aria-haspopup="listbox"
+          aria-autocomplete="list"
+          autocorrect="off"
+          autocomplete="off"
+          autocapitalize="off"
+          spellcheck="false"
+        >
+        <label class="field__label" for="language-filter-input">{{ 'localization.search' | t }}</label>
+        <button
+          type="reset"
+          class="country-filter__reset-button field__button hidden"
+          aria-label="{{ 'general.search.reset' | t }}"
+        >
+          {{- 'icon-reset.svg' | inline_asset_content -}}
+        </button>
+        <div class="country-filter__search-icon field__button motion-reduce">
+          {{- 'icon-search.svg' | inline_asset_content -}}
+        </div>
+      </div>
+    </div>
     <ul id="{{ localPosition }}List" role="list" class="disclosure__list list-unstyled">
       {%- for language in localization.available_languages -%}
         <li class="disclosure__item" tabindex="-1">
@@ -30,15 +62,20 @@
             {% endif %}
             data-value="{{ language.iso_code }}"
           >
-            <span
-              {% if language.iso_code != localization.language.iso_code %}
-                class="visibility-hidden"
-              {% endif %}
-            >
-              {{- 'icon-checkmark.svg' | inline_asset_content -}}
-            </span>
-            <span>
-              {{ language.endonym_name | capitalize }}
+            <div class="language-info">
+              <span
+                {% if language.iso_code != localization.language.iso_code %}
+                  class="visibility-hidden"
+                {% endif %}
+              >
+                {{- 'icon-checkmark.svg' | inline_asset_content -}}
+              </span>
+              <span class="language-name">
+                {{ language.endonym_name | capitalize }}
+              </span>
+            </div>
+            <span class="localization-form__currency motion-reduce">
+              {{ language.iso_code | upcase }}
             </span>
           </a>
         </li>

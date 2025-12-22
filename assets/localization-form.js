@@ -10,7 +10,7 @@ if (!customElements.get('localization-form')) {
           input: this.querySelector('input[name="locale_code"], input[name="country_code"]'),
           button: this.querySelector('button.localization-form__select'),
           panel: this.querySelector('.disclosure__list-wrapper'),
-          search: this.querySelector('input[name="country_filter"]'),
+          search: this.querySelector('input[name="country_filter"], input[name="language_filter"]'),
           closeButton: this.querySelector('.country-selector__close-button'),
           resetButton: this.querySelector('.country-filter__reset-button'),
           searchIcon: this.querySelector('.country-filter__search-icon'),
@@ -148,8 +148,8 @@ if (!customElements.get('localization-form')) {
       filterCountries() {
         const searchValue = this.normalizeString(this.elements.search.value);
         const popularCountries = this.querySelector('.popular-countries');
-        const allCountries = this.querySelectorAll('a');
-        let visibleCountries = allCountries.length;
+        const allItems = this.querySelectorAll('a');
+        let visibleItems = allItems.length;
 
         this.elements.resetButton.classList.toggle('hidden', !searchValue);
 
@@ -157,26 +157,28 @@ if (!customElements.get('localization-form')) {
           popularCountries.classList.toggle('hidden', searchValue);
         }
 
-        allCountries.forEach((item) => {
-          const countryName = this.normalizeString(item.querySelector('.country').textContent);
+        allItems.forEach((item) => {
+          const textElement = item.querySelector('.country') || item.querySelector('.language-name') || item;
+          const countryName = this.normalizeString(textElement.textContent);
+
           if (countryName.indexOf(searchValue) > -1) {
             item.parentElement.classList.remove('hidden');
-            visibleCountries++;
+            visibleItems++;
           } else {
             item.parentElement.classList.add('hidden');
-            visibleCountries--;
+            visibleItems--;
           }
         });
 
         if (this.elements.liveRegion) {
           this.elements.liveRegion.innerHTML = window.accessibilityStrings.countrySelectorSearchCount.replace(
             '[count]',
-            visibleCountries
+            visibleItems
           );
         }
 
-        this.querySelector('.country-selector').scrollTop = 0;
-        this.querySelector('.country-selector__list').scrollTop = 0;
+        this.querySelector('.disclosure__list-wrapper').scrollTop = 0;
+        this.querySelector('.disclosure__list').scrollTop = 0;
       }
 
       resetFilter(event) {
