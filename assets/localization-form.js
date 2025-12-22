@@ -14,7 +14,7 @@ if (!customElements.get('localization-form')) {
           closeButton: this.querySelector('.country-selector__close-button'),
           resetButton: this.querySelector('.country-filter__reset-button'),
           searchIcon: this.querySelector('.country-filter__search-icon'),
-          liveRegion: this.querySelector('#sr-country-search-results'),
+          liveRegion: this.querySelector('.sr-search-results'),
         };
         this.addEventListener('keyup', this.onContainerKeyUp.bind(this));
         this.addEventListener('keydown', this.onContainerKeyDown.bind(this));
@@ -171,10 +171,11 @@ if (!customElements.get('localization-form')) {
         });
 
         if (this.elements.liveRegion) {
-          this.elements.liveRegion.innerHTML = window.accessibilityStrings.countrySelectorSearchCount.replace(
-            '[count]',
-            visibleItems
-          );
+          const accessibilityString =
+            this.elements.search.name === 'language_filter'
+              ? window.accessibilityStrings.languageSelectorSearchCount
+              : window.accessibilityStrings.countrySelectorSearchCount;
+          this.elements.liveRegion.innerHTML = accessibilityString.replace('[count]', visibleItems);
         }
 
         this.querySelector('.disclosure__list-wrapper').scrollTop = 0;

@@ -383,7 +383,8 @@
     "update_country": "Update country/region",
     "search": "Search",
     "popular_countries_regions": "Popular countries/regions",
-    "country_results_count": "{{ count }} countries/regions found"
+    "country_results_count": "{{ count }} countries/regions found",
+    "language_results_count": "{{ count }} languages found"
   },
   "customer": {
     "account": {

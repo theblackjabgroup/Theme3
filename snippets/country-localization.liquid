@@ -82,7 +82,11 @@
         {{- 'icon-close.svg' | inline_asset_content -}}
       </button>
     </div>
-    <div id="sr-country-search-results" class="visually-hidden" aria-live="polite"></div>
+    <div
+      id="{{ localPosition }}-country-search-results"
+      class="visually-hidden sr-search-results"
+      aria-live="polite"
+    ></div>
     <div
       class="disclosure__list country-selector__list{% if show_currencies %} country-selector__list--with-multiple-currencies{% endif %}"
       id="{{ localPosition }}-country-results"
