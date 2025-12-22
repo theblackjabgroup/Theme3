@@ -36,32 +36,29 @@
   <div class="subfooter-container">
     <!-- LEFT: Country/Currency Selector -->
     <div class="subfooter-left">
-      <!-- LEFT: Country/Currency Selector -->
-      <div class="subfooter-left">
-        {%- if section.settings.show_currency or section.settings.show_language -%}
-          <div class="no-js-hidden localization-form__wrapper">
-            {%- if section.settings.show_currency -%}
-              <localization-form>
-                {%- form 'localization', id: 'SubfooterCountryForm', class: 'localization-form' -%}
-                  <div class="no-js-hidden">
-                    {%- render 'country-localization', localPosition: 'SubfooterCountry' -%}
-                  </div>
-                {%- endform -%}
-              </localization-form>
-            {%- endif -%}
+      {%- if section.settings.show_currency or section.settings.show_language -%}
+        <div class="no-js-hidden localization-form__wrapper">
+          {%- if section.settings.show_currency -%}
+            <localization-form>
+              {%- form 'localization', id: 'SubfooterCountryForm', class: 'localization-form' -%}
+                <div class="no-js-hidden">
+                  {%- render 'country-localization', localPosition: 'SubfooterCountry' -%}
+                </div>
+              {%- endform -%}
+            </localization-form>
+          {%- endif -%}
 
-            {%- if section.settings.show_language -%}
-              <localization-form>
-                {%- form 'localization', id: 'SubfooterLanguageForm', class: 'localization-form' -%}
-                  <div class="no-js-hidden">
-                    {%- render 'language-localization', localPosition: 'SubfooterLanguage' -%}
-                  </div>
-                {%- endform -%}
-              </localization-form>
-            {%- endif -%}
-          </div>
-        {%- endif -%}
-      </div>
+          {%- if section.settings.show_language -%}
+            <localization-form>
+              {%- form 'localization', id: 'SubfooterLanguageForm', class: 'localization-form' -%}
+                <div class="no-js-hidden">
+                  {%- render 'language-localization', localPosition: 'SubfooterLanguage' -%}
+                </div>
+              {%- endform -%}
+            </localization-form>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
     </div>
 
     <!-- CENTER: Socials & Text -->
@@ -366,6 +363,11 @@
       "type": "url",
       "id": "social_instagram_link",
       "label": "Instagram"
+    },
+    {
+      "type": "image_picker",
+      "id": "social_instagram_icon",
+      "label": "Instagram Icon (Optional)"
     },
     {
       "type": "url",

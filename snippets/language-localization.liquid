@@ -21,14 +21,14 @@
       <div class="field">
         <input
           class="country-filter__input field__input"
-          id="language-filter-input"
+          id="{{ localPosition }}LanguageFilter"
           type="search"
           name="language_filter"
           value=""
           placeholder="{{ 'localization.search' | t }}"
           role="combobox"
-          aria-owns="language-results"
-          aria-controls="language-results"
+          aria-owns="{{ localPosition }}List"
+          aria-controls="{{ localPosition }}List"
           aria-haspopup="listbox"
           aria-autocomplete="list"
           autocorrect="off"
@@ -36,7 +36,7 @@
           autocapitalize="off"
           spellcheck="false"
         >
-        <label class="field__label" for="language-filter-input">{{ 'localization.search' | t }}</label>
+        <label class="field__label" for="{{ localPosition }}LanguageFilter">{{ 'localization.search' | t }}</label>
         <button
           type="reset"
           class="country-filter__reset-button field__button hidden"
