@@ -77,3 +77,15 @@
   content: '';
   display: block; 
 }
+/* Font Utilities */
+.text-font-primary {
+  font-family: var(--font-family-primary);
+}
+
+.text-font-serif {
+  font-family: serif;
+}
+
+.text-font-sans {
+  font-family: sans-serif;
+}
