@@ -1,0 +1,303 @@
+{{ 'component-product-card.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    padding-left: {{ section.settings.padding_horizontal | times: 0.75 | round: 0 }}px;
+    padding-right: {{ section.settings.padding_horizontal | times: 0.75 | round: 0 }}px;
+    background-color: {{ section.settings.bg_color }};
+    --heading-color: {{ section.settings.heading_color }};
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+      padding-left: {{ section.settings.padding_horizontal }}px;
+      padding-right: {{ section.settings.padding_horizontal }}px;
+    }
+  }
+
+  .sc-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .sc-grid {
+      grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+    }
+  }
+
+  .sc-heading {
+    text-align: center;
+    margin-bottom: 40px;
+    color: var(--heading-color);
+  }
+{%- endstyle -%}
+
+<div class="section-{{ section.id }}-padding" style="max-width: 100%; margin: 0 auto;">
+  {%- if section.settings.heading != blank -%}
+    <h2 class="sc-heading h1">{{ section.settings.heading }}</h2>
+  {%- endif -%}
+
+  <div class="sc-grid">
+    {%- for block in section.blocks -%}
+      <div
+        class="sc-grid-item"
+        style="--dc-bg-color: {{ block.settings.bg_color }}; --dc-text-color: {{ block.settings.text_color }};"
+        {{ block.shopify_attributes }}
+      >
+        {%- case block.type -%}
+          {%- when 'textbox' -%}
+            {% render 'card-textbox',
+              eyebrow: block.settings.eyebrow,
+              title: block.settings.title,
+              text: block.settings.text,
+              list_content: block.settings.list_content
+            %}
+          {%- when 'card' -%}
+            {%- liquid
+              assign card_product = block.settings.product
+
+              assign image = block.settings.image | default: card_product.featured_image
+              assign title = block.settings.title
+              if title == blank and card_product != blank
+                assign title = card_product.title
+              endif
+
+              assign text = block.settings.text
+              if text == blank and card_product != blank
+                assign text = card_product.description | strip_html | truncatewords: 20
+              endif
+
+              assign raised = block.settings.raised
+              if raised == 0 and card_product != blank and card_product.metafields.custom.raised != blank
+                assign raised = card_product.metafields.custom.raised.value
+              endif
+
+              assign goal = block.settings.goal
+              if goal == 100 and card_product != blank and card_product.metafields.custom.goal != blank
+                assign goal = card_product.metafields.custom.goal.value
+              endif
+            -%}
+            {% render 'product-card',
+              eyebrow: block.settings.eyebrow,
+              image: image,
+              title: title,
+              text: text,
+              raised: raised,
+              goal: goal,
+              currency: section.settings.currency
+            %}
+        {%- endcase -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Tech Specs",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Tech Specs"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background",
+      "default": "#f9f9f9"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 4,
+      "label": "Columns on Desktop"
+    },
+    {
+      "type": "text",
+      "id": "currency",
+      "label": "Currency Code",
+      "default": "CHF"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Horizontal Padding (L/R)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "textbox",
+      "name": "Info Card (Red)",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Eyebrow",
+          "default": "OUR GOALS"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Take Five so We Can Give Five"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Body Text",
+          "default": "Coffee Foundation wants to spread awareness and help people in need."
+        },
+        {
+          "type": "textarea",
+          "id": "list_content",
+          "label": "Checklist Items",
+          "info": "Separate items with a new line",
+          "default": "The Crazy Ambulance\nThe Coffee Foundation Van\nThe Coffee Foundation Tent"
+        },
+        {
+          "type": "color",
+          "id": "bg_color",
+          "label": "Card Background",
+          "default": "#ff0000"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Card Text",
+          "default": "#ffffff"
+        }
+      ]
+    },
+    {
+      "type": "card",
+      "name": "Spec Card",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Select Product"
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Eyebrow Text",
+          "default": "WE SUPPORT"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image (Override)"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title (Override)",
+          "default": "Feature Title"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Description (Override)",
+          "default": "Description of the feature."
+        },
+        {
+          "type": "number",
+          "id": "raised",
+          "label": "Value 1 (Current) (Override)",
+          "default": 0
+        },
+        {
+          "type": "number",
+          "id": "goal",
+          "label": "Value 2 (Max) (Override)",
+          "default": 100
+        },
+        {
+          "type": "color",
+          "id": "bg_color",
+          "label": "Card Background",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Card Text",
+          "default": "#000000"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tech Specs",
+      "blocks": [
+        {
+          "type": "textbox"
+        },
+        {
+          "type": "card"
+        },
+        {
+          "type": "card"
+        },
+        {
+          "type": "card"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
