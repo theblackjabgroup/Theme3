@@ -41,14 +41,21 @@
         class="header__logo-link"
         style="color: {{ scheme.settings.text }};"
       >
-        <img
-          src="{{ 'bb-logo.svg' | asset_url }}"
-          alt="{{ shop.name }}"
-          class="header__logo-image"
-          width="150"
-          height="40"
-          loading="eager"
-        >
+        {%- if section.settings.logo != blank -%}
+          {{
+            section.settings.logo
+            | image_url: width: section.settings.logo_width
+            | image_tag:
+              class: 'header__logo-image',
+              widths: '50, 100, 150, 200, 250, 300, 400, 500',
+              height: section.settings.logo.height,
+              width: section.settings.logo.width,
+              alt: section.settings.logo.alt
+            | default: shop.name
+          }}
+        {%- else -%}
+          <span class="h2">{{ shop.name }}</span>
+        {%- endif -%}
       </a>
     </div>
 
@@ -194,14 +201,21 @@
   <div class="mobile-menu-modal" id="MobileMenu" data-mobile-menu>
     <div class="mobile-menu-modal__top">
       <div class="mobile-menu-modal__logo">
-        <img
-          src="{{ 'bb-logo.svg' | asset_url }}"
-          alt="{{ shop.name }}"
-          class="header__logo-image"
-          width="120"
-          height="32"
-          loading="lazy"
-        >
+        {%- if section.settings.logo != blank -%}
+          {{
+            section.settings.logo
+            | image_url: width: section.settings.logo_width
+            | image_tag:
+              class: 'header__logo-image',
+              widths: '50, 100, 150, 200, 250',
+              height: section.settings.logo.height,
+              width: section.settings.logo.width,
+              alt: section.settings.logo.alt
+            | default: shop.name
+          }}
+        {%- else -%}
+          <span class="h2">{{ shop.name }}</span>
+        {%- endif -%}
       </div>
       <div class="mobile-menu-modal__actions">
         <a href="{{ routes.search_url }}" class="mobile-menu-modal__icon">

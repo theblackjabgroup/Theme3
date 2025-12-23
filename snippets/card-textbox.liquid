@@ -1,0 +1,35 @@
+<div class="dc-card dc-card--textbox">
+  {%- if eyebrow != blank -%}
+    <div class="dc-textbox-eyebrow">
+      {{ eyebrow }}
+    </div>
+  {%- endif -%}
+
+  {%- if title != blank -%}
+    <h3 class="dc-textbox-title">{{ title }}</h3>
+  {%- endif -%}
+
+  {%- if text != blank -%}
+    <div class="dc-textbox-text">
+      {{ text }}
+    </div>
+  {%- endif -%}
+
+  {%- if list_content != blank -%}
+    <ul class="dc-textbox-list">
+      {%- assign items = list_content | split: '<br>' -%}
+      {%- if items.size == 1 -%}
+        {%- assign items = list_content | newline_to_br | split: '<br />' -%}
+      {%- endif -%}
+
+      {%- for item in items -%}
+        {%- assign trimmed_item = item | strip -%}
+        {%- if trimmed_item != blank -%}
+          <li>
+            <span class="dc-list-text">{{ trimmed_item }}</span>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+</div>

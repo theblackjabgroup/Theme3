@@ -1,0 +1,61 @@
+{%- liquid
+  assign current_amount = raised | default: 0
+  assign goal_amount = goal | default: 100
+  assign currency_code = currency | default: 'CHF'
+
+  if goal_amount > 0
+    assign percentage = current_amount | times: 100.0 | divided_by: goal_amount
+  else
+    assign percentage = 0
+  endif
+
+  if percentage > 100
+    assign percentage = 100
+  endif
+-%}
+
+<div class="dc-card">
+  <div class="dc-eyebrow">
+    {{ eyebrow | default: 'WE SUPPORT' }}
+  </div>
+
+  <div class="dc-image-wrapper">
+    {%- if image != blank -%}
+      {{ image | image_url: width: 500 | image_tag: class: 'dc-image', loading: 'lazy' }}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'dc-image' }}
+    {%- endif -%}
+  </div>
+
+  <h3 class="dc-title">{{ title | default: 'Charity Name' }}</h3>
+
+  <div class="dc-text">
+    {{ text | default: 'Description of the cause goes here.' }}
+  </div>
+
+  <div class="dc-progress-wrapper">
+    <div class="dc-tooltip" style="left: {{ percentage }}%;">
+      {{ current_amount }}
+      {{ currency_code }}
+    </div>
+
+    <div class="dc-bar-track">
+      <div class="dc-bar-fill" style="width: {{ percentage }}%;">
+        <div class="dc-dot"></div>
+      </div>
+    </div>
+
+    <div class="dc-ticks">
+      <div class="dc-tick"></div>
+      <div class="dc-tick"></div>
+      <div class="dc-tick"></div>
+      <div class="dc-tick"></div>
+      <div class="dc-tick"></div>
+    </div>
+
+    <div class="dc-goal-label">
+      {{ goal_amount }}
+      {{ currency_code }}
+    </div>
+  </div>
+</div>
