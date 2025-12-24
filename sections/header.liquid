@@ -1,387 +1,138 @@
 <link rel="stylesheet" href="{{ 'section-header.css' | asset_url }}" media="print" onload="this.media='all'">
 <noscript>{{ 'section-header.css' | asset_url | stylesheet_tag }}</noscript>
 
-{%- liquid
-  assign scheme = section.settings.color_scheme
-  if scheme == blank
-    assign scheme = settings.color_schemes | first
-  endif
-
-  assign is_transparent = false
-  if template == 'index' and section.settings.transparent_home
-    assign is_transparent = true
-  elsif template == 'product' and section.settings.transparent_product
-    assign is_transparent = true
-  elsif template == 'collection' and section.settings.transparent_collection
-    assign is_transparent = true
-  endif
--%}
-
-<header
-  class="section-header color-{{ scheme.id }}{% if is_transparent %} header-transparent{% endif %}{% if section.settings.sticky_header == 'always' %} sticky-header{% endif %}{% if section.settings.sticky_header == 'on_scroll' %} sticky-header-on-scroll{% endif %}"
-  style="
-    background-color: {% if is_transparent %}transparent{% else %}{{ scheme.settings.background }}{% endif %};
-    color: {{ scheme.settings.text }};
-    --header-height: {% if section.settings.height == 'compact' %}60px{% else %}80px{% endif %};
-    --header-border-thickness: {{ section.settings.border_thickness }}px;
-  "
->
-  <div class="header-wrapper">
-    <!-- Hamburger Button (Mobile Only) -->
-    <button class="header__hamburger medium-hide large-up-hide" aria-label="Menu" data-mobile-menu-toggle>
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-
-    <!-- Logo -->
-    <div class="header__logo">
-      <a
-        href="{{ routes.root_url }}"
-        class="header__logo-link"
-        style="color: {{ scheme.settings.text }};"
-      >
-        {%- if section.settings.logo != blank -%}
-          {{
-            section.settings.logo
-            | image_url: width: section.settings.logo_width
-            | image_tag:
-              class: 'header__logo-image',
-              widths: '50, 100, 150, 200, 250, 300, 400, 500',
-              height: section.settings.logo.height,
-              width: section.settings.logo.width,
-              alt: section.settings.logo.alt
-            | default: shop.name
-          }}
-        {%- else -%}
-          <span class="h2">{{ shop.name }}</span>
-        {%- endif -%}
-      </a>
-    </div>
-
-    <!-- Localization Pills -->
-    <div class="header__localization small-hide">
-      <button class="localization-btn">ENGLISH</button>
-      <button class="localization-btn">US ($)</button>
-      <!-- Note: Real implementation would use localization form, using static buttons for visual match as requested -->
-    </div>
-
-    <!-- Navigation -->
-    <nav class="header__nav">
-      <ul class="header__menu">
-        {%- for link in section.settings.menu.links -%}
-          <li class="header__menu-item-wrapper">
-            {%- if link.links != blank -%}
-              {%- assign matching_block = null -%}
-              {%- for block in section.blocks -%}
-                {%- if block.type == 'mega_menu' and block.settings.link_name == link.title -%}
-                  {%- assign matching_block = block -%}
-                  {%- break -%}
-                {%- endif -%}
-              {%- endfor -%}
-
-              <button
-                class="header__menu-item header__menu-item--has-children"
-                aria-expanded="false"
-                aria-controls="MegaMenu-{{ forloop.index }}"
-                data-mega-menu-trigger
-              >
-                {{ link.title }}
-                <svg
-                  viewBox="0 0 10 6"
-                  aria-hidden="true"
-                  focusable="false"
-                  class="icon icon-caret"
-                >
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor">
-                </svg>
-              </button>
-
-              <div id="MegaMenu-{{ forloop.index }}" class="mega-menu-modal" data-mega-menu>
-                <div class="mega-menu-modal__inner">
-                  <div class="mega-menu-modal__nav">
-                    <ul class="mega-menu-modal__list">
-                      {%- for childlink in link.links -%}
-                        <li class="mega-menu-modal__item">
-                          <a href="{{ childlink.url }}" class="mega-menu-modal__link">
-                            {{ childlink.title }}
-                          </a>
-                        </li>
-                      {%- endfor -%}
-                    </ul>
-                  </div>
-                  <div class="mega-menu-modal__featured">
-                    {%- if matching_block != null -%}
-                      <div class="mega-menu-featured-grid">
-                        {%- for i in (1..4) -%}
-                          {%- assign img_key = 'image_' | append: i -%}
-                          {%- assign label_key = 'label_' | append: i -%}
-                          {%- assign link_key = 'link_' | append: i -%}
-                          {%- assign img = matching_block.settings[img_key] -%}
-                          {%- assign label = matching_block.settings[label_key] -%}
-                          {%- assign url = matching_block.settings[link_key] -%}
-
-                          {%- if img != blank -%}
-                            {%- assign product_count = null -%}
-                            {%- if url contains '/collections/' -%}
-                              {%- assign url_parts = url | split: '/' -%}
-                              {%- assign collection_handle = url_parts | last | split: '?' | first -%}
-                              {%- assign product_count = collections[collection_handle].products_count -%}
-                            {%- endif -%}
-
-                            <a href="{{ url | default: '#' }}" class="mega-menu-featured-item">
-                              <div class="mega-menu-featured-image-wrapper">
-                                {{
-                                  img
-                                  | image_url: width: 400
-                                  | image_tag: loading: 'lazy', class: 'mega-menu-featured-image'
-                                }}
-                              </div>
-                              {%- if label != blank -%}
-                                <div class="mega-menu-featured-label">
-                                  {{ label }}
-                                  {%- if product_count != null -%}
-                                    <span class="mega-menu-featured-count">({{ product_count }})</span>
-                                  {%- endif -%}
-                                </div>
-                              {%- endif -%}
-                            </a>
-                          {%- endif -%}
-                        {%- endfor -%}
-                      </div>
-                    {%- endif -%}
-                  </div>
-                </div>
-              </div>
-            {%- else -%}
-              <a href="{{ link.url }}" class="header__menu-item {% if link.active %}active{% endif %}">
-                {{ link.title }}
-              </a>
-            {%- endif -%}
-          </li>
-        {%- else -%}
-          <!-- Fallback links based on image if menu is empty -->
-          <li><a href="#" class="header__menu-item active">ABOUT</a></li>
-          <li><a href="#" class="header__menu-item">SHOP</a></li>
-          <li><a href="#" class="header__menu-item">COLLECTION</a></li>
-          <li><a href="#" class="header__menu-item">CONTACT US</a></li>
-          <li><a href="#" class="header__menu-item">BLOGS</a></li>
-          <li><a href="#" class="header__menu-item">SHOP</a></li>
-        {%- endfor -%}
-      </ul>
-      <div class="header__nav-underline" aria-hidden="true"></div>
-    </nav>
-    <script src="{{ 'mega-menu.js' | asset_url }}" defer="defer"></script>
-
-    <!-- Icons -->
-    <div class="header__icons">
-      <!-- Search -->
-      <a href="{{ routes.search_url }}" class="header__icon-btn">
-        <img src="{{ 'bb-search.svg' | asset_url }}" alt="Search" width="24" height="24">
-      </a>
-
-      <!-- Account -->
-      {%- if shop.customer_accounts_enabled -%}
-        <a
-          href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
-          class="header__icon-btn"
-        >
-          <img src="{{ 'bb-profile.svg' | asset_url }}" alt="Account" width="24" height="24">
-        </a>
-      {%- endif -%}
-
-      <!-- Cart -->
-      <a href="{{ routes.cart_url }}" class="header__icon-btn" id="cart-icon-bubble">
-        <img src="{{ 'bb-cart.svg' | asset_url }}" alt="Cart" width="24" height="24">
-      </a>
-    </div>
-  </div>
-
-  <!-- Mobile Menu Modal -->
-  <div class="mobile-menu-modal" id="MobileMenu" data-mobile-menu>
-    <div class="mobile-menu-modal__top">
-      <div class="mobile-menu-modal__logo">
-        {%- if section.settings.logo != blank -%}
-          {{
-            section.settings.logo
-            | image_url: width: section.settings.logo_width
-            | image_tag:
-              class: 'header__logo-image',
-              widths: '50, 100, 150, 200, 250',
-              height: section.settings.logo.height,
-              width: section.settings.logo.width,
-              alt: section.settings.logo.alt
-            | default: shop.name
-          }}
-        {%- else -%}
-          <span class="h2">{{ shop.name }}</span>
-        {%- endif -%}
-      </div>
-      <div class="mobile-menu-modal__actions">
-        <a href="{{ routes.search_url }}" class="mobile-menu-modal__icon">
-          <img src="{{ 'bb-search.svg' | asset_url }}" alt="Search" width="20" height="20">
-        </a>
-        <a href="{{ routes.cart_url }}" class="mobile-menu-modal__icon">
-          <img src="{{ 'bb-cart.svg' | asset_url }}" alt="Cart" width="20" height="20">
-        </a>
-        {%- if shop.customer_accounts_enabled -%}
-          <a
-            href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
-            class="mobile-menu-modal__icon"
-          >
-            <img src="{{ 'bb-profile.svg' | asset_url }}" alt="Account" width="20" height="20">
-          </a>
-        {%- endif -%}
-        <button class="mobile-menu-modal__close" aria-label="Close" data-mobile-menu-close>
-          <svg viewBox="0 0 24 24" width="24" height="24">
-            <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-        </button>
-      </div>
-    </div>
-
-    <div class="mobile-menu-modal__content">
-      <div class="mobile-menu-modal__primary-grid">
-        {%- for link in section.settings.menu.links -%}
-          {%- assign product_count = null -%}
-          {%- if link.url contains '/collections/' -%}
-            {%- assign url_parts = link.url | split: '/' -%}
-            {%- assign collection_handle = url_parts | last | split: '?' | first -%}
-            {%- assign product_count = collections[collection_handle].products_count -%}
-          {%- endif -%}
-
-          <div class="mobile-menu-modal__item-group">
-            <a href="{{ link.url }}" class="mobile-menu-modal__primary-link">
-              {{ link.title }}
-              {%- if product_count != null -%}
-                <span class="mobile-menu-modal__count">
-                  {%- if product_count < 10 %}0{% endif -%}
-                  {{- product_count -}}
-                </span>
+<header class="floating-dock-header">
+  <nav class="floating-dock">
+    <ul class="dock-menu">
+      {%- for link in section.settings.menu.links -%}
+        <li class="dock-menu-item">
+          {%- if link.links != blank -%}
+            {%- assign matching_block = null -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'mega_menu' and block.settings.link_name == link.title -%}
+                {%- assign matching_block = block -%}
+                {%- break -%}
               {%- endif -%}
+            {%- endfor -%}
+
+            <button
+              class="dock-link dock-link--dropdown"
+              aria-expanded="false"
+              aria-controls="MegaMenu-{{ forloop.index }}"
+              data-mega-menu-trigger
+            >
+              {{ link.title }}
+              <svg viewBox="0 0 10 6" aria-hidden="true" focusable="false" class="icon-caret">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor"/>
+              </svg>
+            </button>
+
+            <div id="MegaMenu-{{ forloop.index }}" class="mega-menu" data-mega-menu>
+              <div class="mega-menu-inner">
+                <div class="mega-menu-nav">
+                  <ul class="mega-menu-list">
+                    {%- for childlink in link.links -%}
+                      <li class="mega-menu-item">
+                        <a href="{{ childlink.url }}" class="mega-menu-link">
+                          {{ childlink.title }}
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                </div>
+                {%- if matching_block != null -%}
+                  <div class="mega-menu-featured">
+                    <div class="mega-menu-grid">
+                      {%- for i in (1..4) -%}
+                        {%- assign img_key = 'image_' | append: i -%}
+                        {%- assign label_key = 'label_' | append: i -%}
+                        {%- assign link_key = 'link_' | append: i -%}
+                        {%- assign img = matching_block.settings[img_key] -%}
+                        {%- assign label = matching_block.settings[label_key] -%}
+                        {%- assign url = matching_block.settings[link_key] -%}
+
+                        {%- if img != blank -%}
+                          {%- assign product_count = null -%}
+                          {%- if url contains '/collections/' -%}
+                            {%- assign url_parts = url | split: '/' -%}
+                            {%- assign collection_handle = url_parts | last | split: '?' | first -%}
+                            {%- assign product_count = collections[collection_handle].products_count -%}
+                          {%- endif -%}
+
+                          <a href="{{ url | default: '#' }}" class="mega-menu-featured-item">
+                            <div class="mega-menu-image-wrapper">
+                              {{ img | image_url: width: 400 | image_tag: loading: 'lazy', class: 'mega-menu-image' }}
+                            </div>
+                            {%- if label != blank -%}
+                              <div class="mega-menu-label">
+                                {{ label }}
+                                {%- if product_count != null -%}
+                                  <span class="mega-menu-count">({{ product_count }})</span>
+                                {%- endif -%}
+                              </div>
+                            {%- endif -%}
+                          </a>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- else -%}
+            <a href="{{ link.url }}" class="dock-link {% if link.active %}active{% endif %}">
+              {{ link.title }}
             </a>
-
-            {%- if link.links != blank -%}
-              <ul class="mobile-menu-modal__sublist">
-                {%- for childlink in link.links -%}
-                  <li>
-                    <a href="{{ childlink.url }}" class="mobile-menu-modal__sublink">
-                      {{ childlink.title }}
-                    </a>
-                  </li>
-                {%- endfor -%}
-              </ul>
-            {%- endif -%}
-          </div>
-        {%- endfor -%}
-      </div>
-
-      <div class="mobile-menu-modal__divider"></div>
-
-      <div class="mobile-menu-modal__secondary-list">
-        <div class="mobile-menu-modal__localization">
-          <button class="localization-btn">ENGLISH</button>
-          <button class="localization-btn">US ($)</button>
+          {%- endif -%}
+        </li>
+      {%- else -%}
+        <li class="dock-menu-item"><a href="#" class="dock-link">ABOUT</a></li>
+        <li class="dock-menu-item"><a href="#" class="dock-link">SHOP</a></li>
+        <li class="dock-menu-item"><a href="#" class="dock-link">COLLECTION</a></li>
+        <li class="dock-menu-item"><a href="#" class="dock-link">CONTACT</a></li>
+      {%- endfor -%}
+    </ul>
+  </nav>
+  
+  <div class="dock-actions">
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'search' -%}
+        <div class="dock-action-block dock-search" {{ block.shopify_attributes }}>
+          <a href="{{ routes.search_url }}" class="dock-search-link" aria-label="Search">
+            <svg class="dock-search-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M19 19L14.65 14.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
         </div>
-      </div>
-    </div>
+      {%- endif -%}
+      
+      {%- if block.type == 'welcome' -%}
+        <div class="dock-action-block dock-welcome" {{ block.shopify_attributes }}>
+          <a href="{{ block.settings.login_url | default: routes.account_login_url }}" class="dock-welcome-link">
+            <div class="dock-welcome-icon">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="dock-welcome-text">
+              <div class="dock-welcome-greeting">{{ block.settings.welcome_text | default: 'Welcome !' }}</div>
+              <div class="dock-welcome-login">{{ block.settings.login_text | default: 'Login' }}</div>
+            </div>
+          </a>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
   </div>
 </header>
 
+<script src="{{ 'mega-menu.js' | asset_url }}" defer="defer"></script>
+
 {% schema %}
 {
-  "name": "Header",
+  "name": "Floating Dock Header",
   "settings": [
-    {
-      "type": "select",
-      "id": "height",
-      "options": [
-        { "value": "compact", "label": "Compact" },
-        { "value": "standard", "label": "Standard" }
-      ],
-      "default": "standard",
-      "label": "Height"
-    },
-    {
-      "type": "select",
-      "id": "sticky_header",
-      "options": [
-        { "value": "none", "label": "None" },
-        { "value": "on_scroll", "label": "On scroll" },
-        { "value": "always", "label": "Always" }
-      ],
-      "default": "always",
-      "label": "Sticky header"
-    },
-    {
-      "type": "range",
-      "id": "border_thickness",
-      "min": 0,
-      "max": 10,
-      "step": 1,
-      "unit": "px",
-      "label": "Border thickness",
-      "default": 0
-    },
-    {
-      "type": "header",
-      "content": "Colors"
-    },
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Default",
-      "default": "scheme-1"
-    },
-    {
-      "type": "header",
-      "content": "Home page"
-    },
-    {
-      "type": "checkbox",
-      "id": "transparent_home",
-      "default": false,
-      "label": "Transparent background"
-    },
-    {
-      "type": "header",
-      "content": "Product page"
-    },
-    {
-      "type": "checkbox",
-      "id": "transparent_product",
-      "default": false,
-      "label": "Transparent background"
-    },
-    {
-      "type": "header",
-      "content": "Collection page"
-    },
-    {
-      "type": "checkbox",
-      "id": "transparent_collection",
-      "default": false,
-      "label": "Transparent background"
-    },
-    {
-      "type": "header",
-      "content": "Logo"
-    },
-    {
-      "type": "image_picker",
-      "id": "logo",
-      "label": "Logo Image"
-    },
-    {
-      "type": "range",
-      "id": "logo_width",
-      "min": 50,
-      "max": 250,
-      "step": 10,
-      "unit": "px",
-      "label": "Logo Width",
-      "default": 100
-    },
     {
       "type": "link_list",
       "id": "menu",
@@ -391,6 +142,36 @@
   ],
   "blocks": [
     {
+      "type": "search",
+      "name": "Search",
+      "limit": 1
+    },
+    {
+      "type": "welcome",
+      "name": "Welcome Block",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "welcome_text",
+          "label": "Welcome Text",
+          "default": "Welcome !"
+        },
+        {
+          "type": "text",
+          "id": "login_text",
+          "label": "Login Text",
+          "default": "Login"
+        },
+        {
+          "type": "url",
+          "id": "login_url",
+          "label": "Login URL",
+          "info": "Leave empty to use default login page"
+        }
+      ]
+    },
+    {
       "type": "mega_menu",
       "name": "Mega Menu",
       "settings": [
@@ -398,7 +179,7 @@
           "type": "text",
           "id": "link_name",
           "label": "Menu Item Title",
-          "info": "Case-sensitive match with the menu item title (e.g., 'SHOP')"
+          "info": "Case-sensitive match with the menu item title"
         },
         {
           "type": "header",

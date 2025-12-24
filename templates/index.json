@@ -1,119 +1,108 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "bento_grid": {
       "type": "bento-grid",
       "blocks": {
-        "item_1": {
-          "type": "card",
-          "settings": {
-            "external_image_url": "",
-            "heading": "Card 1",
-            "link": "",
-            "card_shape": "rectangle",
-            "column_span": "1",
-            "row_span": "1"
-          }
+        "card_1": { 
+          "type": "logo_card", 
+          "settings": { 
+            "column_span": 1.0, 
+            "row_span": 1.2 
+          } 
         },
-        "item_2": {
-          "type": "card",
-          "settings": {
-            "external_image_url": "",
-            "heading": "Card 2",
-            "link": "",
-            "card_shape": "rectangle",
-            "column_span": "1",
-            "row_span": "1"
-          }
+        "card_2": { 
+          "type": "cart_card", 
+          "settings": { 
+            "column_span": 1.0, 
+            "row_span": 1.2 
+          } 
         },
-        "item_3": {
-          "type": "card",
-          "settings": {
-            "external_image_url": "",
-            "heading": "Card 3",
-            "link": "",
-            "card_shape": "rectangle",
-            "column_span": "2",
-            "row_span": "2"
-          }
+        "card_3": { 
+          "type": "tag_card", 
+          "settings": { 
+            "column_span": 1.6, 
+            "row_span": 1.4 
+          } 
         },
-        "item_4": {
-          "type": "card",
-          "settings": {
-            "external_image_url": "",
-            "heading": "Card 4",
-            "link": "",
-            "card_shape": "rectangle",
-            "column_span": "1",
-            "row_span": "4"
-          }
+        "card_4": { 
+          "type": "text_card", 
+          "settings": { 
+            "content": "<p>Scrollable rich text...</p>", 
+            "column_span": 1.8, 
+            "row_span": 4.0 
+          } 
         },
-        "item_5": {
-          "type": "card",
-          "settings": {
-            "external_image_url": "",
-            "heading": "Card 5",
-            "link": "",
-            "card_shape": "rectangle",
-            "column_span": "3",
-            "row_span": "3"
-          }
+        "card_5": { 
+          "type": "card", 
+          "settings": { 
+            "heading": "", 
+            "column_span": 2.6, 
+            "row_span": 4.0 
+          } 
         },
-        "item_6": {
-          "type": "card",
-          "settings": {
-            "external_image_url": "",
-            "heading": "Card 6",
-            "link": "",
-            "card_shape": "rectangle",
-            "column_span": "2",
-            "row_span": "2"
-          }
+        "card_6": { 
+          "type": "product_card", 
+          "settings": { 
+            "column_span": 2.0, 
+            "row_span": 4.0 
+          } 
         },
-        "item_8": {
-          "type": "card",
-          "settings": {
-            "external_image_url": "",
-            "heading": "Card 8",
-            "link": "",
-            "card_shape": "rectangle",
-            "column_span": "1",
-            "row_span": "1"
-          }
+        "card_7": { 
+          "type": "tag_card", 
+          "settings": { 
+            "column_span": 1.6, 
+            "row_span": 2.5 
+          } 
         },
-        "item_10": {
-          "type": "card",
-          "settings": {
-            "external_image_url": "",
-            "heading": "Card 10",
-            "link": "",
-            "card_shape": "rectangle",
-            "column_span": "1",
-            "row_span": "1"
-          }
+        "card_8": { 
+          "type": "card", 
+          "settings": { 
+            "heading": "Generic 8", 
+            "column_span": 2.8, 
+            "row_span": 2.3 
+          } 
+        },
+        "card_9": { 
+          "type": "video_card", 
+          "settings": { 
+            "column_span": 3.2, 
+            "row_span": 2.3 
+          } 
+        },
+        "card_10": { 
+          "type": "button_card", 
+          "settings": { 
+            "label": "Shop now", 
+            "column_span": 2.0, 
+            "row_span": 1.1 
+          } 
+        },
+        "card_11": { 
+          "type": "scrolling_text_card", 
+          "settings": { 
+            "column_span": 2.5, 
+            "row_span": 0.8 
+          } 
         }
       },
       "block_order": [
-        "item_1",
-        "item_2",
-        "item_3",
-        "item_4",
-        "item_5",
-        "item_6",
-        "item_8",
-        "item_10"
+        "card_1", 
+        "card_2", 
+        "card_3", 
+        "card_4", 
+        "card_5", 
+        "card_6", 
+        "card_7", 
+        "card_8", 
+        "card_9", 
+        "card_10", 
+        "card_11"
       ],
       "settings": {
-        "heading": "Bento Grid",
-        "grid_gap": 24
+        "grid_columns": 8,
+        "row_height": 100,
+        "grid_gap": 20,
+        "card_border_radius": 20
       }
     },
     "featured_collection": {

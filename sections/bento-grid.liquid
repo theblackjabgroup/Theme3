@@ -1,162 +1,307 @@
 {{ 'section-bento-grid.css' | asset_url | stylesheet_tag }}
 
-{%- liquid
-  assign scheme = section.settings.color_scheme
-  if scheme == blank
-    assign scheme = settings.color_schemes | first
-  endif
--%}
+<style>
+  /* Dynamic styles that require Liquid variables */
+  .bento-grid {
+    /* Multiply columns by 10 to allow 0.1 increments */
+    grid-template-columns: repeat({{ section.settings.grid_columns | times: 10 }}, 1fr);
+    /* Divide row height by 10 to allow 0.1 increments */
+    grid-auto-rows: {{ section.settings.row_height | divided_by: 10.0 }}px;
+  }
 
-<div
-  class="section-bento-grid color-{{ scheme.id }}"
-  style="background-color: {{ scheme.settings.background }}; color: {{ scheme.settings.text }};"
->
-  <div class="bento-grid-wrapper page-width">
-    <div class="bento-grid" style="gap: {{ section.settings.grid_gap }}px;">
-      {%- for block in section.blocks -%}
-        <div
-          class="bento-item bento-item--{{ block.type }} bento-col-span-{{ block.settings.column_span }} bento-row-span-{{ block.settings.row_span }} bento-shape-{{ block.settings.card_shape }}"
-          {{ block.shopify_attributes }}
-        >
-          {%- case block.type -%}
-            {%- when 'card' -%}
-              <div class="bento-item__image-container">
-                {%- if block.settings.image != blank -%}
-                  {{
-                    block.settings.image
-                    | image_url: width: 800
-                    | image_tag: class: 'bento-item__image', widths: '300, 600, 800', loading: 'lazy'
-                  }}
-                {%- elsif block.settings.external_image_url != blank -%}
-                  <img
-                    src="{{ block.settings.external_image_url }}"
-                    class="bento-item__image"
-                    alt="{{ block.settings.heading | escape }}"
-                    loading="lazy"
-                    width="800"
-                    height="600"
-                  >
-                {%- else -%}
-                  {{ 'image' | placeholder_svg_tag: 'bento-item__image placeholder-svg' }}
-                {%- endif -%}
-              </div>
-              <div class="bento-item__content">
-                {%- if block.settings.heading != blank -%}
-                  <h3 class="bento-item__heading">{{ block.settings.heading }}</h3>
-                {%- endif -%}
-              </div>
+  .bento-block-wrapper {
+    padding: {{ section.settings.grid_gap | divided_by: 2 }}px;
+  }
 
-            {%- when 'text_card' -%}
-              <div class="bento-item__text-container bento-custom-scrollbar">
-                {%- if block.settings.heading != blank -%}
-                  <h3 class="bento-item__heading bento-item__heading--static">{{ block.settings.heading }}</h3>
-                {%- endif -%}
-                <div class="bento-item__text-content rtl-enabled">
-                  {{ block.settings.text }}
+  .bento-card {
+    border-radius: {{ section.settings.card_border_radius }}px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .bento-grid {
+      grid-auto-rows: {{ section.settings.row_height }}px; /* Normal rows on mobile */
+      gap: {{ section.settings.grid_gap }}px;
+    }
+  }
+</style>
+
+<div class="bento-grid-container">
+  <div class="bento-grid">
+    {%- for block in section.blocks -%}
+      {%- comment -%} Calculate the 10x scaled spans for 0.1 precision {%- endcomment -%}
+      {%- assign col_span = block.settings.column_span | times: 10 | round -%}
+      {%- assign row_span = block.settings.row_span | times: 10 | round -%}
+
+      <div
+        class="bento-block-wrapper"
+        style="grid-column: span {{ col_span }}; grid-row: span {{ row_span }};"
+        {{ block.shopify_attributes }}
+      >
+        {%- case block.type -%}
+          {%- when 'logo_card' -%}
+            <div class="bento-card logo-card">
+              {%- if block.settings.logo_image != blank -%}
+                <img
+                  src="{{ block.settings.logo_image | image_url: width: 400 }}"
+                  alt="{{ block.settings.logo_text | default: shop.name }}"
+                  class="logo-image"
+                  width="{{ block.settings.logo_image_width }}"
+                  height="auto"
+                  style="width: {{ block.settings.logo_image_width }}px; height: auto;"
+                  loading="eager"
+                >
+              {%- else -%}
+                <h1
+                  class="logo-text"
+                  style="font-size: {{ block.settings.logo_font_size }}px; color: {{ block.settings.logo_color }};"
+                >
+                  {{ block.settings.logo_text }}
+                </h1>
+              {%- endif -%}
+            </div>
+
+          {%- when 'cart_card' -%}
+            <div
+              class="bento-card cart-card"
+              onclick="window.location.href='{{ routes.cart_url }}'"
+            >
+              <div class="cart-icon-wrapper">
+                <svg class="cart-icon" viewBox="0 0 24 24">
+                  <circle cx="9" cy="21" r="1"></circle>
+                  <circle cx="20" cy="21" r="1"></circle>
+                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+                <span class="cart-count">{{ cart.item_count }}</span>
+              </div>
+            </div>
+
+          {%- when 'search_card' -%}
+            <div
+              class="bento-card search-card"
+              onclick="window.location.href='{{ routes.search_url }}'"
+            >
+              <svg class="search-icon" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+              </svg>
+            </div>
+
+          {%- when 'login_card' -%}
+            <div
+              class="bento-card login-card"
+              onclick="window.location.href='{{ routes.account_url }}'"
+            >
+              <div class="login-content">
+                <div class="avatar">
+                  {%- if customer -%}
+                    {{ customer.first_name | slice: 0 | upcase }}
+                  {%- else -%}
+                    ?
+                  {%- endif -%}
+                </div>
+                <div class="welcome-text">
+                  {%- if customer -%}
+                    Hi, {{ customer.first_name }}!
+                  {%- else -%}
+                    Login
+                  {%- endif -%}
                 </div>
               </div>
+            </div>
 
-            {%- when 'tag_card' -%}
-              <div class="bento-item__tag-layout bento-item__tag-layout--{{ block.settings.layout_direction }} bento-item__tag-layout--align-{{ block.settings.content_alignment }} bento-item__tag-layout--justify-{{ block.settings.content_justification }}">
-                {%- if block.settings.tag_text != blank -%}
-                  <span class="bento-item__tag-pill">{{ block.settings.tag_text }}</span>
+          {%- when 'card' -%}
+            {%- assign has_image = false -%}
+            {%- if block.settings.image != blank or block.settings.external_image_url != blank -%}
+              {%- assign has_image = true -%}
+            {%- endif -%}
+
+            <div
+              class="bento-card generic-card{% if has_image %} has-image{% endif %}"
+              style="{% if block.settings.image != blank %} background-image: url('{{ block.settings.image | image_url: width: 1000 }}');{% elsif block.settings.external_image_url != blank %} background-image: url('{{ block.settings.external_image_url }}');{% endif %}"
+              {% if block.settings.link != blank %}
+                onclick="window.location.href='{{ block.settings.link }}'"
+              {% endif %}
+            >
+              {%- if block.settings.heading != blank -%}
+                <h3 class="card-heading">{{ block.settings.heading }}</h3>
+              {%- endif -%}
+            </div>
+
+          {%- when 'tag_card' -%}
+            {%- assign direction = block.settings.layout_direction | default: 'row' -%}
+            {%- assign icon_size = block.settings.icon_size | default: 32 -%}
+            {%- assign align = block.settings.content_alignment | default: 'left' -%}
+            <div class="bento-card tag-card tag-card--{{ direction }} tag-card--align-{{ align }}">
+              <div class="tag-card-inner">
+                <div class="tag-card-text-group">
+                  {%- if block.settings.show_tag and block.settings.tag_text != blank -%}
+                    <div class="tag-card-tag">{{ block.settings.tag_text }}</div>
+                  {%- endif -%}
+
+                  {%- if block.settings.show_text and block.settings.main_text != blank -%}
+                    <div class="tag-card-main">{{ block.settings.main_text }}</div>
+                  {%- endif -%}
+                </div>
+
+                {%- if block.settings.show_icon and block.settings.icon_image != blank -%}
+                  <div class="tag-card-icon" style="width: {{ icon_size }}px; height: {{ icon_size }}px;">
+                    <img
+                      src="{{ block.settings.icon_image | image_url: width: 160 }}"
+                      alt="{{ block.settings.main_text | escape }}"
+                      loading="lazy"
+                      width="{{ icon_size }}"
+                      height="{{ icon_size }}"
+                    >
+                  </div>
                 {%- endif -%}
-                {%- if block.settings.heading != blank -%}
-                  <h3 class="bento-item__heading bento-item__heading--static">{{ block.settings.heading }}</h3>
+
+                {%- if block.settings.show_image_strip -%}
+                  {%- assign has_images = false -%}
+                  {%- for i in (1..10) -%}
+                    {%- assign image_key = 'strip_image_' | append: i -%}
+                    {%- if block.settings[image_key] != blank -%}
+                      {%- assign has_images = true -%}
+                      {%- break -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+
+                  {%- if has_images -%}
+                    <div class="tag-card-image-strip">
+                      <div class="tag-card-image-strip-track">
+                        {%- comment -%} First set of images {%- endcomment -%}
+                        {%- for i in (1..10) -%}
+                          {%- assign image_key = 'strip_image_' | append: i -%}
+                          {%- if block.settings[image_key] != blank -%}
+                            <div class="tag-card-image-strip-item">
+                              {{
+                                block.settings[image_key]
+                                | image_url: width: 160
+                                | image_tag: loading: 'lazy', alt: ''
+                              }}
+                            </div>
+                          {%- endif -%}
+                        {%- endfor -%}
+                        {%- comment -%} Duplicate for seamless loop {%- endcomment -%}
+                        {%- for i in (1..10) -%}
+                          {%- assign image_key = 'strip_image_' | append: i -%}
+                          {%- if block.settings[image_key] != blank -%}
+                            <div class="tag-card-image-strip-item">
+                              {{
+                                block.settings[image_key]
+                                | image_url: width: 160
+                                | image_tag: loading: 'lazy', alt: ''
+                              }}
+                            </div>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </div>
+                    </div>
+                  {%- endif -%}
                 {%- endif -%}
-                <div class="bento-item__image-container bento-item__image-container--relative">
-                  {%- if block.settings.image != blank -%}
+              </div>
+            </div>
+
+          {%- when 'content_card' -%}
+            <div
+              class="bento-card content-card"
+              style="background-image: url('{{ block.settings.image | image_url: width: 800 }}');"
+              {% if block.settings.link != blank %}
+                onclick="window.location.href='{{ block.settings.link }}'"
+              {% endif %}
+            >
+              {%- if block.settings.title != blank -%}
+                <h3 class="card-title">{{ block.settings.title }}</h3>
+              {%- endif -%}
+            </div>
+
+          {%- when 'button_card' -%}
+            <div class="bento-card button-card">
+              {%- assign label = block.settings.label | default: 'Button' -%}
+              {%- if block.settings.link != blank -%}
+                <a class="button-card-btn" href="{{ block.settings.link }}">{{ label }}</a>
+              {%- else -%}
+                <button class="button-card-btn" type="button">{{ label }}</button>
+              {%- endif -%}
+            </div>
+
+          {%- when 'text_card' -%}
+            <div class="bento-card text-card">
+              {{ block.settings.content }}
+            </div>
+
+          {%- when 'product_card' -%}
+            {%- assign product = block.settings.product -%}
+            <div
+              class="bento-card product-card"
+              style="{% if product.featured_image %}background-image: url('{{ product.featured_image | image_url: width: 600 }}');{% else %}background-color: #f4f4f4;{% endif %}"
+              {% if product != blank and product.url != blank %}
+                onclick="window.location.href='{{ product.url }}'"
+              {% endif %}
+            >
+              <div class="product-info">
+                <div style="font-weight:bold;">{{ product.title | default: 'Product Title' }}</div>
+                <div>{{ product.price | money }}</div>
+              </div>
+            </div>
+
+          {%- when 'video_card' -%}
+            <div class="bento-card video-card">
+              {%- case block.settings.video_source -%}
+                {%- when 'shopify' -%}
+                  {%- if block.settings.video != blank -%}
                     {{
-                      block.settings.image
-                      | image_url: width: 600
-                      | image_tag: class: 'bento-item__image', loading: 'lazy'
+                      block.settings.video
+                      | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false
                     }}
-                  {%- else -%}
-                    {{ 'image' | placeholder_svg_tag: 'bento-item__image placeholder-svg' }}
                   {%- endif -%}
+                {%- when 'youtube' -%}
+                  {%- if block.settings.youtube_url != blank -%}
+                    {%- assign yt_url = block.settings.youtube_url -%}
+                    {%- assign yt_id = '' -%}
+
+                    {%- if yt_url contains 'youtu.be/' -%}
+                      {%- assign yt_id = yt_url | split: '/' | last | split: '?' | first -%}
+                    {%- elsif yt_url contains 'watch?v=' -%}
+                      {%- assign yt_id = yt_url | split: 'v=' | last | split: '&' | first -%}
+                    {%- endif -%}
+
+                    {%- if yt_id != '' -%}
+                      {%- assign embed_url = 'https://www.youtube.com/embed/' | append: yt_id -%}
+                    {%- else -%}
+                      {%- assign embed_url = yt_url -%}
+                    {%- endif -%}
+
+                    <iframe
+                      src="{{ embed_url }}?autoplay=1&mute=1&controls=0&rel=0&modestbranding=1&playsinline=1&loop=1{% if yt_id != '' %}&playlist={{ yt_id }}{% endif %}"
+                      title="Video"
+                      frameborder="0"
+                      allow="autoplay; encrypted-media; picture-in-picture"
+                      allowfullscreen
+                    ></iframe>
+                  {%- endif -%}
+              {%- endcase -%}
+
+              {%- if block.settings.marquee_text != blank -%}
+                <div class="video-marquee">
+                  <div class="video-marquee-track">
+                    <span class="video-marquee-item">{{ block.settings.marquee_text }}</span>
+                    <span class="video-marquee-item" aria-hidden="true">{{ block.settings.marquee_text }}</span>
+                  </div>
                 </div>
-              </div>
+              {%- endif -%}
+            </div>
 
-            {%- when 'video_card' -%}
-              <div class="bento-item__video-container">
-                {%- if block.settings.video != blank -%}
-                  {{
-                    block.settings.video
-                    | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'bento-item__video'
-                  }}
-                {%- elsif block.settings.video_url != blank -%}
-                  {%- if block.settings.video_url.type == 'youtube' -%}
-                    <iframe
-                      src="https://www.youtube.com/embed/{{ block.settings.video_url.id }}?autoplay=1&mute=1&loop=1&playlist={{ block.settings.video_url.id }}"
-                      frameborder="0"
-                      allow="autoplay; encrypted-media"
-                      allowfullscreen
-                      class="bento-item__video"
-                    ></iframe>
-                  {%- else -%}
-                    <iframe
-                      src="https://player.vimeo.com/video/{{ block.settings.video_url.id }}?autoplay=1&muted=1&loop=1"
-                      frameborder="0"
-                      allow="autoplay; fullscreen"
-                      allowfullscreen
-                      class="bento-item__video"
-                    ></iframe>
-                  {%- endif -%}
-                {%- endif -%}
+          {%- when 'scrolling_text_card' -%}
+            <div class="bento-card scrolling-text-card">
+              <div class="marquee-track">
+                <span class="marquee-item">{{ block.settings.text }}</span>
+                <span class="marquee-item" aria-hidden="true">{{ block.settings.text }}</span>
               </div>
-              <div class="bento-item__content">
-                {%- if block.settings.heading != blank -%}
-                  <h3 class="bento-item__heading">{{ block.settings.heading }}</h3>
-                {%- endif -%}
-              </div>
-
-            {%- when 'blog_card' -%}
-              {%- assign article = block.settings.article -%}
-              <div class="bento-item__image-container">
-                {%- if article.image != blank -%}
-                  {{ article.image | image_url: width: 800 | image_tag: class: 'bento-item__image', loading: 'lazy' }}
-                {%- else -%}
-                  {{ 'image' | placeholder_svg_tag: 'bento-item__image placeholder-svg' }}
-                {%- endif -%}
-              </div>
-              <div class="bento-item__content">
-                <span class="bento-item__label">Blog</span>
-                <h3 class="bento-item__heading">{{ article.title | default: 'Post Title' }}</h3>
-              </div>
-
-            {%- when 'product_card' -%}
-              {%- assign product = block.settings.product -%}
-              <div class="bento-item__image-container">
-                {%- if product.featured_image != blank -%}
-                  {{
-                    product.featured_image
-                    | image_url: width: 800
-                    | image_tag: class: 'bento-item__image', loading: 'lazy'
-                  }}
-                {%- else -%}
-                  {{ 'product-1' | placeholder_svg_tag: 'bento-item__image placeholder-svg' }}
-                {%- endif -%}
-              </div>
-              <div class="bento-item__content">
-                <span class="bento-item__label">{{ product.price | money }}</span>
-                <h3 class="bento-item__heading">{{ product.title | default: 'Product Name' }}</h3>
-              </div>
-          {%- endcase -%}
-
-          {%- assign card_link = block.settings.link -%}
-          {%- if block.type == 'blog_card' -%}{%- assign card_link = block.settings.article.url -%}{%- endif -%}
-          {%- if block.type == 'product_card' -%}{%- assign card_link = block.settings.product.url -%}{%- endif -%}
-
-          {%- if card_link != blank -%}
-            <a
-              href="{{ card_link }}"
-              style="position:absolute; top:0; left:0; width:100%; height:100%; z-index: 4;"
-              aria-label="{{ block.settings.heading | default: 'Link' }}"
-            ></a>
-          {%- endif -%}
-        </div>
-      {%- endfor -%}
-    </div>
+            </div>
+        {%- endcase -%}
+      </div>
+    {%- endfor -%}
   </div>
 </div>
 
@@ -167,41 +312,65 @@
   "class": "section",
   "settings": [
     {
-      "type": "text",
-      "id": "heading",
-      "label": "Heading"
+      "type": "header",
+      "content": "Grid Layout Settings"
     },
     {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Color Scheme",
-      "default": "scheme-1"
+      "type": "range",
+      "id": "grid_columns",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "label": "Grid Columns",
+      "default": 8,
+      "info": "Number of columns in the grid"
+    },
+    {
+      "type": "range",
+      "id": "row_height",
+      "min": 50,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Row Height",
+      "default": 100
     },
     {
       "type": "range",
       "id": "grid_gap",
       "min": 0,
-      "max": 60,
+      "max": 40,
       "step": 2,
       "unit": "px",
       "label": "Grid Gap",
-      "default": 16
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Border Radius",
+      "default": 20
     }
   ],
   "blocks": [
     {
       "type": "card",
-      "name": "Image Card",
+      "name": "Generic Card",
       "settings": [
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Image"
+          "label": "Upload Image"
         },
         {
           "type": "text",
           "id": "external_image_url",
-          "label": "External Image URL"
+          "label": "Or use external image URL",
+          "info": "Enter full URL of image (e.g., https://example.com/image.jpg)"
         },
         {
           "type": "text",
@@ -219,169 +388,184 @@
           "id": "card_shape",
           "label": "Card Shape",
           "options": [
-            { "value": "rectangle", "label": "Rectangle" },
-            { "value": "l_cut_bottom_right", "label": "L-Shape (Cut Bottom Right)" },
-            { "value": "l_cut_bottom_left", "label": "L-Shape (Cut Bottom Left)" },
-            { "value": "l_cut_top_right", "label": "L-Shape (Cut Top Right)" },
-            { "value": "l_cut_top_left", "label": "L-Shape (Cut Top Left)" }
+            {
+              "value": "rectangle",
+              "label": "Rectangle"
+            },
+            {
+              "value": "square",
+              "label": "Square"
+            }
           ],
           "default": "rectangle"
         },
         {
-          "type": "select",
+          "type": "range",
           "id": "column_span",
-          "label": "Column Span (1-10)",
-          "options": [
-            { "value": "1", "label": "1/10" },
-            { "value": "2", "label": "2/10" },
-            { "value": "3", "label": "3/10" },
-            { "value": "4", "label": "4/10" },
-            { "value": "5", "label": "5/10" },
-            { "value": "6", "label": "6/10" },
-            { "value": "7", "label": "7/10" },
-            { "value": "8", "label": "8/10" },
-            { "value": "9", "label": "9/10" },
-            { "value": "10", "label": "10/10" }
-          ],
-          "default": "2"
-        },
-        {
-          "type": "select",
-          "id": "row_span",
-          "label": "Row Span (1-10)",
-          "options": [
-            { "value": "1", "label": "1 Unit" },
-            { "value": "2", "label": "2 Units" },
-            { "value": "3", "label": "3 Units" },
-            { "value": "4", "label": "4 Units" },
-            { "value": "5", "label": "5 Units" },
-            { "value": "6", "label": "6 Units" },
-            { "value": "7", "label": "7 Units" },
-            { "value": "8", "label": "8 Units" },
-            { "value": "9", "label": "9 Units" },
-            { "value": "10", "label": "10 Units" }
-          ],
-          "default": "2"
-        }
-      ]
-    },
-    {
-      "type": "text_card",
-      "name": "Text Card",
-      "settings": [
-        {
-          "type": "text",
-          "id": "heading",
-          "label": "Heading",
-          "default": "Heading"
-        },
-        {
-          "type": "richtext",
-          "id": "text",
-          "label": "Content",
-          "default": "<p>Add your text here. If it exceeds the card height, it will be scrollable.</p>"
-        },
-        {
-          "type": "select",
-          "id": "card_shape",
-          "label": "Card Shape",
-          "options": [
-            { "value": "rectangle", "label": "Rectangle" },
-            { "value": "l_cut_bottom_right", "label": "L-Shape (Cut Bottom Right)" },
-            { "value": "l_cut_bottom_left", "label": "L-Shape (Cut Bottom Left)" },
-            { "value": "l_cut_top_right", "label": "L-Shape (Cut Top Right)" },
-            { "value": "l_cut_top_left", "label": "L-Shape (Cut Top Left)" }
-          ],
-          "default": "rectangle"
-        },
-        {
-          "type": "select",
-          "id": "column_span",
+          "min": 0.1,
+          "max": 6,
+          "step": 0.1,
           "label": "Column Span",
-          "options": [
-            { "value": "1", "label": "1/10" },
-            { "value": "2", "label": "2/10" },
-            { "value": "3", "label": "3/10" },
-            { "value": "4", "label": "4/10" },
-            { "value": "5", "label": "5/10" },
-            { "value": "6", "label": "6/10" },
-            { "value": "7", "label": "7/10" },
-            { "value": "8", "label": "8/10" },
-            { "value": "9", "label": "9/10" },
-            { "value": "10", "label": "10/10" }
-          ],
-          "default": "3"
+          "default": 2
         },
         {
-          "type": "select",
+          "type": "range",
           "id": "row_span",
+          "min": 0.1,
+          "max": 6,
+          "step": 0.1,
           "label": "Row Span",
-          "options": [
-            { "value": "1", "label": "1" },
-            { "value": "2", "label": "2" },
-            { "value": "3", "label": "3" },
-            { "value": "4", "label": "4" },
-            { "value": "5", "label": "5" }
-          ],
-          "default": "2"
+          "default": 2
         }
       ]
     },
     {
-      "type": "tag_card",
-      "name": "Tag Card",
+      "type": "logo_card",
+      "name": "Logo",
       "settings": [
         {
-          "type": "text",
-          "id": "tag_text",
-          "label": "Tag Text",
-          "default": "New"
+          "type": "image_picker",
+          "id": "logo_image",
+          "label": "Logo Image"
+        },
+        {
+          "type": "range",
+          "id": "logo_image_width",
+          "min": 50,
+          "max": 200,
+          "step": 5,
+          "unit": "px",
+          "label": "Logo Image Width",
+          "default": 150
         },
         {
           "type": "text",
-          "id": "heading",
-          "label": "Heading",
-          "default": "Tag Card Heading"
+          "id": "logo_text",
+          "label": "Logo Text",
+          "default": "Logo"
         },
+        {
+          "type": "range",
+          "id": "logo_font_size",
+          "min": 16,
+          "max": 72,
+          "step": 2,
+          "unit": "px",
+          "label": "Logo Font Size",
+          "default": 32
+        },
+        {
+          "type": "color",
+          "id": "logo_color",
+          "label": "Logo Color",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "column_span",
+          "min": 0.1,
+          "max": 6,
+          "step": 0.1,
+          "label": "Column Span",
+          "default": 2
+        },
+        {
+          "type": "range",
+          "id": "row_span",
+          "min": 0.1,
+          "max": 6,
+          "step": 0.1,
+          "label": "Row Span",
+          "default": 1
+        }
+      ]
+    },
+    {
+      "type": "cart_card",
+      "name": "Cart",
+      "settings": [
+        {
+          "type": "range",
+          "id": "column_span",
+          "min": 0.1,
+          "max": 9,
+          "step": 0.1,
+          "label": "Column Span",
+          "default": 1
+        },
+        {
+          "type": "range",
+          "id": "row_span",
+          "min": 0.1,
+          "max": 6,
+          "step": 0.1,
+          "label": "Row Span",
+          "default": 1
+        }
+      ]
+    },
+    {
+      "type": "search_card",
+      "name": "Search",
+      "settings": [
+        {
+          "type": "range",
+          "id": "column_span",
+          "min": 0.1,
+          "max": 6,
+          "step": 0.1,
+          "label": "Column Span",
+          "default": 1
+        },
+        {
+          "type": "range",
+          "id": "row_span",
+          "min": 0.1,
+          "max": 6,
+          "step": 0.1,
+          "label": "Row Span",
+          "default": 1
+        }
+      ]
+    },
+    {
+      "type": "login_card",
+      "name": "Login/Welcome",
+      "settings": [
+        {
+          "type": "range",
+          "id": "column_span",
+          "min": 0.1,
+          "max": 6,
+          "step": 0.1,
+          "label": "Column Span",
+          "default": 2
+        },
+        {
+          "type": "range",
+          "id": "row_span",
+          "min": 0.1,
+          "max": 6,
+          "step": 0.1,
+          "label": "Row Span",
+          "default": 1
+        }
+      ]
+    },
+    {
+      "type": "content_card",
+      "name": "Content Card",
+      "settings": [
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Image"
+          "label": "Background Image"
         },
         {
-          "type": "select",
-          "id": "layout_direction",
-          "label": "Layout Direction",
-          "options": [
-            { "value": "row", "label": "Row" },
-            { "value": "row-reverse", "label": "Row Reverse" },
-            { "value": "column", "label": "Column" },
-            { "value": "column-reverse", "label": "Column Reverse" }
-          ],
-          "default": "row"
-        },
-        {
-          "type": "select",
-          "id": "content_alignment",
-          "label": "Content Alignment (Cross Axis)",
-          "options": [
-            { "value": "start", "label": "Start" },
-            { "value": "center", "label": "Center" },
-            { "value": "end", "label": "End" }
-          ],
-          "default": "center"
-        },
-        {
-          "type": "select",
-          "id": "content_justification",
-          "label": "Content Justification (Main Axis)",
-          "options": [
-            { "value": "start", "label": "Start" },
-            { "value": "center", "label": "Center" },
-            { "value": "end", "label": "End" },
-            { "value": "between", "label": "Space Between" }
-          ],
-          "default": "center"
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Card Title"
         },
         {
           "type": "url",
@@ -389,36 +573,205 @@
           "label": "Link"
         },
         {
-          "type": "select",
+          "type": "range",
           "id": "column_span",
+          "min": 0.1,
+          "max": 6,
+          "step": 0.1,
           "label": "Column Span",
-          "options": [
-            { "value": "1", "label": "1/10" },
-            { "value": "2", "label": "2/10" },
-            { "value": "3", "label": "3/10" },
-            { "value": "4", "label": "4/10" },
-            { "value": "5", "label": "5/10" },
-            { "value": "6", "label": "6/10" },
-            { "value": "7", "label": "7/10" },
-            { "value": "8", "label": "8/10" },
-            { "value": "9", "label": "9/10" },
-            { "value": "10", "label": "10/10" }
-          ],
-          "default": "4"
+          "default": 2
+        },
+        {
+          "type": "range",
+          "id": "row_span",
+          "min": 0.1,
+          "max": 6,
+          "step": 0.1,
+          "label": "Row Span",
+          "default": 2
+        }
+      ]
+    },
+    {
+      "type": "tag_card",
+      "name": "Tag Card",
+      "settings": [
+        { "type": "checkbox", "id": "show_tag", "label": "Show tag", "default": true },
+        { "type": "text", "id": "tag_text", "label": "Tag text", "default": "NEW" },
+        { "type": "checkbox", "id": "show_text", "label": "Show main text", "default": true },
+        { "type": "text", "id": "main_text", "label": "Main text", "default": "Now playing – watch the story" },
+        { "type": "checkbox", "id": "show_icon", "label": "Show icon", "default": false },
+        { "type": "image_picker", "id": "icon_image", "label": "Icon image" },
+        {
+          "type": "range",
+          "id": "icon_size",
+          "min": 16,
+          "max": 200,
+          "step": 2,
+          "unit": "px",
+          "label": "Icon size",
+          "default": 32
+        },
+        {
+          "type": "header",
+          "content": "Image Strip (Right Side)"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_image_strip",
+          "label": "Show image strip",
+          "default": true,
+          "info": "Vertical scrolling image strip that appears on the right side"
+        },
+        {
+          "type": "image_picker",
+          "id": "strip_image_1",
+          "label": "Image 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "strip_image_2",
+          "label": "Image 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "strip_image_3",
+          "label": "Image 3"
+        },
+        {
+          "type": "image_picker",
+          "id": "strip_image_4",
+          "label": "Image 4"
+        },
+        {
+          "type": "image_picker",
+          "id": "strip_image_5",
+          "label": "Image 5"
+        },
+        {
+          "type": "image_picker",
+          "id": "strip_image_6",
+          "label": "Image 6"
+        },
+        {
+          "type": "image_picker",
+          "id": "strip_image_7",
+          "label": "Image 7"
+        },
+        {
+          "type": "image_picker",
+          "id": "strip_image_8",
+          "label": "Image 8"
+        },
+        {
+          "type": "image_picker",
+          "id": "strip_image_9",
+          "label": "Image 9"
+        },
+        {
+          "type": "image_picker",
+          "id": "strip_image_10",
+          "label": "Image 10"
         },
         {
           "type": "select",
-          "id": "row_span",
-          "label": "Row Span",
+          "id": "layout_direction",
+          "label": "Layout direction",
           "options": [
-            { "value": "1", "label": "1" },
-            { "value": "2", "label": "2" },
-            { "value": "3", "label": "3" },
-            { "value": "4", "label": "4" },
-            { "value": "5", "label": "5" }
+            { "value": "column", "label": "Vertical (column)" },
+            { "value": "row", "label": "Horizontal (row)" }
           ],
-          "default": "2"
+          "default": "row"
+        },
+        {
+          "type": "select",
+          "id": "content_alignment",
+          "label": "Content alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "range",
+          "id": "column_span",
+          "min": 0.1,
+          "max": 6,
+          "step": 0.1,
+          "label": "Column Span",
+          "default": 2
+        },
+        {
+          "type": "range",
+          "id": "row_span",
+          "min": 0.1,
+          "max": 6,
+          "step": 0.1,
+          "label": "Row Span",
+          "default": 2
         }
+      ]
+    },
+    {
+      "type": "button_card",
+      "name": "Button Card",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Button text", "default": "Shop now" },
+        { "type": "url", "id": "link", "label": "Button link" },
+        {
+          "type": "range",
+          "id": "column_span",
+          "min": 0.1,
+          "max": 6,
+          "step": 0.1,
+          "label": "Column Span",
+          "default": 2
+        },
+        {
+          "type": "range",
+          "id": "row_span",
+          "min": 0.1,
+          "max": 6,
+          "step": 0.1,
+          "label": "Row Span",
+          "default": 1.1
+        }
+      ]
+    },
+    {
+      "type": "text_card",
+      "name": "Rich Text Card",
+      "settings": [
+        { "type": "richtext", "id": "content", "label": "Content", "default": "<p>Add scrollable text here...</p>" },
+        {
+          "type": "range",
+          "id": "column_span",
+          "min": 0.1,
+          "max": 9,
+          "step": 0.1,
+          "label": "Column Span",
+          "default": 2
+        },
+        { "type": "range", "id": "row_span", "min": 0.1, "max": 6, "step": 0.1, "label": "Row Span", "default": 2 }
+      ]
+    },
+    {
+      "type": "product_card",
+      "name": "Product Card",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product" },
+        {
+          "type": "range",
+          "id": "column_span",
+          "min": 0.1,
+          "max": 9,
+          "step": 0.1,
+          "label": "Column Span",
+          "default": 2
+        },
+        { "type": "range", "id": "row_span", "min": 0.1, "max": 6, "step": 0.1, "label": "Row Span", "default": 2 }
       ]
     },
     {
@@ -426,142 +779,82 @@
       "name": "Video Card",
       "settings": [
         {
-          "type": "video",
-          "id": "video",
-          "label": "Shopify Video"
+          "type": "select",
+          "id": "video_source",
+          "label": "Video source",
+          "options": [
+            { "value": "shopify", "label": "Shopify video" },
+            { "value": "youtube", "label": "YouTube link" }
+          ],
+          "default": "shopify"
         },
         {
-          "type": "video_url",
-          "id": "video_url",
-          "label": "External Video URL",
-          "accept": ["youtube", "vimeo"]
+          "type": "video",
+          "id": "video",
+          "label": "Shopify video",
+          "info": "Select a Shopify-hosted video or upload a new one"
         },
         {
           "type": "text",
-          "id": "heading",
-          "label": "Heading Over Video"
+          "id": "youtube_url",
+          "label": "YouTube video link",
+          "info": "Paste a full YouTube URL (watch or youtu.be)"
         },
         {
-          "type": "select",
+          "type": "text",
+          "id": "marquee_text",
+          "label": "Hover marquee text",
+          "default": "NOW PLAYING - WATCH THE STORY - "
+        },
+        {
+          "type": "range",
           "id": "column_span",
+          "min": 0.1,
+          "max": 9,
+          "step": 0.1,
           "label": "Column Span",
-          "options": [
-            { "value": "1", "label": "1/10" },
-            { "value": "2", "label": "2/10" },
-            { "value": "3", "label": "3/10" },
-            { "value": "4", "label": "4/10" },
-            { "value": "5", "label": "5/10" },
-            { "value": "6", "label": "6/10" },
-            { "value": "7", "label": "7/10" },
-            { "value": "8", "label": "8/10" },
-            { "value": "9", "label": "9/10" },
-            { "value": "10", "label": "10/10" }
-          ],
-          "default": "4"
+          "default": 2
         },
-        {
-          "type": "select",
-          "id": "row_span",
-          "label": "Row Span",
-          "options": [
-            { "value": "1", "label": "1" },
-            { "value": "2", "label": "2" },
-            { "value": "3", "label": "3" },
-            { "value": "4", "label": "4" },
-            { "value": "5", "label": "5" }
-          ],
-          "default": "3"
-        }
+        { "type": "range", "id": "row_span", "min": 0.1, "max": 6, "step": 0.1, "label": "Row Span", "default": 2 }
       ]
     },
     {
-      "type": "blog_card",
-      "name": "Blog Card",
+      "type": "scrolling_text_card",
+      "name": "Scrolling Text",
       "settings": [
+        { "type": "text", "id": "text", "label": "Text", "default": "BREAKING NEWS - SPECIAL OFFER - " },
         {
-          "type": "article",
-          "id": "article",
-          "label": "Article"
-        },
-        {
-          "type": "select",
+          "type": "range",
           "id": "column_span",
+          "min": 0.1,
+          "max": 9,
+          "step": 0.1,
           "label": "Column Span",
-          "options": [
-            { "value": "1", "label": "1/10" },
-            { "value": "2", "label": "2/10" },
-            { "value": "3", "label": "3/10" },
-            { "value": "4", "label": "4/10" },
-            { "value": "5", "label": "5/10" },
-            { "value": "6", "label": "6/10" },
-            { "value": "7", "label": "7/10" },
-            { "value": "8", "label": "8/10" },
-            { "value": "9", "label": "9/10" },
-            { "value": "10", "label": "10/10" }
-          ],
-          "default": "3"
+          "default": 2
         },
-        {
-          "type": "select",
-          "id": "row_span",
-          "label": "Row Span",
-          "options": [
-            { "value": "1", "label": "1" },
-            { "value": "2", "label": "2" },
-            { "value": "3", "label": "3" },
-            { "value": "4", "label": "4" },
-            { "value": "5", "label": "5" }
-          ],
-          "default": "2"
-        }
-      ]
-    },
-    {
-      "type": "product_card",
-      "name": "Product Card",
-      "settings": [
-        {
-          "type": "product",
-          "id": "product",
-          "label": "Product"
-        },
-        {
-          "type": "select",
-          "id": "column_span",
-          "label": "Column Span",
-          "options": [
-            { "value": "1", "label": "1/10" },
-            { "value": "2", "label": "2/10" },
-            { "value": "3", "label": "3/10" },
-            { "value": "4", "label": "4/10" },
-            { "value": "5", "label": "5/10" },
-            { "value": "6", "label": "6/10" },
-            { "value": "7", "label": "7/10" },
-            { "value": "8", "label": "8/10" },
-            { "value": "9", "label": "9/10" },
-            { "value": "10", "label": "10/10" }
-          ],
-          "default": "2"
-        },
-        {
-          "type": "select",
-          "id": "row_span",
-          "label": "Row Span",
-          "options": [
-            { "value": "1", "label": "1" },
-            { "value": "2", "label": "2" },
-            { "value": "3", "label": "3" },
-            { "value": "4", "label": "4" },
-            { "value": "5", "label": "5" }
-          ],
-          "default": "2"
-        }
+        { "type": "range", "id": "row_span", "min": 0.1, "max": 6, "step": 0.1, "label": "Row Span", "default": 1 }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Bento Grid"
+      "name": "Bento Grid",
+      "blocks": [
+        { "type": "logo_card", "settings": { "column_span": 1.0, "row_span": 1.2 } },
+        { "type": "cart_card", "settings": { "column_span": 1.0, "row_span": 1.2 } },
+        { "type": "tag_card", "settings": { "column_span": 1.6, "row_span": 1.4 } },
+        {
+          "type": "text_card",
+          "settings": { "content": "<p>Scrollable rich text...</p>", "column_span": 1.8, "row_span": 4.0 }
+        },
+        { "type": "card", "settings": { "heading": "", "column_span": 2.6, "row_span": 4.0 } },
+        { "type": "product_card", "settings": { "column_span": 2.0, "row_span": 4.0 } },
+        { "type": "tag_card", "settings": { "column_span": 1.6, "row_span": 2.5 } },
+        { "type": "card", "settings": { "heading": "Generic 8", "column_span": 2.8, "row_span": 2.3 } },
+        { "type": "video_card", "settings": { "column_span": 3.2, "row_span": 2.3 } },
+        { "type": "button_card", "settings": { "column_span": 2.0, "row_span": 1.1 } },
+        { "type": "scrolling_text_card", "settings": { "column_span": 2.5, "row_span": 0.8 } }
+      ]
     }
   ]
 }
