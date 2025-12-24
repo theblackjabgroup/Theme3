@@ -235,7 +235,9 @@
             <div
               class="bento-card product-card"
               style="{% if product.featured_image %}background-image: url('{{ product.featured_image | image_url: width: 600 }}');{% else %}background-color: #f4f4f4;{% endif %}"
-              onclick="window.location.href='{{ product.url }}'"
+              {% if product != blank and product.url != blank %}
+                onclick="window.location.href='{{ product.url }}'"
+              {% endif %}
             >
               <div class="product-info">
                 <div style="font-weight:bold;">{{ product.title | default: 'Product Title' }}</div>
@@ -284,6 +286,7 @@
                 <div class="video-marquee">
                   <div class="video-marquee-track">
                     <span class="video-marquee-item">{{ block.settings.marquee_text }}</span>
+                    <span class="video-marquee-item" aria-hidden="true">{{ block.settings.marquee_text }}</span>
                   </div>
                 </div>
               {%- endif -%}

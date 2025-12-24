@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
       closeAllMegaMenus();
 
       // Toggle current menu
-      if (!isExpanded) {
+      if (!isExpanded && menu) {
         this.setAttribute('aria-expanded', 'true');
         menu.setAttribute('aria-hidden', 'false');
         // Add blur class when menu opens
