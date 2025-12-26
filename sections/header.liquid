@@ -110,11 +110,21 @@
       {%- if block.type == 'welcome' -%}
         <div class="dock-action-block dock-welcome" {{ block.shopify_attributes }}>
           <a href="{{ block.settings.login_url | default: routes.account_login_url }}" class="dock-welcome-link">
-            <div class="dock-welcome-icon">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+            {%- assign avatar_size = block.settings.avatar_size | default: 32 -%}
+            {%- assign avatar_shape = block.settings.avatar_shape | default: 'circle' -%}
+            <div class="dock-welcome-icon dock-welcome-icon--{{ avatar_shape }}" style="width: {{ avatar_size }}px; height: {{ avatar_size }}px;">
+              {%- if block.settings.avatar_image != blank -%}
+                {{
+                  block.settings.avatar_image
+                  | image_url: width: 128
+                  | image_tag: loading: 'lazy', alt: block.settings.welcome_text, class: 'dock-welcome-avatar', style: 'width: 100%; height: 100%; object-fit: cover;'
+                }}
+              {%- else -%}
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: {{ avatar_size | times: 0.75 }}px; height: {{ avatar_size | times: 0.75 }}px;">
+                  <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              {%- endif -%}
             </div>
             <div class="dock-welcome-text">
               <div class="dock-welcome-greeting">{{ block.settings.welcome_text | default: 'Welcome !' }}</div>
@@ -168,6 +178,37 @@
           "id": "login_url",
           "label": "Login URL",
           "info": "Leave empty to use default login page"
+        },
+        {
+          "type": "header",
+          "content": "Avatar Settings"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar_image",
+          "label": "Avatar Image",
+          "info": "Upload a custom avatar image. If not provided, default icon will be used."
+        },
+        {
+          "type": "range",
+          "id": "avatar_size",
+          "min": 24,
+          "max": 64,
+          "step": 2,
+          "unit": "px",
+          "label": "Avatar Size",
+          "default": 32
+        },
+        {
+          "type": "select",
+          "id": "avatar_shape",
+          "label": "Avatar Shape",
+          "options": [
+            { "value": "circle", "label": "Circle" },
+            { "value": "square", "label": "Square" },
+            { "value": "rounded", "label": "Rounded" }
+          ],
+          "default": "circle"
         }
       ]
     },

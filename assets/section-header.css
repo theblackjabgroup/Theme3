@@ -54,6 +54,8 @@
 .dock-action-block:hover {
   background: rgba(255, 255, 255, 1);
   transform: translateY(-1px);
+  border-color: var(--color-text, var(--color-primary-button-bg, #E63946)) !important;
+
 }
 
 /* Search Block */
@@ -104,12 +106,33 @@
   justify-content: center;
   color: #666;
   flex-shrink: 0;
+  overflow: hidden;
 }
 
 .dock-welcome-icon svg {
   width: 24px;
   height: 24px;
   stroke: currentColor;
+}
+
+.dock-welcome-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Avatar Shapes */
+.dock-welcome-icon--circle {
+  border-radius: 50%;
+}
+
+.dock-welcome-icon--square {
+  border-radius: 0;
+}
+
+.dock-welcome-icon--rounded {
+  border-radius: 8px;
 }
 
 .dock-welcome-text {
@@ -119,13 +142,13 @@
 }
 
 .dock-welcome-greeting {
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 20px;
+  font-weight: 900;
   color: #000;
 }
 
 .dock-welcome-login {
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 400;
   color: #000;
 }
@@ -386,24 +409,25 @@ body.mega-menu-open .dock-actions * {
     height: 44px;
     padding: 6px 12px;
   }
-  
+
   .dock-welcome-icon {
     width: 28px;
     height: 28px;
   }
   
   .dock-welcome-icon svg {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
   }
   
-  .dock-welcome-greeting {
-    font-size: 12px;
+  .dock-welcome-avatar {
+    width: 100%;
+    height: 100%;
   }
   
-  .dock-welcome-login {
-    font-size: 11px;
-  }
+
+  
+ 
   
   .mega-menu {
     position: fixed;

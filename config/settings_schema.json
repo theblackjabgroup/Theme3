@@ -75,7 +75,7 @@
             "type": "color",
             "id": "borders",
             "label": "Borders",
-            "default": "#000000",
+            "default": "#e5e5e5",
             "alpha": true
           },
           {
@@ -93,7 +93,7 @@
             "type": "color",
             "id": "primary_button_bg",
             "label": "Background",
-            "default": "#000000",
+            "default": "#E63946",
             "alpha": true
           },
           {
@@ -107,14 +107,14 @@
             "type": "color",
             "id": "primary_button_border",
             "label": "Borders",
-            "default": "#000000",
+            "default": "#E63946",
             "alpha": true
           },
           {
             "type": "color",
             "id": "primary_button_hover_bg",
             "label": "Hover background",
-            "default": "#333333",
+            "default": "#D62839",
             "alpha": true
           },
           {
@@ -128,7 +128,39 @@
             "type": "color",
             "id": "primary_button_hover_border",
             "label": "Hover borders",
-            "default": "#000000",
+            "default": "#D62839",
+            "alpha": true
+          },
+          {
+            "type": "header",
+            "content": "Accent Colors"
+          },
+          {
+            "type": "color",
+            "id": "accent_red",
+            "label": "Accent Red (Primary Red)",
+            "default": "#E63946",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "accent_pink",
+            "label": "Accent Pink (Light Pink)",
+            "default": "#FFE5E5",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "accent_off_white",
+            "label": "Off White / Cream",
+            "default": "#FAFAFA",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "accent_light_grey",
+            "label": "Light Grey",
+            "default": "#e5e5e5",
             "alpha": true
           },
           {
