@@ -1,106 +1,220 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "bento_grid": {
       "type": "bento-grid",
       "blocks": {
-        "card_1": { 
-          "type": "logo_card", 
-          "settings": { 
-            "column_span": 1.0, 
-            "row_span": 1.2 
-          } 
+        "card_1": {
+          "type": "logo_card",
+          "settings": {
+            "logo_image_width": 150,
+            "logo_text": "Logo",
+            "logo_font_size": 32,
+            "logo_color": "#000000",
+            "column_span": 1,
+            "row_span": 1.2
+          }
         },
-        "card_2": { 
-          "type": "cart_card", 
-          "settings": { 
-            "column_span": 1.0, 
-            "row_span": 1.2 
-          } 
+        "card_2": {
+          "type": "cart_card",
+          "settings": {
+            "icon_size": 45,
+            "icon_color": "#121212",
+            "icon_stroke_width": 2,
+            "column_span": 1,
+            "row_span": 1.2
+          }
         },
-        "card_3": { 
-          "type": "tag_card", 
-          "settings": { 
-            "column_span": 1.6, 
+        "card_3": {
+          "type": "tag_card",
+          "settings": {
+            "show_tag": true,
+            "tag_text": "NEW",
+            "tag_style": "filled",
+            "tag_font_size": 11,
+            "tag_font_weight": "600",
+            "show_text": true,
+            "main_text": "Now playing – watch the story",
+            "main_text_font_size": 16,
+            "main_text_font_weight": "600",
+            "main_text_line_height": 1.4,
+            "show_icon": false,
+            "icon_size": 32,
+            "show_image_strip": true,
+            "layout_direction": "row",
+            "content_alignment": "left",
+            "vertical_alignment": "top",
+            "tag_card_color": "default",
+            "column_span": 1.6,
             "row_span": 1.3
-          } 
+          }
         },
-        "card_4": { 
-          "type": "text_card", 
-          "settings": { 
+        "card_4": {
+          "type": "text_card",
+          "settings": {
             "heading": "Card Heading",
+            "heading_font_size": 24,
+            "heading_font_weight": "600",
             "paragraph": "Scrollable rich text...",
+            "paragraph_font_size": 16,
+            "paragraph_font_weight": "400",
+            "paragraph_line_height": 1.5,
             "button_text": "Button",
-            "column_span": 1.8, 
+            "button_link": "",
+            "button_font_size": 14,
+            "button_font_weight": "600",
+            "content_alignment": "left",
+            "vertical_alignment": "top",
+            "column_span": 1.8,
             "row_span": 3.8
-          } 
+          }
         },
-        "card_5": { 
-          "type": "video_card", 
-          "settings": { 
-            "column_span": 2.6, 
+        "card_5": {
+          "type": "video_card",
+          "settings": {
+            "video_source": "shopify",
+            "youtube_url": "",
+            "marquee_text": "NOW PLAYING - WATCH THE STORY -",
+            "column_span": 2.6,
             "row_span": 3.8
-          } 
+          }
         },
-        "card_6": { 
-          "type": "product_card", 
-          "settings": { 
-            "column_span": 2.0, 
-            "row_span": 4.3 
-          } 
+        "card_6": {
+          "type": "product_card",
+          "settings": {
+            "product": "",
+            "show_tag": true,
+            "tag_text": "SHOP",
+            "tag_style": "filled",
+            "tag_font_size": 11,
+            "tag_font_weight": 600,
+            "content_alignment": "left",
+            "vertical_alignment": "top",
+            "column_span": 2,
+            "row_span": 4.3
+          }
         },
-        "card_7": { 
-          "type": "tag_card", 
-          "settings": { 
-            "column_span": 1.6, 
-            "row_span": 2.5 
-          } 
-        },    
-          "card_8": { 
-          "type": "tag_card", 
-          "settings": { 
-            "column_span": 3, 
-            "row_span": 2.5 
-          } 
+        "card_7": {
+          "type": "tag_card",
+          "settings": {
+            "show_tag": true,
+            "tag_text": "NEW",
+            "tag_style": "filled",
+            "tag_font_size": 11,
+            "tag_font_weight": "600",
+            "show_text": true,
+            "main_text": "Now playing – watch the story",
+            "main_text_font_size": 16,
+            "main_text_font_weight": "600",
+            "main_text_line_height": 1.4,
+            "show_icon": false,
+            "icon_size": 32,
+            "show_image_strip": true,
+            "layout_direction": "row",
+            "content_alignment": "left",
+            "vertical_alignment": "top",
+            "tag_card_color": "default",
+            "column_span": 1.6,
+            "row_span": 2.5
+          }
         },
-        "card_9": { 
-          "type": "content_card", 
-          "settings": { 
-            "column_span": 3, 
-            "row_span": 2.5 
-          } 
+        "card_8": {
+          "type": "tag_card",
+          "settings": {
+            "show_tag": true,
+            "tag_text": "NEW",
+            "tag_style": "filled",
+            "tag_font_size": 11,
+            "tag_font_weight": "600",
+            "show_text": true,
+            "main_text": "Now playing – watch the story",
+            "main_text_font_size": 16,
+            "main_text_font_weight": "600",
+            "main_text_line_height": 1.4,
+            "show_icon": false,
+            "icon_size": 32,
+            "show_image_strip": true,
+            "layout_direction": "row",
+            "content_alignment": "left",
+            "vertical_alignment": "top",
+            "tag_card_color": "default",
+            "column_span": 3,
+            "row_span": 2.5
+          }
         },
-   
- 
-        "card_10": { 
-          "type": "button_card", 
-          "settings": { 
-            "label": "Shop now", 
-            "column_span": 2.0, 
+        "card_9": {
+          "type": "content_card",
+          "settings": {
+            "image": "shopify://shop_images/Untitled_design.png",
+            "show_tag": true,
+            "tag_text": "NEW",
+            "main_text": "Feature Description",
+            "tag_font_size": 11,
+            "tag_font_weight": "600",
+            "tag_style": "filled",
+            "main_text_font_size": 28,
+            "main_text_font_weight": "600",
+            "main_text_line_height": 1.1,
+            "enable_3d_effect": true,
+            "sprite_scale": 100,
+            "sprite_y_offset": 0,
+            "sprite_x_offset": 0,
+            "background_position_horizontal": "center",
+            "background_position_vertical": "center",
+            "background_size": "cover",
+            "enable_spritesheet_animation": true,
+            "sprite_frames": 8,
+            "sprite_animation_duration": 1,
+            "sprite_direction": "horizontal",
+            "sprite_rotation": 0,
+            "sprite_canvas_size": 40,
+            "sprite_vertical_alignment": "50%",
+            "link": "",
+            "column_span": 3,
+            "row_span": 2.5
+          }
+        },
+        "card_10": {
+          "type": "button_card",
+          "settings": {
+            "label": "Shop now",
+            "link": "",
+            "column_span": 2,
             "row_span": 0.8
-          } 
+          }
         },
-        "card_11": { 
-          "type": "scrolling_text_card", 
-          "settings": { 
-            "column_span": 3.5, 
-            "row_span": 0.8 
-          } 
+        "card_11": {
+          "type": "scrolling_text_card",
+          "settings": {
+            "text": "BREAKING NEWS - SPECIAL OFFER -",
+            "column_span": 3.5,
+            "row_span": 0.8
+          }
         }
       },
       "block_order": [
-        "card_1", 
-        "card_2", 
-        "card_3", 
-        "card_4", 
-        "card_5", 
-        "card_6", 
-        "card_7", 
-        "card_8", 
-        "card_9", 
-        "card_10", 
+        "card_1",
+        "card_2",
+        "card_3",
+        "card_4",
+        "card_5",
+        "card_6",
+        "card_7",
+        "card_8",
+        "card_9",
+        "card_10",
         "card_11"
       ],
       "settings": {
+        "color_scheme": "",
         "grid_columns": 8,
         "row_height": 100,
         "grid_gap": 20,
@@ -109,8 +223,10 @@
     },
     "featured_collection": {
       "type": "featured-collection",
+      "disabled": true,
       "settings": {
         "title": "Featured collection",
+        "color_scheme": "",
         "collection": "",
         "products_to_show": 9,
         "show_shop_all": true,
