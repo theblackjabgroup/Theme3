@@ -76,6 +76,8 @@
                     alt="Cart"
                     class="cart-icon cart-icon-image"
                     style="width: {{ icon_size }}px; height: {{ icon_size }}px;"
+                    width="{{ icon_size }}"
+                    height="{{ icon_size }}"
                   >
                 {%- else -%}
                   <svg
@@ -174,7 +176,8 @@
                       style="font-size: {{ main_font_size }}px; font-weight: {{ main_font_weight }}; line-height: {{ main_line_height }};"
                     >
                       {%- for word in words -%}
-                        <span class="tag-card-word">{{ word }}</span>{% unless forloop.last %} {% endunless %}
+                        <span class="tag-card-word">{{ word }}</span>
+                        {%- unless forloop.last %} {% endunless %}
                       {%- endfor -%}
                     </div>
                   {%- endif -%}
@@ -404,6 +407,8 @@
                         alt=""
                         class="video-marquee-separator"
                         aria-hidden="true"
+                        width="40"
+                        height="40"
                       >
                     {%- endif -%}
                     <span class="video-marquee-item" aria-hidden="true">{{ block.settings.marquee_text }}</span>
@@ -413,6 +418,8 @@
                         alt=""
                         class="video-marquee-separator"
                         aria-hidden="true"
+                        width="40"
+                        height="40"
                       >
                     {%- endif -%}
                     <span class="video-marquee-item" aria-hidden="true">{{ block.settings.marquee_text }}</span>
@@ -422,6 +429,8 @@
                         alt=""
                         class="video-marquee-separator"
                         aria-hidden="true"
+                        width="40"
+                        height="40"
                       >
                     {%- endif -%}
                     <span class="video-marquee-item" aria-hidden="true">{{ block.settings.marquee_text }}</span>
@@ -431,6 +440,8 @@
                         alt=""
                         class="video-marquee-separator"
                         aria-hidden="true"
+                        width="40"
+                        height="40"
                       >
                     {%- endif -%}
                   </div>
@@ -448,6 +459,8 @@
                     alt=""
                     class="marquee-separator"
                     aria-hidden="true"
+                    width="40"
+                    height="40"
                   >
                 {%- endif -%}
                 <span class="marquee-item" aria-hidden="true">{{ block.settings.text }}</span>
@@ -457,6 +470,8 @@
                     alt=""
                     class="marquee-separator"
                     aria-hidden="true"
+                    width="40"
+                    height="40"
                   >
                 {%- endif -%}
                 <span class="marquee-item" aria-hidden="true">{{ block.settings.text }}</span>
@@ -466,6 +481,8 @@
                     alt=""
                     class="marquee-separator"
                     aria-hidden="true"
+                    width="40"
+                    height="40"
                   >
                 {%- endif -%}
                 <span class="marquee-item" aria-hidden="true">{{ block.settings.text }}</span>
@@ -475,6 +492,8 @@
                     alt=""
                     class="marquee-separator"
                     aria-hidden="true"
+                    width="40"
+                    height="40"
                   >
                 {%- endif -%}
               </div>
