@@ -21,7 +21,7 @@
           "type": "tag_card", 
           "settings": { 
             "column_span": 1.6, 
-            "row_span": 1.4 
+            "row_span": 1.3
           } 
         },
         "card_4": { 
@@ -29,22 +29,21 @@
           "settings": { 
             "content": "<p>Scrollable rich text...</p>", 
             "column_span": 1.8, 
-            "row_span": 4.0 
+            "row_span": 3.8
           } 
         },
         "card_5": { 
-          "type": "card", 
+          "type": "video_card", 
           "settings": { 
-            "heading": "", 
             "column_span": 2.6, 
-            "row_span": 4.0 
+            "row_span": 3.8
           } 
         },
         "card_6": { 
           "type": "product_card", 
           "settings": { 
             "column_span": 2.0, 
-            "row_span": 4.0 
+            "row_span": 4.3 
           } 
         },
         "card_7": { 
@@ -53,34 +52,35 @@
             "column_span": 1.6, 
             "row_span": 2.5 
           } 
-        },
-        "card_8": { 
-          "type": "card", 
+        },    
+          "card_8": { 
+          "type": "tag_card", 
           "settings": { 
-            "heading": "Generic 8", 
-            "column_span": 2.8, 
-            "row_span": 2.3 
+            "column_span": 3, 
+            "row_span": 2.5 
           } 
         },
         "card_9": { 
-          "type": "video_card", 
+          "type": "content_card", 
           "settings": { 
-            "column_span": 3.2, 
-            "row_span": 2.3 
+            "column_span": 3, 
+            "row_span": 2.5 
           } 
         },
+   
+ 
         "card_10": { 
           "type": "button_card", 
           "settings": { 
             "label": "Shop now", 
             "column_span": 2.0, 
-            "row_span": 1.1 
+            "row_span": 0.8
           } 
         },
         "card_11": { 
           "type": "scrolling_text_card", 
           "settings": { 
-            "column_span": 2.5, 
+            "column_span": 3.5, 
             "row_span": 0.8 
           } 
         }

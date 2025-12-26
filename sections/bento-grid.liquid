@@ -245,16 +245,73 @@
             {%- assign bg_pos_h = block.settings.background_position_horizontal | default: 'center' -%}
             {%- assign bg_pos_v = block.settings.background_position_vertical | default: 'center' -%}
             {%- assign bg_size = block.settings.background_size | default: 'cover' -%}
+            {%- assign enable_spritesheet = block.settings.enable_spritesheet_animation -%}
+            {%- assign sprite_frames = block.settings.sprite_frames | default: 8 -%}
+            {%- assign sprite_duration = block.settings.sprite_animation_duration | default: 1.0 -%}
+            {%- assign sprite_direction = block.settings.sprite_direction | default: 'horizontal' -%}
+            {%- assign sprite_frames_minus_one = sprite_frames | minus: 1 -%}
             <div
-              class="bento-card content-card"
-              style="background-image: url('{{ block.settings.image | image_url: width: 800 }}'); background-position: {{ bg_pos_h }} {{ bg_pos_v }}; background-size: {{ bg_size }};"
+              class="bento-card content-card{% if enable_spritesheet %} has-spritesheet{% if sprite_direction == 'vertical' %}-vertical{% endif %}{% endif %}{% if block.settings.enable_3d_effect %} enable-3d{% endif %}"
+              style="
+                --tag-font-size: {{ block.settings.tag_font_size }}px;
+                --tag-font-weight: {{ block.settings.tag_font_weight }};
+                --main-text-font-size: {{ block.settings.main_text_font_size }}px;
+                --main-text-font-weight: {{ block.settings.main_text_font_weight }};
+                --main-text-line-height: {{ block.settings.main_text_line_height }};
+                --sprite-canvas-size: {{ block.settings.sprite_canvas_size | default: 40 }}%;
+                --sprite-vertical-alignment: {{ block.settings.sprite_vertical_alignment | default: '50%' }};
+                --sprite-scale: {{ block.settings.sprite_scale | divided_by: 100.0 | default: 1.0 }};
+                --sprite-y-offset: {{ block.settings.sprite_y_offset | default: 0 }}px;
+                --sprite-x-offset: {{ block.settings.sprite_x_offset | default: 0 }}px;
+                --sprite-rotation: {{ block.settings.sprite_rotation | default: 0 }}deg;
+              "
               {% if block.settings.link != blank %}
                 onclick="window.location.href='{{ block.settings.link }}'"
               {% endif %}
             >
-              {%- if block.settings.title != blank -%}
-                <h3 class="card-title">{{ block.settings.title }}</h3>
-              {%- endif -%}
+              <div class="content-card-inner">
+                <div class="content-card-text-side">
+                  <div class="content-card-line"></div>
+                  <div class="content-card-text-content">
+                    {%- if block.settings.show_tag and block.settings.tag_text != blank -%}
+                      <div
+                        class="tag-card-tag tag-card-tag--{{ block.settings.tag_style | default: 'filled' }}"
+                        style="font-size: var(--tag-font-size); font-weight: var(--tag-font-weight);"
+                      >
+                        {{ block.settings.tag_text }}
+                      </div>
+                    {%- endif -%}
+                    {%- if block.settings.main_text != blank -%}
+                      <div
+                        class="content-card-main-text"
+                        style="font-size: var(--main-text-font-size); font-weight: var(--main-text-font-weight); line-height: var(--main-text-line-height);"
+                      >
+                        {{ block.settings.main_text }}
+                      </div>
+                    {%- endif -%}
+                  </div>
+                </div>
+                <div
+                  class="content-card-sprite-side"
+                  style="
+                    flex: 0 0 var(--sprite-canvas-size);
+                    transform: scale(var(--sprite-scale)) translate(var(--sprite-x-offset), var(--sprite-y-offset)) rotate(var(--sprite-rotation));
+                    z-index: 10;
+                    background-image: url('{{ block.settings.image | image_url: width: 5760 }}');
+                    {% unless enable_spritesheet %}
+                      background-position: {{ bg_pos_h }} {{ block.settings.sprite_vertical_alignment | default: '50%' }};
+                      background-size: {{ bg_size }};
+                    {% endunless %}
+                    {% if enable_spritesheet %}
+                      background-position: {% if sprite_direction == 'vertical' %}50% 0%{% else %}0% {{ block.settings.sprite_vertical_alignment | default: '50%' }}{% endif %};
+                      background-repeat: no-repeat;
+                      --sprite-frames: {{ sprite_frames }};
+                      --sprite-animation-duration: {{ sprite_duration }}s;
+                      --sprite-animation-timing: steps({{ sprite_frames_minus_one }});
+                    {% endif %}
+                  "
+                ></div>
+              </div>
             </div>
 
           {%- when 'button_card' -%}
@@ -826,15 +883,135 @@
           "label": "Background Image"
         },
         {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Card Title"
+          "type": "checkbox",
+          "id": "show_tag",
+          "label": "Show Tag",
+          "default": true
         },
         {
-          "type": "url",
-          "id": "link",
-          "label": "Link"
+          "type": "text",
+          "id": "tag_text",
+          "label": "Tag Text",
+          "default": "NEW"
+        },
+        {
+          "type": "text",
+          "id": "main_text",
+          "label": "Main Text",
+          "default": "Feature Description"
+        },
+        {
+          "type": "header",
+          "content": "Tag Typography"
+        },
+        {
+          "type": "range",
+          "id": "tag_font_size",
+          "min": 8,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "label": "Tag font size",
+          "default": 11
+        },
+        {
+          "type": "select",
+          "id": "tag_font_weight",
+          "label": "Tag font weight",
+          "options": [
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "600"
+        },
+        {
+          "type": "select",
+          "id": "tag_style",
+          "label": "Tag style",
+          "options": [
+            { "value": "filled", "label": "Filled (with background)" },
+            { "value": "border", "label": "Border (transparent background)" }
+          ],
+          "default": "filled"
+        },
+        {
+          "type": "header",
+          "content": "Main Text Typography"
+        },
+        {
+          "type": "range",
+          "id": "main_text_font_size",
+          "min": 12,
+          "max": 64,
+          "step": 1,
+          "unit": "px",
+          "label": "Main text font size",
+          "default": 28
+        },
+        {
+          "type": "select",
+          "id": "main_text_font_weight",
+          "label": "Main text font weight",
+          "options": [
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "600"
+        },
+        {
+          "type": "range",
+          "id": "main_text_line_height",
+          "min": 0.8,
+          "max": 2,
+          "step": 0.1,
+          "label": "Main text line height",
+          "default": 1.1
+        },
+        {
+          "type": "header",
+          "content": "3D Pop-out Effect"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_3d_effect",
+          "label": "Enable 3D Pop-out",
+          "default": false,
+          "info": "Allows the sprite to overflow the card boundaries for a 3D effect"
+        },
+        {
+          "type": "range",
+          "id": "sprite_scale",
+          "min": 100,
+          "max": 200,
+          "step": 5,
+          "unit": "%",
+          "label": "Sprite Scale",
+          "default": 100
+        },
+        {
+          "type": "range",
+          "id": "sprite_y_offset",
+          "min": -150,
+          "max": 150,
+          "step": 5,
+          "unit": "px",
+          "label": "Sprite Vertical Offset",
+          "default": 0,
+          "info": "Negative values move it up, positive move it down"
+        },
+        {
+          "type": "range",
+          "id": "sprite_x_offset",
+          "min": -100,
+          "max": 100,
+          "step": 5,
+          "unit": "px",
+          "label": "Sprite Horizontal Offset",
+          "default": 0
         },
         {
           "type": "header",
@@ -872,6 +1049,85 @@
             { "value": "auto", "label": "Auto" }
           ],
           "default": "cover"
+        },
+        {
+          "type": "header",
+          "content": "Spritesheet Animation"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_spritesheet_animation",
+          "label": "Enable Spritesheet Animation",
+          "default": false,
+          "info": "Enable this if your background image is a spritesheet with multiple frames"
+        },
+        {
+          "type": "range",
+          "id": "sprite_frames",
+          "min": 2,
+          "max": 30,
+          "step": 1,
+          "label": "Number of Frames",
+          "default": 8,
+          "info": "Number of frames in your spritesheet"
+        },
+        {
+          "type": "range",
+          "id": "sprite_animation_duration",
+          "min": 0.5,
+          "max": 5,
+          "step": 0.1,
+          "label": "Animation Duration (seconds)",
+          "default": 1.0,
+          "info": "Time for one complete animation cycle"
+        },
+        {
+          "type": "select",
+          "id": "sprite_direction",
+          "label": "Spritesheet Direction",
+          "options": [
+            { "value": "horizontal", "label": "Horizontal (frames side by side)" },
+            { "value": "vertical", "label": "Vertical (frames stacked)" }
+          ],
+          "default": "horizontal",
+          "info": "How frames are arranged in your spritesheet"
+        },
+        {
+          "type": "range",
+          "id": "sprite_rotation",
+          "min": -45,
+          "max": 45,
+          "step": 1,
+          "unit": "deg",
+          "label": "Sprite Rotation",
+          "default": 0,
+          "info": "Rotate the spritesheet image (in degrees)"
+        },
+        {
+          "type": "range",
+          "id": "sprite_canvas_size",
+          "min": 10,
+          "max": 100,
+          "step": 5,
+          "unit": "%",
+          "label": "Sprite Canvas Size",
+          "default": 40,
+          "info": "Width percentage of the card occupied by the sprite"
+        },
+        {
+          "type": "select",
+          "id": "sprite_vertical_alignment",
+          "label": "Sprite Vertical Alignment",
+          "options": [
+            { "value": "0%", "label": "Top" },
+            { "value": "50%", "label": "Center" },
+            { "value": "100%", "label": "Bottom" }
+          ],
+          "default": "50%"
+        },
+        {
+          "type": "header",
+          "content": "Layout"
         },
         {
           "type": "range",
