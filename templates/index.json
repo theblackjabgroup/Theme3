@@ -27,7 +27,9 @@
         "card_4": { 
           "type": "text_card", 
           "settings": { 
-            "content": "<p>Scrollable rich text...</p>", 
+            "heading": "Card Heading",
+            "paragraph": "Scrollable rich text...",
+            "button_text": "Button",
             "column_span": 1.8, 
             "row_span": 3.8
           } 

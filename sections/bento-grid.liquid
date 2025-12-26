@@ -282,11 +282,15 @@
                       </div>
                     {%- endif -%}
                     {%- if block.settings.main_text != blank -%}
+                      {%- assign main_text_words = block.settings.main_text | split: ' ' -%}
                       <div
                         class="content-card-main-text"
                         style="font-size: var(--main-text-font-size); font-weight: var(--main-text-font-weight); line-height: var(--main-text-line-height);"
                       >
-                        {{ block.settings.main_text }}
+                        {%- for word in main_text_words -%}
+                          <span class="content-card-word">{{ word }}</span>
+                          {%- unless forloop.last %} {% endunless -%}
+                        {%- endfor -%}
                       </div>
                     {%- endif -%}
                   </div>
@@ -1124,6 +1128,12 @@
             { "value": "100%", "label": "Bottom" }
           ],
           "default": "50%"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link",
+          "info": "Optional link to make the content card clickable"
         },
         {
           "type": "header",

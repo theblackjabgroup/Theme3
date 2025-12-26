@@ -241,7 +241,6 @@ body.mega-menu-open .dock-actions * {
 
 /* Mega Menu */
 .mega-menu {
-  display: none;
   position: absolute;
   bottom: calc(100% + 20px);
   right: -0%;
@@ -262,7 +261,6 @@ body.mega-menu-open .dock-actions * {
 
 .mega-menu[aria-hidden="false"] {
   opacity: 1;
-  display: block;
   visibility: visible;
   transform: translateX(12%) translateY(0);
   pointer-events: all;
