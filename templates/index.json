@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "bento_grid": {
@@ -30,9 +39,9 @@
             "mobile_row_span": 0.2
           } 
         },
-        "card_4": { 
-          "type": "text_card", 
-          "settings": { 
+        "card_4": {
+          "type": "text_card",
+          "settings": {
             "heading": "Card Heading",
             "paragraph": "lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.",
             "button_text": "Button Text",
@@ -110,19 +119,20 @@
         }
       },
       "block_order": [
-        "card_1", 
-        "card_2", 
-        "card_3", 
-        "card_4", 
-        "card_5", 
-        "card_6", 
-        "card_7", 
-        "card_8", 
-        "card_9", 
-        "card_10", 
+        "card_1",
+        "card_2",
+        "card_3",
+        "card_4",
+        "card_5",
+        "card_6",
+        "card_7",
+        "card_8",
+        "card_9",
+        "card_10",
         "card_11"
       ],
       "settings": {
+        "color_scheme": "",
         "grid_columns": 8,
         "row_height": 100,
         "grid_gap": 20,
@@ -131,8 +141,10 @@
     },
     "featured_collection": {
       "type": "featured-collection",
+      "disabled": true,
       "settings": {
         "title": "Featured collection",
+        "color_scheme": "",
         "collection": "",
         "products_to_show": 9,
         "show_shop_all": true,
