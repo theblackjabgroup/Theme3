@@ -45,8 +45,23 @@
       {%- if mobile_col_span > 2 -%}
         {%- assign mobile_col_span = 2 -%}
       {%- endif -%}
-      {%- comment -%} Mobile row span still uses times: 10 for precision (rows can be fractional) {%- endcomment -%}
-      {%- assign mobile_row_span = block.settings.mobile_row_span | default: block.settings.row_span | times: 10 | round -%}
+      {%- comment -%} Mobile row span: scale desktop value proportionally for mobile, then multiply by 10 for precision {%- endcomment -%}
+      {%- if block.settings.mobile_row_span != blank -%}
+        {%- assign mobile_row_span = block.settings.mobile_row_span | times: 10 | round -%}
+      {%- else -%}
+        {%- comment -%} Default to row_span, but scale it for mobile (mobile rows are smaller) {%- endcomment -%}
+        {%- assign desktop_row_span = block.settings.row_span | default: 1.0 -%}
+        {%- comment -%} Scale desktop span proportionally: desktop max ~4.3 maps to mobile max ~0.5-1.0, so divide by ~8 {%- endcomment -%}
+        {%- assign mobile_row_span_scaled = desktop_row_span | divided_by: 8.0 -%}
+        {%- assign mobile_row_span = mobile_row_span_scaled | times: 10 | round -%}
+      {%- endif -%}
+      {%- comment -%} Clamp to valid range: minimum 1 (0.1 units), maximum 20 (2.0 units) for mobile {%- endcomment -%}
+      {%- if mobile_row_span < 1 -%}
+        {%- assign mobile_row_span = 1 -%}
+      {%- endif -%}
+      {%- if mobile_row_span > 20 -%}
+        {%- assign mobile_row_span = 20 -%}
+      {%- endif -%}
       .bento-block-wrapper[data-block-id="{{ block.id }}"] {
         grid-column: span {{ mobile_col_span }} !important;
         grid-row: span {{ mobile_row_span }} !important;
