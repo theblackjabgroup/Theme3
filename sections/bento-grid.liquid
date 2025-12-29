@@ -20,8 +20,32 @@
   /* Responsive */
   @media (max-width: 768px) {
     .bento-grid {
-      grid-auto-rows: {{ section.settings.row_height }}px; /* Normal rows on mobile */
-      gap: {{ section.settings.grid_gap }}px;
+      grid-auto-rows: {{ section.settings.row_height | times: 0.8 }}px; /* Smaller rows on mobile */
+      gap: {{ section.settings.grid_gap | times: 0.7 }}px;
+    }
+
+    .bento-block-wrapper {
+      padding: {{ section.settings.grid_gap | times: 0.35 }}px;
+    }
+
+    {%- for block in section.blocks -%}
+      {%- assign mobile_col_span = block.settings.mobile_column_span | default: block.settings.column_span | times: 10 | round -%}
+      {%- assign mobile_row_span = block.settings.mobile_row_span | default: block.settings.row_span | times: 10 | round -%}
+      .bento-block-wrapper[data-block-id="{{ block.id }}"] {
+        grid-column: span {{ mobile_col_span }} !important;
+        grid-row: span {{ mobile_row_span }} !important;
+      }
+    {%- endfor -%}
+  }
+
+  @media (max-width: 480px) {
+    .bento-grid {
+      grid-auto-rows: {{ section.settings.row_height | times: 0.7 }}px; /* Even smaller rows on small mobile */
+      gap: {{ section.settings.grid_gap | times: 0.6 }}px;
+    }
+
+    .bento-block-wrapper {
+      padding: {{ section.settings.grid_gap | times: 0.3 }}px;
     }
   }
 </style>
@@ -34,28 +58,34 @@
       {%- assign row_span = block.settings.row_span | times: 10 | round -%}
 
       <div
-        class="bento-block-wrapper"
+        class="bento-block-wrapper bento-block-wrapper--{{ block.type }}"
         style="grid-column: span {{ col_span }}; grid-row: span {{ row_span }};"
+        data-block-id="{{ block.id }}"
         {{ block.shopify_attributes }}
       >
         {%- case block.type -%}
           {%- when 'logo_card' -%}
-            <div class="bento-card logo-card">
+            {%- assign logo_image_width = block.settings.logo_image_width | default: 150 -%}
+            {%- assign mobile_logo_image_width = block.settings.mobile_logo_image_width | default: logo_image_width -%}
+            {%- assign logo_font_size = block.settings.logo_font_size | default: 32 -%}
+            {%- assign mobile_logo_font_size = block.settings.mobile_logo_font_size | default: logo_font_size -%}
+            {%- assign logo_color = block.settings.logo_color | default: '#000000' -%}
+            {%- assign mobile_logo_color = block.settings.mobile_logo_color | default: logo_color -%}
+            <div
+              class="bento-card logo-card"
+              style="--desktop-logo-image-width: {{ logo_image_width }}px; --mobile-logo-image-width: {{ mobile_logo_image_width }}px; --desktop-logo-font-size: {{ logo_font_size }}px; --mobile-logo-font-size: {{ mobile_logo_font_size }}px; --desktop-logo-color: {{ logo_color }}; --mobile-logo-color: {{ mobile_logo_color }};"
+            >
               {%- if block.settings.logo_image != blank -%}
                 <img
                   src="{{ block.settings.logo_image | image_url: width: 400 }}"
                   alt="{{ block.settings.logo_text | default: shop.name }}"
                   class="logo-image"
-                  width="{{ block.settings.logo_image_width }}"
+                  width="{{ logo_image_width }}"
                   height="auto"
-                  style="width: {{ block.settings.logo_image_width }}px; height: auto;"
                   loading="eager"
                 >
               {%- else -%}
-                <h1
-                  class="logo-text"
-                  style="font-size: {{ block.settings.logo_font_size }}px; color: {{ block.settings.logo_color }};"
-                >
+                <h1 class="logo-text">
                   {{ block.settings.logo_text }}
                 </h1>
               {%- endif -%}
@@ -63,10 +93,16 @@
 
           {%- when 'cart_card' -%}
             {%- assign icon_size = block.settings.icon_size | default: 45 -%}
+            {%- assign mobile_icon_size = block.settings.mobile_icon_size | default: icon_size -%}
             {%- assign icon_color = block.settings.icon_color | default: '#121212' -%}
+            {%- assign mobile_icon_color = block.settings.mobile_icon_color | default: icon_color -%}
             {%- assign icon_stroke_width = block.settings.icon_stroke_width | default: 2 -%}
+            {%- assign mobile_icon_stroke_width = block.settings.mobile_icon_stroke_width
+              | default: icon_stroke_width
+            -%}
             <div
               class="bento-card cart-card"
+              style="--desktop-icon-size: {{ icon_size }}px; --mobile-icon-size: {{ mobile_icon_size }}px; --desktop-icon-color: {{ icon_color }}; --mobile-icon-color: {{ mobile_icon_color }}; --desktop-icon-stroke-width: {{ icon_stroke_width }}; --mobile-icon-stroke-width: {{ mobile_icon_stroke_width }};"
               onclick="window.location.href='{{ routes.cart_url }}'"
             >
               <div class="cart-icon-wrapper">
@@ -75,7 +111,6 @@
                     src="{{ block.settings.custom_icon | image_url: width: icon_size | times: 2 }}"
                     alt="Cart"
                     class="cart-icon cart-icon-image"
-                    style="width: {{ icon_size }}px; height: {{ icon_size }}px;"
                     width="{{ icon_size }}"
                     height="{{ icon_size }}"
                   >
@@ -83,7 +118,7 @@
                   <svg
                     class="cart-icon cart-icon-svg"
                     viewBox="0 0 24 24"
-                    style="width: {{ icon_size }}px; height: {{ icon_size }}px; --icon-color: {{ icon_color }}; --icon-stroke-width: {{ icon_stroke_width }};"
+                    fill="none"
                   >
                     <circle cx="9" cy="21" r="1"></circle>
                     <circle cx="20" cy="21" r="1"></circle>
@@ -133,10 +168,17 @@
             {%- if block.settings.image != blank or block.settings.external_image_url != blank -%}
               {%- assign has_image = true -%}
             {%- endif -%}
-
+            {%- assign heading_font_size = block.settings.heading_font_size | default: 18 -%}
+            {%- assign heading_font_weight = block.settings.heading_font_weight | default: 600 -%}
+            {%- assign mobile_heading_font_size = block.settings.mobile_heading_font_size
+              | default: heading_font_size
+            -%}
+            {%- assign mobile_heading_font_weight = block.settings.mobile_heading_font_weight
+              | default: heading_font_weight
+            -%}
             <div
               class="bento-card generic-card{% if has_image %} has-image{% endif %} card-color-{{ block.settings.card_color | default: 'default' }}"
-              style="{% if block.settings.image != blank %} background-image: url('{{ block.settings.image | image_url: width: 1000 }}');{% elsif block.settings.external_image_url != blank %} background-image: url('{{ block.settings.external_image_url }}');{% endif %}"
+              style="{% if block.settings.image != blank %} background-image: url('{{ block.settings.image | image_url: width: 1000 }}');{% elsif block.settings.external_image_url != blank %} background-image: url('{{ block.settings.external_image_url }}');{% endif %} --desktop-heading-font-size: {{ heading_font_size }}px; --desktop-heading-font-weight: {{ heading_font_weight }}; --mobile-heading-font-size: {{ mobile_heading_font_size }}px; --mobile-heading-font-weight: {{ mobile_heading_font_weight }};"
               {% if block.settings.link != blank %}
                 onclick="window.location.href='{{ block.settings.link }}'"
               {% endif %}
@@ -148,19 +190,32 @@
 
           {%- when 'tag_card' -%}
             {%- assign direction = block.settings.layout_direction | default: 'row' -%}
+            {%- assign mobile_direction = block.settings.mobile_layout_direction | default: direction -%}
             {%- assign icon_size = block.settings.icon_size | default: 32 -%}
+            {%- assign mobile_icon_size = block.settings.mobile_icon_size | default: icon_size -%}
             {%- assign align = block.settings.content_alignment | default: 'left' -%}
+            {%- assign mobile_align = block.settings.mobile_content_alignment | default: align -%}
             {%- assign vertical_align = block.settings.vertical_alignment | default: 'top' -%}
-            <div class="bento-card tag-card tag-card--{{ direction }} tag-card--align-{{ align }} tag-card--valign-{{ vertical_align }} card-color-{{ block.settings.tag_card_color | default: 'default' }}">
+            {%- assign mobile_vertical_align = block.settings.mobile_vertical_alignment | default: vertical_align -%}
+            <div
+              class="bento-card tag-card tag-card--{{ direction }} tag-card--align-{{ align }} tag-card--valign-{{ vertical_align }} card-color-{{ block.settings.tag_card_color | default: 'default' }}"
+              data-mobile-direction="{{ mobile_direction }}"
+              data-mobile-align="{{ mobile_align }}"
+              data-mobile-vertical-align="{{ mobile_vertical_align }}"
+            >
               <div class="tag-card-inner">
                 <div class="tag-card-text-group">
                   {%- if block.settings.show_tag and block.settings.tag_text != blank -%}
                     {%- assign tag_style = block.settings.tag_style | default: 'filled' -%}
                     {%- assign tag_font_size = block.settings.tag_font_size | default: 11 -%}
                     {%- assign tag_font_weight = block.settings.tag_font_weight | default: 600 -%}
+                    {%- assign mobile_tag_font_size = block.settings.mobile_tag_font_size | default: tag_font_size -%}
+                    {%- assign mobile_tag_font_weight = block.settings.mobile_tag_font_weight
+                      | default: tag_font_weight
+                    -%}
                     <div
                       class="tag-card-tag tag-card-tag--{{ tag_style }}"
-                      style="font-size: {{ tag_font_size }}px; font-weight: {{ tag_font_weight }};"
+                      style="font-size: {{ tag_font_size }}px; font-weight: {{ tag_font_weight }}; --mobile-tag-font-size: {{ mobile_tag_font_size }}px; --mobile-tag-font-weight: {{ mobile_tag_font_weight }};"
                     >
                       {{ block.settings.tag_text }}
                     </div>
@@ -170,10 +225,19 @@
                     {%- assign main_font_size = block.settings.main_text_font_size | default: 16 -%}
                     {%- assign main_font_weight = block.settings.main_text_font_weight | default: 600 -%}
                     {%- assign main_line_height = block.settings.main_text_line_height | default: 1.4 -%}
+                    {%- assign mobile_main_font_size = block.settings.mobile_main_text_font_size
+                      | default: main_font_size
+                    -%}
+                    {%- assign mobile_main_font_weight = block.settings.mobile_main_text_font_weight
+                      | default: main_font_weight
+                    -%}
+                    {%- assign mobile_main_line_height = block.settings.mobile_main_text_line_height
+                      | default: main_line_height
+                    -%}
                     {%- assign words = block.settings.main_text | split: ' ' -%}
                     <div
                       class="tag-card-main"
-                      style="font-size: {{ main_font_size }}px; font-weight: {{ main_font_weight }}; line-height: {{ main_line_height }};"
+                      style="--desktop-main-font-size: {{ main_font_size }}px; --desktop-main-font-weight: {{ main_font_weight }}; --desktop-main-line-height: {{ main_line_height }}; --mobile-main-font-size: {{ mobile_main_font_size }}px; --mobile-main-font-weight: {{ mobile_main_font_weight }}; --mobile-main-line-height: {{ mobile_main_line_height }};"
                     >
                       {%- for word in words -%}
                         <span class="tag-card-word">{{ word }}</span>
@@ -184,7 +248,10 @@
                 </div>
 
                 {%- if block.settings.show_icon and block.settings.icon_image != blank -%}
-                  <div class="tag-card-icon" style="width: {{ icon_size }}px; height: {{ icon_size }}px;">
+                  <div
+                    class="tag-card-icon"
+                    style="--desktop-icon-size: {{ icon_size }}px; --mobile-icon-size: {{ mobile_icon_size }}px; width: var(--desktop-icon-size); height: var(--desktop-icon-size);"
+                  >
                     <img
                       src="{{ block.settings.icon_image | image_url: width: 160 }}"
                       alt="{{ block.settings.main_text | escape }}"
@@ -250,20 +317,63 @@
             {%- assign sprite_duration = block.settings.sprite_animation_duration | default: 1.0 -%}
             {%- assign sprite_direction = block.settings.sprite_direction | default: 'horizontal' -%}
             {%- assign sprite_frames_minus_one = sprite_frames | minus: 1 -%}
+            {%- assign tag_font_size = block.settings.tag_font_size | default: 11 -%}
+            {%- assign tag_font_weight = block.settings.tag_font_weight | default: 600 -%}
+            {%- assign mobile_tag_font_size = block.settings.mobile_tag_font_size | default: tag_font_size -%}
+            {%- assign mobile_tag_font_weight = block.settings.mobile_tag_font_weight | default: tag_font_weight -%}
+            {%- assign main_text_font_size = block.settings.main_text_font_size | default: 28 -%}
+            {%- assign main_text_font_weight = block.settings.main_text_font_weight | default: 600 -%}
+            {%- assign main_text_line_height = block.settings.main_text_line_height | default: 1.1 -%}
+            {%- assign mobile_main_text_font_size = block.settings.mobile_main_text_font_size
+              | default: main_text_font_size
+            -%}
+            {%- assign mobile_main_text_font_weight = block.settings.mobile_main_text_font_weight
+              | default: main_text_font_weight
+            -%}
+            {%- assign mobile_main_text_line_height = block.settings.mobile_main_text_line_height
+              | default: main_text_line_height
+            -%}
+            {%- assign sprite_scale = block.settings.sprite_scale | default: 100 -%}
+            {%- assign mobile_sprite_scale = block.settings.mobile_sprite_scale | default: sprite_scale -%}
+            {%- assign sprite_y_offset = block.settings.sprite_y_offset | default: 0 -%}
+            {%- assign mobile_sprite_y_offset = block.settings.mobile_sprite_y_offset | default: sprite_y_offset -%}
+            {%- assign sprite_x_offset = block.settings.sprite_x_offset | default: 0 -%}
+            {%- assign mobile_sprite_x_offset = block.settings.mobile_sprite_x_offset | default: sprite_x_offset -%}
+            {%- assign sprite_rotation = block.settings.sprite_rotation | default: 0 -%}
+            {%- assign mobile_sprite_rotation = block.settings.mobile_sprite_rotation | default: sprite_rotation -%}
+            {%- assign sprite_canvas_size = block.settings.sprite_canvas_size | default: 40 -%}
+            {%- assign mobile_sprite_canvas_size = block.settings.mobile_sprite_canvas_size
+              | default: sprite_canvas_size
+            -%}
+            {%- assign sprite_vertical_alignment = block.settings.sprite_vertical_alignment | default: '50%' -%}
+            {%- assign mobile_sprite_vertical_alignment = block.settings.mobile_sprite_vertical_alignment
+              | default: sprite_vertical_alignment
+            -%}
             <div
               class="bento-card content-card{% if enable_spritesheet %} has-spritesheet{% if sprite_direction == 'vertical' %}-vertical{% endif %}{% endif %}{% if block.settings.enable_3d_effect %} enable-3d{% endif %}"
               style="
-                --tag-font-size: {{ block.settings.tag_font_size }}px;
-                --tag-font-weight: {{ block.settings.tag_font_weight }};
-                --main-text-font-size: {{ block.settings.main_text_font_size }}px;
-                --main-text-font-weight: {{ block.settings.main_text_font_weight }};
-                --main-text-line-height: {{ block.settings.main_text_line_height }};
-                --sprite-canvas-size: {{ block.settings.sprite_canvas_size | default: 40 }}%;
-                --sprite-vertical-alignment: {{ block.settings.sprite_vertical_alignment | default: '50%' }};
-                --sprite-scale: {{ block.settings.sprite_scale | divided_by: 100.0 | default: 1.0 }};
-                --sprite-y-offset: {{ block.settings.sprite_y_offset | default: 0 }}px;
-                --sprite-x-offset: {{ block.settings.sprite_x_offset | default: 0 }}px;
-                --sprite-rotation: {{ block.settings.sprite_rotation | default: 0 }}deg;
+                --desktop-tag-font-size: {{ tag_font_size }}px;
+                --desktop-tag-font-weight: {{ tag_font_weight }};
+                --mobile-tag-font-size: {{ mobile_tag_font_size }}px;
+                --mobile-tag-font-weight: {{ mobile_tag_font_weight }};
+                --desktop-main-text-font-size: {{ main_text_font_size }}px;
+                --desktop-main-text-font-weight: {{ main_text_font_weight }};
+                --desktop-main-text-line-height: {{ main_text_line_height }};
+                --mobile-main-text-font-size: {{ mobile_main_text_font_size }}px;
+                --mobile-main-text-font-weight: {{ mobile_main_text_font_weight }};
+                --mobile-main-text-line-height: {{ mobile_main_text_line_height }};
+                --desktop-sprite-canvas-size: {{ sprite_canvas_size }}%;
+                --desktop-sprite-vertical-alignment: {{ sprite_vertical_alignment }};
+                --desktop-sprite-scale: {{ sprite_scale | divided_by: 100.0 }};
+                --desktop-sprite-y-offset: {{ sprite_y_offset }}px;
+                --desktop-sprite-x-offset: {{ sprite_x_offset }}px;
+                --desktop-sprite-rotation: {{ sprite_rotation }}deg;
+                --mobile-sprite-canvas-size: {{ mobile_sprite_canvas_size }}%;
+                --mobile-sprite-vertical-alignment: {{ mobile_sprite_vertical_alignment }};
+                --mobile-sprite-scale: {{ mobile_sprite_scale | divided_by: 100.0 }};
+                --mobile-sprite-y-offset: {{ mobile_sprite_y_offset }}px;
+                --mobile-sprite-x-offset: {{ mobile_sprite_x_offset }}px;
+                --mobile-sprite-rotation: {{ mobile_sprite_rotation }}deg;
               "
               {% if block.settings.link != blank %}
                 onclick="window.location.href='{{ block.settings.link }}'"
@@ -275,18 +385,14 @@
                   <div class="content-card-text-content">
                     {%- if block.settings.show_tag and block.settings.tag_text != blank -%}
                       <div
-                        class="tag-card-tag tag-card-tag--{{ block.settings.tag_style | default: 'filled' }}"
-                        style="font-size: var(--tag-font-size); font-weight: var(--tag-font-weight);"
+                        class="tag-card-tag tag-card-tag--{{ block.settings.tag_style | default: 'filled' }} content-card-tag"
                       >
                         {{ block.settings.tag_text }}
                       </div>
                     {%- endif -%}
                     {%- if block.settings.main_text != blank -%}
                       {%- assign main_text_words = block.settings.main_text | split: ' ' -%}
-                      <div
-                        class="content-card-main-text"
-                        style="font-size: var(--main-text-font-size); font-weight: var(--main-text-font-weight); line-height: var(--main-text-line-height);"
-                      >
+                      <div class="content-card-main-text">
                         {%- for word in main_text_words -%}
                           <span class="content-card-word">{{ word }}</span>
                           {%- unless forloop.last %} {% endunless -%}
@@ -298,16 +404,16 @@
                 <div
                   class="content-card-sprite-side"
                   style="
-                    flex: 0 0 var(--sprite-canvas-size);
-                    transform: scale(var(--sprite-scale)) translate(var(--sprite-x-offset), var(--sprite-y-offset)) rotate(var(--sprite-rotation));
+                    flex: 0 0 var(--desktop-sprite-canvas-size);
+                    transform: scale(var(--desktop-sprite-scale)) translate(var(--desktop-sprite-x-offset), var(--desktop-sprite-y-offset)) rotate(var(--desktop-sprite-rotation));
                     z-index: 10;
-                    background-image: url('{{ block.settings.image | image_url: width: 5760 }}');
+                    background-image: url('{% if block.settings.image != blank %}{{ block.settings.image | image_url: width: 5760 }}{% else %}{{ 'spritesheet-prejudice.png' | asset_url }}{% endif %}');
                     {% unless enable_spritesheet %}
-                      background-position: {{ bg_pos_h }} {{ block.settings.sprite_vertical_alignment | default: '50%' }};
+                      background-position: {{ bg_pos_h }} {{ sprite_vertical_alignment }};
                       background-size: {{ bg_size }};
                     {% endunless %}
                     {% if enable_spritesheet %}
-                      background-position: {% if sprite_direction == 'vertical' %}50% 0%{% else %}0% {{ block.settings.sprite_vertical_alignment | default: '50%' }}{% endif %};
+                      background-position: {% if sprite_direction == 'vertical' %}50% 0%{% else %}0% {{ sprite_vertical_alignment }}{% endif %};
                       background-repeat: no-repeat;
                       --sprite-frames: {{ sprite_frames }};
                       --sprite-animation-duration: {{ sprite_duration }}s;
@@ -319,8 +425,15 @@
             </div>
 
           {%- when 'button_card' -%}
-            <div class="bento-card button-card">
-              {%- assign label = block.settings.label | default: 'Button' -%}
+            {%- assign font_size = block.settings.font_size | default: 16 -%}
+            {%- assign font_weight = block.settings.font_weight | default: 600 -%}
+            {%- assign mobile_font_size = block.settings.mobile_font_size | default: font_size -%}
+            {%- assign mobile_font_weight = block.settings.mobile_font_weight | default: font_weight -%}
+            {%- assign label = block.settings.label | default: 'Button' -%}
+            <div
+              class="bento-card button-card"
+              style="--desktop-font-size: {{ font_size }}px; --desktop-font-weight: {{ font_weight }}; --mobile-font-size: {{ mobile_font_size }}px; --mobile-font-weight: {{ mobile_font_weight }};"
+            >
               {%- if block.settings.link != blank -%}
                 <a class="button-card-btn" href="{{ block.settings.link }}">{{ label }}</a>
               {%- else -%}
@@ -331,39 +444,44 @@
           {%- when 'text_card' -%}
             {%- assign align = block.settings.content_alignment | default: 'left' -%}
             {%- assign vertical_align = block.settings.vertical_alignment | default: 'top' -%}
-            <div class="bento-card text-card text-card--align-{{ align }} text-card--valign-{{ vertical_align }}">
+            {%- assign heading_size = block.settings.heading_font_size | default: 24 -%}
+            {%- assign heading_weight = block.settings.heading_font_weight | default: 600 -%}
+            {%- assign mobile_heading_size = block.settings.mobile_heading_font_size | default: heading_size -%}
+            {%- assign mobile_heading_weight = block.settings.mobile_heading_font_weight | default: heading_weight -%}
+            {%- assign para_size = block.settings.paragraph_font_size | default: 16 -%}
+            {%- assign para_weight = block.settings.paragraph_font_weight | default: 400 -%}
+            {%- assign para_line_height = block.settings.paragraph_line_height | default: 1.5 -%}
+            {%- assign mobile_para_size = block.settings.mobile_paragraph_font_size | default: para_size -%}
+            {%- assign mobile_para_weight = block.settings.mobile_paragraph_font_weight | default: para_weight -%}
+            {%- assign mobile_para_line_height = block.settings.mobile_paragraph_line_height
+              | default: para_line_height
+            -%}
+            {%- assign button_size = block.settings.button_font_size | default: 14 -%}
+            {%- assign button_weight = block.settings.button_font_weight | default: 600 -%}
+            {%- assign mobile_button_size = block.settings.mobile_button_font_size | default: button_size -%}
+            {%- assign mobile_button_weight = block.settings.mobile_button_font_weight | default: button_weight -%}
+            <div
+              class="bento-card text-card text-card--align-{{ align }} text-card--valign-{{ vertical_align }}"
+              style="--desktop-heading-font-size: {{ heading_size }}px; --desktop-heading-font-weight: {{ heading_weight }}; --mobile-heading-font-size: {{ mobile_heading_size }}px; --mobile-heading-font-weight: {{ mobile_heading_weight }}; --desktop-paragraph-font-size: {{ para_size }}px; --desktop-paragraph-font-weight: {{ para_weight }}; --desktop-paragraph-line-height: {{ para_line_height }}; --mobile-paragraph-font-size: {{ mobile_para_size }}px; --mobile-paragraph-font-weight: {{ mobile_para_weight }}; --mobile-paragraph-line-height: {{ mobile_para_line_height }}; --desktop-button-font-size: {{ button_size }}px; --desktop-button-font-weight: {{ button_weight }}; --mobile-button-font-size: {{ mobile_button_size }}px; --mobile-button-font-weight: {{ mobile_button_weight }};"
+            >
               <div class="text-card-inner">
                 {%- if block.settings.heading != blank -%}
-                  {%- assign heading_size = block.settings.heading_font_size | default: 24 -%}
-                  {%- assign heading_weight = block.settings.heading_font_weight | default: 600 -%}
-                  <h3
-                    class="text-card-heading"
-                    style="font-size: {{ heading_size }}px; font-weight: {{ heading_weight }};"
-                  >
+                  <h3 class="text-card-heading">
                     {{ block.settings.heading }}
                   </h3>
                 {%- endif -%}
 
                 {%- if block.settings.paragraph != blank -%}
-                  {%- assign para_size = block.settings.paragraph_font_size | default: 16 -%}
-                  {%- assign para_weight = block.settings.paragraph_font_weight | default: 400 -%}
-                  {%- assign para_line_height = block.settings.paragraph_line_height | default: 1.5 -%}
-                  <p
-                    class="text-card-paragraph"
-                    style="font-size: {{ para_size }}px; font-weight: {{ para_weight }}; line-height: {{ para_line_height }};"
-                  >
+                  <p class="text-card-paragraph">
                     {{ block.settings.paragraph }}
                   </p>
                 {%- endif -%}
 
                 {%- if block.settings.button_text != blank -%}
-                  {%- assign button_size = block.settings.button_font_size | default: 14 -%}
-                  {%- assign button_weight = block.settings.button_font_weight | default: 600 -%}
                   {%- if block.settings.button_link != blank -%}
                     <a
                       href="{{ block.settings.button_link }}"
                       class="text-card-button"
-                      style="font-size: {{ button_size }}px; font-weight: {{ button_weight }};"
                     >
                       {{- block.settings.button_text -}}
                     </a>
@@ -371,7 +489,6 @@
                     <button
                       type="button"
                       class="text-card-button"
-                      style="font-size: {{ button_size }}px; font-weight: {{ button_weight }};"
                     >
                       {{ block.settings.button_text }}
                     </button>
@@ -384,8 +501,15 @@
             {%- assign product = block.settings.product -%}
             {%- assign align = block.settings.content_alignment | default: 'left' -%}
             {%- assign vertical_align = block.settings.vertical_alignment | default: 'top' -%}
+            {%- assign title_font_size = block.settings.title_font_size | default: 38 -%}
+            {%- assign title_font_weight = block.settings.title_font_weight | default: 600 -%}
+            {%- assign mobile_title_font_size = block.settings.mobile_title_font_size | default: title_font_size -%}
+            {%- assign mobile_title_font_weight = block.settings.mobile_title_font_weight
+              | default: title_font_weight
+            -%}
             <div
               class="bento-card product-card product-card--align-{{ align }} product-card--valign-{{ vertical_align }}"
+              style="--desktop-title-font-size: {{ title_font_size }}px; --desktop-title-font-weight: {{ title_font_weight }}; --mobile-title-font-size: {{ mobile_title_font_size }}px; --mobile-title-font-weight: {{ mobile_title_font_weight }};"
               {% if product != blank and product.url != blank %}
                 onclick="window.location.href='{{ product.url }}'"
               {% endif %}
@@ -404,17 +528,43 @@
                     </div>
                   {%- endif -%}
 
-                  {%- if product.title != blank -%}
+                  {%- if product != blank and product.title != blank -%}
                     <div class="product-card-title">{{ product.title }}</div>
+                  {%- elsif product == blank -%}
+                    <div class="product-card-title">Product Name</div>
                   {%- endif -%}
 
-                  {%- if product.featured_image != blank -%}
+                  {%- if product != blank and product.featured_image != blank -%}
                     <div class="product-card-image-wrapper">
                       {{
                         product.featured_image
                         | image_url: width: 600
                         | image_tag: loading: 'lazy', alt: product.title, class: 'product-card-image'
                       }}
+                    </div>
+                  {%- elsif block.settings.default_product_image != blank -%}
+                    <div class="product-card-image-wrapper">
+                      {{
+                        block.settings.default_product_image
+                        | image_url: width: 600
+                        | image_tag:
+                          loading: 'lazy',
+                          alt: 'Product',
+                          class: 'product-card-image',
+                          width: 600,
+                          height: 600
+                      }}
+                    </div>
+                  {%- else -%}
+                    <div class="product-card-image-wrapper">
+                      <img
+                        src="https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-collection-1_large.png?v=1530129113"
+                        alt="Product placeholder"
+                        class="product-card-image"
+                        loading="lazy"
+                        width="600"
+                        height="600"
+                      >
                     </div>
                   {%- endif -%}
                 </div>
@@ -423,9 +573,11 @@
 
           {%- when 'video_card' -%}
             <div class="bento-card video-card">
+              {%- assign has_video = false -%}
               {%- case block.settings.video_source -%}
                 {%- when 'shopify' -%}
                   {%- if block.settings.video != blank -%}
+                    {%- assign has_video = true -%}
                     {{
                       block.settings.video
                       | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false
@@ -433,6 +585,7 @@
                   {%- endif -%}
                 {%- when 'youtube' -%}
                   {%- if block.settings.youtube_url != blank -%}
+                    {%- assign has_video = true -%}
                     {%- assign yt_url = block.settings.youtube_url -%}
                     {%- assign yt_id = '' -%}
 
@@ -458,105 +611,118 @@
                   {%- endif -%}
               {%- endcase -%}
 
+              {%- if has_video == false -%}
+                {%- if block.settings.placeholder_image != blank -%}
+                  <img
+                    src="{{ block.settings.placeholder_image | image_url: width: 1200 }}"
+                    alt="Video placeholder"
+                    class="video-placeholder"
+                    loading="lazy"
+                    width="1200"
+                    height="675"
+                  >
+                {%- else -%}
+                  <img
+                    src="https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?v=1530129081"
+                    alt="Video placeholder"
+                    class="video-placeholder"
+                    loading="lazy"
+                    width="1200"
+                    height="675"
+                  >
+                {%- endif -%}
+              {%- endif -%}
+
               {%- if block.settings.marquee_text != blank -%}
                 <div class="video-marquee">
                   <div class="video-marquee-track">
                     <span class="video-marquee-item">{{ block.settings.marquee_text }}</span>
-                    {%- if block.settings.marquee_separator_image != blank -%}
-                      <img
-                        src="{{ block.settings.marquee_separator_image | image_url: width: 40 }}"
-                        alt=""
-                        class="video-marquee-separator"
-                        aria-hidden="true"
-                        width="40"
-                        height="40"
-                      >
-                    {%- endif -%}
+                    <img
+                      src="{% if block.settings.marquee_separator_image != blank %}{{ block.settings.marquee_separator_image | image_url: width: 40 }}{% else %}https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-collection-2_large.png?v=1530129132{% endif %}"
+                      alt=""
+                      class="video-marquee-separator"
+                      aria-hidden="true"
+                      width="40"
+                      height="40"
+                    >
                     <span class="video-marquee-item" aria-hidden="true">{{ block.settings.marquee_text }}</span>
-                    {%- if block.settings.marquee_separator_image != blank -%}
-                      <img
-                        src="{{ block.settings.marquee_separator_image | image_url: width: 40 }}"
-                        alt=""
-                        class="video-marquee-separator"
-                        aria-hidden="true"
-                        width="40"
-                        height="40"
-                      >
-                    {%- endif -%}
+                    <img
+                      src="{% if block.settings.marquee_separator_image != blank %}{{ block.settings.marquee_separator_image | image_url: width: 40 }}{% else %}https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-collection-2_large.png?v=1530129132{% endif %}"
+                      alt=""
+                      class="video-marquee-separator"
+                      aria-hidden="true"
+                      width="40"
+                      height="40"
+                    >
                     <span class="video-marquee-item" aria-hidden="true">{{ block.settings.marquee_text }}</span>
-                    {%- if block.settings.marquee_separator_image != blank -%}
-                      <img
-                        src="{{ block.settings.marquee_separator_image | image_url: width: 40 }}"
-                        alt=""
-                        class="video-marquee-separator"
-                        aria-hidden="true"
-                        width="40"
-                        height="40"
-                      >
-                    {%- endif -%}
+                    <img
+                      src="{% if block.settings.marquee_separator_image != blank %}{{ block.settings.marquee_separator_image | image_url: width: 40 }}{% else %}https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-collection-2_large.png?v=1530129132{% endif %}"
+                      alt=""
+                      class="video-marquee-separator"
+                      aria-hidden="true"
+                      width="40"
+                      height="40"
+                    >
                     <span class="video-marquee-item" aria-hidden="true">{{ block.settings.marquee_text }}</span>
-                    {%- if block.settings.marquee_separator_image != blank -%}
-                      <img
-                        src="{{ block.settings.marquee_separator_image | image_url: width: 40 }}"
-                        alt=""
-                        class="video-marquee-separator"
-                        aria-hidden="true"
-                        width="40"
-                        height="40"
-                      >
-                    {%- endif -%}
+                    <img
+                      src="{% if block.settings.marquee_separator_image != blank %}{{ block.settings.marquee_separator_image | image_url: width: 40 }}{% else %}https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-collection-2_large.png?v=1530129132{% endif %}"
+                      alt=""
+                      class="video-marquee-separator"
+                      aria-hidden="true"
+                      width="40"
+                      height="40"
+                    >
                   </div>
                 </div>
               {%- endif -%}
             </div>
 
           {%- when 'scrolling_text_card' -%}
-            <div class="bento-card scrolling-text-card">
+            {%- assign font_size = block.settings.font_size | default: 24 -%}
+            {%- assign font_weight = block.settings.font_weight | default: 700 -%}
+            {%- assign mobile_font_size = block.settings.mobile_font_size | default: font_size -%}
+            {%- assign mobile_font_weight = block.settings.mobile_font_weight | default: font_weight -%}
+            <div
+              class="bento-card scrolling-text-card"
+              style="--desktop-font-size: {{ font_size }}px; --desktop-font-weight: {{ font_weight }}; --mobile-font-size: {{ mobile_font_size }}px; --mobile-font-weight: {{ mobile_font_weight }};"
+            >
               <div class="marquee-track">
                 <span class="marquee-item">{{ block.settings.text }}</span>
-                {%- if block.settings.separator_image != blank -%}
-                  <img
-                    src="{{ block.settings.separator_image | image_url: width: 40 }}"
-                    alt=""
-                    class="marquee-separator"
-                    aria-hidden="true"
-                    width="40"
-                    height="40"
-                  >
-                {%- endif -%}
+                <img
+                  src="{% if block.settings.separator_image != blank %}{{ block.settings.separator_image | image_url: width: 40 }}{% else %}https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-collection-2_large.png?v=1530129132{% endif %}"
+                  alt=""
+                  class="marquee-separator"
+                  aria-hidden="true"
+                  width="40"
+                  height="40"
+                >
                 <span class="marquee-item" aria-hidden="true">{{ block.settings.text }}</span>
-                {%- if block.settings.separator_image != blank -%}
-                  <img
-                    src="{{ block.settings.separator_image | image_url: width: 40 }}"
-                    alt=""
-                    class="marquee-separator"
-                    aria-hidden="true"
-                    width="40"
-                    height="40"
-                  >
-                {%- endif -%}
+                <img
+                  src="{% if block.settings.separator_image != blank %}{{ block.settings.separator_image | image_url: width: 40 }}{% else %}https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-collection-2_large.png?v=1530129132{% endif %}"
+                  alt=""
+                  class="marquee-separator"
+                  aria-hidden="true"
+                  width="40"
+                  height="40"
+                >
                 <span class="marquee-item" aria-hidden="true">{{ block.settings.text }}</span>
-                {%- if block.settings.separator_image != blank -%}
-                  <img
-                    src="{{ block.settings.separator_image | image_url: width: 40 }}"
-                    alt=""
-                    class="marquee-separator"
-                    aria-hidden="true"
-                    width="40"
-                    height="40"
-                  >
-                {%- endif -%}
+                <img
+                  src="{% if block.settings.separator_image != blank %}{{ block.settings.separator_image | image_url: width: 40 }}{% else %}https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-collection-2_large.png?v=1530129132{% endif %}"
+                  alt=""
+                  class="marquee-separator"
+                  aria-hidden="true"
+                  width="40"
+                  height="40"
+                >
                 <span class="marquee-item" aria-hidden="true">{{ block.settings.text }}</span>
-                {%- if block.settings.separator_image != blank -%}
-                  <img
-                    src="{{ block.settings.separator_image | image_url: width: 40 }}"
-                    alt=""
-                    class="marquee-separator"
-                    aria-hidden="true"
-                    width="40"
-                    height="40"
-                  >
-                {%- endif -%}
+                <img
+                  src="{% if block.settings.separator_image != blank %}{{ block.settings.separator_image | image_url: width: 40 }}{% else %}https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-collection-2_large.png?v=1530129132{% endif %}"
+                  alt=""
+                  class="marquee-separator"
+                  aria-hidden="true"
+                  width="40"
+                  height="40"
+                >
               </div>
             </div>
         {%- endcase -%}
@@ -690,6 +856,59 @@
           "default": "rectangle"
         },
         {
+          "type": "header",
+          "content": "Heading Typography"
+        },
+        {
+          "type": "range",
+          "id": "heading_font_size",
+          "min": 12,
+          "max": 48,
+          "step": 1,
+          "unit": "px",
+          "label": "Heading font size",
+          "default": 18
+        },
+        {
+          "type": "select",
+          "id": "heading_font_weight",
+          "label": "Heading font weight",
+          "options": [
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "600"
+        },
+        {
+          "type": "header",
+          "content": "Mobile Typography"
+        },
+        {
+          "type": "range",
+          "id": "mobile_heading_font_size",
+          "min": 12,
+          "max": 48,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile Heading font size",
+          "default": 14,
+          "info": "Heading font size on mobile devices"
+        },
+        {
+          "type": "select",
+          "id": "mobile_heading_font_weight",
+          "label": "Mobile Heading font weight",
+          "options": [
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "600"
+        },
+        {
           "type": "range",
           "id": "column_span",
           "min": 0.1,
@@ -706,6 +925,29 @@
           "step": 0.1,
           "label": "Row Span",
           "default": 2
+        },
+        {
+          "type": "header",
+          "content": "Mobile Layout"
+        },
+        {
+          "type": "range",
+          "id": "mobile_column_span",
+          "min": 0.1,
+          "max": 2,
+          "step": 0.1,
+          "label": "Mobile Column Span",
+          "default": 2,
+          "info": "Column span on mobile devices (max 2 columns on mobile grid)"
+        },
+        {
+          "type": "range",
+          "id": "mobile_row_span",
+          "min": 0.1,
+          "max": 6,
+          "step": 0.1,
+          "label": "Mobile Row Span",
+          "default": 1
         }
       ]
     },
@@ -751,6 +993,39 @@
           "default": "#000000"
         },
         {
+          "type": "header",
+          "content": "Mobile Settings"
+        },
+        {
+          "type": "range",
+          "id": "mobile_logo_image_width",
+          "min": 50,
+          "max": 200,
+          "step": 5,
+          "unit": "px",
+          "label": "Mobile Logo Image Width",
+          "default": 120,
+          "info": "Logo image width on mobile devices"
+        },
+        {
+          "type": "range",
+          "id": "mobile_logo_font_size",
+          "min": 16,
+          "max": 72,
+          "step": 2,
+          "unit": "px",
+          "label": "Mobile Logo Font Size",
+          "default": 24,
+          "info": "Logo font size on mobile devices"
+        },
+        {
+          "type": "color",
+          "id": "mobile_logo_color",
+          "label": "Mobile Logo Color",
+          "default": "#000000",
+          "info": "Logo color on mobile devices"
+        },
+        {
           "type": "range",
           "id": "column_span",
           "min": 0.1,
@@ -766,6 +1041,29 @@
           "max": 6,
           "step": 0.1,
           "label": "Row Span",
+          "default": 1
+        },
+        {
+          "type": "header",
+          "content": "Mobile Layout"
+        },
+        {
+          "type": "range",
+          "id": "mobile_column_span",
+          "min": 0.1,
+          "max": 2,
+          "step": 0.1,
+          "label": "Mobile Column Span",
+          "default": 1,
+          "info": "Column span on mobile devices (max 2 columns on mobile grid)"
+        },
+        {
+          "type": "range",
+          "id": "mobile_row_span",
+          "min": 0.1,
+          "max": 6,
+          "step": 0.1,
+          "label": "Mobile Row Span",
           "default": 1
         }
       ]
@@ -810,6 +1108,38 @@
           "default": 2
         },
         {
+          "type": "header",
+          "content": "Mobile Icon Settings"
+        },
+        {
+          "type": "range",
+          "id": "mobile_icon_size",
+          "min": 20,
+          "max": 80,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile Icon Size",
+          "default": 35,
+          "info": "Icon size on mobile devices"
+        },
+        {
+          "type": "color",
+          "id": "mobile_icon_color",
+          "label": "Mobile Icon Color",
+          "default": "#121212",
+          "info": "Icon color on mobile devices"
+        },
+        {
+          "type": "range",
+          "id": "mobile_icon_stroke_width",
+          "min": 1,
+          "max": 4,
+          "step": 0.5,
+          "label": "Mobile Icon Stroke Width",
+          "default": 2,
+          "info": "Icon stroke width on mobile devices"
+        },
+        {
           "type": "range",
           "id": "column_span",
           "min": 0.1,
@@ -825,6 +1155,29 @@
           "max": 6,
           "step": 0.1,
           "label": "Row Span",
+          "default": 1
+        },
+        {
+          "type": "header",
+          "content": "Mobile Layout"
+        },
+        {
+          "type": "range",
+          "id": "mobile_column_span",
+          "min": 0.1,
+          "max": 2,
+          "step": 0.1,
+          "label": "Mobile Column Span",
+          "default": 1,
+          "info": "Column span on mobile devices (max 2 columns on mobile grid)"
+        },
+        {
+          "type": "range",
+          "id": "mobile_row_span",
+          "min": 0.1,
+          "max": 6,
+          "step": 0.1,
+          "label": "Mobile Row Span",
           "default": 1
         }
       ]
@@ -850,6 +1203,29 @@
           "step": 0.1,
           "label": "Row Span",
           "default": 1
+        },
+        {
+          "type": "header",
+          "content": "Mobile Layout"
+        },
+        {
+          "type": "range",
+          "id": "mobile_column_span",
+          "min": 0.1,
+          "max": 2,
+          "step": 0.1,
+          "label": "Mobile Column Span",
+          "default": 1,
+          "info": "Column span on mobile devices (max 2 columns on mobile grid)"
+        },
+        {
+          "type": "range",
+          "id": "mobile_row_span",
+          "min": 0.1,
+          "max": 6,
+          "step": 0.1,
+          "label": "Mobile Row Span",
+          "default": 1
         }
       ]
     },
@@ -874,6 +1250,29 @@
           "step": 0.1,
           "label": "Row Span",
           "default": 1
+        },
+        {
+          "type": "header",
+          "content": "Mobile Layout"
+        },
+        {
+          "type": "range",
+          "id": "mobile_column_span",
+          "min": 0.1,
+          "max": 2,
+          "step": 0.1,
+          "label": "Mobile Column Span",
+          "default": 2,
+          "info": "Column span on mobile devices (max 2 columns on mobile grid)"
+        },
+        {
+          "type": "range",
+          "id": "mobile_row_span",
+          "min": 0.1,
+          "max": 6,
+          "step": 0.1,
+          "label": "Mobile Row Span",
+          "default": 1
         }
       ]
     },
@@ -896,13 +1295,13 @@
           "type": "text",
           "id": "tag_text",
           "label": "Tag Text",
-          "default": "NEW"
+          "default": "Tag name"
         },
         {
           "type": "text",
           "id": "main_text",
           "label": "Main Text",
-          "default": "Feature Description"
+          "default": "3D Animation Card"
         },
         {
           "type": "header",
@@ -938,7 +1337,7 @@
             { "value": "filled", "label": "Filled (with background)" },
             { "value": "border", "label": "Border (transparent background)" }
           ],
-          "default": "filled"
+          "default": "border"
         },
         {
           "type": "header",
@@ -977,13 +1376,72 @@
         },
         {
           "type": "header",
+          "content": "Mobile Typography"
+        },
+        {
+          "type": "range",
+          "id": "mobile_tag_font_size",
+          "min": 8,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile Tag font size",
+          "default": 10,
+          "info": "Tag font size on mobile devices"
+        },
+        {
+          "type": "select",
+          "id": "mobile_tag_font_weight",
+          "label": "Mobile Tag font weight",
+          "options": [
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "600"
+        },
+        {
+          "type": "range",
+          "id": "mobile_main_text_font_size",
+          "min": 12,
+          "max": 64,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile Main text font size",
+          "default": 18,
+          "info": "Main text font size on mobile devices"
+        },
+        {
+          "type": "select",
+          "id": "mobile_main_text_font_weight",
+          "label": "Mobile Main text font weight",
+          "options": [
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "600"
+        },
+        {
+          "type": "range",
+          "id": "mobile_main_text_line_height",
+          "min": 0.8,
+          "max": 2,
+          "step": 0.1,
+          "label": "Mobile Main text line height",
+          "default": 1.1
+        },
+        {
+          "type": "header",
           "content": "3D Pop-out Effect"
         },
         {
           "type": "checkbox",
           "id": "enable_3d_effect",
           "label": "Enable 3D Pop-out",
-          "default": false,
+          "default": true,
           "info": "Allows the sprite to overflow the card boundaries for a 3D effect"
         },
         {
@@ -1062,7 +1520,7 @@
           "type": "checkbox",
           "id": "enable_spritesheet_animation",
           "label": "Enable Spritesheet Animation",
-          "default": false,
+          "default": true,
           "info": "Enable this if your background image is a spritesheet with multiple frames"
         },
         {
@@ -1072,7 +1530,7 @@
           "max": 30,
           "step": 1,
           "label": "Number of Frames",
-          "default": 8,
+          "default": 22,
           "info": "Number of frames in your spritesheet"
         },
         {
@@ -1130,6 +1588,77 @@
           "default": "50%"
         },
         {
+          "type": "header",
+          "content": "Mobile Spritesheet Settings"
+        },
+        {
+          "type": "range",
+          "id": "mobile_sprite_scale",
+          "min": 100,
+          "max": 200,
+          "step": 5,
+          "unit": "%",
+          "label": "Mobile Sprite Scale",
+          "default": 100,
+          "info": "Sprite scale on mobile devices"
+        },
+        {
+          "type": "range",
+          "id": "mobile_sprite_y_offset",
+          "min": -150,
+          "max": 150,
+          "step": 5,
+          "unit": "px",
+          "label": "Mobile Sprite Vertical Offset",
+          "default": 0,
+          "info": "Sprite vertical offset on mobile devices"
+        },
+        {
+          "type": "range",
+          "id": "mobile_sprite_x_offset",
+          "min": -100,
+          "max": 100,
+          "step": 5,
+          "unit": "px",
+          "label": "Mobile Sprite Horizontal Offset",
+          "default": 0,
+          "info": "Sprite horizontal offset on mobile devices"
+        },
+        {
+          "type": "range",
+          "id": "mobile_sprite_rotation",
+          "min": -45,
+          "max": 45,
+          "step": 1,
+          "unit": "deg",
+          "label": "Mobile Sprite Rotation",
+          "default": 0,
+          "info": "Sprite rotation on mobile devices"
+        },
+        {
+          "type": "range",
+          "id": "mobile_sprite_canvas_size",
+          "min": 10,
+          "max": 100,
+          "step": 5,
+          "unit": "%",
+          "label": "Mobile Sprite Canvas Size",
+          "default": 40,
+          "info": "Sprite canvas size on mobile devices"
+        },
+        {
+          "type": "select",
+          "id": "mobile_sprite_vertical_alignment",
+          "label": "Mobile Sprite Vertical Alignment",
+          "options": [
+            { "value": "0%", "label": "Top" },
+            { "value": "50%", "label": "Center" },
+            { "value": "100%", "label": "Bottom" }
+          ],
+          "default": "50%",
+          "info": "Sprite vertical alignment on mobile devices"
+        },
+        {
           "type": "url",
           "id": "link",
           "label": "Link",
@@ -1156,6 +1685,29 @@
           "step": 0.1,
           "label": "Row Span",
           "default": 2
+        },
+        {
+          "type": "header",
+          "content": "Mobile Layout"
+        },
+        {
+          "type": "range",
+          "id": "mobile_column_span",
+          "min": 0.1,
+          "max": 2,
+          "step": 0.1,
+          "label": "Mobile Column Span",
+          "default": 2,
+          "info": "Column span on mobile devices (max 2 columns on mobile grid)"
+        },
+        {
+          "type": "range",
+          "id": "mobile_row_span",
+          "min": 0.1,
+          "max": 6,
+          "step": 0.1,
+          "label": "Mobile Row Span",
+          "default": 0.2
         }
       ]
     },
@@ -1164,7 +1716,7 @@
       "name": "Tag Card",
       "settings": [
         { "type": "checkbox", "id": "show_tag", "label": "Show tag", "default": true },
-        { "type": "text", "id": "tag_text", "label": "Tag text", "default": "NEW" },
+        { "type": "text", "id": "tag_text", "label": "Tag text", "default": "Tag Name" },
         {
           "type": "select",
           "id": "tag_style",
@@ -1173,7 +1725,7 @@
             { "value": "filled", "label": "Filled (with background)" },
             { "value": "border", "label": "Border (transparent background)" }
           ],
-          "default": "filled"
+          "default": "border"
         },
         {
           "type": "header",
@@ -1202,7 +1754,7 @@
           "default": "600"
         },
         { "type": "checkbox", "id": "show_text", "label": "Show main text", "default": true },
-        { "type": "text", "id": "main_text", "label": "Main text", "default": "Now playing – watch the story" },
+        { "type": "text", "id": "main_text", "label": "Main text", "default": "Title of the card" },
         {
           "type": "range",
           "id": "main_text_font_size",
@@ -1234,6 +1786,65 @@
           "label": "Main text line height",
           "default": 1.4
         },
+        {
+          "type": "header",
+          "content": "Mobile Typography"
+        },
+        {
+          "type": "range",
+          "id": "mobile_tag_font_size",
+          "min": 8,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile Tag font size",
+          "default": 10,
+          "info": "Tag font size on mobile devices"
+        },
+        {
+          "type": "select",
+          "id": "mobile_tag_font_weight",
+          "label": "Mobile Tag font weight",
+          "options": [
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "600"
+        },
+        {
+          "type": "range",
+          "id": "mobile_main_text_font_size",
+          "min": 12,
+          "max": 48,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile Main text font size",
+          "default": 14,
+          "info": "Main text font size on mobile devices"
+        },
+        {
+          "type": "select",
+          "id": "mobile_main_text_font_weight",
+          "label": "Mobile Main text font weight",
+          "options": [
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "600"
+        },
+        {
+          "type": "range",
+          "id": "mobile_main_text_line_height",
+          "min": 1,
+          "max": 2,
+          "step": 0.1,
+          "label": "Mobile Main text line height",
+          "default": 1.4
+        },
         { "type": "checkbox", "id": "show_icon", "label": "Show icon", "default": false },
         { "type": "image_picker", "id": "icon_image", "label": "Icon image" },
         {
@@ -1245,6 +1856,17 @@
           "unit": "px",
           "label": "Icon size",
           "default": 32
+        },
+        {
+          "type": "range",
+          "id": "mobile_icon_size",
+          "min": 16,
+          "max": 200,
+          "step": 2,
+          "unit": "px",
+          "label": "Mobile Icon size",
+          "default": 24,
+          "info": "Icon size on mobile devices"
         },
         {
           "type": "header",
@@ -1340,6 +1962,45 @@
           "default": "top"
         },
         {
+          "type": "header",
+          "content": "Mobile Layout Settings"
+        },
+        {
+          "type": "select",
+          "id": "mobile_layout_direction",
+          "label": "Mobile Layout direction",
+          "options": [
+            { "value": "column", "label": "Vertical (column)" },
+            { "value": "row", "label": "Horizontal (row)" }
+          ],
+          "default": "row",
+          "info": "Layout direction on mobile devices"
+        },
+        {
+          "type": "select",
+          "id": "mobile_content_alignment",
+          "label": "Mobile Horizontal alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "left",
+          "info": "Horizontal alignment on mobile devices"
+        },
+        {
+          "type": "select",
+          "id": "mobile_vertical_alignment",
+          "label": "Mobile Vertical alignment",
+          "options": [
+            { "value": "top", "label": "Top" },
+            { "value": "center", "label": "Center" },
+            { "value": "bottom", "label": "Bottom" }
+          ],
+          "default": "top",
+          "info": "Vertical alignment on mobile devices"
+        },
+        {
           "type": "select",
           "id": "tag_card_color",
           "label": "Card Background Color",
@@ -1380,6 +2041,29 @@
           "step": 0.1,
           "label": "Row Span",
           "default": 2
+        },
+        {
+          "type": "header",
+          "content": "Mobile Layout"
+        },
+        {
+          "type": "range",
+          "id": "mobile_column_span",
+          "min": 0.1,
+          "max": 2,
+          "step": 0.1,
+          "label": "Mobile Column Span",
+          "default": 2,
+          "info": "Column span on mobile devices (max 2 columns on mobile grid)"
+        },
+        {
+          "type": "range",
+          "id": "mobile_row_span",
+          "min": 0.1,
+          "max": 6,
+          "step": 0.1,
+          "label": "Mobile Row Span",
+          "default": 2
         }
       ]
     },
@@ -1387,8 +2071,61 @@
       "type": "button_card",
       "name": "Button Card",
       "settings": [
-        { "type": "text", "id": "label", "label": "Button text", "default": "Shop now" },
+        { "type": "text", "id": "label", "label": "Button text", "default": "Button Text" },
         { "type": "url", "id": "link", "label": "Button link" },
+        {
+          "type": "header",
+          "content": "Typography"
+        },
+        {
+          "type": "range",
+          "id": "font_size",
+          "min": 12,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "label": "Font size",
+          "default": 16
+        },
+        {
+          "type": "select",
+          "id": "font_weight",
+          "label": "Font weight",
+          "options": [
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "600"
+        },
+        {
+          "type": "header",
+          "content": "Mobile Typography"
+        },
+        {
+          "type": "range",
+          "id": "mobile_font_size",
+          "min": 12,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile Font size",
+          "default": 14,
+          "info": "Font size on mobile devices"
+        },
+        {
+          "type": "select",
+          "id": "mobile_font_weight",
+          "label": "Mobile Font weight",
+          "options": [
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "600"
+        },
         {
           "type": "range",
           "id": "column_span",
@@ -1406,6 +2143,29 @@
           "step": 0.1,
           "label": "Row Span",
           "default": 1.1
+        },
+        {
+          "type": "header",
+          "content": "Mobile Layout"
+        },
+        {
+          "type": "range",
+          "id": "mobile_column_span",
+          "min": 0.1,
+          "max": 2,
+          "step": 0.1,
+          "label": "Mobile Column Span",
+          "default": 2,
+          "info": "Column span on mobile devices (max 2 columns on mobile grid)"
+        },
+        {
+          "type": "range",
+          "id": "mobile_row_span",
+          "min": 0.1,
+          "max": 6,
+          "step": 0.1,
+          "label": "Mobile Row Span",
+          "default": 1
         }
       ]
     },
@@ -1505,6 +2265,88 @@
           "default": "600"
         },
         {
+          "type": "header",
+          "content": "Mobile Typography"
+        },
+        {
+          "type": "range",
+          "id": "mobile_heading_font_size",
+          "min": 12,
+          "max": 48,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile Heading font size",
+          "default": 18,
+          "info": "Heading font size on mobile devices"
+        },
+        {
+          "type": "select",
+          "id": "mobile_heading_font_weight",
+          "label": "Mobile Heading font weight",
+          "options": [
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "600"
+        },
+        {
+          "type": "range",
+          "id": "mobile_paragraph_font_size",
+          "min": 12,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile Paragraph font size",
+          "default": 14,
+          "info": "Paragraph font size on mobile devices"
+        },
+        {
+          "type": "select",
+          "id": "mobile_paragraph_font_weight",
+          "label": "Mobile Paragraph font weight",
+          "options": [
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "400"
+        },
+        {
+          "type": "range",
+          "id": "mobile_paragraph_line_height",
+          "min": 1,
+          "max": 2,
+          "step": 0.1,
+          "label": "Mobile Paragraph line height",
+          "default": 1.5
+        },
+        {
+          "type": "range",
+          "id": "mobile_button_font_size",
+          "min": 12,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile Button font size",
+          "default": 12,
+          "info": "Button font size on mobile devices"
+        },
+        {
+          "type": "select",
+          "id": "mobile_button_font_weight",
+          "label": "Mobile Button font weight",
+          "options": [
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "600"
+        },
+        {
           "type": "select",
           "id": "content_alignment",
           "label": "Horizontal alignment",
@@ -1535,7 +2377,30 @@
           "label": "Column Span",
           "default": 2
         },
-        { "type": "range", "id": "row_span", "min": 0.1, "max": 6, "step": 0.1, "label": "Row Span", "default": 2 }
+        { "type": "range", "id": "row_span", "min": 0.1, "max": 6, "step": 0.1, "label": "Row Span", "default": 2 },
+        {
+          "type": "header",
+          "content": "Mobile Layout"
+        },
+        {
+          "type": "range",
+          "id": "mobile_column_span",
+          "min": 0.1,
+          "max": 2,
+          "step": 0.1,
+          "label": "Mobile Column Span",
+          "default": 2,
+          "info": "Column span on mobile devices (max 2 columns on mobile grid)"
+        },
+        {
+          "type": "range",
+          "id": "mobile_row_span",
+          "min": 0.1,
+          "max": 6,
+          "step": 0.1,
+          "label": "Mobile Row Span",
+          "default": 2
+        }
       ]
     },
     {
@@ -1543,8 +2408,14 @@
       "name": "Product Card",
       "settings": [
         { "type": "product", "id": "product", "label": "Product" },
+        {
+          "type": "image_picker",
+          "id": "default_product_image",
+          "label": "Default Product Image",
+          "info": "Image to display when no product is selected or product has no image"
+        },
         { "type": "checkbox", "id": "show_tag", "label": "Show tag", "default": true },
-        { "type": "text", "id": "tag_text", "label": "Tag text", "default": "SHOP" },
+        { "type": "text", "id": "tag_text", "label": "Tag text", "default": "Product Tag" },
         {
           "type": "select",
           "id": "tag_style",
@@ -1553,7 +2424,7 @@
             { "value": "filled", "label": "Filled (with background)" },
             { "value": "border", "label": "Border (transparent background)" }
           ],
-          "default": "filled"
+          "default": "border"
         },
         {
           "type": "header",
@@ -1579,6 +2450,65 @@
           "default": 600
         },
         {
+          "type": "header",
+          "content": "Title Typography"
+        },
+        {
+          "type": "range",
+          "id": "title_font_size",
+          "min": 12,
+          "max": 72,
+          "step": 1,
+          "unit": "px",
+          "label": "Title font size",
+          "default": 38
+        },
+        {
+          "type": "select",
+          "id": "title_font_weight",
+          "label": "Title font weight",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" },
+            { "value": "700", "label": "Bold" },
+            { "value": "800", "label": "Extra-bold" },
+            { "value": "900", "label": "Black" }
+          ],
+          "default": "600"
+        },
+        {
+          "type": "header",
+          "content": "Mobile Typography"
+        },
+        {
+          "type": "range",
+          "id": "mobile_title_font_size",
+          "min": 12,
+          "max": 72,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile Title font size",
+          "default": 24,
+          "info": "Title font size on mobile devices"
+        },
+        {
+          "type": "select",
+          "id": "mobile_title_font_weight",
+          "label": "Mobile Title font weight",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" },
+            { "value": "700", "label": "Bold" },
+            { "value": "800", "label": "Extra-bold" },
+            { "value": "900", "label": "Black" }
+          ],
+          "default": "600"
+        },
+        {
           "type": "select",
           "id": "content_alignment",
           "label": "Horizontal alignment",
@@ -1587,7 +2517,7 @@
             { "value": "center", "label": "Center" },
             { "value": "right", "label": "Right" }
           ],
-          "default": "left"
+          "default": "center"
         },
         {
           "type": "select",
@@ -1598,7 +2528,7 @@
             { "value": "center", "label": "Center" },
             { "value": "bottom", "label": "Bottom" }
           ],
-          "default": "top"
+          "default": "center"
         },
         {
           "type": "range",
@@ -1609,7 +2539,30 @@
           "label": "Column Span",
           "default": 2
         },
-        { "type": "range", "id": "row_span", "min": 0.1, "max": 6, "step": 0.1, "label": "Row Span", "default": 2 }
+        { "type": "range", "id": "row_span", "min": 0.1, "max": 6, "step": 0.1, "label": "Row Span", "default": 2 },
+        {
+          "type": "header",
+          "content": "Mobile Layout"
+        },
+        {
+          "type": "range",
+          "id": "mobile_column_span",
+          "min": 0.1,
+          "max": 2,
+          "step": 0.1,
+          "label": "Mobile Column Span",
+          "default": 2,
+          "info": "Column span on mobile devices (max 2 columns on mobile grid)"
+        },
+        {
+          "type": "range",
+          "id": "mobile_row_span",
+          "min": 0.1,
+          "max": 6,
+          "step": 0.1,
+          "label": "Mobile Row Span",
+          "default": 2
+        }
       ]
     },
     {
@@ -1633,6 +2586,12 @@
           "info": "Select a Shopify-hosted video or upload a new one"
         },
         {
+          "type": "image_picker",
+          "id": "placeholder_image",
+          "label": "Placeholder Image",
+          "info": "Image to display when no video is selected"
+        },
+        {
           "type": "text",
           "id": "youtube_url",
           "label": "YouTube video link",
@@ -1642,7 +2601,7 @@
           "type": "text",
           "id": "marquee_text",
           "label": "Hover marquee text",
-          "default": "NOW PLAYING - WATCH THE STORY - "
+          "default": "&nbsp; Scrolling Text &nbsp;"
         },
         {
           "type": "image_picker",
@@ -1659,19 +2618,95 @@
           "label": "Column Span",
           "default": 2
         },
-        { "type": "range", "id": "row_span", "min": 0.1, "max": 6, "step": 0.1, "label": "Row Span", "default": 2 }
+        { "type": "range", "id": "row_span", "min": 0.1, "max": 6, "step": 0.1, "label": "Row Span", "default": 2 },
+        {
+          "type": "header",
+          "content": "Mobile Layout"
+        },
+        {
+          "type": "range",
+          "id": "mobile_column_span",
+          "min": 0.1,
+          "max": 2,
+          "step": 0.1,
+          "label": "Mobile Column Span",
+          "default": 2,
+          "info": "Column span on mobile devices (max 2 columns on mobile grid)"
+        },
+        {
+          "type": "range",
+          "id": "mobile_row_span",
+          "min": 0.1,
+          "max": 6,
+          "step": 0.1,
+          "label": "Mobile Row Span",
+          "default": 2
+        }
       ]
     },
     {
       "type": "scrolling_text_card",
       "name": "Scrolling Text",
       "settings": [
-        { "type": "text", "id": "text", "label": "Text", "default": "BREAKING NEWS - SPECIAL OFFER - " },
+        { "type": "text", "id": "text", "label": "Text", "default": "&nbsp; Scrolling Text &nbsp;" },
         {
           "type": "image_picker",
           "id": "separator_image",
           "label": "Separator Image",
           "info": "Image displayed between text repetitions"
+        },
+        {
+          "type": "header",
+          "content": "Typography"
+        },
+        {
+          "type": "range",
+          "id": "font_size",
+          "min": 12,
+          "max": 48,
+          "step": 1,
+          "unit": "px",
+          "label": "Font size",
+          "default": 24
+        },
+        {
+          "type": "select",
+          "id": "font_weight",
+          "label": "Font weight",
+          "options": [
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "700"
+        },
+        {
+          "type": "header",
+          "content": "Mobile Typography"
+        },
+        {
+          "type": "range",
+          "id": "mobile_font_size",
+          "min": 12,
+          "max": 48,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile Font size",
+          "default": 16,
+          "info": "Font size on mobile devices"
+        },
+        {
+          "type": "select",
+          "id": "mobile_font_weight",
+          "label": "Mobile Font weight",
+          "options": [
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "700"
         },
         {
           "type": "range",
@@ -1682,7 +2717,30 @@
           "label": "Column Span",
           "default": 2
         },
-        { "type": "range", "id": "row_span", "min": 0.1, "max": 6, "step": 0.1, "label": "Row Span", "default": 1 }
+        { "type": "range", "id": "row_span", "min": 0.1, "max": 6, "step": 0.1, "label": "Row Span", "default": 1 },
+        {
+          "type": "header",
+          "content": "Mobile Layout"
+        },
+        {
+          "type": "range",
+          "id": "mobile_column_span",
+          "min": 0.1,
+          "max": 2,
+          "step": 0.1,
+          "label": "Mobile Column Span",
+          "default": 2,
+          "info": "Column span on mobile devices (max 2 columns on mobile grid)"
+        },
+        {
+          "type": "range",
+          "id": "mobile_row_span",
+          "min": 0.1,
+          "max": 6,
+          "step": 0.1,
+          "label": "Mobile Row Span",
+          "default": 1
+        }
       ]
     }
   ],
@@ -1698,7 +2756,7 @@
           "settings": {
             "heading": "Card Heading",
             "paragraph": "Add your paragraph text here...",
-            "button_text": "Button",
+            "button_text": "Button Text",
             "column_span": 1.8,
             "row_span": 4.0
           }

@@ -11,28 +11,6 @@
   "name": "t:sections.header.name",
   "type": "header",
   "sections": {
-    "announcement-bar": {
-      "type": "announcement-bar",
-      "blocks": {
-        "announcement-bar-0": {
-          "type": "announcement",
-          "settings": {
-            "text": "Welcome to our store",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "announcement-bar-0"
-      ],
-      "settings": {
-        "layout_mode": "marquee",
-        "marquee_speed": 5,
-        "color_scheme": "",
-        "sticky": true,
-        "show_close_button": true
-      }
-    },
     "header": {
       "type": "header",
       "blocks": {
@@ -50,10 +28,35 @@
             "label_4": "",
             "link_4": ""
           }
+        },
+    
+        "welcome-block": {
+          "type": "welcome",
+          "settings": {
+            "welcome_text": "Welcome !",
+            "login_text": "Login",
+            "login_url": "",
+            "avatar_image": "",
+            "avatar_size": 32,
+            "avatar_shape": "circle"
+          }
+        },
+        "search-block": {
+          "type": "search"
+        },
+        "cart-block": {
+          "type": "cart"
+        },
+        "mobile-menu-block": {
+          "type": "mobile_menu"
         }
       },
       "block_order": [
-        "mega_menu_KCC3jE"
+        "mega_menu_KCC3jE",
+        "cart-block",
+        "search-block",
+        "welcome-block",
+        "mobile-menu-block"
       ],
       "settings": {
         "logo_width": 100,
@@ -62,7 +65,6 @@
     }
   },
   "order": [
-    "announcement-bar",
     "header"
   ]
 }
