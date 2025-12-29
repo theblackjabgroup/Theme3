@@ -279,7 +279,7 @@
 .video-card:hover video,
 .video-card:hover iframe,
 .video-card:hover .video-placeholder {
-  transform: scale(1);
+  transform: scale(0.85);
 }
 
 /* Hover marquee overlay for video card */
