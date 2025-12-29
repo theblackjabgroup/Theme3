@@ -1,5 +1,93 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
-  "current": "Default",
+  "current": {
+    "logo_width": 90,
+    "favicon": "",
+    "font_family_primary_token": "primary",
+    "body_size_token": "body_regular",
+    "heading_scale_token": "standard",
+    "heading_weight_token": "bold",
+    "container_width_token": "desktop",
+    "section_spacing_token": "spacing_l",
+    "page_gap_token": "gap_section",
+    "animation_duration_in_ms": 200,
+    "animation_easing_opacity": 75,
+    "badge_radius_token": "radius_pill",
+    "badge_shadow_token": "none",
+    "button_height_token": "height_button",
+    "button_radius_token": "radius_large",
+    "button_shadow_token": "shadow_1",
+    "button_text_size_token": "body_regular",
+    "cart_type": "notification",
+    "drawer_background_token": "gray_900",
+    "drawer_radius_token": "radius_medium",
+    "drawer_shadow_token": "shadow_2",
+    "icon_size_token": "icon_medium",
+    "input_height_token": "height_input",
+    "input_radius_token": "radius_small",
+    "input_border_width_token": "border_thin",
+    "popup_radius_token": "radius_medium",
+    "popup_shadow_token": "shadow_1",
+    "price_emphasis_token": "text",
+    "product_card_radius_token": "radius_small",
+    "product_card_shadow_token": "none",
+    "predictive_search_enabled": true,
+    "swatch_shape_token": "radius_small",
+    "variant_pill_radius_token": "radius_pill",
+    "custom_css": "",
+    "theme_style": "light",
+    "color_background_token": "white",
+    "color_text_token": "black",
+    "color_accent_token": "cyan_teal",
+    "color_success_token": "success",
+    "color_warning_token": "warning",
+    "color_error_token": "error",
+    "color_schemes": {
+      "scheme-1": {
+        "settings": {
+          "background": "#FFFFFF",
+          "text": "#121212",
+          "shadow": "#121212"
+        }
+      },
+      "scheme-2": {
+        "settings": {
+          "background": "#F3F3F3",
+          "text": "#121212",
+          "shadow": "#121212"
+        }
+      },
+      "scheme-3": {
+        "settings": {
+          "background": "#242833",
+          "text": "#FFFFFF",
+          "shadow": "#121212"
+        }
+      },
+      "scheme-4": {
+        "settings": {
+          "background": "#121212",
+          "text": "#FFFFFF",
+          "shadow": "#121212"
+        }
+      },
+      "scheme-5": {
+        "settings": {
+          "background": "#334FB4",
+          "text": "#FFFFFF",
+          "shadow": "#121212"
+        }
+      }
+    }
+  },
   "presets": {
     "Default": {
       "logo_width": 90,
@@ -67,53 +155,37 @@
       "color_success_token": "success",
       "color_warning_token": "warning",
       "color_error_token": "error",
-
       "font_family_primary_token": "primary",
       "body_size_token": "body_regular",
       "heading_scale_token": "standard",
       "heading_weight_token": "bold",
-
       "container_width_token": "desktop",
       "section_spacing_token": "spacing_l",
       "page_gap_token": "gap_section",
-
       "animation_duration_in_ms": 200,
       "animation_easing_opacity": 75,
-
       "badge_radius_token": "radius_pill",
       "badge_shadow_token": "none",
-
       "button_height_token": "height_button",
       "button_radius_token": "radius_large",
       "button_shadow_token": "shadow_1",
       "button_text_size_token": "body_regular",
-
       "cart_type": "notification",
-
       "drawer_background_token": "gray_900",
       "drawer_radius_token": "radius_medium",
       "drawer_shadow_token": "shadow_2",
-
       "icon_size_token": "icon_medium",
-
       "input_height_token": "height_input",
       "input_radius_token": "radius_small",
       "input_border_width_token": "border_thin",
-
       "popup_radius_token": "radius_medium",
       "popup_shadow_token": "shadow_1",
-
       "price_emphasis_token": "text",
-
       "product_card_radius_token": "radius_small",
       "product_card_shadow_token": "none",
-
       "predictive_search_enabled": true,
-
       "swatch_shape_token": "radius_small",
-
       "variant_pill_radius_token": "radius_pill",
-
       "custom_css": "",
       "theme_style": "light"
     }
