@@ -146,7 +146,7 @@
             "type": "color",
             "id": "accent_pink",
             "label": "Accent Pink (Light Pink)",
-            "default": "#E6E6E6",
+            "default": "#FFE5E5",
             "alpha": true
           },
           {

@@ -495,14 +495,6 @@ body.mobile-menu-open .mobile-header-container {
   height: 75%;
   stroke: currentColor;
   stroke-width: 2;
-  fill: currentColor;
-}
-
-.mobile-welcome-avatar svg {
-  width: 75%;
-  height: 75%;
-  stroke: currentColor;
-  stroke-width: 2;
   fill: none;
 }
 
