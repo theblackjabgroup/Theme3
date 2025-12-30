@@ -113,7 +113,7 @@
             {%- endif -%}
 
             {%- if show_cta_button -%}
-              <div class="article-card__cta">Read the story</div>
+              <a href="{{ article.url }}" class="article-card__cta">Read the story</a>
             {%- endif -%}
           </div>
           {%- if show_badge -%}
@@ -162,7 +162,7 @@
           {%- endif -%}
 
           {%- if show_cta_button -%}
-            <div class="article-card__cta">Read the story</div>
+            <a href="{{ article.url }}" class="article-card__cta">Read the story</a>
           {%- endif -%}
         </div>
         {%- if show_badge -%}

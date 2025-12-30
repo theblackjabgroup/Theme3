@@ -1,16 +1,12 @@
-/* 
-   Card Styling Override for Standard Article Card 
-   Targeting .article-card-slider class applied via custom_class 
-*/
 .article-card-slider {
-  display: flex !important; /* Force flex to layout content vertically */
+  display: flex !important; 
   flex-direction: column;
   justify-content: space-between;
   background-color: var(--color-card-bg, #ffffff);
   border-radius: 40px;
   padding: 30px;
   height: 100%;
-  min-height: 350px; /* Adjust as needed */
+  min-height: 350px; 
   transition: all 0.4s ease;
   position: relative;
   overflow: hidden;
@@ -20,19 +16,15 @@
   border: 1px solid transparent; 
 }
 
-/* Remove default card styles if needed */
 .article-card-slider.card {
-     /* Add overrides if card class has conflicting borders etc */
      border: none;
      box-shadow: none; 
 }
 
-/* Fix Top Spacing: Hide the inner block (ratio placeholder) entire for slider cards since show_image is false */
 .article-card-slider .card__inner {
     display: none !important;
 }
 
-/* Make inner wrapper fill height so flex works */
 .article-card-slider .card__content {
     height: 100%;
     display: flex;
@@ -46,11 +38,10 @@
 
 
 .article-card-slider:hover {
-  background-color: var(--color-card-bg-hover, #ff0000); /* Red color */
+  background-color: var(--color-card-bg-hover, #ff0000); 
   color: var(--color-card-text-hover, #ffffff);
 }
 
-/* Custom badge injected in snippet */
 .article-card__badge-custom {
   display: inline-flex;
   align-items: center;
@@ -63,7 +54,7 @@
   font-weight: 700;
   text-transform: uppercase;
   margin-bottom: 20px;
-  line-height: 1; /* Ensure text is vertically centered */
+  line-height: 1; 
   transition: all 0.4s ease;
   width: fit-content;
   font-family: var(--font-heading-family);
@@ -75,7 +66,6 @@
   color: var(--color-card-text-hover, #ffffff);
 }
 
-/* Standard Title Targeting */
 .article-card-slider .card__heading {
   font-family: var(--font-heading-family);
   font-size: 2.4rem;
@@ -92,10 +82,9 @@
     text-decoration: none;
 }
 .article-card-slider .card__heading a:after {
-    display: none; /* remove default underline */
+    display: none; 
 }
 
-/* Date and Author Spacing */
 .article-card-slider .article-card__info {
     display: flex;
     justify-content: space-between;
@@ -103,11 +92,10 @@
 }
 
 .article-card-slider .circle-divider::after {
-    display: none; /* Remove the dot separator since they are spaced apart */
+    display: none; 
 }
 
 
-/* Call to Action Button */
 .article-card__cta {
   display: flex;
   align-items: center;
@@ -121,13 +109,14 @@
   font-family: var(--font-heading-family);
   opacity: 0;
   transform: translateY(20px);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s; /* Bouncy pop */
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s; 
   position: absolute;
   bottom: 30px;
   left: 30px;
   right: 30px;
   text-align: center;
   box-shadow: 4px 4px 0px 0px #000000;
+  text-decoration: none; 
 }
 
 .article-card-slider:hover .article-card__cta {
@@ -135,7 +124,6 @@
   transform: translateY(0);
 }
 
-/* Responsive adjustments */
 @media screen and (max-width: 749px) {
   .article-card-slider {
     min-height: 350px;

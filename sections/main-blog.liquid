@@ -15,7 +15,6 @@
     }
   }
 
-  /* Custom Color Variables Scoped to Section */
   #BlogSlider-{{ section.id }} {
     --color-card-bg: {{ section.settings.card_bg }};
     --color-card-bg-hover: {{ section.settings.card_bg_hover }};
@@ -69,27 +68,28 @@
 
       const container = wrapper.querySelector('.blog-slider-container');
       const track = container.querySelector('.blog-slider-track');
+      
+      if (wrapper.dataset.intervalId) {
+        clearInterval(parseInt(wrapper.dataset.intervalId));
+      }
 
-      const items = Array.from(track.children);
+      let items = Array.from(track.children).filter(item => !item.classList.contains('blog-slider-clone'));
+      
       const prevBtn = wrapper.querySelector('.prev-arrow');
       const nextBtn = wrapper.querySelector('.next-arrow');
-
-      // Get interval from liquid (converted to ms)
       const intervalDuration = {{ section.settings.slider_interval | times: 1000 }};
 
       if (items.length === 0) return;
 
       const originalCount = items.length;
 
-      // Clone items for infinite loop buffer
-      // We need enough clones to cover the visible area and one full transition set
       if (track.getAttribute('data-cloned') !== 'true') {
-        // Clone the entire set once or twice depending on length to ensure we have enough buffer
         const setsToClone = originalCount < 4 ? 2 : 1;
         for (let k = 0; k < setsToClone; k++) {
           items.forEach((item) => {
             const clone = item.cloneNode(true);
             clone.setAttribute('aria-hidden', 'true');
+            clone.classList.add('blog-slider-clone'); 
             track.appendChild(clone);
           });
         }
@@ -97,15 +97,14 @@
       }
 
       let currentIndex = 0;
-      // Removed isHovering flag logic for autoplay blocking
-      let intervalId;
       let isTransitioning = false;
+      let intervalId;
 
-      // Calculate width
       function getItemWidth() {
-        if (!track.firstElementChild) return 380; // Fallback
-        const itemWidth = track.firstElementChild.offsetWidth;
-        const gap = 30; // Matches CSS
+        const firstItem = track.querySelector('.blog-slider-item'); 
+        if (!firstItem) return 380;
+        const itemWidth = firstItem.offsetWidth;
+        const gap = 30; 
         return itemWidth + gap;
       }
 
@@ -123,45 +122,36 @@
       }
 
       function startAutoPlay() {
-        clearInterval(intervalId);
+        if (wrapper.dataset.intervalId) {
+            clearInterval(parseInt(wrapper.dataset.intervalId));
+        }
         intervalId = setInterval(nextSlide, intervalDuration);
+        wrapper.dataset.intervalId = intervalId;
       }
 
-      // Handle Transition End for Loop
       track.addEventListener('transitionend', () => {
         isTransitioning = false;
-        // If we reached the end of the original set (start of clones), snap back
         if (currentIndex >= originalCount) {
-          // Reset to 0 (or relative position if we jumped multiple, but usually we move 1 by 1)
-          // To be perfectly safe if we overshoot:
           currentIndex = currentIndex % originalCount;
-
-          // Snap instantly
           requestAnimationFrame(() => {
             updatePosition(false);
           });
         }
       });
 
-      // Events
-      // Removed mouseenter/mouseleave blocking logic for autoplay
-
       if (prevBtn) {
-        prevBtn.addEventListener('click', () => {
+        const newPrev = prevBtn.cloneNode(true);
+        prevBtn.parentNode.replaceChild(newPrev, prevBtn);
+        newPrev.addEventListener('click', () => {
           if (isTransitioning) return;
           isTransitioning = true;
           currentIndex--;
-
           if (currentIndex < 0) {
-            // Jump to end of original set instantly, then slide
             track.style.transition = 'none';
             currentIndex = originalCount;
-            track.style.transform = `translate3d(-${currentIndex * getItemWidth()}px, 0, 0)`;
-
-            // Force reflow
+            const width = getItemWidth();
+            track.style.transform = `translate3d(-${currentIndex * width}px, 0, 0)`;
             track.getBoundingClientRect();
-
-            // Now slide to last item (originalCount - 1)
             currentIndex = originalCount - 1;
             requestAnimationFrame(() => {
               updatePosition(true);
@@ -169,30 +159,28 @@
           } else {
             updatePosition(true);
           }
-          startAutoPlay(); // Reset timer
+          startAutoPlay();
         });
       }
 
       if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
+        const newNext = nextBtn.cloneNode(true);
+        nextBtn.parentNode.replaceChild(newNext, nextBtn);
+        newNext.addEventListener('click', () => {
           if (isTransitioning) return;
           nextSlide();
-          startAutoPlay(); // Reset timer
+          startAutoPlay();
         });
       }
 
       startAutoPlay();
     }
 
-    // Initialize on Load
-    window.addEventListener('load', initBlogSlider);
-
-    // Initialize on Theme Editor Support
-    document.addEventListener('shopify:section:load', function (event) {
-      if (event.detail.sectionId === '{{ section.id }}') {
-        initBlogSlider();
-      }
-    });
+    if (document.readyState === 'loading') {
+      window.addEventListener('DOMContentLoaded', initBlogSlider);
+    } else {
+      initBlogSlider();
+    }
   })();
 </script>
 
