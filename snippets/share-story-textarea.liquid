@@ -1,0 +1,23 @@
+{%- comment -%}
+  Renders a specific textarea for Share Story form.
+  Accepts:
+  - name: {String} Input name attr
+  - label: {String} Label text
+  - placeholder: {String} Placeholder text
+  - required: {Boolean}
+{%- endcomment -%}
+
+<div class="share-story-field">
+  <label class="share-story-label" for="ContactForm-{{ name | handleize }}" data-text="{{ label }}">
+    <span class="share-story-label-text">{{ label }}</span>
+  </label>
+  <textarea
+    class="share-story-textarea"
+    id="ContactForm-{{ name | handleize }}"
+    name="contact[{{ name }}]"
+    placeholder="{{ placeholder }}"
+    {% if required %}
+      required
+    {% endif %}
+  ></textarea>
+</div>

@@ -1,0 +1,310 @@
+{{ 'section-share-story.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="share-story-section section-{{ section.id }}-padding color-{{ section.settings.color_scheme }}">
+  <div class="page-width">
+    {% form 'contact', id: 'ShareStoryForm' %}
+      {%- if form.posted_successfully? -%}
+        <div class="form-status form-status-list form__message" tabindex="-1" autofocus>
+          {% render 'icon-success' %}
+          {{ 'templates.contact.form.post_success' | t }}
+        </div>
+      {%- elsif form.errors -%}
+        <div class="form__message">
+          <h2 class="form-status caption-large text-body" role="alert" tabindex="-1" autofocus>
+            {{ 'templates.contact.form.error_heading' | t }}
+          </h2>
+        </div>
+        <ul class="form-status-list caption-large" role="list">
+          <li>
+            <a href="#ContactForm-email" class="link">
+              {{ form.errors.translated_fields.email | capitalize }}
+              {{ form.errors.messages.email }}
+            </a>
+          </li>
+        </ul>
+      {%- endif -%}
+
+      <div class="share-story-wrapper">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'profile_card' -%}
+              <!-- LEFT COLUMN: PROFILE INFO -->
+              <div class="share-story-card share-story-left" {{ block.shopify_attributes }}>
+                <div>
+                  {%- if block.settings.badge_text != blank -%}
+                    <span class="share-story-badge">{{ block.settings.badge_text }}</span>
+                  {%- endif -%}
+                  <h2 class="share-story-title">{{ block.settings.title }}</h2>
+                </div>
+
+                <p class="share-story-subtitle">{{ block.settings.subtitle }}</p>
+
+                {% render 'share-story-input',
+                  name: block.settings.label_name,
+                  label: block.settings.label_name,
+                  placeholder: block.settings.placeholder_name,
+                  required: true
+                %}
+                {% render 'share-story-input',
+                  name: block.settings.label_age,
+                  label: block.settings.label_age,
+                  placeholder: block.settings.placeholder_age,
+                  required: true
+                %}
+                {% render 'share-story-input',
+                  name: 'email',
+                  label: block.settings.label_email,
+                  placeholder: block.settings.placeholder_email,
+                  type: 'email',
+                  required: true
+                %}
+              </div>
+
+            {%- when 'story_card' -%}
+              <!-- RIGHT COLUMN: STORY INPUT -->
+              <div class="share-story-card share-story-right" {{ block.shopify_attributes }}>
+                <div>
+                  <h2 class="share-story-title">{{ block.settings.title }}</h2>
+                </div>
+
+                {% render 'share-story-input',
+                  name: 'Story Title',
+                  label: block.settings.label_title,
+                  placeholder: block.settings.placeholder_title,
+                  required: true
+                %}
+
+                {% render 'share-story-textarea',
+                  name: 'body',
+                  label: block.settings.label_story,
+                  placeholder: block.settings.placeholder_story,
+                  required: true
+                %}
+
+                <div class="share-story-footer-flex">
+                  <button type="submit" class="share-story-submit">
+                    {{ block.settings.button_text }}
+                  </button>
+                  <p class="share-story-disclaimer">
+                    {{ block.settings.disclaimer }}
+                  </p>
+                </div>
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    {% endform %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Share Story",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "profile_card",
+      "name": "Profile Card",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Badge Text",
+          "default": "SHARE YOUR OWN STORY"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Nice to meet you"
+        },
+        {
+          "type": "textarea",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "Don't be shy, tell us a bit about yourself"
+        },
+        {
+          "type": "header",
+          "content": "Name Field"
+        },
+        {
+          "type": "text",
+          "id": "label_name",
+          "label": "Label",
+          "default": "Name*"
+        },
+        {
+          "type": "text",
+          "id": "placeholder_name",
+          "label": "Placeholder",
+          "default": "Name"
+        },
+        {
+          "type": "header",
+          "content": "Age Field"
+        },
+        {
+          "type": "text",
+          "id": "label_age",
+          "label": "Label",
+          "default": "Age*"
+        },
+        {
+          "type": "text",
+          "id": "placeholder_age",
+          "label": "Placeholder",
+          "default": "Age"
+        },
+        {
+          "type": "header",
+          "content": "Email Field"
+        },
+        {
+          "type": "text",
+          "id": "label_email",
+          "label": "Label",
+          "default": "Email*"
+        },
+        {
+          "type": "text",
+          "id": "placeholder_email",
+          "label": "Placeholder",
+          "default": "Email"
+        }
+      ]
+    },
+    {
+      "type": "story_card",
+      "name": "Story Card",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "textarea",
+          "id": "title",
+          "label": "Title",
+          "default": "Share your story with other fighters."
+        },
+        {
+          "type": "header",
+          "content": "Story Title Field"
+        },
+        {
+          "type": "text",
+          "id": "label_title",
+          "label": "Label",
+          "default": "Title*"
+        },
+        {
+          "type": "text",
+          "id": "placeholder_title",
+          "label": "Placeholder",
+          "default": "Sum things up in a few words..."
+        },
+        {
+          "type": "header",
+          "content": "Story Body Field"
+        },
+        {
+          "type": "text",
+          "id": "label_story",
+          "label": "Label",
+          "default": "Story*"
+        },
+        {
+          "type": "text",
+          "id": "placeholder_story",
+          "label": "Placeholder",
+          "default": "Writing down your feelings...",
+          "info": "Textarea placeholder"
+        },
+        {
+          "type": "header",
+          "content": "Footer"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Submit my story"
+        },
+        {
+          "type": "textarea",
+          "id": "disclaimer",
+          "label": "Disclaimer",
+          "default": "All your data will remain anonymous. We use it only for internal research."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Share Story",
+      "blocks": [
+        {
+          "type": "profile_card"
+        },
+        {
+          "type": "story_card"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

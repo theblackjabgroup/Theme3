@@ -1,0 +1,25 @@
+{%- comment -%}
+  Renders a specific input for Share Story form.
+  Accepts:
+  - name: {String} Input name attr
+  - label: {String} Label text
+  - placeholder: {String} Placeholder text
+  - type: {String} Input type (text, email, number)
+  - required: {Boolean}
+{%- endcomment -%}
+
+<div class="share-story-field">
+  <label class="share-story-label" for="ContactForm-{{ name | handleize }}" data-text="{{ label }}">
+    <span class="share-story-label-text">{{ label }}</span>
+  </label>
+  <input
+    class="share-story-input"
+    type="{{ type | default: 'text' }}"
+    id="ContactForm-{{ name | handleize }}"
+    name="contact[{{ name }}]"
+    placeholder="{{ placeholder }}"
+    {% if required %}
+      required
+    {% endif %}
+  >
+</div>
