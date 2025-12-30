@@ -101,7 +101,7 @@
   align-items: center;
   justify-content: center;
   background-color: var(--color-card-text-hover, #ffffff);
-  color: #000000;
+  color: var(--color-card-text, #ff0000); 
   padding: 18px 30px;
   border-radius: 50px;
   font-weight: 700;
