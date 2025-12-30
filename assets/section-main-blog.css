@@ -1,1 +1,86 @@
-/* Cleared */
+/* Slider Layout Styles */
+.blog-slider-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.blog-slider-container {
+  width: 100%;
+  overflow: hidden;
+  padding: 20px 0;
+}
+
+.blog-slider-track {
+  display: flex;
+  gap: 30px;
+  width: max-content;
+  will-change: transform;
+  transition: transform 0.5s ease-in-out;
+  cursor: grab;
+  padding: 0 50px;
+}
+
+.blog-slider-track:active {
+  cursor: grabbing;
+}
+
+.blog-slider-item {
+  width: 350px;
+  flex-shrink: 0;
+}
+
+.blog-slider-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 80px;
+  height: 60px;
+  border-radius: 20px; 
+  border: 1px solid #000000;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0px 4px 0px 0px #000000; 
+  transition: all 0.3s ease;
+}
+
+.blog-slider-nav-btn:hover {
+  transform: translateY(-50%) translateY(4px); 
+  box-shadow: 0px 2px 0px 0px #000000;
+}
+
+.blog-slider-nav-btn.prev-arrow {
+  left: 30px;
+}
+
+.blog-slider-nav-btn.next-arrow {
+  right: 30px;
+}
+
+.blog-slider-nav-btn svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: #000;
+  stroke-width: 2.5px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media screen and (max-width: 749px) {
+  .blog-slider-item {
+    width: 350px;
+  }
+  .blog-slider-nav-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+  }
+  .blog-slider-nav-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+}

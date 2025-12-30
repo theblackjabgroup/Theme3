@@ -1,11 +1,11 @@
 {{ 'component-article-card.css' | asset_url | stylesheet_tag }}
-{{ 'component-card.css' | asset_url | stylesheet_tag }}
 {{ 'section-main-blog.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    background-color: {{ section.settings.color_bg }};
   }
 
   @media screen and (min-width: 750px) {
@@ -14,41 +14,177 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+  #BlogSlider-{{ section.id }} {
+    --color-card-bg: {{ section.settings.card_bg }};
+    --color-card-bg-hover: {{ section.settings.card_bg_hover }};
+    --color-card-text: {{ section.settings.card_text }};
+    --color-card-text-hover: {{ section.settings.card_text_hover }};
+  }
 {%- endstyle -%}
 
 {%- paginate blog.articles by 6 -%}
-  <div class="main-blog page-width section-{{ section.id }}-padding">
-    <h1 class="title--primary{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
-      {{ blog.title | escape }}
-    </h1>
+  <div class="main-blog section-{{ section.id }}-padding">
+    <div class="blog-slider-wrapper" id="BlogSlider-{{ section.id }}">
+      <button class="blog-slider-nav-btn prev-arrow" aria-label="Previous">
+        <svg viewBox="0 0 24 24">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </button>
 
-    <div class="blog-articles {% if section.settings.layout == 'collage' %}blog-articles--collage{% endif %}">
-      {%- for article in blog.articles -%}
-        <div
-          class="blog-articles__article article{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-          {% if settings.animations_reveal_on_scroll %}
-            data-cascade
-            style="--animation-order: {{ forloop.index }};"
-          {% endif %}
-        >
-          {%- render 'article-card',
-            article: article,
-            media_height: section.settings.image_height,
-            media_aspect_ratio: article.image.aspect_ratio,
-            show_image: section.settings.show_image,
-            show_date: section.settings.show_date,
-            show_author: section.settings.show_author,
-            show_excerpt: true
-          -%}
+      <button class="blog-slider-nav-btn next-arrow" aria-label="Next">
+        <svg viewBox="0 0 24 24">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </button>
+
+      <div class="blog-slider-container">
+        <div class="blog-slider-track">
+          {%- for article in blog.articles -%}
+            <div class="blog-slider-item">
+              {%- render 'article-card',
+                article: article,
+                show_image: false,
+                show_badge: false,
+                show_date: section.settings.show_date,
+                show_author: section.settings.show_author,
+                show_cta_button: true,
+                cta_text: section.settings.cta_text,
+                custom_badge_text: article.tags.first,
+                custom_class: 'article-card-slider'
+              -%}
+            </div>
+          {%- endfor -%}
         </div>
-      {%- endfor -%}
+      </div>
     </div>
-
-    {%- if paginate.pages > 1 -%}
-      {%- render 'pagination', paginate: paginate -%}
-    {%- endif -%}
   </div>
 {%- endpaginate -%}
+
+<script>
+  (function () {
+    function initBlogSlider() {
+      const wrapper = document.querySelector('#BlogSlider-{{ section.id }}');
+      if (!wrapper) return;
+
+      const container = wrapper.querySelector('.blog-slider-container');
+      const track = container.querySelector('.blog-slider-track');
+      
+      if (wrapper.dataset.intervalId) {
+        clearInterval(parseInt(wrapper.dataset.intervalId));
+      }
+
+      let items = Array.from(track.children).filter(item => !item.classList.contains('blog-slider-clone'));
+      
+      const prevBtn = wrapper.querySelector('.prev-arrow');
+      const nextBtn = wrapper.querySelector('.next-arrow');
+      const intervalDuration = {{ section.settings.slider_interval | times: 1000 }};
+
+      if (items.length === 0) return;
+
+      const originalCount = items.length;
+
+      if (track.getAttribute('data-cloned') !== 'true') {
+        const setsToClone = originalCount < 4 ? 2 : 1;
+        for (let k = 0; k < setsToClone; k++) {
+          items.forEach((item) => {
+            const clone = item.cloneNode(true);
+            clone.setAttribute('aria-hidden', 'true');
+            clone.classList.add('blog-slider-clone'); 
+            track.appendChild(clone);
+          });
+        }
+        track.setAttribute('data-cloned', 'true');
+      }
+
+      let currentIndex = 0;
+      let isTransitioning = false;
+      let intervalId;
+
+      function getItemWidth() {
+        const firstItem = track.querySelector('.blog-slider-item'); 
+        if (!firstItem) return 380;
+        const itemWidth = firstItem.offsetWidth;
+        const gap = 30; 
+        return itemWidth + gap;
+      }
+
+      function updatePosition(useTransition = true) {
+        const itemFullWidth = getItemWidth();
+        track.style.transition = useTransition ? 'transform 0.5s ease-in-out' : 'none';
+        track.style.transform = `translate3d(-${currentIndex * itemFullWidth}px, 0, 0)`;
+      }
+
+      function nextSlide() {
+        if (isTransitioning) return;
+        isTransitioning = true;
+        currentIndex++;
+        updatePosition(true);
+      }
+
+      function startAutoPlay() {
+        if (wrapper.dataset.intervalId) {
+            clearInterval(parseInt(wrapper.dataset.intervalId));
+        }
+        intervalId = setInterval(nextSlide, intervalDuration);
+        wrapper.dataset.intervalId = intervalId;
+      }
+
+      track.addEventListener('transitionend', (event) => {
+        if (event.target !== track) return; 
+        isTransitioning = false;
+        if (currentIndex >= originalCount) {
+          currentIndex = currentIndex % originalCount;
+          requestAnimationFrame(() => {
+            updatePosition(false);
+          });
+        }
+      });
+
+      if (prevBtn) {
+        const newPrev = prevBtn.cloneNode(true);
+        prevBtn.parentNode.replaceChild(newPrev, prevBtn);
+        newPrev.addEventListener('click', () => {
+          if (isTransitioning) return;
+          isTransitioning = true;
+          currentIndex--;
+          if (currentIndex < 0) {
+            track.style.transition = 'none';
+            currentIndex = originalCount;
+            const width = getItemWidth();
+            track.style.transform = `translate3d(-${currentIndex * width}px, 0, 0)`;
+            track.getBoundingClientRect();
+            currentIndex = originalCount - 1;
+            requestAnimationFrame(() => {
+              updatePosition(true);
+            });
+          } else {
+            updatePosition(true);
+          }
+          startAutoPlay();
+        });
+      }
+
+      if (nextBtn) {
+        const newNext = nextBtn.cloneNode(true);
+        nextBtn.parentNode.replaceChild(newNext, nextBtn);
+        newNext.addEventListener('click', () => {
+          if (isTransitioning) return;
+          nextSlide();
+          startAutoPlay();
+        });
+      }
+
+      startAutoPlay();
+    }
+
+    if (document.readyState === 'loading') {
+      window.addEventListener('DOMContentLoaded', initBlogSlider);
+    } else {
+      initBlogSlider();
+    }
+  })();
+</script>
 
 {% schema %}
 {
@@ -57,51 +193,44 @@
   "class": "section",
   "settings": [
     {
-      "type": "select",
-      "id": "layout",
-      "options": [
-        {
-          "value": "grid",
-          "label": "t:sections.main-blog.settings.layout.options__1.label"
-        },
-        {
-          "value": "collage",
-          "label": "t:sections.main-blog.settings.layout.options__2.label"
-        }
-      ],
-      "default": "collage",
-      "label": "t:sections.main-blog.settings.layout.label"
+      "type": "header",
+      "content": "Color Schemes"
     },
     {
-      "type": "checkbox",
-      "id": "show_image",
-      "default": true,
-      "label": "t:sections.main-blog.settings.show_image.label"
+      "type": "color",
+      "id": "color_bg",
+      "label": "Section Background",
+      "default": "#FFF5F5"
     },
     {
-      "type": "select",
-      "id": "image_height",
-      "options": [
-        {
-          "value": "adapt",
-          "label": "t:sections.main-blog.settings.image_height.options__1.label"
-        },
-        {
-          "value": "small",
-          "label": "t:sections.main-blog.settings.image_height.options__2.label"
-        },
-        {
-          "value": "medium",
-          "label": "t:sections.main-blog.settings.image_height.options__3.label"
-        },
-        {
-          "value": "large",
-          "label": "t:sections.main-blog.settings.image_height.options__4.label"
-        }
-      ],
-      "default": "medium",
-      "label": "t:sections.main-blog.settings.image_height.label"
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card Background",
+      "default": "#FFFFFF"
     },
+    {
+      "type": "color",
+      "id": "card_bg_hover",
+      "label": "Card Background (Hover)",
+      "default": "#FF0000"
+    },
+    {
+      "type": "color",
+      "id": "card_text",
+      "label": "Card Text",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "card_text_hover",
+      "label": "Card Text (Hover)",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Settings"
+    },
+
     {
       "type": "checkbox",
       "id": "show_date",
@@ -113,6 +242,22 @@
       "id": "show_author",
       "default": false,
       "label": "t:sections.main-blog.settings.show_author.label"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Button Text",
+      "default": "Read the story"
+    },
+    {
+      "type": "range",
+      "id": "slider_interval",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "label": "Slider Interval",
+      "default": 5
     },
     {
       "type": "header",
