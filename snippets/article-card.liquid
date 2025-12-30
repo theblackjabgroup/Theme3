@@ -28,6 +28,7 @@
     <div
       class="
         card article-card
+        {{ custom_class }}
         card--{{ settings.blog_card_style }}
         {% if media_height and media_height != 'adapt' %} article-card__image--{{ media_height }}{% endif %}
         {% if article.image and show_image %} card--media{% else %} card--text{% endif %}
@@ -75,6 +76,12 @@
         {%- endif -%}
         <div class="card__content">
           <div class="card__information">
+            {%- if custom_badge_text -%}
+              <div class="article-card__badge-custom">
+                {{ custom_badge_text }}
+              </div>
+            {%- endif -%}
+
             <h3 class="card__heading{% if show_excerpt %} h2{% endif %}">
               <a href="{{ article.url }}" class="full-unstyled-link">
                 {{ article.title | truncate: 50 | escape }}
@@ -104,6 +111,10 @@
                 {%- endif -%}
               </div>
             {%- endif -%}
+
+            {%- if show_cta_button -%}
+              <div class="article-card__cta">Read the story</div>
+            {%- endif -%}
           </div>
           {%- if show_badge -%}
             <div class="card__badge {{ settings.badge_position }}">
@@ -114,6 +125,12 @@
       </div>
       <div class="card__content">
         <div class="card__information">
+          {%- if custom_badge_text -%}
+            <div class="article-card__badge-custom">
+              {{ custom_badge_text }}
+            </div>
+          {%- endif -%}
+
           <h3 class="card__heading{% if show_excerpt %} h2{% endif %}">
             <a href="{{ article.url }}" class="full-unstyled-link">
               {{ article.title | truncate: 50 | escape }}
@@ -142,6 +159,10 @@
                 <span>{{ 'blogs.article.comments' | t: count: article.comments_count }}</span>
               {%- endif -%}
             </div>
+          {%- endif -%}
+
+          {%- if show_cta_button -%}
+            <div class="article-card__cta">Read the story</div>
           {%- endif -%}
         </div>
         {%- if show_badge -%}
