@@ -1,0 +1,25 @@
+{%- comment -%}
+  Product Image Slider Snippet
+  ------------------------------------------------------------------------------
+  Renders the horizontal image slider for product media (excluding the first image).
+
+  Usage:
+  {% render 'product-image-slider', product: product %}
+
+  Variables:
+  - product: The product object.
+{%- endcomment -%}
+<div class="product-media-wrapper">
+  <button class="media-nav prev" aria-label="Previous image">←</button>
+  <button class="media-nav next" aria-label="Next image">→</button>
+
+  <div class="product-media-track" id="ProductMediaTrack">
+    {% for media in product.media offset: 1 %}
+      {% if media.media_type == 'image' %}
+        <div class="product-media-slide">
+          {{ media | image_url: width: 1200 | image_tag: loading: 'lazy', alt: media.alt }}
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>

@@ -1,0 +1,17 @@
+{%- comment -%}
+  Block: Accordion
+  ------------------------------------------------------------------------------
+  Renders a collapsible accordion tab.
+
+  Usage:
+  {% render 'block-accordion', block: block %}
+
+  Variables:
+  - block: The block object containing settings (heading, content).
+{%- endcomment -%}
+<div class="accordion">
+  <details>
+    <summary>{{ block.settings.heading }}</summary>
+    <div class="accordion__content">{{ block.settings.content }}</div>
+  </details>
+</div>

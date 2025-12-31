@@ -1,0 +1,32 @@
+{%- comment -%}
+  Block: Icon Strip
+  ------------------------------------------------------------------------------
+  Renders a row of up to 4 icons with text headings.
+
+  Usage:
+  {% render 'block-icon-strip', block: block %}
+
+  Variables:
+  - block: The block object containing settings (icon_1, text_1, etc.).
+{%- endcomment -%}
+<div class="icon-strip">
+  {% for i in (1..4) %}
+    {% assign icon_key = 'icon_' | append: i %}
+    {% assign text_key = 'text_' | append: i %}
+    {% assign icon = block.settings[icon_key] %}
+    {% assign text = block.settings[text_key] %}
+
+    {% if icon != blank or text != blank %}
+      <div class="icon-strip-item">
+        {% if icon != blank %}
+          <div class="icon-strip-image-wrapper">
+            {{ icon | image_url: width: 100 | image_tag: loading: 'lazy', class: 'icon-strip-image' }}
+          </div>
+        {% endif %}
+        {% if text != blank %}
+          <span class="icon-strip-text">{{ text }}</span>
+        {% endif %}
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>
