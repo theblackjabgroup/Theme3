@@ -13,7 +13,7 @@
   {% assign first_media = product.media | first %}
   {% if first_media %}
     {{
-      first_media
+      first_media.preview_image
       | image_url: width: 1200
       | image_tag: class: 'product-hero-image', loading: 'eager', alt: first_media.alt
     }}

@@ -1,7 +1,7 @@
 {% assign product_form_id = 'product-form-' | append: section.id %}
 {{ 'section-main-product.css' | asset_url | stylesheet_tag }}
 
-<div class="product-split-container">
+<div class="product-split-container" id="ProductSection-{{ section.id }}">
   <!-- HERO SECTION (Floating Absolute) -->
   {% render 'product-hero-image', product: product %}
 
@@ -14,14 +14,17 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    const sectionContainer = document.getElementById('ProductSection-{{ section.id }}');
+    if (!sectionContainer) return;
+
     // ---------------------------------------------------------
     // IMAGE SLIDER LOGIC
     // ---------------------------------------------------------
-    const track = document.getElementById('ProductMediaTrack');
+    const track = sectionContainer.querySelector('#ProductMediaTrack');
     if (track) {
       const slides = Array.from(track.children);
-      const prevBtn = document.querySelector('.media-nav.prev');
-      const nextBtn = document.querySelector('.media-nav.next');
+      const prevBtn = sectionContainer.querySelector('.media-nav.prev');
+      const nextBtn = sectionContainer.querySelector('.media-nav.next');
       let index = 0;
 
       function updateButtons() {
@@ -75,7 +78,7 @@
       },
       { threshold: 0.1 }
     );
-    document.querySelectorAll('.feature-row').forEach((row) => {
+    sectionContainer.querySelectorAll('.feature-row').forEach((row) => {
       observer.observe(row);
     });
 
@@ -85,12 +88,12 @@
     const productVariants = {{ product.variants | json }};
     const productOptions = {{ product.options_with_values | json }};
     
-    // Select all radio inputs for variants
-    const variantRadios = document.querySelectorAll('.product-form__input input[type="radio"]');
+    // Select all radio inputs for variants WITHIN this section
+    const variantRadios = sectionContainer.querySelectorAll('.product-form__input input[type="radio"]');
     
     // Function to get currently selected options
     function getSelectedOptions() {
-      const fieldsets = Array.from(document.querySelectorAll('.product-form__input'));
+      const fieldsets = Array.from(sectionContainer.querySelectorAll('.product-form__input'));
       // Map each fieldset to its selected radio value
       return fieldsets.map(fieldset => {
         const checkedInput = fieldset.querySelector('input:checked');
@@ -115,8 +118,9 @@
       const selectedOptions = getSelectedOptions();
       const currentVariant = findMatchingVariant(selectedOptions);
 
-      const formInputId = document.querySelector('form[action*="/cart/add"] input[name="id"]');
-      const submitBtn = document.querySelector('.product-form__submit');
+      // Select specific elements within THIS section using the unique ID
+      const formInputId = sectionContainer.querySelector('input[name="id"]');
+      const submitBtn = sectionContainer.querySelector('.product-form__submit');
       
       if (!currentVariant) {
         // Variant doesn't exist
