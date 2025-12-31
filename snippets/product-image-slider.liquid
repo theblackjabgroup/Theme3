@@ -15,11 +15,11 @@
 
   <div class="product-media-track" id="ProductMediaTrack">
     {% for media in product.media offset: 1 %}
-      <div class="product-media-slide">
-        {% if media.media_type == 'image' %}
+      {% if media.media_type == 'image' %}
+        <div class="product-media-slide">
           {{ media | image_url: width: 1200 | image_tag: loading: 'lazy', alt: media.alt }}
-        {% endif %}
-      </div>
+        </div>
+      {% endif %}
     {% endfor %}
   </div>
 </div>

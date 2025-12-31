@@ -15,7 +15,7 @@
   <div class="product-left-inner">
     {% if product.compare_at_price > product.price %}
       <div class="product-type-badge">
-        <span>sale badge</span>
+        <span>SALE</span>
       </div>
     {% endif %}
 
@@ -88,8 +88,19 @@
     <div class="product-form__buttons">
       {% form 'product', product, id: product_form_id %}
         <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-        <button type="submit" class="product-form__submit">
-          Buy {{ product.selected_or_first_available_variant.price | money_without_trailing_zeros }}
+        <button
+          type="submit"
+          class="product-form__submit"
+          {% unless product.selected_or_first_available_variant.available %}
+            disabled
+            style="opacity: 0.5; cursor: not-allowed;"
+          {% endunless %}
+        >
+          {% if product.selected_or_first_available_variant.available %}
+            Buy {{ product.selected_or_first_available_variant.price | money_without_trailing_zeros }}
+          {% else %}
+            Sold Out
+          {% endif %}
         </button>
       {% endform %}
       <div class="quantity">
