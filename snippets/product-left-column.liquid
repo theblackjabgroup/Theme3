@@ -1,0 +1,100 @@
+{%- comment -%}
+  Product Left Column Snippet
+  ------------------------------------------------------------------------------
+  Renders the sticky left column containing product info, price, variants, and buy buttons.
+
+  Usage:
+  {% render 'product-left-column', product: product, section: section, product_form_id: 'product-form-id' %}
+
+  Variables:
+  - product: The product object.
+  - section: The section object (used for block unique IDs).
+  - product_form_id: The unique ID for the product form.
+{%- endcomment -%}
+<div class="product-split-left">
+  <div class="product-left-inner">
+    {% if product.compare_at_price > product.price %}
+      <div class="product-type-badge">
+        <span>sale badge</span>
+      </div>
+    {% endif %}
+
+    <div class="product__title">
+      <h1>{{ product.title }}</h1>
+    </div>
+
+    <div class="product__tagline">
+      {{
+        product.metafields.custom.tagline
+        | default: 'T-SHIRT: ORGANIC COTTON UNISEX TEE INSPIRING RESILIENCE AND STRENGTH – TURN CHALLENGES INTO GROWTH EVERY DAY.'
+      }}
+    </div>
+
+    {% unless product.has_only_default_variant %}
+      <div class="variant-picker-wrapper">
+        {% for option in product.options_with_values %}
+          <fieldset class="product-form__input product-form__input--{{ option.name | downcase }}">
+            <legend class="product-form__label">{{ option.name }}</legend>
+            <div class="variant-options-row">
+              {% for value in option.values %}
+                <input
+                  type="radio"
+                  id="{{ section.id }}-{{ option.position }}-{{ forloop.index }}"
+                  name="{{ option.name }}"
+                  value="{{ value }}"
+                  form="{{ product_form_id }}"
+                  {% if option.selected_value == value %}
+                    checked
+                  {% endif %}
+                >
+                <label
+                  for="{{ section.id }}-{{ option.position }}-{{ forloop.index }}"
+                  {% if option.name == 'Color' %}
+                    class="color-swatch" style="background-color: {{ value | downcase | replace: ' ', '' }}"
+                  {% endif %}
+                >
+                  <span
+                    {% if option.name == 'Color' %}
+                      style="display:none"
+                    {% endif %}
+                  >
+                    {{- value -}}
+                  </span>
+                </label>
+              {% endfor %}
+            </div>
+          </fieldset>
+        {% endfor %}
+      </div>
+    {% endunless %}
+
+    <!-- Stock Badge -->
+    <div class="stock-badge-wrapper">
+      {% assign current_variant = product.selected_or_first_available_variant %}
+      {% if product.available %}
+        <span class="stock-badge">
+          {% if current_variant.inventory_management == 'shopify'
+            and current_variant.inventory_quantity > 0
+            and current_variant.inventory_quantity <= 10
+          %}
+            Only {{ current_variant.inventory_quantity }} left in stock
+          {% else %}
+            In stock
+          {% endif %}
+        </span>
+      {% endif %}
+    </div>
+
+    <div class="product-form__buttons">
+      {% form 'product', product, id: product_form_id %}
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+        <button type="submit" class="product-form__submit">
+          Buy {{ product.selected_or_first_available_variant.price | money_without_trailing_zeros }}
+        </button>
+      {% endform %}
+      <div class="quantity">
+        <input type="number" value="1" min="1" name="quantity" form="{{ product_form_id }}">
+      </div>
+    </div>
+  </div>
+</div>

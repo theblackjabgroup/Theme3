@@ -1,0 +1,34 @@
+{%- comment -%}
+  Block: Marquee
+  ------------------------------------------------------------------------------
+  Renders a scrolling text marquee with optional separator image.
+
+  Usage:
+  {% render 'block-marquee', block: block %}
+
+  Variables:
+  - block: The block object containing settings (text, speed, direction, etc.).
+{%- endcomment -%}
+<div
+  class="marquee-wrapper"
+  data-direction="{{ block.settings.direction }}"
+  style="
+    {% unless block.settings.show_border %}border: none;{% endunless %}
+    {% if block.settings.enable_custom_bg %}background: {{ block.settings.bg_color }};{% endif %}
+  "
+>
+  <div class="marquee-track" style="animation-duration: {{ block.settings.speed }}s">
+    {% for i in (1..10) %}
+      <span class="marquee-item">
+        {{ block.settings.text }}
+        {% if block.settings.separator_image %}
+          {{
+            block.settings.separator_image
+            | image_url: width: 60
+            | image_tag: class: 'marquee-separator', loading: 'lazy', alt: ''
+          }}
+        {% endif %}
+      </span>
+    {% endfor %}
+  </div>
+</div>

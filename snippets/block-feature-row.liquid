@@ -1,0 +1,25 @@
+{%- comment -%}
+  Block: Feature Row
+  ------------------------------------------------------------------------------
+  Renders a feature block with icon, heading, text, and link.
+
+  Usage:
+  {% render 'block-feature-row', block: block %}
+
+  Variables:
+  - block: The block object containing settings (icon, heading, text, button_label, button_link).
+{%- endcomment -%}
+<div class="feature-row">
+  {% if block.settings.icon != blank %}
+    {{ block.settings.icon | image_url: width: 60 | image_tag: class: 'feature-icon', loading: 'lazy' }}
+  {% endif %}
+  {% if block.settings.heading != blank %}
+    <strong class="feature-heading">{{ block.settings.heading }}</strong>
+  {% endif %}
+  {% if block.settings.text != blank %}
+    <div class="feature-text">{{ block.settings.text }}</div>
+  {% endif %}
+  {% if block.settings.button_label != blank %}
+    <a href="{{ block.settings.button_link }}" class="feature-link">{{ block.settings.button_label }}</a>
+  {% endif %}
+</div>

@@ -1,0 +1,21 @@
+{%- comment -%}
+  Product Hero Image Snippet
+  ------------------------------------------------------------------------------
+  Renders the floating main product image (first media item).
+
+  Usage:
+  {% render 'product-hero-image', product: product %}
+
+  Variables:
+  - product: The product object.
+{%- endcomment -%}
+<div class="product-hero-section">
+  {% assign first_media = product.media | first %}
+  {% if first_media %}
+    {{
+      first_media
+      | image_url: width: 1200
+      | image_tag: class: 'product-hero-image', loading: 'eager', alt: first_media.alt
+    }}
+  {% endif %}
+</div>

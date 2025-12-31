@@ -1,0 +1,40 @@
+{%- comment -%}
+  Product Right Column Snippet
+  ------------------------------------------------------------------------------
+  Renders the scrollable right column with image slider and detail blocks.
+
+  Usage:
+  {% render 'product-right-column', product: product, section: section %}
+
+  Variables:
+  - product: The product object.
+  - section: The section object (to iterate over blocks).
+{%- endcomment -%}
+<div class="product-split-right">
+  <!-- IMAGE SLIDER -->
+  {% render 'product-image-slider', product: product %}
+
+  <!-- DETAILS CONTENT -->
+  <div class="product-content-stack">
+    {% assign accordion_count = 0 %}
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when 'collapsible_tab' %}
+          {% if accordion_count < 2 %}
+            {% render 'block-accordion', block: block %}
+            {% assign accordion_count = accordion_count | plus: 1 %}
+          {% endif %}
+        {% when 'description' %}
+          <div class="product__description">{{ product.description }}</div>
+        {% when 'size_chart' %}
+          <button class="size-chart-btn">{{ block.settings.button_label | default: 'View the size chart' }}</button>
+        {% when 'marquee' %}
+          {% render 'block-marquee', block: block %}
+        {% when 'feature_row' %}
+          {% render 'block-feature-row', block: block %}
+        {% when 'icon_strip' %}
+          {% render 'block-icon-strip', block: block %}
+      {% endcase %}
+    {% endfor %}
+  </div>
+</div>
