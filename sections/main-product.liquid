@@ -88,6 +88,16 @@
     const productVariants = {{ product.variants | json }};
     const productOptions = {{ product.options_with_values | json }};
     const moneyFormat = {{ shop.money_with_currency_format | json }};
+    
+    // Create a map of inventory quantities since they aren't in the default JSON
+    const inventoryInfo = {
+      {% for variant in product.variants %}
+        "{{ variant.id }}": {
+          "quantity": {{ variant.inventory_quantity | default: 0 }},
+          "management": "{{ variant.inventory_management }}"
+        }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    };
 
     function formatMoney(cents, format) {
       if (typeof cents == 'string') { cents = cents.replace('.',''); }
@@ -212,8 +222,12 @@
         if (stockBadge) {
            if (currentVariant.available) {
              stockBadge.style.display = 'inline-block';
-             if (currentVariant.inventory_management === 'shopify' && currentVariant.inventory_quantity > 0 && currentVariant.inventory_quantity <= 10) {
-               stockBadge.textContent = `Only ${currentVariant.inventory_quantity} left in stock`;
+             
+             // Access custom inventory info
+             const invStats = inventoryInfo[currentVariant.id];
+             
+             if (invStats && invStats.management === 'shopify' && invStats.quantity > 0 && invStats.quantity <= 10) {
+               stockBadge.textContent = `Only ${invStats.quantity} left in stock`;
              } else {
                stockBadge.textContent = 'In stock';
              }
