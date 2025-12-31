@@ -87,6 +87,51 @@
     // ---------------------------------------------------------
     const productVariants = {{ product.variants | json }};
     const productOptions = {{ product.options_with_values | json }};
+    const moneyFormat = {{ shop.money_with_currency_format | json }};
+
+    function formatMoney(cents, format) {
+      if (typeof cents == 'string') { cents = cents.replace('.',''); }
+      let value = '';
+      const placeholderRegex = /\{\{\s*(\w+)\s*\}\}/;
+      const formatString = format || moneyFormat;
+
+      function defaultOption(opt, def) {
+         return (typeof opt == 'undefined' ? def : opt);
+      }
+
+      function formatWithDelimiters(number, precision, thousands, decimal) {
+        precision = defaultOption(precision, 2);
+        thousands = defaultOption(thousands, ',');
+        decimal   = defaultOption(decimal, '.');
+
+        if (isNaN(number) || number == null) { return 0; }
+
+        number = (number/100.0).toFixed(precision);
+
+        var parts   = number.split('.'),
+            dollars = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1' + thousands),
+            cents   = parts[1] ? (decimal + parts[1]) : '';
+
+        return dollars + cents;
+      }
+
+      switch(formatString.match(placeholderRegex)[1]) {
+        case 'amount':
+          value = formatWithDelimiters(cents, 2);
+          break;
+        case 'amount_no_decimals':
+          value = formatWithDelimiters(cents, 0);
+          break;
+        case 'amount_with_comma_separator':
+          value = formatWithDelimiters(cents, 2, '.', ',');
+          break;
+        case 'amount_no_decimals_with_comma_separator':
+          value = formatWithDelimiters(cents, 0, '.', ',');
+          break;
+      }
+
+      return formatString.replace(placeholderRegex, value);
+    }
     
     // Select all radio inputs for variants WITHIN this section
     const variantRadios = sectionContainer.querySelectorAll('.product-form__input input[type="radio"]');
@@ -143,17 +188,10 @@
         window.history.replaceState({ path: newUrl.toString() }, '', newUrl);
 
         // 3. Update Button State (Price + Status)
-             // 3. Update Button State (Price + Status)
         if (submitBtn) {
            if (currentVariant.available) {
-             // Get currency symbol from liquid injection or inferred from initial state
-             const shopCurrency = {{ cart.currency.symbol | json }} || '$';
-             
-             // Format price
-             let formattedPrice = shopCurrency + (currentVariant.price / 100).toFixed(0);
-             if (currentVariant.price % 100 !== 0) {
-                formattedPrice = shopCurrency + (currentVariant.price / 100).toFixed(2);
-             }
+             // Use proper formatMoney utility
+             const formattedPrice = formatMoney(currentVariant.price, moneyFormat);
              
              submitBtn.textContent = `Buy ${formattedPrice}`;
              
@@ -166,6 +204,21 @@
              submitBtn.disabled = true;
              submitBtn.style.opacity = '0.5';
              submitBtn.style.cursor = 'not-allowed';
+           }
+        }
+
+        // 4. Update Stock Badge
+        const stockBadge = sectionContainer.querySelector('.stock-badge');
+        if (stockBadge) {
+           if (currentVariant.available) {
+             stockBadge.style.display = 'inline-block';
+             if (currentVariant.inventory_management === 'shopify' && currentVariant.inventory_quantity > 0 && currentVariant.inventory_quantity <= 10) {
+               stockBadge.textContent = `Only ${currentVariant.inventory_quantity} left in stock`;
+             } else {
+               stockBadge.textContent = 'In stock';
+             }
+           } else {
+             stockBadge.style.display = 'none';
            }
         }
       }
