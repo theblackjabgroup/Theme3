@@ -262,8 +262,7 @@
 }
 
 .video-card video,
-.video-card iframe,
-.video-card .video-placeholder {
+.video-card iframe {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -277,9 +276,26 @@
 }
 
 .video-card:hover video,
-.video-card:hover iframe,
-.video-card:hover .video-placeholder {
+.video-card:hover iframe {
   transform: scale(0.85);
+}
+
+.video-card .video-placeholder-text {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--color-text, #000);
+  font-size: 16px;
+  font-weight: 500;
+  text-align: center;
+  padding: 20px;
 }
 
 /* Hover marquee overlay for video card */

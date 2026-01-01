@@ -644,27 +644,7 @@
               {%- endcase -%}
 
               {%- if has_video == false -%}
-                {%- if block.settings.placeholder_image != blank -%}
-                  <img
-                    src="{{ block.settings.placeholder_image | image_url: width: 1200 }}"
-                    alt="Video placeholder"
-                    class="video-placeholder"
-                    loading="eager"
-                    fetchpriority="high"
-                    width="1200"
-                    height="675"
-                  >
-                {%- else -%}
-                  <img
-                    src="https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?v=1530129081"
-                    alt="Video placeholder"
-                    class="video-placeholder"
-                    loading="eager"
-                    fetchpriority="high"
-                    width="1200"
-                    height="675"
-                  >
-                {%- endif -%}
+                <div class="video-placeholder-text">Add video here</div>
               {%- endif -%}
 
               {%- if block.settings.marquee_text != blank -%}
