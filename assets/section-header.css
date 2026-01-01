@@ -560,9 +560,11 @@ body.mobile-menu-open .mobile-header-container {
   visibility: hidden;
   transition: opacity 0.3s ease, visibility 0.3s ease;
   pointer-events: none;
+  display: none;
 }
 
 .mobile-menu-drawer[aria-hidden="false"] {
+  display: block;
   opacity: 1;
   visibility: visible;
   pointer-events: all;
@@ -671,6 +673,8 @@ body.mobile-menu-open .mobile-menu-content * {
 .mobile-menu-link-text {
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  font-display: swap;
+  will-change: contents;
 }
 
 .mobile-menu-link-count {

@@ -1,5 +1,4 @@
-<link rel="stylesheet" href="{{ 'section-header.css' | asset_url }}" media="print" onload="this.media='all'">
-<noscript>{{ 'section-header.css' | asset_url | stylesheet_tag }}</noscript>
+{{ 'section-header.css' | asset_url | stylesheet_tag: preload: true }}
 
 <!-- Desktop Header (Floating Dock) -->
 <header class="floating-dock-header desktop-header">
@@ -260,7 +259,7 @@
   </div>
 
   <!-- Mobile Menu Drawer -->
-  <div class="mobile-menu-drawer" data-mobile-menu>
+  <div class="mobile-menu-drawer" data-mobile-menu aria-hidden="true">
     <div class="mobile-menu-content">
       <nav class="mobile-menu-nav">
         <!-- Main Menu Links (Two Column Grid) -->
