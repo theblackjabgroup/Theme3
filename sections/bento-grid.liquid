@@ -187,9 +187,13 @@
                 </div>
                 <div class="welcome-text">
                   {%- if customer -%}
-                    Hi, {{ customer.first_name }}!
+                    {%- if block.settings.welcome_text != blank -%}
+                      {{ block.settings.welcome_text | replace: '[name]', customer.first_name }}
+                    {%- else -%}
+                      Hi, {{ customer.first_name }}!
+                    {%- endif -%}
                   {%- else -%}
-                    Login
+                    {{ block.settings.login_text | default: 'Login' }}
                   {%- endif -%}
                 </div>
               </div>
@@ -1264,6 +1268,24 @@
           "step": 0.1,
           "label": "Row Span",
           "default": 1
+        },
+        {
+          "type": "header",
+          "content": "Text Settings"
+        },
+        {
+          "type": "text",
+          "id": "login_text",
+          "label": "Login Text",
+          "default": "Login",
+          "info": "Text shown when user is not logged in"
+        },
+        {
+          "type": "text",
+          "id": "welcome_text",
+          "label": "Welcome Text",
+          "default": "Hi, [name]!",
+          "info": "Text shown when user is logged in. Use [name] to display customer's first name"
         },
         {
           "type": "header",
