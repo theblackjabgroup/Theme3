@@ -1121,11 +1121,8 @@
   image-rendering: -webkit-optimize-contrast;
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
-  transition: background-position var(--sprite-animation-duration) var(--sprite-animation-timing);
-}
-
-.bento-card.content-card.has-spritesheet:hover .content-card-sprite-side {
-  background-position: 100% 50% !important;
+  /* Transition controlled by JavaScript */
+  transition: background-position 0s;
   will-change: background-position;
 }
 
@@ -1135,11 +1132,8 @@
   image-rendering: -webkit-optimize-contrast;
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
-  transition: background-position var(--sprite-animation-duration) var(--sprite-animation-timing);
-}
-
-.bento-card.content-card.has-spritesheet-vertical:hover .content-card-sprite-side {
-  background-position: 50% 100% !important;
+  /* Transition controlled by JavaScript */
+  transition: background-position 0s;
   will-change: background-position;
 }
 

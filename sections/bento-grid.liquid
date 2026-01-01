@@ -1,4 +1,5 @@
 {{ 'section-bento-grid.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'section-bento-grid.js' | asset_url }}" defer></script>
 
 <style>
   /* Dynamic styles that require Liquid variables */
@@ -438,7 +439,7 @@
                     flex: 0 0 var(--desktop-sprite-canvas-size);
                     transform: scale(var(--desktop-sprite-scale)) translate(var(--desktop-sprite-x-offset), var(--desktop-sprite-y-offset)) rotate(var(--desktop-sprite-rotation));
                     z-index: 10;
-                    background-image: url('{% if block.settings.image != blank %}{{ block.settings.image | image_url: width: 5760 }}{% else %}{{ 'spritesheet-prejudice.png' | asset_url }}{% endif %}');
+                    background-image: url('{% if block.settings.image != blank %}{{ block.settings.image | image_url: width: 1920 }}{% else %}{{ 'spritesheet-prejudice.png' | asset_url }}{% endif %}');
                     {% unless enable_spritesheet %}
                       background-position: {{ bg_pos_h }} {{ sprite_vertical_alignment }};
                       background-size: {{ bg_size }};

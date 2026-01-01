@@ -306,8 +306,8 @@
       {%- if section.settings.logo_image != blank -%}
         {{
           section.settings.logo_image
-          | image_url: width: 3000
-          | image_tag: class: 'ef-logo-img', loading: 'lazy', widths: '600, 1200, 2000, 3000'
+          | image_url: width: 1200
+          | image_tag: class: 'ef-logo-img', loading: 'lazy', widths: '600, 1200'
         }}
       {%- else -%}
         {{ 'lifestyle-1' | placeholder_svg_tag: 'ef-logo-img placeholder-svg' }}
