@@ -644,12 +644,27 @@
               {%- endcase -%}
 
               {%- if has_video == false -%}
+                {%- liquid
+                  assign is_early_block = false
+                  assign block_position = 0
+                  for check_block in section.blocks
+                    assign block_position = block_position | plus: 1
+                    if check_block.id == block.id and block_position <= 2
+                      assign is_early_block = true
+                      break
+                    endif
+                  endfor
+                -%}
                 {%- if block.settings.placeholder_image != blank -%}
                   <img
                     src="{{ block.settings.placeholder_image | image_url: width: 1200 }}"
                     alt="Video placeholder"
                     class="video-placeholder"
-                    loading="lazy"
+                    {% if is_early_block %}
+                      loading="eager" fetchpriority="high"
+                    {% else %}
+                      loading="lazy"
+                    {% endif %}
                     width="1200"
                     height="675"
                   >
@@ -658,7 +673,11 @@
                     src="https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?v=1530129081"
                     alt="Video placeholder"
                     class="video-placeholder"
-                    loading="lazy"
+                    {% if is_early_block %}
+                      loading="eager" fetchpriority="high"
+                    {% else %}
+                      loading="lazy"
+                    {% endif %}
                     width="1200"
                     height="675"
                   >
