@@ -1,4 +1,4 @@
-{{ 'section-bento-grid.css' | asset_url | stylesheet_tag }}
+{{ 'section-bento-grid.css' | asset_url | stylesheet_tag: preload: true }}
 <script src="{{ 'section-bento-grid.js' | asset_url }}" defer></script>
 
 <style>
