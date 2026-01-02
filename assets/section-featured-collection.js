@@ -13,25 +13,25 @@
     function getOriginalSetWidth() {
       if (originalCards.length === 0) return 0;
       
-      // Method 1: Use getBoundingClientRect for accurate measurement
+      // Use offset-based calculations which are scroll-position independent
+      // offsetLeft and offsetWidth are layout-relative, not viewport-relative,
+      // so they work correctly even when the carousel is scrolled
+      
       const firstCard = originalCards[0];
       const lastCard = originalCards[originalCards.length - 1];
       
       if (firstCard && lastCard) {
-        const firstRect = firstCard.getBoundingClientRect();
-        const lastRect = lastCard.getBoundingClientRect();
-        const railRect = rail.getBoundingClientRect();
+        // Since cards are direct children of rail, offsetLeft is relative to rail
+        const firstCardLeft = firstCard.offsetLeft;
+        const lastCardLeft = lastCard.offsetLeft;
+        const lastCardWidth = lastCard.offsetWidth || lastCard.clientWidth;
         
-        // Calculate width from first card left edge to last card right edge
-        const width = lastRect.right - firstRect.left;
-        
-        // Add padding from rail left edge to first card
-        const paddingLeft = firstRect.left - railRect.left;
-        
-        return width + paddingLeft;
+        // Total width from rail left edge to last card right edge
+        return lastCardLeft + lastCardWidth;
       }
       
-      // Method 2: Fallback - calculate manually
+      // Fallback - calculate manually using offsetWidth
+      // This sums card widths and gaps, then adds padding from rail left to first card
       let totalWidth = 0;
       originalCards.forEach((card, index) => {
         totalWidth += card.offsetWidth || card.clientWidth;
@@ -44,6 +44,12 @@
           totalWidth += gap;
         }
       });
+      
+      // Add padding from rail left edge to first card
+      if (originalCards.length > 0) {
+        const firstCard = originalCards[0];
+        totalWidth += firstCard.offsetLeft;
+      }
       
       return totalWidth;
     }

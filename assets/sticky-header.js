@@ -11,6 +11,9 @@ class AnimatedHeader {
     this.scrollThreshold = 50; // Scroll distance before header hides
     this.isScrollingDown = false;
 
+    // Get animation speed from global variable (set by theme editor)
+    this.animationSpeed = window.headerAnimationSpeed || 1;
+
     // State tracking
     this.desktopIsVisible = true;
     this.mobileIsVisible = true;
@@ -56,14 +59,15 @@ class AnimatedHeader {
   setInitialStyles() {
     // Desktop header - ensure it has transition and right position
     if (this.desktopHeader) {
-      this.desktopHeader.style.transition = 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+      this.desktopHeader.style.transition = `transform ${this.animationSpeed}s cubic-bezier(0.4, 0, 0.2, 1)`;
       this.desktopHeader.style.willChange = 'transform';
-      this.desktopHeader.style.right = '0px';
+      // Set initial right position to match the return position
+      this.desktopHeader.style.right = '20px';
     }
 
     // Mobile header - ensure it has transition
     if (this.mobileHeader) {
-      this.mobileHeader.style.transition = 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+      this.mobileHeader.style.transition = `transform ${this.animationSpeed}s cubic-bezier(0.4, 0, 0.2, 1)`;
       this.mobileHeader.style.willChange = 'transform';
     }
   }
@@ -81,6 +85,9 @@ class AnimatedHeader {
           this.desktopIsVisible = true;
           this.desktopHeader.style.right = '20px';
           this.desktopHeader.style.transform = 'translateX(0)';
+        } else {
+          // Ensure position is correct even if already visible (e.g., initial load at top)
+          this.desktopHeader.style.right = '20px';
         }
       } else if (scrollY > this.scrollThreshold) {
         // Scrolled past threshold - slide out to the right

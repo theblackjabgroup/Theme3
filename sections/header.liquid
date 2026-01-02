@@ -312,6 +312,9 @@
 
 {%- render 'spotlight-search', input_id: 'SpotlightSearchInput' -%}
 
+<script>
+  window.headerAnimationSpeed = {{ section.settings.scroll_animation_speed | default: 1 }};
+</script>
 <script src="{{ 'mega-menu.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'mobile-header.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'spotlight-search.js' | asset_url }}" defer="defer"></script>
@@ -326,6 +329,21 @@
       "id": "menu",
       "default": "main-menu",
       "label": "Menu"
+    },
+    {
+      "type": "header",
+      "content": "Scroll Animation Settings"
+    },
+    {
+      "type": "range",
+      "id": "scroll_animation_speed",
+      "min": 0.1,
+      "max": 2,
+      "step": 0.1,
+      "unit": "s",
+      "label": "Scroll Animation Speed",
+      "default": 1,
+      "info": "Speed of header slide animation when scrolling (in seconds)"
     },
     {
       "type": "header",

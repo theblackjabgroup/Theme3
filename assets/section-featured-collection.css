@@ -91,10 +91,6 @@
   transform: rotateZ(-5deg) scale(1.1);
 }
 
-.fc3d-card.is-center:hover .fc3d-card__inner {
-  transform: rotateZ(-5deg) scale(1.1) rotateY(180deg);
-}
-
 .fc3d-card__inner {
   width: 100%;
   height: 100%;
@@ -359,6 +355,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .fc3d-card__inner {
+    transition: none;
+  }
   .fc3d-card,
   .fc3d-card__link {
     transition: none;
