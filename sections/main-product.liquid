@@ -78,8 +78,7 @@
 
       // Update on resize to handle hidden/shown slides
       window.addEventListener('resize', () => {
-        updateButtons();
-        // Optional: Re-align current slide?
+        scrollToSlide(index);
       });
 
       updateButtons();
