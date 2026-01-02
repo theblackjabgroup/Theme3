@@ -3,118 +3,84 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "collapsible_tab_1": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Geeky Details",
+            "content": "<p>Here are the technical details of the product.</p>"
+          }
+        },
+        "size_chart_1": {
+          "type": "size_chart",
+          "settings": {
+            "button_label": "View the size chart"
+          }
+        },
         "description": {
           "type": "description"
         },
-        "collapsible-row-0": {
-          "type": "collapsible_tab",
+        "icon_strip_1": {
+          "type": "icon_strip",
           "settings": {
-            "heading": "Materials",
-            "content": ""
+            "text_1": "Designed in Milan with Love",
+            "text_2": "Conversation Starter",
+            "text_3": "Hug Magnet",
+            "text_4": "Supporting Non-Profit"
           }
         },
-        "collapsible-row-1": {
-          "type": "collapsible_tab",
+        "feature_row_1": {
+          "type": "feature_row",
           "settings": {
-            "heading": "Shipping & Returns",
-            "content": ""
+            "heading": "Delivery",
+            "text": "<p>We haven't yet figured out how to make delivery teleport to your doorstep. So, while we'll do our best to get your order to you as quickly as possible, please be patient.</p>",
+            "button_label": "Discover more"
+          }
+        },
+        "marquee_1": {
+          "type": "marquee",
+          "settings": {
+            "text": "FREE SHIPPING WORLDWIDE",
+            "speed": 20,
+            "direction": "normal"
+          }
+        },
+        "feature_row_2": {
+          "type": "feature_row",
+          "settings": {
+            "heading": "Material",
+            "text": "<p>Made from 100% organic cotton, soft to the touch and kind to the planet.</p>",
+            "button_label": "Read more"
+          }
+        },
+        "feature_row_3": {
+          "type": "feature_row",
+          "settings": {
+            "heading": "Care Instructions",
+            "text": "<p>Wash cool, hang dry. Do not bleach. Love your clothes and they will love you back.</p>",
+            "button_label": "Care Guide"
+          }
+        },
+        "marquee_2": {
+          "type": "marquee",
+          "settings": {
+            "text": "NEW COLLECTION DROPPING SOON",
+            "speed": 25,
+            "direction": "reverse"
           }
         }
       },
       "block_order": [
+        "collapsible_tab_1",
+        "size_chart_1",
         "description",
-        "collapsible-row-0",
-        "collapsible-row-1"
+        "icon_strip_1",
+        "feature_row_1",
+        "marquee_1",
+        "feature_row_2",
+        "feature_row_3",
+        "marquee_2"
       ],
-      "settings": {
-        "enable_sticky_info": true,
-        "gallery_layout": "stacked",
-        "media_size": "large",
-        "constrain_to_viewport": true,
-        "mobile_thumbnails": "hide",
-        "hide_variants": true,
-        "enable_video_looping": false,
-        "padding_top": 36,
-        "padding_bottom": 12
-      }
-    },
-    "image-with-text": {
-      "type": "image-with-text",
-      "blocks": {
-        "image-with-text-0": {
-          "type": "heading",
-          "settings": {
-            "heading": "Image with text",
-            "heading_size": "h1"
-          }
-        },
-        "image-with-text-1": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.<\/p>",
-            "text_style": "body"
-          }
-        }
-      },
-      "block_order": [
-        "image-with-text-0",
-        "image-with-text-1"
-      ],
-      "settings": {
-        "height": "small",
-        "desktop_image_width": "medium",
-        "layout": "text_first",
-        "desktop_content_position": "top",
-        "desktop_content_alignment": "left",
-        "content_layout": "no-overlap",
-        "color_scheme": "scheme-2",
-        "mobile_content_alignment": "left",
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
-    "multicolumn": {
-      "type": "multicolumn",
-      "blocks": {
-        "column-0": {
-          "type": "column",
-          "settings": {
-            "title": "Free Shipping",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.<\/p>",
-            "link_label": "",
-            "link": ""
-          }
-        },
-        "column-1": {
-          "type": "column",
-          "settings": {
-            "title": "Hassle-Free Exchanges",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.<\/p>",
-            "link_label": "",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "column-0",
-        "column-1"
-      ],
-      "settings": {
-        "title": "",
-        "heading_size": "h1",
-        "image_width": "full",
-        "image_ratio": "adapt",
-        "columns_desktop": 2,
-        "column_alignment": "left",
-        "background_style": "none",
-        "button_label": "",
-        "button_link": "",
-        "swipe_on_mobile": false,
-        "color_scheme": "scheme-1",
-        "columns_mobile": "1",
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
+      "settings": {}
     },
     "related-products": {
       "type": "related-products",
@@ -135,8 +101,6 @@
   },
   "order": [
     "main",
-    "image-with-text",
-    "multicolumn",
     "related-products"
   ]
 }

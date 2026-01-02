@@ -14,9 +14,9 @@
   <button class="media-nav next" aria-label="Next image">→</button>
 
   <div class="product-media-track" id="ProductMediaTrack">
-    {% for media in product.media offset: 1 %}
+    {% for media in product.media %}
       {% if media.media_type == 'image' %}
-        <div class="product-media-slide">
+        <div class="product-media-slide {% if forloop.first %}is-hero-slide{% endif %}">
           {{ media | image_url: width: 1200 | image_tag: loading: 'lazy', alt: media.alt }}
         </div>
       {% endif %}
