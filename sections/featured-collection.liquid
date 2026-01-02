@@ -32,57 +32,143 @@
     <div class="fc3d__viewport" data-fc3d-viewport>
       <div class="fc3d__rail" data-fc3d-rail role="list">
         {%- if featured_collection != blank and featured_collection.products_count > 0 -%}
+          {%- comment -%} First set of cards {%- endcomment -%}
           {%- for product in featured_collection.products limit: products_to_show -%}
+            {%- assign product_image = product.featured_image | default: product.images.first -%}
+            {%- assign image_url = product_image | image_url: width: 800 -%}
             <div class="fc3d-card" data-fc3d-card role="listitem">
               <div class="fc3d-card__inner">
                 <div class="fc3d-card__face fc3d-card__face--front">
-                  <a class="fc3d-card__link" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
-                    {%- if product.featured_media != blank -%}
-                      {{
-                        product.featured_media
-                        | image_url: width: 900
-                        | image_tag: class: 'fc3d-card__image', widths: '300, 450, 600, 900', loading: 'lazy'
-                      }}
-                    {%- else -%}
-                      {{ 'product-1' | placeholder_svg_tag: 'fc3d-card__image fc3d-card__image--placeholder' }}
+                  <a
+                    class="fc3d-card__link"
+                    href="{{ product.url }}"
+                    aria-label="{{ product.title | escape }}"
+                    {%- if image_url != blank -%}
+                      style="background-image: url('{{ image_url }}');"
                     {%- endif -%}
-
-                    <div class="fc3d-card__front-overlay">
-                      <div class="fc3d-card__front-title">{{ product.title }}</div>
+                  >
+                    <!-- Main content -->
+                    <div class="fc3d-card__content">
+                      <div class="fc3d-card__title">{{ product.title }}</div>
                     </div>
                   </a>
                 </div>
 
-                <div class="fc3d-card__face fc3d-card__face--back" aria-hidden="true">
-                  <div class="fc3d-card__back-content">
-                    <div class="fc3d-card__back-title">{{ product.title }}</div>
-                    <div class="fc3d-card__back-price">{{ product.price | money }}</div>
-                    {%- if product.description != blank -%}
-                      <div class="fc3d-card__back-text">{{ product.description | strip_html | truncate: 120 }}</div>
+                <div class="fc3d-card__face fc3d-card__face--back">
+                  <a
+                    class="fc3d-card__link"
+                    href="{{ product.url }}"
+                    aria-label="{{ product.title | escape }}"
+                    {%- if image_url != blank -%}
+                      style="background-image: url('{{ image_url }}');"
                     {%- endif -%}
-                    <a class="fc3d-card__back-cta" href="{{ product.url }}">View product</a>
-                  </div>
+                  >
+                    <div class="fc3d-card__back-content">
+                      <div class="fc3d-card__back-title">{{ product.title }}</div>
+                      <div class="fc3d-card__back-price">{{ product.price | money }}</div>
+                      {%- if product.description != blank -%}
+                        <div class="fc3d-card__back-text">{{ product.description | strip_html | truncate: 120 }}</div>
+                      {%- endif -%}
+                      <div class="fc3d-card__back-cta">View product</div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+          {%- comment -%} Duplicate set for infinite loop {%- endcomment -%}
+          {%- for product in featured_collection.products limit: products_to_show -%}
+            {%- assign product_image = product.featured_image | default: product.images.first -%}
+            {%- assign image_url = product_image | image_url: width: 800 -%}
+            <div class="fc3d-card" data-fc3d-card data-fc3d-card-clone role="listitem">
+              <div class="fc3d-card__inner">
+                <div class="fc3d-card__face fc3d-card__face--front">
+                  <a
+                    class="fc3d-card__link"
+                    href="{{ product.url }}"
+                    aria-label="{{ product.title | escape }}"
+                    {%- if image_url != blank -%}
+                      style="background-image: url('{{ image_url }}');"
+                    {%- endif -%}
+                  >
+                    <!-- Main content -->
+                    <div class="fc3d-card__content">
+                      <div class="fc3d-card__title">{{ product.title }}</div>
+                    </div>
+                  </a>
+                </div>
+
+                <div class="fc3d-card__face fc3d-card__face--back">
+                  <a
+                    class="fc3d-card__link"
+                    href="{{ product.url }}"
+                    aria-label="{{ product.title | escape }}"
+                    {%- if image_url != blank -%}
+                      style="background-image: url('{{ image_url }}');"
+                    {%- endif -%}
+                  >
+                    <div class="fc3d-card__back-content">
+                      <div class="fc3d-card__back-title">{{ product.title }}</div>
+                      <div class="fc3d-card__back-price">{{ product.price | money }}</div>
+                      {%- if product.description != blank -%}
+                        <div class="fc3d-card__back-text">{{ product.description | strip_html | truncate: 120 }}</div>
+                      {%- endif -%}
+                      <div class="fc3d-card__back-cta">View product</div>
+                    </div>
+                  </a>
                 </div>
               </div>
             </div>
           {%- endfor -%}
         {%- else -%}
+          {%- comment -%} First set of placeholder cards {%- endcomment -%}
           {%- for i in (1..products_to_show) -%}
+            {%- assign placeholder_title = 'Name of the product' -%}
             <div class="fc3d-card" data-fc3d-card role="listitem">
               <div class="fc3d-card__inner">
                 <div class="fc3d-card__face fc3d-card__face--front">
                   <div class="fc3d-card__link" role="link" aria-label="Placeholder product">
-                    {{ 'product-1' | placeholder_svg_tag: 'fc3d-card__image fc3d-card__image--placeholder' }}
-                    <div class="fc3d-card__front-overlay">
-                      <div class="fc3d-card__front-title">Name of the product</div>
+                    <!-- Main content -->
+                    <div class="fc3d-card__content">
+                      <div class="fc3d-card__title">{{ placeholder_title }}</div>
                     </div>
                   </div>
                 </div>
-                <div class="fc3d-card__face fc3d-card__face--back" aria-hidden="true">
-                  <div class="fc3d-card__back-content">
-                    <div class="fc3d-card__back-title">Back side content</div>
-                    <div class="fc3d-card__back-text">
-                      Add a collection in the section settings to show real products.
+
+                <div class="fc3d-card__face fc3d-card__face--back">
+                  <div class="fc3d-card__link" role="link" aria-label="Placeholder product">
+                    <div class="fc3d-card__back-content">
+                      <div class="fc3d-card__back-title">Back side content</div>
+                      <div class="fc3d-card__back-text">
+                        Add a collection in the section settings to show real products.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+          {%- comment -%} Duplicate set for infinite loop {%- endcomment -%}
+          {%- for i in (1..products_to_show) -%}
+            {%- assign placeholder_title = 'Name of the product' -%}
+            <div class="fc3d-card" data-fc3d-card data-fc3d-card-clone role="listitem">
+              <div class="fc3d-card__inner">
+                <div class="fc3d-card__face fc3d-card__face--front">
+                  <div class="fc3d-card__link" role="link" aria-label="Placeholder product">
+                    <!-- Main content -->
+                    <div class="fc3d-card__content">
+                      <div class="fc3d-card__title">{{ placeholder_title }}</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="fc3d-card__face fc3d-card__face--back">
+                  <div class="fc3d-card__link" role="link" aria-label="Placeholder product">
+                    <div class="fc3d-card__back-content">
+                      <div class="fc3d-card__back-title">Back side content</div>
+                      <div class="fc3d-card__back-text">
+                        Add a collection in the section settings to show real products.
+                      </div>
                     </div>
                   </div>
                 </div>

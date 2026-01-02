@@ -1,21 +1,22 @@
 /**
  * Animated Header Behavior
- * Header slides out left-to-right when scrolling, then slides back in from top 20px
+ * Header slides out to the right when scrolling down, and slides back in when at top
  */
 
 class AnimatedHeader {
   constructor() {
     this.desktopHeader = document.querySelector('.floating-dock-header');
     this.mobileHeader = document.querySelector('.mobile-header');
-    this.stickyOffset = 20; // Distance from top when sticky
-    this.scrollThreshold = 200; // Scroll distance before header comes back
     this.lastScrollY = 0;
-    
-    // Separate state for desktop and mobile headers
+    this.scrollThreshold = 50; // Scroll distance before header hides
+    this.isScrollingDown = false;
+
+    // Get animation speed from global variable (set by theme editor)
+    this.animationSpeed = window.headerAnimationSpeed || 1;
+
+    // State tracking
     this.desktopIsVisible = true;
-    this.desktopHasReturned = false;
     this.mobileIsVisible = true;
-    this.mobileHasReturned = false;
 
     if (this.desktopHeader || this.mobileHeader) {
       this.init();
@@ -23,10 +24,10 @@ class AnimatedHeader {
   }
 
   init() {
-    // Set initial position
-    this.setInitialPosition();
+    // Set initial styles
+    this.setInitialStyles();
 
-    // Add scroll listener
+    // Add scroll listener with throttling
     let ticking = false;
     window.addEventListener(
       'scroll',
@@ -55,30 +56,19 @@ class AnimatedHeader {
     this.handleScroll();
   }
 
-  setInitialPosition() {
-    // Desktop header starts at bottom right
+  setInitialStyles() {
+    // Desktop header - ensure it has transition and right position
     if (this.desktopHeader) {
-      this.desktopHeader.style.position = 'fixed';
-      this.desktopHeader.style.bottom = '24px';
-      this.desktopHeader.style.right = '20px';
-      this.desktopHeader.style.top = 'auto';
-      this.desktopHeader.style.transform = 'translateX(0)';
-      this.desktopHeader.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+      this.desktopHeader.style.transition = `transform ${this.animationSpeed}s cubic-bezier(0.4, 0, 0.2, 1)`;
       this.desktopHeader.style.willChange = 'transform';
+      // Set initial right position to match the return position
+      this.desktopHeader.style.right = '0px';
     }
 
-    // Mobile header starts at top
+    // Mobile header - ensure it has transition
     if (this.mobileHeader) {
-      this.mobileHeader.style.position = 'relative';
-      this.mobileHeader.style.top = '0';
-      this.mobileHeader.style.transform = 'translateX(0)';
-      this.mobileHeader.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+      this.mobileHeader.style.transition = `transform ${this.animationSpeed}s cubic-bezier(0.4, 0, 0.2, 1)`;
       this.mobileHeader.style.willChange = 'transform';
-      const container = this.mobileHeader.querySelector('.mobile-header-container');
-      if (container) {
-        container.style.position = 'relative';
-        container.style.top = '0';
-      }
     }
   }
 
@@ -89,163 +79,42 @@ class AnimatedHeader {
 
     // Desktop header
     if (this.desktopHeader) {
-      // Slide back in from top when reaching threshold
-      if (scrollY >= this.scrollThreshold) {
-        if (!this.desktopHasReturned) {
-          this.desktopHasReturned = true;
+      if (scrollY <= this.scrollThreshold) {
+        // At top - slide back in with right: 20px
+        if (!this.desktopIsVisible) {
           this.desktopIsVisible = true;
-          this.desktopHeader.classList.add('header-sticky');
-          this.desktopHeader.style.position = 'fixed';
-          this.desktopHeader.style.top = `${this.stickyOffset}px`;
-          this.desktopHeader.style.bottom = 'auto';
           this.desktopHeader.style.right = '20px';
-          // Start from right (off screen) and slide in from right to left
-          const headerWidth = this.desktopHeader.offsetWidth || 200;
-          const rightOffset = 20;
-          this.desktopHeader.style.transform = `translateX(calc(100vw - ${rightOffset}px))`;
-          // Use double requestAnimationFrame for smooth animation
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              this.desktopHeader.style.transform = 'translateX(0)';
-            });
-          });
+          this.desktopHeader.style.transform = 'translateX(0)';
+        } else {
+          // Ensure position is correct even if already visible (e.g., initial load at top)
+          this.desktopHeader.style.right = '20px';
         }
-      }
-      // When scrolling back up from sticky position - repeat animation
-      else if (scrollY < this.scrollThreshold && this.desktopHasReturned) {
-        if (this.desktopHasReturned) {
-          this.desktopHasReturned = false;
-          this.desktopIsVisible = false;
-          this.desktopHeader.classList.remove('header-sticky');
-          // Ensure transition is enabled for smooth exit
-          this.desktopHeader.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-          // Slide out to the right - calculate distance to slide off screen
-          const rect = this.desktopHeader.getBoundingClientRect();
-          const distanceToRight = window.innerWidth - rect.left;
-          this.desktopHeader.style.transform = `translateX(${distanceToRight}px)`;
-
-          // After exit animation completes, reset to original position and slide in
-          setTimeout(() => {
-            if (!this.desktopHasReturned && !this.desktopIsVisible) {
-              // First, reset position to original bottom-right location (without transition)
-              this.desktopHeader.style.transition = 'none';
-              this.desktopHeader.style.position = 'fixed';
-              this.desktopHeader.style.bottom = '24px';
-              this.desktopHeader.style.top = 'auto';
-              this.desktopHeader.style.right = '20px';
-              // Start from left (off screen)
-              this.desktopHeader.style.transform = 'translateX(-100vw)';
-
-              // Force reflow to ensure position change is applied
-              this.desktopHeader.offsetHeight;
-
-              // Now enable transition and slide in smoothly
-              requestAnimationFrame(() => {
-                this.desktopHeader.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-                requestAnimationFrame(() => {
-                  this.desktopIsVisible = true;
-                  this.desktopHeader.style.transform = 'translateX(0)';
-                });
-              });
-            }
-          }, 600);
-        }
-      }
-      // Slide out when scrolling down (after 50px) and not at sticky position
-      else if (scrollY > 50 && !this.desktopHasReturned) {
+      } else if (scrollY > this.scrollThreshold) {
+        // Scrolled past threshold - slide out to the right
         if (this.desktopIsVisible) {
           this.desktopIsVisible = false;
-          // Ensure transition is enabled
-          this.desktopHeader.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
           // Calculate distance to slide off screen to the right
           const rect = this.desktopHeader.getBoundingClientRect();
-          const distanceToRight = window.innerWidth - rect.left;
-          this.desktopHeader.style.transform = `translateX(${distanceToRight}px)`;
+          const distanceToRight = window.innerWidth - rect.left; // Add some padding
+          this.desktopHeader.style.transform = `translateX(${distanceToRight + 20}px)`;
         }
-      }
-      // When at top or near top, ensure it's visible
-      else if (scrollY <= 50 && !this.desktopHasReturned && !this.desktopIsVisible) {
-        this.desktopIsVisible = true;
-        this.desktopHeader.style.transform = 'translateX(0)';
       }
     }
 
     // Mobile header
     if (this.mobileHeader) {
-      // Slide back in from top when reaching threshold
-      if (scrollY >= this.scrollThreshold) {
-        if (!this.mobileHasReturned) {
-          this.mobileHasReturned = true;
+      if (scrollY <= this.scrollThreshold) {
+        // At top - slide back in
+        if (!this.mobileIsVisible) {
           this.mobileIsVisible = true;
-          this.mobileHeader.classList.add('header-sticky');
-          this.mobileHeader.style.position = 'fixed';
-          this.mobileHeader.style.top = `${this.stickyOffset}px`;
-          this.mobileHeader.style.left = '0';
-          this.mobileHeader.style.right = '0';
-          this.mobileHeader.style.width = '100%';
-          // Start from right (off screen) and slide in from right to left
-          this.mobileHeader.style.transform = 'translateX(100%)';
-          // Use double requestAnimationFrame for smooth animation
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              this.mobileHeader.style.transform = 'translateX(0)';
-            });
-          });
+          this.mobileHeader.style.transform = 'translateX(0)';
         }
-      }
-      // When scrolling back up from sticky position - repeat animation
-      else if (scrollY < this.scrollThreshold && this.mobileHasReturned) {
-        if (this.mobileHasReturned) {
-          this.mobileHasReturned = false;
-          this.mobileIsVisible = false;
-          this.mobileHeader.classList.remove('header-sticky');
-          // Ensure transition is enabled for smooth exit
-          this.mobileHeader.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-          // Slide out to the right
-          this.mobileHeader.style.transform = 'translateX(100%)';
-
-          // After exit animation completes, reset to original position and slide in
-          setTimeout(() => {
-            if (!this.mobileHasReturned && !this.mobileIsVisible) {
-              // First, reset position to original top location (without transition)
-              this.mobileHeader.style.transition = 'none';
-              this.mobileHeader.style.position = 'relative';
-              this.mobileHeader.style.top = '0';
-              this.mobileHeader.style.left = 'auto';
-              this.mobileHeader.style.right = 'auto';
-              this.mobileHeader.style.width = 'auto';
-              // Start from left (off screen)
-              this.mobileHeader.style.transform = 'translateX(-100%)';
-
-              // Force reflow to ensure position change is applied
-              this.mobileHeader.offsetHeight;
-
-              // Now enable transition and slide in smoothly
-              requestAnimationFrame(() => {
-                this.mobileHeader.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-                requestAnimationFrame(() => {
-                  this.mobileIsVisible = true;
-                  this.mobileHeader.style.transform = 'translateX(0)';
-                });
-              });
-            }
-          }, 600);
-        }
-      }
-      // Slide out when scrolling down (after 50px) and not at sticky position
-      else if (scrollY > 50 && !this.mobileHasReturned) {
+      } else if (scrollY > this.scrollThreshold) {
+        // Scrolled past threshold - slide out to the right
         if (this.mobileIsVisible) {
           this.mobileIsVisible = false;
-          // Ensure transition is enabled
-          this.mobileHeader.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-          // Slide out to the right
           this.mobileHeader.style.transform = 'translateX(100%)';
         }
-      }
-      // When at top or near top, ensure it's visible
-      else if (scrollY <= 50 && !this.mobileHasReturned && !this.mobileIsVisible) {
-        this.mobileIsVisible = true;
-        this.mobileHeader.style.transform = 'translateX(0)';
       }
     }
   }
