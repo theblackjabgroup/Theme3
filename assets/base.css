@@ -215,7 +215,6 @@
   
   /* Semantic transitions */
   --transition-short: var(--transition-base);
-  --transition-medium: var(--transition-medium);
   --transition-long: var(--transition-slow);
   
   /* Easing functions */

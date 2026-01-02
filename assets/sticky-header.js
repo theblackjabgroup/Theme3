@@ -10,8 +10,12 @@ class AnimatedHeader {
     this.stickyOffset = 20; // Distance from top when sticky
     this.scrollThreshold = 200; // Scroll distance before header comes back
     this.lastScrollY = 0;
-    this.isVisible = true;
-    this.hasReturned = false;
+    
+    // Separate state for desktop and mobile headers
+    this.desktopIsVisible = true;
+    this.desktopHasReturned = false;
+    this.mobileIsVisible = true;
+    this.mobileHasReturned = false;
 
     if (this.desktopHeader || this.mobileHeader) {
       this.init();
@@ -87,9 +91,9 @@ class AnimatedHeader {
     if (this.desktopHeader) {
       // Slide back in from top when reaching threshold
       if (scrollY >= this.scrollThreshold) {
-        if (!this.hasReturned) {
-          this.hasReturned = true;
-          this.isVisible = true;
+        if (!this.desktopHasReturned) {
+          this.desktopHasReturned = true;
+          this.desktopIsVisible = true;
           this.desktopHeader.classList.add('header-sticky');
           this.desktopHeader.style.position = 'fixed';
           this.desktopHeader.style.top = `${this.stickyOffset}px`;
@@ -108,10 +112,10 @@ class AnimatedHeader {
         }
       }
       // When scrolling back up from sticky position - repeat animation
-      else if (scrollY < this.scrollThreshold && this.hasReturned) {
-        if (this.hasReturned) {
-          this.hasReturned = false;
-          this.isVisible = false;
+      else if (scrollY < this.scrollThreshold && this.desktopHasReturned) {
+        if (this.desktopHasReturned) {
+          this.desktopHasReturned = false;
+          this.desktopIsVisible = false;
           this.desktopHeader.classList.remove('header-sticky');
           // Ensure transition is enabled for smooth exit
           this.desktopHeader.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
@@ -122,7 +126,7 @@ class AnimatedHeader {
 
           // After exit animation completes, reset to original position and slide in
           setTimeout(() => {
-            if (!this.hasReturned && !this.isVisible) {
+            if (!this.desktopHasReturned && !this.desktopIsVisible) {
               // First, reset position to original bottom-right location (without transition)
               this.desktopHeader.style.transition = 'none';
               this.desktopHeader.style.position = 'fixed';
@@ -139,7 +143,7 @@ class AnimatedHeader {
               requestAnimationFrame(() => {
                 this.desktopHeader.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
                 requestAnimationFrame(() => {
-                  this.isVisible = true;
+                  this.desktopIsVisible = true;
                   this.desktopHeader.style.transform = 'translateX(0)';
                 });
               });
@@ -148,9 +152,9 @@ class AnimatedHeader {
         }
       }
       // Slide out when scrolling down (after 50px) and not at sticky position
-      else if (scrollY > 50 && !this.hasReturned) {
-        if (this.isVisible) {
-          this.isVisible = false;
+      else if (scrollY > 50 && !this.desktopHasReturned) {
+        if (this.desktopIsVisible) {
+          this.desktopIsVisible = false;
           // Ensure transition is enabled
           this.desktopHeader.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
           // Calculate distance to slide off screen to the right
@@ -160,8 +164,8 @@ class AnimatedHeader {
         }
       }
       // When at top or near top, ensure it's visible
-      else if (scrollY <= 50 && !this.hasReturned && !this.isVisible) {
-        this.isVisible = true;
+      else if (scrollY <= 50 && !this.desktopHasReturned && !this.desktopIsVisible) {
+        this.desktopIsVisible = true;
         this.desktopHeader.style.transform = 'translateX(0)';
       }
     }
@@ -170,9 +174,9 @@ class AnimatedHeader {
     if (this.mobileHeader) {
       // Slide back in from top when reaching threshold
       if (scrollY >= this.scrollThreshold) {
-        if (!this.hasReturned) {
-          this.hasReturned = true;
-          this.isVisible = true;
+        if (!this.mobileHasReturned) {
+          this.mobileHasReturned = true;
+          this.mobileIsVisible = true;
           this.mobileHeader.classList.add('header-sticky');
           this.mobileHeader.style.position = 'fixed';
           this.mobileHeader.style.top = `${this.stickyOffset}px`;
@@ -190,10 +194,10 @@ class AnimatedHeader {
         }
       }
       // When scrolling back up from sticky position - repeat animation
-      else if (scrollY < this.scrollThreshold && this.hasReturned) {
-        if (this.hasReturned) {
-          this.hasReturned = false;
-          this.isVisible = false;
+      else if (scrollY < this.scrollThreshold && this.mobileHasReturned) {
+        if (this.mobileHasReturned) {
+          this.mobileHasReturned = false;
+          this.mobileIsVisible = false;
           this.mobileHeader.classList.remove('header-sticky');
           // Ensure transition is enabled for smooth exit
           this.mobileHeader.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
@@ -202,7 +206,7 @@ class AnimatedHeader {
 
           // After exit animation completes, reset to original position and slide in
           setTimeout(() => {
-            if (!this.hasReturned && !this.isVisible) {
+            if (!this.mobileHasReturned && !this.mobileIsVisible) {
               // First, reset position to original top location (without transition)
               this.mobileHeader.style.transition = 'none';
               this.mobileHeader.style.position = 'relative';
@@ -220,7 +224,7 @@ class AnimatedHeader {
               requestAnimationFrame(() => {
                 this.mobileHeader.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
                 requestAnimationFrame(() => {
-                  this.isVisible = true;
+                  this.mobileIsVisible = true;
                   this.mobileHeader.style.transform = 'translateX(0)';
                 });
               });
@@ -229,9 +233,9 @@ class AnimatedHeader {
         }
       }
       // Slide out when scrolling down (after 50px) and not at sticky position
-      else if (scrollY > 50 && !this.hasReturned) {
-        if (this.isVisible) {
-          this.isVisible = false;
+      else if (scrollY > 50 && !this.mobileHasReturned) {
+        if (this.mobileIsVisible) {
+          this.mobileIsVisible = false;
           // Ensure transition is enabled
           this.mobileHeader.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
           // Slide out to the right
@@ -239,8 +243,8 @@ class AnimatedHeader {
         }
       }
       // When at top or near top, ensure it's visible
-      else if (scrollY <= 50 && !this.hasReturned && !this.isVisible) {
-        this.isVisible = true;
+      else if (scrollY <= 50 && !this.mobileHasReturned && !this.mobileIsVisible) {
+        this.mobileIsVisible = true;
         this.mobileHeader.style.transform = 'translateX(0)';
       }
     }
