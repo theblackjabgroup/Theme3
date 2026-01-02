@@ -14,12 +14,26 @@
   <button class="media-nav next" aria-label="Next image">→</button>
 
   <div class="product-media-track" id="ProductMediaTrack">
+    {% assign hero_image_found = false %}
     {% for media in product.media %}
-      {% if media.media_type == 'image' %}
-        <div class="product-media-slide {% if forloop.first %}is-hero-slide{% endif %}">
-          {{ media | image_url: width: 1200 | image_tag: loading: 'lazy', alt: media.alt }}
-        </div>
-      {% endif %}
+      <div class="product-media-slide {% if media.media_type == 'image' and hero_image_found == false %}is-hero-slide{% endif %}">
+        {% case media.media_type %}
+          {% when 'image' %}
+            {{ media | image_url: width: 1200 | image_tag: loading: 'lazy', alt: media.alt }}
+            {% if hero_image_found == false %}
+              {% assign hero_image_found = true %}
+            {% endif %}
+          {% when 'external_video' %}
+            {{ media | external_video_tag: class: 'video-slide' }}
+          {% when 'video' %}
+            {{ media | video_tag: controls: true, class: 'video-slide', image_size: '1200x' }}
+          {% when 'model' %}
+            {{
+              media
+              | model_viewer_tag: image_size: '1200x', reveal: 'interaction', toggleable: true, data-model-id: media.id
+            }}
+        {% endcase %}
+      </div>
     {% endfor %}
   </div>
 </div>
