@@ -5,18 +5,18 @@
   padding-top: var(--padding-vertical);
   padding-bottom: var(--padding-vertical);
   width: 100%;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: var(--border-width-thin) solid rgba(255, 255, 255, 0.1);
 }
 
 .subfooter-container {
   width: 100%;
-  margin: 0;
-  padding: 0 10px;
+  margin: var(--spacing-0);
+  padding: var(--spacing-0) var(--spacing-5);
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: var(--spacing-10);
 }
 
 /* Left: Currency / Localization */
@@ -33,17 +33,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: var(--spacing-10);
   text-align: center;
   min-width: 300px;
 }
 
 .sf-social-list {
   list-style: none;
-  padding: 0;
-  margin: 0;
+  padding: var(--spacing-0);
+  margin: var(--spacing-0);
   display: flex;
-  gap: 15px;
+  gap: var(--spacing-15);
   justify-content: center;
 }
 
@@ -52,7 +52,7 @@
   text-decoration: none;
   display: flex;
   align-items: center;
-  transition: opacity 0.2s;
+  transition: opacity var(--transition-fast);
 }
 
 .sf-social-link:hover {
@@ -60,8 +60,8 @@
 }
 
 .sf-social-link svg {
-  width: 20px;
-  height: 20px;
+  width: var(--icon-size-medium);
+  height: var(--icon-size-medium);
   fill: currentColor;
 }
 
@@ -88,16 +88,16 @@
 
 .sf-payment-list {
   list-style: none;
-  padding: 0;
-  margin: 0;
+  padding: var(--spacing-0);
+  margin: var(--spacing-0);
   display: flex;
-  gap: 8px;
+  gap: var(--spacing-4);
   flex-wrap: wrap;
   justify-content: flex-end;
 }
 
 .sf-payment-item svg {
-  height: 24px;
+  height: var(--icon-size-lg);
   width: auto;
 }
 
@@ -109,8 +109,8 @@
       "payment payment"
       "currency social"
       "text text";
-    padding: 10px;
-    gap: 0px;
+    padding: var(--spacing-5);
+    gap: var(--spacing-0);
     text-align: left;
   }
 

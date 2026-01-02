@@ -7,17 +7,17 @@
 .blog-slider-container {
   width: 100%;
   overflow: hidden;
-  padding: 20px 0;
+  padding: var(--spacing-10) var(--spacing-0);
 }
 
 .blog-slider-track {
   display: flex;
-  gap: 30px;
+  gap: var(--gap-xxl);
   width: max-content;
   will-change: transform;
-  transition: transform 0.5s ease-in-out;
+  transition: transform var(--transition-slow) var(--ease-in-out);
   cursor: grab;
-  padding: 0 50px;
+  padding: var(--spacing-0) 50px;
 }
 
 .blog-slider-track:active {
@@ -33,38 +33,38 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 10;
+  z-index: var(--z-index-dropdown);
   width: 80px;
   height: 60px;
-  border-radius: 20px; 
-  border: 1px solid #000000;
-  background: #ffffff;
+  border-radius: var(--radius-2xl); 
+  border: var(--border-width-thin) solid var(--color-black);
+  background: var(--color-white);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0px 4px 0px 0px #000000; 
-  transition: all 0.3s ease;
+  box-shadow: 0px var(--spacing-2) var(--spacing-0) var(--spacing-0) var(--color-black); 
+  transition: all var(--transition-medium);
 }
 
 .blog-slider-nav-btn:hover {
-  transform: translateY(-50%) translateY(4px); 
-  box-shadow: 0px 2px 0px 0px #000000;
+  transform: translateY(-50%) translateY(var(--spacing-2)); 
+  box-shadow: 0px var(--spacing-1) var(--spacing-0) var(--spacing-0) var(--color-black);
 }
 
 .blog-slider-nav-btn.prev-arrow {
-  left: 30px;
+  left: var(--spacing-15);
 }
 
 .blog-slider-nav-btn.next-arrow {
-  right: 30px;
+  right: var(--spacing-15);
 }
 
 .blog-slider-nav-btn svg {
-  width: 24px;
-  height: 24px;
+  width: var(--icon-size-lg);
+  height: var(--icon-size-lg);
   fill: none;
-  stroke: #000;
+  stroke: var(--color-black);
   stroke-width: 2.5px;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -75,9 +75,9 @@
     width: 350px;
   }
   .blog-slider-nav-btn {
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
+    width: var(--icon-size-2xl);
+    height: var(--icon-size-2xl);
+    border-radius: var(--radius-l);
   }
   .blog-slider-nav-btn svg {
     width: 18px;

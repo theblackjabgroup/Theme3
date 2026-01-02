@@ -16,8 +16,8 @@
 
 .ef-container {
   width: 100%;
-  padding: 0 20px;
-  margin: 0 auto;
+  padding: var(--spacing-0) var(--spacing-10);
+  margin: var(--spacing-0) auto;
   box-sizing: border-box;
 }
 
@@ -25,7 +25,7 @@
 .ef-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 40px;
+  gap: var(--spacing-20);
 }
 
 @media (min-width: 900px) {
@@ -37,7 +37,7 @@
 
 /* Left Column */
 .ef-heading-area {
-  margin-bottom: 30px;
+  margin-bottom: var(--spacing-15);
 }
 
 .ef-heading-area p {
@@ -56,8 +56,8 @@
 .ef-heading-area a {
   color: inherit;
   text-decoration: underline;
-  text-underline-offset: 3px;
-  transition: opacity 0.2s;
+  text-underline-offset: var(--spacing-3);
+  transition: opacity var(--transition-fast);
 }
 .ef-heading-area a:hover {
   opacity: 0.7;
@@ -81,11 +81,11 @@
 
 .ef-input {
   width: 100%;
-  background: transparent;
-  border: 1px solid var(--accent-color);
+  background: var(--color-transparent);
+  border: var(--border-width-thin) solid var(--accent-color);
   color: var(--accent-color);
   border-radius: var(--input-border-radius);
-  padding: 12px 45px 12px 20px;
+  padding: var(--spacing-6) 45px var(--spacing-6) var(--spacing-10);
   font-size: 0.9rem;
   outline: none;
   box-sizing: border-box;
