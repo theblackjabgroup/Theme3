@@ -3,7 +3,6 @@
   position: fixed;
   bottom: var(--spacing-12);
   right: 0%;
-  transform: translateX(calc(var(--spacing-10) * -1));
   z-index: var(--z-index-fixed);
   width: auto;
   display: flex;

@@ -62,7 +62,7 @@ class AnimatedHeader {
       this.desktopHeader.style.transition = `transform ${this.animationSpeed}s cubic-bezier(0.4, 0, 0.2, 1)`;
       this.desktopHeader.style.willChange = 'transform';
       // Set initial right position to match the return position
-      this.desktopHeader.style.right = '20px';
+      this.desktopHeader.style.right = '0px';
     }
 
     // Mobile header - ensure it has transition
