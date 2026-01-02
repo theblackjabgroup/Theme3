@@ -98,12 +98,12 @@
     {%- for block in section.blocks -%}
       {%- if block.type == 'search' -%}
         <div class="dock-action-block dock-search" {{ block.shopify_attributes }}>
-          <a href="{{ routes.search_url }}" class="dock-search-link" aria-label="Search">
+          <button type="button" class="dock-search-link" aria-label="Search" data-spotlight-search-toggle>
             <svg class="dock-search-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               <path d="M19 19L14.65 14.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-          </a>
+          </button>
         </div>
       {%- endif -%}
 
@@ -191,17 +191,18 @@
         {%- endif -%}
 
         {%- if block.type == 'search' -%}
-          <a
-            href="{{ routes.search_url }}"
+          <button
+            type="button"
             class="mobile-header-icon mobile-search-icon"
             aria-label="Search"
+            data-spotlight-search-toggle
             {{ block.shopify_attributes }}
           >
             <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               <path d="M19 19L14.65 14.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-          </a>
+          </button>
         {%- endif -%}
 
         {%- if block.type == 'welcome' -%}
@@ -309,8 +310,11 @@
   </div>
 </header>
 
+{%- render 'spotlight-search', input_id: 'SpotlightSearchInput' -%}
+
 <script src="{{ 'mega-menu.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'mobile-header.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'spotlight-search.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {

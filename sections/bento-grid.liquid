@@ -463,11 +463,10 @@
           {%- when 'button_card' -%}
             {%- assign label = block.settings.label | default: 'Button' -%}
             <div class="bento-card button-card">
-              {%- if block.settings.link != blank -%}
-                <a class="share-story-submit" href="{{ block.settings.link }}">{{ label }}</a>
-              {%- else -%}
-                <button class="share-story-submit" type="button">{{ label }}</button>
-              {%- endif -%}
+              {% render 'submit-button',
+                text: label,
+                url: block.settings.link
+              %}
             </div>
 
           {%- when 'text_card' -%}
