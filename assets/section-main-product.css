@@ -15,7 +15,7 @@
   grid-template-columns: 1fr 1fr;
   height: 100vh;
   overflow: hidden; /* Prevent body scroll */
-  background: #fffafa;
+  background: var(--color-gray-50);
   position: relative;
 }
 
@@ -38,8 +38,8 @@
 .product-hero-image {
   width: 100%;
   height: auto;
-  filter: drop-shadow(0px 20px 30px rgba(0, 0, 0, 0.3));
-  transition: transform 0.2s ease;
+  filter: drop-shadow(0px var(--spacing-10) 30px rgba(0, 0, 0, 0.3));
+  transition: transform var(--transition-fast);
   pointer-events: auto;
   display: block;
 }
@@ -90,13 +90,13 @@
 /* Badge */
 .product-type-badge span {
   display: inline-block;
-  padding: 10px 34px;
-  border: 2px solid #000;
-  border-radius: 999px;
-  font-size: 15px;
-  font-weight: 600;
+  padding: var(--spacing-5) 34px;
+  border: var(--border-width-medium) solid var(--color-black);
+  border-radius: var(--radius-round);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
   margin-bottom: 2.5rem;
-  background: #fff;
+  background: var(--color-white);
 }
 
 /* Title */

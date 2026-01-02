@@ -2,8 +2,8 @@
 .bento-grid-container {
   width: 100%;
   min-height: 100vh;
-  padding: 10px;
-  margin: 0;
+  padding: var(--spacing-5);
+  margin: var(--spacing-0);
 }
 
 .bento-grid {
@@ -23,7 +23,7 @@
 
 /* Text Card */
 .text-card {
-  padding: 16px 0px 16px 20px;
+  padding: var(--spacing-8) var(--spacing-0) var(--spacing-8) var(--spacing-10);
   align-items: flex-start;
   justify-content: flex-start;
   overflow: hidden;
@@ -34,65 +34,65 @@
   flex-direction: column;
   width: 100%;
   height: 100%;
-  gap: 16px;
+  gap: var(--spacing-8);
   overflow-y: auto;
   overflow-x: hidden;
-  padding-right: 4px;
-  padding-left: 0;
+  padding-right: var(--spacing-2);
+  padding-left: var(--spacing-0);
 }
 
 .text-card-inner::-webkit-scrollbar {
-  width: 6px;
+  width: var(--spacing-3);
 }
 
 .text-card-inner::-webkit-scrollbar-track {
   background: rgba(230, 57, 70, 0.1);
-  margin: 20px 0;
-  border-radius: 3px;
+  margin: var(--spacing-10) var(--spacing-0);
+  border-radius: var(--radius-sm);
 }
 
 .text-card-inner::-webkit-scrollbar-thumb {
-  background-color: var(--color-primary-button-bg, #e63946);
-  margin: 100px 0;
-  border-radius: 3px;
+  background-color: var(--color-primary-button-bg, var(--color-red));
+  margin: 100px var(--spacing-0);
+  border-radius: var(--radius-sm);
 }
 
 .text-card-heading {
-  margin: 0;
-  color: var(--color-text, #121212);
-  line-height: 1.2;
-  font-size: var(--desktop-heading-font-size, 24px);
-  font-weight: var(--desktop-heading-font-weight, 600);
+  margin: var(--spacing-0);
+  color: var(--color-text);
+  line-height: var(--line-height-tight);
+  font-size: var(--desktop-heading-font-size, var(--font-size-4xl));
+  font-weight: var(--desktop-heading-font-weight, var(--font-weight-semibold));
 }
 
 .text-card-paragraph {
-  margin: 0;
-  padding: 0;
-  color: var(--color-text, #121212);
+  margin: var(--spacing-0);
+  padding: var(--spacing-0);
+  color: var(--color-text);
   flex: 1;
   word-wrap: break-word; /* Breaks long words if needed */
-  text-indent: 0; /* Ensure no text indentation */
-  font-size: var(--desktop-paragraph-font-size, 16px);
-  font-weight: var(--desktop-paragraph-font-weight, 400);
-  line-height: var(--desktop-paragraph-line-height, 1.5);
+  text-indent: var(--spacing-0); /* Ensure no text indentation */
+  font-size: var(--desktop-paragraph-font-size, var(--font-size-xl));
+  font-weight: var(--desktop-paragraph-font-weight, var(--font-weight-normal));
+  line-height: var(--desktop-paragraph-line-height, var(--line-height-relaxed));
 }
 
 .text-card-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 20px;
-  background: var(--color-primary-button-bg, #e63946);
-  color: var(--color-primary-button-text, #fff);
+  padding: var(--spacing-5) var(--spacing-10);
+  background: var(--color-primary-button-bg, var(--color-red));
+  color: var(--color-primary-button-text, var(--color-white));
   border: none;
-  border-radius: 999px;
+  border-radius: var(--radius-round);
   text-decoration: none;
   cursor: pointer;
   white-space: nowrap;
-  transition: all 0.3s ease;
+  transition: all var(--transition-medium);
   margin-top: auto;
-  font-size: var(--desktop-button-font-size, 14px);
-  font-weight: var(--desktop-button-font-weight, 600);
+  font-size: var(--desktop-button-font-size, var(--font-size-lg));
+  font-weight: var(--desktop-button-font-weight, var(--font-weight-semibold));
 }
 
 .text-card-button:hover {
@@ -147,7 +147,7 @@
 
 /* Product Card */
 .product-card {
-  padding: 16px 20px;
+  padding: var(--spacing-8) var(--spacing-10);
   align-items: flex-start;
   justify-content: flex-start;
 }
@@ -167,7 +167,7 @@
   flex-direction: column;
   width: 100%;
   height: 100%;
-  gap: 12px;
+  gap: var(--spacing-6);
 }
 
 .product-card-tag {
@@ -196,7 +196,9 @@
   height: auto;
   top: 25%;
   object-fit: contain;
-  transition: transform 0.3s ease;
+  transform: rotate(0deg) scale(1);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
 }
 
 .product-card:hover .product-card-image {
@@ -258,7 +260,7 @@
 
 /* Video Card */
 .bento-card.video-card {
-  background-color: var(--color-accent-pink, #fff) !important;
+  background-color: var(--color-accent-pink, var(--color-white)) !important;
 }
 
 .video-card video,
@@ -267,12 +269,13 @@
   height: 100%;
   object-fit: cover;
   position: absolute;
-  top: 0;
-  left: 0;
-  border-radius: 20px;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  top: var(--spacing-0);
+  left: var(--spacing-0);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-md);
   transform: scale(1);
-  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.5s var(--ease-bounce);
+  z-index: 1;
 }
 
 .video-card:hover video,
@@ -287,32 +290,31 @@
   align-items: center;
   justify-content: center;
   position: absolute;
-  top: 0;
-  left: 0;
-  border-radius: 20px;
+  top: var(--spacing-0);
+  left: var(--spacing-0);
+  border-radius: var(--radius-2xl);
   background-color: rgba(0, 0, 0, 0.05);
-  color: var(--color-text, #000);
-  font-size: 16px;
-  font-weight: 500;
+  color: var(--color-text, var(--color-black));
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-medium);
   text-align: center;
-  padding: 20px;
+  padding: var(--spacing-10);
 }
 
 /* Hover marquee overlay for video card */
 .video-marquee {
   position: absolute;
-  left: 0;
-  right: 0;
+  left: var(--spacing-0);
+  right: var(--spacing-0);
   top: 50%;
   transform: translateY(-50%);
-  padding: 8px 0;
-  background: var(--color-accent-pink, #e63946) !important;
+  padding: var(--spacing-4) var(--spacing-0);
+  background: var(--color-accent-pink, var(--color-red)) !important;
   pointer-events: none;
   opacity: 0;
-  border-top: 1px solid var(--color-borders, #e63946) !important;
-  border-bottom: 1px solid var(--color-borders, #e63946) !important;
-
-  transition: opacity 0.3s ease-out;
+  border-top: var(--border-width-thin) solid var(--color-borders, var(--color-red)) !important;
+  border-bottom: var(--border-width-thin) solid var(--color-borders, var(--color-red)) !important;
+  transition: opacity var(--transition-medium);
   z-index: 2;
 }
 
@@ -321,22 +323,22 @@
 }
 
 .video-marquee-track {
-  background: var(--color-accent-pink, #e63946) !important;
+  background: var(--color-accent-pink, var(--color-red)) !important;
   align-items: center;
   display: flex;
   width: max-content;
   animation: marquee 18s linear infinite;
-  padding-left: 1.5rem;
+  padding-left: var(--spacing-8);
   will-change: transform;
 }
 
 .video-marquee-item {
   background: var(--color-accent-pink, #e63946) !important;
   white-space: nowrap;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
   text-transform: uppercase;
-  color: var(--color-primary-button-text, #fff);
+  color: var(--color-primary-button-text, var(--color-white));
 }
 
 /* Separator image in video marquee */
@@ -418,51 +420,53 @@
 }
 
 .bento-card {
-  background: var(--color-background, #fff);
+  background: var(--color-background, var(--color-white));
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   overflow: hidden;
-  transition: all 0.3s ease, box-shadow 0.3s ease;
-  border: 1px solid var(--color-borders, #e5e5e5);
+  border: var(--border-width-thin) solid var(--color-borders, var(--color-gray-300));
   width: 100%;
   height: 100%;
+  transform: scale(1);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
 }
 
 .bento-card:hover {
-  scale: 1.02;
+  transform: scale(1.02);
 }
 
 /* Card Color Variants */
 .card-color-red {
-  background: var(--color-accent-red, var(--color-primary-button-bg, #e63946)) !important;
-  color: var(--color-primary-button-text, #fff) !important;
-  border-color: var(--color-accent-red, var(--color-primary-button-bg, #e63946)) !important;
+  background: var(--color-accent-red, var(--color-primary-button-bg, var(--color-red))) !important;
+  color: var(--color-primary-button-text, var(--color-white)) !important;
+  border-color: var(--color-accent-red, var(--color-primary-button-bg, var(--color-red))) !important;
 }
 
 .card-color-red .tag-card-tag,
 .card-color-red .card-heading,
 .card-color-red .tag-card-main {
-  color: var(--color-primary-button-text, #fff) !important;
+  color: var(--color-primary-button-text, var(--color-white)) !important;
 }
 
 .card-color-pink {
-  background: var(--color-accent-pink, #ffe5e5) !important;
-  color: var(--color-text, #121212) !important;
-  border-color: var(--color-borders, #e5e5e5) !important;
+  background: var(--color-accent-pink, var(--color-pink)) !important;
+  color: var(--color-text) !important;
+  border-color: var(--color-borders, var(--color-gray-300)) !important;
 }
 
 .card-color-off-white {
-  background: var(--color-accent-off-white, #fafafa) !important;
-  color: var(--color-text, #121212) !important;
-  border-color: var(--color-borders, #e5e5e5) !important;
+  background: var(--color-accent-off-white, var(--color-off-white)) !important;
+  color: var(--color-text) !important;
+  border-color: var(--color-borders, var(--color-gray-300)) !important;
 }
 
 .card-color-default {
-  background: var(--color-background, #fff) !important;
-  color: var(--color-text, #121212) !important;
-  border-color: var(--color-borders, #e5e5e5) !important;
+  background: var(--color-background, var(--color-white)) !important;
+  color: var(--color-text) !important;
+  border-color: var(--color-borders, var(--color-gray-300)) !important;
 }
 
 /* Logo Card */
@@ -475,11 +479,11 @@
 }
 
 .logo-text {
-  font-weight: 700;
-  margin: 0;
-  line-height: 1;
-  font-size: var(--desktop-logo-font-size, 32px);
-  color: var(--desktop-logo-color, #000000);
+  font-weight: var(--font-weight-bold);
+  margin: var(--spacing-0);
+  line-height: var(--line-height-tight);
+  font-size: var(--desktop-logo-font-size, var(--font-size-5xl));
+  color: var(--desktop-logo-color, var(--color-black));
 }
 
 .logo-image {
@@ -491,13 +495,13 @@
 /* Cart Card */
 .cart-card {
   cursor: pointer;
-  background: var(--color-accent-pink, #ffe5e5) !important;
+  background: var(--color-accent-pink, var(--color-pink)) !important;
   border: none !important;
   border-bottom: none !important;
-  transition: all 0.3s ease;
+  transition: all var(--transition-medium);
 }
 .bento-card.cart-card:hover {
-  border: 1px solid var(--color-text, var(--color-primary-button-bg, #e63946)) !important;
+  border: var(--border-width-thin) solid var(--color-text, var(--color-primary-button-bg, var(--color-red))) !important;
 }
 
 .cart-icon-wrapper {
@@ -529,64 +533,64 @@
 
 .cart-count {
   position: absolute;
-  top: -8px;
-  right: -8px;
-  background: var(--color-accent-red, var(--color-primary-button-bg, #e63946)) !important;
-  color: var(--color-primary-button-text, #fff);
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
+  top: calc(var(--spacing-4) * -1);
+  right: calc(var(--spacing-4) * -1);
+  background: var(--color-accent-red, var(--color-primary-button-bg, var(--color-red))) !important;
+  color: var(--color-primary-button-text, var(--color-white));
+  border-radius: var(--radius-pill);
+  width: var(--spacing-10);
+  height: var(--spacing-10);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
-  font-weight: 700;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
 }
 
 /* Search Card */
 .search-card {
-  background: var(--color-primary-button-bg, #e63946);
+  background: var(--color-primary-button-bg, var(--color-red));
   cursor: pointer;
 }
 
 .search-icon {
-  width: 32px;
-  height: 32px;
-  stroke: var(--color-primary-button-text, #fff);
-  stroke-width: 2;
+  width: var(--icon-size-xl);
+  height: var(--icon-size-xl);
+  stroke: var(--color-primary-button-text, var(--color-white));
+  stroke-width: var(--border-width-medium);
   fill: none;
 }
 
 /* Login/Welcome Card */
 .login-card {
-  background: var(--color-background, #fff);
+  background: var(--color-background, var(--color-white));
   cursor: pointer;
-  border: 1px solid var(--color-borders, #e5e5e5);
+  border: var(--border-width-thin) solid var(--color-borders, var(--color-gray-300));
 }
 
 .login-content {
   display: flex;
   align-items: center;
-  gap: 12px;
-  color: var(--color-text, #121212);
+  gap: var(--spacing-6);
+  color: var(--color-text);
 }
 
 .avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--color-primary-button-bg, #e63946);
-  color: var(--color-primary-button-text, #fff);
+  width: var(--icon-size-2xl);
+  height: var(--icon-size-2xl);
+  border-radius: var(--radius-pill);
+  background: var(--color-primary-button-bg, var(--color-red));
+  color: var(--color-primary-button-text, var(--color-white));
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
-  font-size: 18px;
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-2xl);
 }
 
 .welcome-text {
-  font-size: 14px;
-  font-weight: 600;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
 }
 
 /* Generic Card (NEW) */
@@ -631,7 +635,7 @@
 
 /* Tag Card */
 .tag-card {
-  padding: 16px 20px;
+  padding: var(--spacing-8) var(--spacing-10);
   align-items: flex-start;
   justify-content: space-between;
 }
@@ -734,10 +738,10 @@
   height: 100%;
   object-fit: contain;
   display: block;
-  transition: transform 0.3s ease;
+  transition: transform var(--transition-medium);
 }
 .bento-card.tag-card:hover {
-  border-color: var(--color-text, #e63946) !important;
+  border-color: var(--color-text, var(--color-red)) !important;
 }
 .tag-card:hover .tag-card-icon img {
   transform: rotate(180deg);
@@ -746,27 +750,27 @@
 .tag-card-tag {
   display: inline-flex;
   align-items: center;
-  padding: 2px 10px;
-  font-size: 11px; /* Default, can be overridden by inline style */
-  font-weight: 600; /* Default, can be overridden by inline style */
+  padding: var(--spacing-1) var(--spacing-5);
+  font-size: var(--font-size-sm); /* Default, can be overridden by inline style */
+  font-weight: var(--font-weight-semibold); /* Default, can be overridden by inline style */
   text-transform: uppercase;
-  margin-bottom: 4px;
+  margin-bottom: var(--spacing-2);
 }
 
 /* Filled tag style (default) */
 .tag-card-tag--filled {
-  border-radius: 999px;
-  background: var(--color-accent-red, #e63946) !important;
-  color: var(--color-primary-button-text, #fff) !important;
+  border-radius: var(--radius-round);
+  background: var(--color-accent-red, var(--color-red)) !important;
+  color: var(--color-primary-button-text, var(--color-white)) !important;
   border: none;
 }
 
 /* Border tag style */
 .tag-card-tag--border {
-  border-radius: 20px;
-  background: transparent;
-  color: var(--color-accent-red, #e63946) !important;
-  border: 1px solid var(--color-accent-red, #e63946) !important;
+  border-radius: var(--radius-2xl);
+  background: var(--color-transparent);
+  color: var(--color-accent-red, var(--color-red)) !important;
+  border: var(--border-width-thin) solid var(--color-accent-red, var(--color-red)) !important;
 }
 
 .tag-card-main {
@@ -893,12 +897,12 @@
 .tag-card-image-strip-item {
   width: 100%;
   height: 100px;
-  border-radius: 8px;
+  border-radius: var(--radius-m);
   overflow: hidden;
   flex-shrink: 0;
   transform: translateY(-50%);
 
-  background: var(--color-accent-off-white, #fafafa);
+  background: var(--color-accent-off-white, var(--color-off-white));
 }
 
 .tag-card-image-strip-item img {
@@ -940,13 +944,17 @@
 .content-card {
   padding: 0 !important;
   overflow: hidden;
-  transform: translateZ(0);
+  transform: translateZ(0) scale(1);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  background-color: var(--color-accent-red, #d62839)  !important;
+  background-color: var(--color-accent-red, var(--color-red-dark))  !important;
 }
 .bento-card.content-card{
-  background-color: var(--color-accent-red, #d62839)  !important;
+  background-color: var(--color-accent-red, var(--color-red-dark))  !important;
+}
+
+.bento-card.content-card:hover {
+  transform: translateZ(0) scale(1.02);
 }
 
 .content-card-inner {
@@ -961,13 +969,13 @@
 }
 
 .content-card-text-side {
-  color: var(--color-accent-off-white, var(--color-primary-button-text, #fff));
+  color: var(--color-accent-off-white, var(--color-primary-button-text, var(--color-white)));
   flex: 1;
   display: flex;
   align-items: center;
-  padding: 24px;
-  gap: 20px;
-  background-color: var(--color-accent-red, #d62839)  !important;
+  padding: var(--spacing-12);
+  gap: var(--spacing-10);
+  background-color: var(--color-accent-red, var(--color-red-dark))  !important;
 
 }
 
@@ -983,30 +991,30 @@
 }
 
 .content-card-text-content {
-  color: var(--color-accent-off-white, var(--color-primary-button-text, #fff));
+  color: var(--color-accent-off-white, var(--color-primary-button-text, var(--color-white)));
 
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 12px;
+  gap: var(--spacing-6);
   text-align: left;
-  background-color: var(--color-accent-red, #d62839)  !important;
+  background-color: var(--color-accent-red, var(--color-red-dark))  !important;
 
 }
 
 .content-card-main-text {
-  color: var(--color-accent-off-white, #fff) !important;
-  letter-spacing: -0.02em;
-  background-color: var(--color-accent-red, #d62839)  !important;
-  font-size: var(--desktop-main-text-font-size, 28px);
-  font-weight: var(--desktop-main-text-font-weight, 600);
-  line-height: var(--desktop-main-text-line-height, 1.1);
+  color: var(--color-accent-off-white, var(--color-white)) !important;
+  letter-spacing: var(--letter-spacing-tight);
+  background-color: var(--color-accent-red, var(--color-red-dark))  !important;
+  font-size: var(--desktop-main-text-font-size, var(--font-size-5xl));
+  font-weight: var(--desktop-main-text-font-weight, var(--font-weight-semibold));
+  line-height: var(--desktop-main-text-line-height, var(--line-height-tight));
   white-space: pre-wrap;
 }
 
 .content-card-tag {
-  font-size: var(--desktop-tag-font-size, 11px) !important;
-  font-weight: var(--desktop-tag-font-weight, 600) !important;
+  font-size: var(--desktop-tag-font-size, var(--font-size-sm)) !important;
+  font-weight: var(--desktop-tag-font-weight, var(--font-weight-semibold)) !important;
 }
 
 /* Content Card Word Animation - Same as Tag Card */
@@ -1129,17 +1137,17 @@
 
 .card-title {
   position: relative;
-  z-index: 2;
-  font-size: 18px;
-  font-weight: 700;
-  margin: 0;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  z-index: var(--z-index-dropdown);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  margin: var(--spacing-0);
+  text-shadow: var(--shadow-sm);
 }
 
 /* Responsive */
 @media (max-width: 768px) {
   .bento-grid-container {
-    padding: 8px;
+    padding: var(--spacing-4);
     min-height: auto;
   }
 
@@ -1157,12 +1165,12 @@
 
   .bento-card {
     height: 100%;
-    border-radius: 12px !important;
+    border-radius: var(--radius-l) !important;
   }
 
   /* Text Card Mobile */
   .text-card {
-    padding: 12px 16px;
+    padding: var(--spacing-6) var(--spacing-8);
   }
 
   .text-card-heading {
@@ -1177,14 +1185,14 @@
   }
 
   .text-card-button {
-    padding: 8px 16px;
-    font-size: var(--mobile-button-font-size, 12px) !important;
-    font-weight: var(--mobile-button-font-weight, 600) !important;
+    padding: var(--spacing-4) var(--spacing-8);
+    font-size: var(--mobile-button-font-size, var(--font-size-base)) !important;
+    font-weight: var(--mobile-button-font-weight, var(--font-weight-semibold)) !important;
   }
 
   /* Product Card Mobile */
   .product-card {
-    padding: 12px 16px;
+    padding: var(--spacing-6) var(--spacing-8);
   }
 
   .product-card-title {
@@ -1200,7 +1208,7 @@
 
   /* Tag Card Mobile */
   .tag-card {
-    padding: 12px 16px;
+    padding: var(--spacing-6) var(--spacing-8);
   }
 
   /* Override layout direction for mobile */
@@ -1278,9 +1286,9 @@
   }
 
   .tag-card-tag {
-    font-size: var(--mobile-tag-font-size, 10px) !important;
-    font-weight: var(--mobile-tag-font-weight, 600) !important;
-    padding: 2px 8px;
+    font-size: var(--mobile-tag-font-size, var(--font-size-xs)) !important;
+    font-weight: var(--mobile-tag-font-weight, var(--font-weight-semibold)) !important;
+    padding: var(--spacing-1) var(--spacing-4);
   }
 
   .tag-card-icon {
@@ -1300,7 +1308,7 @@
 
   .tag-card-image-strip {
     width: 60px;
-    right: 12px;
+    right: var(--spacing-6);
   }
 
   .tag-card-image-strip-item {
@@ -1309,8 +1317,8 @@
 
   /* Content Card Mobile */
   .content-card-text-side {
-    padding: 16px;
-    gap: 12px;
+    padding: var(--spacing-8);
+    gap: var(--spacing-6);
   }
 
   .content-card-main-text {
@@ -1339,9 +1347,9 @@
 
   /* Button Card Mobile */
   .button-card-btn {
-    padding: 8px 16px;
-    font-size: var(--mobile-font-size, 14px) !important;
-    font-weight: var(--mobile-font-weight, 600) !important;
+    padding: var(--spacing-4) var(--spacing-8);
+    font-size: var(--mobile-font-size, var(--font-size-lg)) !important;
+    font-weight: var(--mobile-font-weight, var(--font-weight-semibold)) !important;
   }
 
   /* Logo Card Mobile */
@@ -1372,32 +1380,32 @@
   }
 
   .cart-count {
-    width: 16px;
-    height: 16px;
-    font-size: 9px;
-    top: -6px;
-    right: -6px;
+    width: var(--spacing-8);
+    height: var(--spacing-8);
+    font-size: var(--font-size-xs);
+    top: calc(var(--spacing-3) * -1);
+    right: calc(var(--spacing-3) * -1);
   }
 
   /* Search Card Mobile */
   .search-icon {
-    width: 24px;
-    height: 24px;
+    width: var(--icon-size-lg);
+    height: var(--icon-size-lg);
   }
 
   /* Login Card Mobile */
   .login-content {
-    gap: 8px;
+    gap: var(--spacing-4);
   }
 
   .avatar {
-    width: 32px;
-    height: 32px;
-    font-size: 14px;
+    width: var(--icon-size-xl);
+    height: var(--icon-size-xl);
+    font-size: var(--font-size-lg);
   }
 
   .welcome-text {
-    font-size: 12px;
+    font-size: var(--font-size-base);
   }
 
   /* Generic Card Mobile */
@@ -1408,12 +1416,12 @@
 
   /* Video Card Mobile */
   .video-marquee-item {
-    font-size: 10px;
+    font-size: var(--font-size-xs);
   }
 
   .video-marquee-separator {
-    height: 16px;
-    margin: 0 1rem;
+    height: var(--spacing-8);
+    margin: var(--spacing-0) var(--spacing-8);
   }
 
   /* Scrolling Text Card Mobile */
@@ -1432,8 +1440,8 @@
     position: relative;
     width: 100%;
     height: 60px;
-    right: 0;
-    margin-top: 8px;
+    right: var(--spacing-0);
+    margin-top: var(--spacing-4);
   }
 
   .tag-card--row .tag-card-inner {

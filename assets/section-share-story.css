@@ -1,9 +1,9 @@
 .share-story-wrapper {
   display: flex;
-  gap: 30px; 
+  gap: var(--gap-xxl); 
   flex-direction: column;
   max-width: 1300px; 
-  margin: 0 auto;
+  margin: var(--spacing-0) auto;
 }
 
 @media screen and (min-width: 990px) {
@@ -15,17 +15,17 @@
 
 .share-story-card {
   flex: 1;
-  background: white;
-  border-radius: 32px;
-  padding: 35px; 
-  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+  background: var(--color-white);
+  border-radius: var(--radius-4xl);
+  padding: var(--spacing-18); 
+  box-shadow: var(--shadow-xl);
   display: flex;
   flex-direction: column;
 }
 
 .share-story-left {
   flex: 0 0 28%; 
-  gap: 15px; 
+  gap: var(--spacing-15); 
 }
 
 @media screen and (max-width: 989px) {
@@ -37,33 +37,33 @@
 
 .share-story-right {
   flex: 1;
-  gap: 15px; 
+  gap: var(--spacing-15); 
 }
 
 .share-story-badge {
   display: inline-block;
-  border: 1px solid #FF3B30;
-  color: #FF3B30;
-  padding: 8px 18px;
-  border-radius: 50px;
-  font-weight: 700;
+  border: var(--border-width-thin) solid var(--color-red-light);
+  color: var(--color-red-light);
+  padding: var(--spacing-4) var(--spacing-8);
+  border-radius: var(--radius-pill);
+  font-weight: var(--font-weight-bold);
   text-transform: uppercase;
-  font-size: 0.85rem; 
-  letter-spacing: 0.1em;
+  font-size: var(--font-size-md); 
+  letter-spacing: var(--letter-spacing-widest);
   width: fit-content;
-  margin-bottom: 15px; 
+  margin-bottom: var(--spacing-15); 
   font-family: var(--font-heading-family);
-  background: transparent;
+  background: var(--color-transparent);
 }
 
 .share-story-title {
   font-family: var(--font-heading-family);
   font-size: 2.3rem;
   line-height: 0.8;
-  font-weight: 800;
-  margin: 0 0 10px 0; 
-  letter-spacing: -0.04em;
-  color: #000;
+  font-weight: var(--font-weight-extrabold);
+  margin: var(--spacing-0) var(--spacing-0) var(--spacing-5) var(--spacing-0); 
+  letter-spacing: var(--letter-spacing-tight);
+  color: var(--color-black);
 }
 
 .share-story-right .share-story-title {
@@ -71,47 +71,47 @@
 }
 
 .share-story-subtitle {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: var(--font-family-mono);
   font-size: 1.3rem;
-  line-height: 1.4;
-  margin-bottom: 20px; 
-  color: #333;
+  line-height: var(--line-height-normal);
+  margin-bottom: var(--spacing-10); 
+  color: var(--color-gray-800);
   max-width: 90%;
 }
 
 .share-story-field {
-  margin-bottom: 15px; 
+  margin-bottom: var(--spacing-15); 
   width: 100%;
 }
 
 .share-story-label {
   display: block;
-  font-weight: 700;
-  margin-bottom: 6px;
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--spacing-3);
   font-size: 1.2rem;
-  color: #000;
-  font-family: 'Courier New', Courier, monospace;
-  letter-spacing: 0.05em;
+  color: var(--color-black);
+  font-family: var(--font-family-mono);
+  letter-spacing: var(--letter-spacing-wider);
   position: relative;
   overflow: hidden;
-  line-height: 1.2;
+  line-height: var(--line-height-tight);
   cursor: default;  
 }
 
 .share-story-label-text {
   display: inline-block;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform var(--transition-medium) var(--ease-cubic);
 }
 
 .share-story-label::before {
   content: attr(data-text);
   position: absolute;
   top: 100%;
-  left: 0;
+  left: var(--spacing-0);
   width: 100%;
   height: 100%;
   color: currentColor;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform var(--transition-medium) var(--ease-cubic);
 }
 
 .share-story-label:hover .share-story-label-text {
@@ -124,61 +124,61 @@
 
 .share-story-input {
   width: 100%;
-  padding: 14px 22px;
-  border-radius: 100px;
-  border: 1px solid #EDEDED;
-  background: #FFFFFF;
+  padding: var(--spacing-6) var(--spacing-10);
+  border-radius: var(--radius-full);
+  border: var(--border-width-thin) solid var(--color-gray-200);
+  background: var(--color-white);
   font-size: 1.3rem;
   outline: none;
-  transition: all 0.3s ease;
-  color: #000;
-  font-family: 'Courier New', Courier, monospace;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+  transition: all var(--transition-medium);
+  color: var(--color-black);
+  font-family: var(--font-family-mono);
+  box-shadow: var(--shadow-m);
 }
 
 .share-story-input:focus {
-  border-color: #000;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+  border-color: var(--color-black);
+  box-shadow: var(--shadow-lg);
 }
 
 .share-story-input::placeholder {
-  color: #AAA;
-  font-family: 'Courier New', Courier, monospace;
+  color: var(--color-gray-500);
+  font-family: var(--font-family-mono);
 }
 
 .share-story-textarea {
   width: 100%;
-  padding: 24px;
-  border-radius: 24px;
-  border: 1px solid #EDEDED;
-  background: #FFFFFF;
+  padding: var(--spacing-12);
+  border-radius: var(--radius-3xl);
+  border: var(--border-width-thin) solid var(--color-gray-200);
+  background: var(--color-white);
   font-size: 1.3rem;
   min-height: 250px;
   resize: none;
   outline: none;
-  font-family: 'Courier New', Courier, monospace;
-  line-height: 1.5;
-  color: #000;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+  font-family: var(--font-family-mono);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-black);
+  transition: all var(--transition-medium);
+  box-shadow: var(--shadow-m);
 }
 
 .share-story-textarea:focus {
-  border-color: #000;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+  border-color: var(--color-black);
+  box-shadow: var(--shadow-lg);
 }
 
 .share-story-textarea::placeholder {
-  color: #AAA;
-  font-family: 'Courier New', Courier, monospace;
+  color: var(--color-gray-500);
+  font-family: var(--font-family-mono);
 }
 
 
 .share-story-disclaimer {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: var(--font-family-mono);
   font-size: 1.1rem;
-  color: #777;
-  line-height: 1.3;
+  color: var(--color-gray-600);
+  line-height: var(--line-height-normal);
   max-width: 450px;
   flex: 1;
 }
@@ -186,18 +186,18 @@
 .share-story-footer-flex {
   display: flex;
   align-items: center;
-  gap: 25px; 
+  gap: var(--spacing-12); 
   width: 100%;
   margin-top: auto; 
 }
 
 @media screen and (max-width: 749px) {
   .share-story-wrapper {
-    gap: 15px;
+    gap: var(--spacing-15);
   }
   .share-story-card {
-    padding: 24px;
-    border-radius: 20px;
+    padding: var(--spacing-12);
+    border-radius: var(--radius-2xl);
   }
   .share-story-title {
     font-size: 2.4rem;
@@ -205,6 +205,6 @@
   .share-story-footer-flex {
     flex-direction: column;
     align-items: flex-start;
-    gap: 15px;
+    gap: var(--spacing-15);
   }
 }

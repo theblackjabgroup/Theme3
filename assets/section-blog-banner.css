@@ -19,11 +19,11 @@
 
 .content-hero__container {
   max-width: var(--content-max-width, 800px);
-  margin: 0 auto;
+  margin: var(--spacing-0) auto;
   text-align: center;
-  padding: 0 20px;
+  padding: var(--spacing-0) var(--spacing-10);
   position: relative;
-  z-index: 2;
+  z-index: var(--z-index-dropdown);
   width: 100%;
 }
 
@@ -57,25 +57,25 @@
 
 .content-hero__eyebrow {
   display: inline-block;
-  padding: 8px 24px;
-  border: 1px solid var(--eyebrow-color);
+  padding: var(--spacing-4) var(--spacing-12);
+  border: var(--border-width-thin) solid var(--eyebrow-color);
   color: var(--eyebrow-color);
-  border-radius: 50px;
+  border-radius: var(--radius-pill);
   text-transform: uppercase;
   font-size: 0.8rem;
-  letter-spacing: 0.1em;
-  font-weight: 700;
-  margin-bottom: 30px;
+  letter-spacing: var(--letter-spacing-widest);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--spacing-15);
 }
 
 .content-hero__heading {
-  margin: 0 0 20px;
+  margin: var(--spacing-0) var(--spacing-0) var(--spacing-10);
   font-size: 5rem;
-  line-height: 1;
-  font-weight: 700;
+  line-height: var(--line-height-tight);
+  font-weight: var(--font-weight-bold);
   color: var(--heading-color);
   text-transform: uppercase;
-  letter-spacing: -0.02em;
+  letter-spacing: var(--letter-spacing-tight);
 }
 
 .content-hero__text {

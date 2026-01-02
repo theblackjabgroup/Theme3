@@ -1,32 +1,32 @@
 /* Floating Dock Header */
 .floating-dock-header {
   position: fixed;
-  bottom: 24px;
+  bottom: var(--spacing-12);
   right: 0%;
-  transform: translateX(-20px);
-  z-index: 1000;
+  transform: translateX(calc(var(--spacing-10) * -1));
+  z-index: var(--z-index-fixed);
   width: auto;
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: var(--spacing-10);
 }
 
 .floating-dock {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
-  border-radius: clamp(20px, calc(0px * 0.15), 1.5em);
-  padding: clamp(10px, calc(0px * 0.15), 1.5em) 20px;
-  border: 1px solid rgba(191, 190, 198, .25);
+  border-radius: clamp(var(--radius-2xl), calc(0px * 0.15), 1.5em);
+  padding: clamp(var(--spacing-5), calc(0px * 0.15), 1.5em) var(--spacing-10);
+  border: var(--border-width-thin) solid rgba(191, 190, 198, .25);
   position: relative;
 }
 
 /* Dock Menu */
 .dock-menu {
   display: flex;
-  gap: 8px;
+  gap: var(--spacing-4);
   list-style: none;
-  margin: 0;
-  padding: 0;
+  margin: var(--spacing-0);
+  padding: var(--spacing-0);
   align-items: center;
   position: relative;
   flex: 1;
@@ -36,25 +36,25 @@
 .dock-actions {
   display: flex;
   flex-direction: row-reverse;
-  gap: 20px;
+  gap: var(--spacing-10);
   align-items: center;
 }
 
 .dock-action-block {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
-  border-radius: 20px;
-  border: 1px solid rgba(191, 190, 198, 0.25);
+  border-radius: var(--radius-2xl);
+  border: var(--border-width-thin) solid rgba(191, 190, 198, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
+  transition: all var(--transition-medium);
 }
 
 .dock-action-block:hover {
   background: rgba(255, 255, 255, 1);
-  transform: translateY(-1px);
-  border-color: var(--color-text, var(--color-primary-button-bg, #E63946)) !important;
+  transform: translateY(calc(var(--spacing-1) * -1));
+  border-color: var(--color-text, var(--color-primary-button-bg, var(--color-red))) !important;
 
 }
 
@@ -62,7 +62,7 @@
 .dock-search {
   width: 70px;
   height: 70px;
-  padding: 0;
+  padding: var(--spacing-0);
 }
 
 .dock-search-link {
@@ -71,7 +71,7 @@
   justify-content: center;
   width: 100%;
   height: 100%;
-  color: #000;
+  color: var(--color-black);
   text-decoration: none;
   background: none;
   border: none;
@@ -79,14 +79,14 @@
 }
 
 .dock-search-icon {
-  width: 20px;
-  height: 20px;
+  width: var(--icon-size-medium);
+  height: var(--icon-size-medium);
   stroke: currentColor;
 }
 
 /* Welcome Block */
 .dock-welcome {
-  padding: 20px;
+  padding: var(--spacing-10);
   min-width: 140px;
   height: 70px;
 }
@@ -94,27 +94,27 @@
 .dock-welcome-link {
   display: flex;
   align-items: center;
-  gap: 12px;
-  color: #000;
+  gap: var(--spacing-6);
+  color: var(--color-black);
   text-decoration: none;
   width: 100%;
   height: 100%;
 }
 
 .dock-welcome-icon {
-  width: 32px;
-  height: 32px;
+  width: var(--icon-size-xl);
+  height: var(--icon-size-xl);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #666;
+  color: var(--color-gray-700);
   flex-shrink: 0;
   overflow: hidden;
 }
 
 .dock-welcome-icon svg {
-  width: 24px;
-  height: 24px;
+  width: var(--icon-size-lg);
+  height: var(--icon-size-lg);
   stroke: currentColor;
 }
 
@@ -135,39 +135,39 @@
 }
 
 .dock-welcome-icon--rounded {
-  border-radius: 8px;
+  border-radius: var(--radius-m);
 }
 
 .dock-welcome-text {
   display: flex;
   flex-direction: column;
-  line-height: 1.2;
+  line-height: var(--line-height-tight);
 }
 
 .dock-welcome-greeting {
-  font-size: 20px;
-  font-weight: 900;
-  color: #000;
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-black);
+  color: var(--color-black);
 }
 
 .dock-welcome-login {
-  font-size: 16px;
-  font-weight: 400;
-  color: #000;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-normal);
+  color: var(--color-black);
 }
 
 /* Animated Underline */
 .dock-menu::after {
   content: '';
   position: absolute;
-  bottom: 10px;
-  left: calc(var(--underline-left, 0) + 5px);
-  width: calc(var(--underline-width, 0) - 10px);
-  height: 1px;
-  background: #000;
-  border-radius: 2px;
+  bottom: var(--spacing-5);
+  left: calc(var(--underline-left, 0) + var(--spacing-5));
+  width: calc(var(--underline-width, 0) - var(--spacing-10));
+  height: var(--border-width-thin);
+  background: var(--color-black);
+  border-radius: var(--radius-xs);
   opacity: 0;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--transition-medium) var(--ease-cubic);
   pointer-events: none;
 }
 
@@ -183,17 +183,17 @@
 .dock-link {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 5px 10px;
-  font-size: 16px;
-  font-weight: 500;
+  gap: var(--spacing-3);
+  padding: var(--spacing-5) var(--spacing-5);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-medium);
   text-decoration: none;
-  color: #333;
-  background: transparent;
+  color: var(--color-gray-800);
+  background: var(--color-transparent);
   border: none;
-  border-radius: 12px;
+  border-radius: var(--radius-l);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all var(--transition-medium);
   white-space: nowrap;
   font-family: inherit;
 }
@@ -247,15 +247,15 @@ body.mega-menu-open .dock-actions * {
   position: absolute;
   bottom: calc(100% + 20px);
   right: -0%;
-  transform: translateX(12%) translateY(10px);
+  transform: translateX(12%) translateY(var(--spacing-5));
   background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(10px);
-  border-radius: 20px;
-  padding: 24px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius-2xl);
+  padding: var(--spacing-12);
+  border: var(--border-width-thin) solid rgba(0, 0, 0, 0.1);
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity var(--transition-medium), visibility var(--transition-medium), transform var(--transition-medium) var(--ease-cubic);
   min-width: 600px;
   max-width: 800px;
   pointer-events: none;
@@ -272,52 +272,52 @@ body.mega-menu-open .dock-actions * {
 .mega-menu-inner {
   display: grid;
   grid-template-columns: 200px 1fr;
-  gap: 32px;
+  gap: var(--spacing-16);
 }
 
 /* Mega Menu Navigation */
 .mega-menu-nav {
-  border-right: 1px solid rgba(0, 0, 0, 0.1);
-  padding-right: 24px;
+  border-right: var(--border-width-thin) solid rgba(0, 0, 0, 0.1);
+  padding-right: var(--spacing-12);
 }
 
 .mega-menu-list {
   list-style: none;
-  margin: 0;
-  padding: 0;
+  margin: var(--spacing-0);
+  padding: var(--spacing-0);
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--spacing-2);
 }
 
 .mega-menu-link {
   display: block;
-  padding: 10px 16px;
-  font-size: 16px;
-  color: #333;
+  padding: var(--spacing-5) var(--spacing-8);
+  font-size: var(--font-size-xl);
+  color: var(--color-gray-800);
   text-decoration: none;
-  border-radius: 8px;
-  transition: all 0.2s ease;
+  border-radius: var(--radius-m);
+  transition: all var(--transition-fast);
 }
 
 .mega-menu-link:hover {
   background: rgba(0, 0, 0, 0.05);
-  color: #000;
+  color: var(--color-black);
 }
 
 /* Mega Menu Featured Grid */
 .mega-menu-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  gap: var(--spacing-8);
 }
 
 .mega-menu-featured-item {
   text-decoration: none;
   display: block;
-  border-radius: 12px;
+  border-radius: var(--radius-l);
   overflow: hidden;
-  transition: transform 0.3s ease;
+  transition: transform var(--transition-medium);
 }
 
 .mega-menu-featured-item:hover {
@@ -329,23 +329,23 @@ body.mega-menu-open .dock-actions * {
   width: 100%;
   padding-bottom: 100%;
   overflow: hidden;
-  background: #f5f5f5;
+  background: var(--color-gray-100);
 }
 
 .mega-menu-image {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: var(--spacing-0);
+  left: var(--spacing-0);
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
 .mega-menu-label {
-  padding: 12px;
-  font-size: 13px;
-  font-weight: 500;
-  color: #333;
+  padding: var(--spacing-6);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-800);
   background: rgba(255, 255, 255, 0.9);
   text-align: center;
 }
