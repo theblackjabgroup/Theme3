@@ -167,7 +167,7 @@
   background: var(--color-black);
   border-radius: var(--radius-xs);
   opacity: 0;
-  transition: all var(--transition-medium) var(--ease-cubic);
+  transition: left 0.3s var(--ease-cubic), width 0.3s var(--ease-cubic), opacity 0.3s var(--ease-cubic);
   pointer-events: none;
 }
 
