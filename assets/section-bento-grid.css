@@ -262,8 +262,7 @@
 }
 
 .video-card video,
-.video-card iframe,
-.video-card .video-placeholder {
+.video-card iframe {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -277,9 +276,26 @@
 }
 
 .video-card:hover video,
-.video-card:hover iframe,
-.video-card:hover .video-placeholder {
+.video-card:hover iframe {
   transform: scale(0.85);
+}
+
+.video-card .video-placeholder-text {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--color-text, #000);
+  font-size: 16px;
+  font-weight: 500;
+  text-align: center;
+  padding: 20px;
 }
 
 /* Hover marquee overlay for video card */
@@ -914,37 +930,11 @@
 .button-card.bento-card {
   justify-content: center;
   align-items: center;
-  border: 2px solid var(--color-primary-button-bg, #e63946);
-  background: var(--color-primary-button-bg, #e63946);
-}
-
-.button-card {
-  justify-content: center;
-  align-items: center;
-}
-
-.button-card-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 20px;
-  background: var(--color-primary-button-bg, #e63946);
+  background: transparent;
   border: none;
-  color: var(--color-primary-button-text, #fff);
-  border-radius: 999px;
-  font-size: var(--desktop-font-size, 20px);
-  text-transform: uppercase;
-  font-weight: var(--desktop-font-weight, 600);
-  text-decoration: none;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all 0.3s ease;
+  padding: 0;
 }
 
-.button-card-btn:hover {
-  background: var(--color-primary-button-hover-bg, #d62839);
-  color: var(--color-primary-button-hover-text, #fff);
-}
 
 /* Content Cards */
 .content-card {
@@ -1121,11 +1111,8 @@
   image-rendering: -webkit-optimize-contrast;
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
-  transition: background-position var(--sprite-animation-duration) var(--sprite-animation-timing);
-}
-
-.bento-card.content-card.has-spritesheet:hover .content-card-sprite-side {
-  background-position: 100% 50% !important;
+  /* Transition controlled by JavaScript */
+  transition: background-position 0s;
   will-change: background-position;
 }
 
@@ -1135,11 +1122,8 @@
   image-rendering: -webkit-optimize-contrast;
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
-  transition: background-position var(--sprite-animation-duration) var(--sprite-animation-timing);
-}
-
-.bento-card.content-card.has-spritesheet-vertical:hover .content-card-sprite-side {
-  background-position: 50% 100% !important;
+  /* Transition controlled by JavaScript */
+  transition: background-position 0s;
   will-change: background-position;
 }
 

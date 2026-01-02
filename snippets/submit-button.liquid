@@ -1,0 +1,58 @@
+{%- comment -%}
+  Renders a submit button with the share-story-submit styling.
+  Accepts:
+  - text: {String} Button text (required)
+  - url: {String} Optional URL. If provided, renders as <a>, otherwise as <button>
+  - type: {String} Button type (default: 'button', can be 'submit' for forms)
+  - class: {String} Additional CSS classes (default: 'share-story-submit')
+{%- endcomment -%}
+
+<style>
+  .share-story-submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-primary-button-bg);
+    color: white;
+    border: 2px solid #000;
+    padding: 20px;
+    border-radius: 100px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    cursor: pointer;
+    width: fit-content;
+    box-shadow: 4px 4px 0px 0px #000000;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    margin-top: 5px;
+    text-transform: none;
+    font-family: var(--font-heading-family);
+    letter-spacing: 0.02em;
+    line-height: 1;
+    text-decoration: none;
+  }
+
+  .share-story-submit:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 0px 0px 0px 0px #000000;
+  }
+
+  /* Button card specific styles */
+  .button-card .share-story-submit {
+    padding: 20px !important;
+    width: 97%;
+  }
+</style>
+
+{%- assign button_text = text | default: 'Button' -%}
+{%- assign button_type = type | default: 'button' -%}
+{%- assign button_class = class | default: 'share-story-submit' -%}
+
+{%- if url != blank -%}
+  <a class="{{ button_class }}" href="{{ url }}">
+    {{ button_text }}
+  </a>
+{%- else -%}
+  <button type="{{ button_type }}" class="{{ button_class }}">
+    {{ button_text }}
+  </button>
+{%- endif -%}

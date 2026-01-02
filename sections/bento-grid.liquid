@@ -1,4 +1,5 @@
-{{ 'section-bento-grid.css' | asset_url | stylesheet_tag }}
+{{ 'section-bento-grid.css' | asset_url | stylesheet_tag: preload: true }}
+<script src="{{ 'section-bento-grid.js' | asset_url }}" defer></script>
 
 <style>
   /* Dynamic styles that require Liquid variables */
@@ -186,9 +187,13 @@
                 </div>
                 <div class="welcome-text">
                   {%- if customer -%}
-                    Hi, {{ customer.first_name }}!
+                    {%- if block.settings.welcome_text != blank -%}
+                      {{ block.settings.welcome_text | replace: '[name]', customer.first_name }}
+                    {%- else -%}
+                      Hi, {{ customer.first_name }}!
+                    {%- endif -%}
                   {%- else -%}
-                    Login
+                    {{ block.settings.login_text | default: 'Login' }}
                   {%- endif -%}
                 </div>
               </div>
@@ -438,7 +443,7 @@
                     flex: 0 0 var(--desktop-sprite-canvas-size);
                     transform: scale(var(--desktop-sprite-scale)) translate(var(--desktop-sprite-x-offset), var(--desktop-sprite-y-offset)) rotate(var(--desktop-sprite-rotation));
                     z-index: 10;
-                    background-image: url('{% if block.settings.image != blank %}{{ block.settings.image | image_url: width: 5760 }}{% else %}{{ 'spritesheet-prejudice.png' | asset_url }}{% endif %}');
+                    background-image: url('{% if block.settings.image != blank %}{{ block.settings.image | image_url: width: 1920 }}{% else %}{{ 'spritesheet-prejudice.png' | asset_url }}{% endif %}');
                     {% unless enable_spritesheet %}
                       background-position: {{ bg_pos_h }} {{ sprite_vertical_alignment }};
                       background-size: {{ bg_size }};
@@ -456,20 +461,12 @@
             </div>
 
           {%- when 'button_card' -%}
-            {%- assign font_size = block.settings.font_size | default: 16 -%}
-            {%- assign font_weight = block.settings.font_weight | default: 600 -%}
-            {%- assign mobile_font_size = block.settings.mobile_font_size | default: font_size -%}
-            {%- assign mobile_font_weight = block.settings.mobile_font_weight | default: font_weight -%}
             {%- assign label = block.settings.label | default: 'Button' -%}
-            <div
-              class="bento-card button-card"
-              style="--desktop-font-size: {{ font_size }}px; --desktop-font-weight: {{ font_weight }}; --mobile-font-size: {{ mobile_font_size }}px; --mobile-font-weight: {{ mobile_font_weight }};"
-            >
-              {%- if block.settings.link != blank -%}
-                <a class="button-card-btn" href="{{ block.settings.link }}">{{ label }}</a>
-              {%- else -%}
-                <button class="button-card-btn" type="button">{{ label }}</button>
-              {%- endif -%}
+            <div class="bento-card button-card">
+              {% render 'submit-button',
+                text: label,
+                url: block.settings.link
+              %}
             </div>
 
           {%- when 'text_card' -%}
@@ -643,25 +640,7 @@
               {%- endcase -%}
 
               {%- if has_video == false -%}
-                {%- if block.settings.placeholder_image != blank -%}
-                  <img
-                    src="{{ block.settings.placeholder_image | image_url: width: 1200 }}"
-                    alt="Video placeholder"
-                    class="video-placeholder"
-                    loading="lazy"
-                    width="1200"
-                    height="675"
-                  >
-                {%- else -%}
-                  <img
-                    src="https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?v=1530129081"
-                    alt="Video placeholder"
-                    class="video-placeholder"
-                    loading="lazy"
-                    width="1200"
-                    height="675"
-                  >
-                {%- endif -%}
+                <div class="video-placeholder-text">Add video here</div>
               {%- endif -%}
 
               {%- if block.settings.marquee_text != blank -%}
@@ -1281,6 +1260,24 @@
           "step": 0.1,
           "label": "Row Span",
           "default": 1
+        },
+        {
+          "type": "header",
+          "content": "Text Settings"
+        },
+        {
+          "type": "text",
+          "id": "login_text",
+          "label": "Login Text",
+          "default": "Login",
+          "info": "Text shown when user is not logged in"
+        },
+        {
+          "type": "text",
+          "id": "welcome_text",
+          "label": "Welcome Text",
+          "default": "Hi, [name]!",
+          "info": "Text shown when user is logged in. Use [name] to display customer's first name"
         },
         {
           "type": "header",
@@ -2104,59 +2101,6 @@
       "settings": [
         { "type": "text", "id": "label", "label": "Button text", "default": "Button Text" },
         { "type": "url", "id": "link", "label": "Button link" },
-        {
-          "type": "header",
-          "content": "Typography"
-        },
-        {
-          "type": "range",
-          "id": "font_size",
-          "min": 12,
-          "max": 24,
-          "step": 1,
-          "unit": "px",
-          "label": "Font size",
-          "default": 16
-        },
-        {
-          "type": "select",
-          "id": "font_weight",
-          "label": "Font weight",
-          "options": [
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" }
-          ],
-          "default": "600"
-        },
-        {
-          "type": "header",
-          "content": "Mobile Typography"
-        },
-        {
-          "type": "range",
-          "id": "mobile_font_size",
-          "min": 12,
-          "max": 24,
-          "step": 1,
-          "unit": "px",
-          "label": "Mobile Font size",
-          "default": 14,
-          "info": "Font size on mobile devices"
-        },
-        {
-          "type": "select",
-          "id": "mobile_font_weight",
-          "label": "Mobile Font weight",
-          "options": [
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" }
-          ],
-          "default": "600"
-        },
         {
           "type": "range",
           "id": "column_span",
