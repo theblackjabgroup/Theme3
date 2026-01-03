@@ -11,7 +11,11 @@
 {%- endcomment -%}
 <div class="feature-row">
   {% if block.settings.icon != blank %}
-    {{ block.settings.icon | image_url: width: 60 | image_tag: class: 'feature-icon', loading: 'lazy' }}
+    {{
+      block.settings.icon
+      | image_url: width: 60
+      | image_tag: class: 'feature-icon', loading: 'lazy', alt: block.settings.icon.alt
+    }}
   {% endif %}
   {% if block.settings.heading != blank %}
     <strong class="feature-heading">{{ block.settings.heading }}</strong>

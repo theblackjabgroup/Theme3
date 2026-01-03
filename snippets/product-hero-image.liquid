@@ -10,12 +10,19 @@
   - product: The product object.
 {%- endcomment -%}
 <div class="product-hero-section">
-  {% assign first_media = product.media | first %}
-  {% if first_media %}
+  {% assign hero_image = null %}
+  {% for media in product.media %}
+    {% if media.media_type == 'image' %}
+      {% assign hero_image = media %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+
+  {% if hero_image %}
     {{
-      first_media.preview_image
+      hero_image
       | image_url: width: 1200
-      | image_tag: class: 'product-hero-image', loading: 'eager', alt: first_media.alt
+      | image_tag: class: 'product-hero-image', loading: 'eager', alt: hero_image.alt
     }}
   {% endif %}
 </div>

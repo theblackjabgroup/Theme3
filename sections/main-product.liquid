@@ -22,14 +22,18 @@
     // ---------------------------------------------------------
     const track = sectionContainer.querySelector('#ProductMediaTrack');
     if (track) {
-      const slides = Array.from(track.children);
-      const prevBtn = sectionContainer.querySelector('.media-nav.prev');
-      const nextBtn = sectionContainer.querySelector('.media-nav.next');
+      // Helper to get only visible slides (handles desktop/mobile hiding)
+      const getSlides = () => Array.from(track.children).filter(slide => slide.offsetParent !== null);
+      
       let index = 0;
 
       function updateButtons() {
+        const slides = getSlides();
+        const prevBtn = sectionContainer.querySelector('.media-nav.prev');
+        const nextBtn = sectionContainer.querySelector('.media-nav.next');
+
         if (prevBtn) {
-          if (index === 0) {
+          if (index <= 0) {
             prevBtn.style.opacity = '0.3';
             prevBtn.style.pointerEvents = 'none';
           } else {
@@ -38,7 +42,7 @@
           }
         }
         if (nextBtn) {
-          if (slides.length === 0 || index === slides.length - 1) {
+          if (slides.length === 0 || index >= slides.length - 1) {
             nextBtn.style.opacity = '0.3';
             nextBtn.style.pointerEvents = 'none';
           } else {
@@ -49,19 +53,34 @@
       }
 
       function scrollToSlide(i) {
-        if (!slides[i]) return;
-        slides[i].scrollIntoView({ behavior: 'smooth', inline: 'center' });
+        const slides = getSlides();
+        // Clamp index
+        if (i < 0) i = 0;
+        if (i >= slides.length) i = slides.length - 1;
+        
+        index = i;
+        
+        if (slides[index]) {
+          slides[index].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
         updateButtons();
       }
 
+      const prevBtn = sectionContainer.querySelector('.media-nav.prev');
+      const nextBtn = sectionContainer.querySelector('.media-nav.next');
+
       prevBtn?.addEventListener('click', () => {
-        index = Math.max(index - 1, 0);
-        scrollToSlide(index);
+        scrollToSlide(index - 1);
       });
       nextBtn?.addEventListener('click', () => {
-        index = Math.min(index + 1, slides.length - 1);
+        scrollToSlide(index + 1);
+      });
+
+      // Update on resize to handle hidden/shown slides
+      window.addEventListener('resize', () => {
         scrollToSlide(index);
       });
+
       updateButtons();
     }
 
@@ -248,6 +267,7 @@
 {% schema %}
 {
   "name": "Main Product",
+  "enabled_on": { "templates": ["product"] },
   "blocks": [
     {
       "type": "collapsible_tab",
@@ -396,78 +416,6 @@
         { "type": "header", "content": "Item 4" },
         { "type": "image_picker", "id": "icon_4", "label": "Icon" },
         { "type": "text", "id": "text_4", "label": "Text", "default": "Supporting Non-Profit" }
-      ]
-    }
-  ],
-  "presets": [
-    {
-      "name": "Main Product",
-      "blocks": [
-        {
-          "type": "collapsible_tab",
-          "settings": {
-            "heading": "Geeky Details",
-            "content": "<p>Here are the technical details of the product.</p>"
-          }
-        },
-        {
-          "type": "size_chart",
-          "settings": {
-            "button_label": "View the size chart"
-          }
-        },
-        {
-          "type": "description"
-        },
-        {
-          "type": "icon_strip",
-          "settings": {
-            "text_1": "Designed in Milan with Love",
-            "text_2": "Conversation Starter",
-            "text_3": "Hug Magnet",
-            "text_4": "Supporting Non-Profit"
-          }
-        },
-        {
-          "type": "feature_row",
-          "settings": {
-            "heading": "Delivery",
-            "text": "<p>We haven't yet figured out how to make delivery teleport to your doorstep. So, while we'll do our best to get your order to you as quickly as possible, please be patient.</p>",
-            "button_label": "Discover more"
-          }
-        },
-        {
-          "type": "marquee",
-          "settings": {
-            "text": "FREE SHIPPING WORLDWIDE",
-            "speed": 20,
-            "direction": "normal"
-          }
-        },
-        {
-          "type": "feature_row",
-          "settings": {
-            "heading": "Material",
-            "text": "<p>Made from 100% organic cotton, soft to the touch and kind to the planet.</p>",
-            "button_label": "Read more"
-          }
-        },
-        {
-          "type": "feature_row",
-          "settings": {
-            "heading": "Care Instructions",
-            "text": "<p>Wash cool, hang dry. Do not bleach. Love your clothes and they will love you back.</p>",
-            "button_label": "Care Guide"
-          }
-        },
-        {
-          "type": "marquee",
-          "settings": {
-            "text": "NEW COLLECTION DROPPING SOON",
-            "speed": 25,
-            "direction": "reverse"
-          }
-        }
       ]
     }
   ]
