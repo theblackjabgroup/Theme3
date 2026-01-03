@@ -20,7 +20,7 @@
       <div class="icon-strip-item">
         <div class="icon-strip-image-wrapper">
           {% if icon != blank %}
-            {{ icon | image_url: width: 100 | image_tag: loading: 'lazy', class: 'icon-strip-image' }}
+            {{ icon | image_url: width: 100 | image_tag: loading: 'lazy', class: 'icon-strip-image', alt: icon.alt }}
           {% else %}
             {% case i %}
               {% when 1 %}
