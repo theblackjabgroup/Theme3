@@ -393,3 +393,20 @@
 .article-comment-textarea::placeholder {
   color: rgba(var(--color-foreground), 0.75);
 }
+
+/* Social Share Text Fallback */
+.custom-share-text {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  color: rgb(var(--color-foreground));
+  font-family: var(--font-family-mono);
+  line-height: 1;
+}
+
+/* Ensure icons are a good size */
+.custom-share-link img.custom-share-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
