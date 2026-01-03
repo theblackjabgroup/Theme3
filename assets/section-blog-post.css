@@ -1,1 +1,395 @@
-/* Cleared */
+.article-template {
+  color: rgb(var(--color-foreground));
+  background-color: rgb(var(--color-background));
+}
+
+.article-header {
+  text-align: center;
+  margin-bottom: var(--spacing-32);
+  max-width: 100rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 2rem;
+}
+
+.article-category-pill {
+  display: inline-block;
+  padding: 0.6rem 2.4rem;
+  border-radius: var(--radius-pill);
+  text-transform: uppercase;
+  font-size: var(--font-size-sm);
+  letter-spacing: 0.2rem;
+  margin-bottom: var(--spacing-8);
+  font-weight: var(--font-weight-bold);
+  background: transparent;
+}
+
+.article-title {
+  font-family: var(--font-heading-family);
+  font-size: clamp(3.2rem, 5vw, 6rem);
+  line-height: 0.95;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  margin: 0;
+  color: var(--color-headings);
+}
+
+.article-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  max-width: var(--container-2xl);
+  margin: 0 auto;
+  padding: 0 var(--spacing-8);
+}
+
+@media screen and (min-width: 990px) {
+  .article-grid {
+    grid-template-columns: 320px 1fr;
+    gap: var(--spacing-40);
+    padding: 0 var(--spacing-40);
+  }
+  
+  .article-sidebar {
+    position: sticky;
+    top: var(--spacing-8);
+    height: fit-content;
+  }
+}
+
+.article-image-wrapper {
+  border: 1px solid rgb(var(--color-border));
+  margin-bottom: var(--spacing-12);
+  aspect-ratio: 0.8;
+  position: relative;
+  overflow: hidden;
+  background-color: rgb(var(--color-gray-100));
+}
+
+.article-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: var(--transition-base);
+}
+
+.article-meta-group {
+  margin-bottom: var(--spacing-10);
+}
+
+.article-meta-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--spacing-4);
+  display: block;
+  color: rgb(var(--color-foreground));
+  opacity: 0.8;
+}
+
+.article-meta-value {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-md);
+  text-transform: uppercase;
+  color: rgb(var(--color-foreground));
+  line-height: 1.4;
+  display: block;
+}
+
+.article-tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.article-content {
+  font-size: var(--font-size-xl);
+  line-height: 1.7;
+  color: rgb(var(--color-foreground));
+  font-family: var(--font-family-body);
+}
+
+.article-content h2 {
+  font-size: var(--h3-size);
+  font-weight: var(--font-weight-bold);
+  margin-top: var(--spacing-16);
+  margin-bottom: var(--spacing-8);
+  font-family: var(--font-heading-family);
+}
+
+.article-content p {
+  margin-bottom: var(--spacing-8);
+}
+
+.share-icons-container {
+  display: flex;
+  gap: var(--spacing-6);
+  margin-bottom: var(--spacing-4);
+}
+
+.share-icons-container svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.share-button__button {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  color: rgb(var(--color-foreground));
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.share-button__button .svg-wrapper {
+  width: 20px;
+  height: 20px;
+  display: flex;
+}
+
+.share-button__button svg {
+  width: 100%;
+  height: 100%;
+}
+.custom-share-icons {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.custom-share-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(var(--color-foreground));
+  text-decoration: none;
+  transition: transform 0.2s ease;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.custom-share-link:hover {
+  transform: scale(1.1);
+}
+
+.custom-share-link svg,
+.custom-share-link img.custom-share-icon {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+  object-fit: contain;
+}
+
+.custom-share-link.active svg {
+  fill: currentColor;
+}
+
+.share-button details > summary {
+  list-style: none;
+}
+.share-button details > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* =========================================
+   COMMENT FORM STYLES (MATCHING SHARE STORY)
+========================================= */
+
+.article-comment-card {
+  background: var(--color-white);
+  border-radius: var(--radius-4xl);
+  padding: var(--spacing-18);
+  box-shadow: var(--shadow-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-15);
+  margin-top: var(--spacing-16);
+  border: var(--border-width-thin) solid var(--color-gray-100);
+}
+
+@media screen and (max-width: 749px) {
+  .article-header {
+    margin-bottom: var(--spacing-10);
+  }
+  .article-comment-card {
+    padding: var(--spacing-12);
+    border-radius: var(--radius-2xl);
+  }
+}
+
+.article-comment-field {
+  width: 100%;
+}
+
+.article-comment-label {
+  display: block;
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--spacing-3);
+  font-size: var(--font-size-2xl);
+  font-family: var(--font-family-mono);
+  letter-spacing: var(--letter-spacing-wider);
+  position: relative;
+  overflow: hidden;
+  line-height: var(--line-height-tight);
+  cursor: default;
+}
+
+.article-comment-label-text {
+  display: inline-block;
+  transition: transform var(--transition-medium) var(--ease-cubic);
+}
+
+.article-comment-label::before {
+  content: attr(data-text);
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: currentColor;
+  transition: transform var(--transition-medium) var(--ease-cubic);
+}
+
+.article-comment-label:hover .article-comment-label-text {
+  transform: translateY(-100%);
+}
+
+.article-comment-label:hover::before {
+  transform: translateY(-100%);
+}
+
+.article-comment-input {
+  width: 100%;
+  padding: var(--spacing-6) var(--spacing-10);
+  border-radius: var(--radius-full);
+  border: var(--border-width-thin) solid var(--color-gray-200);
+  background: var(--color-white);
+  font-size: var(--font-size-xl);
+  outline: none;
+  transition: all var(--transition-medium);
+  font-family: var(--font-family-mono);
+  box-shadow: var(--shadow-m);
+}
+
+.article-comment-input:focus {
+  box-shadow: var(--shadow-lg);
+}
+
+.article-comment-input::placeholder {
+  color: var(--color-gray-500);
+  font-family: var(--font-family-mono);
+}
+
+.article-comment-textarea {
+  width: 100%;
+  padding: var(--spacing-12);
+  border-radius: var(--radius-3xl);
+  border: var(--border-width-thin) solid var(--color-gray-200);
+  background: var(--color-white);
+  font-size: var(--font-size-xl);
+  min-height: 200px;
+  resize: none;
+  outline: none;
+  font-family: var(--font-family-mono);
+  line-height: var(--line-height-relaxed);
+  transition: all var(--transition-medium);
+  box-shadow: var(--shadow-m);
+}
+
+.article-comment-textarea:focus {
+  border-color: var(--color-black);
+  box-shadow: var(--shadow-lg);
+}
+
+.article-comment-textarea::placeholder {
+  color: var(--color-gray-500);
+  font-family: var(--font-family-mono);
+}
+
+.article-comment-button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* =========================================
+   POSTED COMMENT CARD STYLES
+========================================= */
+
+.article-posted-comment-card {
+  background: var(--color-white);
+  border-radius: var(--radius-3xl);
+  padding: var(--spacing-12);
+  box-shadow: var(--shadow-l);
+  margin-bottom: var(--spacing-8);
+  border: var(--border-width-thin) solid var(--color-gray-100);
+}
+
+.article-posted-comment-card .circle-divider::before {
+  background-color: var(--color-black);
+}
+
+.article-posted-comment-card footer {
+  margin-top: var(--spacing-6);
+  opacity: 0.7;
+  font-size: var(--font-size-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.article-comment-card .share-story-submit {
+  margin-top: var(--spacing-8);
+}
+
+/* =========================================
+   COLOR SCHEME OVERRIDES
+========================================= */
+
+.article-comment-card,
+.article-posted-comment-card {
+  background: rgb(var(--color-background));
+  border-color: rgba(var(--color-foreground), 0.08); 
+  color: rgb(var(--color-foreground));
+}
+
+.article-comment-input,
+.article-comment-textarea {
+  background: rgb(var(--color-background));
+  border-color: rgba(var(--color-foreground), 0.2); 
+  color: rgb(var(--color-foreground));
+}
+
+.article-comment-input:focus,
+.article-comment-textarea:focus {
+  border-color: rgb(var(--color-foreground));
+  box-shadow: 0 0 0 1px rgb(var(--color-foreground));
+}
+
+.article-comment-label,
+.article-posted-comment-card {
+  color: rgb(var(--color-foreground));
+}
+
+.article-comment-label::before {
+  color: rgb(var(--color-foreground));
+}
+
+.article-posted-comment-card .circle-divider::before {
+   background-color: rgb(var(--color-foreground));
+}
+
+.article-comment-input::placeholder,
+.article-comment-textarea::placeholder {
+  color: rgba(var(--color-foreground), 0.75);
+}

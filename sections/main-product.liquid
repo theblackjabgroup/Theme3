@@ -178,9 +178,6 @@
     // Function to find matching variant
     function findMatchingVariant(selectedOptions) {
       return productVariants.find(variant => {
-        // Compare variant.options (array of values) with selectedOptions
-        // variant.options looks like ["Small", "Red"]
-        // selectedOptions looks like ["Small", "Red"]
         return variant.options.every((option, index) => {
           return option === selectedOptions[index];
         });
@@ -264,10 +261,86 @@
   });
 </script>
 
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const spriteContainer = document.querySelector('.product-hero-sprite-container');
+    if (!spriteContainer) return;
+
+    const img = spriteContainer.querySelector('.product-hero-sprite-img');
+    const frames = parseInt(spriteContainer.dataset.frames || 1, 10);
+
+    if (!img || frames <= 1) return;
+
+    // Function to update aspect ratio
+    function updateAspectRatio() {
+      if (img.naturalWidth && img.naturalHeight) {
+        const frameWidth = img.naturalWidth / frames;
+        const aspectRatio = frameWidth / img.naturalHeight;
+        spriteContainer.style.aspectRatio = `${aspectRatio}`;
+      }
+    }
+
+    if (img.complete) {
+      updateAspectRatio();
+    } else {
+      img.onload = updateAspectRatio;
+    }
+
+    // Interaction Logic: Scroll Based
+    const scrollTarget = document.querySelector('.product-split-right');
+
+    function updateFrame() {
+      if (!scrollTarget) return;
+
+      const scrollTop = scrollTarget.scrollTop;
+      const maxScroll = scrollTarget.scrollHeight - scrollTarget.clientHeight;
+
+      // Avoid division by zero
+      if (maxScroll <= 0) return;
+
+      const scrollPercent = scrollTop / maxScroll;
+
+      // Calculate index
+      let index = Math.floor(scrollPercent * frames);
+
+      // Clamp
+      if (index < 0) index = 0;
+      if (index >= frames) index = frames - 1;
+
+      // Translate
+      const translatePercent = (index / frames) * 100;
+      img.style.transform = `translateX(-${translatePercent}%)`;
+    }
+
+    if (scrollTarget) {
+      scrollTarget.addEventListener('scroll', () => {
+        window.requestAnimationFrame(updateFrame);
+      });
+      // Initial call to set starting frame
+      updateFrame();
+    }
+  });
+</script>
+
 {% schema %}
 {
   "name": "Main Product",
   "enabled_on": { "templates": ["product"] },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_sprite_sheet",
+      "label": "Enable Sprite Sheet Hero",
+      "default": false
+    },
+    {
+      "type": "number",
+      "id": "sprite_sheet_frames",
+      "label": "Sprite Sheet Frames",
+      "default": 1,
+      "info": "Total number of frames in the sprite sheet strip."
+    }
+  ],
   "blocks": [
     {
       "type": "collapsible_tab",

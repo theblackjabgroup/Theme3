@@ -28,7 +28,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
-  max-width: 500px;
+  max-width: 400px;
   z-index: 2;
   pointer-events: none;
   display: flex;
@@ -539,3 +539,28 @@
   }
 }
 
+/* =============================
+   SPRITE SHEET HERO
+============================= */
+.product-hero-sprite-container {
+  display: block;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  /* aspect-ratio will be set by JS, default to square to avoid collapse */
+  aspect-ratio: 1 / 1;
+  pointer-events: auto; /* Keep events just in case, though scroll is elsewhere */
+}
+
+  /* No specific active state needed for scroll */
+
+.product-hero-sprite-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: auto;
+  max-width: none;
+  /* Optimization: promote to layer */
+  will-change: transform;
+}
