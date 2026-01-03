@@ -3,7 +3,16 @@ class CartDrawer extends HTMLElement {
     super();
 
     this.addEventListener('keyup', (evt) => evt.code === 'Escape' && this.close());
-    this.querySelector('#CartDrawer-Overlay').addEventListener('click', this.close.bind(this));
+    // Handle clicks outside the drawer content to close it
+    document.addEventListener('click', (e) => {
+      if (this.classList.contains('active') && !e.target.closest('.drawer__inner') && !e.target.closest('#cart-icon-bubble')) {
+        this.close();
+      }
+      // Close when clicking on overlay
+      if (e.target.classList.contains('cart-drawer__overlay')) {
+        this.close();
+      }
+    });
     this.setHeaderCartIconAccessibility();
   }
 
@@ -46,13 +55,13 @@ class CartDrawer extends HTMLElement {
       { once: true }
     );
 
-    document.body.classList.add('overflow-hidden');
+    document.body.classList.add('overflow-hidden', 'cart-drawer-open');
   }
 
   close() {
     this.classList.remove('active');
     removeTrapFocus(this.activeElement);
-    document.body.classList.remove('overflow-hidden');
+    document.body.classList.remove('overflow-hidden', 'cart-drawer-open');
   }
 
   setSummaryAccessibility(cartDrawerNote) {
@@ -84,7 +93,6 @@ class CartDrawer extends HTMLElement {
     });
 
     setTimeout(() => {
-      this.querySelector('#CartDrawer-Overlay').addEventListener('click', this.close.bind(this));
       this.open();
     });
   }

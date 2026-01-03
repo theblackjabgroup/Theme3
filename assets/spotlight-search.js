@@ -63,6 +63,7 @@ class SpotlightSearch {
     
     this.modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+    document.body.classList.add('spotlight-search-open');
     
     // Focus input after animation
     setTimeout(() => {
@@ -77,6 +78,7 @@ class SpotlightSearch {
     
     this.modal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+    document.body.classList.remove('spotlight-search-open');
     
     // Clear input
     if (this.searchInput) {

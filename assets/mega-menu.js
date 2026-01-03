@@ -56,9 +56,13 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // Close mega menu when clicking outside
+  // Close mega menu when clicking outside or on overlay
   document.addEventListener('click', function (e) {
-    if (!e.target.closest('.dock-menu-item')) {
+    if (!e.target.closest('.dock-menu-item') && !e.target.closest('.mega-menu')) {
+      closeAllMegaMenus();
+    }
+    // Close when clicking on overlay
+    if (e.target.classList.contains('mega-menu-overlay')) {
       closeAllMegaMenus();
     }
   });

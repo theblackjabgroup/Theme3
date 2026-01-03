@@ -135,7 +135,11 @@
             <div
               class="bento-card cart-card"
               style="--desktop-icon-size: {{ icon_size }}px; --mobile-icon-size: {{ mobile_icon_size }}px; --desktop-icon-color: {{ icon_color }}; --mobile-icon-color: {{ mobile_icon_color }}; --desktop-icon-stroke-width: {{ icon_stroke_width }}; --mobile-icon-stroke-width: {{ mobile_icon_stroke_width }};"
-              onclick="window.location.href='{{ routes.cart_url }}'"
+              {% if settings.cart_type == 'drawer' %}
+                onclick="(function(e) { e.preventDefault(); const drawer = document.querySelector('cart-drawer'); if (drawer) drawer.open(); })(event)"
+              {% else %}
+                onclick="window.location.href='{{ routes.cart_url }}'"
+              {% endif %}
             >
               <div class="cart-icon-wrapper">
                 {%- if block.settings.custom_icon != blank -%}
