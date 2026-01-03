@@ -226,12 +226,10 @@
   font-weight: 700 !important;
   font-family: var(--font-family-mono) !important;
   width: 40px !important;
-  text-align: center !important;
 }
 
 .cart-item__totals {
     vertical-align: middle !important;
-    text-align: right !important;
     font-family: var(--font-family-mono) !important;
     font-size: 15px !important;
     font-weight: 700 !important;

@@ -134,26 +134,26 @@
   .cart-main__title .char {
     display: inline-block;
     transform: translateY(60px);
-    animation: staggerFadeUp 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+    animation: staggerFadeUp 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
     position: relative;
     z-index: 2;
     margin-right: -12px;
   }
 
   .cart-main__title .char:nth-child(1) {
-    animation-delay: 0.2s;
+    animation-delay: 0.8s;
   }
 
   .cart-main__title .char:nth-child(2) {
-    animation-delay: 0.22s;
+    animation-delay: 0.82s;
   }
 
   .cart-main__title .char:nth-child(3) {
-    animation-delay: 0.23s;
+    animation-delay: 0.83s;
   }
 
   .cart-main__title .char:nth-child(4) {
-    animation-delay: 0.22s;
+    animation-delay: 0.82s;
   }
 
   @keyframes revealWall {
@@ -181,7 +181,6 @@
   }
 
   .cart-items__thead th {
-    text-align: left;
     padding: 20px 0;
     font-size: 14px;
     font-weight: 700;
@@ -291,7 +290,7 @@
   }
 
   .cart-item__total-cell {
-    text-align: right;
+    text-align: center;
     font-family: monospace;
     font-size: 18px;
     font-weight: 600;
@@ -739,7 +738,7 @@
                 <tr>
                   <th colspan="3">Product</th>
                   <th>Quantity</th>
-                  <th style="text-align: right;">Total</th>
+                  <th>Total</th>
                 </tr>
               </thead>
               <tbody>
@@ -761,13 +760,23 @@
                       {% endif %}
                     </td>
                     <td class="cart-item__details">
-                      <span class="cart-item__badge">FIGHTING</span>
+                      {%- if item.product.tags.size > 0 -%}
+                        {%- assign first_tag = item.product.tags.first -%}
+                        <span class="cart-item__badge">{{ first_tag | upcase }}</span>
+                      {%- endif -%}
                       <a href="{{ item.url }}" class="cart-item__name">
-                        {{- item.product.title }} - {{ item.variant.title -}}
+                        {{- item.product.title -}}
+                        {%- unless item.product.has_only_default_variant -%}
+                          - {{ item.variant.title }}
+                        {%- endunless -%}
                       </a>
                     </td>
                     <td class="cart-item__quantity-cell">
-                      <div class="cart-item__quantity-selector" data-item-index="{{ item.index | plus: 1 }}">
+                      <div
+                        class="cart-item__quantity-selector"
+                        data-item-index="{{ item.index | plus: 1 }}"
+                        data-variant-id="{{ item.variant_id }}"
+                      >
                         <button
                           type="button"
                           class="cart-item__quantity-btn cart-item__quantity-minus"
@@ -784,6 +793,7 @@
                           class="cart-item__quantity-input"
                           id="Quantity-{{ item.index | plus: 1 }}"
                           data-index="{{ item.index | plus: 1 }}"
+                          data-variant-id="{{ item.variant_id }}"
                         >
                         <button
                           type="button"
@@ -978,20 +988,18 @@
       couponApplyBtn.addEventListener('click', () => {
         const couponCode = couponInput.value.trim();
         if (couponCode) {
-          // Submit the form with the discount code
-          const form = couponInput.closest('form');
-          if (form) {
-            // Create a hidden input for the discount code
-            let discountInput = form.querySelector('input[name="discount"]');
-            if (!discountInput) {
-              discountInput = document.createElement('input');
-              discountInput.type = 'hidden';
-              discountInput.name = 'discount';
-              form.appendChild(discountInput);
-            }
-            discountInput.value = couponCode;
-            form.submit();
-          }
+          // Store discount code to apply at checkout
+          sessionStorage.setItem('cartDiscountCode', couponCode);
+
+          // Show success feedback
+          const originalText = couponApplyBtn.textContent;
+          couponApplyBtn.textContent = 'Applied!';
+          couponApplyBtn.style.backgroundColor = '#28a745';
+
+          setTimeout(() => {
+            couponApplyBtn.textContent = originalText;
+            couponApplyBtn.style.backgroundColor = '';
+          }, 2000);
         }
       });
 
@@ -1016,16 +1024,12 @@
       const cartSubtotal = document.getElementById('cart-subtotal');
       const cartTotal = document.getElementById('cart-total');
 
-      console.log('Initializing quantity selectors, found:', quantitySelectors.length);
-
       if (!quantitySelectors.length) {
-        console.log('No quantity selectors found, retrying...');
         setTimeout(initQuantitySelectors, 100);
         return;
       }
 
       if (!window.routes || !window.routes.cart_update_url) {
-        console.error('Cart routes not available', window.routes);
         return;
       }
 
@@ -1132,17 +1136,8 @@
         const itemIndex = selector.getAttribute('data-item-index');
 
         if (!minusBtn || !plusBtn || !valueSpan || !hiddenInput || !itemIndex) {
-          console.log('Missing elements for quantity selector', {
-            minusBtn: !!minusBtn,
-            plusBtn: !!plusBtn,
-            valueSpan: !!valueSpan,
-            hiddenInput: !!hiddenInput,
-            itemIndex: itemIndex,
-          });
           return;
         }
-
-        console.log('Setting up quantity selector for item:', itemIndex);
 
         // Add event listeners
         minusBtn.addEventListener(
@@ -1205,35 +1200,78 @@
         e.preventDefault();
         e.stopPropagation();
 
-        // Collect all quantity updates
-        const updates = {};
-        const quantityInputs = cartForm.querySelectorAll('input[name="updates[]"]');
-        quantityInputs.forEach((input, index) => {
-          const line = index + 1;
-          const quantity = parseInt(input.value) || 0;
-          updates[line] = quantity;
-        });
+        // First, fetch current cart to get correct line numbers
+        fetch(`${window.routes.cart_url}.js`)
+          .then((response) => response.json())
+          .then((cart) => {
+            if (!cart || cart.errors) {
+              throw new Error('Failed to fetch cart');
+            }
 
-        // Update cart via API
-        const body = JSON.stringify({ updates: updates });
+            // Build updates object using line numbers from current cart
+            const updates = {};
+            const quantityInputs = cartForm.querySelectorAll('input[name="updates[]"]');
 
-        fetch(`${window.routes.cart_update_url}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-          body: body,
-        })
+            quantityInputs.forEach((input) => {
+              const variantId = input.getAttribute('data-variant-id');
+              const quantity = parseInt(input.value) || 0;
+
+              if (variantId && cart.items) {
+                // Find the cart item by variant ID to get its line number
+                const cartItem = cart.items.find((item) => item.variant_id.toString() === variantId);
+                if (cartItem) {
+                  // Use the line number (1-based index)
+                  const line = cartItem.index + 1;
+                  updates[line] = quantity;
+                } else {
+                  // Fallback to data-index if item not found in cart
+                  const line = input.getAttribute('data-index');
+                  if (line) {
+                    updates[line] = quantity;
+                  }
+                }
+              } else {
+                // Fallback to data-index if variant ID not available
+                const line = input.getAttribute('data-index');
+                if (line) {
+                  updates[line] = quantity;
+                }
+              }
+            });
+
+            // Update cart via API with correct line numbers
+            const body = JSON.stringify({ updates: updates });
+
+            return fetch(`${window.routes.cart_update_url}`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+              },
+              body: body,
+            });
+          })
           .then((response) => {
             if (!response.ok) {
               throw new Error('Failed to update cart');
             }
+
+            // Check if there's a discount code stored
+            const discountCode = sessionStorage.getItem('cartDiscountCode');
+            let finalCheckoutUrl = checkoutUrl;
+
+            if (discountCode) {
+              // Append discount code to checkout URL
+              const separator = checkoutUrl.includes('?') ? '&' : '?';
+              finalCheckoutUrl = `${checkoutUrl}${separator}discount=${encodeURIComponent(discountCode)}`;
+              // Clear the stored discount code
+              sessionStorage.removeItem('cartDiscountCode');
+            }
+
             // Redirect to checkout after successful update
-            window.location.href = checkoutUrl;
+            window.location.href = finalCheckoutUrl;
           })
-          .catch((error) => {
-            console.error('Error updating cart before checkout:', error);
+          .catch(() => {
             // Fallback: just redirect (cart might already be updated)
             window.location.href = checkoutUrl;
           });
