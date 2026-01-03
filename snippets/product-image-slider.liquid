@@ -26,11 +26,16 @@
           {% when 'external_video' %}
             {{ media | external_video_tag: class: 'video-slide' }}
           {% when 'video' %}
-            {{ media | video_tag: controls: true, class: 'video-slide', image_size: '1200x' }}
+            {{ media | video_tag: controls: true, class: 'video-slide', image_size: '1200x', alt: media.alt }}
           {% when 'model' %}
             {{
               media
-              | model_viewer_tag: image_size: '1200x', reveal: 'interaction', toggleable: true, data-model-id: media.id
+              | model_viewer_tag:
+                image_size: '1200x',
+                reveal: 'interaction',
+                toggleable: true,
+                data-model-id: media.id,
+                alt: media.alt
             }}
         {% endcase %}
       </div>
