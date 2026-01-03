@@ -242,6 +242,17 @@
           {{ article.content }}
         </div>
 
+        <div class="article-blocks">
+          {%- for block in section.blocks -%}
+            {%- case block.type -%}
+              {%- when '@app' -%}
+                <div class="page-width page-width--narrow">
+                  {% render block %}
+                </div>
+            {%- endcase -%}
+          {%- endfor -%}
+        </div>
+
         {%- if blog.comments_enabled? -%}
           <div class="article-template__comment-wrapper background-secondary">
             <div id="comments" class="page-width page-width--narrow">
@@ -398,7 +409,6 @@
     </div>
   </article>
 </div>
-
 
 <script type="application/ld+json">
   {{ article | structured_data }}
