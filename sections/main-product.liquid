@@ -280,10 +280,9 @@
       }
     }
 
+    img.onload = updateAspectRatio;
     if (img.complete) {
       updateAspectRatio();
-    } else {
-      img.onload = updateAspectRatio;
     }
 
     // Interaction Logic: Scroll Based
