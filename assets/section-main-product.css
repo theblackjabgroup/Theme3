@@ -175,7 +175,7 @@
 .quantity {
   width: 96px;
   height: 78px;
-  border-radius: var(--radius-3xl);
+  border-radius: var(--radius-4xl);
   border: var(--border-width-thick) solid var(--color-black);
   background: var(--color-red);
   box-shadow: 0 3px 0 var(--color-black);
@@ -336,7 +336,7 @@
 
 .accordion details {
   border-bottom: var(--border-width-medium) solid var(--color-black);
-  margin-bottom: var(--spacing-xl);
+  margin: var(--spacing-xl) 0;
 }
 .accordion summary {
   cursor: pointer;
@@ -563,4 +563,27 @@
   max-width: none;
   /* Optimization: promote to layer */
   will-change: transform;
+}
+
+/* =============================
+   STATIC SPRITE (Mobile Slider)
+============================= */
+.product-media-static-sprite {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  aspect-ratio: var(--aspect-ratio);
+  display: block;
+  margin: 0 auto;
+}
+
+.static-sprite-img {
+  width: calc(100% * var(--frames)) !important;
+  max-width: none !important;
+  height: 100% !important;
+  object-fit: fill !important;
+  position: absolute;
+  left: 0;
+  top: 0;
+  aspect-ratio: auto !important; /* Override default slide aspect ratio */
 }
