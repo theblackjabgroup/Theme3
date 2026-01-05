@@ -3,7 +3,7 @@
 
 <div class="product-split-container" id="ProductSection-{{ section.id }}">
   <!-- HERO SECTION (Floating Absolute) -->
-  {% render 'product-hero-image', product: product %}
+  {% render 'product-hero-image', product: product, section: section %}
 
   <!-- LEFT COLUMN -->
   {% render 'product-left-column', product: product, section: section, product_form_id: product_form_id %}
