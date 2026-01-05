@@ -350,8 +350,21 @@
                       value="{{ form.author }}"
                       aria-required="true"
                       required
+                      {% if form.errors contains 'author' %}
+                        aria-invalid="true"
+                        aria-describedby="CommentForm-author-error"
+                      {% endif %}
                       placeholder="{{ 'blogs.article.name' | t }}"
                     >
+                    {%- if form.errors contains 'author' -%}
+                      <small id="CommentForm-author-error">
+                        <span class="form__message">
+                          {%- render 'icon-error' -%}
+                          {{ 'blogs.article.name' | t }}
+                          {{ form.errors.messages.author }}.
+                        </span>
+                      </small>
+                    {%- endif -%}
                   </div>
 
                   <div class="article-comment-field">
@@ -371,8 +384,21 @@
                       value="{{ form.email }}"
                       aria-required="true"
                       required
+                      {% if form.errors contains 'email' %}
+                        aria-invalid="true"
+                        aria-describedby="CommentForm-email-error"
+                      {% endif %}
                       placeholder="{{ 'blogs.article.email' | t }}"
                     >
+                    {%- if form.errors contains 'email' -%}
+                      <small id="CommentForm-email-error">
+                        <span class="form__message">
+                          {%- render 'icon-error' -%}
+                          {{ 'blogs.article.email' | t }}
+                          {{ form.errors.messages.email }}.
+                        </span>
+                      </small>
+                    {%- endif -%}
                   </div>
 
                   <div class="article-comment-field">
@@ -390,8 +416,21 @@
                       class="article-comment-textarea"
                       aria-required="true"
                       required
+                      {% if form.errors contains 'body' %}
+                        aria-invalid="true"
+                        aria-describedby="CommentForm-body-error"
+                      {% endif %}
                       placeholder="{{ 'blogs.article.message' | t }}"
                     >{{ form.body }}</textarea>
+                    {%- if form.errors contains 'body' -%}
+                      <small id="CommentForm-body-error">
+                        <span class="form__message">
+                          {%- render 'icon-error' -%}
+                          {{ 'blogs.article.message' | t }}
+                          {{ form.errors.messages.body }}.
+                        </span>
+                      </small>
+                    {%- endif -%}
                   </div>
 
                   {%- if blog.moderated? -%}

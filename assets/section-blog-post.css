@@ -1,5 +1,5 @@
 .article-template {
-  color: rgb(var(--color-foreground));
+  color: var(--color-text);
   background-color: rgb(var(--color-background));
 }
 
@@ -84,7 +84,7 @@
   letter-spacing: 0.05em;
   margin-bottom: var(--spacing-4);
   display: block;
-  color: rgb(var(--color-foreground));
+  color: var(--color-text);
   opacity: 0.8;
 }
 
@@ -92,7 +92,7 @@
   font-family: var(--font-family-mono);
   font-size: var(--font-size-md);
   text-transform: uppercase;
-  color: rgb(var(--color-foreground));
+  color: var(--color-text);
   line-height: 1.4;
   display: block;
 }
@@ -106,7 +106,7 @@
 .article-content {
   font-size: var(--font-size-xl);
   line-height: 1.7;
-  color: rgb(var(--color-foreground));
+  color: var(--color-text);
   font-family: var(--font-family-body);
 }
 
@@ -141,7 +141,7 @@
   font-size: var(--font-size-sm);
   text-transform: uppercase;
   letter-spacing: 0.1rem;
-  color: rgb(var(--color-foreground));
+  color: var(--color-text);
   background: transparent;
   border: none;
   padding: 0;
@@ -168,7 +168,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgb(var(--color-foreground));
+  color: var(--color-text);
   text-decoration: none;
   transition: transform 0.2s ease;
   background: none;
@@ -359,39 +359,39 @@
 .article-comment-card,
 .article-posted-comment-card {
   background: rgb(var(--color-background));
-  border-color: rgba(var(--color-foreground), 0.08); 
-  color: rgb(var(--color-foreground));
+  border-color: var(--color-border-light); 
+  color: var(--color-text);
 }
 
 .article-comment-input,
 .article-comment-textarea {
   background: rgb(var(--color-background));
-  border-color: rgba(var(--color-foreground), 0.2); 
-  color: rgb(var(--color-foreground));
+  border-color: var(--color-border); 
+  color: var(--color-text);
 }
 
 .article-comment-input:focus,
 .article-comment-textarea:focus {
-  border-color: rgb(var(--color-foreground));
-  box-shadow: 0 0 0 1px rgb(var(--color-foreground));
+  border-color: var(--color-text);
+  box-shadow: 0 0 0 1px var(--color-text);
 }
 
 .article-comment-label,
 .article-posted-comment-card {
-  color: rgb(var(--color-foreground));
+  color: var(--color-text);
 }
 
 .article-comment-label::before {
-  color: rgb(var(--color-foreground));
+  color: var(--color-text);
 }
 
 .article-posted-comment-card .circle-divider::before {
-   background-color: rgb(var(--color-foreground));
+   background-color: var(--color-text);
 }
 
 .article-comment-input::placeholder,
 .article-comment-textarea::placeholder {
-  color: rgba(var(--color-foreground), 0.75);
+  color: var(--color-text-secondary);
 }
 
 /* Social Share Text Fallback */
@@ -399,7 +399,7 @@
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-bold);
   text-transform: uppercase;
-  color: rgb(var(--color-foreground));
+  color: var(--color-text);
   font-family: var(--font-family-mono);
   line-height: 1;
 }
