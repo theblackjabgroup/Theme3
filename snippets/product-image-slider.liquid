@@ -24,7 +24,7 @@
               and section.settings.sprite_sheet_frames > 1
               and media.aspect_ratio > 2.0
             %}
-              {% assign frames = section.settings.sprite_sheet_frames %}
+              {% assign frames = section.settings.sprite_sheet_frames | times: 1.0 %}
               {% assign frame_aspect = media.aspect_ratio | divided_by: frames %}
               <div
                 class="product-media-static-sprite"
