@@ -92,63 +92,80 @@
       </div>
     {%- endif -%}
 
-    <ul class="custom-collection-list__grid" role="list">
-      {%- for collection in collections -%}
-        <li class="custom-collection-list__item">
-          <a href="{{ collection.url }}" class="custom-collection-card">
-            <div class="custom-collection-card__image-container">
-              {%- if collection.featured_image -%}
-                <img
-                  src="{{ collection.featured_image | image_url: width: 533 }}"
-                  alt="{{ collection.featured_image.alt | escape }}"
-                  class="custom-collection-card__image"
-                  loading="lazy"
-                  width="533"
-                  height="{{ 533 | divided_by: collection.featured_image.aspect_ratio }}"
-                >
-              {%- else -%}
-                {{ 'collection-1' | placeholder_svg_tag: 'custom-collection-card__image placeholder-svg' }}
+    {%- liquid
+      assign paginate_by = section.settings.collections_per_page | default: 12
+      assign modulo_result = paginate_by | modulo: section.settings.columns_desktop
+      if modulo_result != 0
+        assign paginate_by = paginate_by | plus: section.settings.columns_desktop | minus: modulo_result
+      endif
+    -%}
+    {%- paginate collections by paginate_by -%}
+      <ul class="custom-collection-list__grid" role="list">
+        {%- for collection in collections -%}
+          <li class="custom-collection-list__item">
+            <a href="{{ collection.url }}" class="custom-collection-card">
+              <div class="custom-collection-card__image-container">
+                {%- if collection.featured_image -%}
+                  <img
+                    src="{{ collection.featured_image | image_url: width: 533 }}"
+                    alt="{{ collection.featured_image.alt | escape }}"
+                    class="custom-collection-card__image"
+                    loading="lazy"
+                    width="533"
+                    height="{{ 533 | divided_by: collection.featured_image.aspect_ratio }}"
+                  >
+                {%- else -%}
+                  {{ 'collection-1' | placeholder_svg_tag: 'custom-collection-card__image placeholder-svg' }}
+                {%- endif -%}
+              </div>
+              {%- if section.settings.show_card_badge -%}
+                <span class="custom-collection-card__badge">
+                  {{- section.settings.card_badge_text | default: 'Fighting' -}}
+                </span>
               {%- endif -%}
-            </div>
-            {%- if section.settings.show_card_badge -%}
-              <span class="custom-collection-card__badge">
-                {{- section.settings.card_badge_text | default: 'Fighting' -}}
-              </span>
-            {%- endif -%}
-            <h3 class="custom-collection-card__title">
-              {{ collection.title }}
-            </h3>
+              <h3 class="custom-collection-card__title">
+                {{ collection.title }}
+              </h3>
 
-            {%- if collection.description != blank -%}
-              <p class="custom-collection-card__description">
-                {{ collection.description | strip_html | truncatewords: 20 }}
-              </p>
-            {%- else -%}
-              <p class="custom-collection-card__description">
-                COFFEE WITH A HUGE FLAVOR PROFILE. SWEET, CHOCOLATE, ORANGE, AND CARAMEL.
-              </p>
-            {%- endif -%}
+              {%- if collection.description != blank -%}
+                <p class="custom-collection-card__description">
+                  {{ collection.description | strip_html | truncatewords: 20 }}
+                </p>
+              {%- else -%}
+                <p class="custom-collection-card__description">
+                  {{ section.settings.fallback_description | default: 'Discover our amazing collection of products.' }}
+                </p>
+              {%- endif -%}
 
-            <div class="custom-collection-card__overlay-clip">
-              <div class="custom-collection-card__hover-overlay">
-                <div class="custom-collection-card__hover-content">
-                  <p class="custom-collection-card__hover-description">
-                    {%- if collection.description != blank -%}
-                      {{ collection.description | strip_html | truncatewords: 20 | upcase }}
-                    {%- else -%}
-                      COFFEE WITH A HUGE FLAVOR PROFILE. SWEET, CHOCOLATE, ORANGE, AND CARAMEL.
-                    {%- endif -%}
-                  </p>
-                  <span class="custom-collection-card__hover-button">
-                    {{- section.settings.overlay_button_text | default: 'Love that! (Check it out)' -}}
-                  </span>
+              <div class="custom-collection-card__overlay-clip">
+                <div class="custom-collection-card__hover-overlay">
+                  <div class="custom-collection-card__hover-content">
+                    <p class="custom-collection-card__hover-description">
+                      {%- if collection.description != blank -%}
+                        {{ collection.description | strip_html | truncatewords: 20 | upcase }}
+                      {%- else -%}
+                        {{
+                          section.settings.fallback_description
+                          | default: 'Discover our amazing collection of products.'
+                          | upcase
+                        }}
+                      {%- endif -%}
+                    </p>
+                    <span class="custom-collection-card__hover-button">
+                      {{- section.settings.overlay_button_text | default: 'Love that! (Check it out)' -}}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          </a>
-        </li>
-      {%- endfor -%}
-    </ul>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+
+      {%- if paginate.pages > 1 -%}
+        {% render 'pagination', paginate: paginate, anchor: '' %}
+      {%- endif -%}
+    {%- endpaginate -%}
   </div>
 </div>
 
@@ -272,6 +289,16 @@
     {
       "type": "header",
       "content": "Grid Settings"
+    },
+    {
+      "type": "range",
+      "id": "collections_per_page",
+      "label": "Collections Per Page",
+      "min": 4,
+      "max": 48,
+      "step": 4,
+      "default": 12,
+      "info": "Number of collections to show per page. Will be adjusted to fit grid columns."
     },
     {
       "type": "range",
@@ -423,6 +450,13 @@
       "id": "overlay_button_text",
       "label": "Overlay Button Text",
       "default": "Love that! (Check it out)"
+    },
+    {
+      "type": "textarea",
+      "id": "fallback_description",
+      "label": "Fallback Description",
+      "default": "Discover our amazing collection of products.",
+      "info": "This text will be displayed when a collection has no description. Used in both card description and hover overlay."
     },
     {
       "type": "header",

@@ -1,0 +1,74 @@
+{%- comment -%}
+  Renders a custom product card matching the collection list card design
+
+  Accepts:
+  - card_product: {Object} Product Liquid object (required)
+  - show_badge: {Boolean} Show badge on card. Default: true (optional)
+  - badge_text: {String} Badge text. Default: 'Fighting' (optional)
+  - overlay_button_text: {String} Overlay button text. Default: 'Love that! (Check it out)' (optional)
+  - section_id: {String} The ID of the section that contains this card (optional)
+{%- endcomment -%}
+
+{%- if card_product and card_product != empty -%}
+  <a href="{{ card_product.url }}" class="custom-collection-card">
+    <div class="custom-collection-card__image-container">
+      {%- if card_product.featured_media -%}
+        <img
+          src="{{ card_product.featured_media | image_url: width: 533 }}"
+          alt="{{ card_product.featured_media.alt | escape }}"
+          class="custom-collection-card__image"
+          loading="lazy"
+          width="533"
+          height="{{ 533 | divided_by: card_product.featured_media.aspect_ratio }}"
+        >
+      {%- else -%}
+        {{ 'product-apparel-2' | placeholder_svg_tag: 'custom-collection-card__image placeholder-svg' }}
+      {%- endif -%}
+    </div>
+
+    {%- if show_badge != false -%}
+      <span class="custom-collection-card__badge">
+        {{- badge_text | default: 'Fighting' -}}
+      </span>
+    {%- endif -%}
+
+    <h3 class="custom-collection-card__title">
+      {{ card_product.title }}
+    </h3>
+
+    {%- if card_product.description != blank -%}
+      <p class="custom-collection-card__description">
+        {{ card_product.description | strip_html | truncatewords: 20 }}
+      </p>
+    {%- else -%}
+      <p class="custom-collection-card__description">
+        COFFEE WITH A HUGE FLAVOR PROFILE. SWEET, CHOCOLATE, ORANGE, AND CARAMEL.
+      </p>
+    {%- endif -%}
+
+    <div class="custom-collection-card__footer">
+      <div class="custom-collection-card__price">
+        {{ card_product.price | money }}
+      </div>
+    </div>
+
+    <div class="custom-collection-card__hover-area"></div>
+
+    <div class="custom-collection-card__overlay-clip">
+      <div class="custom-collection-card__hover-overlay">
+        <div class="custom-collection-card__hover-content">
+          <p class="custom-collection-card__hover-description">
+            {%- if card_product.description != blank -%}
+              {{ card_product.description | strip_html | truncatewords: 20 | upcase }}
+            {%- else -%}
+              COFFEE WITH A HUGE FLAVOR PROFILE. SWEET, CHOCOLATE, ORANGE, AND CARAMEL.
+            {%- endif -%}
+          </p>
+          <span class="custom-collection-card__hover-button">
+            {{- overlay_button_text | default: 'Love that! (Check it out)' -}}
+          </span>
+        </div>
+      </div>
+    </div>
+  </a>
+{%- endif -%}
