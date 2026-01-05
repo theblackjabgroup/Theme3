@@ -1,6 +1,6 @@
 .article-template {
   color: var(--color-text);
-  background-color: rgb(var(--color-background));
+  background-color: var(--color-background);
 }
 
 .article-header {
@@ -58,12 +58,12 @@
 }
 
 .article-image-wrapper {
-  border: 1px solid rgb(var(--color-border));
+  border: 1px solid var(--color-borders);
   margin-bottom: var(--spacing-12);
   aspect-ratio: 0.8;
   position: relative;
   overflow: hidden;
-  background-color: rgb(var(--color-gray-100));
+  background-color: var(--color-background);
 }
 
 .article-image {
@@ -207,7 +207,7 @@
 ========================================= */
 
 .article-comment-card {
-  background: var(--color-white);
+  background: var(--color-background);
   border-radius: var(--radius-4xl);
   padding: var(--spacing-18);
   box-shadow: var(--shadow-xl);
@@ -215,7 +215,7 @@
   flex-direction: column;
   gap: var(--spacing-15);
   margin-top: var(--spacing-16);
-  border: var(--border-width-thin) solid var(--color-gray-100);
+  border: var(--border-width-thin) solid var(--color-borders);
 }
 
 @media screen and (max-width: 749px) {
@@ -273,8 +273,8 @@
   width: 100%;
   padding: var(--spacing-6) var(--spacing-10);
   border-radius: var(--radius-full);
-  border: var(--border-width-thin) solid var(--color-gray-200);
-  background: var(--color-white);
+  border: var(--border-width-thin) solid var(--color-borders);
+  background: var(--color-background);
   font-size: var(--font-size-xl);
   outline: none;
   transition: all var(--transition-medium);
@@ -287,7 +287,7 @@
 }
 
 .article-comment-input::placeholder {
-  color: var(--color-gray-500);
+  color: var(--color-text-secondary);
   font-family: var(--font-family-mono);
 }
 
@@ -295,8 +295,8 @@
   width: 100%;
   padding: var(--spacing-12);
   border-radius: var(--radius-3xl);
-  border: var(--border-width-thin) solid var(--color-gray-200);
-  background: var(--color-white);
+  border: var(--border-width-thin) solid var(--color-borders);
+  background: var(--color-background);
   font-size: var(--font-size-xl);
   min-height: 200px;
   resize: none;
@@ -308,12 +308,12 @@
 }
 
 .article-comment-textarea:focus {
-  border-color: var(--color-black);
+  border-color: var(--color-borders);
   box-shadow: var(--shadow-lg);
 }
 
 .article-comment-textarea::placeholder {
-  color: var(--color-gray-500);
+  color: var(--color-text-secondary);
   font-family: var(--font-family-mono);
 }
 
@@ -327,16 +327,16 @@
 ========================================= */
 
 .article-posted-comment-card {
-  background: var(--color-white);
+  background: var(--color-background);
   border-radius: var(--radius-3xl);
   padding: var(--spacing-12);
   box-shadow: var(--shadow-l);
   margin-bottom: var(--spacing-8);
-  border: var(--border-width-thin) solid var(--color-gray-100);
+  border: var(--border-width-thin) solid var(--color-borders);
 }
 
 .article-posted-comment-card .circle-divider::before {
-  background-color: var(--color-black);
+  background-color: var(--color-background);
 }
 
 .article-posted-comment-card footer {
@@ -358,15 +358,15 @@
 
 .article-comment-card,
 .article-posted-comment-card {
-  background: rgb(var(--color-background));
-  border-color: var(--color-border-light); 
+  background: var(--color-background);
+  border-color: var(--color-borders); 
   color: var(--color-text);
 }
 
 .article-comment-input,
 .article-comment-textarea {
-  background: rgb(var(--color-background));
-  border-color: var(--color-border); 
+  background: var(--color-background);
+  border-color: var(--color-borders); 
   color: var(--color-text);
 }
 
