@@ -1,0 +1,582 @@
+{{ 'custom-collection-list.css' | asset_url | stylesheet_tag }}
+
+<style>
+  .custom-collection-list {
+    padding: {{ section.settings.section_padding_top }}px {{ section.settings.section_padding_horizontal }}px {{ section.settings.section_padding_bottom }}px;
+    {% if section.settings.background_color != blank %}
+      background-color: {{ section.settings.background_color }};
+    {% endif %}
+    {% if section.settings.min_height != blank %}
+      min-height: {{ section.settings.min_height }}vh;
+    {% endif %}
+  }
+
+  .custom-collection-list__header {
+    text-align: {{ section.settings.title_alignment }};
+    {% if section.settings.title_margin_bottom != blank %}
+      margin-bottom: {{ section.settings.title_margin_bottom }}px;
+    {% endif %}
+  }
+
+  .custom-collection-list__header .title {
+    {% if section.settings.title_font_size != blank %}
+      font-size: {{ section.settings.title_font_size }}rem;
+    {% endif %}
+  }
+
+  .custom-collection-list__grid {
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+    gap: {{ section.settings.grid_gap }}px;
+  }
+
+  .custom-collection-card {
+    padding: {{ section.settings.card_padding_top }}px {{ section.settings.card_padding_horizontal }}px {{ section.settings.card_padding_bottom }}px;
+    text-align: {{ section.settings.card_text_alignment }};
+    align-items: {{ section.settings.card_content_alignment }};
+  }
+
+  .custom-collection-card__image-container {
+    height: {{ section.settings.image_height }}px;
+    {% if section.settings.image_margin_bottom != blank %}
+      margin-bottom: {{ section.settings.image_margin_bottom }}px;
+    {% endif %}
+  }
+
+  @media screen and (max-width: 1200px) {
+    .custom-collection-list__grid {
+      grid-template-columns: repeat({{ section.settings.columns_tablet }}, 1fr);
+    }
+  }
+
+  @media screen and (max-width: 900px) {
+    .custom-collection-list__grid {
+      grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr);
+      gap: {{ section.settings.grid_gap_mobile }}px;
+    }
+
+    .custom-collection-list {
+      padding: {{ section.settings.section_padding_top_mobile }}px {{ section.settings.section_padding_horizontal_mobile }}px {{ section.settings.section_padding_bottom_mobile }}px;
+    }
+
+    .custom-collection-list__header .title {
+      font-size: {{ section.settings.title_font_size_mobile }}rem;
+    }
+
+    .custom-collection-card {
+      padding: {{ section.settings.card_padding_top_mobile }}px {{ section.settings.card_padding_horizontal_mobile }}px {{ section.settings.card_padding_bottom_mobile }}px;
+    }
+
+    .custom-collection-card__image-container {
+      height: {{ section.settings.image_height_mobile }}px;
+      margin-bottom: {{ section.settings.image_margin_bottom_mobile }}px;
+    }
+
+    .custom-collection-card__title {
+      font-size: {{ section.settings.card_title_font_size_mobile }}px;
+    }
+
+    .custom-collection-card__description {
+      font-size: {{ section.settings.card_description_font_size_mobile }}px;
+    }
+  }
+</style>
+
+<div class="custom-collection-list">
+  <div class="page-width">
+    {%- if section.settings.show_title and section.settings.title != blank -%}
+      <div class="custom-collection-list__header">
+        {%- if section.settings.show_badge -%}
+          <span class="custom-collection-card__badge">{{ section.settings.badge_text | default: 'Fighting' }}</span>
+        {%- endif -%}
+        <h2 class="title">{{ section.settings.title | escape }}</h2>
+      </div>
+    {%- endif -%}
+
+    {%- liquid
+      assign paginate_by = section.settings.collections_per_page | default: 12
+      assign modulo_result = paginate_by | modulo: section.settings.columns_desktop
+      if modulo_result != 0
+        assign paginate_by = paginate_by | plus: section.settings.columns_desktop | minus: modulo_result
+      endif
+    -%}
+    {%- paginate collections by paginate_by -%}
+      <ul class="custom-collection-list__grid" role="list">
+        {%- for collection in collections -%}
+          <li class="custom-collection-list__item">
+            <a href="{{ collection.url }}" class="custom-collection-card">
+              <div class="custom-collection-card__image-container">
+                {%- if collection.featured_image -%}
+                  <img
+                    src="{{ collection.featured_image | image_url: width: 533 }}"
+                    alt="{{ collection.featured_image.alt | escape }}"
+                    class="custom-collection-card__image"
+                    loading="lazy"
+                    width="533"
+                    height="{{ 533 | divided_by: collection.featured_image.aspect_ratio }}"
+                  >
+                {%- else -%}
+                  {{ 'collection-1' | placeholder_svg_tag: 'custom-collection-card__image placeholder-svg' }}
+                {%- endif -%}
+              </div>
+              {%- if section.settings.show_card_badge -%}
+                <span class="custom-collection-card__badge">
+                  {{- section.settings.card_badge_text | default: 'Fighting' -}}
+                </span>
+              {%- endif -%}
+              <h3 class="custom-collection-card__title">
+                {{ collection.title }}
+              </h3>
+
+              {%- if collection.description != blank -%}
+                <p class="custom-collection-card__description">
+                  {{ collection.description | strip_html | truncatewords: 20 }}
+                </p>
+              {%- else -%}
+                <p class="custom-collection-card__description">
+                  {{ section.settings.fallback_description | default: 'Discover our amazing collection of products.' }}
+                </p>
+              {%- endif -%}
+
+              <div class="custom-collection-card__hover-area"></div>
+
+              <div class="custom-collection-card__overlay-clip">
+                <div class="custom-collection-card__hover-overlay">
+                  <div class="custom-collection-card__hover-content">
+                    <p class="custom-collection-card__hover-description">
+                      {%- if collection.description != blank -%}
+                        {{ collection.description | strip_html | truncatewords: 20 | upcase }}
+                      {%- else -%}
+                        {{
+                          section.settings.fallback_description
+                          | default: 'Discover our amazing collection of products.'
+                          | upcase
+                        }}
+                      {%- endif -%}
+                    </p>
+                    <span class="custom-collection-card__hover-button">
+                      {{- section.settings.overlay_button_text | default: 'Love that! (Check it out)' -}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+
+      {%- if paginate.pages > 1 -%}
+        {% render 'pagination', paginate: paginate, anchor: '' %}
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom Collection List",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show Section Title",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Collections"
+    },
+    {
+      "type": "select",
+      "id": "title_alignment",
+      "label": "Title Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size",
+      "label": "Title Font Size (rem)",
+      "min": 2,
+      "max": 8,
+      "step": 0.5,
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "title_margin_bottom",
+      "label": "Title Bottom Margin (px)",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badge",
+      "label": "Show Badge in Header",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Header Badge Text",
+      "default": "Fighting"
+    },
+    {
+      "type": "header",
+      "content": "Spacing & Layout"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Section Padding Top (px)",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Section Padding Bottom (px)",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "section_padding_horizontal",
+      "label": "Section Padding Horizontal (px)",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "min_height",
+      "label": "Minimum Section Height (vh)",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "default": 100,
+      "info": "Set to 0 to disable"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#fff9f9"
+    },
+    {
+      "type": "header",
+      "content": "Grid Settings"
+    },
+    {
+      "type": "range",
+      "id": "collections_per_page",
+      "label": "Collections Per Page",
+      "min": 4,
+      "max": 48,
+      "step": 4,
+      "default": 12,
+      "info": "Number of collections to show per page. Will be adjusted to fit grid columns."
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns (Desktop)",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "columns_tablet",
+      "label": "Columns (Tablet)",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "columns_mobile",
+      "label": "Columns (Mobile)",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Grid Gap (px)",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Card Settings"
+    },
+    {
+      "type": "select",
+      "id": "card_text_alignment",
+      "label": "Card Text Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "card_content_alignment",
+      "label": "Card Content Alignment",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Start"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "End"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "card_padding_top",
+      "label": "Card Padding Top (px)",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "card_padding_bottom",
+      "label": "Card Padding Bottom (px)",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "card_padding_horizontal",
+      "label": "Card Padding Horizontal (px)",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Image Settings"
+    },
+    {
+      "type": "range",
+      "id": "image_height",
+      "label": "Image Container Height (px)",
+      "min": 150,
+      "max": 400,
+      "step": 10,
+      "default": 250
+    },
+    {
+      "type": "range",
+      "id": "image_margin_bottom",
+      "label": "Image Bottom Margin (px)",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Card Badge & Overlay"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_card_badge",
+      "label": "Show Badge on Cards",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "card_badge_text",
+      "label": "Card Badge Text",
+      "default": "Fighting"
+    },
+    {
+      "type": "text",
+      "id": "overlay_button_text",
+      "label": "Overlay Button Text",
+      "default": "Love that! (Check it out)"
+    },
+    {
+      "type": "textarea",
+      "id": "fallback_description",
+      "label": "Fallback Description",
+      "default": "Discover our amazing collection of products.",
+      "info": "This text will be displayed when a collection has no description. Used in both card description and hover overlay."
+    },
+    {
+      "type": "header",
+      "content": "Mobile Settings"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_mobile",
+      "label": "Section Padding Top - Mobile (px)",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_mobile",
+      "label": "Section Padding Bottom - Mobile (px)",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "section_padding_horizontal_mobile",
+      "label": "Section Padding Horizontal - Mobile (px)",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "title_font_size_mobile",
+      "label": "Title Font Size - Mobile (rem)",
+      "min": 1.5,
+      "max": 5,
+      "step": 0.1,
+      "default": 2.5
+    },
+    {
+      "type": "range",
+      "id": "grid_gap_mobile",
+      "label": "Grid Gap - Mobile (px)",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "card_padding_top_mobile",
+      "label": "Card Padding Top - Mobile (px)",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "card_padding_bottom_mobile",
+      "label": "Card Padding Bottom - Mobile (px)",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "card_padding_horizontal_mobile",
+      "label": "Card Padding Horizontal - Mobile (px)",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "image_height_mobile",
+      "label": "Image Container Height - Mobile (px)",
+      "min": 120,
+      "max": 300,
+      "step": 10,
+      "default": 200
+    },
+    {
+      "type": "range",
+      "id": "image_margin_bottom_mobile",
+      "label": "Image Bottom Margin - Mobile (px)",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "card_title_font_size_mobile",
+      "label": "Card Title Font Size - Mobile (px)",
+      "min": 16,
+      "max": 32,
+      "step": 2,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "card_description_font_size_mobile",
+      "label": "Card Description Font Size - Mobile (px)",
+      "min": 8,
+      "max": 14,
+      "step": 1,
+      "default": 11
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Collection List"
+    }
+  ]
+}
+{% endschema %}
