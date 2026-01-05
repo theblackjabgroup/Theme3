@@ -19,7 +19,31 @@
       <div class="product-media-slide {% if media.media_type == 'image' and hero_image_found == false %}is-hero-slide{% endif %}">
         {% case media.media_type %}
           {% when 'image' %}
-            {{ media | image_url: width: 1200 | image_tag: loading: 'lazy', alt: media.alt }}
+            {% if hero_image_found == false
+              and section.settings.enable_sprite_sheet
+              and section.settings.sprite_sheet_frames > 1
+              and media.aspect_ratio > 2.0
+            %}
+              {% assign frames = section.settings.sprite_sheet_frames | times: 1.0 %}
+              {% assign frame_aspect = media.aspect_ratio | divided_by: frames %}
+              <div
+                class="product-media-static-sprite"
+                style="--frames: {{ frames }}; --aspect-ratio: {{ frame_aspect }};"
+              >
+                {{
+                  media
+                  | image_url: width: media.width
+                  | image_tag:
+                    loading: 'eager',
+                    alt: media.alt,
+                    class: 'static-sprite-img',
+                    widths: '2000, 3000, 4000, 5000',
+                    sizes: 'calc(100vw * 10)'
+                }}
+              </div>
+            {% else %}
+              {{ media | image_url: width: 1200 | image_tag: loading: 'lazy', alt: media.alt }}
+            {% endif %}
             {% if hero_image_found == false %}
               {% assign hero_image_found = true %}
             {% endif %}

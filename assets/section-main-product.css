@@ -28,7 +28,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
-  max-width: 500px;
+  max-width: 400px;
   z-index: 2;
   pointer-events: none;
   display: flex;
@@ -175,7 +175,7 @@
 .quantity {
   width: 96px;
   height: 78px;
-  border-radius: var(--radius-3xl);
+  border-radius: var(--radius-4xl);
   border: var(--border-width-thick) solid var(--color-black);
   background: var(--color-red);
   box-shadow: 0 3px 0 var(--color-black);
@@ -336,7 +336,7 @@
 
 .accordion details {
   border-bottom: var(--border-width-medium) solid var(--color-black);
-  margin-bottom: var(--spacing-xl);
+  margin: var(--spacing-xl) 0;
 }
 .accordion summary {
   cursor: pointer;
@@ -539,3 +539,51 @@
   }
 }
 
+/* =============================
+   SPRITE SHEET HERO
+============================= */
+.product-hero-sprite-container {
+  display: block;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  /* aspect-ratio will be set by JS, default to square to avoid collapse */
+  aspect-ratio: 1 / 1;
+  pointer-events: auto; /* Keep events just in case, though scroll is elsewhere */
+}
+
+  /* No specific active state needed for scroll */
+
+.product-hero-sprite-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: auto;
+  max-width: none;
+  /* Optimization: promote to layer */
+  will-change: transform;
+}
+
+/* =============================
+   STATIC SPRITE (Mobile Slider)
+============================= */
+.product-media-static-sprite {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  aspect-ratio: var(--aspect-ratio);
+  display: block;
+  margin: 0 auto;
+}
+
+.static-sprite-img {
+  width: calc(100% * var(--frames)) !important;
+  max-width: none !important;
+  height: 100% !important;
+  object-fit: fill !important;
+  position: absolute;
+  left: 0;
+  top: 0;
+  aspect-ratio: auto !important; /* Override default slide aspect ratio */
+}

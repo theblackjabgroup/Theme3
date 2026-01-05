@@ -4,7 +4,7 @@
   Renders the floating main product image (first media item).
 
   Usage:
-  {% render 'product-hero-image', product: product %}
+  {% render 'product-hero-image', product: product, section: section %}
 
   Variables:
   - product: The product object.
@@ -19,10 +19,27 @@
   {% endfor %}
 
   {% if hero_image %}
-    {{
-      hero_image
-      | image_url: width: 1200
-      | image_tag: class: 'product-hero-image', loading: 'eager', alt: hero_image.alt
-    }}
+    {% if section.settings.enable_sprite_sheet
+      and section.settings.sprite_sheet_frames > 1
+      and hero_image.aspect_ratio > 2.0
+    %}
+      <div
+        class="product-hero-sprite-container"
+        data-frames="{{ section.settings.sprite_sheet_frames }}"
+        style="--frames: {{ section.settings.sprite_sheet_frames }};"
+      >
+        {{
+          hero_image
+          | image_url: width: hero_image.width
+          | image_tag: class: 'product-hero-sprite-img', loading: 'eager', alt: hero_image.alt
+        }}
+      </div>
+    {% else %}
+      {{
+        hero_image
+        | image_url: width: 1200
+        | image_tag: class: 'product-hero-image', loading: 'eager', alt: hero_image.alt
+      }}
+    {% endif %}
   {% endif %}
 </div>
