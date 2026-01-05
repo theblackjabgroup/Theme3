@@ -19,7 +19,10 @@
   {% endfor %}
 
   {% if hero_image %}
-    {% if section.settings.enable_sprite_sheet and section.settings.sprite_sheet_frames > 1 %}
+    {% if section.settings.enable_sprite_sheet
+      and section.settings.sprite_sheet_frames > 1
+      and hero_image.aspect_ratio > 2.0
+    %}
       <div
         class="product-hero-sprite-container"
         data-frames="{{ section.settings.sprite_sheet_frames }}"
