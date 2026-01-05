@@ -19,8 +19,11 @@
       <div class="product-media-slide {% if media.media_type == 'image' and hero_image_found == false %}is-hero-slide{% endif %}">
         {% case media.media_type %}
           {% when 'image' %}
-            {% if hero_image_found == false and section.settings.enable_sprite_sheet %}
-              %}
+            {% if hero_image_found == false
+              and section.settings.enable_sprite_sheet
+              and section.settings.sprite_sheet_frames > 1
+              and media.aspect_ratio > 2.0
+            %}
               {% assign frames = section.settings.sprite_sheet_frames %}
               {% assign frame_aspect = media.aspect_ratio | divided_by: frames %}
               <div
