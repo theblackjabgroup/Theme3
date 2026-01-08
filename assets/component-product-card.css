@@ -69,8 +69,8 @@
 .dc-tooltip {
   position: absolute;
   bottom: 100%;
-  background-color: var(--color-red);
-  color: var(--color-white);
+  background-color: var(--dc-tooltip-bg, #ff0000);
+  color: var(--dc-tooltip-text, #ffffff);
   padding: var(--spacing-5) var(--spacing-5);
   font-weight: var(--font-weight-extrabold);
   font-size: 0.9rem;
@@ -79,7 +79,7 @@
   margin-bottom: var(--spacing-3);
   white-space: nowrap;
   box-shadow: var(--spacing-1) var(--spacing-1) var(--spacing-0) rgba(0,0,0,1);
-  border: var(--border-width-thin) solid var(--color-black);
+  border: 1px solid var(--dc-tooltip-bg, #ff0000);
 }
 .dc-tooltip::after {
   content: '';
@@ -89,13 +89,13 @@
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: #000 transparent transparent transparent;
+  border-color: var(--dc-tooltip-bg, #ff0000) transparent transparent transparent;
 }
 
 .dc-bar-track {
   width: 100%;
   height: var(--spacing-4);
-  background-color: #fce8e8;
+  background-color: var(--dc-bar-track, #fce8e8);
   border-radius: var(--radius-s);
   position: relative;
   overflow: visible;
@@ -103,7 +103,7 @@
 
 .dc-bar-fill {
   height: 100%;
-  background-color: #ff0000;
+  background-color: var(--dc-bar-fill, #ff0000);
   border-radius: 4px;
   position: relative;
 }
@@ -111,7 +111,7 @@
 .dc-dot {
   width: 12px;
   height: 12px;
-  background-color: #ff0000;
+  background-color: var(--dc-bar-fill, #ff0000);
   border-radius: 50%;
   position: absolute;
   right: -6px;
@@ -211,6 +211,6 @@
   background-position: center;
   border-width: 1px 1px 2.5px 1px;
   border-style: solid;
-  border-color: #fff;
+  border-color: var(--dc-text-color);
   border-radius: .5em;
 }
