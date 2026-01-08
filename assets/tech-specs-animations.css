@@ -1,0 +1,90 @@
+:root {
+  --duration-medium: 0.85s;
+  --elastic-ease-out: linear(0, 0.5737 7.6%, 0.8382 11.87%, 0.9463 14.19%, 1.0292 16.54%, 1.0886 18.97%, 1.1258 21.53%, 1.137 22.97%, 1.1424 24.48%, 1.1423 26.1%, 1.1366 27.86%, 1.1165 31.01%, 1.0507 38.62%, 1.0219 42.57%, 0.9995 46.99%, 0.9872 51.63%, 0.9842 58.77%, 1.0011 81.26%, 1);
+}
+
+.sc-grid {
+  perspective: 1000px;
+}
+
+.sc-grid-item {
+  opacity: 0;
+  will-change: transform, opacity;
+  -webkit-font-smoothing: antialiased;
+  backface-visibility: hidden; 
+}
+
+.sc-grid.is-visible .sc-grid-item {
+  animation-duration: var(--duration-medium); 
+  animation-fill-mode: forwards;
+  animation-timing-function: var(--elastic-ease-out); 
+}
+
+.sc-grid.is-visible .sc-grid-item:first-child {
+  animation-name: flipInLeft;
+  transform-origin: center center;
+}
+
+.sc-grid.is-visible .sc-grid-item:not(:first-child) {
+  animation-name: bounceInRight;
+}
+.sc-grid.is-visible .sc-grid-item:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.sc-grid.is-visible .sc-grid-item:nth-child(3) {
+  animation-delay: 0.2s;
+}
+.sc-grid.is-visible .sc-grid-item:nth-child(4) {
+  animation-delay: 0.3s;
+}
+.sc-grid.is-visible .sc-grid-item:nth-child(5) {
+  animation-delay: 0.4s;
+}
+
+@keyframes flipInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-60px) rotateY(-40deg) scale(0.85);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) rotateY(0) scale(1);
+  }
+}
+
+@keyframes bounceInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(250px) scale(0.85);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+.dc-bar-fill {
+  width: 0; 
+}
+
+.dc-tooltip {
+  left: 0; 
+}
+
+.sc-grid.is-visible .dc-bar-fill {
+  width: var(--target-width);
+  transition: width 2s cubic-bezier(0.22, 1, 0.36, 1) 2s; 
+}
+
+.sc-grid.is-visible .dc-tooltip {
+  left: var(--target-left);
+  transition: left 2s cubic-bezier(0.22, 1, 0.36, 1) 2s; 
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sc-grid-item {
+    opacity: 1 !important;
+    animation: none !important;
+    transform: none !important;
+  }
+}
