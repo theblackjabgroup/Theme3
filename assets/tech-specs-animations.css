@@ -65,10 +65,18 @@
 }
 
 .dc-bar-fill {
+  width: var(--target-width); 
+}
+
+.js .dc-bar-fill {
   width: 0; 
 }
 
 .dc-tooltip {
+  left: var(--target-left); 
+}
+
+.js .dc-tooltip {
   left: 0; 
 }
 
