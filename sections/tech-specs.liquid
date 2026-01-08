@@ -47,7 +47,14 @@
     {%- for block in section.blocks -%}
       <div
         class="sc-grid-item"
-        style="--dc-bg-color: {{ block.settings.bg_color }}; --dc-text-color: {{ block.settings.text_color }};"
+        style="
+          --dc-bg-color: {{ block.settings.bg_color }};
+          --dc-text-color: {{ block.settings.text_color }};
+          --dc-tooltip-bg: {{ block.settings.tooltip_bg | default: '#ff0000' }};
+          --dc-tooltip-text: {{ block.settings.tooltip_text | default: '#ffffff' }};
+          --dc-bar-fill: {{ block.settings.progress_fill | default: '#ff0000' }};
+          --dc-bar-track: {{ block.settings.progress_track | default: '#fce8e8' }};
+        "
         {{ block.shopify_attributes }}
       >
         {%- case block.type -%}
@@ -276,6 +283,34 @@
           "id": "text_color",
           "label": "Card Text",
           "default": "#000000"
+        },
+        {
+          "type": "header",
+          "content": "Progress & Tooltip Colors"
+        },
+        {
+          "type": "color",
+          "id": "tooltip_bg",
+          "label": "Tooltip Background",
+          "default": "#ff0000"
+        },
+        {
+          "type": "color",
+          "id": "tooltip_text",
+          "label": "Tooltip Text",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "progress_fill",
+          "label": "Progress Bar Fill",
+          "default": "#ff0000"
+        },
+        {
+          "type": "color",
+          "id": "progress_track",
+          "label": "Progress Bar Track",
+          "default": "#fce8e8"
         }
       ]
     }
