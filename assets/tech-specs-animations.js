@@ -11,12 +11,13 @@ document.addEventListener('DOMContentLoaded', () => {
         entry.target.classList.add('is-visible');
         observer.unobserve(entry.target); // Run only once
 
-        // Animate Tooltip Value after 2s delay
-        const tooltipVal = entry.target.querySelector('.dc-tooltip-val');
-        if (tooltipVal) {
+        // Animate ALL Tooltip Values after 2s delay
+        const tooltipVals = entry.target.querySelectorAll('.dc-tooltip-val');
+        tooltipVals.forEach((tooltipVal) => {
+          tooltipVal.textContent = '0'; // Reset to 0 for animation start
           setTimeout(() => {
             const finalVal = parseInt(tooltipVal.dataset.value, 10);
-            const duration = 500; // 0.5s to match CSS transition
+            const duration = 2000; // 2s to match CSS transition
             const startTime = performance.now();
 
             function update(currentTime) {
@@ -37,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             requestAnimationFrame(update);
           }, 2000);
-        }
+        });
       }
     });
   }, observerOptions);
