@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+const initTechSpecsAnimations = () => {
   const observerOptions = {
     root: null,
     rootMargin: '0px',
@@ -60,4 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const grids = document.querySelectorAll('.sc-grid');
   grids.forEach((grid) => observer.observe(grid));
-});
+};
+
+document.addEventListener('DOMContentLoaded', initTechSpecsAnimations);
+document.addEventListener('shopify:section:load', initTechSpecsAnimations);
