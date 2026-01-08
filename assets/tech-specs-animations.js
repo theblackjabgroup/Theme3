@@ -58,7 +58,7 @@ const initTechSpecsAnimations = () => {
     });
   }, observerOptions);
 
-  const grids = document.querySelectorAll('.sc-grid');
+  const grids = document.querySelectorAll('.sc-grid:not(.is-visible)');
   grids.forEach((grid) => observer.observe(grid));
 };
 
