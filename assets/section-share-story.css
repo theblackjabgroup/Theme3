@@ -137,7 +137,7 @@
 }
 
 .share-story-input:focus {
-  border-color: var(--color-borders);
+  border-color: var(--color-variant-selected-hover-border);
   box-shadow: var(--shadow-lg);
 }
 
@@ -163,7 +163,7 @@
 }
 
 .share-story-textarea:focus {
-  border-color: var(--color-borders);
+  border-color: var(--color-variant-selected-hover-border);
   box-shadow: var(--shadow-lg);
 }
 
