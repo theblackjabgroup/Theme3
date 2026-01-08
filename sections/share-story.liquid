@@ -1,4 +1,5 @@
 {{ 'section-share-story.css' | asset_url | stylesheet_tag }}
+{{ 'component-primary-button.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
   .section-{{ section.id }}-padding {
@@ -96,7 +97,7 @@
                 %}
 
                 <div class="share-story-footer-flex">
-                  {% render 'submit-button', text: block.settings.button_text, type: 'submit' %}
+                  {% render 'primary-button', text: block.settings.button_text, type: 'submit' %}
                   <p class="share-story-disclaimer">
                     {{ block.settings.disclaimer }}
                   </p>
