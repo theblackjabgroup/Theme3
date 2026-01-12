@@ -354,46 +354,54 @@
     "name": "Typography",
     "settings": [
       {
-        "type": "select",
-        "id": "font_family_primary_token",
-        "label": "Base font family",
-        "options": [
-          { "value": "primary", "label": "Primary (font-family-primary)" },
-          { "value": "fallback", "label": "Fallback (font-family-fallback)" }
-        ],
-        "default": "primary"
+        "type": "header",
+        "content": "t:settings_schema.typography.settings.header__1.content"
       },
       {
-        "type": "select",
-        "id": "body_size_token",
-        "label": "Body text size",
-        "options": [
-          { "value": "body_small", "label": "Small (body-text-small)" },
-          { "value": "body_regular", "label": "Regular (body-text-regular)" },
-          { "value": "body_large", "label": "Large (body-text-large)" }
-        ],
-        "default": "body_regular"
+        "type": "font_picker",
+        "id": "type_header_font",
+        "default": "lora_n5",
+        "label": "t:settings_schema.typography.settings.type_header_font.label"
       },
       {
-        "type": "select",
-        "id": "heading_scale_token",
-        "label": "Heading scale",
-        "options": [
-          { "value": "compact", "label": "Compact (smaller tokens)" },
-          { "value": "standard", "label": "Standard (h1–h4 tokens)" },
-          { "value": "expanded", "label": "Expanded (larger tokens)" }
-        ],
-        "default": "standard"
+        "type": "range",
+        "id": "heading_scale",
+        "min": 100,
+        "max": 150,
+        "step": 5,
+        "unit": "%",
+        "label": "t:settings_schema.typography.settings.heading_scale.label",
+        "default": 100
       },
       {
-        "type": "select",
-        "id": "heading_weight_token",
-        "label": "Heading weight",
-        "options": [
-          { "value": "normal", "label": "Normal" },
-          { "value": "bold", "label": "Bold (heading-weight)" }
-        ],
-        "default": "bold"
+        "type": "header",
+        "content": "t:settings_schema.typography.settings.header__2.content"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_body_font",
+        "default": "figtree_n4",
+        "label": "t:settings_schema.typography.settings.type_body_font.label"
+      },
+      {
+        "type": "range",
+        "id": "body_scale",
+        "min": 100,
+        "max": 130,
+        "step": 5,
+        "unit": "%",
+        "label": "t:settings_schema.typography.settings.body_scale.label",
+        "default": 100
+      },
+      {
+        "type": "header",
+        "content": "t:settings_schema.typography.settings.header__3.content"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_subheader_font",
+        "default": "lora_n4",
+        "label": "t:settings_schema.typography.settings.type_subheading_font.label"
       }
     ]
   },

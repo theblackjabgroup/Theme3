@@ -134,9 +134,9 @@
      ============================================ */
   
   /* Font families */
-  --font-family-primary: var(--font-family-primary, 'Anonymous Pro', monospace);
-  --font-family-heading: var(--font-heading-family, var(--font-family-primary));
-  --font-family-body: var(--font-family-primary);
+  --font-family-primary: var(--font-body-family, 'Anonymous Pro', monospace);
+  --font-family-heading: var(--font-heading-family, var(--font-body-family));
+  --font-family-body: var(--font-body-family);
   --font-family-mono: 'Courier New', Courier, monospace;
   
   /* Font sizes */

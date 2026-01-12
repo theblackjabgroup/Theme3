@@ -193,6 +193,12 @@
         },
         "body_scale": {
           "label": "Scale"
+        },
+        "header__3": {
+          "content": "Subheadings"
+        },
+        "type_subheading_font": {
+          "label": "Font"
         }
       }
     },
