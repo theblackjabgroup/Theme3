@@ -969,6 +969,7 @@
 
 
 /* Content Cards */
+
 .content-card {
   padding: 0 !important;
   overflow: hidden;
@@ -977,8 +978,18 @@
   backface-visibility: hidden;
   background-color: var(--color-accent-red, var(--color-red-dark))  !important;
 }
-.bento-card.content-card{
+.bento-card.content-card {
   background-color: var(--color-accent-red, var(--color-red-dark))  !important;
+  /* Border radius is inherited from .bento-card, but ensure it's applied */
+  border-radius: inherit;
+}
+
+.bento-card.content-card.enable-3d {
+  overflow: visible !important;
+}
+
+.bento-card.content-card.enable-3d .content-card-inner {
+  overflow: visible !important;
 }
 
 .bento-card.content-card:hover {
@@ -994,6 +1005,7 @@
 }
 .bento-card.content-card-inner{
   background-color: var(--color-accent-red, #d62839)  !important;
+
 }
 
 .content-card-text-side {
