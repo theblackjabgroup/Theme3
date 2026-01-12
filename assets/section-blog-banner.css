@@ -73,7 +73,7 @@
   font-size: 5rem;
   line-height: var(--line-height-tight);
   font-weight: var(--font-weight-bold);
-  color: var(--color-headings);
+  color: var(--heading-color);
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing-tight);
 }
