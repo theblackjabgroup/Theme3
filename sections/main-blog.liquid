@@ -1,11 +1,14 @@
 {{ 'component-article-card.css' | asset_url | stylesheet_tag }}
 {{ 'section-main-blog.css' | asset_url | stylesheet_tag }}
 
+{%- liquid
+  assign scheme = section.settings.color_scheme
+-%}
+
 {%- style -%}
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
-    background-color: {{ section.settings.color_bg }};
   }
 
   @media screen and (min-width: 750px) {
@@ -16,27 +19,29 @@
   }
 
   #BlogSlider-{{ section.id }} {
-    --color-card-bg: {{ section.settings.card_bg }};
-    --color-card-bg-hover: {{ section.settings.card_bg_hover }};
-    --color-card-text: {{ section.settings.card_text }};
-    --color-card-text-hover: {{ section.settings.card_text_hover }};
+    --color-card-bg: {{ scheme.settings.accent_off_white}};
+    --color-card-bg-hover: {{ scheme.settings.selected_variant_bg }};
+    --color-card-text: {{ scheme.settings.text }};
+    --color-card-text-hover: {{ scheme.settings.selected_variant_text }};
   }
 {%- endstyle -%}
 
 {%- paginate blog.articles by 6 -%}
-  <div class="main-blog section-{{ section.id }}-padding">
+  <div class="main-blog section-{{ section.id }}-padding color-{{ scheme.id }}">
     <div class="blog-slider-wrapper" id="BlogSlider-{{ section.id }}">
-      <button class="blog-slider-nav-btn prev-arrow" aria-label="Previous">
-        <svg viewBox="0 0 24 24">
-          <path d="M19 12H5M12 19l-7-7 7-7"/>
-        </svg>
-      </button>
+      <div class="blog-slider-controls">
+        <button class="blog-slider-nav-btn prev-arrow" aria-label="Previous">
+          <svg viewBox="0 0 24 24">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+        </button>
 
-      <button class="blog-slider-nav-btn next-arrow" aria-label="Next">
-        <svg viewBox="0 0 24 24">
-          <path d="M5 12h14M12 5l7 7-7 7"/>
-        </svg>
-      </button>
+        <button class="blog-slider-nav-btn next-arrow" aria-label="Next">
+          <svg viewBox="0 0 24 24">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </div>
 
       <div class="blog-slider-container">
         <div class="blog-slider-track">
@@ -193,38 +198,10 @@
   "class": "section",
   "settings": [
     {
-      "type": "header",
-      "content": "Color Schemes"
-    },
-    {
-      "type": "color",
-      "id": "color_bg",
-      "label": "Section Background",
-      "default": "#FFF5F5"
-    },
-    {
-      "type": "color",
-      "id": "card_bg",
-      "label": "Card Background",
-      "default": "#FFFFFF"
-    },
-    {
-      "type": "color",
-      "id": "card_bg_hover",
-      "label": "Card Background (Hover)",
-      "default": "#FF0000"
-    },
-    {
-      "type": "color",
-      "id": "card_text",
-      "label": "Card Text",
-      "default": "#000000"
-    },
-    {
-      "type": "color",
-      "id": "card_text_hover",
-      "label": "Card Text (Hover)",
-      "default": "#FFFFFF"
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
     },
     {
       "type": "header",
@@ -234,7 +211,7 @@
     {
       "type": "checkbox",
       "id": "show_date",
-      "default": true,
+      "default": false,
       "label": "t:sections.main-blog.settings.show_date.label"
     },
     {
@@ -246,7 +223,7 @@
     {
       "type": "text",
       "id": "cta_text",
-      "label": "CTA Button Text",
+      "label": "Button Text",
       "default": "Read the story"
     },
     {

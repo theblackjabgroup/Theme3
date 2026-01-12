@@ -1,4 +1,7 @@
 /* Slider Layout Styles */
+.main-blog{
+  background-color: var(--color-background);
+}
 .blog-slider-wrapper {
   position: relative;
   width: 100%;
@@ -72,15 +75,41 @@
 
 @media screen and (max-width: 749px) {
   .blog-slider-item {
-    width: 350px;
+    width: 320px;
+    min-height: 280px;
   }
   .blog-slider-nav-btn {
     width: var(--icon-size-2xl);
     height: var(--icon-size-2xl);
     border-radius: var(--radius-l);
+    position: static;
+    transform: none;
   }
   .blog-slider-nav-btn svg {
     width: 18px;
     height: 18px;
+  }
+  
+  .blog-slider-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .blog-slider-container {
+    order: 1;
+  }
+
+  .blog-slider-controls {
+    order: 2;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .blog-slider-nav-btn:hover {
+    transform: none;
+    box-shadow: 0px var(--spacing-2) var(--spacing-0) var(--spacing-0) var(--color-black); 
   }
 }
