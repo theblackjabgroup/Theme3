@@ -53,18 +53,18 @@
   letter-spacing: var(--letter-spacing-widest);
   width: fit-content;
   margin-bottom: var(--spacing-15); 
-  font-family: var(--font-heading-family);
+  font-family: var(--font-family-primary);
   background: var(--color-transparent);
 }
 
 .share-story-title {
-  font-family: var(--font-heading-family);
+  font-family: var(--font-family-primary);
   font-size: var(--font-size-5xl);
   line-height: 0.8;
   font-weight: var(--font-weight-bold);
   margin: var(--spacing-0) var(--spacing-0) var(--spacing-12) var(--spacing-0); 
   letter-spacing: var(--letter-spacing-wider);
-  color: var(--color-heading-text);
+  color: var(--color-headings);
 }
 
 .share-story-right .share-story-title {
