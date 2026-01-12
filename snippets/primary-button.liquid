@@ -1,0 +1,37 @@
+{% comment %}
+  Renders a primary button with a 3D bounce flip animation.
+
+  Accepts:
+  - text: {String} Button text
+  - link: {String} Button link (optional)
+  - type: {String} Button type (optional, default: 'button')
+  - class: {String} Optional extra classes
+  - attributes: {String} Optional extra attributes
+{% endcomment %}
+
+{%- liquid
+  assign tag = 'a'
+  if link == blank
+    assign tag = 'button'
+  endif
+-%}
+
+<{{ tag }}
+  {% if link != blank %}
+    href="{{ link }}"
+  {% endif %}
+  class="primary-button {{ class }}"
+  {% if type != blank %}
+    type="{{ type }}"
+  {% endif %}
+  {{ attributes }}
+>
+  <div class="primary-button__wrapper">
+    <div class="primary-button__face primary-button__face--front">
+      {{ text }}
+    </div>
+    <div class="primary-button__face primary-button__face--back">
+      {{ text }}
+    </div>
+  </div>
+</{{ tag }}>
