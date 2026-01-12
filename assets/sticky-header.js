@@ -52,6 +52,9 @@ class AnimatedHeader {
       () => {
         // Update mobile detection on resize
         this.isMobile = window.innerWidth <= 768;
+        // Update transition styles based on new mobile state
+        this.setInitialStyles();
+        // Update header position based on current scroll state
         this.handleScroll();
       },
       { passive: true }

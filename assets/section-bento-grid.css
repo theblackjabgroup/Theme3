@@ -284,7 +284,7 @@
 
 .video-card:hover video,
 .video-card:hover iframe {
-  transform: scale(0.85);
+  transform: scale(1);
 }
 
 .video-card .video-placeholder-text {
@@ -442,6 +442,13 @@
 
 .bento-card:hover {
   transform: scale(1.1);
+}
+
+/* Disable scale on hover for cart, content, and video cards */
+.bento-card.cart-card:hover,
+.bento-card.content-card:hover,
+.bento-card.video-card:hover {
+  transform: scale(1);
 }
 
 /* Card Color Variants */
@@ -973,7 +980,7 @@
 }
 
 .bento-card.content-card:hover {
-  transform: translateZ(0) scale(1.02);
+  transform: translateZ(0) scale(1);
 }
 
 .content-card-inner {

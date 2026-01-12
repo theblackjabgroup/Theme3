@@ -1,6 +1,34 @@
 {{ 'custom-collection-list.css' | asset_url | stylesheet_tag }}
 
 <style>
+  /* Submit button styles for hover overlay button */
+  .share-story-submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-primary-button-bg);
+    color: white;
+    border: 2px solid var(--color-primary-button-border);
+    padding: 20px;
+    border-radius: 100px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    cursor: pointer;
+    width: fit-content;
+    box-shadow: 0px 4px 0px 0px var(--color-shadow);
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    margin-top: 5px;
+    text-transform: none;
+    font-family: var(--font-heading-family);
+    letter-spacing: 0.02em;
+    line-height: 1;
+    text-decoration: none;
+  }
+
+  .share-story-submit:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 0px 0px 0px 0px var(--color-shadow);
+  }
   .custom-collection-list {
     padding: {{ section.settings.section_padding_top }}px {{ section.settings.section_padding_horizontal }}px {{ section.settings.section_padding_bottom }}px;
     {% if section.settings.background_color != blank %}
@@ -271,10 +299,9 @@
                         }}
                       {%- endif -%}
                     </p>
-                    {% render 'submit-button',
-                      text: section.settings.overlay_button_text | default: 'Love that! (Check it out)',
-                      class: 'custom-collection-card__hover-button share-story-submit'
-                    %}
+                    <span class="custom-collection-card__hover-button share-story-submit">
+                      {{- section.settings.overlay_button_text | default: 'Love that! (Check it out)' -}}
+                    </span>
                   </div>
                 </div>
               </div>
