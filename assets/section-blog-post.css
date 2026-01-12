@@ -6,19 +6,23 @@
 .article-header {
   text-align: center;
   margin-bottom: var(--spacing-32);
-  max-width: 100rem;
+  max-width: 80rem;
   margin-left: auto;
   margin-right: auto;
-  padding: 0 2rem;
+  padding: 2rem;
+  border: 1px solid var(--color-borders);
+  border-radius: var(--radius-full);
+  
+
 }
 
 .article-category-pill {
   display: inline-block;
-  padding: 0.6rem 2.4rem;
+  padding: var(--spacing-4) var(--spacing-5);
   border-radius: var(--radius-pill);
   text-transform: uppercase;
   font-size: var(--font-size-sm);
-  letter-spacing: 0.2rem;
+  letter-spacing: var(--letter-spacing-wide);
   margin-bottom: var(--spacing-8);
   font-weight: var(--font-weight-bold);
   background: transparent;
