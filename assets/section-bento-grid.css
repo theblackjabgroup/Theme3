@@ -61,6 +61,7 @@
   margin: var(--spacing-0);
   color: var(--color-text);
   line-height: var(--line-height-tight);
+  font-family: var(--font-heading-family);
   font-size: var(--desktop-heading-font-size, var(--font-size-4xl));
   font-weight: var(--desktop-heading-font-weight, var(--font-weight-semibold));
 }
@@ -72,6 +73,7 @@
   flex: 1;
   word-wrap: break-word; /* Breaks long words if needed */
   text-indent: var(--spacing-0); /* Ensure no text indentation */
+  font-family: var(--font-body-family);
   font-size: var(--desktop-paragraph-font-size, var(--font-size-xl));
   font-weight: var(--desktop-paragraph-font-weight, var(--font-weight-normal));
   line-height: var(--desktop-paragraph-line-height, var(--line-height-relaxed));
@@ -91,6 +93,7 @@
   white-space: nowrap;
   transition: all var(--transition-medium);
   margin-top: auto;
+  font-family: var(--font-body-family);
   font-size: var(--desktop-button-font-size, var(--font-size-lg));
   font-weight: var(--desktop-button-font-weight, var(--font-weight-semibold));
 }
@@ -175,6 +178,7 @@
 }
 
 .product-card-title {
+  font-family: var(--font-heading-family);
   font-size: var(--desktop-title-font-size, 38px);
   font-weight: var(--desktop-title-font-weight, 600);
   color: var(--color-text, #121212);
@@ -335,6 +339,7 @@
 .video-marquee-item {
   background: var(--color-accent-pink, #e63946) !important;
   white-space: nowrap;
+  font-family: var(--font-body-family);
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
   text-transform: uppercase;
@@ -386,6 +391,7 @@
 /* Each repeated text block */
 .marquee-item {
   white-space: nowrap;
+  font-family: var(--font-heading-family);
   font-size: var(--desktop-font-size, 24px);
   font-weight: var(--desktop-font-weight, 700);
   text-transform: uppercase;
@@ -479,6 +485,7 @@
 }
 
 .logo-text {
+  font-family: var(--font-heading-family);
   font-weight: var(--font-weight-bold);
   margin: var(--spacing-0);
   line-height: var(--line-height-tight);
@@ -598,6 +605,7 @@
 }
 
 .welcome-text {
+  font-family: var(--font-body-family);
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
 }
@@ -633,6 +641,7 @@
 .generic-card .card-heading {
   position: relative;
   z-index: 2;
+  font-family: var(--font-heading-family);
   font-size: var(--desktop-heading-font-size, 18px);
   font-weight: var(--desktop-heading-font-weight, 700);
   margin: 0;
@@ -783,6 +792,7 @@
 }
 
 .tag-card-main {
+  font-family: var(--font-subheading-family, var(--font-heading-family));
   font-size: var(--desktop-main-font-size, 16px);
   font-weight: var(--desktop-main-font-weight, 600);
   line-height: var(--desktop-main-line-height, 1) !important;
@@ -1015,6 +1025,7 @@
   color: var(--color-accent-off-white, var(--color-white)) !important;
   letter-spacing: var(--letter-spacing-tight);
   background-color: var(--color-accent-red, var(--color-red-dark))  !important;
+  font-family: var(--font-heading-family);
   font-size: var(--desktop-main-text-font-size, var(--font-size-5xl));
   font-weight: var(--desktop-main-text-font-weight, var(--font-weight-semibold));
   line-height: var(--desktop-main-text-line-height, var(--line-height-tight));
@@ -1147,6 +1158,7 @@
 .card-title {
   position: relative;
   z-index: var(--z-index-dropdown);
+  font-family: var(--font-heading-family);
   font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
   margin: var(--spacing-0);
