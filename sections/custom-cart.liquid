@@ -1035,6 +1035,9 @@
     let desktopIsVisible = true;
     let mobileIsVisible = true;
 
+    // Check if mobile device (disable animations on mobile)
+    let isMobile = window.innerWidth <= 768;
+
     // Set initial styles if headers exist
     if (desktopHeader) {
       desktopHeader.style.transition = 'transform 1s cubic-bezier(0.4, 0, 0.2, 1)';
@@ -1042,9 +1045,37 @@
       desktopHeader.style.right = '20px';
     }
     if (mobileHeader) {
-      mobileHeader.style.transition = 'transform 1s cubic-bezier(0.4, 0, 0.2, 1)';
-      mobileHeader.style.willChange = 'transform';
+      if (isMobile) {
+        // Disable animation on mobile - keep header always visible
+        mobileHeader.style.transition = 'none';
+        mobileHeader.style.willChange = 'auto';
+        mobileHeader.style.transform = 'translateX(0)';
+      } else {
+        mobileHeader.style.transition = 'transform 1s cubic-bezier(0.4, 0, 0.2, 1)';
+        mobileHeader.style.willChange = 'transform';
+      }
     }
+
+    // Update mobile detection on resize
+    window.addEventListener(
+      'resize',
+      () => {
+        isMobile = window.innerWidth <= 768;
+        // Update mobile header styles based on new mobile state
+        if (mobileHeader) {
+          if (isMobile) {
+            mobileHeader.style.transition = 'none';
+            mobileHeader.style.willChange = 'auto';
+            mobileHeader.style.transform = 'translateX(0)';
+            mobileIsVisible = true;
+          } else {
+            mobileHeader.style.transition = 'transform 1s cubic-bezier(0.4, 0, 0.2, 1)';
+            mobileHeader.style.willChange = 'transform';
+          }
+        }
+      },
+      { passive: true }
+    );
 
     cartMain.addEventListener(
       'scroll',
@@ -1073,19 +1104,26 @@
           }
         }
 
-        // Mobile header
+        // Mobile header - disable animation on mobile devices
         if (mobileHeader) {
-          if (scrollTop <= scrollThreshold) {
-            // At top - slide back in
-            if (!mobileIsVisible) {
-              mobileIsVisible = true;
-              mobileHeader.style.transform = 'translateX(0)';
-            }
-          } else if (scrollTop > scrollThreshold) {
-            // Scrolled past threshold - slide out to the right
-            if (mobileIsVisible) {
-              mobileIsVisible = false;
-              mobileHeader.style.transform = 'translateX(100%)';
+          if (isMobile) {
+            // On mobile, keep header always visible (no animation)
+            mobileHeader.style.transform = 'translateX(0)';
+            mobileIsVisible = true;
+          } else {
+            // Desktop behavior - animate header
+            if (scrollTop <= scrollThreshold) {
+              // At top - slide back in
+              if (!mobileIsVisible) {
+                mobileIsVisible = true;
+                mobileHeader.style.transform = 'translateX(0)';
+              }
+            } else if (scrollTop > scrollThreshold) {
+              // Scrolled past threshold - slide out to the right
+              if (mobileIsVisible) {
+                mobileIsVisible = false;
+                mobileHeader.style.transform = 'translateX(100%)';
+              }
             }
           }
         }
