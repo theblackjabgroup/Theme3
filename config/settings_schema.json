@@ -736,6 +736,413 @@
   },
 
   {
+    "name": "Collection cards",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Card Title Typography & Spacing"
+      },
+      {
+        "type": "range",
+        "id": "collection_card_title_font_size",
+        "label": "Title Font Size (px)",
+        "min": 16,
+        "max": 48,
+        "step": 2,
+        "default": 32
+      },
+      {
+        "type": "range",
+        "id": "collection_card_title_font_weight",
+        "label": "Title Font Weight",
+        "min": 300,
+        "max": 900,
+        "step": 100,
+        "default": 900
+      },
+      {
+        "type": "range",
+        "id": "collection_card_title_line_height",
+        "label": "Title Line Height",
+        "min": 0.8,
+        "max": 2,
+        "step": 0.1,
+        "default": 1
+      },
+      {
+        "type": "range",
+        "id": "collection_card_title_margin_top",
+        "label": "Title Margin Top (px)",
+        "min": 0,
+        "max": 40,
+        "step": 2,
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "collection_card_title_margin_bottom",
+        "label": "Title Margin Bottom (px)",
+        "min": 0,
+        "max": 40,
+        "step": 2,
+        "default": 12
+      },
+      {
+        "type": "header",
+        "content": "Card Description Typography & Spacing"
+      },
+      {
+        "type": "range",
+        "id": "collection_card_description_font_size",
+        "label": "Description Font Size (px)",
+        "min": 8,
+        "max": 20,
+        "step": 1,
+        "default": 12
+      },
+      {
+        "type": "range",
+        "id": "collection_card_description_font_weight",
+        "label": "Description Font Weight",
+        "min": 300,
+        "max": 900,
+        "step": 100,
+        "default": 400
+      },
+      {
+        "type": "range",
+        "id": "collection_card_description_line_height",
+        "label": "Description Line Height",
+        "min": 1,
+        "max": 2,
+        "step": 0.1,
+        "default": 1.4
+      },
+      {
+        "type": "range",
+        "id": "collection_card_description_margin_top",
+        "label": "Description Margin Top (px)",
+        "min": 0,
+        "max": 40,
+        "step": 2,
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "collection_card_description_margin_bottom",
+        "label": "Description Margin Bottom (px)",
+        "min": 0,
+        "max": 40,
+        "step": 2,
+        "default": 20
+      },
+      {
+        "type": "header",
+        "content": "Card Badge Typography & Spacing"
+      },
+      {
+        "type": "range",
+        "id": "collection_card_badge_font_size",
+        "label": "Badge Font Size (px)",
+        "min": 8,
+        "max": 16,
+        "step": 1,
+        "default": 12
+      },
+      {
+        "type": "range",
+        "id": "collection_card_badge_font_weight",
+        "label": "Badge Font Weight",
+        "min": 300,
+        "max": 900,
+        "step": 100,
+        "default": 700
+      },
+      {
+        "type": "range",
+        "id": "collection_card_badge_padding_vertical",
+        "label": "Badge Padding Vertical (px)",
+        "min": 2,
+        "max": 16,
+        "step": 1,
+        "default": 4
+      },
+      {
+        "type": "range",
+        "id": "collection_card_badge_padding_horizontal",
+        "label": "Badge Padding Horizontal (px)",
+        "min": 8,
+        "max": 32,
+        "step": 2,
+        "default": 16
+      },
+      {
+        "type": "range",
+        "id": "collection_card_badge_margin_bottom",
+        "label": "Badge Margin Bottom (px)",
+        "min": 0,
+        "max": 30,
+        "step": 2,
+        "default": 10
+      },
+      {
+        "type": "color",
+        "id": "collection_card_badge_background_color",
+        "label": "Badge Background Color",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "collection_card_badge_text_color",
+        "label": "Badge Text Color",
+        "default": "#FF4D4D"
+      },
+      {
+        "type": "color",
+        "id": "collection_card_badge_border_color",
+        "label": "Badge Border Color",
+        "default": "#FF4D4D"
+      },
+      {
+        "type": "range",
+        "id": "collection_card_badge_border_width",
+        "label": "Badge Border Width (px)",
+        "min": 0,
+        "max": 5,
+        "step": 1,
+        "default": 1
+      },
+      {
+        "type": "range",
+        "id": "collection_card_badge_border_radius",
+        "label": "Badge Border Radius (px)",
+        "min": 0,
+        "max": 50,
+        "step": 2,
+        "default": 20
+      },
+      {
+        "type": "select",
+        "id": "collection_card_badge_text_transform",
+        "label": "Badge Text Transform",
+        "options": [
+          { "value": "none", "label": "None" },
+          { "value": "uppercase", "label": "Uppercase" },
+          { "value": "lowercase", "label": "Lowercase" },
+          { "value": "capitalize", "label": "Capitalize" }
+        ],
+        "default": "uppercase"
+      },
+      {
+        "type": "header",
+        "content": "Hover Overlay Elements"
+      },
+      {
+        "type": "range",
+        "id": "collection_card_hover_description_font_size",
+        "label": "Hover Description Font Size (px)",
+        "min": 10,
+        "max": 18,
+        "step": 1,
+        "default": 14
+      },
+      {
+        "type": "range",
+        "id": "collection_card_hover_description_font_weight",
+        "label": "Hover Description Font Weight",
+        "min": 300,
+        "max": 900,
+        "step": 100,
+        "default": 400
+      },
+      {
+        "type": "range",
+        "id": "collection_card_hover_button_font_size",
+        "label": "Hover Button Font Size (px)",
+        "min": 10,
+        "max": 18,
+        "step": 1,
+        "default": 14
+      },
+      {
+        "type": "range",
+        "id": "collection_card_hover_button_font_weight",
+        "label": "Hover Button Font Weight",
+        "min": 300,
+        "max": 900,
+        "step": 100,
+        "default": 600
+      },
+      {
+        "type": "range",
+        "id": "collection_card_hover_button_padding_vertical",
+        "label": "Hover Button Padding Vertical (px)",
+        "min": 8,
+        "max": 20,
+        "step": 1,
+        "default": 10
+      },
+      {
+        "type": "range",
+        "id": "collection_card_hover_button_padding_horizontal",
+        "label": "Hover Button Padding Horizontal (px)",
+        "min": 12,
+        "max": 40,
+        "step": 2,
+        "default": 20
+      },
+      {
+        "type": "range",
+        "id": "collection_card_hover_content_gap",
+        "label": "Hover Content Gap (px)",
+        "min": 4,
+        "max": 20,
+        "step": 2,
+        "default": 10
+      },
+      {
+        "type": "header",
+        "content": "Mobile Typography & Spacing"
+      },
+      {
+        "type": "range",
+        "id": "collection_card_title_font_size_mobile",
+        "label": "Title Font Size - Mobile (px)",
+        "min": 16,
+        "max": 32,
+        "step": 2,
+        "default": 20
+      },
+      {
+        "type": "range",
+        "id": "collection_card_title_margin_top_mobile",
+        "label": "Title Margin Top - Mobile (px)",
+        "min": 0,
+        "max": 30,
+        "step": 2,
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "collection_card_title_margin_bottom_mobile",
+        "label": "Title Margin Bottom - Mobile (px)",
+        "min": 0,
+        "max": 30,
+        "step": 2,
+        "default": 8
+      },
+      {
+        "type": "range",
+        "id": "collection_card_description_font_size_mobile",
+        "label": "Description Font Size - Mobile (px)",
+        "min": 8,
+        "max": 14,
+        "step": 1,
+        "default": 11
+      },
+      {
+        "type": "range",
+        "id": "collection_card_description_margin_top_mobile",
+        "label": "Description Margin Top - Mobile (px)",
+        "min": 0,
+        "max": 30,
+        "step": 2,
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "collection_card_description_margin_bottom_mobile",
+        "label": "Description Margin Bottom - Mobile (px)",
+        "min": 0,
+        "max": 30,
+        "step": 2,
+        "default": 16
+      },
+      {
+        "type": "range",
+        "id": "collection_card_badge_font_size_mobile",
+        "label": "Badge Font Size - Mobile (px)",
+        "min": 8,
+        "max": 14,
+        "step": 1,
+        "default": 10
+      },
+      {
+        "type": "range",
+        "id": "collection_card_badge_padding_vertical_mobile",
+        "label": "Badge Padding Vertical - Mobile (px)",
+        "min": 2,
+        "max": 12,
+        "step": 1,
+        "default": 3
+      },
+      {
+        "type": "range",
+        "id": "collection_card_badge_padding_horizontal_mobile",
+        "label": "Badge Padding Horizontal - Mobile (px)",
+        "min": 6,
+        "max": 24,
+        "step": 2,
+        "default": 12
+      },
+      {
+        "type": "range",
+        "id": "collection_card_badge_margin_bottom_mobile",
+        "label": "Badge Margin Bottom - Mobile (px)",
+        "min": 0,
+        "max": 20,
+        "step": 2,
+        "default": 8
+      },
+      {
+        "type": "range",
+        "id": "collection_card_hover_description_font_size_mobile",
+        "label": "Hover Description Font Size - Mobile (px)",
+        "min": 10,
+        "max": 16,
+        "step": 1,
+        "default": 12
+      },
+      {
+        "type": "range",
+        "id": "collection_card_hover_button_font_size_mobile",
+        "label": "Hover Button Font Size - Mobile (px)",
+        "min": 10,
+        "max": 16,
+        "step": 1,
+        "default": 12
+      },
+      {
+        "type": "range",
+        "id": "collection_card_hover_button_padding_vertical_mobile",
+        "label": "Hover Button Padding Vertical - Mobile (px)",
+        "min": 6,
+        "max": 16,
+        "step": 1,
+        "default": 8
+      },
+      {
+        "type": "range",
+        "id": "collection_card_hover_button_padding_horizontal_mobile",
+        "label": "Hover Button Padding Horizontal - Mobile (px)",
+        "min": 10,
+        "max": 32,
+        "step": 2,
+        "default": 16
+      },
+      {
+        "type": "range",
+        "id": "collection_card_hover_content_gap_mobile",
+        "label": "Hover Content Gap - Mobile (px)",
+        "min": 4,
+        "max": 16,
+        "step": 2,
+        "default": 8
+      }
+    ]
+  },
+
+  {
     "name": "Search",
     "settings": [
       {

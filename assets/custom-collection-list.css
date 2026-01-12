@@ -65,23 +65,18 @@
 
 .custom-collection-card__title {
   font-family: var(--font-heading-family, sans-serif);
-  font-size: 32px;
-  font-weight: 900;
-  margin: 0 0 12px 0;
-  line-height: 1;
   text-transform: capitalize;
   transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* Font size, weight, line-height, and margins are controlled by section settings */
 }
 
 .custom-collection-card__description {
   font-family: var(--font-body-family, 'Courier New', Courier, monospace);
-  font-size: 12px;
-  line-height: 1.4;
-  margin: 0 0 20px 0;
   color: #1a1a1a;
   text-transform: uppercase;
   min-height: 48px;
   transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* Font size, weight, line-height, and margins are controlled by section settings */
 }
 
 .custom-collection-card__footer {
@@ -167,40 +162,20 @@
   max-width: 90%;
 }
 
+/* Hover button now uses submit-button snippet - styles are handled by the snippet */
+/* Custom overrides can be applied via theme settings in the section file */
 .custom-collection-card__hover-button {
-  background: white;
-  border: 2px solid #1a1a1a;
-  border-radius: 8px;
-  padding: 10px 20px;
-  font-family: var(--font-body-family, sans-serif);
-  font-size: 14px;
-  font-weight: 600;
-  color: #1a1a1a;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-transform: none;
-  display: inline-block;
-}
-
-.custom-collection-card__hover-button:hover {
-  background: #1a1a1a;
-  color: white;
+  /* Submit button snippet styles take precedence */
 }
 
 .custom-collection-card__badge {
-  background: white;
-  border: 1px solid #ff4d4d;
-  color: #ff4d4d;
-  padding: 4px 16px;
-  border-radius: 20px;
+  /* Background, border, color, border-radius, text-transform are controlled by theme settings */
+  border-style: solid;
   font-family: var(--font-body-family);
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  margin-bottom: 10px;
   position: relative;
   z-index: 2;
   transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* Font size, weight, padding, margin, colors, border, and text-transform are controlled by theme settings */
 }
 
 .custom-collection-card:hover .custom-collection-card__hover-area {
