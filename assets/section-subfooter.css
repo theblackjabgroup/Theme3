@@ -43,7 +43,7 @@
   padding: var(--spacing-0);
   margin: var(--spacing-0);
   display: flex;
-  gap: var(--spacing-15);
+  gap: var(--spacing-6);
   justify-content: center;
 }
 
