@@ -14,8 +14,26 @@
     padding: {{ section.settings.grid_gap | divided_by: 2 }}px;
   }
 
-  .bento-card {
-    border-radius: {{ section.settings.card_border_radius }}px;
+  .bento-card,
+  .content-card,
+  .content-card-inner,
+  .tag-card,
+  .generic-card,
+  .logo-card,
+  .cart-card,
+  .search-card,
+  .login-card,
+  .video-card,
+  .product-card,
+  .text-card {
+    border-radius: {{ section.settings.card_border_radius }}px !important;
+  }
+
+  .content-card-inner,
+  .content-card-text-side,
+  .content-card-sprite-side {
+    background-color: transparent !important;
+    border-radius: inherit !important;
   }
 
   /* Responsive */
@@ -353,7 +371,6 @@
 
           {%- when 'content_card' -%}
             {%- assign bg_pos_h = block.settings.background_position_horizontal | default: 'center' -%}
-            {%- assign bg_pos_v = block.settings.background_position_vertical | default: 'center' -%}
             {%- assign bg_size = block.settings.background_size | default: 'cover' -%}
             {%- assign enable_spritesheet = block.settings.enable_spritesheet_animation -%}
             {%- assign sprite_frames = block.settings.sprite_frames | default: 8 -%}
@@ -470,10 +487,7 @@
           {%- when 'button_card' -%}
             {%- assign label = block.settings.label | default: 'Button' -%}
             <div class="bento-card button-card">
-              {% render 'submit-button',
-                text: label,
-                url: block.settings.link
-              %}
+              {% render 'submit-button', text: label, url: block.settings.link %}
             </div>
 
           {%- when 'text_card' -%}

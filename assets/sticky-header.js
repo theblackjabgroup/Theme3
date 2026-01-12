@@ -14,6 +14,9 @@ class AnimatedHeader {
     // Get animation speed from global variable (set by theme editor)
     this.animationSpeed = window.headerAnimationSpeed || 1;
 
+    // Check if mobile device (disable animations on mobile)
+    this.isMobile = window.innerWidth <= 768;
+
     // State tracking
     this.desktopIsVisible = true;
     this.mobileIsVisible = true;
@@ -47,6 +50,11 @@ class AnimatedHeader {
     window.addEventListener(
       'resize',
       () => {
+        // Update mobile detection on resize
+        this.isMobile = window.innerWidth <= 768;
+        // Update transition styles based on new mobile state
+        this.setInitialStyles();
+        // Update header position based on current scroll state
         this.handleScroll();
       },
       { passive: true }
@@ -65,10 +73,18 @@ class AnimatedHeader {
       this.desktopHeader.style.right = '0px';
     }
 
-    // Mobile header - ensure it has transition
+    // Mobile header - disable transition on mobile
     if (this.mobileHeader) {
-      this.mobileHeader.style.transition = `transform ${this.animationSpeed}s cubic-bezier(0.4, 0, 0.2, 1)`;
-      this.mobileHeader.style.willChange = 'transform';
+      if (this.isMobile) {
+        // Disable animation on mobile
+        this.mobileHeader.style.transition = 'none';
+        this.mobileHeader.style.willChange = 'auto';
+        // Keep header visible on mobile
+        this.mobileHeader.style.transform = 'translateX(0)';
+      } else {
+        this.mobileHeader.style.transition = `transform ${this.animationSpeed}s cubic-bezier(0.4, 0, 0.2, 1)`;
+        this.mobileHeader.style.willChange = 'transform';
+      }
     }
   }
 
@@ -101,19 +117,26 @@ class AnimatedHeader {
       }
     }
 
-    // Mobile header
+    // Mobile header - disable animation on mobile devices
     if (this.mobileHeader) {
-      if (scrollY <= this.scrollThreshold) {
-        // At top - slide back in
-        if (!this.mobileIsVisible) {
-          this.mobileIsVisible = true;
-          this.mobileHeader.style.transform = 'translateX(0)';
-        }
-      } else if (scrollY > this.scrollThreshold) {
-        // Scrolled past threshold - slide out to the right
-        if (this.mobileIsVisible) {
-          this.mobileIsVisible = false;
-          this.mobileHeader.style.transform = 'translateX(100%)';
+      if (this.isMobile) {
+        // On mobile, keep header always visible (no animation)
+        this.mobileHeader.style.transform = 'translateX(0)';
+        this.mobileIsVisible = true;
+      } else {
+        // Desktop behavior - animate header
+        if (scrollY <= this.scrollThreshold) {
+          // At top - slide back in
+          if (!this.mobileIsVisible) {
+            this.mobileIsVisible = true;
+            this.mobileHeader.style.transform = 'translateX(0)';
+          }
+        } else if (scrollY > this.scrollThreshold) {
+          // Scrolled past threshold - slide out to the right
+          if (this.mobileIsVisible) {
+            this.mobileIsVisible = false;
+            this.mobileHeader.style.transform = 'translateX(100%)';
+          }
         }
       }
     }

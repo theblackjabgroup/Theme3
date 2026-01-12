@@ -1,6 +1,34 @@
 {{ 'custom-collection-list.css' | asset_url | stylesheet_tag }}
 
 <style>
+  /* Submit button styles for hover overlay button */
+  .share-story-submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-primary-button-bg);
+    color: white;
+    border: 2px solid var(--color-primary-button-border);
+    padding: 20px;
+    border-radius: 100px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    cursor: pointer;
+    width: fit-content;
+    box-shadow: 0px 4px 0px 0px var(--color-shadow);
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    margin-top: 5px;
+    text-transform: none;
+    font-family: var(--font-heading-family);
+    letter-spacing: 0.02em;
+    line-height: 1;
+    text-decoration: none;
+  }
+
+  .share-story-submit:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 0px 0px 0px 0px var(--color-shadow);
+  }
   .custom-collection-list {
     padding: {{ section.settings.section_padding_top }}px {{ section.settings.section_padding_horizontal }}px {{ section.settings.section_padding_bottom }}px;
     {% if section.settings.background_color != blank %}
@@ -42,6 +70,70 @@
     {% endif %}
   }
 
+  /* Card Typography & Spacing Variables - Using Theme Settings */
+  .custom-collection-card__title {
+    font-size: {{ settings.collection_card_title_font_size | default: 32 }}px;
+    font-weight: {{ settings.collection_card_title_font_weight | default: 900 }};
+    line-height: {{ settings.collection_card_title_line_height | default: 1 }};
+    margin-top: {{ settings.collection_card_title_margin_top | default: 0 }}px;
+    margin-bottom: {{ settings.collection_card_title_margin_bottom | default: 12 }}px;
+  }
+
+  .custom-collection-card__description {
+    font-size: {{ settings.collection_card_description_font_size | default: 12 }}px;
+    font-weight: {{ settings.collection_card_description_font_weight | default: 400 }};
+    line-height: {{ settings.collection_card_description_line_height | default: 1.4 }};
+    margin-top: {{ settings.collection_card_description_margin_top | default: 0 }}px;
+    margin-bottom: {{ settings.collection_card_description_margin_bottom | default: 20 }}px;
+  }
+
+  .custom-collection-card__badge {
+    font-size: {{ settings.collection_card_badge_font_size | default: 12 }}px;
+    font-weight: {{ settings.collection_card_badge_font_weight | default: 700 }};
+    padding: {{ settings.collection_card_badge_padding_vertical | default: 4 }}px {{ settings.collection_card_badge_padding_horizontal | default: 16 }}px;
+    margin-bottom: {{ settings.collection_card_badge_margin_bottom | default: 10 }}px;
+    {% if settings.collection_card_badge_background_color != blank %}
+      background-color: {{ settings.collection_card_badge_background_color }};
+    {% endif %}
+    {% if settings.collection_card_badge_text_color != blank %}
+      color: {{ settings.collection_card_badge_text_color }};
+    {% endif %}
+    {% if settings.collection_card_badge_border_color != blank %}
+      border-color: {{ settings.collection_card_badge_border_color }};
+    {% endif %}
+    {% if settings.collection_card_badge_border_width != blank %}
+      border-width: {{ settings.collection_card_badge_border_width }}px;
+    {% endif %}
+    {% if settings.collection_card_badge_border_radius != blank %}
+      border-radius: {{ settings.collection_card_badge_border_radius }}px;
+    {% endif %}
+    {% if settings.collection_card_badge_text_transform != blank %}
+      text-transform: {{ settings.collection_card_badge_text_transform }};
+    {% endif %}
+  }
+
+  .custom-collection-card__hover-description {
+    font-size: {{ settings.collection_card_hover_description_font_size | default: 14 }}px;
+    font-weight: {{ settings.collection_card_hover_description_font_weight | default: 400 }};
+  }
+
+  .custom-collection-card__hover-button {
+    /* Submit button snippet styles take precedence, these are overrides if needed */
+    {% if settings.collection_card_hover_button_font_size != blank %}
+      font-size: {{ settings.collection_card_hover_button_font_size }}px !important;
+    {% endif %}
+    {% if settings.collection_card_hover_button_font_weight != blank %}
+      font-weight: {{ settings.collection_card_hover_button_font_weight }} !important;
+    {% endif %}
+    {% if settings.collection_card_hover_button_padding_vertical != blank or settings.collection_card_hover_button_padding_horizontal != blank %}
+      padding: {{ settings.collection_card_hover_button_padding_vertical | default: 10 }}px {{ settings.collection_card_hover_button_padding_horizontal | default: 20 }}px !important;
+    {% endif %}
+  }
+
+  .custom-collection-card__hover-content {
+    gap: {{ settings.collection_card_hover_content_gap | default: 10 }}px;
+  }
+
   @media screen and (max-width: 1200px) {
     .custom-collection-list__grid {
       grid-template-columns: repeat({{ section.settings.columns_tablet }}, 1fr);
@@ -72,11 +164,65 @@
     }
 
     .custom-collection-card__title {
-      font-size: {{ section.settings.card_title_font_size_mobile }}px;
+      {% if settings.collection_card_title_font_size_mobile != blank %}
+        font-size: {{ settings.collection_card_title_font_size_mobile }}px;
+      {% endif %}
+      {% if settings.collection_card_title_margin_top_mobile != blank %}
+        margin-top: {{ settings.collection_card_title_margin_top_mobile }}px;
+      {% endif %}
+      {% if settings.collection_card_title_margin_bottom_mobile != blank %}
+        margin-bottom: {{ settings.collection_card_title_margin_bottom_mobile }}px;
+      {% endif %}
     }
 
     .custom-collection-card__description {
-      font-size: {{ section.settings.card_description_font_size_mobile }}px;
+      {% if settings.collection_card_description_font_size_mobile != blank %}
+        font-size: {{ settings.collection_card_description_font_size_mobile }}px;
+      {% endif %}
+      {% if settings.collection_card_description_margin_top_mobile != blank %}
+        margin-top: {{ settings.collection_card_description_margin_top_mobile }}px;
+      {% endif %}
+      {% if settings.collection_card_description_margin_bottom_mobile != blank %}
+        margin-bottom: {{ settings.collection_card_description_margin_bottom_mobile }}px;
+      {% endif %}
+    }
+
+    .custom-collection-card__badge {
+      {% if settings.collection_card_badge_font_size_mobile != blank %}
+        font-size: {{ settings.collection_card_badge_font_size_mobile }}px;
+      {% endif %}
+      {% if settings.collection_card_badge_padding_vertical_mobile != blank %}
+        padding-top: {{ settings.collection_card_badge_padding_vertical_mobile }}px;
+        padding-bottom: {{ settings.collection_card_badge_padding_vertical_mobile }}px;
+      {% endif %}
+      {% if settings.collection_card_badge_padding_horizontal_mobile != blank %}
+        padding-left: {{ settings.collection_card_badge_padding_horizontal_mobile }}px;
+        padding-right: {{ settings.collection_card_badge_padding_horizontal_mobile }}px;
+      {% endif %}
+      {% if settings.collection_card_badge_margin_bottom_mobile != blank %}
+        margin-bottom: {{ settings.collection_card_badge_margin_bottom_mobile }}px;
+      {% endif %}
+    }
+
+    .custom-collection-card__hover-description {
+      {% if settings.collection_card_hover_description_font_size_mobile != blank %}
+        font-size: {{ settings.collection_card_hover_description_font_size_mobile }}px;
+      {% endif %}
+    }
+
+    .custom-collection-card__hover-button {
+      {% if settings.collection_card_hover_button_font_size_mobile != blank %}
+        font-size: {{ settings.collection_card_hover_button_font_size_mobile }}px !important;
+      {% endif %}
+      {% if settings.collection_card_hover_button_padding_vertical_mobile != blank or settings.collection_card_hover_button_padding_horizontal_mobile != blank %}
+        padding: {{ settings.collection_card_hover_button_padding_vertical_mobile | default: 8 }}px {{ settings.collection_card_hover_button_padding_horizontal_mobile | default: 16 }}px !important;
+      {% endif %}
+    }
+
+    .custom-collection-card__hover-content {
+      {% if settings.collection_card_hover_content_gap_mobile != blank %}
+        gap: {{ settings.collection_card_hover_content_gap_mobile }}px;
+      {% endif %}
     }
   }
 </style>
@@ -153,7 +299,7 @@
                         }}
                       {%- endif -%}
                     </p>
-                    <span class="custom-collection-card__hover-button">
+                    <span class="custom-collection-card__hover-button share-story-submit">
                       {{- section.settings.overlay_button_text | default: 'Love that! (Check it out)' -}}
                     </span>
                   </div>
@@ -341,6 +487,10 @@
     {
       "type": "header",
       "content": "Card Settings"
+    },
+    {
+      "type": "paragraph",
+      "content": "Card typography and spacing settings are available in Theme Settings > Collection cards"
     },
     {
       "type": "select",
@@ -555,22 +705,8 @@
       "default": 16
     },
     {
-      "type": "range",
-      "id": "card_title_font_size_mobile",
-      "label": "Card Title Font Size - Mobile (px)",
-      "min": 16,
-      "max": 32,
-      "step": 2,
-      "default": 20
-    },
-    {
-      "type": "range",
-      "id": "card_description_font_size_mobile",
-      "label": "Card Description Font Size - Mobile (px)",
-      "min": 8,
-      "max": 14,
-      "step": 1,
-      "default": 11
+      "type": "paragraph",
+      "content": "Card typography and spacing mobile settings are available in Theme Settings > Collection cards"
     }
   ],
   "presets": [

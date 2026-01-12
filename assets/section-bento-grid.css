@@ -284,7 +284,7 @@
 
 .video-card:hover video,
 .video-card:hover iframe {
-  transform: scale(0.85);
+  transform: scale(1);
 }
 
 .video-card .video-placeholder-text {
@@ -442,6 +442,15 @@
 
 .bento-card:hover {
   transform: scale(1.1);
+}
+
+/* Disable scale on hover for cart, content, video, scrolling text, and logo cards */
+.bento-card.cart-card:hover,
+.bento-card.content-card:hover,
+.bento-card.video-card:hover,
+.bento-card.scrolling-text-card:hover,
+.bento-card.logo-card:hover {
+  transform: scale(1);
 }
 
 /* Card Color Variants */
@@ -960,6 +969,7 @@
 
 
 /* Content Cards */
+
 .content-card {
   padding: 0 !important;
   overflow: hidden;
@@ -968,12 +978,22 @@
   backface-visibility: hidden;
   background-color: var(--color-accent-red, var(--color-red-dark))  !important;
 }
-.bento-card.content-card{
+.bento-card.content-card {
   background-color: var(--color-accent-red, var(--color-red-dark))  !important;
+  /* Border radius is inherited from .bento-card, but ensure it's applied */
+  border-radius: inherit;
+}
+
+.bento-card.content-card.enable-3d {
+  overflow: visible !important;
+}
+
+.bento-card.content-card.enable-3d .content-card-inner {
+  overflow: visible !important;
 }
 
 .bento-card.content-card:hover {
-  transform: translateZ(0) scale(1.02);
+  transform: translateZ(0) scale(1);
 }
 
 .content-card-inner {
@@ -985,6 +1005,7 @@
 }
 .bento-card.content-card-inner{
   background-color: var(--color-accent-red, #d62839)  !important;
+
 }
 
 .content-card-text-side {
