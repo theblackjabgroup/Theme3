@@ -9,6 +9,7 @@
   - fallback_description: {String} Fallback text when product has no description. Default: 'Discover our amazing product.' (optional)
   - section_id: {String} The ID of the section that contains this card (optional)
   - quick_add: {String} Quick add mode. Values: 'none', 'standard', 'bulk'. Default: 'none' (optional)
+  - lazy_load: {Boolean} Image should be lazy loaded. Default: true (optional)
 {%- endcomment -%}
 
 {%- if card_product and card_product != empty -%}
@@ -20,7 +21,9 @@
             src="{{ card_product.featured_media | image_url: width: 533 }}"
             alt="{{ card_product.featured_media.alt | escape }}"
             class="custom-collection-card__image"
-            loading="lazy"
+            {% unless lazy_load == false %}
+              loading="lazy"
+            {% endunless %}
             width="533"
             height="{{ 533 | divided_by: card_product.featured_media.aspect_ratio }}"
           >

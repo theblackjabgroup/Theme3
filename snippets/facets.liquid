@@ -296,6 +296,7 @@
         {%- if enable_sorting -%}
           <div class="facet-filters sorting caption">
             <div class="facet-filters__field">
+              <label for="SortBy" class="visually-hidden">{{ 'products.facets.sort_by_label' | t }}</label>
               <div class="select">
                 {%- assign sort_by = results.sort_by | default: results.default_sort_by -%}
                 <select

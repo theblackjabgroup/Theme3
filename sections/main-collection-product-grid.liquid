@@ -184,7 +184,7 @@
                     style="--animation-order: {{ forloop.index }};"
                   {% endif %}
                 >
-                  {% render 'card-product-custom', card_product: product, section_id: section.id, quick_add: section.settings.quick_add %}
+                  {% render 'card-product-custom', card_product: product, section_id: section.id, quick_add: section.settings.quick_add, lazy_load: forloop.index > 2 %}
                 </li>
               {%- endfor -%}
             </ul>
