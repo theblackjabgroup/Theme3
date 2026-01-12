@@ -141,7 +141,7 @@
         --font-heading-weight: {{ settings.type_header_font.weight }};
 
         {% if settings.type_subheader_font %}
-        --font-subheading-family: {{ settings.type_subheader_font.family }}, {{ settings.type_header_font.fallback_families }};
+        --font-subheading-family: {{ settings.type_subheader_font.family }}, {{ settings.type_subheader_font.fallback_families }};
         --font-subheading-style: {{ settings.type_subheader_font.style }};
         --font-subheading-weight: {{ settings.type_subheader_font.weight }};
         {% else %}
@@ -156,7 +156,6 @@
         /* Legacy font variables for backward compatibility */
         --font-family-primary: var(--font-body-family);
         --font-body-size: 16px;
-        --font-heading-weight: var(--font-heading-weight);
 
         /* Spacing Variables */
         --spacing-xs: 4px;
