@@ -444,10 +444,11 @@
   transform: scale(1.1);
 }
 
-/* Disable scale on hover for cart, content, and video cards */
+/* Disable scale on hover for cart, content, video, and scrolling text cards */
 .bento-card.cart-card:hover,
 .bento-card.content-card:hover,
-.bento-card.video-card:hover {
+.bento-card.video-card:hover,
+.bento-card.scrolling-text-card:hover {
   transform: scale(1);
 }
 
