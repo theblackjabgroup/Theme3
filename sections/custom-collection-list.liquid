@@ -126,7 +126,7 @@
       font-weight: {{ settings.collection_card_hover_button_font_weight }} !important;
     {% endif %}
     {% if settings.collection_card_hover_button_padding_vertical != blank or settings.collection_card_hover_button_padding_horizontal != blank %}
-      padding: {{ settings.collection_card_hover_button_padding_vertical | default: 20 }}px {{ settings.collection_card_hover_button_padding_horizontal | default: 20 }}px !important;
+      padding: {{ settings.collection_card_hover_button_padding_vertical | default: 10 }}px {{ settings.collection_card_hover_button_padding_horizontal | default: 20 }}px !important;
     {% endif %}
   }
 
@@ -215,7 +215,7 @@
         font-size: {{ settings.collection_card_hover_button_font_size_mobile }}px !important;
       {% endif %}
       {% if settings.collection_card_hover_button_padding_vertical_mobile != blank or settings.collection_card_hover_button_padding_horizontal_mobile != blank %}
-        padding: {{ settings.collection_card_hover_button_padding_vertical_mobile | default: 20 }}px {{ settings.collection_card_hover_button_padding_horizontal_mobile | default: 20 }}px !important;
+        padding: {{ settings.collection_card_hover_button_padding_vertical_mobile | default: 8 }}px {{ settings.collection_card_hover_button_padding_horizontal_mobile | default: 16 }}px !important;
       {% endif %}
     }
 
