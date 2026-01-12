@@ -153,7 +153,7 @@
         {% endif %}
       >
         {%- if collection.products.size == 0 -%}
-          <div class="collection collection--empty page-width" id="product-grid" data-id="{{ section.id }}">
+          <div class="collection collection--empty page-width" id="product-grid-{{ section.id }}" data-id="{{ section.id }}">
             <div class="loading-overlay gradient"></div>
             <div class="title-wrapper center">
               <h2 class="title title--primary">
@@ -184,7 +184,7 @@
                     style="--animation-order: {{ forloop.index }};"
                   {% endif %}
                 >
-                  {% render 'card-product-custom', card_product: product, section_id: section.id %}
+                  {% render 'card-product-custom', card_product: product, section_id: section.id, quick_add: section.settings.quick_add %}
                 </li>
               {%- endfor -%}
             </ul>

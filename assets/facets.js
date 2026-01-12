@@ -243,9 +243,33 @@ class FacetFiltersForm extends HTMLElement {
   }
 
   static getSections() {
+    // Find product grid element - try new ID pattern first, then fallback to old pattern
+    const productGridContainer = document.getElementById('ProductGridContainer');
+    let productGrid = null;
+    
+    if (productGridContainer) {
+      // Try to find element with class 'product-grid' that has data-id attribute
+      productGrid = productGridContainer.querySelector('.product-grid[data-id]');
+      
+      // If not found, try ID pattern 'product-grid-*'
+      if (!productGrid) {
+        productGrid = productGridContainer.querySelector('[id^="product-grid-"][data-id]');
+      }
+    }
+    
+    // Fallback to old ID for backwards compatibility
+    if (!productGrid) {
+      productGrid = document.getElementById('product-grid');
+    }
+    
+    if (!productGrid || !productGrid.dataset.id) {
+      console.warn('FacetFiltersForm: Could not find product grid with data-id attribute');
+      return [];
+    }
+    
     return [
       {
-        section: document.getElementById('product-grid').dataset.id,
+        section: productGrid.dataset.id,
       },
     ];
   }
