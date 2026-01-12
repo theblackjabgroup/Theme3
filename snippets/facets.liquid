@@ -15,6 +15,7 @@
 {{ 'component-show-more.css' | asset_url | stylesheet_tag }}
 {{ 'component-swatch-input.css' | asset_url | stylesheet_tag }}
 {{ 'component-swatch.css' | asset_url | stylesheet_tag }}
+{{ 'custom-facets.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
   assign sort_by = results.sort_by | default: results.default_sort_by
@@ -48,64 +49,9 @@
               class="facets__wrapper"
             {% endif %}
           >
-            {%- if filter_type == 'horizontal' and results.filters != empty -%}
-              <h2 class="facets__heading caption-large text-body" id="verticalTitle" tabindex="-1">
-                {{ 'products.facets.filter_by_label' | t }}
-              </h2>
-            {%- endif -%}
+            {%- comment -%} Removed "Filter by" heading {%- endcomment -%}
             {% comment %} Pills are right below the title for filter type vertical {% endcomment %}
-            {%- if filter_type == 'vertical' -%}
-              <div class="active-facets active-facets-desktop">
-                <div class="active-facets-vertical-filter">
-                  {%- unless results.filters == empty -%}
-                    <h2
-                      class="facets__heading facets__heading--vertical caption-large text-body"
-                      id="verticalTitle"
-                      tabindex="-1"
-                    >
-                      {{ 'products.facets.filter_by_label' | t }}
-                    </h2>
-                  {%- endunless -%}
-                  <facet-remove class="active-facets__button-wrapper">
-                    <a href="{{ results_url }}" class="active-facets__button-remove underlined-link">
-                      <span>{{ 'products.facets.clear_all' | t }}</span>
-                    </a>
-                  </facet-remove>
-                </div>
-                {%- for filter in results.filters -%}
-                  {%- for value in filter.active_values -%}
-                    <facet-remove>
-                      <a href="{{ value.url_to_remove }}" class="active-facets__button active-facets__button--light">
-                        <span class="active-facets__button-inner button button--tertiary">
-                          {{ filter.label | escape }}: {{ value.label | escape }}
-                          <span class="svg-wrapper">
-                            {{- 'icon-close-small.svg' | inline_asset_content -}}
-                          </span>
-                          <span class="visually-hidden">{{ 'products.facets.clear_filter' | t }}</span>
-                        </span>
-                      </a>
-                    </facet-remove>
-                  {%- endfor -%}
-                  {% if filter.type == 'price_range' %}
-                    {% assign min = filter.min_value.value %}
-                    {% assign max = filter.max_value.value %}
-                    {%- if min != null or max != null -%}
-                      <facet-remove>
-                        <a href="{{ filter.url_to_remove }}" class="active-facets__button active-facets__button--light">
-                          <span class="active-facets__button-inner button button--tertiary">
-                            {{ min | default: 0 | money }} - {{ max | default: filter.range_max | money }}
-                            <span class="svg-wrapper">
-                              {{- 'icon-close-small.svg' | inline_asset_content -}}
-                            </span>
-                            <span class="visually-hidden">{{ 'products.facets.clear_filter' | t }}</span>
-                          </span>
-                        </a>
-                      </facet-remove>
-                    {%- endif -%}
-                  {% endif %}
-                {%- endfor -%}
-              </div>
-            {%- endif -%}
+            {%- comment -%} Removed active-facets pills and clear all {%- endcomment -%}
 
             <script src="{{ 'show-more.js' | asset_url }}" defer="defer"></script>
             {% comment %} Filters for both horizontal and vertical filter {% endcomment %}
@@ -138,20 +84,24 @@
                       aria-label="{{ filter.label | escape }} ({{ 'products.facets.filters_selected.one' | t: count: filter.active_values.size }})"
                     >
                       <div>
-                        <span class="facets__summary-label">
-                          {{- filter.label | escape }}
-                          {%- if filter_type == 'vertical' -%}
-                            <span class="facets__selected{% if filter.active_values.size == 0 %} hidden{% endif %}">
-                              ({{ filter.active_values.size }})</span
-                            >
-                          {%- endif -%}
-                        </span>
-                        {%- if filter_type == 'vertical' and filter.operator == 'AND' -%}
-                          <span class="facets__and-helptext">
-                            {{ 'products.facets.filter_and_operator_subtitle' | t }}
+                        <div class="facets__summary-inner">
+                          <span class="facets__summary-label">
+                            {{- filter.label | escape }}
+                            {%- if filter_type == 'vertical' -%}
+                              <span class="facets__selected{% if filter.active_values.size == 0 %} hidden{% endif %}">
+                                ({{ filter.active_values.size }})</span
+                              >
+                            {%- endif -%}
                           </span>
-                        {%- endif -%}
-                        {{- 'icon-caret.svg' | inline_asset_content -}}
+                          {%- if filter_type == 'vertical' and filter.operator == 'AND' -%}
+                            <span class="facets__and-helptext">
+                              {{ 'products.facets.filter_and_operator_subtitle' | t }}
+                            </span>
+                          {%- endif -%}
+                          <span class="facets__summary-icon">
+                            {{- 'icon-caret.svg' | inline_asset_content -}}
+                          </span>
+                        </div>
                       </div>
                     </summary>
                     <div
@@ -336,103 +286,41 @@
             {%- endfor -%}
           </div>
           {% comment %} Pills after filtes on filter type horizontal {% endcomment %}
-          {%- if filter_type == 'horizontal' -%}
-            <div class="active-facets active-facets-desktop">
-              {%- for filter in results.filters -%}
-                {%- for value in filter.active_values -%}
-                  <facet-remove>
-                    <a href="{{ value.url_to_remove }}" class="active-facets__button active-facets__button--light">
-                      <span class="active-facets__button-inner button button--tertiary">
-                        {{ filter.label | escape }}: {{ value.label | escape }}
-                        <span class="svg-wrapper">
-                          {{- 'icon-close-small.svg' | inline_asset_content -}}
-                        </span>
-                        <span class="visually-hidden">{{ 'products.facets.clear_filter' | t }}</span>
-                      </span>
-                    </a>
-                  </facet-remove>
-                {%- endfor -%}
-                {% if filter.type == 'price_range' %}
-                  {% assign min = filter.min_value.value %}
-                  {% assign max = filter.max_value.value %}
-                  {%- if min != null or max != null -%}
-                    <facet-remove>
-                      <a href="{{ filter.url_to_remove }}" class="active-facets__button active-facets__button--light">
-                        <span class="active-facets__button-inner button button--tertiary">
-                          {{ min | default: 0 | money }} - {{ max | default: filter.range_max | money }}
-                          <span class="svg-wrapper">
-                            {{- 'icon-close-small.svg' | inline_asset_content -}}
-                          </span>
-                          <span class="visually-hidden">{{ 'products.facets.clear_filter' | t }}</span>
-                        </span>
-                      </a>
-                    </facet-remove>
-                  {%- endif -%}
-                {% endif %}
-              {%- endfor -%}
-              <facet-remove class="active-facets__button-wrapper">
-                <a href="{{ results_url }}" class="active-facets__button-remove underlined-link">
-                  <span>{{ 'products.facets.clear_all' | t }}</span>
-                </a>
-              </facet-remove>
-            </div>
-          {%- endif -%}
+          {%- comment -%} Removed horizontal active-facets pills {%- endcomment -%}
         {% endif %}
 
         {% if results.current_vendor or results.current_type %}
           <input type="hidden" name="q" value="{{ results.current_vendor }}{{ results.current_type }}">
         {% endif %}
 
-        {%- if filter_type == 'horizontal' -%}
-          {% comment %} Sorting and product count are the last elements when filter type is horizontal {% endcomment %}
-          {%- if enable_sorting -%}
-            <div class="facet-filters sorting caption">
-              <div class="facet-filters__field">
-                <h2 class="facet-filters__label caption-large text-body">
-                  <label for="SortBy">{{ 'products.facets.sort_by_label' | t }}</label>
-                </h2>
-                <div class="select">
-                  {%- assign sort_by = results.sort_by | default: results.default_sort_by -%}
-                  <select
-                    name="sort_by"
-                    class="facet-filters__sort select__select caption-large"
-                    id="SortBy"
-                    aria-describedby="a11y-refresh-page-message"
-                  >
-                    {%- for option in results.sort_options -%}
-                      <option
-                        value="{{ option.value | escape }}"
-                        {% if option.value == sort_by %}
-                          selected="selected"
-                        {% endif %}
-                      >
-                        {{ option.name | escape }}
-                      </option>
-                    {%- endfor -%}
-                  </select>
-                  <span class="svg-wrapper">
-                    {{- 'icon-caret.svg' | inline_asset_content -}}
-                  </span>
-                </div>
+        {%- if enable_sorting -%}
+          <div class="facet-filters sorting caption">
+            <div class="facet-filters__field">
+              <label for="SortBy" class="visually-hidden">{{ 'products.facets.sort_by_label' | t }}</label>
+              <div class="select">
+                {%- assign sort_by = results.sort_by | default: results.default_sort_by -%}
+                <select
+                  name="sort_by"
+                  class="facet-filters__sort select__select caption-large"
+                  id="SortBy"
+                  aria-describedby="a11y-refresh-page-message"
+                >
+                  {%- for option in results.sort_options -%}
+                    <option
+                      value="{{ option.value | escape }}"
+                      {% if option.value == sort_by %}
+                        selected="selected"
+                      {% endif %}
+                    >
+                      {{ option.name | escape }}
+                    </option>
+                  {%- endfor -%}
+                </select>
+                <span class="svg-wrapper">
+                  {{- 'icon-caret.svg' | inline_asset_content -}}
+                </span>
               </div>
             </div>
-          {%- endif -%}
-          <div class="product-count light" role="status">
-            <h2 class="product-count__text text-body">
-              <span id="ProductCountDesktop">
-                {%- if results.results_count -%}
-                  {{ 'templates.search.results_with_count' | t: terms: results.terms, count: results.results_count }}
-                {%- elsif results.products_count == results.all_products_count -%}
-                  {{ 'products.facets.product_count_simple' | t: count: results.products_count }}
-                {%- else -%}
-                  {{
-                    'products.facets.product_count'
-                    | t: product_count: results.products_count, count: results.all_products_count
-                  }}
-                {%- endif -%}
-              </span>
-            </h2>
-            {%- render 'loading-spinner' -%}
           </div>
         {%- endif -%}
       </form>
