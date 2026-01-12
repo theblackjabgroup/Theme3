@@ -141,6 +141,7 @@
 .share-story-input:focus {
   border-color: var(--color-variant-selected-hover-border);
   box-shadow: var(--shadow-lg);
+  opacity: 1;
 }
 
 .share-story-input::placeholder {
@@ -168,6 +169,7 @@
 .share-story-textarea:focus {
   border-color: var(--color-variant-selected-hover-border);
   box-shadow: var(--shadow-lg);
+  opacity: 1;
 }
 
 .share-story-textarea::placeholder {
