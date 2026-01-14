@@ -53,6 +53,10 @@
         {%- assign block_count = section.blocks.size -%}
         {%- if block_count > 0 -%}
           {%- assign repeat_count = min_items | divided_by: block_count | ceil | at_least: 2 -%}
+          {%- assign remainder = repeat_count | modulo: 2 -%}
+          {%- if remainder != 0 -%}
+            {%- assign repeat_count = repeat_count | plus: 1 -%}
+          {%- endif -%}
 
           {%- for i in (1..repeat_count) -%}
             {%- for block in section.blocks -%}
@@ -175,6 +179,7 @@
   "name": "Scrolling Text Flip",
   "tag": "section",
   "class": "section",
+  "max_blocks": 3,
   "settings": [
     {
       "type": "color_scheme",
