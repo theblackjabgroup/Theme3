@@ -110,8 +110,10 @@
                   <div class="scrolling-text-flip-back">
                     {%- if block.settings.use_back_image -%}
                       {%- if block.settings.back_image != blank -%}
-                        {%- assign back_img_class = 'scrolling-text-flip-back-image' -%}
-                        {%- if block.settings.back_image_style == 'custom' -%}
+                        {%- assign back_img_class = 'scrolling-text-flip-back-cover' -%}
+                        {%- if block.settings.back_image_style == 'contain' -%}
+                          {%- assign back_img_class = 'scrolling-text-flip-back-contain' -%}
+                        {%- elsif block.settings.back_image_style == 'custom' -%}
                           {%- assign back_img_class = 'scrolling-text-flip-back-custom' -%}
                         {%- endif -%}
                         {{
