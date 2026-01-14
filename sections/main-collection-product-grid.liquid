@@ -55,23 +55,10 @@
 
   /* Section Level Settings */
   .section-{{ section.id }}-padding {
-    {% if section.settings.section_padding_top != blank %}
-      padding-top: {{ section.settings.section_padding_top }}px;
-    {% else %}
-      padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    {% endif %}
-    {% if section.settings.section_padding_bottom != blank %}
-      padding-bottom: {{ section.settings.section_padding_bottom }}px;
-    {% else %}
-      padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
-    {% endif %}
-    {% if section.settings.section_padding_horizontal_mobile != blank %}
-      padding-left: {{ section.settings.section_padding_horizontal_mobile }}px;
-      padding-right: {{ section.settings.section_padding_horizontal_mobile }}px;
-    {% else %}
-      padding-left: {{ section.settings.padding_horizontal_mobile | default: 20 }}px;
-      padding-right: {{ section.settings.padding_horizontal_mobile | default: 20 }}px;
-    {% endif %}
+    padding-top: {{ section.settings.section_padding_top }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom }}px;
+    padding-left: {{ section.settings.section_padding_horizontal_mobile }}px;
+    padding-right: {{ section.settings.section_padding_horizontal_mobile }}px;
     {% if section.settings.background_color != blank %}
       background-color: {{ section.settings.background_color }};
     {% endif %}
@@ -82,24 +69,15 @@
 
   @media screen and (min-width: 750px) {
     .section-{{ section.id }}-padding {
-      {% if section.settings.section_padding_horizontal != blank %}
-        padding-left: {{ section.settings.section_padding_horizontal }}px;
-        padding-right: {{ section.settings.section_padding_horizontal }}px;
-      {% else %}
-        padding-left: {{ section.settings.padding_horizontal | default: 20 }}px;
-        padding-right: {{ section.settings.padding_horizontal | default: 20 }}px;
-      {% endif %}
+      padding-left: {{ section.settings.section_padding_horizontal }}px;
+      padding-right: {{ section.settings.section_padding_horizontal }}px;
     }
   }
 
   /* Header Settings */
   .product-grid-header {
     text-align: {{ section.settings.title_alignment | default: 'center' }};
-    {% if section.settings.title_margin_bottom != blank %}
-      margin-bottom: {{ section.settings.title_margin_bottom }}px;
-    {% else %}
-      margin-bottom: 4rem;
-    {% endif %}
+    margin-bottom: {{ section.settings.title_margin_bottom }}px;
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
@@ -119,11 +97,7 @@
   }
 
   .product-grid-header__title {
-    {% if section.settings.title_font_size != blank %}
-      font-size: {{ section.settings.title_font_size }}rem;
-    {% else %}
-      font-size: 8rem;
-    {% endif %}
+    font-size: {{ section.settings.title_font_size }}rem;
     font-weight: 900;
     margin: 0 0 2rem 0;
     line-height: 1;
@@ -140,24 +114,14 @@
 
   @media screen and (max-width: 749px) {
     .section-{{ section.id }}-padding {
-      {% if section.settings.section_padding_top_mobile != blank %}
-        padding-top: {{ section.settings.section_padding_top_mobile }}px;
-      {% endif %}
-      {% if section.settings.section_padding_bottom_mobile != blank %}
-        padding-bottom: {{ section.settings.section_padding_bottom_mobile }}px;
-      {% endif %}
-      {% if section.settings.section_padding_horizontal_mobile != blank %}
-        padding-left: {{ section.settings.section_padding_horizontal_mobile }}px;
-        padding-right: {{ section.settings.section_padding_horizontal_mobile }}px;
-      {% endif %}
+      padding-top: {{ section.settings.section_padding_top_mobile }}px;
+      padding-bottom: {{ section.settings.section_padding_bottom_mobile }}px;
+      padding-left: {{ section.settings.section_padding_horizontal_mobile }}px;
+      padding-right: {{ section.settings.section_padding_horizontal_mobile }}px;
     }
 
     .product-grid-header__title {
-      {% if section.settings.title_font_size_mobile != blank %}
-        font-size: {{ section.settings.title_font_size_mobile }}rem;
-      {% else %}
-        font-size: 4rem;
-      {% endif %}
+      font-size: {{ section.settings.title_font_size_mobile }}rem;
     }
   }
 
@@ -196,11 +160,7 @@
 
   #product-grid-{{ section.id }} .custom-collection-card__image-container {
     height: {{ section.settings.image_height | default: 250 }}px;
-    {% if section.settings.image_margin_bottom != blank %}
-      margin-bottom: {{ section.settings.image_margin_bottom }}px;
-    {% else %}
-      margin-bottom: 20px;
-    {% endif %}
+    margin-bottom: {{ section.settings.image_margin_bottom }}px;
   }
 
   /* Card Typography & Spacing Variables - Using Product Card Theme Settings */
@@ -285,11 +245,7 @@
 
     #product-grid-{{ section.id }} .custom-collection-card__image-container {
       height: {{ section.settings.image_height_mobile | default: 200 }}px;
-      {% if section.settings.image_margin_bottom_mobile != blank %}
-        margin-bottom: {{ section.settings.image_margin_bottom_mobile }}px;
-      {% else %}
-        margin-bottom: 16px;
-      {% endif %}
+      margin-bottom: {{ section.settings.image_margin_bottom_mobile }}px;
     }
 
     #product-grid-{{ section.id }} .custom-collection-card__title {
