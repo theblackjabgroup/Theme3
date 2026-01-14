@@ -293,70 +293,64 @@
     }
 
     #product-grid-{{ section.id }} .custom-collection-card__title {
-      {% if settings.collection_card_title_font_size_mobile != blank %}
-        font-size: {{ settings.collection_card_title_font_size_mobile }}px;
+      {% if settings.product_card_title_font_size_mobile != blank %}
+        font-size: {{ settings.product_card_title_font_size_mobile }}px;
       {% endif %}
-      {% if settings.collection_card_title_margin_top_mobile != blank %}
-        margin-top: {{ settings.collection_card_title_margin_top_mobile }}px;
+      {% if settings.product_card_title_margin_top_mobile != blank %}
+        margin-top: {{ settings.product_card_title_margin_top_mobile }}px;
       {% endif %}
-      {% if settings.collection_card_title_margin_bottom_mobile != blank %}
-        margin-bottom: {{ settings.collection_card_title_margin_bottom_mobile }}px;
+      {% if settings.product_card_title_margin_bottom_mobile != blank %}
+        margin-bottom: {{ settings.product_card_title_margin_bottom_mobile }}px;
       {% endif %}
     }
 
     #product-grid-{{ section.id }} .custom-collection-card__description {
-      {% if settings.collection_card_description_font_size_mobile != blank %}
-        font-size: {{ settings.collection_card_description_font_size_mobile }}px;
+      {% if settings.product_card_description_font_size_mobile != blank %}
+        font-size: {{ settings.product_card_description_font_size_mobile }}px;
       {% endif %}
-      {% if settings.collection_card_description_margin_top_mobile != blank %}
-        margin-top: {{ settings.collection_card_description_margin_top_mobile }}px;
+      {% if settings.product_card_description_margin_top_mobile != blank %}
+        margin-top: {{ settings.product_card_description_margin_top_mobile }}px;
       {% endif %}
-      {% if settings.collection_card_description_margin_bottom_mobile != blank %}
-        margin-bottom: {{ settings.collection_card_description_margin_bottom_mobile }}px;
+      {% if settings.product_card_description_margin_bottom_mobile != blank %}
+        margin-bottom: {{ settings.product_card_description_margin_bottom_mobile }}px;
       {% endif %}
     }
 
     #product-grid-{{ section.id }} .custom-collection-card__badge {
-      {% if settings.collection_card_badge_font_size_mobile != blank %}
-        font-size: {{ settings.collection_card_badge_font_size_mobile }}px;
+      {% if settings.product_card_badge_font_size_mobile != blank %}
+        font-size: {{ settings.product_card_badge_font_size_mobile }}px;
       {% endif %}
-      {% if settings.collection_card_badge_padding_vertical_mobile != blank %}
-        padding-top: {{ settings.collection_card_badge_padding_vertical_mobile }}px;
-        padding-bottom: {{ settings.collection_card_badge_padding_vertical_mobile }}px;
+      {% if settings.product_card_badge_padding_vertical_mobile != blank %}
+        padding-top: {{ settings.product_card_badge_padding_vertical_mobile }}px;
+        padding-bottom: {{ settings.product_card_badge_padding_vertical_mobile }}px;
       {% endif %}
-      {% if settings.collection_card_badge_padding_horizontal_mobile != blank %}
-        padding-left: {{ settings.collection_card_badge_padding_horizontal_mobile }}px;
-        padding-right: {{ settings.collection_card_badge_padding_horizontal_mobile }}px;
+      {% if settings.product_card_badge_padding_horizontal_mobile != blank %}
+        padding-left: {{ settings.product_card_badge_padding_horizontal_mobile }}px;
+        padding-right: {{ settings.product_card_badge_padding_horizontal_mobile }}px;
       {% endif %}
-      {% if settings.collection_card_badge_margin_bottom_mobile != blank %}
-        margin-bottom: {{ settings.collection_card_badge_margin_bottom_mobile }}px;
-      {% endif %}
-    }
-
-    #product-grid-{{ section.id }} .custom-collection-card__hover-description {
-      {% if settings.collection_card_hover_description_font_size_mobile != blank %}
-        font-size: {{ settings.collection_card_hover_description_font_size_mobile }}px;
+      {% if settings.product_card_badge_margin_bottom_mobile != blank %}
+        margin-bottom: {{ settings.product_card_badge_margin_bottom_mobile }}px;
       {% endif %}
     }
 
     #product-grid-{{ section.id }} .custom-collection-card__hover-description {
-      {% if settings.collection_card_hover_description_font_size_mobile != blank %}
-        font-size: {{ settings.collection_card_hover_description_font_size_mobile }}px;
+      {% if settings.product_card_hover_description_font_size_mobile != blank %}
+        font-size: {{ settings.product_card_hover_description_font_size_mobile }}px;
       {% endif %}
     }
 
     #product-grid-{{ section.id }} .custom-collection-card__hover-button {
-      {% if settings.collection_card_hover_button_font_size_mobile != blank %}
-        font-size: {{ settings.collection_card_hover_button_font_size_mobile }}px !important;
+      {% if settings.product_card_hover_button_font_size_mobile != blank %}
+        font-size: {{ settings.product_card_hover_button_font_size_mobile }}px !important;
       {% endif %}
-      {% if settings.collection_card_hover_button_padding_vertical_mobile != blank or settings.collection_card_hover_button_padding_horizontal_mobile != blank %}
-        padding: {{ settings.collection_card_hover_button_padding_vertical_mobile | default: 8 }}px {{ settings.collection_card_hover_button_padding_horizontal_mobile | default: 16 }}px !important;
+      {% if settings.product_card_hover_button_padding_vertical_mobile != blank or settings.product_card_hover_button_padding_horizontal_mobile != blank %}
+        padding: {{ settings.product_card_hover_button_padding_vertical_mobile | default: 8 }}px {{ settings.product_card_hover_button_padding_horizontal_mobile | default: 16 }}px !important;
       {% endif %}
     }
 
     #product-grid-{{ section.id }} .custom-collection-card__hover-content {
-      {% if settings.collection_card_hover_content_gap_mobile != blank %}
-        gap: {{ settings.collection_card_hover_content_gap_mobile }}px;
+      {% if settings.product_card_hover_content_gap_mobile != blank %}
+        gap: {{ settings.product_card_hover_content_gap_mobile }}px;
       {% endif %}
     }
   }
