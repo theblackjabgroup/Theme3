@@ -1,0 +1,698 @@
+{{ 'section-scrolling-text-flip.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    --section-padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    --section-padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      --section-padding-top: {{ section.settings.padding_top }}px;
+      --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  #ScrollingFlip-{{ section.id }} {
+    --flip-width: {{ section.settings.box_width }}px;
+    --flip-height: {{ section.settings.box_height }}px;
+    --flip-gap: {{ section.settings.gap }}px;
+    --flip-speed: {{ section.settings.speed }}s;
+    --flip-radius: {{ section.settings.border_radius }}px;
+    --row-gap: {{ section.settings.row_gap }}px;
+    --flip-transform: {{ section.settings.flip_direction }};
+    --flip-duration: {{ section.settings.flip_duration }}s;
+    --card-font-size: {{ section.settings.font_size }}px;
+  }
+{%- endstyle -%}
+
+<div
+  class="scrolling-text-flip-section section-{{ section.id }}-padding color-{{ section.settings.color_scheme }}"
+  id="ScrollingFlip-{{ section.id }}"
+>
+  <div class="scrolling-text-flip-wrapper" style="flex-direction: column; gap: var(--row-gap);">
+    {%- for row in (1..section.settings.rows_count) -%}
+      {%- liquid
+        assign current_direction = section.settings.direction
+        if section.settings.alternate_direction
+          assign remainder = row | modulo: 2
+          if remainder == 0
+            if current_direction == 'normal'
+              assign current_direction = 'reverse'
+            else
+              assign current_direction = 'normal'
+            endif
+          endif
+        endif
+      -%}
+      <div
+        class="scrolling-text-flip-track{% if section.settings.pause_on_hover %} pause-on-hover{% endif %}"
+        data-direction="{{ current_direction }}"
+      >
+        {%- assign min_items = 20 -%}
+        {%- assign block_count = section.blocks.size -%}
+        {%- if block_count > 0 -%}
+          {%- assign repeat_count = min_items | divided_by: block_count | ceil | at_least: 2 -%}
+
+          {%- for i in (1..repeat_count) -%}
+            {%- for block in section.blocks -%}
+              {%- style -%}
+                .block-{{ block.id }} {
+                  {%- if block.settings.card_bg != blank -%}
+                    --card-bg: {{ block.settings.card_bg }};
+                  {%- else -%}
+                    --card-bg: var(--color-background);
+                  {%- endif -%}
+                  {%- if block.settings.card_text != blank -%}
+                    --card-text: {{ block.settings.card_text }};
+                  {%- else -%}
+                    --card-text: var(--color-text);
+                  {%- endif -%}
+                  --icon-width: {{ block.settings.icon_width }}px;
+                  --icon-height: {{ block.settings.icon_height }}px;
+                  --back-image-width: {{ block.settings.back_image_width }}px;
+                  --back-image-height: {{ block.settings.back_image_height }}px;
+                }
+              {%- endstyle -%}
+              <div class="scrolling-text-flip-item block-{{ block.id }}" {{ block.shopify_attributes }}>
+                <div class="scrolling-text-flip-card">
+                  <div class="scrolling-text-flip-front">
+                    {%- if block.settings.front_image != blank -%}
+                      {%- assign front_img_class = 'scrolling-text-flip-icon' -%}
+                      {%- assign front_img_width = 500 -%}
+                      {%- if block.settings.front_image_style == 'cover' -%}
+                        {%- assign front_img_class = 'scrolling-text-flip-front-cover' -%}
+                        {%- assign front_img_width = 800 -%}
+                      {%- elsif block.settings.front_image_style == 'contain' -%}
+                        {%- assign front_img_class = 'scrolling-text-flip-front-contain' -%}
+                        {%- assign front_img_width = 800 -%}
+                      {%- endif -%}
+                      {{
+                        block.settings.front_image
+                        | image_url: width: front_img_width
+                        | image_tag: loading: 'lazy', class: front_img_class
+                      }}
+                    {%- elsif block.settings.icon != 'none' -%}
+                      <div class="scrolling-text-flip-icon">
+                        {% render 'icon-accordion', icon: block.settings.icon %}
+                      </div>
+                      <span class="visually-hidden">{{ block.settings.icon }}</span>
+                    {%- endif -%}
+                    <div class="scrolling-text-flip-text">
+                      {{ block.settings.front_text }}
+                    </div>
+                  </div>
+                  <div class="scrolling-text-flip-back">
+                    {%- if block.settings.use_back_image -%}
+                      {%- if block.settings.back_image != blank -%}
+                        {%- assign back_img_class = 'scrolling-text-flip-back-image' -%}
+                        {%- if block.settings.back_image_style == 'custom' -%}
+                          {%- assign back_img_class = 'scrolling-text-flip-back-custom' -%}
+                        {%- endif -%}
+                        {{
+                          block.settings.back_image
+                          | image_url: width: 800
+                          | image_tag: loading: 'lazy', class: back_img_class
+                        }}
+                      {%- endif -%}
+                    {%- else -%}
+                      {%- if block.settings.front_image != blank -%}
+                        {%- assign front_img_class = 'scrolling-text-flip-icon' -%}
+                        {%- assign front_img_width = 500 -%}
+                        {%- if block.settings.front_image_style == 'cover' -%}
+                          {%- assign front_img_class = 'scrolling-text-flip-front-cover' -%}
+                          {%- assign front_img_width = 800 -%}
+                        {%- elsif block.settings.front_image_style == 'contain' -%}
+                          {%- assign front_img_class = 'scrolling-text-flip-front-contain' -%}
+                          {%- assign front_img_width = 800 -%}
+                        {%- endif -%}
+                        {{
+                          block.settings.front_image
+                          | image_url: width: front_img_width
+                          | image_tag: loading: 'lazy', class: front_img_class
+                        }}
+                      {%- elsif block.settings.icon != 'none' -%}
+                        <div class="scrolling-text-flip-icon">
+                          {% render 'icon-accordion', icon: block.settings.icon %}
+                        </div>
+                      {%- endif -%}
+                    {%- endif -%}
+                    <div class="scrolling-text-flip-text">
+                      {%- if block.settings.link != blank -%}
+                        <a href="{{ block.settings.link }}" class="full-unstyled-link">
+                      {%- endif -%}
+                      {{ block.settings.back_text | default: block.settings.front_text }}
+                      {%- if block.settings.link != blank -%}
+                        </a>
+                      {%- endif -%}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {%- endfor -%}
+          {%- endfor -%}
+        {%- else -%}
+          {%- for i in (1..10) -%}
+            <div class="scrolling-text-flip-item">
+              <div class="scrolling-text-flip-card">
+                <div class="scrolling-text-flip-front">
+                  <div class="scrolling-text-flip-text">Front {{ i }}</div>
+                </div>
+                <div class="scrolling-text-flip-back">
+                  <div class="scrolling-text-flip-text">Back {{ i }}</div>
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Scrolling Text Flip",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Dimensions"
+    },
+    {
+      "type": "range",
+      "id": "rows_count",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "Number of Rows",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "row_gap",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Gap between rows",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "box_width",
+      "min": 100,
+      "max": 1000,
+      "step": 10,
+      "unit": "px",
+      "label": "Box Width",
+      "default": 200
+    },
+    {
+      "type": "range",
+      "id": "box_height",
+      "min": 100,
+      "max": 1000,
+      "step": 10,
+      "unit": "px",
+      "label": "Box Height",
+      "default": 200
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Corner Radius",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Gap between items",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "min": 5,
+      "max": 100,
+      "step": 5,
+      "unit": "s",
+      "label": "Scroll Speed",
+      "default": 20
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause on hover",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "direction",
+      "options": [
+        {
+          "value": "normal",
+          "label": "Left"
+        },
+        {
+          "value": "reverse",
+          "label": "Right"
+        }
+      ],
+      "default": "normal",
+      "label": "Direction"
+    },
+    {
+      "type": "checkbox",
+      "id": "alternate_direction",
+      "default": false,
+      "label": "Alternate direction per row"
+    },
+    {
+      "type": "select",
+      "id": "flip_direction",
+      "label": "Flip Animation",
+      "options": [
+        {
+          "value": "rotateY(180deg)",
+          "label": "Horizontal (Y-Axis)"
+        },
+        {
+          "value": "rotateX(180deg)",
+          "label": "Vertical (X-Axis)"
+        },
+        {
+          "value": "rotate3d(1, 1, 0, 180deg)",
+          "label": "Tilt (Diagonal)"
+        }
+      ],
+      "default": "rotateY(180deg)"
+    },
+    {
+      "type": "range",
+      "id": "flip_duration",
+      "min": 0.5,
+      "max": 3.0,
+      "step": 0.1,
+      "unit": "s",
+      "label": "Flip Duration",
+      "default": 1.3
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "min": 12,
+      "max": 300,
+      "step": 4,
+      "unit": "px",
+      "label": "Font Size",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text_block",
+      "name": "Flip Card",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Colors",
+          "info": "Leave empty to use section color scheme."
+        },
+        {
+          "type": "color",
+          "id": "card_bg",
+          "label": "Card Background"
+        },
+        {
+          "type": "color",
+          "id": "card_text",
+          "label": "Card Text"
+        },
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "richtext",
+          "id": "front_text",
+          "default": "<p>Front Text</p>",
+          "label": "Front Text"
+        },
+        {
+          "type": "richtext",
+          "id": "back_text",
+          "default": "<p>Back Text</p>",
+          "label": "Back Text"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link (Optional)"
+        },
+        {
+          "type": "image_picker",
+          "id": "front_image",
+          "label": "Front Image"
+        },
+        {
+          "type": "select",
+          "id": "front_image_style",
+          "label": "Front Image Sizing",
+          "options": [
+            {
+              "value": "custom",
+              "label": "Custom Size"
+            },
+            {
+              "value": "cover",
+              "label": "Cover (Full Size)"
+            },
+            {
+              "value": "contain",
+              "label": "Contain (Fit)"
+            }
+          ],
+          "default": "custom"
+        },
+        {
+          "type": "range",
+          "id": "icon_width",
+          "min": 10,
+          "max": 500,
+          "step": 10,
+          "unit": "px",
+          "label": "Front Image Width (Custom)",
+          "default": 100
+        },
+        {
+          "type": "range",
+          "id": "icon_height",
+          "min": 10,
+          "max": 500,
+          "step": 10,
+          "unit": "px",
+          "label": "Front Image Height (Custom)",
+          "default": 100
+        },
+        {
+          "type": "checkbox",
+          "id": "use_back_image",
+          "label": "Use separate back image",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "back_image",
+          "label": "Back Image"
+        },
+        {
+          "type": "select",
+          "id": "back_image_style",
+          "label": "Back Image Sizing",
+          "options": [
+            {
+              "value": "cover",
+              "label": "Cover (Full Size)"
+            },
+            {
+              "value": "custom",
+              "label": "Custom Size"
+            }
+          ],
+          "default": "cover"
+        },
+        {
+          "type": "range",
+          "id": "back_image_width",
+          "min": 10,
+          "max": 500,
+          "step": 10,
+          "unit": "px",
+          "label": "Back Image Width (Custom)",
+          "default": 100
+        },
+        {
+          "type": "range",
+          "id": "back_image_height",
+          "min": 10,
+          "max": 500,
+          "step": 10,
+          "unit": "px",
+          "label": "Back Image Height (Custom)",
+          "default": 100
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "options": [
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "apple",
+              "label": "Apple"
+            },
+            {
+              "value": "banana",
+              "label": "Banana"
+            },
+            {
+              "value": "bottle",
+              "label": "Bottle"
+            },
+            {
+              "value": "box",
+              "label": "Box"
+            },
+            {
+              "value": "carrot",
+              "label": "Carrot"
+            },
+            {
+              "value": "chat_bubble",
+              "label": "Chat bubble"
+            },
+            {
+              "value": "check_mark",
+              "label": "Check mark"
+            },
+            {
+              "value": "clipboard",
+              "label": "Clipboard"
+            },
+            {
+              "value": "dairy",
+              "label": "Dairy"
+            },
+            {
+              "value": "dairy_free",
+              "label": "Dairy free"
+            },
+            {
+              "value": "dryer",
+              "label": "Dryer"
+            },
+            {
+              "value": "eye",
+              "label": "Eye"
+            },
+            {
+              "value": "fire",
+              "label": "Fire"
+            },
+            {
+              "value": "gluten_free",
+              "label": "Gluten free"
+            },
+            {
+              "value": "heart",
+              "label": "Heart"
+            },
+            {
+              "value": "iron",
+              "label": "Iron"
+            },
+            {
+              "value": "leaf",
+              "label": "Leaf"
+            },
+            {
+              "value": "leather",
+              "label": "Leather"
+            },
+            {
+              "value": "lightning_bolt",
+              "label": "Lightning bolt"
+            },
+            {
+              "value": "lipstick",
+              "label": "Lipstick"
+            },
+            {
+              "value": "lock",
+              "label": "Lock"
+            },
+            {
+              "value": "map_pin",
+              "label": "Map pin"
+            },
+            {
+              "value": "nut_free",
+              "label": "Nut free"
+            },
+            {
+              "value": "pants",
+              "label": "Pants"
+            },
+            {
+              "value": "paw_print",
+              "label": "Paw print"
+            },
+            {
+              "value": "pepper",
+              "label": "Pepper"
+            },
+            {
+              "value": "perfume",
+              "label": "Perfume"
+            },
+            {
+              "value": "plane",
+              "label": "Plane"
+            },
+            {
+              "value": "plant",
+              "label": "Plant"
+            },
+            {
+              "value": "price_tag",
+              "label": "Price tag"
+            },
+            {
+              "value": "question_mark",
+              "label": "Question mark"
+            },
+            {
+              "value": "recycle",
+              "label": "Recycle"
+            },
+            {
+              "value": "return",
+              "label": "Return"
+            },
+            {
+              "value": "ruler",
+              "label": "Ruler"
+            },
+            {
+              "value": "serving_dish",
+              "label": "Serving dish"
+            },
+            {
+              "value": "shirt",
+              "label": "Shirt"
+            },
+            {
+              "value": "shoe",
+              "label": "Shoe"
+            },
+            {
+              "value": "silhouette",
+              "label": "Silhouette"
+            },
+            {
+              "value": "snowflake",
+              "label": "Snowflake"
+            },
+            {
+              "value": "star",
+              "label": "Star"
+            },
+            {
+              "value": "stopwatch",
+              "label": "Stopwatch"
+            },
+            {
+              "value": "truck",
+              "label": "Truck"
+            },
+            {
+              "value": "washing",
+              "label": "Washing"
+            }
+          ],
+          "default": "none",
+          "label": "Icon"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Scrolling Text Flip",
+      "blocks": [
+        {
+          "type": "text_block"
+        },
+        {
+          "type": "text_block"
+        },
+        {
+          "type": "text_block"
+        },
+        {
+          "type": "text_block"
+        },
+        {
+          "type": "text_block"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
