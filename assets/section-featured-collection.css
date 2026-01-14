@@ -84,6 +84,10 @@
   transform-style: preserve-3d;
   transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   will-change: transform;
+  /* Add these for better performance */
+  -webkit-transform-style: preserve-3d;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .fc3d-card.is-center:hover .fc3d-card__inner {
@@ -94,18 +98,6 @@
 /* Smooth flip back when hover ends */
 .fc3d-card.is-center:not(:hover) .fc3d-card__inner {
   animation: wind-flip-back 0.8s ease-in-out forwards;
-}
-.fc3d-card__inner {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  transform-style: preserve-3d;
-  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  will-change: transform;
-  /* Add these for better performance */
-  -webkit-transform-style: preserve-3d;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
 }
 .fc3d-card__face {
   position: absolute;
@@ -156,19 +148,6 @@
   100% {
     transform: rotateZ(-5deg) scale(1.1) rotateY(0deg);
   }
-}
-
-.fc3d-card__face {
-  position: absolute;
-  inset: 0;
-  backface-visibility: hidden;
-  border-radius: 20px;
-  overflow: visible;
-  padding: 4px;
-}
-
-.fc3d-card__face--back {
-  transform: rotateY(180deg);
 }
 
 .fc3d-card__link {
