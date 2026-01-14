@@ -70,9 +70,10 @@
                 {{ fallback_description | default: 'Discover our amazing product.' | upcase }}
               {%- endif -%}
             </p>
-            <span class="custom-collection-card__hover-button">
-              {{- overlay_button_text | default: 'Love that! (Check it out)' -}}
-            </span>
+            {% render 'submit-button', 
+              text: overlay_button_text | default: 'Love that! (Check it out)',
+              class: 'custom-collection-card__hover-button share-story-submit'
+            %}
           </div>
         </div>
       </div>

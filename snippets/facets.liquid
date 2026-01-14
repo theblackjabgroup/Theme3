@@ -16,6 +16,7 @@
 {{ 'component-swatch-input.css' | asset_url | stylesheet_tag }}
 {{ 'component-swatch.css' | asset_url | stylesheet_tag }}
 {{ 'custom-facets.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'custom-facets.js' | asset_url }}" defer="defer"></script>
 
 {%- liquid
   assign sort_by = results.sort_by | default: results.default_sort_by
@@ -212,12 +213,6 @@
                                         }}
                                       {%- endif -%}
                                     </div>
-                                  {%- else -%}
-                                    {{- 'square.svg' | inline_asset_content -}}
-
-                                    <div class="svg-wrapper">
-                                      {{- 'icon-checkmark.svg' | inline_asset_content -}}
-                                    </div>
                                   {%- endif -%}
 
                                   {{ text_value }}
@@ -256,8 +251,14 @@
                   >
                     <summary class="facets__summary caption-large focus-offset">
                       <div>
-                        <span>{{ filter.label | escape }}</span>
-                        {{- 'icon-caret.svg' | inline_asset_content -}}
+                        <div class="facets__summary-inner">
+                          <span class="facets__summary-label">
+                            {{- filter.label | escape -}}
+                          </span>
+                          <span class="facets__summary-icon">
+                            {{- 'icon-caret.svg' | inline_asset_content -}}
+                          </span>
+                        </div>
                       </div>
                     </summary>
                     <div
