@@ -38,6 +38,16 @@
 }
 
 /* Shop all button uses primary-button snippet */
+.fc3d__shop-all {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+}
+
+.fc3d__header .primary-button {
+  margin: 0;
+  vertical-align: middle;
+}
 
 .fc3d__viewport {
   position: relative;
@@ -317,6 +327,38 @@
   transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
+/* Support for image-based buttons */
+.fc3d__nav[style*="background-image"] {
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.fc3d__nav[style*="background-image"] span {
+  display: none !important;
+}
+
+.fc3d__nav[style*="background-image"]::after {
+  display: none !important;
+}
+
+.fc3d__nav[style*="background-image"]::before {
+  display: none !important;
+}
+
+/* Ensure image buttons still have hover effect */
+.fc3d__nav[style*="background-image"]:hover {
+  transform: translate(1px, 1px);
+  opacity: 0.9;
+  box-shadow: none;
+}
+
+.fc3d__nav[style*="background-image"]:active {
+  transform: translate(3px, 3px);
+  opacity: 0.8;
+  box-shadow: none;
+}
+
 .fc3d__nav span {
   display: block;
   position: relative;
@@ -325,6 +367,7 @@
   font-size: 24px;
   transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
               opacity 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 2;
 }
 
 .fc3d__nav::before {
@@ -413,6 +456,11 @@
   .fc3d__header {
     flex-direction: column;
     align-items: flex-start;
+  }
+  
+  .fc3d__header .primary-button {
+    width: 100%;
+    min-width: unset;
   }
   .fc3d__rail {
     scroll-padding: 20vw;

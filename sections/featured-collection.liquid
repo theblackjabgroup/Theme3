@@ -1,4 +1,5 @@
 {{ 'section-featured-collection.css' | asset_url | stylesheet_tag }}
+{{ 'component-primary-button.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'section-featured-collection.js' | asset_url }}" defer="defer"></script>
 
 {%- liquid
@@ -183,12 +184,50 @@
       </div>
     </div>
 
-    <div class="fc3d__controls">
-      <button class="fc3d__nav fc3d__nav--prev" type="button" data-fc3d-prev aria-label="Previous">
-        <span aria-hidden="true">←</span>
+    <div class="fc3d__controls" style="gap: {{ section.settings.nav_button_spacing | default: 16 }}px;">
+      <button 
+        class="fc3d__nav fc3d__nav--prev" 
+        type="button" 
+        data-fc3d-prev 
+        aria-label="Previous"
+        style="
+          width: {{ section.settings.nav_button_width | default: 64 }}px;
+          height: {{ section.settings.nav_button_height | default: 56 }}px;
+          padding: {{ section.settings.nav_button_padding | default: 0 }}px;
+          font-size: {{ section.settings.nav_button_font_size | default: 24 }}px;
+          {% if section.settings.nav_button_prev_image != blank %}
+            background-image: url('{{ section.settings.nav_button_prev_image | image_url: width: 200 }}');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+          {% endif %}
+        "
+      >
+        {% if section.settings.nav_button_prev_image == blank %}
+          <span aria-hidden="true" style="font-size: {{ section.settings.nav_button_font_size | default: 24 }}px;">←</span>
+        {% endif %}
       </button>
-      <button class="fc3d__nav fc3d__nav--next" type="button" data-fc3d-next aria-label="Next">
-        <span aria-hidden="true">→</span>
+      <button 
+        class="fc3d__nav fc3d__nav--next" 
+        type="button" 
+        data-fc3d-next 
+        aria-label="Next"
+        style="
+          width: {{ section.settings.nav_button_width | default: 64 }}px;
+          height: {{ section.settings.nav_button_height | default: 56 }}px;
+          padding: {{ section.settings.nav_button_padding | default: 0 }}px;
+          font-size: {{ section.settings.nav_button_font_size | default: 24 }}px;
+          {% if section.settings.nav_button_next_image != blank %}
+            background-image: url('{{ section.settings.nav_button_next_image | image_url: width: 200 }}');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+          {% endif %}
+        "
+      >
+        {% if section.settings.nav_button_next_image == blank %}
+          <span aria-hidden="true" style="font-size: {{ section.settings.nav_button_font_size | default: 24 }}px;">→</span>
+        {% endif %}
       </button>
     </div>
   </div>
@@ -334,6 +373,75 @@
         }
       ],
       "default": "no-repeat"
+    },
+    {
+      "type": "header",
+      "content": "Navigation Buttons"
+    },
+    {
+      "type": "range",
+      "id": "nav_button_spacing",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Button spacing",
+      "default": 16,
+      "info": "Space between previous and next buttons"
+    },
+    {
+      "type": "range",
+      "id": "nav_button_width",
+      "min": 20,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Button width",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "nav_button_height",
+      "min": 20,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Button height",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "nav_button_padding",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Button padding",
+      "default": 0,
+      "info": "Internal padding inside the button"
+    },
+    {
+      "type": "range",
+      "id": "nav_button_font_size",
+      "min": 12,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "label": "Button font size",
+      "default": 24,
+      "info": "Font size for arrow icons (if not using custom images)"
+    },
+    {
+      "type": "image_picker",
+      "id": "nav_button_prev_image",
+      "label": "Previous button image",
+      "info": "Upload a custom image for the previous button. If not set, default arrow will be used."
+    },
+    {
+      "type": "image_picker",
+      "id": "nav_button_next_image",
+      "label": "Next button image",
+      "info": "Upload a custom image for the next button. If not set, default arrow will be used."
     }
   ],
   "presets": [
