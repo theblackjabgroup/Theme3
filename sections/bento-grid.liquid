@@ -757,6 +757,68 @@
                 >
               </div>
             </div>
+
+          {%- when 'toggle_card' -%}
+            {%- assign toggle_size = block.settings.toggle_size | default: 60 -%}
+            {%- assign mobile_toggle_size = block.settings.mobile_toggle_size | default: toggle_size -%}
+            {%- assign icon_size = block.settings.icon_size | default: 24 -%}
+            {%- assign mobile_icon_size = block.settings.mobile_icon_size | default: icon_size -%}
+            {%- assign toggle_bg_color = block.settings.toggle_bg_color | default: '#f0f0f0' -%}
+            {%- assign toggle_active_bg_color = block.settings.toggle_active_bg_color | default: '#1a1a1a' -%}
+            {%- assign toggle_knob_color = block.settings.toggle_knob_color | default: '#ffffff' -%}
+            {%- assign sun_color = block.settings.sun_color | default: '#ffa500' -%}
+            {%- assign moon_color = block.settings.moon_color | default: '#ffffff' -%}
+            <div
+              class="bento-card toggle-card"
+              style="--toggle-size: {{ toggle_size }}px; --mobile-toggle-size: {{ mobile_toggle_size }}px; --icon-size: {{ icon_size }}px; --mobile-icon-size: {{ mobile_icon_size }}px; --toggle-bg: {{ toggle_bg_color }}; --toggle-active-bg: {{ toggle_active_bg_color }}; --toggle-knob: {{ toggle_knob_color }}; --sun-color: {{ sun_color }}; --moon-color: {{ moon_color }};"
+              data-toggle-card
+            >
+              <div class="toggle-switch-wrapper">
+                <label class="toggle-switch" for="toggle-{{ block.id }}">
+                  <input
+                    type="checkbox"
+                    id="toggle-{{ block.id }}"
+                    class="toggle-input"
+                    data-toggle-input
+                    aria-label="Toggle switch"
+                  >
+                  <span class="toggle-slider">
+                    <span class="toggle-icon toggle-icon-sun">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                      </svg>
+                    </span>
+                    <span class="toggle-icon toggle-icon-moon">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                      </svg>
+                    </span>
+                  </span>
+                </label>
+              </div>
+            </div>
         {%- endcase -%}
       </div>
     {%- endfor -%}
@@ -2734,6 +2796,146 @@
           "id": "mobile_row_span",
           "min": 0.1,
           "max": 6,
+          "step": 0.1,
+          "label": "Mobile Row Span",
+          "default": 1
+        }
+      ]
+    },
+    {
+      "type": "toggle_card",
+      "name": "Toggle Switch Card",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Toggle Switch Settings"
+        },
+        {
+          "type": "range",
+          "id": "toggle_size",
+          "min": 40,
+          "max": 220,
+          "step": 10,
+          "unit": "px",
+          "label": "Toggle Size",
+          "default": 60,
+          "info": "Overall size of the toggle switch"
+        },
+        {
+          "type": "range",
+          "id": "icon_size",
+          "min": 16,
+          "max": 48,
+          "step": 1,
+          "unit": "px",
+          "label": "Icon Size",
+          "default": 24,
+          "info": "Size of sun/moon icons"
+        },
+        {
+          "type": "header",
+          "content": "Colors"
+        },
+        {
+          "type": "color",
+          "id": "toggle_bg_color",
+          "label": "Toggle Background (Off)",
+          "default": "#f0f0f0",
+          "info": "Background color when toggle is off"
+        },
+        {
+          "type": "color",
+          "id": "toggle_active_bg_color",
+          "label": "Toggle Background (On)",
+          "default": "#1a1a1a",
+          "info": "Background color when toggle is on"
+        },
+        {
+          "type": "color",
+          "id": "toggle_knob_color",
+          "label": "Toggle Knob Color",
+          "default": "#ffffff",
+          "info": "Color of the sliding knob"
+        },
+        {
+          "type": "color",
+          "id": "sun_color",
+          "label": "Sun Icon Color",
+          "default": "#ffa500",
+          "info": "Color of the sun icon"
+        },
+        {
+          "type": "color",
+          "id": "moon_color",
+          "label": "Moon Icon Color",
+          "default": "#ffffff",
+          "info": "Color of the moon icon"
+        },
+        {
+          "type": "header",
+          "content": "Mobile Settings"
+        },
+        {
+          "type": "range",
+          "id": "mobile_toggle_size",
+          "min": 40,
+          "max": 120,
+          "step": 2,
+          "unit": "px",
+          "label": "Mobile Toggle Size",
+          "default": 50,
+          "info": "Toggle size on mobile devices"
+        },
+        {
+          "type": "range",
+          "id": "mobile_icon_size",
+          "min": 16,
+          "max": 48,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile Icon Size",
+          "default": 20,
+          "info": "Icon size on mobile devices"
+        },
+        {
+          "type": "header",
+          "content": "Layout Settings"
+        },
+        {
+          "type": "range",
+          "id": "column_span",
+          "min": 0.5,
+          "max": 8.0,
+          "step": 0.1,
+          "label": "Column Span",
+          "default": 1.0,
+          "info": "How many columns this card spans"
+        },
+        {
+          "type": "range",
+          "id": "row_span",
+          "min": 0.5,
+          "max": 4.3,
+          "step": 0.1,
+          "label": "Row Span",
+          "default": 1.0,
+          "info": "How many rows this card spans"
+        },
+        {
+          "type": "range",
+          "id": "mobile_column_span",
+          "min": 0.1,
+          "max": 2,
+          "step": 0.1,
+          "label": "Mobile Column Span",
+          "default": 1,
+          "info": "Column span on mobile (0.1-2.0 columns)"
+        },
+        {
+          "type": "range",
+          "id": "mobile_row_span",
+          "min": 0.1,
+          "max": 2.0,
           "step": 0.1,
           "label": "Mobile Row Span",
           "default": 1

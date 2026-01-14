@@ -87,8 +87,61 @@
     });
   }
 
+  function initToggleCards() {
+    const toggleCards = document.querySelectorAll('[data-toggle-card]');
+    
+    toggleCards.forEach((card) => {
+      const toggleInput = card.querySelector('[data-toggle-input]');
+      if (!toggleInput) return;
+
+      // Optional: Load saved state from localStorage
+      const cardId = toggleInput.id;
+      const savedState = localStorage.getItem(`toggle-${cardId}`);
+      if (savedState === 'true') {
+        toggleInput.checked = true;
+      }
+
+      // Handle toggle change
+      toggleInput.addEventListener('change', (e) => {
+        const isChecked = e.target.checked;
+        
+        // Optional: Save state to localStorage
+        localStorage.setItem(`toggle-${cardId}`, isChecked.toString());
+        
+        // Optional: Trigger custom event for other scripts to listen to
+        const toggleEvent = new CustomEvent('toggleChange', {
+          detail: {
+            cardId: cardId,
+            checked: isChecked,
+            card: card
+          }
+        });
+        card.dispatchEvent(toggleEvent);
+        
+        // Optional: Add ripple effect or other visual feedback
+        const slider = card.querySelector('.toggle-slider');
+        if (slider) {
+          slider.style.transform = 'scale(0.98)';
+          setTimeout(() => {
+            slider.style.transform = '';
+          }, 150);
+        }
+      });
+
+      // Add keyboard support
+      toggleInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggleInput.checked = !toggleInput.checked;
+          toggleInput.dispatchEvent(new Event('change'));
+        }
+      });
+    });
+  }
+
   function initAll() {
     initSpritesheetAnimations();
+    initToggleCards();
   }
 
   if (document.readyState === 'loading') {
@@ -102,6 +155,7 @@
     const section = event.target?.querySelector?.('.bento-grid-container') || event.target;
     if (section?.matches?.('.bento-grid-container')) {
       initSpritesheetAnimations();
+      initToggleCards();
     }
   });
 })();
