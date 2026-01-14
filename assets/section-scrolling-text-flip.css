@@ -1,0 +1,186 @@
+.scrolling-text-flip-section {
+  overflow: hidden;
+  padding-top: var(--section-padding-top);
+  padding-bottom: var(--section-padding-bottom);
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+.scrolling-text-flip-wrapper {
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+ }
+
+.scrolling-text-flip-track {
+  display: flex;
+  gap: var(--flip-gap);
+  width: max-content;
+  animation: scroll-left var(--flip-speed) linear infinite;
+}
+
+.scrolling-text-flip-track.pause-on-hover:hover {
+  animation-play-state: paused;
+}
+
+.scrolling-text-flip-track[data-direction="reverse"] {
+  animation-direction: reverse;
+}
+
+.scrolling-text-flip-item {
+  width: var(--flip-width);
+  height: var(--flip-height);
+  flex-shrink: 0;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.scrolling-text-flip-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform var(--flip-duration, 1.3s) linear(0, 1.3, 1, 0.92, 1, 0.99, 1, 1.004, 0.998, 1 100% 100%);
+  transform-style: preserve-3d;
+  border-radius: var(--flip-radius, 12px);
+}
+
+.scrolling-text-flip-item:hover .scrolling-text-flip-card {
+  transform: var(--flip-transform, rotateY(180deg));
+}
+
+.scrolling-text-flip-front,
+.scrolling-text-flip-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--flip-radius, 12px);
+  padding: 1rem;
+  overflow: hidden;
+  z-index: 1; /* Ensure content stacking context */
+}
+
+.scrolling-text-flip-front-cover,
+.scrolling-text-flip-front-contain {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.scrolling-text-flip-front-cover {
+  object-fit: cover;
+}
+
+.scrolling-text-flip-front-contain {
+  object-fit: contain;
+}
+
+.scrolling-text-flip-front .scrolling-text-flip-text,
+.scrolling-text-flip-front .scrolling-text-flip-icon {
+  position: relative;
+  z-index: 1;
+}
+
+.scrolling-text-flip-front {
+  background-color: var(--card-bg, var(--color-background));
+  color: var(--card-text, var(--color-text));
+  border: 1px solid var(--color-borders);
+}
+
+.scrolling-text-flip-back {
+  background-color: var(--card-text, var(--color-text));
+  color: var(--card-bg, var(--color-background));
+  border: 1px solid var(--color-borders);
+  transform: var(--flip-transform, rotateY(180deg));
+}
+
+.scrolling-text-flip-back-cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0; 
+}
+
+.scrolling-text-flip-back-contain {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 0;
+}
+
+.scrolling-text-flip-back-custom {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: var(--back-image-width, 100px);
+  height: var(--back-image-height, 100px);
+  object-fit: contain;
+  z-index: 0;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.scrolling-text-flip-back .scrolling-text-flip-text {
+  position: relative;
+  z-index: 1;
+}
+
+.scrolling-text-flip-text {
+  margin: 0;
+  font-weight: bold;
+  font-size: var(--card-font-size, 1.2rem);
+  line-height: 1.2;
+}
+
+.scrolling-text-flip-icon {
+  width: var(--icon-width, 24px);
+  height: var(--icon-height, 24px);
+  margin-right: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+img.scrolling-text-flip-icon {
+  object-fit: contain;
+}
+
+.scrolling-text-flip-icon img,
+.scrolling-text-flip-icon svg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .scrolling-text-flip-item {
+    width: calc(var(--flip-width) * 0.8);
+    height: calc(var(--flip-height) * 0.8);
+  }
+}
