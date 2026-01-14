@@ -145,7 +145,7 @@
   }
   /* Settle at exactly 180deg */
   100% {
-    transform: rotateZ(-5deg) scale(1.1) rotateY(185deg);
+    transform: rotateZ(-5deg) scale(1.1) rotateY(180deg);
   }
 }
 
