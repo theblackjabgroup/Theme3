@@ -1,23 +1,456 @@
-<style type="text/css">
-  .template-404 .title + * {
-    margin-top: 1rem;
+{{ 'component-primary-button.css' | asset_url | stylesheet_tag }}
+
+<style>
+  .template-404 {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    position: relative;
+    overflow: hidden;
+    padding: 2rem;
   }
 
-  @media screen and (min-width: 750px) {
-    .template-404 .title + * {
-      margin-top: 2rem;
+  .template-404__content {
+    text-align: center;
+    z-index: 10;
+    position: relative;
+  }
+
+  .template-404__title {
+    font-size: clamp({{ section.settings.title_font_size_min | default: 3 }}rem, {{ section.settings.title_font_size_vw | default: 8 }}vw, {{ section.settings.title_font_size_max | default: 6 }}rem);
+    font-weight: {{ section.settings.title_font_weight | default: 900 }};
+    color: {{ section.settings.title_color | default: '#000000' }};
+    text-transform: {{ section.settings.title_text_transform | default: 'uppercase' }};
+    letter-spacing: {{ section.settings.title_letter_spacing | default: '-0.02em' }};
+    margin: 0 0 2rem 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: staggerUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s forwards;
+  }
+
+  .template-404__button {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: staggerUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s forwards;
+  }
+
+  .template-404__button-link .primary-button__face::after {
+    content: ' ↗';
+    display: inline-block;
+    margin-left: 0.5rem;
+  }
+
+  /* SVG Illustrations */
+  .template-404__illustration {
+    position: absolute;
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  .template-404__magnifying-glass {
+    top: {{ section.settings.magnifying_glass_top | default: 15 }}%;
+    left: {{ section.settings.magnifying_glass_left | default: 35 }}%;
+    animation: balloonPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.8s forwards, float1 3.5s ease-in-out {{ section.settings.magnifying_glass_float_delay | default: 1.4 }}s infinite;
+  }
+
+  .template-404__cylinders {
+    bottom: {{ section.settings.cylinders_bottom | default: 25 }}%;
+    left: {{ section.settings.cylinders_left | default: 25 }}%;
+    animation: balloonPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 1s forwards, float2 4.2s ease-in-out {{ section.settings.cylinders_float_delay | default: 1.6 }}s infinite;
+  }
+
+  .template-404__mixer {
+    bottom: {{ section.settings.mixer_bottom | default: 20 }}%;
+    right: {{ section.settings.mixer_right | default: 25 }}%;
+    animation: balloonPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 1.2s forwards, float3 3.8s ease-in-out {{ section.settings.mixer_float_delay | default: 1.8 }}s infinite;
+  }
+
+  @keyframes staggerUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes balloonPop {
+    0% {
+      opacity: 0;
+      transform: scale(0);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes float1 {
+    0%, 100% {
+      transform: scale(1) translateY(0px) translateX(0px) rotate(0deg);
+    }
+    33% {
+      transform: scale(1) translateY(-18px) translateX(5px) rotate(1.5deg);
+    }
+    66% {
+      transform: scale(1) translateY(-12px) translateX(-3px) rotate(-1deg);
+    }
+  }
+
+  @keyframes float2 {
+    0%, 100% {
+      transform: scale(1) translateY(0px) translateX(0px) rotate(0deg);
+    }
+    25% {
+      transform: scale(1) translateY(-15px) translateX(-4px) rotate(-1.8deg);
+    }
+    50% {
+      transform: scale(1) translateY(-22px) translateX(3px) rotate(2.2deg);
+    }
+    75% {
+      transform: scale(1) translateY(-10px) translateX(6px) rotate(-0.5deg);
+    }
+  }
+
+  @keyframes float3 {
+    0%, 100% {
+      transform: scale(1) translateY(0px) translateX(0px) rotate(0deg);
+    }
+    40% {
+      transform: scale(1) translateY(-20px) translateX(-5px) rotate(-2deg);
+    }
+    80% {
+      transform: scale(1) translateY(-8px) translateX(4px) rotate(1.2deg);
+    }
+  }
+
+  .template-404 svg {
+    display: block;
+  }
+
+  @media (max-width: 768px) {
+    .template-404__title {
+      font-size: clamp(2rem, 10vw, 4rem);
+    }
+
+    .template-404__illustration {
+      transform: scale(0.8);
+    }
+
+    .template-404__magnifying-glass {
+      top: 10%;
+      left: 20%;
+    }
+
+    .template-404__cylinders {
+      bottom: 5%;
+      left: 2%;
+    }
+
+    .template-404__mixer {
+      bottom: 5%;
+      right: 2%;
     }
   }
 </style>
 
-<div class="template-404 page-width page-margin center">
-  <p>
-    {{ 'templates.404.subtext' | t }}
-  </p>
-  <h1 class="title">
-    {{ 'templates.404.title' | t }}
-  </h1>
-  <a href="{{ routes.all_products_collection_url }}" class="button">
-    {{ 'general.continue_shopping' | t }}
-  </a>
+<div class="template-404" style="background: {{ section.settings.background_color | default: '#ffffff' }};">
+  <!-- Magnifying Glass Illustration -->
+  {%- if section.settings.show_magnifying_glass != false -%}
+    <div class="template-404__illustration template-404__magnifying-glass">
+      <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Frame -->
+        <circle cx="50" cy="50" r="35" stroke="#000000" stroke-width="3" fill="#B794F6"/>
+        <!-- Handle -->
+        <line x1="75" y1="75" x2="95" y2="95" stroke="#000000" stroke-width="3" stroke-linecap="round"/>
+        <!-- Lens -->
+        <circle cx="50" cy="50" r="28" fill="#3B82F6"/>
+        <!-- Star -->
+        <path d="M58 42 L60 38 L62 42 L66 44 L62 46 L60 50 L58 46 L54 44 Z" fill="#FFFFFF"/>
+      </svg>
+    </div>
+  {%- endif -%}
+
+  <!-- Colorful Cylinders -->
+  {%- if section.settings.show_cylinders != false -%}
+    <div class="template-404__illustration template-404__cylinders">
+      <svg width="100" height="80" viewBox="0 0 100 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Yellow Cylinder -->
+        <ellipse cx="15" cy="70" rx="8" ry="3" fill="#FCD34D" stroke="#000000" stroke-width="2"/>
+        <rect x="7" y="30" width="16" height="40" fill="#FCD34D" stroke="#000000" stroke-width="2"/>
+        <ellipse cx="15" cy="30" rx="8" ry="3" fill="#FCD34D" stroke="#000000" stroke-width="2"/>
+
+        <!-- Light Purple Cylinder -->
+        <ellipse cx="35" cy="70" rx="8" ry="3" fill="#C4B5FD" stroke="#000000" stroke-width="2"/>
+        <rect x="27" y="35" width="16" height="35" fill="#C4B5FD" stroke="#000000" stroke-width="2"/>
+        <ellipse cx="35" cy="35" rx="8" ry="3" fill="#C4B5FD" stroke="#000000" stroke-width="2"/>
+
+        <!-- Light Green Cylinder -->
+        <ellipse cx="55" cy="70" rx="8" ry="3" fill="#86EFAC" stroke="#000000" stroke-width="2"/>
+        <rect x="47" y="25" width="16" height="45" fill="#86EFAC" stroke="#000000" stroke-width="2"/>
+        <ellipse cx="55" cy="25" rx="8" ry="3" fill="#86EFAC" stroke="#000000" stroke-width="2"/>
+
+        <!-- Light Blue Cylinder -->
+        <ellipse cx="75" cy="70" rx="8" ry="3" fill="#93C5FD" stroke="#000000" stroke-width="2"/>
+        <rect x="67" y="40" width="16" height="30" fill="#93C5FD" stroke="#000000" stroke-width="2"/>
+        <ellipse cx="75" cy="40" rx="8" ry="3" fill="#93C5FD" stroke="#000000" stroke-width="2"/>
+      </svg>
+    </div>
+  {%- endif -%}
+
+  <!-- Audio Mixer -->
+  {%- if section.settings.show_mixer != false -%}
+    <div class="template-404__illustration template-404__mixer">
+      <svg width="100" height="80" viewBox="0 0 100 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Base -->
+        <rect x="20" y="50" width="60" height="20" fill="#E5E7EB" stroke="#000000" stroke-width="2" rx="2"/>
+
+        <!-- Slider 1 (Light Blue) -->
+        <line x1="35" y1="50" x2="35" y2="70" stroke="#000000" stroke-width="2"/>
+        <rect x="30" y="35" width="10" height="15" fill="#93C5FD" stroke="#000000" stroke-width="2" rx="1"/>
+
+        <!-- Slider 2 (Light Purple) -->
+        <line x1="50" y1="50" x2="50" y2="70" stroke="#000000" stroke-width="2"/>
+        <rect x="45" y="30" width="10" height="20" fill="#C4B5FD" stroke="#000000" stroke-width="2" rx="1"/>
+
+        <!-- Slider 3 (Light Green) -->
+        <line x1="65" y1="50" x2="65" y2="70" stroke="#000000" stroke-width="2"/>
+        <rect x="60" y="40" width="10" height="10" fill="#86EFAC" stroke="#000000" stroke-width="2" rx="1"/>
+      </svg>
+    </div>
+  {%- endif -%}
+
+  <!-- Main Content -->
+  <div class="template-404__content">
+    <h1 class="template-404__title">{{ section.settings.title_text | default: 'YOU SEEM LOST.' }}</h1>
+    <div class="template-404__button">
+      {%- render 'primary-button', text: section.settings.button_text | default: 'BACK HOME', link: section.settings.button_link | default: routes.root_url, class: 'template-404__button-link' -%}
+    </div>
+  </div>
 </div>
+
+{% schema %}
+{
+  "name": "404 Page",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Text Settings"
+    },
+    {
+      "type": "text",
+      "id": "title_text",
+      "label": "Title Text",
+      "default": "YOU SEEM LOST."
+    },
+    {
+      "type": "range",
+      "id": "title_font_size_min",
+      "min": 2,
+      "max": 6,
+      "step": 0.5,
+      "unit": "rem",
+      "label": "Title Font Size (Min)",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "title_font_size_vw",
+      "min": 4,
+      "max": 12,
+      "step": 0.5,
+      "unit": "vw",
+      "label": "Title Font Size (Viewport)",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "title_font_size_max",
+      "min": 4,
+      "max": 10,
+      "step": 0.5,
+      "unit": "rem",
+      "label": "Title Font Size (Max)",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "title_font_weight",
+      "min": 400,
+      "max": 900,
+      "step": 100,
+      "label": "Title Font Weight",
+      "default": 900
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "select",
+      "id": "title_text_transform",
+      "label": "Title Text Transform",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "uppercase", "label": "Uppercase" },
+        { "value": "lowercase", "label": "Lowercase" },
+        { "value": "capitalize", "label": "Capitalize" }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "text",
+      "id": "title_letter_spacing",
+      "label": "Title Letter Spacing",
+      "default": "-0.02em",
+      "info": "Use CSS units like -0.02em, -2px, etc."
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "BACK HOME"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link",
+      "default": "/"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Illustrations"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_magnifying_glass",
+      "label": "Show Magnifying Glass",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "magnifying_glass_top",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "%",
+      "label": "Magnifying Glass Top Position",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "magnifying_glass_left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Magnifying Glass Left Position",
+      "default": 35
+    },
+    {
+      "type": "range",
+      "id": "magnifying_glass_float_delay",
+      "min": 0,
+      "max": 3,
+      "step": 0.1,
+      "unit": "s",
+      "label": "Magnifying Glass Float Delay",
+      "default": 1.4
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cylinders",
+      "label": "Show Cylinders",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "cylinders_bottom",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "%",
+      "label": "Cylinders Bottom Position",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "cylinders_left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Cylinders Left Position",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "cylinders_float_delay",
+      "min": 0,
+      "max": 3,
+      "step": 0.1,
+      "unit": "s",
+      "label": "Cylinders Float Delay",
+      "default": 1.6
+    },
+    {
+      "type": "checkbox",
+      "id": "show_mixer",
+      "label": "Show Audio Mixer",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "mixer_bottom",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "%",
+      "label": "Mixer Bottom Position",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "mixer_right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Mixer Right Position",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "mixer_float_delay",
+      "min": 0,
+      "max": 3,
+      "step": 0.1,
+      "unit": "s",
+      "label": "Mixer Float Delay",
+      "default": 1.8
+    }
+  ]
+}
+{% endschema %}
