@@ -58,5 +58,11 @@
   transform: rotateX(-90deg) translateZ(25px); 
 }
 
+/* Button card specific styles */
+.button-card .primary-button {
+  width: 97%;
+  min-width: unset;
+}
+
 
 

@@ -1,4 +1,5 @@
 {{ 'section-bento-grid.css' | asset_url | stylesheet_tag: preload: true }}
+{{ 'component-primary-button.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'section-bento-grid.js' | asset_url }}" defer></script>
 
 <style>
@@ -487,7 +488,7 @@
           {%- when 'button_card' -%}
             {%- assign label = block.settings.label | default: 'Button' -%}
             <div class="bento-card button-card">
-              {% render 'submit-button', text: label, url: block.settings.link %}
+              {% render 'primary-button', text: label, link: block.settings.link %}
             </div>
 
           {%- when 'text_card' -%}

@@ -5,6 +5,11 @@
   padding: var(--spacing-xxl) 0;
   color: var(--color-text);
   overflow-y: hidden;
+  position: relative;
+}
+
+.fc3d--has-background {
+  background-attachment: scroll;
 }
 
 .fc3d__container {
@@ -32,26 +37,7 @@
   text-transform: uppercase;
 }
 
-.fc3d__shop-all {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: var(--height-button);
-  padding: 0 var(--padding-large);
-  border-radius: var(--radius-pill);
-  background: var(--color-primary-button-bg);
-  color: var(--color-primary-button-text);
-  text-decoration: none;
-  font-weight: 800;
-  text-transform: uppercase;
-  border: var(--border-width-medium) solid var(--color-primary-button-border);
-}
-
-.fc3d__shop-all:hover {
-  background: var(--color-primary-button-hover-bg);
-  color: var(--color-primary-button-hover-text);
-  border-color: var(--color-primary-button-hover-border);
-}
+/* Shop all button uses primary-button snippet */
 
 .fc3d__viewport {
   position: relative;
@@ -88,7 +74,7 @@
 }
 
 .fc3d-card.is-center .fc3d-card__inner {
-  transform: rotateZ(-5deg) scale(1.1);
+  transform: rotateZ(-5deg) scale(1.1) ;
 }
 
 .fc3d-card__inner {
@@ -96,24 +82,72 @@
   height: 100%;
   position: relative;
   transform-style: preserve-3d;
-  transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  will-change: transform;
+  /* Add these for better performance */
+  -webkit-transform-style: preserve-3d;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .fc3d-card.is-center:hover .fc3d-card__inner {
-  transform: scale(1.1) rotateY(180deg) rotateZ(-5deg);
+  animation: wind-flip-hover 1.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  will-change: transform;
 }
 
+/* Smooth flip back when hover ends */
+.fc3d-card.is-center:not(:hover) .fc3d-card__inner {
+  animation: wind-flip-back 0.8s ease-in-out forwards;
+}
 .fc3d-card__face {
   position: absolute;
   inset: 0;
   backface-visibility: hidden;
-  border-radius: 8px;
+  -webkit-backface-visibility: hidden; /* Add webkit prefix */
+  border-radius: 20px;
   overflow: visible;
   padding: 4px;
+  /* Force GPU acceleration */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 .fc3d-card__face--back {
-  transform: rotateY(180deg);
+  transform: rotateY(180deg) translateZ(0); /* Add translateZ */
+}
+
+@keyframes wind-flip-hover {
+  0% {
+    transform: rotateZ(-5deg) scale(1.1) rotateY(0deg);
+  }
+  20% {
+    transform: rotateZ(-5deg) scale(1.1) rotateY(10deg);
+  }
+  40% {
+    transform: rotateZ(-5deg) scale(1.1) rotateY(0deg);
+  }
+  45% {
+    transform: rotateZ(-5deg) scale(1.1) rotateY(20deg);
+  }
+  /* Flip to the target position */
+
+  /* Slight overshoot */
+  65% {
+    transform: rotateZ(-5deg) scale(1.1) rotateY(195deg);
+  }
+  /* Settle at exactly 180deg */
+  100% {
+    transform: rotateZ(-5deg) scale(1.1) rotateY(180deg);
+  }
+}
+
+@keyframes wind-flip-back {
+  0% {
+    transform: rotateZ(-5deg) scale(1.1) rotateY(180deg);
+  }
+  100% {
+    transform: rotateZ(-5deg) scale(1.1) rotateY(0deg);
+  }
 }
 
 .fc3d-card__link {
@@ -125,7 +159,7 @@
   background-position: center;
   background-repeat: no-repeat;
   border: none;
-  border-radius: 8px;
+  border-radius: 20px;
   padding: 0;
   text-decoration: none;
   color: #ffffff;
@@ -300,7 +334,7 @@
   background: #000000;
   border-radius: var(--radius-xl) var(--radius-xl) 0  0;
   transform: translateY(100%);
-  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: transform 0.3s ease-in-out;
   z-index: 0;
 }
 
@@ -342,7 +376,7 @@
 }
 
 .fc3d__nav:hover::before {
-  transform: translateY(0);
+  transform: translateY(0%);
 }
 
 .fc3d__nav:hover::after {
@@ -357,6 +391,7 @@
 @media (prefers-reduced-motion: reduce) {
   .fc3d-card__inner {
     transition: none;
+    animation: none !important;
   }
   .fc3d-card,
   .fc3d-card__link {
@@ -364,6 +399,10 @@
   }
   .fc3d__rail {
     scroll-behavior: auto;
+  }
+  .fc3d-card.is-center:hover .fc3d-card__inner {
+    transform: scale(1.1) rotateY(180deg) rotateZ(-5deg);
+    animation: none !important;
   }
 }
 

@@ -8,13 +8,15 @@
   if scheme == blank
     assign scheme = settings.color_schemes | first
   endif
+  assign background_image = section.settings.background_image
+  assign background_image_url = background_image | image_url: width: 2000
 -%}
 
 <section
-  class="fc3d color-{{ scheme.id }}"
+  class="fc3d color-{{ scheme.id }}{% if background_image != blank %} fc3d--has-background{% endif %}"
   data-fc3d-section
   data-section-id="{{ section.id }}"
-  style="background-color: {{ scheme.settings.background }}; color: {{ scheme.settings.text }};"
+  style="{% if background_image != blank %}background-image: url('{{ background_image_url }}'); background-size: {{ section.settings.background_image_size }}; background-position: {{ section.settings.background_image_position }}; background-repeat: {{ section.settings.background_image_repeat }};{% else %}background-color: {{ scheme.settings.background }};{% endif %} color: {{ scheme.settings.text }};"
 >
   <div class="fc3d__container">
     <div class="fc3d__header">
@@ -23,9 +25,11 @@
       {%- endif -%}
 
       {%- if section.settings.show_shop_all and featured_collection != blank and featured_collection.url != blank -%}
-        <a class="fc3d__shop-all" href="{{ featured_collection.url }}">
-          {{ section.settings.shop_all_label | default: 'Shop all' }}
-        </a>
+        {%- render 'primary-button',
+          text: section.settings.shop_all_label | default: 'Shop all',
+          link: featured_collection.url,
+          class: 'fc3d__shop-all'
+        -%}
       {%- endif -%}
     </div>
 
@@ -233,6 +237,103 @@
       "id": "shop_all_label",
       "label": "Shop all label",
       "default": "Shop all"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "select",
+      "id": "background_image_size",
+      "label": "Background image size",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Cover"
+        },
+        {
+          "value": "contain",
+          "label": "Contain"
+        },
+        {
+          "value": "auto",
+          "label": "Auto"
+        }
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "select",
+      "id": "background_image_position",
+      "label": "Background image position",
+      "options": [
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        },
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        },
+        {
+          "value": "top left",
+          "label": "Top left"
+        },
+        {
+          "value": "top right",
+          "label": "Top right"
+        },
+        {
+          "value": "bottom left",
+          "label": "Bottom left"
+        },
+        {
+          "value": "bottom right",
+          "label": "Bottom right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "background_image_repeat",
+      "label": "Background image repeat",
+      "options": [
+        {
+          "value": "no-repeat",
+          "label": "No repeat"
+        },
+        {
+          "value": "repeat",
+          "label": "Repeat"
+        },
+        {
+          "value": "repeat-x",
+          "label": "Repeat horizontally"
+        },
+        {
+          "value": "repeat-y",
+          "label": "Repeat vertically"
+        }
+      ],
+      "default": "no-repeat"
     }
   ],
   "presets": [
