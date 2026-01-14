@@ -90,14 +90,14 @@
 }
 
 .scrolling-text-flip-front {
-  background-color: var(--card-bg);
-  color: var(--card-text);
+  background-color: var(--card-bg, var(--color-background));
+  color: var(--card-text, var(--color-text));
   border: 1px solid var(--color-borders);
 }
 
 .scrolling-text-flip-back {
-  background-color: var(--card-text);
-  color: var(--card-bg);
+  background-color: var(--card-text, var(--color-text));
+  color: var(--card-bg, var(--color-background));
   border: 1px solid var(--color-borders);
   transform: var(--flip-transform, rotateY(180deg));
 }
