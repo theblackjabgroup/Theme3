@@ -156,6 +156,10 @@
   justify-content: center;
 }
 
+img.scrolling-text-flip-icon {
+  object-fit: contain;
+}
+
 .scrolling-text-flip-icon img,
 .scrolling-text-flip-icon svg {
   width: 100%;
