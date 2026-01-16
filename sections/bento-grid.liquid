@@ -117,7 +117,7 @@
 <div
   class="bento-grid-container color-{{ section.settings.color_scheme }}"
   id="bento-grid-{{ section.id }}"
-  style="background-color: {{ scheme.settings.background }} !important; color: {{ scheme.settings.text }} !important;"
+  style="{%- unless section.settings.section_background_color != blank and section.settings.section_background_color != 'rgba(0,0,0,0)' -%}background-color: {{ scheme.settings.background }} !important; {%- endunless -%}color: {{ scheme.settings.text }} !important;"
 >
   <div class="bento-grid">
     {%- for block in section.blocks -%}
@@ -548,6 +548,7 @@
             {%- assign button_weight = block.settings.button_font_weight | default: 600 -%}
             {%- assign mobile_button_size = block.settings.mobile_button_font_size | default: button_size -%}
             {%- assign mobile_button_weight = block.settings.mobile_button_font_weight | default: button_weight -%}
+            {%- assign enable_heading = block.settings.enable_heading | default: true -%}
             <div
               class="bento-card text-card text-card--align-{{ align }} text-card--valign-{{ vertical_align }}"
               style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %} --desktop-heading-font-size: {{ heading_size }}px; --desktop-heading-font-weight: {{ heading_weight }}; --mobile-heading-font-size: {{ mobile_heading_size }}px; --mobile-heading-font-weight: {{ mobile_heading_weight }}; --desktop-paragraph-font-size: {{ para_size }}px; --desktop-paragraph-font-weight: {{ para_weight }}; --desktop-paragraph-line-height: {{ para_line_height }}; --mobile-paragraph-font-size: {{ mobile_para_size }}px; --mobile-paragraph-font-weight: {{ mobile_para_weight }}; --mobile-paragraph-line-height: {{ mobile_para_line_height }}; --desktop-button-font-size: {{ button_size }}px; --desktop-button-font-weight: {{ button_weight }}; --mobile-button-font-size: {{ mobile_button_size }}px; --mobile-button-font-weight: {{ mobile_button_weight }};"
@@ -566,7 +567,7 @@
                   </div>
                 {%- endif -%}
 
-                {%- if block.settings.enable_heading and block.settings.heading != blank -%}
+                {%- if enable_heading and block.settings.heading != blank -%}
                   <h3 class="text-card-heading">
                     {{ block.settings.heading }}
                   </h3>
