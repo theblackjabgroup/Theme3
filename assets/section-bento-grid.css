@@ -964,6 +964,28 @@
   display: block;
   transition: transform var(--transition-medium);
 }
+
+/* Text color for tag cards with custom backgrounds - defaults to dark text for light backgrounds */
+.tag-card.has-custom-background {
+  color: var(--color-text, #1a1a1a);
+}
+
+/* Dark backgrounds should have white text - handle common dark color values */
+.tag-card.has-custom-background[data-background-color="#1a1a1a"],
+.tag-card.has-custom-background[data-background-color="#000000"],
+.tag-card.has-custom-background[data-background-color="#000"],
+.tag-card.has-custom-background[data-background-color="rgb(26, 26, 26)"],
+.tag-card.has-custom-background[data-background-color="rgba(26, 26, 26, 1)"] {
+  color: #ffffff;
+}
+
+/* Ensure text elements inherit the color */
+.tag-card.has-custom-background .tag-card-tag,
+.tag-card.has-custom-background .tag-card-main,
+.tag-card.has-custom-background .tag-card-text-group {
+  color: inherit;
+}
+
 .bento-card.tag-card:hover {
   border-color: var(--color-text, var(--color-red)) !important;
 }

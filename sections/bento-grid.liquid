@@ -279,11 +279,14 @@
             {%- assign vertical_align = block.settings.vertical_alignment | default: 'top' -%}
             {%- assign mobile_vertical_align = block.settings.mobile_vertical_alignment | default: vertical_align -%}
             <div
-              class="bento-card tag-card tag-card--{{ direction }} tag-card--align-{{ align }} tag-card--valign-{{ vertical_align }}"
-              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }}; color: #ffffff;{% endif %}"
+              class="bento-card tag-card tag-card--{{ direction }} tag-card--align-{{ align }} tag-card--valign-{{ vertical_align }}{% if block.settings.card_background_color != blank %} has-custom-background{% endif %}"
+              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %}"
               data-mobile-direction="{{ mobile_direction }}"
               data-mobile-align="{{ mobile_align }}"
               data-mobile-vertical-align="{{ mobile_vertical_align }}"
+              {% if block.settings.card_background_color != blank %}
+                data-background-color="{{ block.settings.card_background_color }}"
+              {% endif %}
             >
               <div class="tag-card-inner">
                 <div class="tag-card-text-group">
