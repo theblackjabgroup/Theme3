@@ -378,7 +378,7 @@
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
   text-transform: uppercase;
-  color: var(--color-primary-button-text, var(--color-white));
+  color: var(--marquee-text-color, var(--color-primary-button-text, var(--color-white)));
 }
 
 /* Separator image in video marquee */
@@ -965,12 +965,12 @@
   transition: transform var(--transition-medium);
 }
 
-/* Text color for tag cards with custom backgrounds - defaults to dark text for light backgrounds */
+/* Text color for tag cards with custom backgrounds - fallback to dark text if not set via inline style */
 .tag-card.has-custom-background {
   color: var(--color-text, #1a1a1a);
 }
 
-/* Dark backgrounds should have white text - handle common dark color values */
+/* Dark backgrounds should have white text - handle common dark color values (fallback only, inline style takes precedence) */
 .tag-card.has-custom-background[data-background-color="#1a1a1a"],
 .tag-card.has-custom-background[data-background-color="#000000"],
 .tag-card.has-custom-background[data-background-color="#000"],
@@ -979,10 +979,11 @@
   color: #ffffff;
 }
 
-/* Ensure text elements inherit the color */
+/* Ensure text elements inherit the color from parent (inline style will override this) */
 .tag-card.has-custom-background .tag-card-tag,
 .tag-card.has-custom-background .tag-card-main,
-.tag-card.has-custom-background .tag-card-text-group {
+.tag-card.has-custom-background .tag-card-text-group,
+.tag-card.has-custom-background .tag-card-icon {
   color: inherit;
 }
 

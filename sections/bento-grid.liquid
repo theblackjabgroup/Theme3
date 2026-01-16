@@ -280,7 +280,7 @@
             {%- assign mobile_vertical_align = block.settings.mobile_vertical_alignment | default: vertical_align -%}
             <div
               class="bento-card tag-card tag-card--{{ direction }} tag-card--align-{{ align }} tag-card--valign-{{ vertical_align }}{% if block.settings.card_background_color != blank %} has-custom-background{% endif %}"
-              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %}"
+              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %}{% if block.settings.card_text_color != blank %} color: {{ block.settings.card_text_color }};{% endif %}"
               data-mobile-direction="{{ mobile_direction }}"
               data-mobile-align="{{ mobile_align }}"
               data-mobile-vertical-align="{{ mobile_vertical_align }}"
@@ -728,7 +728,7 @@
               {%- if block.settings.marquee_text != blank -%}
                 <div
                   class="video-marquee"
-                  style="{% if block.settings.scrolling_text_background_color != blank %}background-color: {{ block.settings.scrolling_text_background_color }};{% endif %}"
+                  style="{% if block.settings.scrolling_text_background_color != blank %}background-color: {{ block.settings.scrolling_text_background_color }};{% endif %}{% if block.settings.scrolling_text_text_color != blank %} --marquee-text-color: {{ block.settings.scrolling_text_text_color }};{% endif %}"
                 >
                   <div class="video-marquee-track">
                     <span class="video-marquee-item">{{ block.settings.marquee_text }}</span>
@@ -2229,7 +2229,14 @@
           "id": "card_background_color",
           "label": "Card Background Color",
           "default": "#1a1a1a",
-          "info": "Background color for this card. Text is white, so use a dark color for visibility."
+          "info": "Background color for this card"
+        },
+        {
+          "type": "color",
+          "id": "card_text_color",
+          "label": "Card Text Color",
+          "default": "#ffffff",
+          "info": "Text color for this card. Choose white for dark backgrounds, dark for light backgrounds."
         },
         {
           "type": "header",
@@ -2835,6 +2842,13 @@
           "label": "Scrolling Text Background Color",
           "default": "#e63946",
           "info": "Background color for the scrolling marquee text"
+        },
+        {
+          "type": "color",
+          "id": "scrolling_text_text_color",
+          "label": "Scrolling Text Color",
+          "default": "#ffffff",
+          "info": "Text color for the scrolling marquee. Choose white for dark backgrounds, dark for light backgrounds."
         },
         {
           "type": "color",
