@@ -12,7 +12,7 @@
   /* Dynamic styles that require Liquid variables */
   {%- if section.settings.section_background_color != blank and section.settings.section_background_color != 'rgba(0,0,0,0)' -%}
   #bento-grid-{{ section.id }}.bento-grid-container,
-  #bento-grid-{{ section.id }}.bento-grid-container.color-{{ section.settings.color_scheme }} {
+  #bento-grid-{{ section.id }}.bento-grid-container.color-{{ scheme.id }} {
     background-color: {{ section.settings.section_background_color }} !important;
   }
   {%- endif -%}
@@ -115,7 +115,7 @@
 </style>
 
 <div
-  class="bento-grid-container color-{{ section.settings.color_scheme }}"
+  class="bento-grid-container color-{{ scheme.id }}"
   id="bento-grid-{{ section.id }}"
   style="{%- unless section.settings.section_background_color != blank and section.settings.section_background_color != 'rgba(0,0,0,0)' -%}background-color: {{ scheme.settings.background }} !important; {%- endunless -%}color: {{ scheme.settings.text }} !important;"
 >
@@ -280,7 +280,7 @@
             {%- assign mobile_vertical_align = block.settings.mobile_vertical_alignment | default: vertical_align -%}
             <div
               class="bento-card tag-card tag-card--{{ direction }} tag-card--align-{{ align }} tag-card--valign-{{ vertical_align }}"
-              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %}"
+              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }}; color: #ffffff;{% endif %}"
               data-mobile-direction="{{ mobile_direction }}"
               data-mobile-align="{{ mobile_align }}"
               data-mobile-vertical-align="{{ mobile_vertical_align }}"
