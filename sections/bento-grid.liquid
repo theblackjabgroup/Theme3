@@ -728,7 +728,7 @@
               {%- if block.settings.marquee_text != blank -%}
                 <div
                   class="video-marquee"
-                  style="{% if block.settings.scrolling_text_background_color != blank %}background-color: {{ block.settings.scrolling_text_background_color }};{% endif %}{% if block.settings.scrolling_text_text_color != blank %} --marquee-text-color: {{ block.settings.scrolling_text_text_color }};{% endif %}"
+                  style="{% if block.settings.scrolling_text_background_color != blank %}background-color: {{ block.settings.scrolling_text_background_color }} !important;{% endif %}{% if block.settings.scrolling_text_text_color != blank %} --marquee-text-color: {{ block.settings.scrolling_text_text_color }};{% endif %}"
                 >
                   <div class="video-marquee-track">
                     <span class="video-marquee-item">{{ block.settings.marquee_text }}</span>

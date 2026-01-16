@@ -353,6 +353,7 @@
   padding: var(--spacing-4) var(--spacing-0);
   pointer-events: none;
   opacity: 0;
+  background-color: var(--color-accent-pink, #e63946);
   border-top: var(--border-width-thin) solid var(--color-borders, var(--color-red)) !important;
   border-bottom: var(--border-width-thin) solid var(--color-borders, var(--color-red)) !important;
   transition: opacity var(--transition-medium);
