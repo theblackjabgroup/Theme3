@@ -551,7 +551,6 @@
             {%- assign button_weight = block.settings.button_font_weight | default: 600 -%}
             {%- assign mobile_button_size = block.settings.mobile_button_font_size | default: button_size -%}
             {%- assign mobile_button_weight = block.settings.mobile_button_font_weight | default: button_weight -%}
-            {%- assign enable_heading = block.settings.enable_heading | default: true -%}
             <div
               class="bento-card text-card text-card--align-{{ align }} text-card--valign-{{ vertical_align }}"
               style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %} --desktop-heading-font-size: {{ heading_size }}px; --desktop-heading-font-weight: {{ heading_weight }}; --mobile-heading-font-size: {{ mobile_heading_size }}px; --mobile-heading-font-weight: {{ mobile_heading_weight }}; --desktop-paragraph-font-size: {{ para_size }}px; --desktop-paragraph-font-weight: {{ para_weight }}; --desktop-paragraph-line-height: {{ para_line_height }}; --mobile-paragraph-font-size: {{ mobile_para_size }}px; --mobile-paragraph-font-weight: {{ mobile_para_weight }}; --mobile-paragraph-line-height: {{ mobile_para_line_height }}; --desktop-button-font-size: {{ button_size }}px; --desktop-button-font-weight: {{ button_weight }}; --mobile-button-font-size: {{ mobile_button_size }}px; --mobile-button-font-weight: {{ mobile_button_weight }};"
@@ -570,7 +569,7 @@
                   </div>
                 {%- endif -%}
 
-                {%- if enable_heading and block.settings.heading != blank -%}
+                {%- if block.settings.enable_heading and block.settings.heading != blank -%}
                   <h3 class="text-card-heading">
                     {{ block.settings.heading }}
                   </h3>
@@ -899,6 +898,12 @@
       "id": "color_scheme",
       "label": "Color scheme",
       "default": "scheme-1"
+    },
+    {
+      "type": "color",
+      "id": "section_background_color",
+      "label": "Section Background Color",
+      "info": "Custom background color for the section. If not set, the color scheme background will be used."
     },
     {
       "type": "header",
