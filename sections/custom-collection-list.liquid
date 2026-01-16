@@ -51,6 +51,9 @@
     {% if section.settings.title_font_size != blank %}
       font-size: {{ section.settings.title_font_size }}rem;
     {% endif %}
+    {% if section.settings.title_font_weight != blank %}
+      font-weight: {{ section.settings.title_font_weight }};
+    {% endif %}
   }
 
   .custom-collection-list__grid {
@@ -366,6 +369,15 @@
       "max": 8,
       "step": 0.5,
       "default": 5
+    },
+    {
+      "type": "range",
+      "id": "title_font_weight",
+      "label": "Title Font Weight",
+      "min": 400,
+      "max": 900,
+      "step": 100,
+      "default": 700
     },
     {
       "type": "range",
