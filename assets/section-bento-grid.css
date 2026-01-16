@@ -398,9 +398,6 @@
 .scrolling-text-card {
   overflow: hidden;
 }
-.scrolling-text-card.bento-card {
-  border: none !important;
-}
 
 .scrolling-text-card.bento-card {
   border: var(--border-width-thin) solid var(--color-borders, var(--color-gray-300)) !important;
