@@ -2,8 +2,21 @@
 {{ 'component-primary-button.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'section-bento-grid.js' | asset_url }}" defer></script>
 
+{%- liquid
+  assign scheme = section.settings.color_scheme
+  if scheme == blank
+    assign scheme = settings.color_schemes | first
+  endif
+-%}
 <style>
   /* Dynamic styles that require Liquid variables */
+  {%- if section.settings.section_background_color != blank and section.settings.section_background_color != 'rgba(0,0,0,0)' -%}
+  #bento-grid-{{ section.id }}.bento-grid-container,
+  #bento-grid-{{ section.id }}.bento-grid-container.color-{{ section.settings.color_scheme }} {
+    background-color: {{ section.settings.section_background_color }} !important;
+  }
+  {%- endif -%}
+
   .bento-grid {
     /* Multiply columns by 10 to allow 0.1 increments */
     grid-template-columns: repeat({{ section.settings.grid_columns | times: 10 }}, 1fr);
@@ -101,7 +114,11 @@
   }
 </style>
 
-<div class="bento-grid-container color-{{ section.settings.color_scheme }}">
+<div
+  class="bento-grid-container color-{{ section.settings.color_scheme }}"
+  id="bento-grid-{{ section.id }}"
+  style="background-color: {{ scheme.settings.background }} !important; color: {{ scheme.settings.text }} !important;"
+>
   <div class="bento-grid">
     {%- for block in section.blocks -%}
       {%- comment -%} Calculate the 10x scaled spans for 0.1 precision {%- endcomment -%}
@@ -124,7 +141,7 @@
             {%- assign mobile_logo_color = block.settings.mobile_logo_color | default: logo_color -%}
             <div
               class="bento-card logo-card"
-              style="--desktop-logo-image-width: {{ logo_image_width }}px; --mobile-logo-image-width: {{ mobile_logo_image_width }}px; --desktop-logo-font-size: {{ logo_font_size }}px; --mobile-logo-font-size: {{ mobile_logo_font_size }}px; --desktop-logo-color: {{ logo_color }}; --mobile-logo-color: {{ mobile_logo_color }};"
+              style="--desktop-logo-image-width: {{ logo_image_width }}px; --mobile-logo-image-width: {{ mobile_logo_image_width }}px; --desktop-logo-font-size: {{ logo_font_size }}px; --mobile-logo-font-size: {{ mobile_logo_font_size }}px; --desktop-logo-color: {{ logo_color }}; --mobile-logo-color: {{ mobile_logo_color }};{% if block.settings.card_background_color != blank %} background-color: {{ block.settings.card_background_color }};{% endif %}"
             >
               {%- if block.settings.logo_image != blank -%}
                 <img
@@ -153,7 +170,7 @@
             -%}
             <div
               class="bento-card cart-card"
-              style="--desktop-icon-size: {{ icon_size }}px; --mobile-icon-size: {{ mobile_icon_size }}px; --desktop-icon-color: {{ icon_color }}; --mobile-icon-color: {{ mobile_icon_color }}; --desktop-icon-stroke-width: {{ icon_stroke_width }}; --mobile-icon-stroke-width: {{ mobile_icon_stroke_width }};"
+              style="--desktop-icon-size: {{ icon_size }}px; --mobile-icon-size: {{ mobile_icon_size }}px; --desktop-icon-color: {{ icon_color }}; --mobile-icon-color: {{ mobile_icon_color }}; --desktop-icon-stroke-width: {{ icon_stroke_width }}; --mobile-icon-stroke-width: {{ mobile_icon_stroke_width }};{% if block.settings.card_background_color != blank %} background-color: {{ block.settings.card_background_color }} !important;{% endif %}"
               {% if settings.cart_type == 'drawer' %}
                 onclick="(function(e) { e.preventDefault(); const drawer = document.querySelector('cart-drawer'); if (drawer) drawer.open(); })(event)"
               {% else %}
@@ -190,6 +207,7 @@
           {%- when 'search_card' -%}
             <div
               class="bento-card search-card"
+              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %}"
               onclick="window.location.href='{{ routes.search_url }}'"
             >
               <svg class="search-icon" viewBox="0 0 24 24">
@@ -201,6 +219,7 @@
           {%- when 'login_card' -%}
             <div
               class="bento-card login-card"
+              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %}"
               onclick="window.location.href='{{ routes.account_url }}'"
             >
               <div class="login-content">
@@ -239,8 +258,8 @@
               | default: heading_font_weight
             -%}
             <div
-              class="bento-card generic-card{% if has_image %} has-image{% endif %} card-color-{{ block.settings.card_color | default: 'default' }}"
-              style="{% if block.settings.image != blank %} background-image: url('{{ block.settings.image | image_url: width: 1000 }}');{% elsif block.settings.external_image_url != blank %} background-image: url('{{ block.settings.external_image_url }}');{% endif %} --desktop-heading-font-size: {{ heading_font_size }}px; --desktop-heading-font-weight: {{ heading_font_weight }}; --mobile-heading-font-size: {{ mobile_heading_font_size }}px; --mobile-heading-font-weight: {{ mobile_heading_font_weight }};"
+              class="bento-card generic-card{% if has_image %} has-image{% endif %}"
+              style="{% if block.settings.image != blank %} background-image: url('{{ block.settings.image | image_url: width: 1000 }}');{% elsif block.settings.external_image_url != blank %} background-image: url('{{ block.settings.external_image_url }}');{% endif %}{% if block.settings.card_background_color != blank %} background-color: {{ block.settings.card_background_color }};{% endif %} --desktop-heading-font-size: {{ heading_font_size }}px; --desktop-heading-font-weight: {{ heading_font_weight }}; --mobile-heading-font-size: {{ mobile_heading_font_size }}px; --mobile-heading-font-weight: {{ mobile_heading_font_weight }};"
               {% if block.settings.link != blank %}
                 onclick="window.location.href='{{ block.settings.link }}'"
               {% endif %}
@@ -260,7 +279,8 @@
             {%- assign vertical_align = block.settings.vertical_alignment | default: 'top' -%}
             {%- assign mobile_vertical_align = block.settings.mobile_vertical_alignment | default: vertical_align -%}
             <div
-              class="bento-card tag-card tag-card--{{ direction }} tag-card--align-{{ align }} tag-card--valign-{{ vertical_align }} card-color-{{ block.settings.tag_card_color | default: 'default' }}"
+              class="bento-card tag-card tag-card--{{ direction }} tag-card--align-{{ align }} tag-card--valign-{{ vertical_align }}"
+              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %}"
               data-mobile-direction="{{ mobile_direction }}"
               data-mobile-align="{{ mobile_align }}"
               data-mobile-vertical-align="{{ mobile_vertical_align }}"
@@ -296,16 +316,29 @@
                     {%- assign mobile_main_line_height = block.settings.mobile_main_text_line_height
                       | default: main_line_height
                     -%}
+                    {%- assign main_display_type = block.settings.main_text_display_type | default: 'paragraph' -%}
                     {%- assign words = block.settings.main_text | split: ' ' -%}
-                    <div
-                      class="tag-card-main"
-                      style="--desktop-main-font-size: {{ main_font_size }}px; --desktop-main-font-weight: {{ main_font_weight }}; --desktop-main-line-height: {{ main_line_height }}; --mobile-main-font-size: {{ mobile_main_font_size }}px; --mobile-main-font-weight: {{ mobile_main_font_weight }}; --mobile-main-line-height: {{ mobile_main_line_height }};"
-                    >
-                      {%- for word in words -%}
-                        <span class="tag-card-word">{{ word }}</span>
-                        {%- unless forloop.last %} {% endunless %}
-                      {%- endfor -%}
-                    </div>
+                    {%- if main_display_type == 'heading' -%}
+                      <h3
+                        class="tag-card-main tag-card-main--heading"
+                        style="--desktop-main-font-size: {{ main_font_size }}px; --desktop-main-font-weight: {{ main_font_weight }}; --desktop-main-line-height: {{ main_line_height }}; --mobile-main-font-size: {{ mobile_main_font_size }}px; --mobile-main-font-weight: {{ mobile_main_font_weight }}; --mobile-main-line-height: {{ mobile_main_line_height }};"
+                      >
+                        {%- for word in words -%}
+                          <span class="tag-card-word">{{ word }}</span>
+                          {%- unless forloop.last %} {% endunless %}
+                        {%- endfor -%}
+                      </h3>
+                    {%- else -%}
+                      <div
+                        class="tag-card-main"
+                        style="--desktop-main-font-size: {{ main_font_size }}px; --desktop-main-font-weight: {{ main_font_weight }}; --desktop-main-line-height: {{ main_line_height }}; --mobile-main-font-size: {{ mobile_main_font_size }}px; --mobile-main-font-weight: {{ mobile_main_font_weight }}; --mobile-main-line-height: {{ mobile_main_line_height }};"
+                      >
+                        {%- for word in words -%}
+                          <span class="tag-card-word">{{ word }}</span>
+                          {%- unless forloop.last %} {% endunless %}
+                        {%- endfor -%}
+                      </div>
+                    {%- endif -%}
                   {%- endif -%}
                 </div>
 
@@ -413,6 +446,7 @@
             <div
               class="bento-card content-card{% if enable_spritesheet %} has-spritesheet{% if sprite_direction == 'vertical' %}-vertical{% endif %}{% endif %}{% if block.settings.enable_3d_effect %} enable-3d{% endif %}"
               style="
+                {% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %}
                 --desktop-tag-font-size: {{ tag_font_size }}px;
                 --desktop-tag-font-weight: {{ tag_font_weight }};
                 --mobile-tag-font-size: {{ mobile_tag_font_size }}px;
@@ -487,13 +521,17 @@
 
           {%- when 'button_card' -%}
             {%- assign label = block.settings.label | default: 'Button' -%}
-            <div class="bento-card button-card">
+            <div
+              class="bento-card button-card"
+              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %}"
+            >
               {% render 'primary-button', text: label, link: block.settings.link %}
             </div>
 
           {%- when 'text_card' -%}
             {%- assign align = block.settings.content_alignment | default: 'left' -%}
             {%- assign vertical_align = block.settings.vertical_alignment | default: 'top' -%}
+            {%- assign button_align = block.settings.button_alignment | default: 'left' -%}
             {%- assign heading_size = block.settings.heading_font_size | default: 24 -%}
             {%- assign heading_weight = block.settings.heading_font_weight | default: 600 -%}
             {%- assign mobile_heading_size = block.settings.mobile_heading_font_size | default: heading_size -%}
@@ -512,37 +550,52 @@
             {%- assign mobile_button_weight = block.settings.mobile_button_font_weight | default: button_weight -%}
             <div
               class="bento-card text-card text-card--align-{{ align }} text-card--valign-{{ vertical_align }}"
-              style="--desktop-heading-font-size: {{ heading_size }}px; --desktop-heading-font-weight: {{ heading_weight }}; --mobile-heading-font-size: {{ mobile_heading_size }}px; --mobile-heading-font-weight: {{ mobile_heading_weight }}; --desktop-paragraph-font-size: {{ para_size }}px; --desktop-paragraph-font-weight: {{ para_weight }}; --desktop-paragraph-line-height: {{ para_line_height }}; --mobile-paragraph-font-size: {{ mobile_para_size }}px; --mobile-paragraph-font-weight: {{ mobile_para_weight }}; --mobile-paragraph-line-height: {{ mobile_para_line_height }}; --desktop-button-font-size: {{ button_size }}px; --desktop-button-font-weight: {{ button_weight }}; --mobile-button-font-size: {{ mobile_button_size }}px; --mobile-button-font-weight: {{ mobile_button_weight }};"
+              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %} --desktop-heading-font-size: {{ heading_size }}px; --desktop-heading-font-weight: {{ heading_weight }}; --mobile-heading-font-size: {{ mobile_heading_size }}px; --mobile-heading-font-weight: {{ mobile_heading_weight }}; --desktop-paragraph-font-size: {{ para_size }}px; --desktop-paragraph-font-weight: {{ para_weight }}; --desktop-paragraph-line-height: {{ para_line_height }}; --mobile-paragraph-font-size: {{ mobile_para_size }}px; --mobile-paragraph-font-weight: {{ mobile_para_weight }}; --mobile-paragraph-line-height: {{ mobile_para_line_height }}; --desktop-button-font-size: {{ button_size }}px; --desktop-button-font-weight: {{ button_weight }}; --mobile-button-font-size: {{ mobile_button_size }}px; --mobile-button-font-weight: {{ mobile_button_weight }};"
             >
               <div class="text-card-inner">
-                {%- if block.settings.heading != blank -%}
+                {%- if block.settings.enable_svg and block.settings.svg_icon != blank -%}
+                  <div class="text-card-svg">
+                    <img
+                      src="{{ block.settings.svg_icon | image_url: width: 80 }}"
+                      alt=""
+                      class="text-card-svg-icon"
+                      width="80"
+                      height="80"
+                      loading="lazy"
+                    >
+                  </div>
+                {%- endif -%}
+
+                {%- if block.settings.enable_heading and block.settings.heading != blank -%}
                   <h3 class="text-card-heading">
                     {{ block.settings.heading }}
                   </h3>
                 {%- endif -%}
 
                 {%- if block.settings.paragraph != blank -%}
-                  <p class="text-card-paragraph">
+                  <div class="text-card-paragraph">
                     {{ block.settings.paragraph }}
-                  </p>
+                  </div>
                 {%- endif -%}
 
                 {%- if block.settings.button_text != blank -%}
-                  {%- if block.settings.button_link != blank -%}
-                    <a
-                      href="{{ block.settings.button_link }}"
-                      class="text-card-button"
-                    >
-                      {{- block.settings.button_text -}}
-                    </a>
-                  {%- else -%}
-                    <button
-                      type="button"
-                      class="text-card-button"
-                    >
-                      {{ block.settings.button_text }}
-                    </button>
-                  {%- endif -%}
+                  <div class="text-card-button-wrapper text-card-button--align-{{ button_align }}">
+                    {%- if block.settings.button_link != blank -%}
+                      <a
+                        href="{{ block.settings.button_link }}"
+                        class="text-card-button"
+                      >
+                        {{- block.settings.button_text -}}
+                      </a>
+                    {%- else -%}
+                      <button
+                        type="button"
+                        class="text-card-button"
+                      >
+                        {{ block.settings.button_text }}
+                      </button>
+                    {%- endif -%}
+                  </div>
                 {%- endif -%}
               </div>
             </div>
@@ -559,7 +612,7 @@
             -%}
             <div
               class="bento-card product-card product-card--align-{{ align }} product-card--valign-{{ vertical_align }}"
-              style="--desktop-title-font-size: {{ title_font_size }}px; --desktop-title-font-weight: {{ title_font_weight }}; --mobile-title-font-size: {{ mobile_title_font_size }}px; --mobile-title-font-weight: {{ mobile_title_font_weight }};"
+              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %} --desktop-title-font-size: {{ title_font_size }}px; --desktop-title-font-weight: {{ title_font_weight }}; --mobile-title-font-size: {{ mobile_title_font_size }}px; --mobile-title-font-weight: {{ mobile_title_font_weight }};"
               {% if product != blank and product.url != blank %}
                 onclick="window.location.href='{{ product.url }}'"
               {% endif %}
@@ -622,7 +675,10 @@
             </div>
 
           {%- when 'video_card' -%}
-            <div class="bento-card video-card">
+            <div
+              class="bento-card video-card"
+              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %}"
+            >
               {%- assign has_video = false -%}
               {%- case block.settings.video_source -%}
                 {%- when 'shopify' -%}
@@ -666,7 +722,10 @@
               {%- endif -%}
 
               {%- if block.settings.marquee_text != blank -%}
-                <div class="video-marquee">
+                <div
+                  class="video-marquee"
+                  style="{% if block.settings.scrolling_text_background_color != blank %}background-color: {{ block.settings.scrolling_text_background_color }};{% endif %}"
+                >
                   <div class="video-marquee-track">
                     <span class="video-marquee-item">{{ block.settings.marquee_text }}</span>
                     <img
@@ -716,7 +775,7 @@
             {%- assign mobile_font_weight = block.settings.mobile_font_weight | default: font_weight -%}
             <div
               class="bento-card scrolling-text-card"
-              style="--desktop-font-size: {{ font_size }}px; --desktop-font-weight: {{ font_weight }}; --mobile-font-size: {{ mobile_font_size }}px; --mobile-font-weight: {{ mobile_font_weight }};"
+              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %} --desktop-font-size: {{ font_size }}px; --desktop-font-weight: {{ font_weight }}; --mobile-font-size: {{ mobile_font_size }}px; --mobile-font-weight: {{ mobile_font_weight }};"
             >
               <div class="marquee-track">
                 <span class="marquee-item">{{ block.settings.text }}</span>
@@ -770,7 +829,7 @@
             {%- assign moon_color = block.settings.moon_color | default: '#ffffff' -%}
             <div
               class="bento-card toggle-card"
-              style="--toggle-size: {{ toggle_size }}px; --mobile-toggle-size: {{ mobile_toggle_size }}px; --icon-size: {{ icon_size }}px; --mobile-icon-size: {{ mobile_icon_size }}px; --toggle-bg: {{ toggle_bg_color }}; --toggle-active-bg: {{ toggle_active_bg_color }}; --toggle-knob: {{ toggle_knob_color }}; --sun-color: {{ sun_color }}; --moon-color: {{ moon_color }};"
+              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %} --toggle-size: {{ toggle_size }}px; --mobile-toggle-size: {{ mobile_toggle_size }}px; --icon-size: {{ icon_size }}px; --mobile-icon-size: {{ mobile_icon_size }}px; --toggle-bg: {{ toggle_bg_color }}; --toggle-active-bg: {{ toggle_active_bg_color }}; --toggle-knob: {{ toggle_knob_color }}; --sun-color: {{ sun_color }}; --moon-color: {{ moon_color }};"
               data-toggle-card
             >
               <div class="toggle-switch-wrapper">
@@ -910,28 +969,11 @@
           "label": "Link"
         },
         {
-          "type": "select",
-          "id": "card_color",
+          "type": "color",
+          "id": "card_background_color",
           "label": "Card Background Color",
-          "options": [
-            {
-              "value": "default",
-              "label": "Default (White)"
-            },
-            {
-              "value": "red",
-              "label": "Red"
-            },
-            {
-              "value": "pink",
-              "label": "Light Pink"
-            },
-            {
-              "value": "off-white",
-              "label": "Off White / Cream"
-            }
-          ],
-          "default": "default"
+          "default": "#ffffff",
+          "info": "Background color for this card"
         },
         {
           "type": "select",
@@ -1003,6 +1045,10 @@
           "default": "600"
         },
         {
+          "type": "header",
+          "content": "Desktop Layout"
+        },
+        {
           "type": "range",
           "id": "column_span",
           "min": 0.1,
@@ -1071,6 +1117,13 @@
           "default": "Logo"
         },
         {
+          "type": "color",
+          "id": "card_background_color",
+          "label": "Card Background Color",
+          "default": "#ffffff",
+          "info": "Background color for this card"
+        },
+        {
           "type": "range",
           "id": "logo_font_size",
           "min": 16,
@@ -1120,6 +1173,10 @@
           "info": "Logo color on mobile devices"
         },
         {
+          "type": "header",
+          "content": "Desktop Layout"
+        },
+        {
           "type": "range",
           "id": "column_span",
           "min": 0.1,
@@ -1166,6 +1223,35 @@
       "type": "cart_card",
       "name": "Cart",
       "settings": [
+        {
+          "type": "color",
+          "id": "card_background_color",
+          "label": "Card Background Color",
+          "default": "#ffffff",
+          "info": "Background color for this card"
+        },
+        {
+          "type": "header",
+          "content": "Desktop Layout"
+        },
+        {
+          "type": "range",
+          "id": "column_span",
+          "min": 0.1,
+          "max": 9,
+          "step": 0.1,
+          "label": "Column Span",
+          "default": 1
+        },
+        {
+          "type": "range",
+          "id": "row_span",
+          "min": 0.1,
+          "max": 6,
+          "step": 0.1,
+          "label": "Row Span",
+          "default": 1
+        },
         {
           "type": "header",
           "content": "Icon Settings"
@@ -1234,24 +1320,6 @@
           "info": "Icon stroke width on mobile devices"
         },
         {
-          "type": "range",
-          "id": "column_span",
-          "min": 0.1,
-          "max": 9,
-          "step": 0.1,
-          "label": "Column Span",
-          "default": 1
-        },
-        {
-          "type": "range",
-          "id": "row_span",
-          "min": 0.1,
-          "max": 6,
-          "step": 0.1,
-          "label": "Row Span",
-          "default": 1
-        },
-        {
           "type": "header",
           "content": "Mobile Layout"
         },
@@ -1280,6 +1348,17 @@
       "type": "search_card",
       "name": "Search",
       "settings": [
+        {
+          "type": "color",
+          "id": "card_background_color",
+          "label": "Card Background Color",
+          "default": "#ffffff",
+          "info": "Background color for this card"
+        },
+        {
+          "type": "header",
+          "content": "Desktop Layout"
+        },
         {
           "type": "range",
           "id": "column_span",
@@ -1327,6 +1406,17 @@
       "type": "login_card",
       "name": "Login/Welcome",
       "settings": [
+        {
+          "type": "color",
+          "id": "card_background_color",
+          "label": "Card Background Color",
+          "default": "#ffffff",
+          "info": "Background color for this card"
+        },
+        {
+          "type": "header",
+          "content": "Desktop Layout"
+        },
         {
           "type": "range",
           "id": "column_span",
@@ -1396,6 +1486,13 @@
           "type": "image_picker",
           "id": "image",
           "label": "Background Image"
+        },
+        {
+          "type": "color",
+          "id": "card_background_color",
+          "label": "Card Background Color",
+          "default": "#ffffff",
+          "info": "Background color for this card (shown when no background image is set)"
         },
         {
           "type": "checkbox",
@@ -1778,7 +1875,7 @@
         },
         {
           "type": "header",
-          "content": "Layout"
+          "content": "Desktop Layout"
         },
         {
           "type": "range",
@@ -1867,6 +1964,17 @@
         },
         { "type": "checkbox", "id": "show_text", "label": "Show main text", "default": true },
         { "type": "text", "id": "main_text", "label": "Main text", "default": "Title of the card" },
+        {
+          "type": "select",
+          "id": "main_text_display_type",
+          "label": "Display main text as",
+          "options": [
+            { "value": "paragraph", "label": "Paragraph" },
+            { "value": "heading", "label": "Heading" }
+          ],
+          "default": "paragraph",
+          "info": "Choose whether to display the main text as a heading or paragraph"
+        },
         {
           "type": "range",
           "id": "main_text_font_size",
@@ -2113,28 +2221,15 @@
           "info": "Vertical alignment on mobile devices"
         },
         {
-          "type": "select",
-          "id": "tag_card_color",
+          "type": "color",
+          "id": "card_background_color",
           "label": "Card Background Color",
-          "options": [
-            {
-              "value": "default",
-              "label": "Default (White)"
-            },
-            {
-              "value": "red",
-              "label": "Red"
-            },
-            {
-              "value": "pink",
-              "label": "Light Pink"
-            },
-            {
-              "value": "off-white",
-              "label": "Off White / Cream"
-            }
-          ],
-          "default": "default"
+          "default": "#ffffff",
+          "info": "Background color for this card"
+        },
+        {
+          "type": "header",
+          "content": "Desktop Layout"
         },
         {
           "type": "range",
@@ -2186,6 +2281,17 @@
         { "type": "text", "id": "label", "label": "Button text", "default": "Button Text" },
         { "type": "url", "id": "link", "label": "Button link" },
         {
+          "type": "color",
+          "id": "card_background_color",
+          "label": "Card Background Color",
+          "default": "#ffffff",
+          "info": "Background color for this card"
+        },
+        {
+          "type": "header",
+          "content": "Desktop Layout"
+        },
+        {
           "type": "range",
           "id": "column_span",
           "min": 0.1,
@@ -2233,6 +2339,21 @@
       "name": "Text Card",
       "settings": [
         { "type": "text", "id": "heading", "label": "Heading", "default": "Card Heading" },
+        { "type": "checkbox", "id": "enable_heading", "label": "Enable heading", "default": true },
+        {
+          "type": "image_picker",
+          "id": "svg_icon",
+          "label": "SVG Icon",
+          "info": "SVG icon displayed above the heading"
+        },
+        { "type": "checkbox", "id": "enable_svg", "label": "Enable SVG icon", "default": false },
+        {
+          "type": "color",
+          "id": "card_background_color",
+          "label": "Card Background Color",
+          "default": "#ffffff",
+          "info": "Background color for this card"
+        },
         {
           "type": "header",
           "content": "Heading Typography"
@@ -2259,7 +2380,12 @@
           ],
           "default": "600"
         },
-        { "type": "textarea", "id": "paragraph", "label": "Paragraph", "default": "Add your paragraph text here..." },
+        {
+          "type": "richtext",
+          "id": "paragraph",
+          "label": "Paragraph",
+          "default": "<p>Add your paragraph text here...</p>"
+        },
         {
           "type": "header",
           "content": "Paragraph Typography"
@@ -2428,6 +2554,26 @@
           "default": "top"
         },
         {
+          "type": "header",
+          "content": "Button Alignment"
+        },
+        {
+          "type": "select",
+          "id": "button_alignment",
+          "label": "Button horizontal alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "left",
+          "info": "Button alignment independent from content alignment"
+        },
+        {
+          "type": "header",
+          "content": "Desktop Layout"
+        },
+        {
           "type": "range",
           "id": "column_span",
           "min": 0.1,
@@ -2472,6 +2618,13 @@
           "id": "default_product_image",
           "label": "Default Product Image",
           "info": "Image to display when no product is selected or product has no image"
+        },
+        {
+          "type": "color",
+          "id": "card_background_color",
+          "label": "Card Background Color",
+          "default": "#ffffff",
+          "info": "Background color for this card"
         },
         { "type": "checkbox", "id": "show_tag", "label": "Show tag", "default": true },
         { "type": "text", "id": "tag_text", "label": "Tag text", "default": "Product Tag" },
@@ -2590,6 +2743,10 @@
           "default": "center"
         },
         {
+          "type": "header",
+          "content": "Desktop Layout"
+        },
+        {
           "type": "range",
           "id": "column_span",
           "min": 0.1,
@@ -2669,6 +2826,24 @@
           "info": "Image displayed between text repetitions"
         },
         {
+          "type": "color",
+          "id": "scrolling_text_background_color",
+          "label": "Scrolling Text Background Color",
+          "default": "#e63946",
+          "info": "Background color for the scrolling marquee text"
+        },
+        {
+          "type": "color",
+          "id": "card_background_color",
+          "label": "Card Background Color",
+          "default": "#ffffff",
+          "info": "Background color for this card"
+        },
+        {
+          "type": "header",
+          "content": "Desktop Layout"
+        },
+        {
           "type": "range",
           "id": "column_span",
           "min": 0.1,
@@ -2713,6 +2888,13 @@
           "id": "separator_image",
           "label": "Separator Image",
           "info": "Image displayed between text repetitions"
+        },
+        {
+          "type": "color",
+          "id": "card_background_color",
+          "label": "Card Background Color",
+          "default": "#ffffff",
+          "info": "Background color for this card"
         },
         {
           "type": "header",
@@ -2768,6 +2950,10 @@
           "default": "700"
         },
         {
+          "type": "header",
+          "content": "Desktop Layout"
+        },
+        {
           "type": "range",
           "id": "column_span",
           "min": 0.1,
@@ -2806,6 +2992,13 @@
       "type": "toggle_card",
       "name": "Toggle Switch Card",
       "settings": [
+        {
+          "type": "color",
+          "id": "card_background_color",
+          "label": "Card Background Color",
+          "default": "#ffffff",
+          "info": "Background color for this card"
+        },
         {
           "type": "header",
           "content": "Toggle Switch Settings"
@@ -2899,7 +3092,7 @@
         },
         {
           "type": "header",
-          "content": "Layout Settings"
+          "content": "Desktop Layout"
         },
         {
           "type": "range",
@@ -2954,7 +3147,7 @@
           "type": "text_card",
           "settings": {
             "heading": "Card Heading",
-            "paragraph": "Add your paragraph text here...",
+            "paragraph": "<p>Add your paragraph text here...</p>",
             "button_text": "Button Text",
             "column_span": 1.8,
             "row_span": 4.0

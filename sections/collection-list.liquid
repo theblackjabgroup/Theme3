@@ -14,6 +14,10 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+  #SectionHeading-{{ section.id }} {
+    font-weight: {{ section.settings.title_font_weight | default: 700 }};
+  }
 {%- endstyle -%}
 
 {%- liquid
@@ -150,6 +154,10 @@
       "label": "t:sections.collection-list.settings.title.label"
     },
     {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
       "type": "select",
       "id": "heading_size",
       "options": [
@@ -178,9 +186,18 @@
       "label": "t:sections.all.heading_size.label"
     },
     {
+      "type": "range",
+      "id": "title_font_weight",
+      "min": 400,
+      "max": 900,
+      "step": 100,
+      "label": "Title Font Weight",
+      "default": 700
+    },
+    {
       "type": "header",
       "content": "t:sections.collection-list.settings.header_layout.content"
-    },    
+    },
     {
       "type": "select",
       "id": "image_ratio",
@@ -222,7 +239,7 @@
       "id": "show_view_all",
       "default": false,
       "label": "t:sections.collection-list.settings.show_view_all.label",
-      "info": "t:sections.collection-list.settings.show_view_all.info"   
+      "info": "t:sections.collection-list.settings.show_view_all.info"
     },
     {
       "type": "header",

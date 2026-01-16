@@ -57,6 +57,30 @@
   border-radius: var(--radius-sm);
 }
 
+.text-card-svg {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: var(--spacing-4);
+}
+
+.text-card--align-center .text-card-svg {
+  justify-content: center;
+}
+
+.text-card--align-right .text-card-svg {
+  justify-content: flex-end;
+}
+
+.text-card-svg-icon {
+  width: auto;
+  height: auto;
+  max-width: 80px;
+  max-height: 80px;
+  object-fit: contain;
+  display: block;
+}
+
 .text-card-heading {
   margin: var(--spacing-0);
   color: var(--color-text);
@@ -92,7 +116,6 @@
   cursor: pointer;
   white-space: nowrap;
   transition: all var(--transition-medium);
-  margin-top: auto;
   font-family: var(--font-body-family);
   font-size: var(--desktop-button-font-size, var(--font-size-lg));
   font-weight: var(--desktop-button-font-weight, var(--font-weight-semibold));
@@ -101,6 +124,24 @@
 .text-card-button:hover {
   background: var(--color-primary-button-hover-bg, #d62839);
   color: var(--color-primary-button-hover-text, #fff);
+}
+
+.text-card-button-wrapper {
+  width: 100%;
+  display: flex;
+  margin-top: auto;
+}
+
+.text-card-button--align-left {
+  justify-content: flex-start;
+}
+
+.text-card-button--align-center {
+  justify-content: center;
+}
+
+.text-card-button--align-right {
+  justify-content: flex-end;
 }
 
 .bento-card.text-card:hover {
@@ -262,10 +303,7 @@
   justify-content: flex-end;
 }
 
-/* Video Card */
-.bento-card.video-card {
-  background-color: var(--color-accent-pink, var(--color-white)) !important;
-}
+ 
 
 .video-card video,
 .video-card iframe {
@@ -313,7 +351,6 @@
   top: 50%;
   transform: translateY(-50%);
   padding: var(--spacing-4) var(--spacing-0);
-  background: var(--color-accent-pink, var(--color-red)) !important;
   pointer-events: none;
   opacity: 0;
   border-top: var(--border-width-thin) solid var(--color-borders, var(--color-red)) !important;
@@ -327,7 +364,6 @@
 }
 
 .video-marquee-track {
-  background: var(--color-accent-pink, var(--color-red)) !important;
   align-items: center;
   display: flex;
   width: max-content;
@@ -337,7 +373,6 @@
 }
 
 .video-marquee-item {
-  background: var(--color-accent-pink, #e63946) !important;
   white-space: nowrap;
   font-family: var(--font-body-family);
   font-size: var(--font-size-lg);
@@ -361,12 +396,14 @@
 
 /* Scrolling Text Card */
 .scrolling-text-card {
-  background: var(--color-accent-pink, #e63946) !important;
-  color: var(--color-primary-button-text, #fff);
   overflow: hidden;
 }
 .scrolling-text-card.bento-card {
   border: none !important;
+}
+
+.scrolling-text-card.bento-card {
+  border: var(--border-width-thin) solid var(--color-borders, var(--color-gray-300)) !important;
 }
 
 .scrolling-text-card:hover .marquee-track {
@@ -376,9 +413,7 @@
 
 /* The moving strip that contains multiple copies of the text */
 .marquee-track {
-  background: var(--color-accent-pink, #e63946) !important;
   align-items: center;
-
   display: flex;
   width: max-content; /* shrink-wrap to content width */
   animation: marquee 40s linear infinite;
@@ -395,7 +430,6 @@
   font-size: var(--desktop-font-size, 24px);
   font-weight: var(--desktop-font-weight, 700);
   text-transform: uppercase;
-  background: var(--color-accent-pink, #e63946) !important;
 }
 
 /* Separator image in scrolling text */
@@ -452,6 +486,11 @@
 .bento-card.logo-card:hover,
 .bento-card.button-card:hover {
   transform: scale(1);
+}
+
+/* Video card hover border */
+.bento-card.video-card:hover {
+  border-color: var(--color-text, var(--color-primary-button-bg, #e63946)) !important;
 }
 
 /* Card Color Variants */
@@ -536,7 +575,6 @@
 }
 
 .cart-icon-svg {
-  background: var(--color-accent-pink, var(--color-pink)) !important;
   stroke: var(--desktop-icon-color, var(--color-text));
   stroke-width: var(--desktop-icon-stroke-width, var(--border-width-medium));
   fill: none;
@@ -968,6 +1006,12 @@
   font-weight: var(--desktop-main-font-weight, 600);
   line-height: var(--desktop-main-line-height, 1) !important;
   display: inline-block;
+  margin: var(--spacing-0);
+}
+
+.tag-card-main--heading {
+  font-family: var(--font-heading-family);
+  line-height: var(--line-height-tight);
 }
 
 .tag-card-word {
@@ -1138,10 +1182,8 @@
   transform: translateZ(0) scale(1);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  background-color: var(--color-accent-red, var(--color-red-dark))  !important;
 }
 .bento-card.content-card {
-  background-color: var(--color-accent-red, var(--color-red-dark))  !important;
   /* Border radius is inherited from .bento-card, but ensure it's applied */
   border-radius: inherit;
 }
@@ -1163,12 +1205,8 @@
   width: 100%;
   height: 100%;
   align-items: stretch;
-  background-color: var(--color-accent-red, #d62839)  !important;
 }
-.bento-card.content-card-inner{
-  background-color: var(--color-accent-red, #d62839)  !important;
 
-}
 
 .content-card-text-side {
   color: var(--color-accent-off-white, var(--color-primary-button-text, var(--color-white)));
@@ -1177,7 +1215,6 @@
   align-items: center;
   padding: var(--spacing-12);
   gap: var(--spacing-10);
-  background-color: var(--color-accent-red, var(--color-red-dark))  !important;
 
 }
 
@@ -1188,7 +1225,6 @@
   height: 50%;
   opacity: 0.8;
   flex-shrink: 0;
-  background-color: var(--color-accent-red, #d62839)  !important;
 
 }
 
@@ -1200,14 +1236,12 @@
   align-items: flex-start;
   gap: var(--spacing-6);
   text-align: left;
-  background-color: var(--color-accent-red, var(--color-red-dark))  !important;
 
 }
 
 .content-card-main-text {
   color: var(--color-accent-off-white, var(--color-white)) !important;
   letter-spacing: var(--letter-spacing-tight);
-  background-color: var(--color-accent-red, var(--color-red-dark))  !important;
   font-family: var(--font-heading-family);
   font-size: var(--desktop-main-text-font-size, var(--font-size-5xl));
   font-weight: var(--desktop-main-text-font-weight, var(--font-weight-semibold));
@@ -1229,7 +1263,6 @@
 
 /* Ensure filled tag is visible on red background */
 .content-card-tag.tag-card-tag--filled {
-  background: var(--color-accent-red, var(--color-red)) !important;
   color: var(--color-primary-button-text, var(--color-white)) !important;
   border: none !important;
   border-radius: var(--radius-round) !important;
@@ -1249,7 +1282,6 @@
   opacity: 0;
   transform: translateY(20px);
   color: var(--color-accent-off-white, #fff) !important;
-  background-color: var(--color-accent-red, #d62839)  !important;
   animation: tagCardWordLoadUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
@@ -1325,7 +1357,6 @@
 }
 
 .content-card-sprite-side {
-  background-color: var(--color-accent-red, #d62839)  !important;
 
   flex: 0 0 var(--desktop-sprite-canvas-size, 40%);
   background-size: contain;
@@ -1398,6 +1429,11 @@
   /* Text Card Mobile */
   .text-card {
     padding: var(--spacing-6) var(--spacing-8);
+  }
+
+  .text-card-svg-icon {
+    max-width: 60px;
+    max-height: 60px;
   }
 
   .text-card-heading {
