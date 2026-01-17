@@ -60,7 +60,7 @@
               {% for source in media.sources %}
                 <source src="{{ source.url }}" type="{{ source.mime_type }}">
               {% endfor %}
-              <track kind="captions" srclang="en" label="English" src="#" default>
+              <track kind="captions" srclang="en" label="English" src="data:text/vtt;base64,V0VCVlRUCg==">
             </video>
           {% when 'model' %}
             {{

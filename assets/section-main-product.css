@@ -420,11 +420,11 @@
   transition: opacity 0.8s ease, transform 0.8s ease;
   text-align: left;
   color: var(--color-text);
+  margin-top: var(--spacing-xl);
 }
 .feature-row.visible {
   opacity: 1;
   transform: translateY(0);
-  margin-top: var(--spacing-xl);
 }
 .feature-icon {
   display: block;
