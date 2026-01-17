@@ -26,6 +26,12 @@
         {%- assign trimmed_item = item | strip -%}
         {%- if trimmed_item != blank -%}
           <li>
+            <span
+              class="dc-list-icon {% if custom_icon != blank %}dc-list-icon--custom{% endif %}"
+              {% if custom_icon != blank %}
+                style="--icon-url: url('{{ custom_icon | image_url: width: 32 }}');"
+              {% endif %}
+            ></span>
             <span class="dc-list-text">{{ trimmed_item }}</span>
           </li>
         {%- endif -%}

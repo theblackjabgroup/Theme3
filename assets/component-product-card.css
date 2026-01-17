@@ -11,14 +11,15 @@
   height: 100%;
   position: relative;
   font-family: var(--font-body-family);
-  border: var(--border-width-thin) solid var(--color-gray-100);
+  border: var(--border-width-thin) solid var(--color-borders);
 }
 
 .dc-eyebrow {
   text-transform: uppercase;
   font-size: 0.7rem;
   letter-spacing: var(--letter-spacing-widest);
-  border: var(--border-width-thin) solid var(--dc-text-color);
+  color: var(--dc-eyebrow-color, var(--dc-text-color));
+  border: var(--border-width-thin) solid var(--dc-eyebrow-color, var(--dc-text-color));
   border-radius: var(--radius-2xl);
   padding: var(--spacing-3) var(--spacing-8);
   line-height: var(--line-height-tight);
@@ -46,6 +47,7 @@
   font-family: var(--font-heading-family);
   font-weight: 700;
   line-height: 1.2;
+  color: var(--dc-text-color);
 }
 
 .dc-text {
@@ -54,9 +56,11 @@
   max-width: 100%;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: var(--dc-text-color);
 }
 
 .dc-progress-wrapper {
@@ -151,7 +155,8 @@
 
 .dc-textbox-eyebrow {
   display: inline-block;
-  border: 1px solid var(--dc-text-color);
+  border: 1px solid var(--dc-eyebrow-color, var(--dc-text-color));
+  color: var(--dc-eyebrow-color, var(--dc-text-color));
   border-radius: 20px;
   padding: 6px 16px;
   text-transform: uppercase;
@@ -194,23 +199,49 @@
   line-height: 1.4;
 }
 
-.dc-textbox-list li:before {
-  content: "";
+.dc-list-icon {
   display: block;
   flex-shrink: 0;
   margin-right: 0; 
-  height: 1.3em; 
+  height: 1.7em; 
   width: 1.7em; 
-  color: rgba(0, 0, 0, 0);
   text-align: center;
   line-height: 1.4;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='rgba(255, 255, 255, 0.99)' viewBox='0 0 16 16'%3E%3Cpath d='M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z'/%3E%3C/svg%3E");
-  background-color: rgba(0, 0, 0, 0);
-  background-size: 80%;
-  background-repeat: no-repeat;
-  background-position: center;
+  background-color: var(--dc-bg-color);
   border-width: 1px 1px 2.5px 1px;
   border-style: solid;
   border-color: var(--dc-text-color);
   border-radius: .5em;
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+.dc-textbox-list li:hover .dc-list-icon {
+  transform: scale(0.9);
+  cursor: pointer;
+}
+
+.dc-list-icon::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-size: 80%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: var(--dc-text-color);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='rgba(255, 255, 255, 0.99)' viewBox='0 0 16 16'%3E%3Cpath d='M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='rgba(255, 255, 255, 0.99)' viewBox='0 0 16 16'%3E%3Cpath d='M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z'/%3E%3C/svg%3E");
+  -webkit-mask-size: 80%;
+  mask-size: 80%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+
+.dc-list-icon--custom::after {
+  background-color: transparent;
+  background-image: var(--icon-url);
+  -webkit-mask-image: none;
+  mask-image: none;
 }

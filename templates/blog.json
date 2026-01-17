@@ -32,11 +32,45 @@
       ],
       "settings": {
       }
+    },
+    "tech_specs": {
+      "type": "tech-specs",
+      "blocks": {
+        "textbox": {
+          "type": "textbox",
+          "settings": {
+          }
+        },
+        "card_1": {
+          "type": "card",
+          "settings": {
+          }
+        },
+        "card_2": {
+          "type": "card",
+          "settings": {
+          }
+        },
+        "card_3": {
+          "type": "card",
+          "settings": {
+          }
+        }
+      },
+      "block_order": [
+        "textbox",
+        "card_1",
+        "card_2",
+        "card_3"
+      ],
+      "settings": {
+      }
     }
   },
   "order": [
     "banner",
     "main",
-    "share_story"
+    "share_story",
+    "tech_specs"
   ]
 }
