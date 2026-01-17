@@ -26,8 +26,8 @@
           {% endif %}
         {% when 'description' %}
           <div class="product__description">{{ product.description }}</div>
-        {% when 'size_chart' %}
-          <button class="size-chart-btn">{{ block.settings.button_label | default: 'View the size chart' }}</button>
+        {% comment %} {% when 'size_chart' %}
+          <button class="size-chart-btn">{{ block.settings.button_label | default: 'View the size chart' }}</button> {% endcomment %}
         {% when 'marquee' %}
           {% render 'block-marquee', block: block %}
         {% when 'feature_row' %}

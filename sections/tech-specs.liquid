@@ -56,6 +56,7 @@
           --dc-tooltip-text: {{ block.settings.tooltip_text | default: '#ffffff' }};
           --dc-bar-fill: {{ block.settings.progress_fill | default: '#ff0000' }};
           --dc-bar-track: {{ block.settings.progress_track | default: '#fce8e8' }};
+          --dc-eyebrow-color: {{ block.settings.eyebrow_color }};
         "
         {{ block.shopify_attributes }}
       >
@@ -65,7 +66,8 @@
               eyebrow: block.settings.eyebrow,
               title: block.settings.title,
               text: block.settings.text,
-              list_content: block.settings.list_content
+              list_content: block.settings.list_content,
+              custom_icon: block.settings.icon_custom
             %}
           {%- when 'card' -%}
             {%- liquid
@@ -112,7 +114,7 @@
   "name": "Tech Specs",
   "tag": "section",
   "class": "section",
-  "enabled_on": {"templates": ["index"]},
+  "disabled_on": { "groups": ["header", "footer"] },
   "settings": [
     {
       "type": "text",
@@ -218,6 +220,12 @@
           "default": "The Crazy Ambulance\nThe Coffee Foundation Van\nThe Coffee Foundation Tent"
         },
         {
+          "type": "image_picker",
+          "id": "icon_custom",
+          "label": "Custom Checklist Icon",
+          "info": "Upload a custom icon for the checklist items. Recommended size: 32x32px."
+        },
+        {
           "type": "color",
           "id": "bg_color",
           "label": "Card Background",
@@ -227,6 +235,12 @@
           "type": "color",
           "id": "text_color",
           "label": "Card Text",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "eyebrow_color",
+          "label": "Tag Color",
           "default": "#ffffff"
         }
       ]
@@ -285,6 +299,12 @@
           "type": "color",
           "id": "text_color",
           "label": "Card Text",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "eyebrow_color",
+          "label": "Tag Color",
           "default": "#000000"
         },
         {

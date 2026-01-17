@@ -10,12 +10,6 @@
             "content": "<p>Here are the technical details of the product.</p>"
           }
         },
-        "size_chart_1": {
-          "type": "size_chart",
-          "settings": {
-            "button_label": "View the size chart"
-          }
-        },
         "description": {
           "type": "description"
         },
@@ -71,7 +65,6 @@
       },
       "block_order": [
         "collapsible_tab_1",
-        "size_chart_1",
         "description",
         "icon_strip_1",
         "feature_row_1",

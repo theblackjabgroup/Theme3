@@ -1,19 +1,76 @@
 {
   "sections": {
+    "banner": {
+      "type": "blog-banner"
+    },
     "main": {
       "type": "main-blog",
       "settings": {
-        "layout": "collage",
-        "show_image": true,
-        "image_height": "medium",
-        "show_date": true,
+        "show_date": false,
         "show_author": false,
         "padding_top": 36,
         "padding_bottom": 36
       }
+    },
+    "share_story": {
+      "type": "share-story",
+      "blocks": {
+        "profile": {
+          "type": "profile_card",
+          "settings": {
+          }
+        },
+        "story": {
+          "type": "story_card",
+          "settings": {
+          }
+        }
+      },
+      "block_order": [
+        "profile",
+        "story"
+      ],
+      "settings": {
+      }
+    },
+    "tech_specs": {
+      "type": "tech-specs",
+      "blocks": {
+        "textbox": {
+          "type": "textbox",
+          "settings": {
+          }
+        },
+        "card_1": {
+          "type": "card",
+          "settings": {
+          }
+        },
+        "card_2": {
+          "type": "card",
+          "settings": {
+          }
+        },
+        "card_3": {
+          "type": "card",
+          "settings": {
+          }
+        }
+      },
+      "block_order": [
+        "textbox",
+        "card_1",
+        "card_2",
+        "card_3"
+      ],
+      "settings": {
+      }
     }
   },
   "order": [
-    "main"
+    "banner",
+    "main",
+    "share_story",
+    "tech_specs"
   ]
 }

@@ -50,15 +50,18 @@
           {% when 'external_video' %}
             {{ media | external_video_tag: class: 'video-slide' }}
           {% when 'video' %}
-            {{
-              media
-              | video_tag:
-                controls: true,
-                class: 'video-slide',
-                image_size: '1200x',
-                image_alt: media.alt,
-                description: media.alt
-            }}
+            <video
+              playsinline
+              controls
+              class="video-slide"
+              poster="{{ media.preview_image | image_url: width: 1200 }}"
+              aria-label="{{ media.alt | default: product.title }}"
+            >
+              {% for source in media.sources %}
+                <source src="{{ source.url }}" type="{{ source.mime_type }}">
+              {% endfor %}
+              <track kind="captions" srclang="en" label="English" src="data:text/vtt;base64,V0VCVlRUCg==">
+            </video>
           {% when 'model' %}
             {{
               media
