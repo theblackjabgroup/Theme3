@@ -1,8 +1,5 @@
 {
   "sections": {
-    "banner": {
-      "type": "blog-banner"
-    },
     "main": {
       "type": "main-article",
       "blocks": {},
@@ -10,7 +7,6 @@
     }
   },
   "order": [
-    "banner",
     "main"
   ]
 }
