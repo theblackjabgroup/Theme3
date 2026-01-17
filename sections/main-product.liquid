@@ -102,6 +102,37 @@
     });
 
     // ---------------------------------------------------------
+    // SCROLL HIJACKING (Desktop Only)
+    // ---------------------------------------------------------
+    const desktopContainer = document.querySelector('.product-split-container');
+    const rightColumn = document.querySelector('.product-split-right');
+    
+    if (desktopContainer && rightColumn) {
+      desktopContainer.addEventListener('wheel', (e) => {
+        // Only active on desktop
+        if (window.innerWidth < 990) return;
+
+        const scrollTop = rightColumn.scrollTop;
+        const scrollHeight = rightColumn.scrollHeight;
+        const clientHeight = rightColumn.clientHeight;
+        const delta = e.deltaY;
+        const isScrollDown = delta > 0;
+
+        // Determine if we can scroll the element
+        // 1px buffer to account for rounding errors
+        const canScrollDown = scrollTop + clientHeight < scrollHeight - 1;
+        const canScrollUp = scrollTop > 0;
+
+        if ((isScrollDown && canScrollDown) || (!isScrollDown && canScrollUp)) {
+            // We can scroll the inner content, so prevent window scroll
+            e.preventDefault();
+            rightColumn.scrollTop += delta;
+        }
+          // Else: let the event bubble to window (default behavior)
+      }, { passive: false }); // Passive false required for preventDefault
+    }
+
+    // ---------------------------------------------------------
     // VARIANT SELECTION LOGIC
     // ---------------------------------------------------------
     const productVariants = {{ product.variants | json }};
@@ -363,19 +394,7 @@
       "name": "Description",
       "limit": 1
     },
-    {
-      "type": "size_chart",
-      "name": "Button",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "button_label",
-          "label": "Button Label",
-          "default": "View the size chart"
-        }
-      ]
-    },
+
     {
       "type": "marquee",
       "name": "Marquee",
