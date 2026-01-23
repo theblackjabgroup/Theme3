@@ -13,35 +13,64 @@
 {%- endcomment -%}
 <div class="product-split-left">
   <div class="product-left-inner">
-    {% if product.compare_at_price > product.price %}
-      <div class="product-type-badge">
-        <span>SALE</span>
-      </div>
-    {% endif %}
-
-    <div class="product__title">
-      <h1>{{ product.title }}</h1>
+    <!-- Stock Badge (Moved to Top) -->
+    <div class="stock-badge-wrapper product-type-badge-wrapper">
+      {% assign current_variant = product.selected_or_first_available_variant %}
+      {% if product.available %}
+        <span class="stock-badge product-type-badge">
+          {% if current_variant.inventory_management == 'shopify'
+            and current_variant.inventory_quantity > 0
+            and current_variant.inventory_quantity <= 10
+          %}
+            Only {{ current_variant.inventory_quantity }} left in stock
+          {% else %}
+            In stock
+          {% endif %}
+        </span>
+      {% endif %}
     </div>
 
-    <div class="product__tagline">
+    <div class="product__title" style="max-width: {{ title_width | default: 500 }}px; margin: 0 auto;">
+      <h1 style="font-size: {{ title_font_size | default: 38 }}px;">{{ product.title }}</h1>
+    </div>
+
+    <div
+      class="product__tagline"
+      style="max-width: {{ tagline_width | default: 500 }}px; margin: var(--spacing-l) auto; font-size: {{ tagline_font_size | default: 14 }}px;"
+    >
       {{
         product.metafields.custom.tagline
         | default: 'T-SHIRT: ORGANIC COTTON UNISEX TEE INSPIRING RESILIENCE AND STRENGTH – TURN CHALLENGES INTO GROWTH EVERY DAY.'
       }}
     </div>
 
+    <!-- NEW PRICE DISPLAY -->
+    <div class="product-price-container">
+      <span class="price-main" style="font-size: {{ price_font_size | default: 56 }}px;">
+        {{- current_variant.price | money_without_trailing_zeros -}}
+      </span>
+      <span
+        class="price-compare"
+        style="font-size: {{ sale_price_font_size | default: 20 }}px; {% unless current_variant.compare_at_price > current_variant.price %}display:none{% endunless %}"
+      >
+        MRP {{ current_variant.compare_at_price | money_without_trailing_zeros }}
+      </span>
+    </div>
+
     {% unless product.has_only_default_variant %}
       <div class="variant-picker-wrapper">
         {% for option in product.options_with_values %}
           <fieldset class="product-form__input product-form__input--{{ option.name | downcase }}">
-            <legend class="product-form__label">{{ option.name }}</legend>
+            {% unless option.name == 'Size' %}
+              <legend class="product-form__label">{{ option.name }}</legend>
+            {% endunless %}
             <div class="variant-options-row">
               {% for value in option.values %}
                 <input
                   type="radio"
                   id="{{ section.id }}-{{ option.position }}-{{ forloop.index }}"
                   name="{{ option.name }}"
-                  value="{{ value }}"
+                  value="{{ value | escape }}"
                   form="{{ product_form_id }}"
                   {% if option.selected_value == value %}
                     checked
@@ -68,44 +97,32 @@
       </div>
     {% endunless %}
 
-    <!-- Stock Badge -->
-    <div class="stock-badge-wrapper">
-      {% assign current_variant = product.selected_or_first_available_variant %}
-      {% if product.available %}
-        <span class="stock-badge">
-          {% if current_variant.inventory_management == 'shopify'
-            and current_variant.inventory_quantity > 0
-            and current_variant.inventory_quantity <= 10
-          %}
-            Only {{ current_variant.inventory_quantity }} left in stock
-          {% else %}
-            In stock
-          {% endif %}
-        </span>
-      {% endif %}
-    </div>
+    <!-- PROMO TEXT -->
+    {% if promo_text != blank %}
+      <div class="sale-roasted-text" style="font-size: {{ promo_font_size | default: 12 }}px;">{{ promo_text }}</div>
+    {% endif %}
 
-    <div class="product-form__buttons">
+    <div class="product-actions-row">
+      {% render 'quantity-input',
+        variant: current_variant,
+        min: 1,
+        is_product_form: true,
+        product_form_id: product_form_id
+      %}
+
       {% form 'product', product, id: product_form_id %}
         <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-        <button
-          type="submit"
-          class="product-form__submit"
-          {% unless product.selected_or_first_available_variant.available %}
-            disabled
-            style="opacity: 0.5; cursor: not-allowed;"
-          {% endunless %}
-        >
-          {% if product.selected_or_first_available_variant.available %}
-            Buy {{ product.selected_or_first_available_variant.price | money_without_trailing_zeros }}
-          {% else %}
-            Sold Out
-          {% endif %}
-        </button>
+
+        {% liquid
+          if product.selected_or_first_available_variant.available
+            assign btn_text = 'ADD TO CART'
+          else
+            assign btn_text = 'Sold Out'
+          endif
+        %}
+
+        {% render 'submit-button', text: btn_text, type: 'submit', class: 'share-story-submit product-form__submit' %}
       {% endform %}
-      <div class="quantity">
-        <input type="number" value="1" min="1" name="quantity" form="{{ product_form_id }}" aria-label="Quantity">
-      </div>
     </div>
   </div>
 </div>

@@ -16,27 +16,33 @@
     color: white;
     border: 2px solid var(--color-primary-button-border);
     padding: 20px;
-    border-radius: 100px;
+    border-radius: var(--radius-l);
     font-size: 1.4rem;
     font-weight: 700;
     cursor: pointer;
     width: fit-content;
-    box-shadow: 0px 4px 0px 0px var(--color-shadow);
-    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    margin-top: 5px;
+    margin-top: 0;
     text-transform: none;
     font-family: var(--font-heading-family);
     letter-spacing: 0.02em;
     line-height: 1;
     text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 0 var(--color-shadow);
   }
 
   .share-story-submit:hover {
-    transform: translate(2px, 2px);
-    box-shadow: 0px 0px 0px 0px var(--color-shadow);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 var(--color-shadow);
   }
 
-  /* Button card specific styles */
+  .share-story-submit:active {
+    animation: bounce-click 0.2s ease;
+    box-shadow: 0 0 0 var(--color-shadow);
+    transform-origin: center center;
+  }
+
+  /* Override for button card context if needed */
   .button-card .share-story-submit {
     padding: 20px !important;
     width: 97%;
