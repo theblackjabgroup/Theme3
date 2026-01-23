@@ -8,27 +8,6 @@
 {%- endcomment -%}
 
 <style>
-  .bouncy-button-wrapper {
-    position: relative;
-    display: inline-flex;
-    z-index: 1;
-    width: fit-content;
-  }
-
-  .bouncy-button-shadow {
-    position: absolute;
-    top: 4px;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: var(--radius-l);
-    background-color: var(--color-shadow);
-    z-index: -1;
-    pointer-events: none;
-    transform-origin: center center;
-    transition: all 0.3s ease-out;
-  }
-
   .share-story-submit {
     display: flex;
     align-items: center;
@@ -48,19 +27,22 @@
     letter-spacing: 0.02em;
     line-height: 1;
     text-decoration: none;
-    transform-origin: center bottom;
-    transition: transform 0.3s ease-out;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 0 var(--color-shadow);
   }
 
-  .bouncy-button-wrapper:hover .share-story-submit {
-    transform: translateY(-6px);
+  .share-story-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 var(--color-shadow);
   }
 
-  .bouncy-button-wrapper:active .share-story-submit {
-    transform: translateY(4px);
-    transition: transform 0.1s ease-out;
+  .share-story-submit:active {
+    animation: bounce-click 0.2s ease;
+    box-shadow: 0 0 0 var(--color-shadow);
+    transform-origin: center center;
   }
 
+  /* Override for button card context if needed */
   .button-card .share-story-submit {
     padding: 20px !important;
     width: 97%;
@@ -71,15 +53,12 @@
 {%- assign button_type = type | default: 'button' -%}
 {%- assign button_class = class | default: 'share-story-submit' -%}
 
-<div class="bouncy-button-wrapper">
-  <div class="bouncy-button-shadow">&nbsp;</div>
-  {%- if url != blank -%}
-    <a class="{{ button_class }}" href="{{ url }}">
-      {{ button_text }}
-    </a>
-  {%- else -%}
-    <button type="{{ button_type }}" class="{{ button_class }}">
-      {{ button_text }}
-    </button>
-  {%- endif -%}
-</div>
+{%- if url != blank -%}
+  <a class="{{ button_class }}" href="{{ url }}">
+    {{ button_text }}
+  </a>
+{%- else -%}
+  <button type="{{ button_type }}" class="{{ button_class }}">
+    {{ button_text }}
+  </button>
+{%- endif -%}

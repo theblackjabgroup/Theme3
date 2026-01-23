@@ -155,8 +155,9 @@
     const inventoryInfo = {
       {% for variant in product.variants %}
         "{{ variant.id }}": {
-          "quantity": {{ variant.inventory_quantity | default: 0 }},
-          "management": "{{ variant.inventory_management }}"
+        "quantity": {{ variant.inventory_quantity | default: 0 }},
+          "management": "{{ variant.inventory_management }}",
+          "policy": "{{ variant.inventory_policy }}"
         }{% unless forloop.last %},{% endunless %}
       {% endfor %}
     };
@@ -277,7 +278,6 @@
         }
 
         // 4. Update Price Display
-        // 4. Update Price Display
         const priceMain = sectionContainer.querySelector('.price-main');
         const priceCompare = sectionContainer.querySelector('.price-compare');
         
@@ -294,14 +294,13 @@
             }
         }
 
-        // 4. Update Stock Badge
+        // 5. Update Stock Badge
         const stockBadge = sectionContainer.querySelector('.stock-badge');
+        const invStats = inventoryInfo[currentVariant.id];
+
         if (stockBadge) {
            if (currentVariant.available) {
              stockBadge.style.display = 'inline-block';
-             
-             // Access custom inventory info
-             const invStats = inventoryInfo[currentVariant.id];
              
              if (invStats && invStats.management === 'shopify' && invStats.quantity > 0 && invStats.quantity <= 10) {
                stockBadge.textContent = `Only ${invStats.quantity} left in stock`;
@@ -311,6 +310,51 @@
            } else {
              stockBadge.style.display = 'none';
            }
+        }
+
+        // 6. Update Quantity Max
+        const qtyInput = sectionContainer.querySelector('.quantity__input');
+        if (qtyInput) {
+          let maxQty = null;
+          
+          // Check inventory policy
+          if (invStats && invStats.management === 'shopify' && invStats.policy === 'deny') {
+             maxQty = invStats.quantity;
+          }
+
+          // Check quantity rules (if available in variant object)
+          if (currentVariant.quantity_rule && currentVariant.quantity_rule.max) {
+             if (maxQty === null || currentVariant.quantity_rule.max < maxQty) {
+                maxQty = currentVariant.quantity_rule.max;
+             }
+          }
+
+          if (maxQty !== null) {
+            qtyInput.max = maxQty;
+            qtyInput.dataset.max = maxQty;
+            // Optional: Clamp current value if it exceeds new max
+            if (parseInt(qtyInput.value) > maxQty) {
+              qtyInput.value = maxQty;
+            }
+          } else {
+            qtyInput.removeAttribute('max');
+            delete qtyInput.dataset.max;
+          }
+
+          // 7. Update Quantity Min & Step
+          if (currentVariant.quantity_rule) {
+             const minQty = currentVariant.quantity_rule.min || 1;
+             const stepQty = currentVariant.quantity_rule.increment || 1;
+
+             qtyInput.min = minQty;
+             qtyInput.dataset.min = minQty;
+             qtyInput.step = stepQty;
+
+             // Ensure current value satisfies min
+             if (parseInt(qtyInput.value) < minQty) {
+               qtyInput.value = minQty;
+             }
+          }
         }
       }
     }

@@ -46,7 +46,6 @@
 
     <!-- NEW PRICE DISPLAY -->
     <div class="product-price-container">
-      {% assign current_variant = product.selected_or_first_available_variant %}
       <span class="price-main" style="font-size: {{ price_font_size | default: 56 }}px;">
         {{- current_variant.price | money_without_trailing_zeros -}}
       </span>
