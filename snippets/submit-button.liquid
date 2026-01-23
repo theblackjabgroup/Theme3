@@ -8,6 +8,27 @@
 {%- endcomment -%}
 
 <style>
+  .bouncy-button-wrapper {
+    position: relative;
+    display: inline-flex;
+    z-index: 1;
+    width: fit-content;
+  }
+
+  .bouncy-button-shadow {
+    position: absolute;
+    top: 4px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: var(--radius-l);
+    background-color: var(--color-shadow);
+    z-index: -1;
+    pointer-events: none;
+    transform-origin: center center;
+    transition: all 0.3s ease-out;
+  }
+
   .share-story-submit {
     display: flex;
     align-items: center;
@@ -16,27 +37,30 @@
     color: white;
     border: 2px solid var(--color-primary-button-border);
     padding: 20px;
-    border-radius: 100px;
+    border-radius: var(--radius-l);
     font-size: 1.4rem;
     font-weight: 700;
     cursor: pointer;
     width: fit-content;
-    box-shadow: 0px 4px 0px 0px var(--color-shadow);
-    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    margin-top: 5px;
+    margin-top: 0;
     text-transform: none;
     font-family: var(--font-heading-family);
     letter-spacing: 0.02em;
     line-height: 1;
     text-decoration: none;
+    transform-origin: center bottom;
+    transition: transform 0.3s ease-out;
   }
 
-  .share-story-submit:hover {
-    transform: translate(2px, 2px);
-    box-shadow: 0px 0px 0px 0px var(--color-shadow);
+  .bouncy-button-wrapper:hover .share-story-submit {
+    transform: translateY(-6px);
   }
 
-  /* Button card specific styles */
+  .bouncy-button-wrapper:active .share-story-submit {
+    transform: translateY(4px);
+    transition: transform 0.1s ease-out;
+  }
+
   .button-card .share-story-submit {
     padding: 20px !important;
     width: 97%;
@@ -47,12 +71,15 @@
 {%- assign button_type = type | default: 'button' -%}
 {%- assign button_class = class | default: 'share-story-submit' -%}
 
-{%- if url != blank -%}
-  <a class="{{ button_class }}" href="{{ url }}">
-    {{ button_text }}
-  </a>
-{%- else -%}
-  <button type="{{ button_type }}" class="{{ button_class }}">
-    {{ button_text }}
-  </button>
-{%- endif -%}
+<div class="bouncy-button-wrapper">
+  <div class="bouncy-button-shadow">&nbsp;</div>
+  {%- if url != blank -%}
+    <a class="{{ button_class }}" href="{{ url }}">
+      {{ button_text }}
+    </a>
+  {%- else -%}
+    <button type="{{ button_type }}" class="{{ button_class }}">
+      {{ button_text }}
+    </button>
+  {%- endif -%}
+</div>
