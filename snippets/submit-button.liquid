@@ -5,6 +5,9 @@
   - url: {String} Optional URL. If provided, renders as <a>, otherwise as <button>
   - type: {String} Button type (default: 'button', can be 'submit' for forms)
   - class: {String} Additional CSS classes (default: 'share-story-submit')
+  - icon: {String} Optional SVG icon code
+  - badge: {String} Optional badge text/number
+  - attributes: {String} Optional extra attributes
 {%- endcomment -%}
 
 <style>
@@ -51,14 +54,34 @@
 
 {%- assign button_text = text | default: 'Button' -%}
 {%- assign button_type = type | default: 'button' -%}
-{%- assign button_class = class | default: 'share-story-submit' -%}
+{%- if class != blank -%}
+  {%- assign button_class = 'share-story-submit ' | append: class -%}
+{%- else -%}
+  {%- assign button_class = 'share-story-submit' -%}
+{%- endif -%}
 
 {%- if url != blank -%}
-  <a class="{{ button_class }}" href="{{ url }}">
-    {{ button_text }}
+  <a class="{{ button_class }}" href="{{ url }}" {{ attributes }}>
+    {%- if icon != blank -%}
+      <span class="submit-button__icon">{{ icon }}</span>
+    {%- endif -%}
+    {%- if button_text != blank -%}
+      <span class="submit-button__text">{{ button_text }}</span>
+    {%- endif -%}
+    {%- if badge != blank and badge != '0' -%}
+      <span class="submit-button__badge">{{ badge }}</span>
+    {%- endif -%}
   </a>
 {%- else -%}
-  <button type="{{ button_type }}" class="{{ button_class }}">
-    {{ button_text }}
+  <button type="{{ button_type }}" class="{{ button_class }}" {{ attributes }}>
+    {%- if icon != blank -%}
+      <span class="submit-button__icon">{{ icon }}</span>
+    {%- endif -%}
+    {%- if button_text != blank -%}
+      <span class="submit-button__text">{{ button_text }}</span>
+    {%- endif -%}
+    {%- if badge != blank and badge != '0' -%}
+      <span class="submit-button__badge">{{ badge }}</span>
+    {%- endif -%}
   </button>
 {%- endif -%}

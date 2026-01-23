@@ -4,7 +4,10 @@
   min-height: 100vh;
   padding: var(--spacing-5);
   margin: var(--spacing-0);
+  padding-left: 0 !important;
 }
+
+
 
 .bento-grid {
   display: grid;
@@ -1228,6 +1231,68 @@
   align-items: stretch;
 }
 
+/* Layout direction modifiers */
+.content-card--column .content-card-inner {
+  flex-direction: column;
+}
+
+.content-card--row .content-card-inner {
+  flex-direction: row;
+}
+
+/* Horizontal alignment modifiers */
+/* For column layout: controls horizontal alignment of items */
+.content-card--column.content-card--align-left .content-card-inner {
+  align-items: flex-start;
+}
+
+.content-card--column.content-card--align-center .content-card-inner {
+  align-items: center;
+}
+
+.content-card--column.content-card--align-right .content-card-inner {
+  align-items: flex-end;
+}
+
+/* For row layout: controls horizontal spacing */
+.content-card--row.content-card--align-left .content-card-inner {
+  justify-content: flex-start;
+}
+
+.content-card--row.content-card--align-center .content-card-inner {
+  justify-content: center;
+}
+
+.content-card--row.content-card--align-right .content-card-inner {
+  justify-content: flex-end;
+}
+
+/* Vertical alignment modifiers */
+/* For column layout: controls vertical spacing */
+.content-card--column.content-card--valign-top .content-card-inner {
+  justify-content: flex-start;
+}
+
+.content-card--column.content-card--valign-center .content-card-inner {
+  justify-content: center;
+}
+
+.content-card--column.content-card--valign-bottom .content-card-inner {
+  justify-content: flex-end;
+}
+
+/* For row layout: controls vertical alignment of items */
+.content-card--row.content-card--valign-top .content-card-inner {
+  align-items: flex-start;
+}
+
+.content-card--row.content-card--valign-center .content-card-inner {
+  align-items: center;
+}
+
+.content-card--row.content-card--valign-bottom .content-card-inner {
+  align-items: flex-end;
+}
 
 .content-card-text-side {
   color: var(--color-accent-off-white, var(--color-primary-button-text, var(--color-white)));
@@ -1236,7 +1301,42 @@
   align-items: center;
   padding: var(--spacing-12);
   gap: var(--spacing-10);
+  min-width: 0;
+  min-height: 0;
+}
 
+/* Text side sizing for different layouts */
+.content-card--column .content-card-text-side {
+  width: 100%;
+}
+
+.content-card--row .content-card-text-side {
+  height: 100%;
+}
+
+/* Alignment for text side (horizontal alignment within text side) */
+.content-card--align-left .content-card-text-side {
+  justify-content: flex-start;
+}
+
+.content-card--align-center .content-card-text-side {
+  justify-content: center;
+}
+
+.content-card--align-right .content-card-text-side {
+  justify-content: flex-end;
+}
+
+.content-card--valign-top .content-card-text-side {
+  align-items: flex-start;
+}
+
+.content-card--valign-center .content-card-text-side {
+  align-items: center;
+}
+
+.content-card--valign-bottom .content-card-text-side {
+  align-items: flex-end;
 }
 
 .content-card-line {  
@@ -1257,7 +1357,22 @@
   align-items: flex-start;
   gap: var(--spacing-6);
   text-align: left;
+}
 
+/* Alignment for text content */
+.content-card--align-left .content-card-text-content {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.content-card--align-center .content-card-text-content {
+  align-items: center;
+  text-align: center;
+}
+
+.content-card--align-right .content-card-text-content {
+  align-items: flex-end;
+  text-align: right;
 }
 
 .content-card-main-text {
@@ -1378,14 +1493,33 @@
 }
 
 .content-card-sprite-side {
-
   flex: 0 0 var(--desktop-sprite-canvas-size, 40%);
+  background-color: transparent !important;
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   position: relative;
   transition: background-position 0s;
+}
+
+/* Ensure sprite-side stays transparent even on hover */
+.content-card:hover .content-card-sprite-side {
+  background-color: transparent !important;
+}
+
+/* Sprite side sizing for different layouts */
+.content-card--column .content-card-sprite-side {
+  width: 100%;
+  min-height: 0;
+  /* Ensure transparent background when image is missing */
+  background-color: transparent !important;
+}
+
+.content-card--row .content-card-sprite-side {
   height: 100%;
+  min-width: 0;
+  /* Ensure transparent background when image is missing */
+  background-color: transparent !important;
 }
 
 /* Spritesheet Animation for Content Cards */
@@ -1573,6 +1707,121 @@
     font-size: var(--mobile-tag-font-size, var(--font-size-xs)) !important;
     font-weight: var(--mobile-tag-font-weight, var(--font-weight-semibold)) !important;
     padding: var(--spacing-1) var(--spacing-4);
+  }
+
+  /* Content Card Mobile Layout */
+  /* Override layout direction for mobile */
+  .content-card[data-mobile-direction="column"] .content-card-inner {
+    flex-direction: column !important;
+  }
+
+  .content-card[data-mobile-direction="row"] .content-card-inner {
+    flex-direction: row !important;
+  }
+
+  /* Content Card Mobile Alignment */
+  /* Override horizontal alignment for mobile */
+  /* For column layout: controls align-items */
+  .content-card[data-mobile-direction="column"][data-mobile-align="left"] .content-card-inner {
+    align-items: flex-start !important;
+  }
+
+  .content-card[data-mobile-direction="column"][data-mobile-align="center"] .content-card-inner {
+    align-items: center !important;
+  }
+
+  .content-card[data-mobile-direction="column"][data-mobile-align="right"] .content-card-inner {
+    align-items: flex-end !important;
+  }
+
+  /* For row layout: controls justify-content */
+  .content-card[data-mobile-direction="row"][data-mobile-align="left"] .content-card-inner {
+    justify-content: flex-start !important;
+  }
+
+  .content-card[data-mobile-direction="row"][data-mobile-align="center"] .content-card-inner {
+    justify-content: center !important;
+  }
+
+  .content-card[data-mobile-direction="row"][data-mobile-align="right"] .content-card-inner {
+    justify-content: flex-end !important;
+  }
+
+  .content-card[data-mobile-align="left"] .content-card-text-side {
+    justify-content: flex-start !important;
+  }
+
+  .content-card[data-mobile-align="center"] .content-card-text-side {
+    justify-content: center !important;
+  }
+
+  .content-card[data-mobile-align="right"] .content-card-text-side {
+    justify-content: flex-end !important;
+  }
+
+  .content-card[data-mobile-align="left"] .content-card-text-content {
+    align-items: flex-start !important;
+    text-align: left !important;
+  }
+
+  .content-card[data-mobile-align="center"] .content-card-text-content {
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  .content-card[data-mobile-align="right"] .content-card-text-content {
+    align-items: flex-end !important;
+    text-align: right !important;
+  }
+
+  /* Override vertical alignment for mobile */
+  /* For column layout: controls justify-content */
+  .content-card[data-mobile-direction="column"][data-mobile-vertical-align="top"] .content-card-inner {
+    justify-content: flex-start !important;
+  }
+
+  .content-card[data-mobile-direction="column"][data-mobile-vertical-align="center"] .content-card-inner {
+    justify-content: center !important;
+  }
+
+  .content-card[data-mobile-direction="column"][data-mobile-vertical-align="bottom"] .content-card-inner {
+    justify-content: flex-end !important;
+  }
+
+  /* For row layout: controls align-items */
+  .content-card[data-mobile-direction="row"][data-mobile-vertical-align="top"] .content-card-inner {
+    align-items: flex-start !important;
+  }
+
+  .content-card[data-mobile-direction="row"][data-mobile-vertical-align="center"] .content-card-inner {
+    align-items: center !important;
+  }
+
+  .content-card[data-mobile-direction="row"][data-mobile-vertical-align="bottom"] .content-card-inner {
+    align-items: flex-end !important;
+  }
+
+  /* Sprite side sizing for mobile */
+  .content-card[data-mobile-direction="column"] .content-card-sprite-side {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .content-card[data-mobile-direction="row"] .content-card-sprite-side {
+    width: auto !important;
+    height: 100% !important;
+  }
+
+  .content-card[data-mobile-vertical-align="top"] .content-card-text-side {
+    align-items: flex-start !important;
+  }
+
+  .content-card[data-mobile-vertical-align="center"] .content-card-text-side {
+    align-items: center !important;
+  }
+
+  .content-card[data-mobile-vertical-align="bottom"] .content-card-text-side {
+    align-items: flex-end !important;
   }
 
   .tag-card-icon {

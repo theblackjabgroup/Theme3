@@ -73,7 +73,7 @@
 .dc-tooltip {
   position: absolute;
   bottom: 100%;
-  background-color: var(--dc-tooltip-bg, #ff0000);
+  background-color: var(--dc-tooltip-bg);
   color: var(--dc-tooltip-text, #ffffff);
   padding: var(--spacing-5) var(--spacing-5);
   font-weight: var(--font-weight-extrabold);
@@ -83,7 +83,7 @@
   margin-bottom: var(--spacing-3);
   white-space: nowrap;
   box-shadow: var(--spacing-1) var(--spacing-1) var(--spacing-0) rgba(0,0,0,1);
-  border: 1px solid var(--dc-tooltip-bg, #ff0000);
+  border: 1px solid var(--dc-tooltip-bg, );
 }
 .dc-tooltip::after {
   content: '';
@@ -93,7 +93,7 @@
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: var(--dc-tooltip-bg, #ff0000) transparent transparent transparent;
+  border-color: var(--dc-tooltip-bg) transparent transparent transparent;
 }
 
 .dc-bar-track {
@@ -107,7 +107,7 @@
 
 .dc-bar-fill {
   height: 100%;
-  background-color: var(--dc-bar-fill, #ff0000);
+  background-color: var(--dc-bar-fill);
   border-radius: 4px;
   position: relative;
 }

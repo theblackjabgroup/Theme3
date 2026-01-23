@@ -64,5 +64,59 @@
   min-width: unset;
 }
 
+/* Header Icon Variation */
+.primary-button--header-icon {
+  min-width: unset;
+  width: 100%;
+  height: 48px;
+  flex: 1;
+}
+
+.primary-button--header-icon .primary-button__face {
+  padding: 0 12px;
+}
+
+.primary-button__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+}
+
+.primary-button__icon svg {
+  width: 100%;
+  height: 100%;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+}
+
+.primary-button__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 6px;
+  font-size: 10px;
+  font-weight: 800;
+  background: white;
+  color: var(--color-primary-button-bg);
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+.primary-button__face--back .primary-button__badge {
+  color: var(--color-primary-button-hover-bg);
+}
+
+.primary-button__text {
+  margin-left: 8px;
+}
+
+.primary-button--header-icon .primary-button__text:empty {
+  display: none;
+}
 
 

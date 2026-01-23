@@ -95,13 +95,9 @@
   --color-light-grey: #F3F3F3;
   
   /* Semantic color aliases (use theme variables when available) */
-  --color-text: var(--color-text, var(--color-gray-900));
   --color-text-secondary: var(--color-gray-700);
   --color-text-tertiary: var(--color-gray-600);
   --color-text-muted: var(--color-gray-500);
-  --color-heading: var(--color-headings, var(--color-black));
-  --color-background: var(--color-background, var(--color-white));
-  --color-border: var(--color-borders, var(--color-gray-300));
   --color-border-light: var(--color-gray-200);
   
   /* ============================================
@@ -305,6 +301,7 @@
 body {
     font-family: var(--font-family-primary);
     color: var(--body-color, var(--color-text));
+    background-color: var(--color-background);
     font-size: var(--body-text-regular);
     line-height: var(--line-height-relaxed);
 }

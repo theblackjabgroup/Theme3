@@ -1,0 +1,60 @@
+{%- comment -%}
+  Header Button Snippet
+  Reusable button component for header navigation
+  
+  Parameters:
+  - button_text: Text to display on button
+  - button_url: URL for the link (optional)
+  - button_icon: SVG icon code or image tag (optional)
+  - button_icon_is_image: Boolean flag if icon is an image (optional)
+  - button_type: Type of button (link, button, etc.)
+  - button_class: Additional CSS classes
+  - aria_label: Accessibility label
+  - button_badge: Badge text/number to display (optional)
+{%- endcomment -%}
+
+{%- liquid
+  assign button_type = button_type | default: 'link'
+  assign button_class = button_class | default: ''
+  assign aria_label = aria_label | default: button_text
+  assign button_icon_is_image = button_icon_is_image | default: false
+-%}
+
+{%- if button_type == 'link' -%}
+  <a 
+    href="{{ button_url | default: '#' }}" 
+    class="header-nav-button {{ button_class }}"
+    {% if aria_label != blank %}aria-label="{{ aria_label }}"{% endif %}
+    {% if button_class contains 'search' %}data-spotlight-search-toggle{% endif %}
+  >
+    {%- if button_icon != blank -%}
+      <span class="header-nav-button-icon {% if button_icon_is_image %}header-nav-button-icon--image{% endif %}">{{ button_icon }}</span>
+    {%- endif -%}
+    {%- if button_text != blank -%}
+      <span class="header-nav-button-text">{{ button_text }}</span>
+    {%- endif -%}
+    {%- if button_badge != blank and button_badge != '0' -%}
+      <span class="header-nav-button-badge">{{ button_badge }}</span>
+    {%- elsif button_class contains 'cart' and cart.item_count > 0 -%}
+      <span class="header-nav-button-badge">{{ cart.item_count }}</span>
+    {%- endif -%}
+  </a>
+{%- else -%}
+  <button 
+    type="{{ button_type }}"
+    class="header-nav-button {{ button_class }}"
+    {% if aria_label != blank %}aria-label="{{ aria_label }}"{% endif %}
+    {% if button_url != blank %}data-url="{{ button_url }}"{% endif %}
+    {% if button_class contains 'search' %}data-spotlight-search-toggle{% endif %}
+  >
+    {%- if button_icon != blank -%}
+      <span class="header-nav-button-icon {% if button_icon_is_image %}header-nav-button-icon--image{% endif %}">{{ button_icon }}</span>
+    {%- endif -%}
+    {%- if button_text != blank -%}
+      <span class="header-nav-button-text">{{ button_text }}</span>
+    {%- endif -%}
+    {%- if button_badge != blank and button_badge != '0' -%}
+      <span class="header-nav-button-badge">{{ button_badge }}</span>
+    {%- endif -%}
+  </button>
+{%- endif -%}

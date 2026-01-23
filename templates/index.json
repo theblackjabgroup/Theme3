@@ -13,110 +13,96 @@
       "type": "bento-grid",
       "blocks": {
         "card_1": { 
-          "type": "logo_card", 
+          "type": "tag_card", 
           "settings": { 
-            "column_span": 1.0, 
-            "row_span": 1.2,
-            "mobile_column_span": 1.0,
-            "mobile_row_span": 1.0
+            "column_span": 3, 
+            "row_span": 1.4,
+            "card_background_color": "#306030",
+            "mobile_column_span": 2.0,
+            "mobile_row_span": 0.2
+            
           } 
         },
         "card_2": { 
-          "type": "cart_card", 
+          "type": "text_card", 
           "settings": { 
-            "column_span": 1.0, 
-            "row_span": 1.2,
-            "mobile_column_span": 1.0,
-            "mobile_row_span": 1.0
+            "heading": "Card Heading",
+            "paragraph": "<p>Add your paragraph text here...</p>",
+            "button_text": "Button Text",
+            "column_span": 2, 
+            "row_span": 3.6,
+            "mobile_column_span": 2.0,
+            "mobile_row_span": 0.5
           } 
         },
         "card_3": { 
-          "type": "tag_card", 
+          "type": "video_card", 
           "settings": { 
-            "column_span": 1.6, 
-            "row_span": 1.3,
-            "mobile_column_span": 2.0,
-            "mobile_row_span": 0.2
-          } 
-        },
-        "card_4": {
-          "type": "text_card",
-          "settings": {
-            "heading": "Card Heading",
-            "paragraph": "<p>lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</p>",
-            "button_text": "Button Text",
-            "column_span": 1.8, 
-            "row_span": 3.8,
+            "column_span": 3, 
+            "row_span": 3.6,
             "mobile_column_span": 2.0,
             "mobile_row_span": 0.5
+          } 
+        },
+        "card_4": { 
+          "type": "content_card", 
+          "settings": { 
+            "column_span": 1.5, 
+            "row_span": 4,
+            "mobile_column_span": 2.0,
+            "mobile_row_span": 0.5,
+            "layout_direction": "column"
           } 
         },
         "card_5": { 
-          "type": "video_card", 
-          "settings": { 
-            "column_span": 2.6, 
-            "row_span": 3.8,
-            "mobile_column_span": 2.0,
-            "mobile_row_span": 0.5
-          } 
-        },
-        "card_6": { 
-          "type": "product_card", 
-          "settings": { 
-            "column_span": 2.0, 
-            "row_span": 4.3,
-            "mobile_column_span": 2.0,
-            "mobile_row_span": 0.5
-          } 
-        },
-        "card_7": { 
           "type": "tag_card", 
           "settings": { 
-            "column_span": 1.6, 
-            "row_span": 2.5,
+            "column_span": 1.5, 
+            "row_span": 2.2,
             "mobile_column_span": 1.5,
             "mobile_row_span": 0.2
           } 
-        },    
-          "card_8": { 
+        },
+        "card_6": { 
           "type": "tag_card", 
           "settings": { 
             "column_span": 3, 
-            "row_span": 2.5,
-            "mobile_column_span": 0.5,
+            "row_span": 2.6,
+            "mobile_column_span": 1.5,
             "mobile_row_span": 0.2
           } 
         },
-        "card_9": { 
+        "card_7": { 
           "type": "content_card", 
           "settings": { 
-            "column_span": 3, 
-            "row_span": 2.5,
+            "column_span": 3.5, 
+            "row_span": 2.6,
+            "card_background_color": "#306030",
             "mobile_column_span": 2.0,
-            "mobile_row_span": 0.2
+            "mobile_row_span": 0.5,
+            "layout_direction": "row"
           } 
         },
-   
-
-        "card_10": { 
+        "card_8": { 
           "type": "button_card", 
           "settings": { 
-            "label": "Button Text", 
-            "column_span": 2.0, 
+            "column_span": 1.5, 
             "row_span": 0.8,
             "mobile_column_span": 2.0,
             "mobile_row_span": 0.1
           } 
         },
-        "card_11": { 
+        "card_9": { 
           "type": "scrolling_text_card", 
           "settings": { 
-            "column_span": 3.5, 
-            "row_span": 0.8,
+            "column_span": 9, 
+            "row_span": 1.1,
             "mobile_column_span": 2.0,
             "mobile_row_span": 0.1
           } 
         }
+   
+
       },
       "block_order": [
         "card_1",
@@ -127,9 +113,7 @@
         "card_6",
         "card_7",
         "card_8",
-        "card_9",
-        "card_10",
-        "card_11"
+        "card_9"
       ],
       "settings": {
         "color_scheme": "",
