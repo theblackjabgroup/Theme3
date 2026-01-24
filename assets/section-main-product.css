@@ -474,7 +474,7 @@
   transition: border-color var(--transition-base);
 }
 .feature-link:hover {
-  border-bottom-color: var(--color-black);
+  border-bottom-color: var(--color-text);
 }
 
 .icon-strip {

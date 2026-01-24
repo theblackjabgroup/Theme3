@@ -18,7 +18,9 @@
   {%- for block in section.blocks -%}
     {%- liquid
       assign angle_val = block.settings.angle
-      assign tilt_margin = block.settings.tilt_margin
+      assign abs_angle = angle_val | abs
+      assign auto_tilt_margin = abs_angle | times: 3 | plus: 10
+      assign tilt_margin = block.settings.tilt_margin | default: auto_tilt_margin
 
       assign direction_val = 'normal'
       if block.settings.direction == 'right'
