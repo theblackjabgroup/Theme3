@@ -232,9 +232,9 @@
                     <div
                       class="tag-card-tag tag-card-tag--{{ tag_style }}"
                       style="
-                        font-size: {{ tag_font_size }}px; 
-                        font-weight: {{ tag_font_weight }}; 
-                        --mobile-tag-font-size: {{ mobile_tag_font_size }}px; 
+                        font-size: {{ tag_font_size }}px;
+                        font-weight: {{ tag_font_weight }};
+                        --mobile-tag-font-size: {{ mobile_tag_font_size }}px;
                         --mobile-tag-font-weight: {{ mobile_tag_font_weight }};
                         {%- if tag_style == 'filled' and block.settings.tag_bg_color != blank -%}
                           background: {{ block.settings.tag_bg_color }} !important;
@@ -316,7 +316,10 @@
                   {%- endfor -%}
 
                   {%- if has_images -%}
-                    <div class="tag-card-image-strip">
+                    <div
+                      class="tag-card-image-strip"
+                      style="--strip-width: {{ block.settings.strip_width | default: 80 }}px; --mobile-strip-width: {{ block.settings.mobile_strip_width | default: 60 }}px;"
+                    >
                       <div class="tag-card-image-strip-track">
                         {%- comment -%} First set of images {%- endcomment -%}
                         {%- for i in (1..10) -%}
@@ -348,25 +351,24 @@
                     </div>
                   {%- else -%}
                     {%- comment -%} Show default product placeholder images when no images are uploaded {%- endcomment -%}
-                    <div class="tag-card-image-strip">
+                    <div
+                      class="tag-card-image-strip"
+                      style="--strip-width: {{ block.settings.strip_width | default: 80 }}px; --mobile-strip-width: {{ block.settings.mobile_strip_width | default: 60 }}px;"
+                    >
                       <div class="tag-card-image-strip-track">
-                        {%- assign default_images = 'product-apparel-1,product-apparel-2,product-apparel-3,product-apparel-4,product-bag-1,product-bag-2,product-bottle-1,product-bottle-2' | split: ',' -%}
+                        {%- assign default_images = 'product-apparel-1,product-apparel-2,product-apparel-3,product-apparel-4,product-bag-1,product-bag-2,product-bottle-1,product-bottle-2'
+                          | split: ','
+                        -%}
                         {%- comment -%} First set of default images {%- endcomment -%}
                         {%- for default_image in default_images -%}
                           <div class="tag-card-image-strip-item">
-                            {{
-                              default_image
-                              | placeholder_svg_tag: 'tag-card-image-strip-placeholder'
-                            }}
+                            {{ default_image | placeholder_svg_tag: 'tag-card-image-strip-placeholder' }}
                           </div>
                         {%- endfor -%}
                         {%- comment -%} Duplicate for seamless loop {%- endcomment -%}
                         {%- for default_image in default_images -%}
                           <div class="tag-card-image-strip-item">
-                            {{
-                              default_image
-                              | placeholder_svg_tag: 'tag-card-image-strip-placeholder'
-                            }}
+                            {{ default_image | placeholder_svg_tag: 'tag-card-image-strip-placeholder' }}
                           </div>
                         {%- endfor -%}
                       </div>
@@ -401,6 +403,18 @@
             -%}
             {%- assign mobile_main_text_line_height = block.settings.mobile_main_text_line_height
               | default: main_text_line_height
+            -%}
+            {%- assign sub_text_font_size = block.settings.sub_text_font_size | default: 14 -%}
+            {%- assign sub_text_font_weight = block.settings.sub_text_font_weight | default: 400 -%}
+            {%- assign sub_text_line_height = block.settings.sub_text_line_height | default: 1.4 -%}
+            {%- assign mobile_sub_text_font_size = block.settings.mobile_sub_text_font_size
+              | default: sub_text_font_size
+            -%}
+            {%- assign mobile_sub_text_font_weight = block.settings.mobile_sub_text_font_weight
+              | default: sub_text_font_weight
+            -%}
+            {%- assign mobile_sub_text_line_height = block.settings.mobile_sub_text_line_height
+              | default: sub_text_line_height
             -%}
             {%- assign align = block.settings.content_alignment | default: 'left' -%}
             {%- assign mobile_align = block.settings.mobile_content_alignment | default: align -%}
@@ -451,6 +465,12 @@
                 --mobile-sprite-y-offset: {{ mobile_sprite_y_offset }}px;
                 --mobile-sprite-x-offset: {{ mobile_sprite_x_offset }}px;
                 --mobile-sprite-rotation: {{ mobile_sprite_rotation }}deg;
+                --desktop-sub-text-font-size: {{ sub_text_font_size }}px;
+                --desktop-sub-text-font-weight: {{ sub_text_font_weight }};
+                --desktop-sub-text-line-height: {{ sub_text_line_height }};
+                --mobile-sub-text-font-size: {{ mobile_sub_text_font_size }}px;
+                --mobile-sub-text-font-weight: {{ mobile_sub_text_font_weight }};
+                --mobile-sub-text-line-height: {{ mobile_sub_text_line_height }};
               "
               {% if block.settings.link != blank %}
                 onclick="window.location.href='{{ block.settings.link }}'"
@@ -474,6 +494,14 @@
                           <span class="content-card-word">{{ word }}</span>
                           {%- unless forloop.last %} {% endunless -%}
                         {%- endfor -%}
+                      </div>
+                    {%- endif -%}
+                    {%- if block.settings.sub_text != blank -%}
+                      <div
+                        class="content-card-sub-text"
+                        style="{% if block.settings.sub_text_color != blank %}color: {{ block.settings.sub_text_color }};{% endif %}"
+                      >
+                        {{ block.settings.sub_text }}
                       </div>
                     {%- endif -%}
                   </div>
@@ -512,11 +540,7 @@
               class="bento-card button-card"
               style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %}"
             >
-              {%- render 'submit-button',
-                text: label,
-                url: block.settings.link,
-                class: 'button-card-button'
-              -%}
+              {%- render 'submit-button', text: label, url: block.settings.link, class: 'button-card-button' -%}
             </div>
 
           {%- when 'text_card' -%}
@@ -592,9 +616,10 @@
             {%- assign mobile_title_font_weight = block.settings.mobile_title_font_weight
               | default: title_font_weight
             -%}
+            {%- assign title_text_color = block.settings.title_text_color | default: 'inherit' -%}
             <div
               class="bento-card product-card product-card--align-{{ align }} product-card--valign-{{ vertical_align }}"
-              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %} --desktop-title-font-size: {{ title_font_size }}px; --desktop-title-font-weight: {{ title_font_weight }}; --mobile-title-font-size: {{ mobile_title_font_size }}px; --mobile-title-font-weight: {{ mobile_title_font_weight }};"
+              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %} --desktop-title-font-size: {{ title_font_size }}px; --desktop-title-font-weight: {{ title_font_weight }}; --mobile-title-font-size: {{ mobile_title_font_size }}px; --mobile-title-font-weight: {{ mobile_title_font_weight }}; --title-text-color: {{ title_text_color }};"
               {% if product != blank and product.url != blank %}
                 onclick="window.location.href='{{ product.url }}'"
               {% endif %}
@@ -614,9 +639,9 @@
                   {%- endif -%}
 
                   {%- if product != blank and product.title != blank -%}
-                    <div class="product-card-title">{{ product.title }}</div>
+                    <div class="product-card-title" style="color: var(--title-text-color);">{{ product.title }}</div>
                   {%- elsif product == blank -%}
-                    <div class="product-card-title">Product Name</div>
+                    <div class="product-card-title" style="color: var(--title-text-color);">Product Name</div>
                   {%- endif -%}
 
                   {%- if product != blank and product.featured_image != blank -%}
@@ -757,45 +782,27 @@
             {%- assign mobile_font_weight = block.settings.mobile_font_weight | default: font_weight -%}
             <div
               class="bento-card scrolling-text-card"
-              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %} --desktop-font-size: {{ font_size }}px; --desktop-font-weight: {{ font_weight }}; --mobile-font-size: {{ mobile_font_size }}px; --mobile-font-weight: {{ mobile_font_weight }};"
+              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %}{% if block.settings.card_border_color != blank %} border-color: {{ block.settings.card_border_color }} !important;{% endif %} --desktop-font-size: {{ font_size }}px; --desktop-font-weight: {{ font_weight }}; --mobile-font-size: {{ mobile_font_size }}px; --mobile-font-weight: {{ mobile_font_weight }}; --animation-duration: {{ block.settings.animation_duration | default: 40 }}s;"
             >
               <div class="marquee-track">
-                <span class="marquee-item">{{ block.settings.text }}</span>
-                <img
-                  src="{% if block.settings.separator_image != blank %}{{ block.settings.separator_image | image_url: width: 40 }}{% else %}https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-collection-2_large.png?v=1530129132{% endif %}"
-                  alt=""
-                  class="marquee-separator"
-                  aria-hidden="true"
-                  width="40"
-                  height="40"
-                >
-                <span class="marquee-item" aria-hidden="true">{{ block.settings.text }}</span>
-                <img
-                  src="{% if block.settings.separator_image != blank %}{{ block.settings.separator_image | image_url: width: 40 }}{% else %}https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-collection-2_large.png?v=1530129132{% endif %}"
-                  alt=""
-                  class="marquee-separator"
-                  aria-hidden="true"
-                  width="40"
-                  height="40"
-                >
-                <span class="marquee-item" aria-hidden="true">{{ block.settings.text }}</span>
-                <img
-                  src="{% if block.settings.separator_image != blank %}{{ block.settings.separator_image | image_url: width: 40 }}{% else %}https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-collection-2_large.png?v=1530129132{% endif %}"
-                  alt=""
-                  class="marquee-separator"
-                  aria-hidden="true"
-                  width="40"
-                  height="40"
-                >
-                <span class="marquee-item" aria-hidden="true">{{ block.settings.text }}</span>
-                <img
-                  src="{% if block.settings.separator_image != blank %}{{ block.settings.separator_image | image_url: width: 40 }}{% else %}https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-collection-2_large.png?v=1530129132{% endif %}"
-                  alt=""
-                  class="marquee-separator"
-                  aria-hidden="true"
-                  width="40"
-                  height="40"
-                >
+                {%- for i in (1..20) -%}
+                  <span
+                    class="marquee-item"
+                    {% if i > 1 %}
+                      aria-hidden="true"
+                    {% endif %}
+                  >
+                    {{- block.settings.text -}}
+                  </span>
+                  <img
+                    src="{% if block.settings.separator_image != blank %}{{ block.settings.separator_image | image_url: width: 40 }}{% else %}https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-collection-2_large.png?v=1530129132{% endif %}"
+                    alt=""
+                    class="marquee-separator"
+                    aria-hidden="true"
+                    width="40"
+                    height="40"
+                  >
+                {%- endfor -%}
               </div>
             </div>
 
@@ -1248,6 +1255,12 @@
           "default": "3D Animation Card"
         },
         {
+          "type": "richtext",
+          "id": "sub_text",
+          "label": "Sub Text",
+          "default": "<p>Add additional description here...</p>"
+        },
+        {
           "type": "header",
           "content": "Tag Typography"
         },
@@ -1320,6 +1333,48 @@
         },
         {
           "type": "header",
+          "content": "Sub Text Typography"
+        },
+        {
+          "type": "color",
+          "id": "sub_text_color",
+          "label": "Sub text color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "range",
+          "id": "sub_text_font_size",
+          "min": 8,
+          "max": 48,
+          "step": 1,
+          "unit": "px",
+          "label": "Sub text font size",
+          "default": 14
+        },
+        {
+          "type": "select",
+          "id": "sub_text_font_weight",
+          "label": "Sub text font weight",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "400"
+        },
+        {
+          "type": "range",
+          "id": "sub_text_line_height",
+          "min": 0.8,
+          "max": 2.5,
+          "step": 0.1,
+          "label": "Sub text line height",
+          "default": 1.4
+        },
+        {
+          "type": "header",
           "content": "Mobile Typography"
         },
         {
@@ -1376,6 +1431,38 @@
           "step": 0.1,
           "label": "Mobile Main text line height",
           "default": 1.1
+        },
+        {
+          "type": "range",
+          "id": "mobile_sub_text_font_size",
+          "min": 8,
+          "max": 48,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile Sub text font size",
+          "default": 12
+        },
+        {
+          "type": "select",
+          "id": "mobile_sub_text_font_weight",
+          "label": "Mobile Sub text font weight",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "400"
+        },
+        {
+          "type": "range",
+          "id": "mobile_sub_text_line_height",
+          "min": 0.8,
+          "max": 2.5,
+          "step": 0.1,
+          "label": "Mobile Sub text line height",
+          "default": 1.4
         },
         {
           "type": "header",
@@ -1762,8 +1849,7 @@
         {
           "type": "color",
           "id": "tag_text_color",
-          "label": "Tag text color",
-          "default": "#306030"
+          "label": "Tag text color"
         },
         {
           "type": "color",
@@ -1775,7 +1861,6 @@
           "type": "color",
           "id": "tag_border_color",
           "label": "Tag border color",
-          "default": "#306030",
           "info": "Applies when tag style is 'Border'"
         },
         {
@@ -1824,8 +1909,7 @@
         {
           "type": "color",
           "id": "main_text_color",
-          "label": "Main text color",
-          "default": "#306030"
+          "label": "Main text color"
         },
         {
           "type": "range",
@@ -1950,6 +2034,26 @@
           "label": "Show image strip",
           "default": false,
           "info": "Vertical scrolling image strip that appears on the right side"
+        },
+        {
+          "type": "range",
+          "id": "strip_width",
+          "min": 20,
+          "max": 300,
+          "step": 5,
+          "unit": "px",
+          "label": "Strip Width",
+          "default": 80
+        },
+        {
+          "type": "range",
+          "id": "mobile_strip_width",
+          "min": 20,
+          "max": 200,
+          "step": 5,
+          "unit": "px",
+          "label": "Mobile Strip Width",
+          "default": 60
         },
         {
           "type": "image_picker",
@@ -2083,6 +2187,7 @@
           "type": "color",
           "id": "card_border_color",
           "label": "Card Border Color",
+          "default": "#ffffff",
           "info": "Border color for this card. If not set, will match the background color."
         },
         {
@@ -2538,6 +2643,13 @@
           "content": "Title Typography"
         },
         {
+          "type": "color",
+          "id": "title_text_color",
+          "label": "Title Text Color",
+          "default": "#121212",
+          "info": "Color for the product title"
+        },
+        {
           "type": "range",
           "id": "title_font_size",
           "min": 12,
@@ -2769,11 +2881,28 @@
           "info": "Image displayed between text repetitions"
         },
         {
+          "type": "range",
+          "id": "animation_duration",
+          "min": 5,
+          "max": 100,
+          "step": 5,
+          "unit": "s",
+          "label": "Animation Duration",
+          "default": 40,
+          "info": "Lower values result in faster scrolling speed."
+        },
+        {
           "type": "color",
           "id": "card_background_color",
           "label": "Card Background Color",
           "default": "#ffffff",
           "info": "Background color for this card"
+        },
+        {
+          "type": "color",
+          "id": "card_border_color",
+          "label": "Card Border Color",
+          "info": "Border color for this card. If not set, will use the default border color."
         },
         {
           "type": "header",
@@ -3019,7 +3148,19 @@
     {
       "name": "Bento Grid",
       "blocks": [
-        { "type": "tag_card", "settings": { "column_span": 1.6, "row_span": 1.4, "card_background_color": "#d2cdc4", "content_alignment": "center", "vertical_alignment": "center" } },
+        {
+          "type": "tag_card",
+          "settings": {
+            "column_span": 1.6,
+            "row_span": 1.4,
+            "card_background_color": "#d2cdc4",
+            "content_alignment": "center",
+            "vertical_alignment": "center",
+            "main_text_color": "#ffffff",
+            "tag_text_color": "#ffffff",
+            "tag_border_color": "#ffffff"
+          }
+        },
         {
           "type": "text_card",
           "settings": {

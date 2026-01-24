@@ -21,7 +21,13 @@
             "card_border_color": "#306030",
             "mobile_column_span": 2.0,
             "mobile_row_span": 0.2,
-            "show_image_strip": false
+            "show_image_strip": false,
+            "tag_text_color": "#E6E1DA",
+            "tag_border_color": "#E6E1DA",
+            "main_text_color": "#E6E1DA",
+            "content_alignment": "center",
+            "vertical_alignment": "center"
+            
           } 
         },
         "card_2": { 
@@ -44,7 +50,8 @@
             "column_span": 3, 
             "row_span": 3.6,
             "mobile_column_span": 2.0,
-            "mobile_row_span": 0.5
+            "mobile_row_span": 0.5,
+            "card_background_color": "#E598A9",
           } 
         },
         "card_4": { 
@@ -54,7 +61,9 @@
             "row_span": 4,
             "mobile_column_span": 2.0,
             "mobile_row_span": 0.5,
-            "layout_direction": "column"
+            "layout_direction": "column",
+            "card_background_color": "#E5E1DA",
+            "title_text_color": "#306030"
           } 
         },
         "card_5": { 
@@ -66,7 +75,10 @@
             "mobile_row_span": 0.2,
             "show_image_strip": false,
             "card_background_color": "#E598A9",
-            "card_border_color": "#E598A9"
+            "card_border_color": "#E598A9",
+            "tag_text_color": "#306030",
+            "tag_border_color": "#306030",
+            "main_text_color": "#306030"
           } 
         },
         "card_6": { 
@@ -78,7 +90,10 @@
             "mobile_row_span": 0.2,
             "show_image_strip": true,
             "card_background_color": "#E5E1DA",
-            "card_border_color": "#E5E1DA"
+            "card_border_color": "#E5E1DA",
+            "tag_text_color": "#306030",
+            "tag_border_color": "#306030",
+            "main_text_color": "#306030"
           } 
         },
         "card_7": { 
@@ -107,7 +122,9 @@
             "column_span": 9, 
             "row_span": 1.1,
             "mobile_column_span": 2.0,
-            "mobile_row_span": 0.1
+            "mobile_row_span": 0.1,
+            "card_background_color": "#D2CDC4",
+            "card_border_color": "#D2CDC4"
           } 
         }
    
