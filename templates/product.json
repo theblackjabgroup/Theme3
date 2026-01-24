@@ -7,10 +7,28 @@
           "type": "scrolling_strip",
           "settings": {
             "text": "<p>FREE SHIPPING WORLDWIDE</p>",
-            "speed": 20,
+            "icon": "shopify://shop_images/Vector.svg",
+            "icon_width": 22,
+            "text_font": "assistant_n4",
+            "text_2": "",
+            "text_2_font": "assistant_n4",
+            "link": "",
+            "strip_width": 95,
+            "alignment": "center",
+            "padding": 10,
+            "text_gap": 50,
+            "transparent_background": false,
+            "bg_color": "#e5e1da",
+            "text_color": "#000000",
+            "font_size": 22,
             "direction": "left",
-            "bg_color": "#000000",
-            "text_color": "#ffffff"
+            "speed": 20,
+            "angle": 0,
+            "tilt_margin": 0,
+            "enable_border": false,
+            "border_color": "#000000",
+            "border_radius": 14,
+            "border_width": 1
           }
         }
       },
@@ -19,7 +37,10 @@
       ],
       "settings": {
         "vertical_gap": 0,
-        "vertical_gap_mobile": 0
+        "vertical_gap_mobile": 0,
+        "color_scheme": "",
+        "padding_top": 24,
+        "padding_bottom": 0
       }
     },
     "main": {
@@ -29,11 +50,13 @@
           "type": "collapsible_tab",
           "settings": {
             "heading": "Geeky Details",
-            "content": "<p>Here are the technical details of the product.</p>"
+            "content": "<p>Here are the technical details of the product.</p>",
+            "custom_liquid": ""
           }
         },
         "description": {
-          "type": "description"
+          "type": "description",
+          "settings": {}
         },
         "icon_strip_1": {
           "type": "icon_strip",
@@ -49,7 +72,8 @@
           "settings": {
             "heading": "Delivery",
             "text": "<p>We haven't yet figured out how to make delivery teleport to your doorstep. So, while we'll do our best to get your order to you as quickly as possible, please be patient.</p>",
-            "button_label": "Discover more"
+            "button_label": "Discover more",
+            "button_link": ""
           }
         },
         "marquee_1": {
@@ -57,7 +81,10 @@
           "settings": {
             "text": "FREE SHIPPING WORLDWIDE",
             "speed": 20,
-            "direction": "normal"
+            "direction": "normal",
+            "show_border": true,
+            "enable_custom_bg": false,
+            "bg_color": "#ffffff"
           }
         },
         "feature_row_2": {
@@ -65,7 +92,8 @@
           "settings": {
             "heading": "Material",
             "text": "<p>Made from 100% organic cotton, soft to the touch and kind to the planet.</p>",
-            "button_label": "Read more"
+            "button_label": "Read more",
+            "button_link": ""
           }
         },
         "feature_row_3": {
@@ -73,7 +101,8 @@
           "settings": {
             "heading": "Care Instructions",
             "text": "<p>Wash cool, hang dry. Do not bleach. Love your clothes and they will love you back.</p>",
-            "button_label": "Care Guide"
+            "button_label": "Care Guide",
+            "button_link": ""
           }
         },
         "marquee_2": {
@@ -81,7 +110,10 @@
           "settings": {
             "text": "NEW COLLECTION DROPPING SOON",
             "speed": 25,
-            "direction": "reverse"
+            "direction": "reverse",
+            "show_border": true,
+            "enable_custom_bg": false,
+            "bg_color": "#ffffff"
           }
         }
       },
@@ -95,7 +127,28 @@
         "feature_row_3",
         "marquee_2"
       ],
-      "settings": {}
+      "settings": {
+        "enable_sprite_sheet": false,
+        "sprite_sheet_frames": 1,
+        "hero_image_max_width": 400,
+        "margin_top": 12,
+        "margin_top_mobile": 8,
+        "border_radius": 14,
+        "color_scheme": "scheme-1",
+        "product_tag_enabled": true,
+        "product_tag_text": "LOREM",
+        "product_tag_text_color": "#000000",
+        "product_tag_border_color": "#000000",
+        "product_tag_bg_color": "rgba(0,0,0,0)",
+        "promo_text": "Sale Roasted Kaffeebohnen",
+        "tagline_width": 300,
+        "title_width": 300,
+        "title_font_size": 38,
+        "tagline_font_size": 14,
+        "price_font_size": 56,
+        "sale_price_font_size": 20,
+        "promo_font_size": 12
+      }
     }
   },
   "order": [

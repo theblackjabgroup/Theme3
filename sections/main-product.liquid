@@ -11,7 +11,12 @@
 <div
   class="product-split-container color-{{ scheme.id }} gradient"
   id="ProductSection-{{ section.id }}"
-  style="--hero-image-max-width: {{ section.settings.hero_image_max_width }}px;"
+  style="
+    --hero-image-max-width: {{ section.settings.hero_image_max_width }}px;
+    --section-margin-top: {{ section.settings.margin_top }}px;
+    --section-margin-top-mobile: {{ section.settings.margin_top_mobile }}px;
+    --section-border-radius: {{ section.settings.border_radius }}px;
+  "
 >
   <!-- HERO SECTION (Floating Absolute) -->
   {% render 'product-hero-image', product: product, section: section %}
@@ -48,17 +53,19 @@
     // ---------------------------------------------------------
     // IMAGE SLIDER LOGIC
     // ---------------------------------------------------------
-    const track = sectionContainer.querySelector('#ProductMediaTrack');
-    if (track) {
-      // Helper to get only visible slides (handles desktop/mobile hiding)
+    const wrappers = sectionContainer.querySelectorAll('.product-media-wrapper');
+    wrappers.forEach(wrapper => {
+      const track = wrapper.querySelector('.product-media-track');
+      if (!track) return;
+
       const getSlides = () => Array.from(track.children).filter(slide => slide.offsetParent !== null);
       
       let index = 0;
 
       function updateButtons() {
         const slides = getSlides();
-        const prevBtn = sectionContainer.querySelector('.media-nav.prev');
-        const nextBtn = sectionContainer.querySelector('.media-nav.next');
+        const prevBtn = wrapper.querySelector('.media-nav.prev');
+        const nextBtn = wrapper.querySelector('.media-nav.next');
 
         if (prevBtn) {
           if (index <= 0) {
@@ -70,7 +77,9 @@
           }
         }
         if (nextBtn) {
-          if (slides.length === 0 || index >= slides.length - 1) {
+          // If slides are empty or index at end
+          const maxIdx = slides.length > 0 ? slides.length - 1 : 0;
+          if (index >= maxIdx) {
             nextBtn.style.opacity = '0.3';
             nextBtn.style.pointerEvents = 'none';
           } else {
@@ -82,9 +91,10 @@
 
       function scrollToSlide(i) {
         const slides = getSlides();
-        // Clamp index
+        const maxIdx = slides.length > 0 ? slides.length - 1 : 0;
+        
         if (i < 0) i = 0;
-        if (i >= slides.length) i = slides.length - 1;
+        if (i > maxIdx) i = maxIdx;
         
         index = i;
         
@@ -94,8 +104,8 @@
         updateButtons();
       }
 
-      const prevBtn = sectionContainer.querySelector('.media-nav.prev');
-      const nextBtn = sectionContainer.querySelector('.media-nav.next');
+      const prevBtn = wrapper.querySelector('.media-nav.prev');
+      const nextBtn = wrapper.querySelector('.media-nav.next');
 
       prevBtn?.addEventListener('click', () => {
         scrollToSlide(index - 1);
@@ -104,13 +114,13 @@
         scrollToSlide(index + 1);
       });
 
-      // Update on resize to handle hidden/shown slides
+      // Update on resize
       window.addEventListener('resize', () => {
         scrollToSlide(index);
       });
 
       updateButtons();
-    }
+    });
 
     // ---------------------------------------------------------
     // SCROLL ANIMATION
@@ -469,6 +479,36 @@
       "unit": "px",
       "label": "Hero Image Max Width",
       "default": 400
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top Margin",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Top Margin (Mobile)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Border Radius",
+      "default": 14
     },
     {
       "type": "color_scheme",
