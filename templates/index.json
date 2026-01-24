@@ -35,6 +35,7 @@
             "mobile_column_span": 2.0,
             "mobile_row_span": 0.5,
             "card_background_color": "#E5E1DA",
+            "heading_text_color": "#306030"
           } 
         },
         "card_3": { 

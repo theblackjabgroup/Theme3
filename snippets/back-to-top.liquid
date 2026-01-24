@@ -27,10 +27,20 @@
 
     // Scroll to top on click
     backToTopButton.addEventListener('click', function() {
+      // Scroll the main window to top
       window.scrollTo({
         top: 0,
         behavior: 'smooth'
       });
+      
+      // Scroll the header sidebar to top
+      const headerSidebar = document.querySelector('.vertical-sidebar-inner');
+      if (headerSidebar) {
+        headerSidebar.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }
     });
 
     // Listen for scroll events

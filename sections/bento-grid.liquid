@@ -231,7 +231,23 @@
                     -%}
                     <div
                       class="tag-card-tag tag-card-tag--{{ tag_style }}"
-                      style="font-size: {{ tag_font_size }}px; font-weight: {{ tag_font_weight }}; --mobile-tag-font-size: {{ mobile_tag_font_size }}px; --mobile-tag-font-weight: {{ mobile_tag_font_weight }};"
+                      style="
+                        font-size: {{ tag_font_size }}px; 
+                        font-weight: {{ tag_font_weight }}; 
+                        --mobile-tag-font-size: {{ mobile_tag_font_size }}px; 
+                        --mobile-tag-font-weight: {{ mobile_tag_font_weight }};
+                        {%- if tag_style == 'filled' and block.settings.tag_bg_color != blank -%}
+                          background: {{ block.settings.tag_bg_color }} !important;
+                        {%- endif -%}
+                        {%- if tag_style == 'border' and block.settings.tag_border_color != blank -%}
+                          border-color: {{ block.settings.tag_border_color }} !important;
+                        {%- endif -%}
+                        {%- if block.settings.tag_text_color != blank -%}
+                          color: {{ block.settings.tag_text_color }} !important;
+                        {%- elsif tag_style == 'border' and block.settings.tag_border_color != blank -%}
+                          color: {{ block.settings.tag_border_color }} !important;
+                        {%- endif -%}
+                      "
                     >
                       {{ block.settings.tag_text }}
                     </div>
@@ -251,11 +267,12 @@
                       | default: main_line_height
                     -%}
                     {%- assign main_display_type = block.settings.main_text_display_type | default: 'paragraph' -%}
-                    {%- assign words = block.settings.main_text | split: ' ' -%}
                     {%- if main_display_type == 'heading' -%}
+                      {%- assign plain_text = block.settings.main_text | strip_html -%}
+                      {%- assign words = plain_text | split: ' ' -%}
                       <h3
                         class="tag-card-main tag-card-main--heading"
-                        style="--desktop-main-font-size: {{ main_font_size }}px; --desktop-main-font-weight: {{ main_font_weight }}; --desktop-main-line-height: {{ main_line_height }}; --mobile-main-font-size: {{ mobile_main_font_size }}px; --mobile-main-font-weight: {{ mobile_main_font_weight }}; --mobile-main-line-height: {{ mobile_main_line_height }};"
+                        style="--desktop-main-font-size: {{ main_font_size }}px; --desktop-main-font-weight: {{ main_font_weight }}; --desktop-main-line-height: {{ main_line_height }}; --mobile-main-font-size: {{ mobile_main_font_size }}px; --mobile-main-font-weight: {{ mobile_main_font_weight }}; --mobile-main-line-height: {{ mobile_main_line_height }};{%- if block.settings.main_text_color != blank %} color: {{ block.settings.main_text_color }} !important;{% endif %}"
                       >
                         {%- for word in words -%}
                           <span class="tag-card-word">{{ word }}</span>
@@ -264,13 +281,10 @@
                       </h3>
                     {%- else -%}
                       <div
-                        class="tag-card-main"
-                        style="--desktop-main-font-size: {{ main_font_size }}px; --desktop-main-font-weight: {{ main_font_weight }}; --desktop-main-line-height: {{ main_line_height }}; --mobile-main-font-size: {{ mobile_main_font_size }}px; --mobile-main-font-weight: {{ mobile_main_font_weight }}; --mobile-main-line-height: {{ mobile_main_line_height }};"
+                        class="tag-card-main tag-card-main--paragraph"
+                        style="--desktop-main-font-size: {{ main_font_size }}px; --desktop-main-font-weight: {{ main_font_weight }}; --desktop-main-line-height: {{ main_line_height }}; --mobile-main-font-size: {{ mobile_main_font_size }}px; --mobile-main-font-weight: {{ mobile_main_font_weight }}; --mobile-main-line-height: {{ mobile_main_line_height }};{%- if block.settings.main_text_color != blank %} color: {{ block.settings.main_text_color }} !important;{% endif %}"
                       >
-                        {%- for word in words -%}
-                          <span class="tag-card-word">{{ word }}</span>
-                          {%- unless forloop.last %} {% endunless %}
-                        {%- endfor -%}
+                        {{ block.settings.main_text }}
                       </div>
                     {%- endif -%}
                   {%- endif -%}
@@ -498,7 +512,11 @@
               class="bento-card button-card"
               style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %}"
             >
-              {% render 'primary-button', text: label, link: block.settings.link %}
+              {%- render 'submit-button',
+                text: label,
+                url: block.settings.link,
+                class: 'button-card-button'
+              -%}
             </div>
 
           {%- when 'text_card' -%}
@@ -521,9 +539,10 @@
             {%- assign button_weight = block.settings.button_font_weight | default: 600 -%}
             {%- assign mobile_button_size = block.settings.mobile_button_font_size | default: button_size -%}
             {%- assign mobile_button_weight = block.settings.mobile_button_font_weight | default: button_weight -%}
+            {%- assign heading_color = block.settings.heading_text_color | default: '#306030' -%}
             <div
               class="bento-card text-card text-card--align-{{ align }} text-card--valign-{{ vertical_align }}"
-              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %} --desktop-heading-font-size: {{ heading_size }}px; --desktop-heading-font-weight: {{ heading_weight }}; --mobile-heading-font-size: {{ mobile_heading_size }}px; --mobile-heading-font-weight: {{ mobile_heading_weight }}; --desktop-paragraph-font-size: {{ para_size }}px; --desktop-paragraph-font-weight: {{ para_weight }}; --desktop-paragraph-line-height: {{ para_line_height }}; --mobile-paragraph-font-size: {{ mobile_para_size }}px; --mobile-paragraph-font-weight: {{ mobile_para_weight }}; --mobile-paragraph-line-height: {{ mobile_para_line_height }}; --desktop-button-font-size: {{ button_size }}px; --desktop-button-font-weight: {{ button_weight }}; --mobile-button-font-size: {{ mobile_button_size }}px; --mobile-button-font-weight: {{ mobile_button_weight }};"
+              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %} --text-card-heading-color: {{ heading_color }}; --desktop-heading-font-size: {{ heading_size }}px; --desktop-heading-font-weight: {{ heading_weight }}; --mobile-heading-font-size: {{ mobile_heading_size }}px; --mobile-heading-font-weight: {{ mobile_heading_weight }}; --desktop-paragraph-font-size: {{ para_size }}px; --desktop-paragraph-font-weight: {{ para_weight }}; --desktop-paragraph-line-height: {{ para_line_height }}; --mobile-paragraph-font-size: {{ mobile_para_size }}px; --mobile-paragraph-font-weight: {{ mobile_para_weight }}; --mobile-paragraph-line-height: {{ mobile_para_line_height }}; --desktop-button-font-size: {{ button_size }}px; --desktop-button-font-weight: {{ button_weight }}; --mobile-button-font-size: {{ mobile_button_size }}px; --mobile-button-font-weight: {{ mobile_button_weight }};"
             >
               <div class="text-card-inner">
                 {%- if block.settings.enable_svg and block.settings.svg_icon != blank -%}
@@ -540,7 +559,7 @@
                 {%- endif -%}
 
                 {%- if block.settings.enable_heading and block.settings.heading != blank -%}
-                  <h3 class="text-card-heading"{% if block.settings.heading_text_color != blank %} style="color: {{ block.settings.heading_text_color }};"{% endif %}>
+                  <h3 class="text-card-heading" style="color: var(--text-card-heading-color, {{ heading_color }});">
                     {{ block.settings.heading }}
                   </h3>
                 {%- endif -%}
@@ -1738,6 +1757,29 @@
         },
         {
           "type": "header",
+          "content": "Tag Colors"
+        },
+        {
+          "type": "color",
+          "id": "tag_text_color",
+          "label": "Tag text color",
+          "default": "#306030"
+        },
+        {
+          "type": "color",
+          "id": "tag_bg_color",
+          "label": "Tag background color",
+          "info": "Applies when tag style is 'Filled'"
+        },
+        {
+          "type": "color",
+          "id": "tag_border_color",
+          "label": "Tag border color",
+          "default": "#306030",
+          "info": "Applies when tag style is 'Border'"
+        },
+        {
+          "type": "header",
           "content": "Typography"
         },
         {
@@ -1763,7 +1805,7 @@
           "default": "600"
         },
         { "type": "checkbox", "id": "show_text", "label": "Show main text", "default": true },
-        { "type": "text", "id": "main_text", "label": "Main text", "default": "Title of the card" },
+        { "type": "richtext", "id": "main_text", "label": "Main text", "default": "<p>Title of the card</p>" },
         {
           "type": "select",
           "id": "main_text_display_type",
@@ -1774,6 +1816,16 @@
           ],
           "default": "paragraph",
           "info": "Choose whether to display the main text as a heading or paragraph"
+        },
+        {
+          "type": "header",
+          "content": "Main Text Colors"
+        },
+        {
+          "type": "color",
+          "id": "main_text_color",
+          "label": "Main text color",
+          "default": "#306030"
         },
         {
           "type": "range",
@@ -2097,7 +2149,7 @@
           "type": "color",
           "id": "card_background_color",
           "label": "Card Background Color",
-          "default": "#ffffff",
+          "default": "#D2CDC4",
           "info": "Background color for this card"
         },
         {
@@ -2175,6 +2227,7 @@
           "type": "color",
           "id": "heading_text_color",
           "label": "Heading Text Color",
+          "default": "#306030",
           "info": "Text color for the heading. If not set, will use the default text color."
         },
         {
@@ -2445,7 +2498,7 @@
           "default": "#ffffff",
           "info": "Background color for this card"
         },
-        { "type": "checkbox", "id": "show_tag", "label": "Show tag", "default": true },
+        { "type": "checkbox", "id": "show_tag", "label": "Show tag", "default": false },
         { "type": "text", "id": "tag_text", "label": "Tag text", "default": "Product Tag" },
         {
           "type": "select",
@@ -2966,7 +3019,7 @@
     {
       "name": "Bento Grid",
       "blocks": [
-        { "type": "tag_card", "settings": { "column_span": 1.6, "row_span": 1.4, "card_background_color": "#306030" } },
+        { "type": "tag_card", "settings": { "column_span": 1.6, "row_span": 1.4, "card_background_color": "#d2cdc4", "content_alignment": "center", "vertical_alignment": "center" } },
         {
           "type": "text_card",
           "settings": {
