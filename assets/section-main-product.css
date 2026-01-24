@@ -270,6 +270,8 @@
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   padding: 0 2rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 .product-media-track::-webkit-scrollbar {
   display: none;
