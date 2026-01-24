@@ -2,13 +2,13 @@
 
 <style>
   :root {
-    --header-width: {{ section.settings.header_width | default: 280 }}px;
+    --header-width: {{ section.settings.header_width | default: 230 }}px;
     --header-padding: {{ section.settings.header_padding | default: 24 }}px;
     --header-gap: {{ section.settings.header_gap | default: 24 }}px;
 
     /* Logo */
-    --logo-padding-top: {{ section.settings.logo_padding_top | default: 16 }}px;
-    --logo-padding-bottom: {{ section.settings.logo_padding_bottom | default: 16 }}px;
+    --logo-padding-top: {{ section.settings.logo_padding_top | default: 26 }}px;
+    --logo-padding-bottom: {{ section.settings.logo_padding_bottom | default: 26 }}px;
     --logo-padding-left: {{ section.settings.logo_padding_left | default: 20 }}px;
     --logo-padding-right: {{ section.settings.logo_padding_right | default: 20 }}px;
     --logo-padding: var(--logo-padding-top) var(--logo-padding-right) var(--logo-padding-bottom) var(--logo-padding-left);
@@ -17,7 +17,7 @@
     --logo-font-weight: {{ section.settings.logo_font_weight | default: 700 }};
     --logo-letter-spacing: {{ section.settings.logo_letter_spacing | default: -0.5 }}px;
     --color-header-logo-background: {{ section.settings.logo_background_color | default: '#306030' }};
-    --logo-image-max-width: {{ section.settings.logo_image_max_width | default: 200 }}px;
+    --logo-image-max-width: {{ section.settings.logo_image_max_width | default: 140 }}px;
     --logo-image-max-height: {{ section.settings.logo_image_max_height | default: 100 }}px;
     --logo-image-width: {% if section.settings.logo_image_width > 0 %}{{ section.settings.logo_image_width }}px{% else %}auto{% endif %};
     --logo-image-height: {% if section.settings.logo_image_height > 0 %}{{ section.settings.logo_image_height }}px{% else %}auto{% endif %};
@@ -34,7 +34,8 @@
     --button-icon-size: {{ section.settings.button_icon_size | default: 20 }}px;
 
     /* Navigation */
-    --nav-gap: {{ section.settings.nav_gap | default: 16 }}px;
+    --nav-gap: {{ section.settings.nav_gap | default: 10 }}px;
+    --nav-animation-speed: {{ section.settings.nav_animation_speed | default: 0.8 }}s;
     --nav-padding-top: {{ section.settings.nav_padding_top | default: 24 }}px;
     --nav-padding-bottom: {{ section.settings.nav_padding_bottom | default: 24 }}px;
     --nav-item-padding-top: {{ section.settings.nav_item_padding_top | default: 16 }}px;
@@ -46,20 +47,14 @@
     --nav-font-weight: {{ section.settings.nav_font_weight | default: 700 }};
     --nav-letter-spacing: {{ section.settings.nav_letter_spacing | default: 0.5 }}px;
     --nav-icon-size: {{ section.settings.nav_icon_size | default: 20 }}px;
+    --nav-hover-background: {{ section.settings.nav_hover_background_color | default: '#306030' }};
+    --nav-default-background: var(--color-header-button-background, var(--color-header-background, var(--color-background, #eae7e1)));
     {%- if section.settings.nav_show_borders -%}
       --nav-border: 1px solid var(--color-header-border, var(--color-headings, #365330));
     {%- else -%}
       --nav-border: none;
     {%- endif -%}
 
-    /* Back to Top */
-    --back-to-top-margin-top: {{ section.settings.back_to_top_margin_top | default: 12 }}px;
-    --back-to-top-padding-top: {{ section.settings.back_to_top_padding_top | default: 14 }}px;
-    --back-to-top-padding-bottom: {{ section.settings.back_to_top_padding_bottom | default: 14 }}px;
-    --back-to-top-padding-left: {{ section.settings.back_to_top_padding_left | default: 18 }}px;
-    --back-to-top-padding-right: {{ section.settings.back_to_top_padding_right | default: 18 }}px;
-    --back-to-top-padding: var(--back-to-top-padding-top) var(--back-to-top-padding-right) var(--back-to-top-padding-bottom) var(--back-to-top-padding-left);
-    --back-to-top-font-size: {{ section.settings.back_to_top_font_size | default: 16 }}px;
   }
 </style>
 
@@ -73,10 +68,10 @@
     <div class="vertical-sidebar-logo">
       <a
         href="{{ routes.root_url }}"
-        class="vertical-sidebar-logo-link vertical-sidebar-logo-link--{{ section.settings.logo_alignment | default: 'left' }}"
+        class="vertical-sidebar-logo-link vertical-sidebar-logo-link--{{ section.settings.logo_alignment | default: 'center' }}"
       >
         {%- if section.settings.logo != blank -%}
-          {%- assign logo_width = section.settings.logo_image_max_width | default: 200 -%}
+          {%- assign logo_width = section.settings.logo_image_max_width | default: 140 -%}
           {{
             section.settings.logo
             | image_url: width: logo_width
@@ -96,7 +91,15 @@
           {%- assign welcome_icon = '' -%}
           {%- assign icon_size = section.settings.button_icon_size | default: 20 -%}
           {%- if block.settings.button_icon_image != blank -%}
-            {%- assign welcome_icon = block.settings.button_icon_image | image_url: width: icon_size | image_tag: loading: 'lazy', alt: 'Account', class: 'button-icon-image', width: icon_size, height: icon_size -%}
+            {%- assign welcome_icon = block.settings.button_icon_image
+              | image_url: width: icon_size
+              | image_tag:
+                loading: 'lazy',
+                alt: 'Account',
+                class: 'button-icon-image',
+                width: icon_size,
+                height: icon_size
+            -%}
           {%- elsif block.settings.button_icon_svg != blank -%}
             {%- assign welcome_icon = block.settings.button_icon_svg -%}
           {%- else -%}
@@ -118,7 +121,10 @@
           {%- assign cart_icon = '' -%}
           {%- assign icon_size = section.settings.button_icon_size | default: 20 -%}
           {%- if block.settings.button_icon_image != blank -%}
-            {%- assign cart_icon = block.settings.button_icon_image | image_url: width: icon_size | image_tag: loading: 'lazy', alt: 'Cart', class: 'button-icon-image', width: icon_size, height: icon_size -%}
+            {%- assign cart_icon = block.settings.button_icon_image
+              | image_url: width: icon_size
+              | image_tag: loading: 'lazy', alt: 'Cart', class: 'button-icon-image', width: icon_size, height: icon_size
+            -%}
           {%- elsif block.settings.button_icon_svg != blank -%}
             {%- assign cart_icon = block.settings.button_icon_svg -%}
           {%- else -%}
@@ -128,8 +134,8 @@
           {%- assign cart_text = '' -%}
           {%- if cart.item_count > 0 -%}
             {%- assign cart_text = cart.item_count -%}
-          {%- elsif block.settings.button_text != blank -%}
-            {%- assign cart_text = block.settings.button_text -%}
+          {%- else -%}
+            {%- assign cart_text = '0' -%}
           {%- endif -%}
           {%- render 'submit-button',
             text: cart_text,
@@ -150,7 +156,15 @@
           {%- assign search_icon = '' -%}
           {%- assign icon_size = section.settings.button_icon_size | default: 20 -%}
           {%- if block.settings.button_icon_image != blank -%}
-            {%- assign search_icon = block.settings.button_icon_image | image_url: width: icon_size | image_tag: loading: 'lazy', alt: 'Search', class: 'button-icon-image', width: icon_size, height: icon_size -%}
+            {%- assign search_icon = block.settings.button_icon_image
+              | image_url: width: icon_size
+              | image_tag:
+                loading: 'lazy',
+                alt: 'Search',
+                class: 'button-icon-image',
+                width: icon_size,
+                height: icon_size
+            -%}
           {%- elsif block.settings.button_icon_svg != blank -%}
             {%- assign search_icon = block.settings.button_icon_svg -%}
           {%- else -%}
@@ -158,7 +172,8 @@
           {%- endif -%}
           {%- comment -%} Determine button type and URL {%- endcomment -%}
           {%- if block.settings.button_url != blank -%}
-            {%- render 'submit-button',
+            {%-
+              render 'submit-button',
               text: block.settings.button_text | default: '',
               url: block.settings.button_url,
               icon: search_icon,
@@ -166,7 +181,8 @@
               attributes: 'aria-label="Search"'
             -%}
           {%- else -%}
-            {%- render 'submit-button',
+            {%-
+              render 'submit-button',
               text: block.settings.button_text | default: '',
               url: '',
               icon: search_icon,
@@ -193,29 +209,91 @@
               {%- break -%}
             {%- endif -%}
           {%- endfor -%}
-          
-          {%- comment -%} Determine which icon to use for this link {%- endcomment -%}
+
+          {%- comment -%} Determine which default icon to use for this link {%- endcomment -%}
           {%- assign nav_icon = default_icon_svg -%}
           {%- assign nav_icon_is_image = false -%}
+          {%- assign nav_hover_icon = '' -%}
+          {%- assign nav_hover_icon_is_image = false -%}
+          {%- assign icon_size = section.settings.nav_icon_size | default: 20 -%}
+
           {%- if custom_icon_block != null -%}
             {%- comment -%} Use custom icon from block {%- endcomment -%}
             {%- if custom_icon_block.settings.icon_image != blank -%}
-              {%- assign icon_size = section.settings.nav_icon_size | default: 20 -%}
-              {%- assign nav_icon = custom_icon_block.settings.icon_image | image_url: width: icon_size | image_tag: loading: 'lazy', alt: link.title, class: 'nav-icon-image', width: icon_size, height: icon_size -%}
+              {%- assign nav_icon = custom_icon_block.settings.icon_image
+                | image_url: width: icon_size
+                | image_tag:
+                  loading: 'lazy',
+                  alt: link.title,
+                  class: 'nav-icon-image',
+                  width: icon_size,
+                  height: icon_size
+              -%}
               {%- assign nav_icon_is_image = true -%}
             {%- elsif custom_icon_block.settings.icon_svg != blank -%}
               {%- assign nav_icon = custom_icon_block.settings.icon_svg -%}
             {%- endif -%}
+            {%- comment -%} Check for hover icon {%- endcomment -%}
+            {%- if custom_icon_block.settings.hover_icon_image != blank -%}
+              {%- assign nav_hover_icon = custom_icon_block.settings.hover_icon_image
+                | image_url: width: icon_size
+                | image_tag:
+                  loading: 'lazy',
+                  alt: link.title,
+                  class: 'nav-icon-image',
+                  width: icon_size,
+                  height: icon_size
+              -%}
+              {%- assign nav_hover_icon_is_image = true -%}
+            {%- elsif custom_icon_block.settings.hover_icon_svg != blank -%}
+              {%- assign nav_hover_icon = custom_icon_block.settings.hover_icon_svg -%}
+            {%- endif -%}
           {%- elsif section.settings.nav_icon_image != blank -%}
             {%- comment -%} Use global default icon image {%- endcomment -%}
-            {%- assign icon_size = section.settings.nav_icon_size | default: 20 -%}
-            {%- assign nav_icon = section.settings.nav_icon_image | image_url: width: icon_size | image_tag: loading: 'lazy', alt: link.title, class: 'nav-icon-image', width: icon_size, height: icon_size -%}
+            {%- assign nav_icon = section.settings.nav_icon_image
+              | image_url: width: icon_size
+              | image_tag:
+                loading: 'lazy',
+                alt: link.title,
+                class: 'nav-icon-image',
+                width: icon_size,
+                height: icon_size
+            -%}
             {%- assign nav_icon_is_image = true -%}
+            {%- comment -%} Check for global hover icon {%- endcomment -%}
+            {%- if section.settings.nav_hover_icon_image != blank -%}
+              {%- assign nav_hover_icon = section.settings.nav_hover_icon_image
+                | image_url: width: icon_size
+                | image_tag:
+                  loading: 'lazy',
+                  alt: link.title,
+                  class: 'nav-icon-image',
+                  width: icon_size,
+                  height: icon_size
+              -%}
+              {%- assign nav_hover_icon_is_image = true -%}
+            {%- elsif section.settings.nav_hover_icon_svg != blank -%}
+              {%- assign nav_hover_icon = section.settings.nav_hover_icon_svg -%}
+            {%- endif -%}
           {%- elsif section.settings.nav_icon_svg != blank -%}
             {%- comment -%} Use global default icon SVG {%- endcomment -%}
             {%- assign nav_icon = section.settings.nav_icon_svg -%}
+            {%- if section.settings.nav_hover_icon_svg != blank -%}
+              {%- assign nav_hover_icon = section.settings.nav_hover_icon_svg -%}
+            {%- elsif section.settings.nav_hover_icon_image != blank -%}
+              {%- assign nav_hover_icon = section.settings.nav_hover_icon_image
+                | image_url: width: icon_size
+                | image_tag:
+                  loading: 'lazy',
+                  alt: link.title,
+                  class: 'nav-icon-image',
+                  width: icon_size,
+                  height: icon_size
+              -%}
+              {%- assign nav_hover_icon_is_image = true -%}
+            {%- endif -%}
           {%- endif -%}
-          
+
           <li class="vertical-sidebar-nav-item">
             {%- if link.links != blank -%}
               {%- assign matching_block = null -%}
@@ -227,57 +305,88 @@
               {%- endfor -%}
 
               <button
-                class="header-nav-button header-nav-button--dropdown"
+                class="header-nav-button header-nav-button--dropdown{% if nav_hover_icon != blank %} has-hover-icon{% endif %}"
                 aria-expanded="false"
                 aria-controls="MegaMenu-{{ forloop.index }}"
                 data-mega-menu-trigger
               >
-                <span class="header-nav-button-icon {% if nav_icon_is_image %}header-nav-button-icon--image{% endif %}">{{ nav_icon }}</span>
+                <span class="header-nav-button-icon {% if nav_icon_is_image %}header-nav-button-icon--image{% endif %}">
+                  <span class="nav-icon-default">{{ nav_icon }}</span>
+                  {%- if nav_hover_icon != blank -%}
+                    <span class="nav-icon-hover {% if nav_hover_icon_is_image %}header-nav-button-icon--image{% endif %}">
+                      {{- nav_hover_icon -}}
+                    </span>
+                  {%- endif -%}
+                </span>
                 <span class="header-nav-button-text">{{ link.title | upcase }}</span>
               </button>
 
               <div id="MegaMenu-{{ forloop.index }}" class="mega-menu" data-mega-menu>
                 <div class="mega-menu-inner">
-                  <div class="mega-menu-nav">
-                    <ul class="mega-menu-list">
-                      {%- for childlink in link.links -%}
-                        <li class="mega-menu-item">
-                          <a href="{{ childlink.url }}" class="mega-menu-link">
-                            {{ childlink.title }}
-                          </a>
-                        </li>
-                      {%- endfor -%}
-                    </ul>
+                  {%- comment -%} Main Title Section {%- endcomment -%}
+                  <div class="mega-menu-header">
+                    <h2 class="mega-menu-title">
+                      {{ matching_block.settings.main_title | default: link.title | default: 'Collection' }}
+                    </h2>
                   </div>
+
+                  {%- comment -%} Featured Columns Section {%- endcomment -%}
+                  {%- if link.links != blank -%}
+                    <div class="mega-menu-featured-columns">
+                      {%- assign total_links = link.links.size -%}
+                      {%- assign links_per_column = total_links | divided_by: 3.0 | ceil -%}
+
+                      {%- for i in (1..3) -%}
+                        {%- assign featured_title_key = 'featured_title_' | append: i -%}
+                        {%- assign featured_title = matching_block.settings[featured_title_key]
+                          | default: 'FEATURED'
+                        -%}
+                        {%- assign start_index = i | minus: 1 | times: links_per_column -%}
+                        {%- assign end_index = start_index | plus: links_per_column | minus: 1 -%}
+                        {%- if i == 3 -%}
+                          {%- assign end_index = total_links | minus: 1 -%}
+                        {%- endif -%}
+                        <div class="mega-menu-column">
+                          <h3 class="mega-menu-featured-header">
+                            <span class="mega-menu-featured-bullet"></span>
+                            {{ featured_title }}
+                          </h3>
+                          <ul class="mega-menu-column-list">
+                            {%- for j in (start_index..end_index) -%}
+                              {%- if j >= 0 and j < total_links and link.links[j] -%}
+                                <li class="mega-menu-column-item">
+                                  <a href="{{ link.links[j].url }}" class="mega-menu-column-link">
+                                    {{ link.links[j].title }}
+                                  </a>
+                                </li>
+                              {%- endif -%}
+                            {%- endfor -%}
+                          </ul>
+                        </div>
+                      {%- endfor -%}
+                    </div>
+                  {%- endif -%}
+
+                  {%- comment -%} Image Cards Section {%- endcomment -%}
                   {%- if matching_block != null -%}
-                    <div class="mega-menu-featured">
-                      <div class="mega-menu-grid">
-                        {%- for i in (1..4) -%}
+                    <div class="mega-menu-images">
+                      <div class="mega-menu-image-grid">
+                        {%- for i in (1..2) -%}
                           {%- assign img_key = 'image_' | append: i -%}
-                          {%- assign label_key = 'label_' | append: i -%}
                           {%- assign link_key = 'link_' | append: i -%}
+                          {%- assign label_key = 'label_' | append: i -%}
                           {%- assign img = matching_block.settings[img_key] -%}
-                          {%- assign label = matching_block.settings[label_key] -%}
                           {%- assign url = matching_block.settings[link_key] -%}
+                          {%- assign label = matching_block.settings[label_key] -%}
 
                           {%- if img != blank -%}
-                            {%- assign product_count = null -%}
-                            {%- if url contains '/collections/' -%}
-                              {%- assign url_parts = url | split: '/' -%}
-                              {%- assign collection_handle = url_parts | last | split: '?' | first -%}
-                              {%- assign product_count = collections[collection_handle].products_count -%}
-                            {%- endif -%}
-
-                            <a href="{{ url | default: '#' }}" class="mega-menu-featured-item">
+                            <a href="{{ url | default: '#' }}" class="mega-menu-image-card">
                               <div class="mega-menu-image-wrapper">
                                 {{ img | image_url: width: 400 | image_tag: loading: 'lazy', class: 'mega-menu-image' }}
                               </div>
                               {%- if label != blank -%}
-                                <div class="mega-menu-label">
+                                <div class="mega-menu-image-label">
                                   {{ label }}
-                                  {%- if product_count != null -%}
-                                    <span class="mega-menu-count">({{ product_count }})</span>
-                                  {%- endif -%}
                                 </div>
                               {%- endif -%}
                             </a>
@@ -295,6 +404,8 @@
                 button_url: link.url,
                 button_icon: nav_icon,
                 button_icon_is_image: nav_icon_is_image,
+                button_hover_icon: nav_hover_icon,
+                button_hover_icon_is_image: nav_hover_icon_is_image,
                 button_type: 'link',
                 button_class: link.active | default: false | ternary: 'active', '',
                 aria_label: link.title
@@ -302,13 +413,6 @@
             {%- endif -%}
           </li>
         {%- endfor -%}
-
-        <!-- Back to Top Button (inside scrollable nav) -->
-        <li class="vertical-sidebar-nav-item vertical-sidebar-nav-item--back-to-top">
-          <div class="vertical-sidebar-back-to-top">
-            {%- render 'back-to-top' -%}
-          </div>
-        </li>
       </ul>
     </nav>
   </div>
@@ -524,7 +628,7 @@
       "step": 10,
       "unit": "px",
       "label": "Header Width",
-      "default": 280,
+      "default": 230,
       "info": "Width of the vertical sidebar header"
     },
     {
@@ -562,7 +666,7 @@
         { "value": "center", "label": "Center" },
         { "value": "right", "label": "Right" }
       ],
-      "default": "left",
+      "default": "center",
       "info": "Horizontal alignment of the logo within the header"
     },
     {
@@ -573,7 +677,7 @@
       "step": 2,
       "unit": "px",
       "label": "Logo Padding Top",
-      "default": 16
+      "default": 26
     },
     {
       "type": "range",
@@ -583,7 +687,7 @@
       "step": 2,
       "unit": "px",
       "label": "Logo Padding Bottom",
-      "default": 16
+      "default": 26
     },
     {
       "type": "range",
@@ -667,7 +771,7 @@
       "step": 10,
       "unit": "px",
       "label": "Logo Image Max Width",
-      "default": 200,
+      "default": 140,
       "info": "Maximum width of the logo image"
     },
     {
@@ -804,8 +908,19 @@
       "step": 2,
       "unit": "px",
       "label": "Navigation Item Gap",
-      "default": 16,
+      "default": 10,
       "info": "Gap between navigation items"
+    },
+    {
+      "type": "range",
+      "id": "nav_animation_speed",
+      "min": 0.1,
+      "max": 2,
+      "step": 0.1,
+      "unit": "s",
+      "label": "Navigation Animation Speed",
+      "default": 0.8,
+      "info": "Animation speed for navigation hover effects"
     },
     {
       "type": "range",
@@ -911,6 +1026,13 @@
       "default": 20
     },
     {
+      "type": "color",
+      "id": "nav_hover_background_color",
+      "label": "Navigation Hover Background Color",
+      "default": "#306030",
+      "info": "Background color for navigation items on hover"
+    },
+    {
       "type": "header",
       "content": "Default Navigation Icon (Fallback)"
     },
@@ -927,75 +1049,27 @@
       "info": "Paste SVG code for a default icon that will be used for all menu items unless overridden by a per-item icon. Use 'currentColor' for stroke/fill to match theme colors. Example: <svg viewBox=\"0 0 24 24\" fill=\"none\"><path d=\"...\" stroke=\"currentColor\" stroke-width=\"2\"/></svg>"
     },
     {
+      "type": "header",
+      "content": "Default Navigation Hover Icon (Fallback)"
+    },
+    {
+      "type": "image_picker",
+      "id": "nav_hover_icon_image",
+      "label": "Default Navigation Hover Icon Image",
+      "info": "Upload a default hover icon image that will be used for all menu items on hover unless overridden by a per-item hover icon. Recommended size: 20x20px to 32x32px."
+    },
+    {
+      "type": "html",
+      "id": "nav_hover_icon_svg",
+      "label": "Default Navigation Hover Icon SVG Code",
+      "info": "Paste SVG code for a default hover icon. Use 'currentColor' for stroke/fill to match theme colors."
+    },
+    {
       "type": "checkbox",
       "id": "nav_show_borders",
       "label": "Show Navigation Item Borders",
       "default": false,
       "info": "Enable borders around navigation items"
-    },
-    {
-      "type": "header",
-      "content": "Back to Top Button Settings"
-    },
-    {
-      "type": "range",
-      "id": "back_to_top_margin_top",
-      "min": 0,
-      "max": 32,
-      "step": 2,
-      "unit": "px",
-      "label": "Back to Top Margin Top",
-      "default": 12
-    },
-    {
-      "type": "range",
-      "id": "back_to_top_padding_top",
-      "min": 8,
-      "max": 32,
-      "step": 2,
-      "unit": "px",
-      "label": "Back to Top Padding Top",
-      "default": 14
-    },
-    {
-      "type": "range",
-      "id": "back_to_top_padding_bottom",
-      "min": 8,
-      "max": 32,
-      "step": 2,
-      "unit": "px",
-      "label": "Back to Top Padding Bottom",
-      "default": 14
-    },
-    {
-      "type": "range",
-      "id": "back_to_top_padding_left",
-      "min": 8,
-      "max": 32,
-      "step": 2,
-      "unit": "px",
-      "label": "Back to Top Padding Left",
-      "default": 18
-    },
-    {
-      "type": "range",
-      "id": "back_to_top_padding_right",
-      "min": 8,
-      "max": 32,
-      "step": 2,
-      "unit": "px",
-      "label": "Back to Top Padding Right",
-      "default": 18
-    },
-    {
-      "type": "range",
-      "id": "back_to_top_font_size",
-      "min": 12,
-      "max": 24,
-      "step": 1,
-      "unit": "px",
-      "label": "Back to Top Font Size",
-      "default": 16
     },
     {
       "type": "header",
@@ -1190,6 +1264,43 @@
         },
         {
           "type": "header",
+          "content": "Main Title"
+        },
+        {
+          "type": "text",
+          "id": "main_title",
+          "label": "Main Title",
+          "default": "Collection",
+          "info": "Main title displayed at the top of the mega menu"
+        },
+        {
+          "type": "header",
+          "content": "Featured Sections"
+        },
+        {
+          "type": "text",
+          "id": "featured_title_1",
+          "label": "Featured Column 1 Title",
+          "default": "FEATURED"
+        },
+        {
+          "type": "text",
+          "id": "featured_title_2",
+          "label": "Featured Column 2 Title",
+          "default": "FEATURED"
+        },
+        {
+          "type": "text",
+          "id": "featured_title_3",
+          "label": "Featured Column 3 Title",
+          "default": "FEATURED"
+        },
+        {
+          "type": "header",
+          "content": "Image Cards"
+        },
+        {
+          "type": "header",
           "content": "Image 1"
         },
         {
@@ -1225,44 +1336,6 @@
           "type": "url",
           "id": "link_2",
           "label": "Link"
-        },
-        {
-          "type": "header",
-          "content": "Image 3"
-        },
-        {
-          "type": "image_picker",
-          "id": "image_3",
-          "label": "Image"
-        },
-        {
-          "type": "text",
-          "id": "label_3",
-          "label": "Label"
-        },
-        {
-          "type": "url",
-          "id": "link_3",
-          "label": "Link"
-        },
-        {
-          "type": "header",
-          "content": "Image 4"
-        },
-        {
-          "type": "image_picker",
-          "id": "image_4",
-          "label": "Image"
-        },
-        {
-          "type": "text",
-          "id": "label_4",
-          "label": "Label"
-        },
-        {
-          "type": "url",
-          "id": "link_4",
-          "label": "Link"
         }
       ]
     },
@@ -1278,7 +1351,7 @@
         },
         {
           "type": "header",
-          "content": "Icon Options"
+          "content": "Default Icon (Unhovered)"
         },
         {
           "type": "image_picker",
@@ -1291,6 +1364,22 @@
           "id": "icon_svg",
           "label": "Icon SVG Code",
           "info": "Paste your SVG code here for this menu item. Use 'currentColor' for stroke/fill to match theme colors. Example: <svg viewBox=\"0 0 24 24\" fill=\"none\"><path d=\"...\" stroke=\"currentColor\" stroke-width=\"2\"/></svg>"
+        },
+        {
+          "type": "header",
+          "content": "Hover Icon (On Hover)"
+        },
+        {
+          "type": "image_picker",
+          "id": "hover_icon_image",
+          "label": "Hover Icon Image",
+          "info": "Upload a custom icon image to show on hover. Recommended size: 20x20px to 32x32px. If both image and SVG are provided, image will be used."
+        },
+        {
+          "type": "html",
+          "id": "hover_icon_svg",
+          "label": "Hover Icon SVG Code",
+          "info": "Paste SVG code for the hover state. Use 'currentColor' for stroke/fill to match theme colors."
         }
       ]
     }

@@ -59,7 +59,8 @@
         "mobile-menu-block"
       ],
       "settings": {
-        "menu": "main-menu"
+        "menu": "main-menu",
+        "header_padding": 20
       }
     }
   },

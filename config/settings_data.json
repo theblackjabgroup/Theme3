@@ -54,7 +54,7 @@
       "scheme-1": {
         "settings": {
           "background": "#D2CDC4",
-          "text": "#E5E1DA",
+          "text": "#121212",
           "shadow": "#121212",
           "header_background": "#D2CDC4",
           "primary_button_bg": "#E5E1DA",
@@ -102,7 +102,7 @@
           "settings": {
             "background": "#D2CDC4",
             "background_gradient": "",
-            "text": "#E5E1DA",
+            "text": "#121212",
             "button": "#E63946",
             "button_label": "#FFFFFF",
             "secondary_button_label": "#121212",
