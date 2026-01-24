@@ -13,22 +13,21 @@
 {%- endcomment -%}
 <div class="product-split-left">
   <div class="product-left-inner">
-    <!-- Stock Badge (Moved to Top) -->
-    <div class="stock-badge-wrapper product-type-badge-wrapper">
-      {% assign current_variant = product.selected_or_first_available_variant %}
-      {% if product.available %}
-        <span class="stock-badge product-type-badge">
-          {% if current_variant.inventory_management == 'shopify'
-            and current_variant.inventory_quantity > 0
-            and current_variant.inventory_quantity <= 10
-          %}
-            Only {{ current_variant.inventory_quantity }} left in stock
-          {% else %}
-            In stock
-          {% endif %}
-        </span>
-      {% endif %}
-    </div>
+    {% assign current_variant = product.selected_or_first_available_variant %}
+
+    <!-- Custom Tag -->
+    {% if product_tag_enabled and product_tag_text != blank %}
+      <div
+        class="product-custom-tag"
+        style="
+          --tag-text-color: {{ product_tag_text_color | default: '#000000' }};
+          --tag-border-color: {{ product_tag_border_color | default: '#000000' }};
+          --tag-bg-color: {{ product_tag_bg_color | default: 'transparent' }};
+        "
+      >
+        {{ product_tag_text }}
+      </div>
+    {% endif %}
 
     <div class="product__title" style="max-width: {{ title_width | default: 500 }}px; margin: 0 auto;">
       <h1 style="font-size: {{ title_font_size | default: 38 }}px;">{{ product.title }}</h1>
@@ -55,6 +54,22 @@
       >
         MRP {{ current_variant.compare_at_price | money_without_trailing_zeros }}
       </span>
+    </div>
+
+    <!-- Stock Badge -->
+    <div class="stock-badge-wrapper product-type-badge-wrapper">
+      {% if product.available %}
+        <span class="stock-badge product-type-badge">
+          {% if current_variant.inventory_management == 'shopify'
+            and current_variant.inventory_quantity > 0
+            and current_variant.inventory_quantity <= 10
+          %}
+            Only {{ current_variant.inventory_quantity }} left in stock
+          {% else %}
+            In stock
+          {% endif %}
+        </span>
+      {% endif %}
     </div>
 
     {% unless product.has_only_default_variant %}

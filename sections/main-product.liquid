@@ -1,7 +1,18 @@
 {% assign product_form_id = 'product-form-' | append: section.id %}
 {{ 'section-main-product.css' | asset_url | stylesheet_tag }}
 
-<div class="product-split-container" id="ProductSection-{{ section.id }}">
+{%- liquid
+  assign scheme = section.settings.color_scheme
+  if scheme == blank
+    assign scheme = settings.color_schemes | first
+  endif
+-%}
+
+<div
+  class="product-split-container color-{{ scheme.id }} gradient"
+  id="ProductSection-{{ section.id }}"
+  style="--hero-image-max-width: {{ section.settings.hero_image_max_width }}px;"
+>
   <!-- HERO SECTION (Floating Absolute) -->
   {% render 'product-hero-image', product: product, section: section %}
 
@@ -17,7 +28,12 @@
     tagline_font_size: section.settings.tagline_font_size,
     price_font_size: section.settings.price_font_size,
     sale_price_font_size: section.settings.sale_price_font_size,
-    promo_font_size: section.settings.promo_font_size
+    promo_font_size: section.settings.promo_font_size,
+    product_tag_enabled: section.settings.product_tag_enabled,
+    product_tag_text: section.settings.product_tag_text,
+    product_tag_text_color: section.settings.product_tag_text_color,
+    product_tag_border_color: section.settings.product_tag_border_color,
+    product_tag_bg_color: section.settings.product_tag_bg_color
   %}
 
   <!-- RIGHT COLUMN -->
@@ -443,6 +459,60 @@
       "label": "Sprite Sheet Frames",
       "default": 1,
       "info": "Total number of frames in the sprite sheet strip."
+    },
+    {
+      "type": "range",
+      "id": "hero_image_max_width",
+      "min": 200,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "label": "Hero Image Max Width",
+      "default": 400
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Product Tag (Above Title)"
+    },
+    {
+      "type": "checkbox",
+      "id": "product_tag_enabled",
+      "label": "Enable Tag",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "product_tag_text",
+      "label": "Tag Text",
+      "default": "LOREM"
+    },
+    {
+      "type": "color",
+      "id": "product_tag_text_color",
+      "label": "Tag Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "product_tag_border_color",
+      "label": "Tag Border Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "product_tag_bg_color",
+      "label": "Tag Background Color",
+      "default": "transparent"
+    },
+    {
+      "type": "header",
+      "content": "Content"
     },
     {
       "type": "text",

@@ -1,5 +1,27 @@
 {
   "sections": {
+    "scrolling_text": {
+      "type": "scrolling-text",
+      "blocks": {
+        "strip_1": {
+          "type": "scrolling_strip",
+          "settings": {
+            "text": "<p>FREE SHIPPING WORLDWIDE</p>",
+            "speed": 20,
+            "direction": "left",
+            "bg_color": "#000000",
+            "text_color": "#ffffff"
+          }
+        }
+      },
+      "block_order": [
+        "strip_1"
+      ],
+      "settings": {
+        "vertical_gap": 0,
+        "vertical_gap_mobile": 0
+      }
+    },
     "main": {
       "type": "main-product",
       "blocks": {
@@ -74,26 +96,10 @@
         "marquee_2"
       ],
       "settings": {}
-    },
-    "related-products": {
-      "type": "related-products",
-      "settings": {
-        "heading": "You may also like",
-        "heading_size": "h2",
-        "columns_desktop": 4,
-        "color_scheme": "scheme-1",
-        "image_ratio": "square",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "columns_mobile": "2",
-        "padding_top": 36,
-        "padding_bottom": 28
-      }
     }
   },
   "order": [
-    "main",
-    "related-products"
+    "scrolling_text",
+    "main"
   ]
 }
