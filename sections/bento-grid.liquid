@@ -50,64 +50,59 @@
 
   /* Responsive */
   @media (max-width: 768px) {
+    #bento-grid-{{ section.id }}.bento-grid-container {
+      padding: {{ section.settings.mobile_section_padding }}px !important;
+    }
+
     .bento-grid {
-      grid-auto-rows: {{ section.settings.row_height | times: 0.8 }}px; /* Smaller rows on mobile */
-      gap: {{ section.settings.grid_gap | times: 0.7 }}px;
+      /* Dynamic columns for mobile */
+      grid-template-columns: repeat({{ section.settings.mobile_grid_columns | times: 10 }}, 1fr) !important;
+      grid-auto-rows: {{ section.settings.mobile_row_height | divided_by: 10.0 }}px !important;
+      gap: 0 !important;
     }
 
     .bento-block-wrapper {
-      padding: {{ section.settings.grid_gap | times: 0.35 }}px;
+      padding: {{ section.settings.mobile_grid_gap | divided_by: 2 }}px !important;
     }
 
     {%- for block in section.blocks -%}
-      {%- comment -%} Mobile grid has 2 columns, so mobile_column_span should be used directly (not multiplied by 10) {%- endcomment -%}
+      {%- assign mobile_cols = section.settings.mobile_grid_columns | default: 2.0 | plus: 0.0 -%}
+      {%- assign desktop_cols = section.settings.grid_columns | default: 8.0 | plus: 0.0 -%}
+
+      {%- comment -%} Mobile Column Span calculation {%- endcomment -%}
       {%- if block.settings.mobile_column_span != blank -%}
-        {%- assign mobile_col_span = block.settings.mobile_column_span | round -%}
+        {%- assign mobile_col_span = block.settings.mobile_column_span | times: 10 | round -%}
       {%- else -%}
-        {%- comment -%} Default to column_span, but scale it for 2-column mobile grid {%- endcomment -%}
-        {%- assign desktop_col_span = block.settings.column_span | default: 1.0 -%}
-        {%- comment -%} Scale desktop span proportionally: desktop max ~8.0 maps to mobile max 2.0 {%- endcomment -%}
-        {%- assign mobile_col_span = desktop_col_span | divided_by: 4.0 | round -%}
+        {%- assign desktop_span = block.settings.column_span | default: 1.0 | plus: 0.0 -%}
+        {%- comment -%} Scale desktop span proportionally to mobile grid width {%- endcomment -%}
+        {%- assign mobile_span_scaled = desktop_span | divided_by: desktop_cols | times: mobile_cols -%}
+        {%- assign mobile_col_span = mobile_span_scaled | times: 10 | round -%}
       {%- endif -%}
-      {%- comment -%} Clamp to valid range: minimum 1, maximum 2 (mobile grid has 2 columns) {%- endcomment -%}
-      {%- if mobile_col_span < 1 -%}
-        {%- assign mobile_col_span = 1 -%}
-      {%- endif -%}
-      {%- if mobile_col_span > 2 -%}
-        {%- assign mobile_col_span = 2 -%}
-      {%- endif -%}
-      {%- comment -%} Mobile row span: scale desktop value proportionally for mobile, then multiply by 10 for precision {%- endcomment -%}
+
+      {%- comment -%} Clamp mobile column span to grid width {%- endcomment -%}
+      {%- assign max_mobile_span = mobile_cols | times: 10 | round -%}
+      {%- if mobile_col_span < 1 -%}{%- assign mobile_col_span = 1 -%}{%- endif -%}
+      {%- if mobile_col_span > max_mobile_span -%}{%- assign mobile_col_span = max_mobile_span -%}{%- endif -%}
+
+      {%- comment -%} Mobile Row Span calculation {%- endcomment -%}
       {%- if block.settings.mobile_row_span != blank -%}
-        {%- assign mobile_row_span = block.settings.mobile_row_span | times: 10 | round -%}
+        {%- assign mobile_row_span_val = block.settings.mobile_row_span | times: 10 | round -%}
       {%- else -%}
-        {%- comment -%} Default to row_span, but scale it for mobile (mobile rows are smaller) {%- endcomment -%}
-        {%- assign desktop_row_span = block.settings.row_span | default: 1.0 -%}
-        {%- comment -%} Scale desktop span proportionally: desktop max ~4.3 maps to mobile max ~0.5-1.0, so divide by ~8 {%- endcomment -%}
-        {%- assign mobile_row_span_scaled = desktop_row_span | divided_by: 8.0 -%}
-        {%- assign mobile_row_span = mobile_row_span_scaled | times: 10 | round -%}
+        {%- comment -%} Default to desktop row span if not specified {%- endcomment -%}
+        {%- assign mobile_row_span_val = block.settings.row_span | default: 1.0 | times: 10 | round -%}
       {%- endif -%}
-      {%- comment -%} Clamp to valid range: minimum 1 (0.1 units), maximum 20 (2.0 units) for mobile {%- endcomment -%}
-      {%- if mobile_row_span < 1 -%}
-        {%- assign mobile_row_span = 1 -%}
-      {%- endif -%}
-      {%- if mobile_row_span > 20 -%}
-        {%- assign mobile_row_span = 20 -%}
-      {%- endif -%}
+
       .bento-block-wrapper[data-block-id="{{ block.id }}"] {
         grid-column: span {{ mobile_col_span }} !important;
-        grid-row: span {{ mobile_row_span }} !important;
+        grid-row: span {{ mobile_row_span_val }} !important;
       }
     {%- endfor -%}
   }
 
+  /* Small Mobile Devices overrides */
   @media (max-width: 480px) {
-    .bento-grid {
-      grid-auto-rows: {{ section.settings.row_height | times: 0.7 }}px; /* Even smaller rows on small mobile */
-      gap: {{ section.settings.grid_gap | times: 0.6 }}px;
-    }
-
-    .bento-block-wrapper {
-      padding: {{ section.settings.grid_gap | times: 0.3 }}px;
+    #bento-grid-{{ section.id }}.bento-grid-container {
+      padding: {{ section.settings.mobile_section_padding | divided_by: 1.5 | floor }}px !important;
     }
   }
 </style>
@@ -124,7 +119,7 @@
       {%- assign row_span = block.settings.row_span | times: 10 | round -%}
 
       <div
-        class="bento-block-wrapper bento-block-wrapper--{{ block.type }}"
+        class="bento-block-wrapper bento-block-wrapper--{{ block.type }}{% if block.settings.hide_on_mobile %} hidden-mobile{% endif %}"
         style="grid-column: span {{ col_span }}; grid-row: span {{ row_span }};"
         data-block-id="{{ block.id }}"
         {{ block.shopify_attributes }}
@@ -934,6 +929,50 @@
       "unit": "px",
       "label": "Card Border Radius",
       "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Mobile Grid Layout Settings"
+    },
+    {
+      "type": "range",
+      "id": "mobile_grid_columns",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "label": "Mobile Grid Columns",
+      "default": 2,
+      "info": "Number of columns on mobile devices"
+    },
+    {
+      "type": "range",
+      "id": "mobile_row_height",
+      "min": 50,
+      "max": 2000,
+      "step": 50,
+      "unit": "px",
+      "label": "Mobile Row Height",
+      "default": 800
+    },
+    {
+      "type": "range",
+      "id": "mobile_grid_gap",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile Grid Gap",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "mobile_section_padding",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile Section Padding",
+      "default": 10
     }
   ],
   "blocks": [

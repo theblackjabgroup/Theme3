@@ -4,7 +4,6 @@
   min-height: 100vh;
   padding: var(--spacing-5);
   margin: var(--spacing-0);
-  padding-left: 0 !important;
 }
 
 .bento-grid {
@@ -20,6 +19,12 @@
 */
 .bento-block-wrapper {
   display: flex;
+}
+
+@media (max-width: 768px) {
+  .hidden-mobile {
+    display: none !important;
+  }
 }
 
 /* Text Card */

@@ -1,0 +1,230 @@
+{%- comment -%}
+  Back to Top Section
+  Appears when scrolling and provides a floating button to return to page top
+{%- endcomment -%}
+
+<style>
+  .back-to-top-container {
+    position: fixed;
+    bottom: {{ section.settings.bottom_offset | default: 30 }}px;
+    right: {{ section.settings.right_offset | default: 30 }}px;
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .back-to-top-container.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .back-to-top-button {
+    width: {{ section.settings.button_size | default: 50 }}px !important;
+    height: {{ section.settings.button_size | default: 50 }}px !important;
+    padding: 0 !important;
+    border-radius: {{ section.settings.border_radius | default: 20 }}px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: unset !important;
+    {% if section.settings.background_color != blank %}
+      background-color: {{ section.settings.background_color }} !important;
+    {% endif %}
+    {% if section.settings.icon_color != blank %}
+      color: {{ section.settings.icon_color }} !important;
+    {% endif %}
+    {% if section.settings.border_color != blank %}
+      border: 2px solid {{ section.settings.border_color }} !important;
+    {% endif %}
+  }
+
+  .back-to-top-button .submit-button__icon {
+    width: {{ section.settings.icon_size | default: 60 }}%;
+    height: {{ section.settings.icon_size | default: 60 }}%;
+    margin: 0 !important;
+  }
+
+  /* Reset any possible default button styles that might interfere */
+  .back-to-top-button .submit-button__text {
+    display: none !important;
+  }
+</style>
+
+<div class="back-to-top-container" data-back-to-top-container>
+  {%- capture icon_svg -%}
+    {%- if section.settings.icon_svg != blank -%}
+      {{ section.settings.icon_svg }}
+    {%- else -%}
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 19V5M12 5L5 12M12 5L19 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    {%- endif -%}
+  {%- endcapture -%}
+
+  {%- if section.settings.icon_image != blank -%}
+    {%- assign icon_content = section.settings.icon_image
+      | image_url: width: 40
+      | image_tag: loading: 'lazy', alt: 'Back to top'
+    -%}
+  {%- else -%}
+    {%- assign icon_content = icon_svg -%}
+  {%- endif -%}
+
+  {%- render 'submit-button',
+    text: '',
+    url: '#',
+    icon: icon_content,
+    class: 'back-to-top-button',
+    attributes: 'data-back-to-top-trigger aria-label="Back to top"',
+    type: 'button'
+  -%}
+</div>
+
+<script>
+  (function () {
+    const container = document.querySelector('[data-back-to-top-container]');
+    const trigger = document.querySelector('[data-back-to-top-trigger]');
+    if (!container || !trigger) return;
+
+    function handleScroll() {
+      // Show button after threshold scroll
+      if (window.scrollY > {{ section.settings.scroll_threshold | default: 50 }}) {
+        container.classList.add('is-visible');
+      } else {
+        container.classList.remove('is-visible');
+      }
+    }
+
+    trigger.addEventListener('click', function (e) {
+      e.preventDefault();
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    });
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    // Run once on load
+    handleScroll();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Back to Top",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "This section adds a floating 'Back to Top' button that appears when scrolling down."
+    },
+    {
+      "type": "header",
+      "content": "Icon Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_image",
+      "label": "Custom Icon Image",
+      "info": "Upload an image to use as the icon. If left blank, the SVG/Default will be used."
+    },
+    {
+      "type": "html",
+      "id": "icon_svg",
+      "label": "Custom SVG Icon",
+      "info": "Paste custom SVG code here. Use 'currentColor' for stroke/fill to match button text color."
+    },
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "range",
+      "id": "button_size",
+      "min": 40,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Button Size",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "bottom_offset",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom Distance",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "right_offset",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Right Distance",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Border Radius",
+      "default": 20,
+      "info": "Set to 0 for a square, higher for rounded corners."
+    },
+    {
+      "type": "range",
+      "id": "scroll_threshold",
+      "min": 0,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "label": "Show after scroll amount",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Color Settings"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon/Arrow Color"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "label": "Icon Size (Relative to Button)",
+      "default": 60
+    }
+  ],
+  "presets": [
+    {
+      "name": "Back to Top"
+    }
+  ]
+}
+{% endschema %}

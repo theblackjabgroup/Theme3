@@ -20,17 +20,22 @@
   flex-direction: column;
   height: 100%;
   padding: var(--header-padding, 24px);
-  padding-right:  !important;
+  padding-right: 0 !important;
   gap: var(--header-gap, 24px);
   min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
+  direction: rtl; /* Moves scrollbar to left */
   scrollbar-width: thin;
   scrollbar-color: var(--color-header-border, var(--color-headings, #365330)) var(--color-header-background, var(--color-background, #eae7e1));
 }
 
+.vertical-sidebar-inner > * {
+  direction: ltr; /* Reset text direction for content */
+}
+
 .vertical-sidebar-inner::-webkit-scrollbar {
-  width: 6px;
+  width: 3px;
 }
 
 .vertical-sidebar-inner::-webkit-scrollbar-track {
@@ -381,59 +386,7 @@
   flex-shrink: 0;
 }
 
-.vertical-sidebar-nav-item--back-to-top {
-  padding-top: 0;
-}
 
-.header-nav-button--dropdown {
-  position: relative;
-}
-
-.header-nav-button--dropdown::after {
-  content: '';
-  position: absolute;
-  right: 24px;
-  bottom: 24px;
-  width: 8px;
-  height: 8px;
-  border-right: 2px solid currentColor;
-  border-bottom: 2px solid currentColor;
-  transform: rotate(45deg);
-  transition: transform var(--transition-medium);
-}
-
-.header-nav-button--dropdown[aria-expanded="true"]::after {
-  transform: rotate(225deg);
-}
-
-/* Back to Top Button */
-.vertical-sidebar-back-to-top {
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  position: relative;
-  z-index: 1;
-}
-
-/* Back to Top Button - Same 3D styling as submit-button, use default colors */
-.vertical-sidebar-header .share-story-submit.submit-button--back-to-top,
-.vertical-sidebar-header .submit-button--back-to-top,
-.vertical-sidebar-header .back-to-top-button {
-  width: 100% !important;
-  min-width: unset !important;
-  padding: var(--back-to-top-padding, var(--back-to-top-padding-top, 14px) var(--back-to-top-padding-right, 18px) var(--back-to-top-padding-bottom, 14px) var(--back-to-top-padding-left, 18px)) !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  margin-top: 0 !important;
-  font-size: var(--back-to-top-font-size, 16px) !important;
-  height: auto !important;
-}
-
-.back-to-top-button-text,
-.submit-button--back-to-top .submit-button__text {
-  display: block;
-}
 
 /* Caret Icon */
 .icon-caret {
@@ -656,6 +609,23 @@ body.mega-menu-open .dock-actions * {
   object-fit: cover;
 }
 
+.mega-menu-image-label {
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #365330;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: #fff;
+  text-align: center;
+  transition: color 0.2s ease;
+  font-family: var(--font-body-family);
+}
+
+.mega-menu-image-card:hover .mega-menu-image-label {
+  color: #ec95ae;
+}
+
 /* Mobile Header */
 .mobile-header {
   display: none;
@@ -667,16 +637,17 @@ body.mega-menu-open .dock-actions * {
   justify-content: space-between;
   padding: 12px 16px;
   background: var(--color-background, #fff);
-  border-bottom: 1px solid var(--color-borders, #e5e5e5);
+  border: 1px solid var(--color-borders, #e5e5e5);
+  border-radius: 20px;
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  width: calc(100% - 10px);
   z-index: 1000;
   background: color-mix(in srgb, var(--color-white, #fff) 98%, transparent);
   backdrop-filter: blur(10px);
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 /* Change mobile header background to accent pink when menu is open */
@@ -1117,27 +1088,6 @@ body.header-disabled .vertical-sidebar-header {
   .mega-menu-image-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
-  }
-  
-  .mega-menu-inner {
-    gap: 20px;
-  }
-
-  .mega-menu-featured-columns {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-
-  .mega-menu-column {
-    border-right: none;
-    border-bottom: 1px solid color-mix(in srgb, var(--color-black, #000) 8%, transparent);
-    padding-bottom: 20px;
-    margin-bottom: 0;
-  }
-
-  .mega-menu-column:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
   }
 }
 

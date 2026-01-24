@@ -55,14 +55,6 @@
       --nav-border: none;
     {%- endif -%}
 
-    /* Back to Top */
-    --back-to-top-margin-top: {{ section.settings.back_to_top_margin_top | default: 12 }}px;
-    --back-to-top-padding-top: {{ section.settings.back_to_top_padding_top | default: 14 }}px;
-    --back-to-top-padding-bottom: {{ section.settings.back_to_top_padding_bottom | default: 14 }}px;
-    --back-to-top-padding-left: {{ section.settings.back_to_top_padding_left | default: 18 }}px;
-    --back-to-top-padding-right: {{ section.settings.back_to_top_padding_right | default: 18 }}px;
-    --back-to-top-padding: var(--back-to-top-padding-top) var(--back-to-top-padding-right) var(--back-to-top-padding-bottom) var(--back-to-top-padding-left);
-    --back-to-top-font-size: {{ section.settings.back_to_top_font_size | default: 16 }}px;
   }
 </style>
 
@@ -99,7 +91,15 @@
           {%- assign welcome_icon = '' -%}
           {%- assign icon_size = section.settings.button_icon_size | default: 20 -%}
           {%- if block.settings.button_icon_image != blank -%}
-            {%- assign welcome_icon = block.settings.button_icon_image | image_url: width: icon_size | image_tag: loading: 'lazy', alt: 'Account', class: 'button-icon-image', width: icon_size, height: icon_size -%}
+            {%- assign welcome_icon = block.settings.button_icon_image
+              | image_url: width: icon_size
+              | image_tag:
+                loading: 'lazy',
+                alt: 'Account',
+                class: 'button-icon-image',
+                width: icon_size,
+                height: icon_size
+            -%}
           {%- elsif block.settings.button_icon_svg != blank -%}
             {%- assign welcome_icon = block.settings.button_icon_svg -%}
           {%- else -%}
@@ -121,7 +121,10 @@
           {%- assign cart_icon = '' -%}
           {%- assign icon_size = section.settings.button_icon_size | default: 20 -%}
           {%- if block.settings.button_icon_image != blank -%}
-            {%- assign cart_icon = block.settings.button_icon_image | image_url: width: icon_size | image_tag: loading: 'lazy', alt: 'Cart', class: 'button-icon-image', width: icon_size, height: icon_size -%}
+            {%- assign cart_icon = block.settings.button_icon_image
+              | image_url: width: icon_size
+              | image_tag: loading: 'lazy', alt: 'Cart', class: 'button-icon-image', width: icon_size, height: icon_size
+            -%}
           {%- elsif block.settings.button_icon_svg != blank -%}
             {%- assign cart_icon = block.settings.button_icon_svg -%}
           {%- else -%}
@@ -153,7 +156,15 @@
           {%- assign search_icon = '' -%}
           {%- assign icon_size = section.settings.button_icon_size | default: 20 -%}
           {%- if block.settings.button_icon_image != blank -%}
-            {%- assign search_icon = block.settings.button_icon_image | image_url: width: icon_size | image_tag: loading: 'lazy', alt: 'Search', class: 'button-icon-image', width: icon_size, height: icon_size -%}
+            {%- assign search_icon = block.settings.button_icon_image
+              | image_url: width: icon_size
+              | image_tag:
+                loading: 'lazy',
+                alt: 'Search',
+                class: 'button-icon-image',
+                width: icon_size,
+                height: icon_size
+            -%}
           {%- elsif block.settings.button_icon_svg != blank -%}
             {%- assign search_icon = block.settings.button_icon_svg -%}
           {%- else -%}
@@ -161,7 +172,8 @@
           {%- endif -%}
           {%- comment -%} Determine button type and URL {%- endcomment -%}
           {%- if block.settings.button_url != blank -%}
-            {%- render 'submit-button',
+            {%-
+              render 'submit-button',
               text: block.settings.button_text | default: '',
               url: block.settings.button_url,
               icon: search_icon,
@@ -169,7 +181,8 @@
               attributes: 'aria-label="Search"'
             -%}
           {%- else -%}
-            {%- render 'submit-button',
+            {%-
+              render 'submit-button',
               text: block.settings.button_text | default: '',
               url: '',
               icon: search_icon,
@@ -196,36 +209,68 @@
               {%- break -%}
             {%- endif -%}
           {%- endfor -%}
-          
+
           {%- comment -%} Determine which default icon to use for this link {%- endcomment -%}
           {%- assign nav_icon = default_icon_svg -%}
           {%- assign nav_icon_is_image = false -%}
           {%- assign nav_hover_icon = '' -%}
           {%- assign nav_hover_icon_is_image = false -%}
           {%- assign icon_size = section.settings.nav_icon_size | default: 20 -%}
-          
+
           {%- if custom_icon_block != null -%}
             {%- comment -%} Use custom icon from block {%- endcomment -%}
             {%- if custom_icon_block.settings.icon_image != blank -%}
-              {%- assign nav_icon = custom_icon_block.settings.icon_image | image_url: width: icon_size | image_tag: loading: 'lazy', alt: link.title, class: 'nav-icon-image nav-icon-default', width: icon_size, height: icon_size -%}
+              {%- assign nav_icon = custom_icon_block.settings.icon_image
+                | image_url: width: icon_size
+                | image_tag:
+                  loading: 'lazy',
+                  alt: link.title,
+                  class: 'nav-icon-image',
+                  width: icon_size,
+                  height: icon_size
+              -%}
               {%- assign nav_icon_is_image = true -%}
             {%- elsif custom_icon_block.settings.icon_svg != blank -%}
               {%- assign nav_icon = custom_icon_block.settings.icon_svg -%}
             {%- endif -%}
             {%- comment -%} Check for hover icon {%- endcomment -%}
             {%- if custom_icon_block.settings.hover_icon_image != blank -%}
-              {%- assign nav_hover_icon = custom_icon_block.settings.hover_icon_image | image_url: width: icon_size | image_tag: loading: 'lazy', alt: link.title, class: 'nav-icon-image nav-icon-hover', width: icon_size, height: icon_size -%}
+              {%- assign nav_hover_icon = custom_icon_block.settings.hover_icon_image
+                | image_url: width: icon_size
+                | image_tag:
+                  loading: 'lazy',
+                  alt: link.title,
+                  class: 'nav-icon-image',
+                  width: icon_size,
+                  height: icon_size
+              -%}
               {%- assign nav_hover_icon_is_image = true -%}
             {%- elsif custom_icon_block.settings.hover_icon_svg != blank -%}
               {%- assign nav_hover_icon = custom_icon_block.settings.hover_icon_svg -%}
             {%- endif -%}
           {%- elsif section.settings.nav_icon_image != blank -%}
             {%- comment -%} Use global default icon image {%- endcomment -%}
-            {%- assign nav_icon = section.settings.nav_icon_image | image_url: width: icon_size | image_tag: loading: 'lazy', alt: link.title, class: 'nav-icon-image nav-icon-default', width: icon_size, height: icon_size -%}
+            {%- assign nav_icon = section.settings.nav_icon_image
+              | image_url: width: icon_size
+              | image_tag:
+                loading: 'lazy',
+                alt: link.title,
+                class: 'nav-icon-image',
+                width: icon_size,
+                height: icon_size
+            -%}
             {%- assign nav_icon_is_image = true -%}
             {%- comment -%} Check for global hover icon {%- endcomment -%}
             {%- if section.settings.nav_hover_icon_image != blank -%}
-              {%- assign nav_hover_icon = section.settings.nav_hover_icon_image | image_url: width: icon_size | image_tag: loading: 'lazy', alt: link.title, class: 'nav-icon-image nav-icon-hover', width: icon_size, height: icon_size -%}
+              {%- assign nav_hover_icon = section.settings.nav_hover_icon_image
+                | image_url: width: icon_size
+                | image_tag:
+                  loading: 'lazy',
+                  alt: link.title,
+                  class: 'nav-icon-image',
+                  width: icon_size,
+                  height: icon_size
+              -%}
               {%- assign nav_hover_icon_is_image = true -%}
             {%- elsif section.settings.nav_hover_icon_svg != blank -%}
               {%- assign nav_hover_icon = section.settings.nav_hover_icon_svg -%}
@@ -236,11 +281,19 @@
             {%- if section.settings.nav_hover_icon_svg != blank -%}
               {%- assign nav_hover_icon = section.settings.nav_hover_icon_svg -%}
             {%- elsif section.settings.nav_hover_icon_image != blank -%}
-              {%- assign nav_hover_icon = section.settings.nav_hover_icon_image | image_url: width: icon_size | image_tag: loading: 'lazy', alt: link.title, class: 'nav-icon-image nav-icon-hover', width: icon_size, height: icon_size -%}
+              {%- assign nav_hover_icon = section.settings.nav_hover_icon_image
+                | image_url: width: icon_size
+                | image_tag:
+                  loading: 'lazy',
+                  alt: link.title,
+                  class: 'nav-icon-image',
+                  width: icon_size,
+                  height: icon_size
+              -%}
               {%- assign nav_hover_icon_is_image = true -%}
             {%- endif -%}
           {%- endif -%}
-          
+
           <li class="vertical-sidebar-nav-item">
             {%- if link.links != blank -%}
               {%- assign matching_block = null -%}
@@ -260,7 +313,9 @@
                 <span class="header-nav-button-icon {% if nav_icon_is_image %}header-nav-button-icon--image{% endif %}">
                   <span class="nav-icon-default">{{ nav_icon }}</span>
                   {%- if nav_hover_icon != blank -%}
-                    <span class="nav-icon-hover {% if nav_hover_icon_is_image %}header-nav-button-icon--image{% endif %}">{{ nav_hover_icon }}</span>
+                    <span class="nav-icon-hover {% if nav_hover_icon_is_image %}header-nav-button-icon--image{% endif %}">
+                      {{- nav_hover_icon -}}
+                    </span>
                   {%- endif -%}
                 </span>
                 <span class="header-nav-button-text">{{ link.title | upcase }}</span>
@@ -280,10 +335,12 @@
                     <div class="mega-menu-featured-columns">
                       {%- assign total_links = link.links.size -%}
                       {%- assign links_per_column = total_links | divided_by: 3.0 | ceil -%}
-                      
+
                       {%- for i in (1..3) -%}
                         {%- assign featured_title_key = 'featured_title_' | append: i -%}
-                        {%- assign featured_title = matching_block.settings[featured_title_key] | default: 'FEATURED' -%}
+                        {%- assign featured_title = matching_block.settings[featured_title_key]
+                          | default: 'FEATURED'
+                        -%}
                         {%- assign start_index = i | minus: 1 | times: links_per_column -%}
                         {%- assign end_index = start_index | plus: links_per_column | minus: 1 -%}
                         {%- if i == 3 -%}
@@ -317,14 +374,21 @@
                         {%- for i in (1..2) -%}
                           {%- assign img_key = 'image_' | append: i -%}
                           {%- assign link_key = 'link_' | append: i -%}
+                          {%- assign label_key = 'label_' | append: i -%}
                           {%- assign img = matching_block.settings[img_key] -%}
                           {%- assign url = matching_block.settings[link_key] -%}
+                          {%- assign label = matching_block.settings[label_key] -%}
 
                           {%- if img != blank -%}
                             <a href="{{ url | default: '#' }}" class="mega-menu-image-card">
                               <div class="mega-menu-image-wrapper">
                                 {{ img | image_url: width: 400 | image_tag: loading: 'lazy', class: 'mega-menu-image' }}
                               </div>
+                              {%- if label != blank -%}
+                                <div class="mega-menu-image-label">
+                                  {{ label }}
+                                </div>
+                              {%- endif -%}
                             </a>
                           {%- endif -%}
                         {%- endfor -%}
@@ -349,13 +413,6 @@
             {%- endif -%}
           </li>
         {%- endfor -%}
-
-        <!-- Back to Top Button (inside scrollable nav) -->
-        <li class="vertical-sidebar-nav-item vertical-sidebar-nav-item--back-to-top">
-          <div class="vertical-sidebar-back-to-top">
-            {%- render 'back-to-top' -%}
-          </div>
-        </li>
       </ul>
     </nav>
   </div>
@@ -1016,70 +1073,6 @@
     },
     {
       "type": "header",
-      "content": "Back to Top Button Settings"
-    },
-    {
-      "type": "range",
-      "id": "back_to_top_margin_top",
-      "min": 0,
-      "max": 32,
-      "step": 2,
-      "unit": "px",
-      "label": "Back to Top Margin Top",
-      "default": 12
-    },
-    {
-      "type": "range",
-      "id": "back_to_top_padding_top",
-      "min": 8,
-      "max": 32,
-      "step": 2,
-      "unit": "px",
-      "label": "Back to Top Padding Top",
-      "default": 14
-    },
-    {
-      "type": "range",
-      "id": "back_to_top_padding_bottom",
-      "min": 8,
-      "max": 32,
-      "step": 2,
-      "unit": "px",
-      "label": "Back to Top Padding Bottom",
-      "default": 14
-    },
-    {
-      "type": "range",
-      "id": "back_to_top_padding_left",
-      "min": 8,
-      "max": 32,
-      "step": 2,
-      "unit": "px",
-      "label": "Back to Top Padding Left",
-      "default": 18
-    },
-    {
-      "type": "range",
-      "id": "back_to_top_padding_right",
-      "min": 8,
-      "max": 32,
-      "step": 2,
-      "unit": "px",
-      "label": "Back to Top Padding Right",
-      "default": 18
-    },
-    {
-      "type": "range",
-      "id": "back_to_top_font_size",
-      "min": 12,
-      "max": 24,
-      "step": 1,
-      "unit": "px",
-      "label": "Back to Top Font Size",
-      "default": 16
-    },
-    {
-      "type": "header",
       "content": "Scroll Animation Settings"
     },
     {
@@ -1343,7 +1336,7 @@
           "type": "url",
           "id": "link_2",
           "label": "Link"
-        },
+        }
       ]
     },
     {
