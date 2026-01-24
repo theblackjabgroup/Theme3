@@ -5,7 +5,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--section-gap, 0px);
-  padding: 50px 0;
+  background: var(--color-background);
 }
 
 .scrolling-text-strip {
@@ -19,6 +19,8 @@
   transition: transform 0.3s ease;
   z-index: 1; 
   margin: var(--tilt-margin, 0) var(--margin-right, auto) var(--tilt-margin, 0) var(--margin-left, auto);
+  border-radius: var(--border-radius, 0px);
+  border: var(--border-width, 1px) var(--border-style, none) var(--border-color, #000);
 }
 
 .scrolling-text-inner {

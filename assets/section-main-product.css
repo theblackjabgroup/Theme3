@@ -29,7 +29,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
-  max-width: 400px;
+  max-width: var(--hero-image-max-width, 400px);
   z-index: 2;
   pointer-events: none;
   display: flex;
@@ -38,7 +38,7 @@
 
 .product-hero-image {
   width: 100%;
-  max-width: 400px;
+  max-width: var(--hero-image-max-width, 400px);
   height: auto;
   filter: drop-shadow(0px var(--spacing-10) 30px rgba(0, 0, 0, 0.3));
   transition: transform var(--transition-fast);
@@ -178,7 +178,7 @@
   font-family: var(--font-heading-family);
   font-size: 3.5rem;
   font-weight: 900;
-  color: var(--color-primary-button-bg);
+  color: var(--color-text);
   line-height: 1;
 }
 .price-compare {
@@ -222,21 +222,17 @@
 .product-form__buttons {
   display: flex;
   justify-content: center;
-  /* Legacy support or mobile styles might use this */
 }
 
 .stock-badge-wrapper {
-  margin-bottom: var(--spacing-xl);
   height: 30px;
   display: flex;
   justify-content: center;
+  margin: var(--spacing-5) 0;
 }
 .stock-badge {
   display: inline-block;
-  background: var(--color-accent-pink);
   color: var(--color-text);
-  padding: 6px 16px;
-  border-radius: var(--radius-xl);
   font-size: 0.85rem;
   font-weight: var(--font-weight-normal);
 }
@@ -252,6 +248,7 @@
   position: relative;
   text-align: center;
   padding: 10px 0;
+  color: var(--color-text);
 }
 
 .product-media-wrapper {
@@ -472,7 +469,7 @@
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
   text-decoration: none;
-  color: var(--color-black);
+  color: var(--color-text);
   border-bottom: 1px solid transparent;
   transition: border-color var(--transition-base);
 }
@@ -646,4 +643,21 @@
   left: 0;
   top: 0;
   aspect-ratio: auto !important; 
+}
+
+/* =============================
+   CUSTOM TAG
+============================= */
+.product-custom-tag {
+  display: inline-block;
+  padding: 6px 20px;
+  border-radius: 50px;
+  border: 1px solid var(--tag-border-color);
+  color: var(--tag-text-color);
+  background-color: var(--tag-bg-color);
+  font-size: var(--font-size-sm, 12px);
+  font-weight: var(--font-weight-medium, 500);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: var(--spacing-m, 16px);
 }
