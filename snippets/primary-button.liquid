@@ -28,10 +28,26 @@
 >
   <div class="primary-button__wrapper">
     <div class="primary-button__face primary-button__face--front">
-      {{ text }}
+      {%- if icon != blank -%}
+        <span class="primary-button__icon">{{ icon }}</span>
+      {%- endif -%}
+      {%- if text != blank -%}
+        <span class="primary-button__text">{{ text }}</span>
+      {%- endif -%}
+      {%- if badge != blank and badge != '0' -%}
+        <span class="primary-button__badge">{{ badge }}</span>
+      {%- endif -%}
     </div>
     <div class="primary-button__face primary-button__face--back">
-      {{ text }}
+      {%- if icon != blank -%}
+        <span class="primary-button__icon">{{ icon }}</span>
+      {%- endif -%}
+      {%- if text != blank -%}
+        <span class="primary-button__text">{{ text }}</span>
+      {%- endif -%}
+      {%- if badge != blank and badge != '0' -%}
+        <span class="primary-button__badge">{{ badge }}</span>
+      {%- endif -%}
     </div>
   </div>
 </{{ tag }}>

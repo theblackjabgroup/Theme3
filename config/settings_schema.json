@@ -40,7 +40,7 @@
             "type": "color",
             "id": "background",
             "label": "Background",
-            "default": "#FFFFFF",
+            "default": "#D2CDC4",
             "alpha": true
           },
           {
@@ -54,7 +54,7 @@
             "type": "color",
             "id": "text",
             "label": "Text",
-            "default": "#121212",
+            "default": "#E5E1DA",
             "alpha": true
           },
           {
@@ -93,21 +93,21 @@
             "type": "color",
             "id": "primary_button_bg",
             "label": "Background",
-            "default": "#E63946",
+            "default": "#E5E1DA",
             "alpha": true
           },
           {
             "type": "color",
             "id": "primary_button_text",
             "label": "Text",
-            "default": "#FFFFFF",
+            "default": "#273827",
             "alpha": true
           },
           {
             "type": "color",
             "id": "primary_button_border",
             "label": "Borders",
-            "default": "#E63946",
+            "default": "#273827",
             "alpha": true
           },
           {
@@ -331,6 +331,66 @@
             "id": "selected_variant_hover_border",
             "label": "Hover borders",
             "default": "#1A1A1A",
+            "alpha": true
+          },
+          {
+            "type": "header",
+            "content": "Header Colors"
+          },
+          {
+            "type": "color",
+            "id": "header_background",
+            "label": "Header Background",
+            "default": "#D2CDC4",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "header_text",
+            "label": "Header Text",
+            "default": "#365330",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "header_border",
+            "label": "Header Borders",
+            "default": "#365330",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "header_button_background",
+            "label": "Header Button Background",
+            "default": "#E5E1DA",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "header_button_hover_background",
+            "label": "Header Button Hover Background",
+            "default": "#f5f3f0",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "header_logo_background",
+            "label": "Header Logo Background",
+            "default": "#365330",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "header_logo_text",
+            "label": "Header Logo Text",
+            "default": "#a8d5a3",
+            "alpha": true
+          },
+          {
+            "type": "color",
+            "id": "header_active_border",
+            "label": "Header Active Border (Accent)",
+            "default": "#ec95ae",
             "alpha": true
           }
         ],

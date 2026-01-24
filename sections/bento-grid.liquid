@@ -33,8 +33,6 @@
   .content-card-inner,
   .tag-card,
   .generic-card,
-  .logo-card,
-  .cart-card,
   .search-card,
   .login-card,
   .video-card,
@@ -132,78 +130,6 @@
         {{ block.shopify_attributes }}
       >
         {%- case block.type -%}
-          {%- when 'logo_card' -%}
-            {%- assign logo_image_width = block.settings.logo_image_width | default: 150 -%}
-            {%- assign mobile_logo_image_width = block.settings.mobile_logo_image_width | default: logo_image_width -%}
-            {%- assign logo_font_size = block.settings.logo_font_size | default: 32 -%}
-            {%- assign mobile_logo_font_size = block.settings.mobile_logo_font_size | default: logo_font_size -%}
-            {%- assign logo_color = block.settings.logo_color | default: '#000000' -%}
-            {%- assign mobile_logo_color = block.settings.mobile_logo_color | default: logo_color -%}
-            <div
-              class="bento-card logo-card"
-              style="--desktop-logo-image-width: {{ logo_image_width }}px; --mobile-logo-image-width: {{ mobile_logo_image_width }}px; --desktop-logo-font-size: {{ logo_font_size }}px; --mobile-logo-font-size: {{ mobile_logo_font_size }}px; --desktop-logo-color: {{ logo_color }}; --mobile-logo-color: {{ mobile_logo_color }};{% if block.settings.card_background_color != blank %} background-color: {{ block.settings.card_background_color }};{% endif %}"
-            >
-              {%- if block.settings.logo_image != blank -%}
-                <img
-                  src="{{ block.settings.logo_image | image_url: width: 400 }}"
-                  alt="{{ block.settings.logo_text | default: shop.name }}"
-                  class="logo-image"
-                  width="{{ logo_image_width }}"
-                  height="auto"
-                  loading="eager"
-                >
-              {%- else -%}
-                <h1 class="logo-text">
-                  {{ block.settings.logo_text }}
-                </h1>
-              {%- endif -%}
-            </div>
-
-          {%- when 'cart_card' -%}
-            {%- assign icon_size = block.settings.icon_size | default: 45 -%}
-            {%- assign mobile_icon_size = block.settings.mobile_icon_size | default: icon_size -%}
-            {%- assign icon_color = block.settings.icon_color | default: '#121212' -%}
-            {%- assign mobile_icon_color = block.settings.mobile_icon_color | default: icon_color -%}
-            {%- assign icon_stroke_width = block.settings.icon_stroke_width | default: 2 -%}
-            {%- assign mobile_icon_stroke_width = block.settings.mobile_icon_stroke_width
-              | default: icon_stroke_width
-            -%}
-            <div
-              class="bento-card cart-card"
-              style="--desktop-icon-size: {{ icon_size }}px; --mobile-icon-size: {{ mobile_icon_size }}px; --desktop-icon-color: {{ icon_color }}; --mobile-icon-color: {{ mobile_icon_color }}; --desktop-icon-stroke-width: {{ icon_stroke_width }}; --mobile-icon-stroke-width: {{ mobile_icon_stroke_width }};{% if block.settings.card_background_color != blank %} background-color: {{ block.settings.card_background_color }} !important;{% endif %}"
-              {% if settings.cart_type == 'drawer' %}
-                onclick="(function(e) { e.preventDefault(); const drawer = document.querySelector('cart-drawer'); if (drawer) drawer.open(); })(event)"
-              {% else %}
-                onclick="window.location.href='{{ routes.cart_url }}'"
-              {% endif %}
-            >
-              <div class="cart-icon-wrapper">
-                {%- if block.settings.custom_icon != blank -%}
-                  <img
-                    src="{{ block.settings.custom_icon | image_url: width: icon_size | times: 2 }}"
-                    alt="Cart"
-                    class="cart-icon cart-icon-image"
-                    width="{{ icon_size }}"
-                    height="{{ icon_size }}"
-                    loading="eager"
-                  >
-                {%- else -%}
-                  <svg
-                    class="cart-icon cart-icon-svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    width="{{ icon_size }}"
-                    height="{{ icon_size }}"
-                  >
-                    <circle cx="9" cy="21" r="1"></circle>
-                    <circle cx="20" cy="21" r="1"></circle>
-                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                  </svg>
-                {%- endif -%}
-                <span class="cart-count">{{ cart.item_count }}</span>
-              </div>
-            </div>
-
           {%- when 'search_card' -%}
             <div
               class="bento-card search-card"
@@ -278,9 +204,14 @@
             {%- assign mobile_align = block.settings.mobile_content_alignment | default: align -%}
             {%- assign vertical_align = block.settings.vertical_alignment | default: 'top' -%}
             {%- assign mobile_vertical_align = block.settings.mobile_vertical_alignment | default: vertical_align -%}
+            {%- comment -%} Determine border color - use card_border_color if set, otherwise match background color {%- endcomment -%}
+            {%- assign border_color = block.settings.card_border_color -%}
+            {%- if border_color == blank and block.settings.card_background_color != blank -%}
+              {%- assign border_color = block.settings.card_background_color -%}
+            {%- endif -%}
             <div
               class="bento-card tag-card tag-card--{{ direction }} tag-card--align-{{ align }} tag-card--valign-{{ vertical_align }}{% if block.settings.card_background_color != blank %} has-custom-background{% endif %}"
-              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %}{% if block.settings.card_text_color != blank %} color: {{ block.settings.card_text_color }};{% endif %}"
+              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %}{% if border_color != blank %} border-color: {{ border_color }};{% endif %}{% if block.settings.card_text_color != blank %} color: {{ block.settings.card_text_color }};{% endif %}"
               data-mobile-direction="{{ mobile_direction }}"
               data-mobile-align="{{ mobile_align }}"
               data-mobile-vertical-align="{{ mobile_vertical_align }}"
@@ -401,12 +332,39 @@
                         {%- endfor -%}
                       </div>
                     </div>
+                  {%- else -%}
+                    {%- comment -%} Show default product placeholder images when no images are uploaded {%- endcomment -%}
+                    <div class="tag-card-image-strip">
+                      <div class="tag-card-image-strip-track">
+                        {%- assign default_images = 'product-apparel-1,product-apparel-2,product-apparel-3,product-apparel-4,product-bag-1,product-bag-2,product-bottle-1,product-bottle-2' | split: ',' -%}
+                        {%- comment -%} First set of default images {%- endcomment -%}
+                        {%- for default_image in default_images -%}
+                          <div class="tag-card-image-strip-item">
+                            {{
+                              default_image
+                              | placeholder_svg_tag: 'tag-card-image-strip-placeholder'
+                            }}
+                          </div>
+                        {%- endfor -%}
+                        {%- comment -%} Duplicate for seamless loop {%- endcomment -%}
+                        {%- for default_image in default_images -%}
+                          <div class="tag-card-image-strip-item">
+                            {{
+                              default_image
+                              | placeholder_svg_tag: 'tag-card-image-strip-placeholder'
+                            }}
+                          </div>
+                        {%- endfor -%}
+                      </div>
+                    </div>
                   {%- endif -%}
                 {%- endif -%}
               </div>
             </div>
 
           {%- when 'content_card' -%}
+            {%- assign direction = block.settings.layout_direction | default: 'column' -%}
+            {%- assign mobile_direction = block.settings.mobile_layout_direction | default: direction -%}
             {%- assign bg_pos_h = block.settings.background_position_horizontal | default: 'center' -%}
             {%- assign bg_size = block.settings.background_size | default: 'cover' -%}
             {%- assign enable_spritesheet = block.settings.enable_spritesheet_animation -%}
@@ -430,6 +388,10 @@
             {%- assign mobile_main_text_line_height = block.settings.mobile_main_text_line_height
               | default: main_text_line_height
             -%}
+            {%- assign align = block.settings.content_alignment | default: 'left' -%}
+            {%- assign mobile_align = block.settings.mobile_content_alignment | default: align -%}
+            {%- assign vertical_align = block.settings.vertical_alignment | default: 'top' -%}
+            {%- assign mobile_vertical_align = block.settings.mobile_vertical_alignment | default: vertical_align -%}
             {%- assign sprite_scale = block.settings.sprite_scale | default: 100 -%}
             {%- assign mobile_sprite_scale = block.settings.mobile_sprite_scale | default: sprite_scale -%}
             {%- assign sprite_y_offset = block.settings.sprite_y_offset | default: 0 -%}
@@ -447,7 +409,10 @@
               | default: sprite_vertical_alignment
             -%}
             <div
-              class="bento-card content-card{% if enable_spritesheet %} has-spritesheet{% if sprite_direction == 'vertical' %}-vertical{% endif %}{% endif %}{% if block.settings.enable_3d_effect %} enable-3d{% endif %}"
+              class="bento-card content-card content-card--{{ direction }} content-card--align-{{ align }} content-card--valign-{{ vertical_align }}{% if enable_spritesheet %} has-spritesheet{% if sprite_direction == 'vertical' %}-vertical{% endif %}{% endif %}{% if block.settings.enable_3d_effect %} enable-3d{% endif %}"
+              data-mobile-direction="{{ mobile_direction }}"
+              data-mobile-align="{{ mobile_align }}"
+              data-mobile-vertical-align="{{ mobile_vertical_align }}"
               style="
                 {% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %}
                 --desktop-tag-font-size: {{ tag_font_size }}px;
@@ -505,7 +470,12 @@
                     flex: 0 0 var(--desktop-sprite-canvas-size);
                     transform: scale(var(--desktop-sprite-scale)) translate(var(--desktop-sprite-x-offset), var(--desktop-sprite-y-offset)) rotate(var(--desktop-sprite-rotation));
                     z-index: 10;
-                    background-image: url('{% if block.settings.image != blank %}{{ block.settings.image | image_url: width: 1920 }}{% else %}{{ 'spritesheet-prejudice.png' | asset_url }}{% endif %}');
+                    background-color: transparent;
+                    {% if block.settings.image != blank %}
+                      background-image: url('{{ block.settings.image | image_url: width: 1920 }}');
+                    {% elsif 'spritesheet-prejudice.png' != blank %}
+                      background-image: url('{{ 'spritesheet-prejudice.png' | asset_url }}');
+                    {% endif %}
                     {% unless enable_spritesheet %}
                       background-position: {{ bg_pos_h }} {{ sprite_vertical_alignment }};
                       background-size: {{ bg_size }};
@@ -570,7 +540,7 @@
                 {%- endif -%}
 
                 {%- if block.settings.enable_heading and block.settings.heading != blank -%}
-                  <h3 class="text-card-heading">
+                  <h3 class="text-card-heading"{% if block.settings.heading_text_color != blank %} style="color: {{ block.settings.heading_text_color }};"{% endif %}>
                     {{ block.settings.heading }}
                   </h3>
                 {%- endif -%}
@@ -583,21 +553,11 @@
 
                 {%- if block.settings.button_text != blank -%}
                   <div class="text-card-button-wrapper text-card-button--align-{{ button_align }}">
-                    {%- if block.settings.button_link != blank -%}
-                      <a
-                        href="{{ block.settings.button_link }}"
-                        class="text-card-button"
-                      >
-                        {{- block.settings.button_text -}}
-                      </a>
-                    {%- else -%}
-                      <button
-                        type="button"
-                        class="text-card-button"
-                      >
-                        {{ block.settings.button_text }}
-                      </button>
-                    {%- endif -%}
+                    {%- render 'submit-button',
+                      text: block.settings.button_text,
+                      url: block.settings.button_link,
+                      class: 'text-card-button'
+                    -%}
                   </div>
                 {%- endif -%}
               </div>
@@ -1101,259 +1061,6 @@
       ]
     },
     {
-      "type": "logo_card",
-      "name": "Logo",
-      "settings": [
-        {
-          "type": "image_picker",
-          "id": "logo_image",
-          "label": "Logo Image"
-        },
-        {
-          "type": "range",
-          "id": "logo_image_width",
-          "min": 50,
-          "max": 200,
-          "step": 5,
-          "unit": "px",
-          "label": "Logo Image Width",
-          "default": 150
-        },
-        {
-          "type": "text",
-          "id": "logo_text",
-          "label": "Logo Text",
-          "default": "Logo"
-        },
-        {
-          "type": "color",
-          "id": "card_background_color",
-          "label": "Card Background Color",
-          "default": "#ffffff",
-          "info": "Background color for this card"
-        },
-        {
-          "type": "range",
-          "id": "logo_font_size",
-          "min": 16,
-          "max": 72,
-          "step": 2,
-          "unit": "px",
-          "label": "Logo Font Size",
-          "default": 32
-        },
-        {
-          "type": "color",
-          "id": "logo_color",
-          "label": "Logo Color",
-          "default": "#000000"
-        },
-        {
-          "type": "header",
-          "content": "Mobile Settings"
-        },
-        {
-          "type": "range",
-          "id": "mobile_logo_image_width",
-          "min": 50,
-          "max": 200,
-          "step": 5,
-          "unit": "px",
-          "label": "Mobile Logo Image Width",
-          "default": 120,
-          "info": "Logo image width on mobile devices"
-        },
-        {
-          "type": "range",
-          "id": "mobile_logo_font_size",
-          "min": 16,
-          "max": 72,
-          "step": 2,
-          "unit": "px",
-          "label": "Mobile Logo Font Size",
-          "default": 24,
-          "info": "Logo font size on mobile devices"
-        },
-        {
-          "type": "color",
-          "id": "mobile_logo_color",
-          "label": "Mobile Logo Color",
-          "default": "#000000",
-          "info": "Logo color on mobile devices"
-        },
-        {
-          "type": "header",
-          "content": "Desktop Layout"
-        },
-        {
-          "type": "range",
-          "id": "column_span",
-          "min": 0.1,
-          "max": 6,
-          "step": 0.1,
-          "label": "Column Span",
-          "default": 2
-        },
-        {
-          "type": "range",
-          "id": "row_span",
-          "min": 0.1,
-          "max": 6,
-          "step": 0.1,
-          "label": "Row Span",
-          "default": 1
-        },
-        {
-          "type": "header",
-          "content": "Mobile Layout"
-        },
-        {
-          "type": "range",
-          "id": "mobile_column_span",
-          "min": 0.1,
-          "max": 2,
-          "step": 0.1,
-          "label": "Mobile Column Span",
-          "default": 1,
-          "info": "Column span on mobile devices (max 2 columns on mobile grid)"
-        },
-        {
-          "type": "range",
-          "id": "mobile_row_span",
-          "min": 0.1,
-          "max": 6,
-          "step": 0.1,
-          "label": "Mobile Row Span",
-          "default": 1
-        }
-      ]
-    },
-    {
-      "type": "cart_card",
-      "name": "Cart",
-      "settings": [
-        {
-          "type": "color",
-          "id": "card_background_color",
-          "label": "Card Background Color",
-          "default": "#ffffff",
-          "info": "Background color for this card"
-        },
-        {
-          "type": "header",
-          "content": "Desktop Layout"
-        },
-        {
-          "type": "range",
-          "id": "column_span",
-          "min": 0.1,
-          "max": 9,
-          "step": 0.1,
-          "label": "Column Span",
-          "default": 1
-        },
-        {
-          "type": "range",
-          "id": "row_span",
-          "min": 0.1,
-          "max": 6,
-          "step": 0.1,
-          "label": "Row Span",
-          "default": 1
-        },
-        {
-          "type": "header",
-          "content": "Icon Settings"
-        },
-        {
-          "type": "image_picker",
-          "id": "custom_icon",
-          "label": "Custom Icon",
-          "info": "Upload a custom icon image. If not set, default SVG icon will be used."
-        },
-        {
-          "type": "range",
-          "id": "icon_size",
-          "min": 20,
-          "max": 80,
-          "step": 1,
-          "unit": "px",
-          "label": "Icon Size",
-          "default": 45
-        },
-        {
-          "type": "color",
-          "id": "icon_color",
-          "label": "Icon Color",
-          "default": "#121212"
-        },
-        {
-          "type": "range",
-          "id": "icon_stroke_width",
-          "min": 1,
-          "max": 4,
-          "step": 0.5,
-          "label": "Icon Stroke Width",
-          "default": 2
-        },
-        {
-          "type": "header",
-          "content": "Mobile Icon Settings"
-        },
-        {
-          "type": "range",
-          "id": "mobile_icon_size",
-          "min": 20,
-          "max": 80,
-          "step": 1,
-          "unit": "px",
-          "label": "Mobile Icon Size",
-          "default": 35,
-          "info": "Icon size on mobile devices"
-        },
-        {
-          "type": "color",
-          "id": "mobile_icon_color",
-          "label": "Mobile Icon Color",
-          "default": "#121212",
-          "info": "Icon color on mobile devices"
-        },
-        {
-          "type": "range",
-          "id": "mobile_icon_stroke_width",
-          "min": 1,
-          "max": 4,
-          "step": 0.5,
-          "label": "Mobile Icon Stroke Width",
-          "default": 2,
-          "info": "Icon stroke width on mobile devices"
-        },
-        {
-          "type": "header",
-          "content": "Mobile Layout"
-        },
-        {
-          "type": "range",
-          "id": "mobile_column_span",
-          "min": 0.1,
-          "max": 2,
-          "step": 0.1,
-          "label": "Mobile Column Span",
-          "default": 1,
-          "info": "Column span on mobile devices (max 2 columns on mobile grid)"
-        },
-        {
-          "type": "range",
-          "id": "mobile_row_span",
-          "min": 0.1,
-          "max": 6,
-          "step": 0.1,
-          "label": "Mobile Row Span",
-          "default": 1
-        }
-      ]
-    },
-    {
       "type": "search_card",
       "name": "Search",
       "settings": [
@@ -1650,6 +1357,90 @@
           "step": 0.1,
           "label": "Mobile Main text line height",
           "default": 1.1
+        },
+        {
+          "type": "header",
+          "content": "Layout Settings"
+        },
+        {
+          "type": "select",
+          "id": "layout_direction",
+          "label": "Layout direction",
+          "options": [
+            { "value": "column", "label": "Vertical (column)" },
+            { "value": "row", "label": "Horizontal (row)" }
+          ],
+          "default": "column",
+          "info": "Choose how text and sprite are arranged: column (stacked) or row (side-by-side)"
+        },
+        {
+          "type": "header",
+          "content": "Content Alignment"
+        },
+        {
+          "type": "select",
+          "id": "content_alignment",
+          "label": "Horizontal alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "select",
+          "id": "vertical_alignment",
+          "label": "Vertical alignment",
+          "options": [
+            { "value": "top", "label": "Top" },
+            { "value": "center", "label": "Center" },
+            { "value": "bottom", "label": "Bottom" }
+          ],
+          "default": "top"
+        },
+        {
+          "type": "header",
+          "content": "Mobile Layout Settings"
+        },
+        {
+          "type": "select",
+          "id": "mobile_layout_direction",
+          "label": "Mobile Layout direction",
+          "options": [
+            { "value": "column", "label": "Vertical (column)" },
+            { "value": "row", "label": "Horizontal (row)" }
+          ],
+          "default": "column",
+          "info": "Layout direction on mobile devices"
+        },
+        {
+          "type": "header",
+          "content": "Mobile Alignment Settings"
+        },
+        {
+          "type": "select",
+          "id": "mobile_content_alignment",
+          "label": "Mobile Horizontal alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "left",
+          "info": "Horizontal alignment on mobile devices"
+        },
+        {
+          "type": "select",
+          "id": "mobile_vertical_alignment",
+          "label": "Mobile Vertical alignment",
+          "options": [
+            { "value": "top", "label": "Top" },
+            { "value": "center", "label": "Center" },
+            { "value": "bottom", "label": "Bottom" }
+          ],
+          "default": "top",
+          "info": "Vertical alignment on mobile devices"
         },
         {
           "type": "header",
@@ -2105,7 +1896,7 @@
           "type": "checkbox",
           "id": "show_image_strip",
           "label": "Show image strip",
-          "default": true,
+          "default": false,
           "info": "Vertical scrolling image strip that appears on the right side"
         },
         {
@@ -2235,6 +2026,12 @@
           "label": "Card Background Color",
           "default": "#1a1a1a",
           "info": "Background color for this card"
+        },
+        {
+          "type": "color",
+          "id": "card_border_color",
+          "label": "Card Border Color",
+          "info": "Border color for this card. If not set, will match the background color."
         },
         {
           "type": "color",
@@ -2373,6 +2170,12 @@
         {
           "type": "header",
           "content": "Heading Typography"
+        },
+        {
+          "type": "color",
+          "id": "heading_text_color",
+          "label": "Heading Text Color",
+          "info": "Text color for the heading. If not set, will use the default text color."
         },
         {
           "type": "range",
@@ -3163,9 +2966,7 @@
     {
       "name": "Bento Grid",
       "blocks": [
-        { "type": "logo_card", "settings": { "column_span": 1.0, "row_span": 1.2 } },
-        { "type": "cart_card", "settings": { "column_span": 1.0, "row_span": 1.2 } },
-        { "type": "tag_card", "settings": { "column_span": 1.6, "row_span": 1.4 } },
+        { "type": "tag_card", "settings": { "column_span": 1.6, "row_span": 1.4, "card_background_color": "#306030" } },
         {
           "type": "text_card",
           "settings": {
@@ -3176,13 +2977,16 @@
             "row_span": 4.0
           }
         },
-        { "type": "card", "settings": { "heading": "", "column_span": 2.6, "row_span": 4.0 } },
-        { "type": "product_card", "settings": { "column_span": 2.0, "row_span": 4.0 } },
-        { "type": "tag_card", "settings": { "column_span": 1.6, "row_span": 2.5 } },
-        { "type": "card", "settings": { "heading": "Generic 8", "column_span": 2.8, "row_span": 2.3 } },
         { "type": "video_card", "settings": { "column_span": 3.2, "row_span": 2.3 } },
-        { "type": "button_card", "settings": { "column_span": 2.0, "row_span": 1.1 } },
-        { "type": "scrolling_text_card", "settings": { "column_span": 2.5, "row_span": 0.8 } }
+        { "type": "content_card", "settings": { "column_span": 2.6, "row_span": 4.0 } },
+        { "type": "tag_card", "settings": { "column_span": 1.6, "row_span": 2.5 } },
+        { "type": "tag_card", "settings": { "column_span": 1.6, "row_span": 2.5 } },
+        {
+          "type": "content_card",
+          "settings": { "column_span": 2.6, "row_span": 4.0, "card_background_color": "#306030" }
+        },
+        { "type": "scrolling_text_card", "settings": { "column_span": 2.5, "row_span": 0.8 } },
+        { "type": "button_card", "settings": { "column_span": 2.0, "row_span": 1.1 } }
       ]
     }
   ]
