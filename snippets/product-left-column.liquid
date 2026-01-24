@@ -43,6 +43,11 @@
       }}
     </div>
 
+    <!-- MOBILE SLIDER (Visible only on mobile) -->
+    <div class="mobile-product-slider">
+      {% render 'product-image-slider', product: product, section: section %}
+    </div>
+
     <!-- NEW PRICE DISPLAY -->
     <div class="product-price-container">
       <span class="price-main" style="font-size: {{ price_font_size | default: 56 }}px;">

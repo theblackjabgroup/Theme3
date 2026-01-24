@@ -13,7 +13,7 @@
   <button class="media-nav prev" aria-label="Previous image">←</button>
   <button class="media-nav next" aria-label="Next image">→</button>
 
-  <div class="product-media-track" id="ProductMediaTrack">
+  <div class="product-media-track">
     {% assign hero_image_found = false %}
     {% for media in product.media %}
       <div class="product-media-slide {% if media.media_type == 'image' and hero_image_found == false %}is-hero-slide{% endif %}">
