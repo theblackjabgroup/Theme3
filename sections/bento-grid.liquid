@@ -204,9 +204,14 @@
             {%- assign mobile_align = block.settings.mobile_content_alignment | default: align -%}
             {%- assign vertical_align = block.settings.vertical_alignment | default: 'top' -%}
             {%- assign mobile_vertical_align = block.settings.mobile_vertical_alignment | default: vertical_align -%}
+            {%- comment -%} Determine border color - use card_border_color if set, otherwise match background color {%- endcomment -%}
+            {%- assign border_color = block.settings.card_border_color -%}
+            {%- if border_color == blank and block.settings.card_background_color != blank -%}
+              {%- assign border_color = block.settings.card_background_color -%}
+            {%- endif -%}
             <div
               class="bento-card tag-card tag-card--{{ direction }} tag-card--align-{{ align }} tag-card--valign-{{ vertical_align }}{% if block.settings.card_background_color != blank %} has-custom-background{% endif %}"
-              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %}{% if block.settings.card_text_color != blank %} color: {{ block.settings.card_text_color }};{% endif %}"
+              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %}{% if border_color != blank %} border-color: {{ border_color }};{% endif %}{% if block.settings.card_text_color != blank %} color: {{ block.settings.card_text_color }};{% endif %}"
               data-mobile-direction="{{ mobile_direction }}"
               data-mobile-align="{{ mobile_align }}"
               data-mobile-vertical-align="{{ mobile_vertical_align }}"
@@ -324,6 +329,31 @@
                               }}
                             </div>
                           {%- endif -%}
+                        {%- endfor -%}
+                      </div>
+                    </div>
+                  {%- else -%}
+                    {%- comment -%} Show default product placeholder images when no images are uploaded {%- endcomment -%}
+                    <div class="tag-card-image-strip">
+                      <div class="tag-card-image-strip-track">
+                        {%- assign default_images = 'product-apparel-1,product-apparel-2,product-apparel-3,product-apparel-4,product-bag-1,product-bag-2,product-bottle-1,product-bottle-2' | split: ',' -%}
+                        {%- comment -%} First set of default images {%- endcomment -%}
+                        {%- for default_image in default_images -%}
+                          <div class="tag-card-image-strip-item">
+                            {{
+                              default_image
+                              | placeholder_svg_tag: 'tag-card-image-strip-placeholder'
+                            }}
+                          </div>
+                        {%- endfor -%}
+                        {%- comment -%} Duplicate for seamless loop {%- endcomment -%}
+                        {%- for default_image in default_images -%}
+                          <div class="tag-card-image-strip-item">
+                            {{
+                              default_image
+                              | placeholder_svg_tag: 'tag-card-image-strip-placeholder'
+                            }}
+                          </div>
                         {%- endfor -%}
                       </div>
                     </div>
@@ -510,7 +540,7 @@
                 {%- endif -%}
 
                 {%- if block.settings.enable_heading and block.settings.heading != blank -%}
-                  <h3 class="text-card-heading">
+                  <h3 class="text-card-heading"{% if block.settings.heading_text_color != blank %} style="color: {{ block.settings.heading_text_color }};"{% endif %}>
                     {{ block.settings.heading }}
                   </h3>
                 {%- endif -%}
@@ -523,21 +553,11 @@
 
                 {%- if block.settings.button_text != blank -%}
                   <div class="text-card-button-wrapper text-card-button--align-{{ button_align }}">
-                    {%- if block.settings.button_link != blank -%}
-                      <a
-                        href="{{ block.settings.button_link }}"
-                        class="text-card-button"
-                      >
-                        {{- block.settings.button_text -}}
-                      </a>
-                    {%- else -%}
-                      <button
-                        type="button"
-                        class="text-card-button"
-                      >
-                        {{ block.settings.button_text }}
-                      </button>
-                    {%- endif -%}
+                    {%- render 'submit-button',
+                      text: block.settings.button_text,
+                      url: block.settings.button_link,
+                      class: 'text-card-button'
+                    -%}
                   </div>
                 {%- endif -%}
               </div>
@@ -1876,7 +1896,7 @@
           "type": "checkbox",
           "id": "show_image_strip",
           "label": "Show image strip",
-          "default": true,
+          "default": false,
           "info": "Vertical scrolling image strip that appears on the right side"
         },
         {
@@ -2006,6 +2026,12 @@
           "label": "Card Background Color",
           "default": "#1a1a1a",
           "info": "Background color for this card"
+        },
+        {
+          "type": "color",
+          "id": "card_border_color",
+          "label": "Card Border Color",
+          "info": "Border color for this card. If not set, will match the background color."
         },
         {
           "type": "color",
@@ -2144,6 +2170,12 @@
         {
           "type": "header",
           "content": "Heading Typography"
+        },
+        {
+          "type": "color",
+          "id": "heading_text_color",
+          "label": "Heading Text Color",
+          "info": "Text color for the heading. If not set, will use the default text color."
         },
         {
           "type": "range",
