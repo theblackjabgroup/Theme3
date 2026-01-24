@@ -7,12 +7,20 @@
   }
 {%- endstyle -%}
 
-<div class="scrolling-text-section">
+{%- liquid
+  assign scheme = section.settings.color_scheme
+  if scheme == blank
+    assign scheme = settings.color_schemes | first
+  endif
+-%}
+
+<div class="scrolling-text-section color-{{ scheme.id }} gradient">
   {%- for block in section.blocks -%}
     {%- liquid
       assign angle_val = block.settings.angle
       assign abs_angle = angle_val | abs
-      assign tilt_margin = abs_angle | times: 3 | plus: 10
+      assign auto_tilt_margin = abs_angle | times: 3 | plus: 10
+      assign tilt_margin = block.settings.tilt_margin | default: auto_tilt_margin
 
       assign direction_val = 'normal'
       if block.settings.direction == 'right'
@@ -65,6 +73,10 @@
         --strip-width: {{ block.settings.strip_width }}%;
         --margin-left: {{ margin_left }};
         --margin-right: {{ margin_right }};
+        --border-radius: {{ block.settings.border_radius }}px;
+        --border-width: {{ block.settings.border_width }}px;
+        --border-color: {{ block.settings.border_color }};
+        --border-style: {% if block.settings.enable_border %}solid{% else %}none{% endif %};
       "
     >
       <div class="scrolling-text-inner">
@@ -155,6 +167,12 @@
       "unit": "px",
       "label": "Vertical Gap (Mobile)",
       "default": 15
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
     }
   ],
   "max_blocks": 3,
@@ -321,6 +339,52 @@
           "unit": "deg",
           "label": "Tilt Angle",
           "default": 0
+        },
+        {
+          "type": "range",
+          "id": "tilt_margin",
+          "min": 0,
+          "max": 100,
+          "step": 2,
+          "unit": "px",
+          "label": "Tilt Margin (Vertical)",
+          "default": 0
+        },
+        {
+          "type": "header",
+          "content": "Border"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_border",
+          "label": "Enable Border",
+          "default": false
+        },
+        {
+          "type": "color",
+          "id": "border_color",
+          "label": "Border Color",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "border_radius",
+          "min": 0,
+          "max": 100,
+          "step": 2,
+          "unit": "px",
+          "label": "Border Radius",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "border_width",
+          "min": 1,
+          "max": 10,
+          "step": 1,
+          "unit": "px",
+          "label": "Border Width",
+          "default": 1
         }
       ]
     }
