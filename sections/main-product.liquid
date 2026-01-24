@@ -150,6 +150,9 @@
         // Only active on desktop
         if (window.innerWidth < 990) return;
 
+        // Allow zooming (Ctrl/Cmd + Scroll)
+        if (e.ctrlKey || e.metaKey) return;
+
         const scrollTop = rightColumn.scrollTop;
         const scrollHeight = rightColumn.scrollHeight;
         const clientHeight = rightColumn.clientHeight;
