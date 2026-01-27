@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
       }
 
-      // Close all other menus first (but skip state check to avoid double update)
+      // Close all other menus first - do this synchronously to prevent race conditions
       megaMenuTriggers.forEach((otherTrigger) => {
         if (otherTrigger !== this) {
           otherTrigger.setAttribute('aria-expanded', 'false');
@@ -79,12 +79,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       });
 
-      // Open the clicked menu - use requestAnimationFrame to ensure DOM is ready
-      requestAnimationFrame(() => {
-        this.setAttribute('aria-expanded', 'true');
-        menu.setAttribute('aria-hidden', 'false');
-        checkMegaMenuState();
-      });
+      // Update state immediately after closing other menus
+      checkMegaMenuState();
+
+      // Open the clicked menu - do this synchronously to prevent race conditions
+      this.setAttribute('aria-expanded', 'true');
+      menu.setAttribute('aria-hidden', 'false');
+      checkMegaMenuState();
     });
   });
 

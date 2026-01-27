@@ -145,9 +145,9 @@ class MobileHeader {
       }
 
       // Wait for animation to complete before cleaning up body classes
-      const handleTransitionEnd = (e) => {
-        // Only proceed if we're still closing and this is the correct transition
-        if (!this.isClosing || e.target !== menuContent) {
+      const cleanup = () => {
+        // Only proceed if we're still closing
+        if (!this.isClosing) {
           return;
         }
         
@@ -160,30 +160,49 @@ class MobileHeader {
         document.documentElement.classList.remove('mobile-menu-open');
         document.body.style.overflow = '';
         
+        this.closeTransitionHandler = null;
+        this.isClosing = false;
+      };
+
+      const handleTransitionEnd = (e) => {
+        // Only proceed if we're still closing and this is the correct transition
+        if (!this.isClosing || e.target !== menuContent) {
+          return;
+        }
+        
+        // Double-check menu is still closed
+        if (this.menuDrawer.getAttribute('aria-hidden') !== 'true') {
+          return;
+        }
+        
+        cleanup();
+        
         if (menuContent) {
           menuContent.removeEventListener('transitionend', handleTransitionEnd);
         }
-        
-        this.closeTransitionHandler = null;
-        this.isClosing = false;
       };
 
       // Store handler reference so we can cancel it if menu reopens
       this.closeTransitionHandler = handleTransitionEnd;
 
+      // Always set up timeout fallback to prevent scroll lock
+      const fallbackTimeout = setTimeout(() => {
+        cleanup();
+        if (menuContent && this.closeTransitionHandler) {
+          menuContent.removeEventListener('transitionend', this.closeTransitionHandler);
+        }
+        this.closeTransitionHandler = null;
+      }, 800);
+
       if (menuContent) {
-        menuContent.addEventListener('transitionend', handleTransitionEnd, { once: true });
+        menuContent.addEventListener('transitionend', (e) => {
+          clearTimeout(fallbackTimeout);
+          handleTransitionEnd(e);
+        }, { once: true });
       } else {
-        // Fallback if menuContent not found
-        setTimeout(() => {
-          if (this.isClosing && this.menuDrawer.getAttribute('aria-hidden') === 'true') {
-            document.body.classList.remove('mobile-menu-open');
-            document.documentElement.classList.remove('mobile-menu-open');
-            document.body.style.overflow = '';
-          }
-          this.isClosing = false;
-          this.closeTransitionHandler = null;
-        }, 800);
+        // If menuContent not found, cleanup immediately
+        clearTimeout(fallbackTimeout);
+        cleanup();
       }
 
       const hamburgerToggle = document.querySelector('.mobile-menu-toggle[data-mobile-menu-toggle]');
