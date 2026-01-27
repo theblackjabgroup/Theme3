@@ -4,9 +4,10 @@ document.addEventListener('DOMContentLoaded', function () {
   const megaMenus = document.querySelectorAll('[data-mega-menu]');
   const dockMenu = document.querySelector('.dock-menu');
   const dockLinks = document.querySelectorAll('.dock-link');
+  let isTriggerClick = false;
 
   // Close all mega menus
-  function closeAllMegaMenus() {
+  function closeAllMegaMenus(skipStateCheck = false) {
     megaMenuTriggers.forEach((trigger) => {
       trigger.setAttribute('aria-expanded', 'false');
     });
@@ -15,10 +16,10 @@ document.addEventListener('DOMContentLoaded', function () {
       menu.setAttribute('aria-hidden', 'true');
     });
     
-    // Remove blur class after a short delay to allow closing animation to complete
-    setTimeout(() => {
+    // Update state immediately
+    if (!skipStateCheck) {
       checkMegaMenuState();
-    }, 300);
+    }
   }
 
   // Check if any mega menu is open
@@ -38,34 +39,86 @@ document.addEventListener('DOMContentLoaded', function () {
     trigger.addEventListener('click', function (e) {
       e.preventDefault();
       e.stopPropagation();
+      e.stopImmediatePropagation();
+      
+      // Set flag to prevent click-outside handler from interfering
+      isTriggerClick = true;
+      setTimeout(() => {
+        isTriggerClick = false;
+      }, 200);
 
       const menuId = this.getAttribute('aria-controls');
       const menu = document.getElementById(menuId);
-      const isExpanded = this.getAttribute('aria-expanded') === 'true';
+      if (!menu) {
+        isTriggerClick = false;
+        return;
+      }
 
-      // Close all menus first
-      closeAllMegaMenus();
+      // Get current state from the menu itself, not just the trigger
+      const menuIsHidden = menu.getAttribute('aria-hidden') === 'true';
+      const triggerIsExpanded = this.getAttribute('aria-expanded') === 'true';
 
-      // Toggle current menu
-      if (!isExpanded && menu) {
+      // If menu is visible or trigger says expanded, close it
+      if (!menuIsHidden || triggerIsExpanded) {
+        this.setAttribute('aria-expanded', 'false');
+        menu.setAttribute('aria-hidden', 'true');
+        checkMegaMenuState();
+        return;
+      }
+
+      // Close all other menus first (but skip state check to avoid double update)
+      megaMenuTriggers.forEach((otherTrigger) => {
+        if (otherTrigger !== this) {
+          otherTrigger.setAttribute('aria-expanded', 'false');
+        }
+      });
+      
+      megaMenus.forEach((otherMenu) => {
+        if (otherMenu !== menu) {
+          otherMenu.setAttribute('aria-hidden', 'true');
+        }
+      });
+
+      // Open the clicked menu - use requestAnimationFrame to ensure DOM is ready
+      requestAnimationFrame(() => {
         this.setAttribute('aria-expanded', 'true');
         menu.setAttribute('aria-hidden', 'false');
-        // Add blur class when menu opens
         checkMegaMenuState();
-      }
+      });
     });
   });
 
   // Close mega menu when clicking outside or on overlay
   document.addEventListener('click', function (e) {
+    // Don't close if this was a trigger click
+    if (isTriggerClick) {
+      return;
+    }
+    
+    // Don't close if clicking on a trigger button
+    if (e.target.closest('[data-mega-menu-trigger]')) {
+      return;
+    }
+    
+    // Check if any menu is actually open before closing
+    const isAnyMenuOpen = Array.from(megaMenus).some(
+      (menu) => menu.getAttribute('aria-hidden') === 'false'
+    );
+    
+    if (!isAnyMenuOpen) {
+      return; // No menu is open, nothing to close
+    }
+    
+    // Close when clicking outside menu items and mega menu
     if (!e.target.closest('.dock-menu-item') && !e.target.closest('.mega-menu')) {
       closeAllMegaMenus();
     }
+    
     // Close when clicking on overlay
     if (e.target.classList.contains('mega-menu-overlay')) {
       closeAllMegaMenus();
     }
-  });
+  }, true); // Use capture phase to handle before other handlers
 
   // Close mega menu on escape key
   document.addEventListener('keydown', function (e) {
