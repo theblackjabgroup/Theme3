@@ -90,6 +90,11 @@ class MobileHeader {
 
       // Use requestAnimationFrame to ensure the transform animation triggers
       requestAnimationFrame(() => {
+        // Check if menu is still being opened (not closed in the meantime)
+        if (this.isClosing || this.menuDrawer.getAttribute('aria-hidden') === 'true') {
+          return; // Menu was closed, don't proceed with opening
+        }
+
         const menuContent = this.menuDrawer.querySelector('.mobile-menu-content');
         if (menuContent) {
           menuContent.style.transform = ''; // Clear any inline transform from closing
