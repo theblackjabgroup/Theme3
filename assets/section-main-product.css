@@ -152,7 +152,7 @@
 
 .product-form__input label:active,
 .product-form__input input:checked + label:active {
-  animation: bounce-click 0.2s ease;
+  transform: scale(0.96);
   box-shadow: 0 0 0 var(--color-black);
 }
 
@@ -326,7 +326,7 @@
   z-index: 50;
 }
 .media-nav:active {
-  animation: bounce-click 0.2s ease;
+  transform: translateY(-50%) scale(0.96);
   box-shadow: 0 0 0 var(--color-black);
 }
 .media-nav.prev {
