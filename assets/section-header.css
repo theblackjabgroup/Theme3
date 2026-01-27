@@ -694,7 +694,7 @@ body.mega-menu-open .dock-actions * {
 }
 
 /* Change mobile header background when menu is open */
-body.mobile-menu-open .mobile-header-container {
+.mobile-header-container {
   background: var(--color-header-button-background) !important;
   border-color: var(--color-header-button-background) !important;
 }
