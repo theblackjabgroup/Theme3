@@ -353,9 +353,8 @@ body.mega-menu-open .vertical-sidebar-inner {
 
 .header-nav-button-caret {
   position: absolute;
-  right: var(--nav-item-padding-right, 16px);
+  right: var(--nav-item-padding-right, 18px);
   bottom: 18px;
-  right: 18px;
   transform: translateY(-50%);
   display: flex;
   align-items: center;
@@ -695,9 +694,9 @@ body.mega-menu-open .dock-actions * {
 }
 
 /* Change mobile header background when menu is open */
- .mobile-header-container {
-  background: var(--color-header-button-background);
-  border-color: var(--color-header-button-background);
+body.mobile-menu-open .mobile-header-container {
+  background: var(--color-header-button-background) !important;
+  border-color: var(--color-header-button-background) !important;
 }
 
 .mobile-header-logo {

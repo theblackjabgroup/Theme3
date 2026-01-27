@@ -5,6 +5,8 @@ class MobileHeader {
     this.headerContainer = document.querySelector('.mobile-header-container');
     this.lastScrollY = window.scrollY;
     this.scrollThreshold = 10; // Minimum scroll distance to trigger hide/show
+    this.closeTransitionHandler = null; // Track the close transition handler
+    this.isClosing = false; // Track if menu is currently closing
 
     // Initialize scroll handler for mobile header
     this.initScrollHandler();
@@ -29,7 +31,6 @@ class MobileHeader {
           e.preventDefault();
           e.stopPropagation();
           e.stopImmediatePropagation();
-          console.log('Close button clicked'); // Debug log
           this.closeMenu();
           return false;
         }
@@ -75,6 +76,16 @@ class MobileHeader {
 
   openMenu() {
     if (this.menuDrawer) {
+      // Cancel any pending close transition handler
+      if (this.closeTransitionHandler) {
+        const menuContent = this.menuDrawer.querySelector('.mobile-menu-content');
+        if (menuContent) {
+          menuContent.removeEventListener('transitionend', this.closeTransitionHandler);
+        }
+        this.closeTransitionHandler = null;
+      }
+      
+      this.isClosing = false;
       this.menuDrawer.setAttribute('aria-hidden', 'false');
 
       // Use requestAnimationFrame to ensure the transform animation triggers
@@ -109,7 +120,15 @@ class MobileHeader {
   closeMenu() {
     if (this.menuDrawer) {
       const menuContent = this.menuDrawer.querySelector('.mobile-menu-content');
+      
+      // Cancel any pending close transition handler from previous close attempts
+      if (this.closeTransitionHandler && menuContent) {
+        menuContent.removeEventListener('transitionend', this.closeTransitionHandler);
+        this.closeTransitionHandler = null;
+      }
 
+      this.isClosing = true;
+      
       // Set aria-hidden to true immediately to trigger the CSS transition
       this.menuDrawer.setAttribute('aria-hidden', 'true');
 
@@ -117,26 +136,48 @@ class MobileHeader {
       if (menuContent) {
         // Force reflow to ensure the transition starts
         menuContent.offsetHeight;
+        menuContent.style.transform = 'translateY(-100%)';
       }
 
       // Wait for animation to complete before cleaning up body classes
-      const handleTransitionEnd = () => {
+      const handleTransitionEnd = (e) => {
+        // Only proceed if we're still closing and this is the correct transition
+        if (!this.isClosing || e.target !== menuContent) {
+          return;
+        }
+        
+        // Double-check menu is still closed
+        if (this.menuDrawer.getAttribute('aria-hidden') !== 'true') {
+          return;
+        }
+        
         document.body.classList.remove('mobile-menu-open');
         document.documentElement.classList.remove('mobile-menu-open');
         document.body.style.overflow = '';
+        
         if (menuContent) {
           menuContent.removeEventListener('transitionend', handleTransitionEnd);
         }
+        
+        this.closeTransitionHandler = null;
+        this.isClosing = false;
       };
+
+      // Store handler reference so we can cancel it if menu reopens
+      this.closeTransitionHandler = handleTransitionEnd;
 
       if (menuContent) {
         menuContent.addEventListener('transitionend', handleTransitionEnd, { once: true });
       } else {
         // Fallback if menuContent not found
         setTimeout(() => {
-          document.body.classList.remove('mobile-menu-open');
-          document.documentElement.classList.remove('mobile-menu-open');
-          document.body.style.overflow = '';
+          if (this.isClosing && this.menuDrawer.getAttribute('aria-hidden') === 'true') {
+            document.body.classList.remove('mobile-menu-open');
+            document.documentElement.classList.remove('mobile-menu-open');
+            document.body.style.overflow = '';
+          }
+          this.isClosing = false;
+          this.closeTransitionHandler = null;
         }, 800);
       }
 
