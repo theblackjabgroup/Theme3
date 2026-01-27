@@ -316,7 +316,7 @@
         
         if (priceCompare) {
             if (currentVariant.compare_at_price > currentVariant.price) {
-                priceCompare.innerHTML = 'MRP ' + formatMoney(currentVariant.compare_at_price, moneyFormat);
+                priceCompare.innerHTML = formatMoney(currentVariant.compare_at_price, moneyFormat);
                 priceCompare.style.display = 'inline';
             } else {
                 priceCompare.style.display = 'none';
