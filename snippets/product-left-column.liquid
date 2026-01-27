@@ -57,7 +57,7 @@
         class="price-compare"
         style="font-size: {{ sale_price_font_size | default: 20 }}px; {% unless current_variant.compare_at_price > current_variant.price %}display:none{% endunless %}"
       >
-        MRP {{ current_variant.compare_at_price | money_without_trailing_zeros }}
+        {{ current_variant.compare_at_price | money_without_trailing_zeros }}
       </span>
     </div>
 
