@@ -108,17 +108,6 @@ class MobileHeader {
         document.documentElement.classList.add('mobile-menu-open');
         document.body.style.overflow = 'hidden';
       });
-
-      // Open all submenus by default
-      this.submenuToggles.forEach((toggle) => {
-        const parentLink = toggle.getAttribute('data-parent-link');
-        const submenu = document.querySelector(`.mobile-submenu[data-parent="${parentLink}"]`);
-        if (submenu) {
-          toggle.classList.add('active');
-          toggle.setAttribute('aria-expanded', 'true');
-          submenu.classList.add('active');
-        }
-      });
     }
   }
 
@@ -196,8 +185,11 @@ class MobileHeader {
 
       if (menuContent) {
         menuContent.addEventListener('transitionend', (e) => {
-          clearTimeout(fallbackTimeout);
-          handleTransitionEnd(e);
+          // Only handle transform transitions from menuContent itself, not child elements
+          if (e.target === menuContent && e.propertyName === 'transform') {
+            clearTimeout(fallbackTimeout);
+            handleTransitionEnd(e);
+          }
         }, { once: true });
       } else {
         // If menuContent not found, cleanup immediately
