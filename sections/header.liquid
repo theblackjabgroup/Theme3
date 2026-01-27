@@ -510,6 +510,7 @@
           {%- for link in section.settings.menu.links -%}
             <li class="mobile-menu-item">
               {%- if link.links != blank -%}
+                {%- assign link_handle = link.title | handleize -%}
                 <div class="mobile-menu-link-wrapper">
                   <a href="{{ link.url }}" class="mobile-menu-link {% if link.active %}active{% endif %}">
                     <span class="mobile-menu-link-text">{{ link.title | upcase }}</span>
@@ -518,7 +519,7 @@
                     type="button"
                     class="mobile-menu-toggle-submenu"
                     data-mobile-submenu-toggle
-                    data-parent-link="{{ link.handle }}"
+                    data-parent-link="{{ link_handle }}"
                     aria-expanded="false"
                     aria-label="Toggle {{ link.title }} submenu"
                   >
@@ -527,7 +528,7 @@
                     </svg>
                   </button>
                 </div>
-                <ul class="mobile-submenu" data-parent="{{ link.handle }}">
+                <ul class="mobile-submenu" data-parent="{{ link_handle }}">
                   {%- for childlink in link.links -%}
                     <li class="mobile-submenu-item">
                       <a href="{{ childlink.url }}" class="mobile-submenu-link {% if childlink.active %}active{% endif %}">
