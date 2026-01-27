@@ -20,7 +20,6 @@
   <script src="{{ 'quick-add-bulk.js' | asset_url }}" defer="defer"></script>
   <script src="{{ 'quantity-popover.js' | asset_url }}" defer="defer"></script>
   <script src="{{ 'price-per-item.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'quick-order-list.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}
 
 {%- style -%}
@@ -364,7 +363,11 @@
         {% endif %}
       >
         {%- if collection.products.size == 0 -%}
-          <div class="collection collection--empty page-width" id="product-grid-{{ section.id }}" data-id="{{ section.id }}">
+          <div
+            class="collection collection--empty page-width"
+            id="product-grid-{{ section.id }}"
+            data-id="{{ section.id }}"
+          >
             <div class="loading-overlay gradient"></div>
             <div class="title-wrapper center">
               <h2 class="title title--primary">
@@ -395,10 +398,11 @@
                     style="--animation-order: {{ forloop.index }};"
                   {% endif %}
                 >
-                  {% render 'card-product-custom', 
-                    card_product: product, 
-                    section_id: section.id, 
-                    quick_add: section.settings.quick_add, 
+                  {%
+                    render 'card-product-custom',
+                    card_product: product,
+                    section_id: section.id,
+                    quick_add: section.settings.quick_add,
                     lazy_load: forloop.index > 2,
                     show_badge: section.settings.show_card_badge,
                     badge_text: section.settings.card_badge_text,
