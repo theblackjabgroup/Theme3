@@ -19,7 +19,7 @@
             "row_span": 1.4,
             "card_background_color": "#306030",
             "card_border_color": "#306030",
-            "mobile_column_span": 2.0,
+            "mobile_column_span": 1.0,
             "mobile_row_span": 0.2,
             "show_image_strip": false,
             "tag_text_color": "#E6E1DA",
@@ -38,8 +38,8 @@
             "button_text": "Button Text",
             "column_span": 2, 
             "row_span": 3.6,
-            "mobile_column_span": 2.0,
-            "mobile_row_span": 0.5,
+            "mobile_column_span": 1.0,
+            "mobile_row_span": 0.4,
             "card_background_color": "#E5E1DA",
             "heading_text_color": "#306030"
           } 
@@ -49,8 +49,8 @@
           "settings": { 
             "column_span": 3, 
             "row_span": 3.6,
-            "mobile_column_span": 2.0,
-            "mobile_row_span": 0.5,
+            "mobile_column_span": 1.0,
+            "mobile_row_span": 0.2,
             "card_background_color": "#E598A9",
           } 
         },
@@ -71,14 +71,16 @@
           "settings": { 
             "column_span": 1.5, 
             "row_span": 2.2,
-            "mobile_column_span": 1.5,
+            "mobile_column_span": 1,
             "mobile_row_span": 0.2,
             "show_image_strip": false,
             "card_background_color": "#E598A9",
             "card_border_color": "#E598A9",
             "tag_text_color": "#306030",
             "tag_border_color": "#306030",
-            "main_text_color": "#306030"
+            "main_text_color": "#306030",
+            "show_icon": true,
+            "mobile_layout_direction": "column"
           } 
         },
         "card_6": { 
@@ -86,14 +88,15 @@
           "settings": { 
             "column_span": 3, 
             "row_span": 2.6,
-            "mobile_column_span": 1.5,
+            "mobile_column_span": 1,
             "mobile_row_span": 0.2,
             "show_image_strip": true,
             "card_background_color": "#E5E1DA",
             "card_border_color": "#E5E1DA",
             "tag_text_color": "#306030",
             "tag_border_color": "#306030",
-            "main_text_color": "#306030"
+            "main_text_color": "#306030",
+            "mobile_layout_direction": "column"
           } 
         },
         "card_7": { 
@@ -104,7 +107,8 @@
             "card_background_color": "#306030",
             "mobile_column_span": 2.0,
             "mobile_row_span": 0.5,
-            "layout_direction": "row"
+            "layout_direction": "row",
+            "hide_on_mobile": true
           } 
         },
         "card_8": { 
