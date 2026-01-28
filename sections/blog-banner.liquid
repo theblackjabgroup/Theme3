@@ -4,11 +4,24 @@
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
-    background-color: {{ section.settings.color_scheme.settings.background }};
+    background-color: {{ section.settings.color_scheme.settings.primary_button_bg }};
+    border-radius: {{ section.settings.border_radius }}px;
+    margin: {{ section.settings.margin_vertical }}px {{ section.settings.margin_horizontal }}px;
+
     --eyebrow-color: {{ section.settings.color_scheme.settings.accent_red }};
     --heading-color: {{ section.settings.color_scheme.settings.headings }};
     --text-color: {{ section.settings.color_scheme.settings.text }};
     --content-max-width: {{ section.settings.content_max_width }}px;
+    --eyebrow-font-size: {{ section.settings.eyebrow_font_size }}px;
+    --heading-font-size: {{ section.settings.heading_font_size }}px;
+    --heading-font-size-mobile: {{ section.settings.heading_font_size_mobile }}px;
+    --text-font-size: {{ section.settings.text_font_size }}px;
+  }
+
+  @media screen and (max-width: 750px) {
+    .section-{{ section.id }}-padding {
+       margin: {{ section.settings.margin_vertical_mobile }}px {{ section.settings.margin_horizontal_mobile }}px;
+    }
   }
 
   @media screen and (min-width: 750px) {
@@ -77,6 +90,50 @@
       "id": "text",
       "label": "Description",
       "default": "By sharing your own mental health story, you'll be a huge inspiration to anyone struggling. You can even share your story anonymously - think of it as a virtual coffee with a friend."
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_font_size",
+      "min": 10,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Eyebrow Font Size",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "min": 20,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Font Size",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_mobile",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Font Size (Mobile)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "text_font_size",
+      "min": 10,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Description Font Size",
+      "default": 16
     },
     {
       "type": "header",
@@ -154,6 +211,64 @@
       "unit": "px",
       "label": "Bottom Padding",
       "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Layout Customization"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Border Radius",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_vertical",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Margin Vertical",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "margin_horizontal",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Margin Horizontal",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Mobile Layout"
+    },
+    {
+      "type": "range",
+      "id": "margin_vertical_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Mobile Margin Vertical",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "margin_horizontal_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile Margin Horizontal",
+      "default": 10
     }
   ]
 }
