@@ -1,5 +1,5 @@
 {%- comment -%}
-  Renders a submit button with the share-story-submit styling.
+  Renders a submit button with the share-story-submit styling using a dual-span layer for 3D effect.
   Accepts:
   - text: {String} Button text (required)
   - url: {String} Optional URL. If provided, renders as <a>, otherwise as <button>
@@ -12,43 +12,91 @@
 
 <style>
   .share-story-submit {
+    position: relative;
+    display: inline-block;
+    background: transparent;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    width: fit-content;
+    margin-top: 0;
+    text-transform: none;
+    z-index: 1;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .share-story-submit * {
+    box-sizing: border-box;
+  }
+
+  .submit-button__shadow {
+    position: absolute;
+    top: 3px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-primary-button-hover-bg);
+    border-radius: var(--radius-l);
+    z-index: -1;
+    transition: transform 0.4s ease;
+  }
+
+  .submit-button__content {
+    position: relative;
+    z-index: 2;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: var(--color-primary-button-bg);
-    color: var(--color-primary-button-text, #273827);
-    border: 2px solid var(--color-primary-button-border);
+    color: var(--color-primary-button-text);
+    border: 1px solid var(--color-primary-button-border);
     padding: 20px;
     border-radius: var(--radius-l);
     font-size: 1.4rem;
     font-weight: 700;
-    cursor: pointer;
-    width: fit-content;
-    margin-top: 0;
-    text-transform: none;
     font-family: var(--font-heading-family);
     letter-spacing: 0.02em;
     line-height: 1;
-    text-decoration: none;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 4px 0 var(--color-shadow);
+    transition: transform 0.4s ease;
+    will-change: transform;
+    width: 100%;
+    height: 100%;
   }
 
-  .share-story-submit:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 0 var(--color-shadow);
+  .share-story-submit:not([disabled]):hover .submit-button__content {
+    transform: translate(0, -4px);
   }
 
-  .share-story-submit:active {
-    transform: scale(0.96);
-    box-shadow: 0 0 0 var(--color-shadow);
-    transform-origin: center center;
+  .share-story-submit:not([disabled]):active .submit-button__content {
+    transform: translate(0, 1px);
   }
 
-  /* Override for button card context if needed */
+  .submit-button__icon {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 8px;
+  }
+
+  .submit-button__text {
+    position: relative;
+  }
+
+  .submit-button__badge {
+    margin-left: 8px;
+    background: var(--color-primary-button-hover-bg);
+    color: var(--color-primary-button-text);
+    padding: 2px 6px;
+    border-radius: 12px;
+    font-size: 0.8em;
+  }
+
   .button-card .share-story-submit {
-    padding: 20px !important;
     width: 97%;
+  }
+
+  .button-card .share-story-submit .submit-button__content {
+    width: 100%;
   }
 </style>
 
@@ -62,26 +110,32 @@
 
 {%- if url != blank -%}
   <a class="{{ button_class }}" href="{{ url }}" {{ attributes }}>
-    {%- if icon != blank -%}
-      <span class="submit-button__icon">{{ icon }}</span>
-    {%- endif -%}
-    {%- if button_text != blank -%}
-      <span class="submit-button__text">{{ button_text }}</span>
-    {%- endif -%}
-    {%- if badge != blank and badge != '0' -%}
-      <span class="submit-button__badge">{{ badge }}</span>
-    {%- endif -%}
+    <span class="submit-button__shadow"></span>
+    <span class="submit-button__content">
+      {%- if icon != blank -%}
+        <span class="submit-button__icon">{{ icon }}</span>
+      {%- endif -%}
+      {%- if button_text != blank -%}
+        <span class="submit-button__text">{{ button_text }}</span>
+      {%- endif -%}
+      {%- if badge != blank and badge != '0' -%}
+        <span class="submit-button__badge">{{ badge }}</span>
+      {%- endif -%}
+    </span>
   </a>
 {%- else -%}
   <button type="{{ button_type }}" class="{{ button_class }}" {{ attributes }}>
-    {%- if icon != blank -%}
-      <span class="submit-button__icon">{{ icon }}</span>
-    {%- endif -%}
-    {%- if button_text != blank -%}
-      <span class="submit-button__text">{{ button_text }}</span>
-    {%- endif -%}
-    {%- if badge != blank and badge != '0' -%}
-      <span class="submit-button__badge">{{ badge }}</span>
-    {%- endif -%}
+    <span class="submit-button__shadow"></span>
+    <span class="submit-button__content">
+      {%- if icon != blank -%}
+        <span class="submit-button__icon">{{ icon }}</span>
+      {%- endif -%}
+      {%- if button_text != blank -%}
+        <span class="submit-button__text">{{ button_text }}</span>
+      {%- endif -%}
+      {%- if badge != blank and badge != '0' -%}
+        <span class="submit-button__badge">{{ badge }}</span>
+      {%- endif -%}
+    </span>
   </button>
 {%- endif -%}
