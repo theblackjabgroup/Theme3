@@ -65,6 +65,11 @@
   display: flex;
   align-items: center;
   z-index: 10;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.product-split-left::-webkit-scrollbar {
+  display: none;
 }
 .product-split-left::before {
   content: '';
@@ -252,6 +257,11 @@
   text-align: center;
   padding: 10px 0;
   color: var(--color-text);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.product-split-right::-webkit-scrollbar {
+  display: none;
 }
 
 .product-media-wrapper {
