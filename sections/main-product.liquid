@@ -272,7 +272,12 @@
       if (!currentVariant) {
         // Variant doesn't exist
         if (submitBtn) {
-          submitBtn.textContent = 'Unavailable';
+          const btnText = submitBtn.querySelector('.submit-button__text');
+          if (btnText) {
+            btnText.textContent = 'Unavailable';
+          } else {
+            submitBtn.textContent = 'Unavailable';
+          }
           submitBtn.disabled = true;
           submitBtn.style.opacity = '0.5';
           submitBtn.style.cursor = 'not-allowed';
