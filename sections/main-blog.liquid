@@ -1,264 +1,185 @@
-{{ 'component-article-card.css' | asset_url | stylesheet_tag }}
 {{ 'section-main-blog.css' | asset_url | stylesheet_tag }}
 
-{%- liquid
-  assign scheme = section.settings.color_scheme
--%}
+<div class="main-blog-slider">
+  <div class="main-blog-slider__container" id="MainBlogContainer">
+    <div class="main-blog-slider__track" id="MainBlogSliderTrack">
+      {%- assign articles = section.settings.blog.articles -%}
+      {%- if articles.size == 0 -%}
+        {%- assign articles = (1..5) -%}
+      {%- endif -%}
 
-{%- style -%}
-  .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
-  }
+      {%- for article in articles -%}
+        <div class="main-blog-card" data-index="{{ forloop.index0 }}">
+          <div class="main-blog-card__image-wrapper">
+            {%- if article.image -%}
+              {{ article.image | image_url: width: 600 | image_tag: loading: 'lazy', class: 'main-blog-card__image' }}
+            {%- else -%}
+              {{ 'image' | placeholder_svg_tag: 'main-blog-card__image' }}
+            {%- endif -%}
+          </div>
+          <div class="main-blog-card__content">
+            {%- if article.tags.size > 0 -%}
+              <span class="main-blog-card__tag">{{ article.tags.first }}</span>
+            {%- else -%}
+              <span class="main-blog-card__tag">LOREM</span>
+            {%- endif -%}
 
-  @media screen and (min-width: 750px) {
-    .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
-    }
-  }
+            <h3 class="main-blog-card__title">
+              {{ article.title | default: 'Journaling For Mental Heath In Switzerland' }}
+            </h3>
 
-  #BlogSlider-{{ section.id }} {
-    --color-card-bg: {{ scheme.settings.accent_off_white}};
-    --color-card-bg-hover: {{ scheme.settings.selected_variant_bg }};
-    --color-card-text: {{ scheme.settings.text }};
-    --color-card-text-hover: {{ scheme.settings.selected_variant_text }};
-  }
-{%- endstyle -%}
-
-{%- paginate blog.articles by 6 -%}
-  <div class="main-blog section-{{ section.id }}-padding color-{{ scheme.id }}">
-    <div class="blog-slider-wrapper" id="BlogSlider-{{ section.id }}">
-      <div class="blog-slider-controls">
-        <button class="blog-slider-nav-btn prev-arrow" aria-label="Previous">
-          <svg viewBox="0 0 24 24">
-            <path d="M19 12H5M12 19l-7-7 7-7"/>
-          </svg>
-        </button>
-
-        <button class="blog-slider-nav-btn next-arrow" aria-label="Next">
-          <svg viewBox="0 0 24 24">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
-          </svg>
-        </button>
-      </div>
-
-      <div class="blog-slider-container">
-        <div class="blog-slider-track">
-          {%- for article in blog.articles -%}
-            <div class="blog-slider-item">
-              {%- render 'article-card',
-                article: article,
-                show_image: false,
-                show_badge: false,
-                show_date: section.settings.show_date,
-                show_author: section.settings.show_author,
-                show_cta_button: true,
-                cta_text: section.settings.cta_text,
-                custom_badge_text: article.tags.first,
-                custom_class: 'article-card-slider'
-              -%}
+            <div class="main-blog-card__excerpt">
+              {%- if article.excerpt.size > 0 -%}
+                {{ article.excerpt | strip_html | truncatewords: 15 }}
+              {%- else -%}
+                {{ article.content | strip_html | truncatewords: 15 }}
+              {%- endif -%}
             </div>
-          {%- endfor -%}
+          </div>
+
+          {% render 'submit-button', text: 'Read more', url: article.url, class: 'main-blog-card__button' %}
         </div>
-      </div>
+      {%- endfor -%}
     </div>
   </div>
-{%- endpaginate -%}
+
+  <div class="main-blog-slider__controls">
+    <button class="main-blog-slider__arrow main-blog-slider__arrow--prev" id="MainBlogPrev">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <button class="main-blog-slider__arrow main-blog-slider__arrow--next" id="MainBlogNext">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+</div>
 
 <script>
-  (function () {
-    function initBlogSlider() {
-      const wrapper = document.querySelector('#BlogSlider-{{ section.id }}');
-      if (!wrapper) return;
+  document.addEventListener('DOMContentLoaded', function () {
+    const track = document.getElementById('MainBlogSliderTrack');
+    const container = document.getElementById('MainBlogContainer');
+    const prevBtn = document.getElementById('MainBlogPrev');
+    const nextBtn = document.getElementById('MainBlogNext');
+    let cards = Array.from(track.querySelectorAll('.main-blog-card'));
 
-      const container = wrapper.querySelector('.blog-slider-container');
-      const track = container.querySelector('.blog-slider-track');
-      
-      if (wrapper.dataset.intervalId) {
-        clearInterval(parseInt(wrapper.dataset.intervalId));
+    const cloneCount = 10;
+    const cardCount = cards.length;
+
+    if (cardCount > 0) {
+      for (let i = 0; i < cloneCount; i++) {
+        const sourceIndex = cardCount - 1 - (i % cardCount);
+        const clone = cards[sourceIndex].cloneNode(true);
+        clone.classList.add('is-clone');
+        clone.dataset.index = -1 - i;
+        track.insertBefore(clone, track.firstChild);
       }
 
-      let items = Array.from(track.children).filter(item => !item.classList.contains('blog-slider-clone'));
-      
-      const prevBtn = wrapper.querySelector('.prev-arrow');
-      const nextBtn = wrapper.querySelector('.next-arrow');
-      const intervalDuration = {{ section.settings.slider_interval | times: 1000 }};
+      for (let i = 0; i < cloneCount; i++) {
+        const sourceIndex = i % cardCount;
+        const clone = cards[sourceIndex].cloneNode(true);
+        clone.classList.add('is-clone');
+        clone.dataset.index = cardCount + i;
+        track.appendChild(clone);
+      }
+    }
 
-      if (items.length === 0) return;
+    const allCards = Array.from(track.querySelectorAll('.main-blog-card'));
+    let currentIndex = cloneCount;
+    let isAnimating = false;
+    requestAnimationFrame(() => {
+      handleVisualUpdate(currentIndex, false);
+    });
 
-      const originalCount = items.length;
+    function updateSlider(index) {
+      if (isAnimating) return;
+      isAnimating = true;
 
-      if (track.getAttribute('data-cloned') !== 'true') {
-        const setsToClone = originalCount < 4 ? 2 : 1;
-        for (let k = 0; k < setsToClone; k++) {
-          items.forEach((item) => {
-            const clone = item.cloneNode(true);
-            clone.setAttribute('aria-hidden', 'true');
-            clone.classList.add('blog-slider-clone'); 
-            track.appendChild(clone);
-          });
-        }
-        track.setAttribute('data-cloned', 'true');
+      handleVisualUpdate(index, true);
+      currentIndex = index;
+
+      setTimeout(() => {
+        checkIndexBounds();
+        isAnimating = false;
+      }, 550);
+    }
+
+    function checkIndexBounds() {
+      let newIndex = currentIndex;
+      let jumped = false;
+
+      if (currentIndex < cloneCount) {
+        newIndex = currentIndex + cardCount;
+        jumped = true;
+      } else if (currentIndex >= cloneCount + cardCount) {
+        newIndex = currentIndex - cardCount;
+        jumped = true;
       }
 
-      let currentIndex = 0;
-      let isTransitioning = false;
-      let intervalId;
-
-      function getItemWidth() {
-        const firstItem = track.querySelector('.blog-slider-item'); 
-        if (!firstItem) return 380;
-        const itemWidth = firstItem.offsetWidth;
-        const gap = 30; 
-        return itemWidth + gap;
+      if (jumped) {
+        container.classList.add('no-transition');
+        void container.offsetHeight;
+        handleVisualUpdate(newIndex, false);
+        currentIndex = newIndex;
+        void container.offsetHeight;
+        requestAnimationFrame(() => {
+          container.classList.remove('no-transition');
+        });
       }
+    }
 
-      function updatePosition(useTransition = true) {
-        const itemFullWidth = getItemWidth();
-        track.style.transition = useTransition ? 'transform 0.5s ease-in-out' : 'none';
-        track.style.transform = `translate3d(-${currentIndex * itemFullWidth}px, 0, 0)`;
-      }
-
-      function nextSlide() {
-        if (isTransitioning) return;
-        isTransitioning = true;
-        currentIndex++;
-        updatePosition(true);
-      }
-
-      function startAutoPlay() {
-        if (wrapper.dataset.intervalId) {
-            clearInterval(parseInt(wrapper.dataset.intervalId));
-        }
-        intervalId = setInterval(nextSlide, intervalDuration);
-        wrapper.dataset.intervalId = intervalId;
-      }
-
-      track.addEventListener('transitionend', (event) => {
-        if (event.target !== track) return; 
-        isTransitioning = false;
-        if (currentIndex >= originalCount) {
-          currentIndex = currentIndex % originalCount;
-          requestAnimationFrame(() => {
-            updatePosition(false);
-          });
+    function handleVisualUpdate(index, animate) {
+      allCards.forEach((card, i) => {
+        if (i === index) {
+          card.classList.add('is-active');
+        } else {
+          card.classList.remove('is-active');
         }
       });
 
-      if (prevBtn) {
-        const newPrev = prevBtn.cloneNode(true);
-        prevBtn.parentNode.replaceChild(newPrev, prevBtn);
-        newPrev.addEventListener('click', () => {
-          if (isTransitioning) return;
-          isTransitioning = true;
-          currentIndex--;
-          if (currentIndex < 0) {
-            track.style.transition = 'none';
-            currentIndex = originalCount;
-            const width = getItemWidth();
-            track.style.transform = `translate3d(-${currentIndex * width}px, 0, 0)`;
-            track.getBoundingClientRect();
-            currentIndex = originalCount - 1;
-            requestAnimationFrame(() => {
-              updatePosition(true);
-            });
-          } else {
-            updatePosition(true);
-          }
-          startAutoPlay();
-        });
-      }
+      const activeCard = allCards[index];
+      if (!activeCard) return;
 
-      if (nextBtn) {
-        const newNext = nextBtn.cloneNode(true);
-        nextBtn.parentNode.replaceChild(newNext, nextBtn);
-        newNext.addEventListener('click', () => {
-          if (isTransitioning) return;
-          nextSlide();
-          startAutoPlay();
-        });
-      }
+      const containerWidth = container.offsetWidth;
+      const cardWidth = activeCard.offsetWidth;
+      const cardLeft = activeCard.offsetLeft;
+      const scrollLeft = cardLeft - containerWidth / 2 + cardWidth / 2;
 
-      startAutoPlay();
+      container.scrollTo({
+        left: scrollLeft,
+        behavior: animate ? 'smooth' : 'auto',
+      });
     }
 
-    if (document.readyState === 'loading') {
-      window.addEventListener('DOMContentLoaded', initBlogSlider);
-    } else {
-      initBlogSlider();
-    }
-  })();
+    prevBtn.addEventListener('click', () => {
+      updateSlider(currentIndex - 1);
+    });
+
+    nextBtn.addEventListener('click', () => {
+      updateSlider(currentIndex + 1);
+    });
+
+    window.addEventListener('resize', () => {
+      handleVisualUpdate(currentIndex, false);
+    });
+  });
 </script>
 
 {% schema %}
 {
-  "name": "t:sections.main-blog.name",
-  "tag": "section",
-  "class": "section",
+  "name": "Main Blog Slider",
   "settings": [
     {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Color Scheme",
-      "default": "scheme-1"
-    },
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog"
+    }
+  ],
+  "presets": [
     {
-      "type": "header",
-      "content": "Settings"
-    },
-
-    {
-      "type": "checkbox",
-      "id": "show_date",
-      "default": false,
-      "label": "t:sections.main-blog.settings.show_date.label"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_author",
-      "default": false,
-      "label": "t:sections.main-blog.settings.show_author.label"
-    },
-    {
-      "type": "text",
-      "id": "cta_text",
-      "label": "Button Text",
-      "default": "Read the story"
-    },
-    {
-      "type": "range",
-      "id": "slider_interval",
-      "min": 2,
-      "max": 10,
-      "step": 1,
-      "unit": "s",
-      "label": "Slider Interval",
-      "default": 5
-    },
-    {
-      "type": "header",
-      "content": "t:sections.all.padding.section_padding_heading"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "t:sections.all.padding.padding_top",
-      "default": 36
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "t:sections.all.padding.padding_bottom",
-      "default": 36
+      "name": "Main Blog Slider"
     }
   ]
 }
