@@ -98,6 +98,6 @@
 
 @media screen and (max-width: 768px) {
   .content-hero__heading {
-    font-size: var(--heading-font-size, 3rem);
+    font-size: var(--heading-font-size-mobile, 3rem);
   }
 }
