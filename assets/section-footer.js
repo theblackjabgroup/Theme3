@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
+  initFooterSocialHover();
+  initEditorialFooterNewsletter();
+});
+
+function initEditorialFooterNewsletter() {
   const form = document.getElementById('EditorialFooterNewsletter');
   if (!form) return;
 
@@ -71,4 +76,43 @@ document.addEventListener('DOMContentLoaded', function () {
         isSubmitting = false;
       });
   });
-});
+}
+
+/**
+ * Footer social icons: same expansion logic as header profile/cart row (vertical-header.js).
+ * Each .footer-social-row is a flex row; hovered icon expands, sibling in row shrinks.
+ */
+function initFooterSocialHover() {
+  const rows = document.querySelectorAll('.footer-social-row');
+  if (!rows.length) return;
+
+  rows.forEach((row) => {
+    const buttons = Array.from(row.querySelectorAll('.social-box'));
+    if (buttons.length === 0) return;
+
+    const isMultipleButtons = buttons.length > 1;
+
+    buttons.forEach((button) => {
+      button.addEventListener('mouseenter', () => {
+        if (isMultipleButtons) {
+          button.classList.add('is-expanded-horizontal');
+
+          buttons.forEach((otherButton) => {
+            if (otherButton !== button) {
+              otherButton.classList.add('is-shrunk-horizontal');
+            }
+          });
+        }
+      });
+
+      button.addEventListener('mouseleave', () => {
+        if (isMultipleButtons) {
+          button.classList.remove('is-expanded-horizontal');
+          buttons.forEach((otherButton) => {
+            otherButton.classList.remove('is-shrunk-horizontal');
+          });
+        }
+      });
+    });
+  });
+}

@@ -26,19 +26,29 @@
 %}
 
 <div class="disclosure">
+  {%- capture flag -%}
+    {{ localization.country | image_url: width: 32 | image_tag: loading: 'lazy', class: 'localization-flag' }}
+  {%- endcapture -%}
+  {%- capture button_text -%}
+    {{- localization.country.name }} | {{ localization.country.currency.iso_code -}}
+  {%- endcapture -%}
+  {%- capture caret -%}
+    {{ 'icon-caret.svg' | inline_asset_content }}
+  {%- endcapture -%}
+
   <button
     type="button"
-    class="disclosure__button localization-form__select localization-selector link link--text caption-large"
+    class="custom-3d-button disclosure__button localization-form__select localization-selector"
     aria-expanded="false"
     aria-controls="{{ localPosition }}-country-results"
     aria-describedby="{{ localPosition }}Label"
   >
-    <span>
-      {{- localization.country.name }} |
-      {{ localization.country.currency.iso_code }}
-      {{ localization.country.currency.symbol -}}
+    <span class="custom-3d-button__shadow"></span>
+    <span class="custom-3d-button__content">
+      <span class="submit-button__icon">{{ flag }}</span>
+      <span class="submit-button__text">{{ button_text }}</span>
+      <span class="submit-button__badge">{{ caret }}</span>
     </span>
-    {{ 'icon-caret.svg' | inline_asset_content }}
   </button>
   <div class="disclosure__list-wrapper country-selector" hidden>
     <div class="country-filter{% unless show_country_filter %} country-filter--no-padding{% endunless %}">

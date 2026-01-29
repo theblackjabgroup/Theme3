@@ -1,7 +1,7 @@
 {%- comment -%}
   Header Button Snippet
   Reusable button component for header navigation
-  
+
   Parameters:
   - button_text: Text to display on button
   - button_url: URL for the link (optional)
@@ -13,6 +13,7 @@
   - button_class: Additional CSS classes
   - aria_label: Accessibility label
   - button_badge: Badge text/number to display (optional)
+  - skip_nav_class: If true, don't apply header-nav-button class (optional)
 {%- endcomment -%}
 
 {%- liquid
@@ -21,56 +22,106 @@
   assign aria_label = aria_label | default: button_text
   assign button_icon_is_image = button_icon_is_image | default: false
   assign button_hover_icon_is_image = button_hover_icon_is_image | default: false
+  assign skip_nav_class = skip_nav_class | default: false
   if button_hover_icon != blank
     assign button_class = button_class | append: ' has-hover-icon'
+  endif
+  if skip_nav_class == false
+    assign base_class = 'header-nav-button'
+  else
+    assign base_class = ''
   endif
 -%}
 
 {%- if button_type == 'link' -%}
-  <a 
-    href="{{ button_url | default: '#' }}" 
-    class="header-nav-button {{ button_class }}"
-    {% if aria_label != blank %}aria-label="{{ aria_label }}"{% endif %}
-    {% if button_class contains 'search' %}data-spotlight-search-toggle{% endif %}
+  <a
+    href="{{ button_url | default: '#' }}"
+    class="{{ base_class }} {{ button_class }}"
+    {% if aria_label != blank %}
+      aria-label="{{ aria_label }}"
+    {% endif %}
+    {% if button_class contains 'search' %}
+      data-spotlight-search-toggle
+    {% endif %}
   >
     {%- if button_icon != blank -%}
-      <span class="header-nav-button-icon {% if button_icon_is_image %}header-nav-button-icon--image{% endif %}">
-        <span class="nav-icon-default">{{ button_icon }}</span>
-        {%- if button_hover_icon != blank -%}
-          <span class="nav-icon-hover {% if button_hover_icon_is_image %}header-nav-button-icon--image{% endif %}">{{ button_hover_icon }}</span>
-        {%- endif -%}
-      </span>
+      {%- if skip_nav_class -%}
+        <span class="header-action-button-icon {% if button_icon_is_image %}header-action-button-icon--image{% endif %}">
+          <span class="action-icon-default">{{ button_icon }}</span>
+          {%- if button_hover_icon != blank -%}
+            <span class="action-icon-hover {% if button_hover_icon_is_image %}header-action-button-icon--image{% endif %}">
+              {{- button_hover_icon -}}
+            </span>
+          {%- endif -%}
+        </span>
+      {%- else -%}
+        <span class="header-nav-button-icon {% if button_icon_is_image %}header-nav-button-icon--image{% endif %}">
+          <span class="nav-icon-default">{{ button_icon }}</span>
+          {%- if button_hover_icon != blank -%}
+            <span class="nav-icon-hover {% if button_hover_icon_is_image %}header-nav-button-icon--image{% endif %}">
+              {{- button_hover_icon -}}
+            </span>
+          {%- endif -%}
+        </span>
+      {%- endif -%}
     {%- endif -%}
     {%- if button_text != blank -%}
-      <span class="header-nav-button-text">{{ button_text }}</span>
+      {%- if skip_nav_class -%}
+        <span class="header-action-button-text">{{ button_text }}</span>
+      {%- else -%}
+        <span class="header-nav-button-text">{{ button_text }}</span>
+      {%- endif -%}
     {%- endif -%}
     {%- if button_badge != blank and button_badge != '0' -%}
-      <span class="header-nav-button-badge">{{ button_badge }}</span>
+      <span class="header-action-button-badge">{{ button_badge }}</span>
     {%- elsif button_class contains 'cart' and cart.item_count > 0 -%}
-      <span class="header-nav-button-badge">{{ cart.item_count }}</span>
+      <span class="header-action-button-badge">{{ cart.item_count }}</span>
     {%- endif -%}
   </a>
 {%- else -%}
-  <button 
+  <button
     type="{{ button_type }}"
-    class="header-nav-button {{ button_class }}"
-    {% if aria_label != blank %}aria-label="{{ aria_label }}"{% endif %}
-    {% if button_url != blank %}data-url="{{ button_url }}"{% endif %}
-    {% if button_class contains 'search' %}data-spotlight-search-toggle{% endif %}
+    class="{{ base_class }} {{ button_class }}"
+    {% if aria_label != blank %}
+      aria-label="{{ aria_label }}"
+    {% endif %}
+    {% if button_url != blank %}
+      data-url="{{ button_url }}"
+    {% endif %}
+    {% if button_class contains 'search' %}
+      data-spotlight-search-toggle
+    {% endif %}
   >
     {%- if button_icon != blank -%}
-      <span class="header-nav-button-icon {% if button_icon_is_image %}header-nav-button-icon--image{% endif %}">
-        <span class="nav-icon-default">{{ button_icon }}</span>
-        {%- if button_hover_icon != blank -%}
-          <span class="nav-icon-hover {% if button_hover_icon_is_image %}header-nav-button-icon--image{% endif %}">{{ button_hover_icon }}</span>
-        {%- endif -%}
-      </span>
+      {%- if skip_nav_class -%}
+        <span class="header-action-button-icon {% if button_icon_is_image %}header-action-button-icon--image{% endif %}">
+          <span class="action-icon-default">{{ button_icon }}</span>
+          {%- if button_hover_icon != blank -%}
+            <span class="action-icon-hover {% if button_hover_icon_is_image %}header-action-button-icon--image{% endif %}">
+              {{- button_hover_icon -}}
+            </span>
+          {%- endif -%}
+        </span>
+      {%- else -%}
+        <span class="header-nav-button-icon {% if button_icon_is_image %}header-nav-button-icon--image{% endif %}">
+          <span class="nav-icon-default">{{ button_icon }}</span>
+          {%- if button_hover_icon != blank -%}
+            <span class="nav-icon-hover {% if button_hover_icon_is_image %}header-nav-button-icon--image{% endif %}">
+              {{- button_hover_icon -}}
+            </span>
+          {%- endif -%}
+        </span>
+      {%- endif -%}
     {%- endif -%}
     {%- if button_text != blank -%}
-      <span class="header-nav-button-text">{{ button_text }}</span>
+      {%- if skip_nav_class -%}
+        <span class="header-action-button-text">{{ button_text }}</span>
+      {%- else -%}
+        <span class="header-nav-button-text">{{ button_text }}</span>
+      {%- endif -%}
     {%- endif -%}
     {%- if button_badge != blank and button_badge != '0' -%}
-      <span class="header-nav-button-badge">{{ button_badge }}</span>
+      <span class="header-action-button-badge">{{ button_badge }}</span>
     {%- endif -%}
   </button>
 {%- endif -%}

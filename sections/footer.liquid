@@ -7,29 +7,129 @@
   "settings": [
     {
       "type": "header",
-      "content": "Content"
+      "content": "Newsletter"
     },
     {
-      "type": "richtext",
-      "id": "heading",
-      "label": "Heading",
-      "default": "<p>Join Brandname World below, say “hi” <a href=\"#\">@brandname</a>, or <a href=\"#\">drop us an email</a>.</p>"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_newsletter",
-      "label": "Show Newsletter",
-      "default": true
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Newsletter Heading",
+      "default": "SIGN UP FOR UPDATES"
     },
     {
       "type": "text",
       "id": "email_placeholder",
       "label": "Email Placeholder",
-      "default": "Enter email"
+      "default": "YOUR EMAIL..."
     },
     {
       "type": "header",
-      "content": "Links"
+      "content": "Color Schemes"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Section Color Scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "color_scheme",
+      "id": "box_color_scheme",
+      "label": "Main Box Color Scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Social Media"
+    },
+    {
+      "type": "image_picker",
+      "id": "social_1_image",
+      "label": "Social Icon 1 (Image)"
+    },
+    {
+      "type": "image_picker",
+      "id": "social_1_image_hover",
+      "label": "Social Icon 1 (Image on hover)"
+    },
+    {
+      "type": "text",
+      "id": "social_1_svg",
+      "label": "Social Icon 1 (SVG fallback)"
+    },
+    {
+      "type": "url",
+      "id": "social_1_link",
+      "label": "Social Link 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "social_2_image",
+      "label": "Social Icon 2 (Image)"
+    },
+    {
+      "type": "image_picker",
+      "id": "social_2_image_hover",
+      "label": "Social Icon 2 (Image on hover)"
+    },
+    {
+      "type": "text",
+      "id": "social_2_svg",
+      "label": "Social Icon 2 (SVG fallback)"
+    },
+    {
+      "type": "url",
+      "id": "social_2_link",
+      "label": "Social Link 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "social_3_image",
+      "label": "Social Icon 3 (Image)"
+    },
+    {
+      "type": "image_picker",
+      "id": "social_3_image_hover",
+      "label": "Social Icon 3 (Image on hover)"
+    },
+    {
+      "type": "text",
+      "id": "social_3_svg",
+      "label": "Social Icon 3 (SVG fallback)"
+    },
+    {
+      "type": "url",
+      "id": "social_3_link",
+      "label": "Social Link 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "social_4_image",
+      "label": "Social Icon 4 (Image)"
+    },
+    {
+      "type": "image_picker",
+      "id": "social_4_image_hover",
+      "label": "Social Icon 4 (Image on hover)"
+    },
+    {
+      "type": "text",
+      "id": "social_4_svg",
+      "label": "Social Icon 4 (SVG fallback)"
+    },
+    {
+      "type": "url",
+      "id": "social_4_link",
+      "label": "Social Link 4"
+    },
+    {
+      "type": "header",
+      "content": "Main Box Content"
+    },
+    {
+      "type": "text",
+      "id": "main_heading",
+      "label": "Main Heading",
+      "default": "Lorem Ipsum"
     },
     {
       "type": "link_list",
@@ -38,145 +138,28 @@
       "default": "footer"
     },
     {
-      "type": "text",
-      "id": "links_heading",
-      "label": "Links Heading",
-      "default": "Also"
-    },
-    {
-      "type": "image_picker",
-      "id": "links_icon",
-      "label": "Custom Icon"
-    },
-    {
       "type": "header",
-      "content": "Logo"
-    },
-    {
-      "type": "image_picker",
-      "id": "logo_image",
-      "label": "Bottom Logo Image"
-    },
-    {
-      "type": "range",
-      "id": "logo_width",
-      "min": 50,
-      "max": 100,
-      "step": 1,
-      "unit": "%",
-      "label": "Logo Width",
-      "default": 100
-    },
-    {
-      "type": "select",
-      "id": "logo_alignment",
-      "label": "Logo Alignment",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
-      ],
-      "default": "center"
-    },
-    {
-      "type": "header",
-      "content": "Design"
-    },
-    {
-      "type": "color",
-      "id": "bg_color",
-      "label": "Background Color",
-      "default": "#FFFFFF"
-    },
-    {
-      "type": "color",
-      "id": "accent_color",
-      "label": "Accent Color",
-      "default": "#000000"
-    },
-    {
-      "type": "color",
-      "id": "links_hover_color",
-      "label": "Links Hover Color",
-      "default": "#ff0000"
-    },
-    {
-      "type": "range",
-      "id": "input_border_radius",
-      "min": 0,
-      "max": 20,
-      "step": 1,
-      "unit": "px",
-      "label": "Input Border Radius",
-      "default": 20
-    },
-    {
-      "type": "header",
-      "content": "Desktop Spacing"
+      "content": "Design Settings"
     },
     {
       "type": "range",
       "id": "padding_top",
-      "min": 20,
-      "max": 120,
+      "min": 0,
+      "max": 100,
       "step": 4,
       "unit": "px",
-      "label": "Top Padding (Desktop)",
-      "default": 40
+      "label": "Padding Top",
+      "default": 20
     },
     {
       "type": "range",
       "id": "padding_bottom",
-      "min": 20,
-      "max": 120,
+      "min": 0,
+      "max": 100,
       "step": 4,
       "unit": "px",
-      "label": "Bottom Padding (Desktop)",
-      "default": 40
-    },
-    {
-      "type": "range",
-      "id": "logo_spacing_top",
-      "min": 0,
-      "max": 150,
-      "step": 5,
-      "unit": "px",
-      "label": "Space above logo (Desktop)",
-      "default": 40
-    },
-    {
-      "type": "header",
-      "content": "Mobile Spacing"
-    },
-    {
-      "type": "range",
-      "id": "padding_top_mobile",
-      "min": 10,
-      "max": 100,
-      "step": 2,
-      "unit": "px",
-      "label": "Top Padding (Mobile)",
-      "default": 40
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom_mobile",
-      "min": 10,
-      "max": 100,
-      "step": 2,
-      "unit": "px",
-      "label": "Bottom Padding (Mobile)",
-      "default": 40
-    },
-    {
-      "type": "range",
-      "id": "logo_spacing_top_mobile",
-      "min": 0,
-      "max": 100,
-      "step": 5,
-      "unit": "px",
-      "label": "Space above logo (Mobile)",
-      "default": 40
+      "label": "Padding Bottom",
+      "default": 20
     }
   ]
 }
@@ -186,132 +169,98 @@
 
 {%- style -%}
   #shopify-section-{{ section.id }} {
-    --bg-color: {{ section.settings.bg_color }};
-    --accent-color: {{ section.settings.accent_color }};
-    --links-hover-color: {{ section.settings.links_hover_color }};
     --padding-top: {{ section.settings.padding_top }}px;
     --padding-bottom: {{ section.settings.padding_bottom }}px;
-    --logo-spacing-top: {{ section.settings.logo_spacing_top }}px;
-    --padding-top-mobile: {{ section.settings.padding_top_mobile }}px;
-    --padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
-    --logo-spacing-top-mobile: {{ section.settings.logo_spacing_top_mobile }}px;
-    --logo-width: {{ section.settings.logo_width }}%;
-    --logo-alignment: {{ section.settings.logo_alignment }};
-    --input-border-radius: {{ section.settings.input_border_radius }}px;
   }
 {%- endstyle -%}
 
-<script src="{{ 'section-footer.js' | asset_url }}" defer="defer"></script>
-
-<div class="editorial-footer-section">
-  <div class="ef-container">
-    <!-- PART 1: CONTENT -->
-    <div class="ef-grid">
-      <!-- LEFT -->
-      <div class="ef-left-col">
-        {%- if section.settings.heading != blank -%}
-          <div class="ef-heading-area">
-            {{ section.settings.heading }}
-          </div>
-        {%- endif -%}
-
-        {%- if section.settings.show_newsletter -%}
-          <div class="ef-form-wrapper">
-            {% form 'customer', id: 'EditorialFooterNewsletter', class: 'ef-newsletter-form' %}
-              <input type="hidden" name="contact[tags]" value="newsletter">
-
-              <div class="ef-form-inner">
-                <input
-                  id="NewsletterForm--{{ section.id }}"
-                  type="email"
-                  name="contact[email]"
-                  class="ef-input"
-                  value="{{ form.email }}"
-                  aria-required="true"
-                  autocorrect="off"
-                  autocapitalize="off"
-                  autocomplete="email"
-                  placeholder="{{ section.settings.email_placeholder }}"
-                  required
-                >
-                <button type="submit" class="ef-submit" name="commit" aria-label="Subscribe">
-                  <svg
-                    viewBox="0 0 14 10"
-                    fill="none"
-                    aria-hidden="true"
-                    focusable="false"
-                    role="presentation"
-                    class="icon icon-arrow"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.537.808a.5.5 0 01.817-.162l4 4a.5.5 0 010 .708l-4 4a.5.5 0 11-.708-.708L11.793 5.5H1a.5.5 0 010-1h10.793L8.646 1.354a.5.5 0 01-.109-.546z" fill="currentColor"/>
-                  </svg>
-                </button>
-              </div>
-
-              {%- if form.errors -%}
-                <div class="ef-message ef-message--error">
-                  {{ form.errors.translated_fields.email | capitalize }}
-                  {{ form.errors.messages.email }}
-                </div>
-              {%- endif -%}
-              {%- if form.posted_successfully? -%}
-                <div class="ef-message ef-message--success" tabindex="-1" autofocus>Thanks for subscribing!</div>
-              {%- endif -%}
-            {% endform %}
-          </div>
-        {%- endif -%}
-      </div>
-
-      <!-- RIGHT -->
-      <div class="ef-links-col">
-        {%- if section.settings.links_heading != blank -%}
-          <div class="ef-links-title">
-            {{ section.settings.links_heading }}
-            {%- if section.settings.links_icon != blank -%}
-              {{
-                section.settings.links_icon
-                | image_url: width: 200
-                | image_tag: class: 'ef-links-icon', loading: 'lazy'
-              }}
-            {%- else -%}
-              <svg
-                viewBox="0 0 14 10"
-                fill="none"
-                aria-hidden="true"
-                focusable="false"
-                role="presentation"
-                class="icon icon-arrow ef-links-icon"
-                xmlns="http://www.w3.org/2000/svg"
+<footer class="custom-footer color-{{ section.settings.color_scheme }} gradient">
+  <div class="footer-container">
+    <div class="footer-layout">
+      <!-- LEFT COLUMN -->
+      <div class="footer-left">
+        <!-- Newsletter -->
+        <div class="footer-newsletter">
+          <span class="newsletter-label">{{ section.settings.newsletter_heading }}</span>
+          {% form 'customer', id: 'FooterNewsletter', class: 'footer-newsletter-form' %}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <div class="newsletter-field">
+              <input
+                id="FooterNewsletterInput"
+                type="email"
+                name="contact[email]"
+                class="newsletter-input"
+                value="{{ form.email }}"
+                placeholder="{{ section.settings.email_placeholder }}"
+                required
               >
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.537.808a.5.5 0 01.817-.162l4 4a.5.5 0 010 .708l-4 4a.5.5 0 11-.708-.708L11.793 5.5H1a.5.5 0 010-1h10.793L8.646 1.354a.5.5 0 01-.109-.546z" fill="currentColor"/>
-              </svg>
-            {%- endif -%}
-          </div>
-        {%- endif -%}
-        <ul class="ef-links-list">
-          {%- for link in linklists[section.settings.menu].links -%}
-            <li class="ef-link-item">
-              <a href="{{ link.url }}" data-text="{{ link.title | escape }}">
-                <span class="ef-link-text">{{ link.title }}</span>
-              </a>
-            </li>
-          {%- endfor -%}
-        </ul>
-      </div>
-    </div>
+            </div>
+          {% endform %}
+        </div>
 
-    <!-- PART 2: LOGO -->
-    <div class="ef-logo-container" data-align="{{ section.settings.logo_alignment }}">
-      {%- if section.settings.logo_image != blank -%}
-        {{
-          section.settings.logo_image
-          | image_url: width: 1200
-          | image_tag: class: 'ef-logo-img', loading: 'lazy', widths: '600, 1200'
-        }}
-      {%- else -%}
-        {{ 'lifestyle-1' | placeholder_svg_tag: 'ef-logo-img placeholder-svg' }}
-      {%- endif -%}
+        <!-- Social Icons: two flex rows (same expansion logic as header profile/cart row) -->
+        <div class="footer-social-grid">
+          <div class="footer-social-row">
+            {%- for i in (1..2) -%}
+              {%- render 'footer-social-box', section: section, index: i -%}
+            {%- endfor -%}
+          </div>
+          <div class="footer-social-row">
+            {%- for i in (3..4) -%}
+              {%- render 'footer-social-box', section: section, index: i -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN (Green Box) -->
+      <div class="footer-right">
+        <div class="footer-box color-{{ section.settings.box_color_scheme }} gradient">
+          <div class="footer-box__inner">
+            <div class="footer-box__left">
+              <h2 class="box-heading">{{ section.settings.main_heading }}</h2>
+              <div class="copyright">
+                <span>2026 {{ shop.name | upcase }}</span>
+              </div>
+            </div>
+
+            <div class="footer-box__right">
+              <nav class="box-nav">
+                <ul class="box-nav-list">
+                  {%- for link in linklists[section.settings.menu].links -%}
+                    <li>
+                      <a href="{{ link.url }}">{{ link.title | upcase }}</a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              </nav>
+
+              <div class="localization-pills">
+                {%- if localization.available_countries.size > 1 -%}
+                  <localization-form>
+                    {%- form 'localization', id: 'FooterCountryForm', class: 'localization-form' -%}
+                      <div class="no-js-hidden">
+                        {%- render 'country-localization', localPosition: 'FooterCountry' -%}
+                      </div>
+                    {%- endform -%}
+                  </localization-form>
+                {%- endif -%}
+                {%- if localization.available_languages.size > 1 -%}
+                  <localization-form>
+                    {%- form 'localization', id: 'FooterLanguageForm', class: 'localization-form' -%}
+                      <div class="no-js-hidden">
+                        {%- render 'language-localization', localPosition: 'FooterLanguage' -%}
+                      </div>
+                    {%- endform -%}
+                  </localization-form>
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+</footer>
+
+<script src="{{ 'section-footer.js' | asset_url }}" defer="defer"></script>
