@@ -1,29 +1,30 @@
 document.addEventListener('DOMContentLoaded', function () {
   initFooterSocialHover();
-  initEditorialFooterNewsletter();
+  initFooterNewsletter();
 });
 
-function initEditorialFooterNewsletter() {
-  const form = document.getElementById('EditorialFooterNewsletter');
+/**
+ * Footer newsletter form (id: FooterNewsletter): AJAX submit, show success/error without reload.
+ */
+function initFooterNewsletter() {
+  const form = document.getElementById('FooterNewsletter');
   if (!form) return;
+
+  const input = form.querySelector('#FooterNewsletterInput') || form.querySelector('.newsletter-input');
+  if (!input) return;
 
   let isSubmitting = false;
 
   form.addEventListener('submit', function (e) {
-    if (isSubmitting) {
-      e.preventDefault();
-      return;
-    }
-
     e.preventDefault();
+    if (isSubmitting) return;
+
     isSubmitting = true;
+    const submitBtn = form.querySelector('[type="submit"]');
+    if (submitBtn) submitBtn.disabled = true;
 
-    const submitBtn = form.querySelector('.ef-submit');
-    const input = form.querySelector('.ef-input');
-    const existingMessages = form.querySelectorAll('.ef-message');
+    const existingMessages = form.querySelectorAll('.newsletter-message');
     existingMessages.forEach((el) => el.remove());
-
-    submitBtn.disabled = true;
 
     const formData = new FormData(form);
     const url = form.getAttribute('action');
@@ -33,7 +34,7 @@ function initEditorialFooterNewsletter() {
       body: formData,
     })
       .then((response) => {
-        if (response.url.includes('/challenge')) {
+        if (response.url && response.url.includes('/challenge')) {
           window.location.href = response.url;
           return;
         }
@@ -45,34 +46,38 @@ function initEditorialFooterNewsletter() {
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
 
-        const successMessage = doc.querySelector('.ef-message--success');
-        const errorMessage = doc.querySelector('.ef-message--error') || doc.querySelector('.errors');
+        const successMessage = doc.querySelector('.form__message--success, .note--success, [data-success]');
+        const errorMessage =
+          doc.querySelector('.form__message--error, .note--error, .errors, [data-error]') ||
+          doc.querySelector('.form-status.is-error');
 
         if (successMessage) {
           input.value = '';
-          form.appendChild(successMessage);
+          const msg = document.createElement('div');
+          msg.className = 'newsletter-message newsletter-message--success';
+          msg.textContent = successMessage.textContent?.trim() || 'Thanks for subscribing.';
+          form.appendChild(msg);
         } else if (errorMessage) {
-          if (!errorMessage.classList.contains('ef-message')) {
-            errorMessage.className = 'ef-message ef-message--error';
-          }
-          form.appendChild(errorMessage);
+          const msg = document.createElement('div');
+          msg.className = 'newsletter-message newsletter-message--error';
+          msg.textContent = errorMessage.textContent?.trim() || 'Something went wrong. Please try again.';
+          form.appendChild(msg);
         } else {
-          console.error('Newsletter submission returned unknown response format.');
-          const unknownErr = document.createElement('div');
-          unknownErr.className = 'ef-message ef-message--error';
-          unknownErr.textContent = 'Unable to subscribe at this moment. Please try again later.';
-          form.appendChild(unknownErr);
+          const msg = document.createElement('div');
+          msg.className = 'newsletter-message newsletter-message--error';
+          msg.textContent = 'Unable to subscribe at this moment. Please try again later.';
+          form.appendChild(msg);
         }
       })
       .catch((error) => {
-        console.error('Error:', error);
-        const errDiv = document.createElement('div');
-        errDiv.className = 'ef-message ef-message--error';
-        errDiv.textContent = 'Something went wrong. Please check your connection and try again.';
-        form.appendChild(errDiv);
+        console.error('Newsletter error:', error);
+        const msg = document.createElement('div');
+        msg.className = 'newsletter-message newsletter-message--error';
+        msg.textContent = 'Something went wrong. Please check your connection and try again.';
+        form.appendChild(msg);
       })
       .finally(() => {
-        submitBtn.disabled = false;
+        if (submitBtn) submitBtn.disabled = false;
         isSubmitting = false;
       });
   });

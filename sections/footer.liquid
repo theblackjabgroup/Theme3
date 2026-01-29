@@ -220,7 +220,10 @@
             <div class="footer-box__left">
               <h2 class="box-heading">{{ section.settings.main_heading }}</h2>
               <div class="copyright">
-                <span>2026 {{ shop.name | upcase }}</span>
+                <span>
+                  {{- 'now' | date: '%Y' }}
+                  {{ shop.name | upcase -}}
+                </span>
               </div>
             </div>
 
