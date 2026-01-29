@@ -276,7 +276,11 @@
               {%- if section.settings.show_card_badge -%}
                 <span class="custom-collection-card__badge">
                   {{- collection.all_products_count }}
-                  {{ 'items' -}}
+                  {%- if collection.all_products_count == 1 -%}
+                    item
+                  {%- else -%}
+                    items
+                  {%- endif -%}
                 </span>
               {%- endif -%}
               <h3 class="custom-collection-card__title">
@@ -603,22 +607,9 @@
     },
     {
       "type": "text",
-      "id": "card_badge_text",
-      "label": "Card Badge Text",
-      "default": "Fighting"
-    },
-    {
-      "type": "text",
       "id": "overlay_button_text",
       "label": "Overlay Button Text",
       "default": "Love that! (Check it out)"
-    },
-    {
-      "type": "textarea",
-      "id": "fallback_description",
-      "label": "Fallback Description",
-      "default": "Discover our amazing collection of products.",
-      "info": "This text will be displayed when a collection has no description. Used in both card description and hover overlay."
     },
     {
       "type": "header",

@@ -313,9 +313,4 @@
     padding: 8px 16px;
     font-size: 12px;
   }
-  /* Card Typography */
-.custom-collection-card__title {
-
-  font-size: 17px !important;
-}
 }
