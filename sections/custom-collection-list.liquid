@@ -8,7 +8,7 @@
     align-items: center;
     justify-content: center;
     background-color: var(--color-primary-button-bg);
-    color: white;
+    color: var(--color-primary-button-text);
     border: 2px solid var(--color-primary-button-border);
     padding: 20px;
     border-radius: 100px;
@@ -34,20 +34,22 @@
     padding: {{ section.settings.section_padding_top }}px {{ section.settings.section_padding_horizontal }}px {{ section.settings.section_padding_bottom }}px;
     {% if section.settings.background_color != blank %}
       background-color: {{ section.settings.background_color }};
+    {% else %}
+      background-color: var(--color-background);
     {% endif %}
     {% if section.settings.min_height != blank %}
       min-height: {{ section.settings.min_height }}vh;
     {% endif %}
   }
 
-  .custom-collection-list__header {
+  .custom-collection-list__header-box {
     text-align: {{ section.settings.title_alignment }};
     {% if section.settings.title_margin_bottom != blank %}
       margin-bottom: {{ section.settings.title_margin_bottom }}px;
     {% endif %}
   }
 
-  .custom-collection-list__header .title {
+  .custom-collection-list__header-box-title {
     {% if section.settings.title_font_size != blank %}
       font-size: {{ section.settings.title_font_size }}rem;
     {% endif %}
@@ -154,7 +156,7 @@
       padding: {{ section.settings.section_padding_top_mobile }}px {{ section.settings.section_padding_horizontal_mobile }}px {{ section.settings.section_padding_bottom_mobile }}px;
     }
 
-    .custom-collection-list__header .title {
+    .custom-collection-list__header-box-title {
       font-size: {{ section.settings.title_font_size_mobile }}rem;
     }
 
@@ -231,14 +233,17 @@
   }
 </style>
 
-<div class="custom-collection-list">
+<div class="custom-collection-list color-{{ section.settings.color_scheme }} gradient">
   <div class="page-width">
     {%- if section.settings.show_title and section.settings.title != blank -%}
-      <div class="custom-collection-list__header">
+      <div class="custom-collection-list__header-box" style="text-align: {{ section.settings.title_alignment }};">
         {%- if section.settings.show_badge -%}
           <span class="custom-collection-card__badge">{{ section.settings.badge_text | default: 'Fighting' }}</span>
         {%- endif -%}
-        <h2 class="title">{{ section.settings.title | escape }}</h2>
+        <h2 class="custom-collection-list__header-box-title">{{ section.settings.title | escape }}</h2>
+        {%- if section.settings.header_box_description != blank -%}
+          <p class="custom-collection-list__header-box-description">{{ section.settings.header_box_description }}</p>
+        {%- endif -%}
       </div>
     {%- endif -%}
 
@@ -270,39 +275,23 @@
               </div>
               {%- if section.settings.show_card_badge -%}
                 <span class="custom-collection-card__badge">
-                  {{- section.settings.card_badge_text | default: 'Fighting' -}}
+                  {{- collection.all_products_count }}
+                  {%- if collection.all_products_count == 1 -%}
+                    item
+                  {%- else -%}
+                    items
+                  {%- endif -%}
                 </span>
               {%- endif -%}
               <h3 class="custom-collection-card__title">
                 {{ collection.title }}
               </h3>
 
-              {%- if collection.description != blank -%}
-                <p class="custom-collection-card__description">
-                  {{ collection.description | strip_html | truncatewords: 20 }}
-                </p>
-              {%- else -%}
-                <p class="custom-collection-card__description">
-                  {{ section.settings.fallback_description | default: 'Discover our amazing collection of products.' }}
-                </p>
-              {%- endif -%}
-
               <div class="custom-collection-card__hover-area"></div>
 
               <div class="custom-collection-card__overlay-clip">
                 <div class="custom-collection-card__hover-overlay">
                   <div class="custom-collection-card__hover-content">
-                    <p class="custom-collection-card__hover-description">
-                      {%- if collection.description != blank -%}
-                        {{ collection.description | strip_html | truncatewords: 20 | upcase }}
-                      {%- else -%}
-                        {{
-                          section.settings.fallback_description
-                          | default: 'Discover our amazing collection of products.'
-                          | upcase
-                        }}
-                      {%- endif -%}
-                    </p>
                     <span class="custom-collection-card__hover-button share-story-submit">
                       {{- section.settings.overlay_button_text | default: 'Love that! (Check it out)' -}}
                     </span>
@@ -328,6 +317,12 @@
     {
       "type": "header",
       "content": "Section Settings"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
     },
     {
       "type": "checkbox",
@@ -365,10 +360,10 @@
       "type": "range",
       "id": "title_font_size",
       "label": "Title Font Size (rem)",
-      "min": 2,
+      "min": 1,
       "max": 8,
-      "step": 0.5,
-      "default": 5
+      "step": 0.1,
+      "default": 3.2
     },
     {
       "type": "range",
@@ -399,6 +394,12 @@
       "id": "badge_text",
       "label": "Header Badge Text",
       "default": "Fighting"
+    },
+    {
+      "type": "textarea",
+      "id": "header_box_description",
+      "label": "Header box description",
+      "default": "Explore our curated collections and find something you'll love. Each collection is thoughtfully put together to make shopping easy and enjoyable."
     },
     {
       "type": "header",
@@ -444,8 +445,8 @@
     {
       "type": "color",
       "id": "background_color",
-      "label": "Background Color",
-      "default": "#fff9f9"
+      "label": "Background Color (override)",
+      "info": "Leave blank to use the color scheme background"
     },
     {
       "type": "header",
@@ -486,7 +487,7 @@
       "min": 1,
       "max": 3,
       "step": 1,
-      "default": 1
+      "default": 2
     },
     {
       "type": "range",
@@ -583,7 +584,7 @@
       "min": 150,
       "max": 400,
       "step": 10,
-      "default": 250
+      "default": 340
     },
     {
       "type": "range",
@@ -606,22 +607,9 @@
     },
     {
       "type": "text",
-      "id": "card_badge_text",
-      "label": "Card Badge Text",
-      "default": "Fighting"
-    },
-    {
-      "type": "text",
       "id": "overlay_button_text",
       "label": "Overlay Button Text",
       "default": "Love that! (Check it out)"
-    },
-    {
-      "type": "textarea",
-      "id": "fallback_description",
-      "label": "Fallback Description",
-      "default": "Discover our amazing collection of products.",
-      "info": "This text will be displayed when a collection has no description. Used in both card description and hover overlay."
     },
     {
       "type": "header",
@@ -706,7 +694,7 @@
       "min": 120,
       "max": 300,
       "step": 10,
-      "default": 200
+      "default": 130
     },
     {
       "type": "range",
