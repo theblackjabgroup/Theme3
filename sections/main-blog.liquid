@@ -1,10 +1,63 @@
 {{ 'section-main-blog.css' | asset_url | stylesheet_tag }}
+{%- style -%}
+  .section-{{ section.id }}-margin {
+    margin-top: {{ section.settings.margin_top_mobile }}px;
+    margin-bottom: {{ section.settings.margin_bottom_mobile }}px;
+    margin-left: {{ section.settings.margin_horizontal_mobile }}px;
+    margin-right: {{ section.settings.margin_horizontal_mobile }}px;
+  }
 
-<div class="main-blog-slider">
-  <div class="main-blog-slider__container" id="MainBlogContainer">
-    <div class="main-blog-slider__track" id="MainBlogSliderTrack">
-      {%- assign articles = section.settings.blog.articles -%}
-      {%- if articles.size == 0 -%}
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-margin {
+      margin-top: {{ section.settings.margin_top_desktop }}px;
+      margin-bottom: {{ section.settings.margin_bottom_desktop }}px;
+      margin-left: {{ section.settings.margin_horizontal_desktop }}px;
+      margin-right: {{ section.settings.margin_horizontal_desktop }}px;
+    }
+  }
+
+  /* Mobile Font Sizes */
+  #MainBlogContainer-{{ section.id }} .main-blog-card__title {
+    font-size: {{ section.settings.title_size_mobile }}px;
+  }
+  #MainBlogContainer-{{ section.id }} .main-blog-card__excerpt {
+    font-size: {{ section.settings.description_size_mobile }}px;
+  }
+  #MainBlogContainer-{{ section.id }} .main-blog-card__tag {
+    font-size: {{ section.settings.tag_size_mobile }}px;
+  }
+
+  /* Desktop Font Sizes */
+  @media screen and (min-width: 750px) {
+    #MainBlogContainer-{{ section.id }} .main-blog-card__title {
+      font-size: {{ section.settings.title_size_desktop }}px;
+    }
+    #MainBlogContainer-{{ section.id }} .main-blog-card__excerpt {
+      font-size: {{ section.settings.description_size_desktop }}px;
+    }
+    #MainBlogContainer-{{ section.id }} .main-blog-card__tag {
+      font-size: {{ section.settings.tag_size_desktop }}px;
+    }
+
+    #MainBlogContainer-{{ section.id }} .main-blog-card.is-active .main-blog-card__title {
+       font-size: calc({{ section.settings.title_size_desktop }}px + 4px);
+    }
+  }
+
+  #MainBlogContainer-{{ section.id }} .main-blog-card {
+    border-radius: {{ section.settings.card_border_radius }}px;
+  }
+  #MainBlogContainer-{{ section.id }} .main-blog-card__image-wrapper {
+    border-radius: {{ section.settings.image_border_radius }}px;
+  }
+{%- endstyle -%}
+
+<div class="main-blog-slider color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-margin">
+  <div class="main-blog-slider__container" id="MainBlogContainer-{{ section.id }}">
+    <div class="main-blog-slider__track" id="MainBlogSliderTrack-{{ section.id }}">
+      {%- if section.settings.blog != blank and section.settings.blog.articles_count > 0 -%}
+        {%- assign articles = section.settings.blog.articles -%}
+      {%- else -%}
         {%- assign articles = (1..5) -%}
       {%- endif -%}
 
@@ -20,12 +73,12 @@
           <div class="main-blog-card__content">
             {%- if article.tags.size > 0 -%}
               <span class="main-blog-card__tag">{{ article.tags.first }}</span>
-            {%- else -%}
-              <span class="main-blog-card__tag">LOREM</span>
+            {%- elsif section.settings.placeholder_tag_text != blank -%}
+              <span class="main-blog-card__tag">{{ section.settings.placeholder_tag_text }}</span>
             {%- endif -%}
 
             <h3 class="main-blog-card__title">
-              {{ article.title | default: 'Journaling For Mental Heath In Switzerland' }}
+              {{ article.title | default: 'Default Title' }}
             </h3>
 
             <div class="main-blog-card__excerpt">
@@ -44,12 +97,12 @@
   </div>
 
   <div class="main-blog-slider__controls">
-    <button class="main-blog-slider__arrow main-blog-slider__arrow--prev" id="MainBlogPrev">
+    <button class="main-blog-slider__arrow main-blog-slider__arrow--prev" id="MainBlogPrev-{{ section.id }}">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </button>
-    <button class="main-blog-slider__arrow main-blog-slider__arrow--next" id="MainBlogNext">
+    <button class="main-blog-slider__arrow main-blog-slider__arrow--next" id="MainBlogNext-{{ section.id }}">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
@@ -58,113 +111,139 @@
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const track = document.getElementById('MainBlogSliderTrack');
-    const container = document.getElementById('MainBlogContainer');
-    const prevBtn = document.getElementById('MainBlogPrev');
-    const nextBtn = document.getElementById('MainBlogNext');
-    let cards = Array.from(track.querySelectorAll('.main-blog-card'));
+  (function () {
+    function initMainBlogSlider() {
+      const track = document.getElementById('MainBlogSliderTrack-{{ section.id }}');
+      if (!track) return;
 
-    const cloneCount = 10;
-    const cardCount = cards.length;
+      const container = document.getElementById('MainBlogContainer-{{ section.id }}');
+      const prevBtn = document.getElementById('MainBlogPrev-{{ section.id }}');
+      const nextBtn = document.getElementById('MainBlogNext-{{ section.id }}');
 
-    if (cardCount > 0) {
-      for (let i = 0; i < cloneCount; i++) {
-        const sourceIndex = cardCount - 1 - (i % cardCount);
-        const clone = cards[sourceIndex].cloneNode(true);
-        clone.classList.add('is-clone');
-        clone.dataset.index = -1 - i;
-        track.insertBefore(clone, track.firstChild);
+      const existingClones = track.querySelectorAll('.is-clone');
+      existingClones.forEach((clone) => clone.remove());
+
+      let cards = Array.from(track.querySelectorAll('.main-blog-card'));
+
+      const cloneCount = 10;
+      const cardCount = cards.length;
+
+      if (cardCount > 0) {
+        for (let i = 0; i < cloneCount; i++) {
+          const sourceIndex = cardCount - 1 - (i % cardCount);
+          const clone = cards[sourceIndex].cloneNode(true);
+          clone.classList.add('is-clone');
+          clone.dataset.index = -1 - i;
+          track.insertBefore(clone, track.firstChild);
+        }
+
+        for (let i = 0; i < cloneCount; i++) {
+          const sourceIndex = i % cardCount;
+          const clone = cards[sourceIndex].cloneNode(true);
+          clone.classList.add('is-clone');
+          clone.dataset.index = cardCount + i;
+          track.appendChild(clone);
+        }
       }
 
-      for (let i = 0; i < cloneCount; i++) {
-        const sourceIndex = i % cardCount;
-        const clone = cards[sourceIndex].cloneNode(true);
-        clone.classList.add('is-clone');
-        clone.dataset.index = cardCount + i;
-        track.appendChild(clone);
-      }
-    }
+      const allCards = Array.from(track.querySelectorAll('.main-blog-card'));
+      let currentIndex = cloneCount;
+      let isAnimating = false;
+      requestAnimationFrame(() => {
+        handleVisualUpdate(currentIndex, false);
+      });
 
-    const allCards = Array.from(track.querySelectorAll('.main-blog-card'));
-    let currentIndex = cloneCount;
-    let isAnimating = false;
-    requestAnimationFrame(() => {
-      handleVisualUpdate(currentIndex, false);
-    });
+      function updateSlider(index) {
+        if (isAnimating) return;
+        isAnimating = true;
 
-    function updateSlider(index) {
-      if (isAnimating) return;
-      isAnimating = true;
+        handleVisualUpdate(index, true);
+        currentIndex = index;
 
-      handleVisualUpdate(index, true);
-      currentIndex = index;
-
-      setTimeout(() => {
-        checkIndexBounds();
-        isAnimating = false;
-      }, 550);
-    }
-
-    function checkIndexBounds() {
-      let newIndex = currentIndex;
-      let jumped = false;
-
-      if (currentIndex < cloneCount) {
-        newIndex = currentIndex + cardCount;
-        jumped = true;
-      } else if (currentIndex >= cloneCount + cardCount) {
-        newIndex = currentIndex - cardCount;
-        jumped = true;
+        setTimeout(() => {
+          checkIndexBounds();
+          isAnimating = false;
+        }, 800);
       }
 
-      if (jumped) {
-        container.classList.add('no-transition');
-        void container.offsetHeight;
-        handleVisualUpdate(newIndex, false);
-        currentIndex = newIndex;
-        void container.offsetHeight;
-        requestAnimationFrame(() => {
-          container.classList.remove('no-transition');
+      function checkIndexBounds() {
+        let newIndex = currentIndex;
+        let jumped = false;
+
+        if (currentIndex < cloneCount) {
+          newIndex = currentIndex + cardCount;
+          jumped = true;
+        } else if (currentIndex >= cloneCount + cardCount) {
+          newIndex = currentIndex - cardCount;
+          jumped = true;
+        }
+
+        if (jumped) {
+          container.classList.add('no-transition');
+          void container.offsetHeight;
+          handleVisualUpdate(newIndex, false);
+          currentIndex = newIndex;
+          void container.offsetHeight;
+          requestAnimationFrame(() => {
+            container.classList.remove('no-transition');
+          });
+        }
+      }
+
+      function handleVisualUpdate(index, animate) {
+        allCards.forEach((card, i) => {
+          if (i === index) {
+            card.classList.add('is-active');
+          } else {
+            card.classList.remove('is-active');
+          }
+        });
+
+        const activeCard = allCards[index];
+        if (!activeCard) return;
+
+        const containerWidth = container.offsetWidth;
+        const cardWidth = activeCard.offsetWidth;
+        const cardLeft = activeCard.offsetLeft;
+        const scrollLeft = cardLeft - containerWidth / 2 + cardWidth / 2;
+
+        container.scrollTo({
+          left: scrollLeft,
+          behavior: animate ? 'smooth' : 'auto',
         });
       }
-    }
 
-    function handleVisualUpdate(index, animate) {
-      allCards.forEach((card, i) => {
-        if (i === index) {
-          card.classList.add('is-active');
-        } else {
-          card.classList.remove('is-active');
-        }
+      const newPrevBtn = prevBtn.cloneNode(true);
+      const newNextBtn = nextBtn.cloneNode(true);
+      prevBtn.parentNode.replaceChild(newPrevBtn, prevBtn);
+      nextBtn.parentNode.replaceChild(newNextBtn, nextBtn);
+
+      newPrevBtn.addEventListener('click', () => {
+        updateSlider(currentIndex - 1);
       });
 
-      const activeCard = allCards[index];
-      if (!activeCard) return;
+      newNextBtn.addEventListener('click', () => {
+        updateSlider(currentIndex + 1);
+      });
 
-      const containerWidth = container.offsetWidth;
-      const cardWidth = activeCard.offsetWidth;
-      const cardLeft = activeCard.offsetLeft;
-      const scrollLeft = cardLeft - containerWidth / 2 + cardWidth / 2;
-
-      container.scrollTo({
-        left: scrollLeft,
-        behavior: animate ? 'smooth' : 'auto',
+      window.addEventListener('resize', () => {
+        handleVisualUpdate(currentIndex, false);
       });
     }
 
-    prevBtn.addEventListener('click', () => {
-      updateSlider(currentIndex - 1);
-    });
+    // Initialize immediately if document is ready (e.g. in Theme Editor or async load)
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initMainBlogSlider);
+    } else {
+      initMainBlogSlider();
+    }
 
-    nextBtn.addEventListener('click', () => {
-      updateSlider(currentIndex + 1);
+    document.addEventListener('shopify:section:load', function (event) {
+      if (event.detail.sectionId === '{{ section.id }}') {
+        initMainBlogSlider();
+      }
     });
-
-    window.addEventListener('resize', () => {
-      handleVisualUpdate(currentIndex, false);
-    });
-  });
+  })();
 </script>
 
 {% schema %}
@@ -175,6 +254,178 @@
       "type": "blog",
       "id": "blog",
       "label": "Blog"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Desktop Margin"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top Margin",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom Margin",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_horizontal_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Horizontal Margin",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Mobile Margin"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top Margin",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom Margin",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "margin_horizontal_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Horizontal Margin",
+      "default": 0
+    },
+    {
+      "type": "text",
+      "id": "placeholder_tag_text",
+      "label": "Placeholder Tag Text",
+      "default": "Category"
+    },
+    {
+      "type": "header",
+      "content": "Desktop Typography"
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "min": 10,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Title Size",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "description_size_desktop",
+      "min": 10,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Description Size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "tag_size_desktop",
+      "min": 8,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Tag Size",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Mobile Typography"
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "min": 10,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Title Size",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "description_size_mobile",
+      "min": 10,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Description Size",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "tag_size_mobile",
+      "min": 8,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Tag Size",
+      "default": 9
+    },
+    {
+      "type": "header",
+      "content": "Borders"
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Card Border Radius",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Image Border Radius",
+      "default": 10
     }
   ],
   "presets": [
