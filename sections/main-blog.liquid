@@ -112,6 +112,8 @@
 
 <script>
   (function () {
+    let cleanupSlider;
+
     function initMainBlogSlider() {
       const track = document.getElementById('MainBlogSliderTrack-{{ section.id }}');
       if (!track) return;
@@ -149,6 +151,8 @@
       const allCards = Array.from(track.querySelectorAll('.main-blog-card'));
       let currentIndex = cloneCount;
       let isAnimating = false;
+      let scrollTimeout;
+
       requestAnimationFrame(() => {
         handleVisualUpdate(currentIndex, false);
       });
@@ -181,8 +185,10 @@
         if (jumped) {
           container.classList.add('no-transition');
           void container.offsetHeight;
+
           handleVisualUpdate(newIndex, false);
           currentIndex = newIndex;
+
           void container.offsetHeight;
           requestAnimationFrame(() => {
             container.classList.remove('no-transition');
@@ -190,7 +196,7 @@
         }
       }
 
-      function handleVisualUpdate(index, animate) {
+      function handleVisualUpdate(index, animate, skipScroll = false) {
         allCards.forEach((card, i) => {
           if (i === index) {
             card.classList.add('is-active');
@@ -198,6 +204,8 @@
             card.classList.remove('is-active');
           }
         });
+
+        if (skipScroll) return;
 
         const activeCard = allCards[index];
         if (!activeCard) return;
@@ -213,6 +221,37 @@
         });
       }
 
+      const onScroll = () => {
+        if (isAnimating) return;
+
+        requestAnimationFrame(() => {
+          if (isAnimating) return;
+
+          const containerCenter = container.scrollLeft + container.offsetWidth / 2;
+          let closestIndex = currentIndex;
+          let minDiff = Infinity;
+
+          allCards.forEach((card, index) => {
+            const cardLeft = card.offsetLeft;
+            const cardWidth = card.offsetWidth;
+            const cardCenter = cardLeft + cardWidth / 2;
+            const diff = Math.abs(containerCenter - cardCenter);
+
+            if (diff < minDiff) {
+              minDiff = diff;
+              closestIndex = index;
+            }
+          });
+
+          if (closestIndex !== currentIndex) {
+            currentIndex = closestIndex;
+            handleVisualUpdate(currentIndex, false, true); 
+          }
+        });
+      };
+
+      container.addEventListener('scroll', onScroll, { passive: true });
+
       const newPrevBtn = prevBtn.cloneNode(true);
       const newNextBtn = nextBtn.cloneNode(true);
       prevBtn.parentNode.replaceChild(newPrevBtn, prevBtn);
@@ -226,23 +265,45 @@
         updateSlider(currentIndex + 1);
       });
 
-      window.addEventListener('resize', () => {
+      const resizeHandler = () => {
         handleVisualUpdate(currentIndex, false);
-      });
+      };
+
+      window.addEventListener('resize', resizeHandler);
+
+      return () => {
+        window.removeEventListener('resize', resizeHandler);
+        container.removeEventListener('scroll', onScroll);
+      };
     }
 
-    // Initialize immediately if document is ready (e.g. in Theme Editor or async load)
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initMainBlogSlider);
+      document.addEventListener('DOMContentLoaded', () => {
+        cleanupSlider = initMainBlogSlider();
+      });
     } else {
-      initMainBlogSlider();
+      cleanupSlider = initMainBlogSlider();
     }
 
-    document.addEventListener('shopify:section:load', function (event) {
-      if (event.detail.sectionId === '{{ section.id }}') {
-        initMainBlogSlider();
+    const sectionId = '{{ section.id }}';
+
+    const onLoad = (event) => {
+      if (event.detail.sectionId === sectionId) {
+        if (typeof cleanupSlider === 'function') cleanupSlider();
+        cleanupSlider = initMainBlogSlider();
       }
-    });
+    };
+
+    const onUnload = (event) => {
+      if (event.detail.sectionId === sectionId) {
+        if (typeof cleanupSlider === 'function') cleanupSlider();
+        document.removeEventListener('shopify:section:load', onLoad);
+        document.removeEventListener('shopify:section:unload', onUnload);
+      }
+    };
+
+    document.addEventListener('shopify:section:load', onLoad);
+    document.addEventListener('shopify:section:unload', onUnload);
   })();
 </script>
 
