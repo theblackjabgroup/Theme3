@@ -8,8 +8,20 @@
       "settings": {
         "show_date": false,
         "show_author": false,
-        "padding_top": 36,
-        "padding_bottom": 36
+        "margin_top_desktop": 0,
+        "margin_bottom_desktop": 0,
+        "margin_horizontal_desktop": 10,
+        "margin_top_mobile": 20,
+        "margin_bottom_mobile": 20,
+        "margin_horizontal_mobile": 0,
+        "card_border_radius": 16,
+        "image_border_radius": 10,
+        "title_size_desktop": 20,
+        "description_size_desktop": 14,
+        "tag_size_desktop": 10,
+        "title_size_mobile": 18,
+        "description_size_mobile": 13,
+        "tag_size_mobile": 9
       }
     },
     "share_story": {
