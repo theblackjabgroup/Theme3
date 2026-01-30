@@ -272,7 +272,12 @@
       if (!currentVariant) {
         // Variant doesn't exist
         if (submitBtn) {
-          submitBtn.textContent = 'Unavailable';
+          const btnText = submitBtn.querySelector('.submit-button__text');
+          if (btnText) {
+            btnText.textContent = 'Unavailable';
+          } else {
+            submitBtn.textContent = 'Unavailable';
+          }
           submitBtn.disabled = true;
           submitBtn.style.opacity = '0.5';
           submitBtn.style.cursor = 'not-allowed';
@@ -289,17 +294,27 @@
         newUrl.searchParams.set('variant', currentVariant.id);
         window.history.replaceState({ path: newUrl.toString() }, '', newUrl);
 
-        // 3. Update Button State (Status Only)
+       // 3. Update Button State (Status Only)
         if (submitBtn) {
+           const btnText = submitBtn.querySelector('.submit-button__text');
+           
            if (currentVariant.available) {
-             submitBtn.textContent = 'ADD TO CART';
+             if (btnText) {
+                btnText.textContent = 'ADD TO CART';
+             } else {
+                submitBtn.textContent = 'ADD TO CART';
+             }
              
              // Ensure it's active
              submitBtn.disabled = false;
              submitBtn.style.opacity = '1';
              submitBtn.style.cursor = 'pointer';
            } else {
-             submitBtn.textContent = 'Sold Out';
+             if (btnText) {
+                btnText.textContent = 'Sold Out';
+             } else {
+                submitBtn.textContent = 'Sold Out';
+             }
              submitBtn.disabled = true;
              submitBtn.style.opacity = '0.5';
              submitBtn.style.cursor = 'not-allowed';
