@@ -87,6 +87,29 @@
     });
   }
 
+  function initQuantitySelectorCards() {
+    document.querySelectorAll('[data-quantity-selector-card]').forEach((card) => {
+      const input = card.querySelector('[data-quantity-input]');
+      const minusBtn = card.querySelector('[data-quantity-minus]');
+      const plusBtn = card.querySelector('[data-quantity-plus]');
+      if (!input || !minusBtn || !plusBtn) return;
+
+      const min = parseInt(input.getAttribute('min'), 10) || 0;
+      const max = parseInt(input.getAttribute('max'), 10) || 99;
+      const step = parseInt(input.getAttribute('step'), 10) || 1;
+
+      function updateValue(delta) {
+        let val = parseInt(input.value, 10) || min;
+        val = Math.min(max, Math.max(min, val + delta));
+        input.value = val;
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+
+      minusBtn.addEventListener('click', () => updateValue(-step));
+      plusBtn.addEventListener('click', () => updateValue(step));
+    });
+  }
+
   function initToggleCards() {
     const toggleCards = document.querySelectorAll('[data-toggle-card]');
     
@@ -141,6 +164,7 @@
 
   function initAll() {
     initSpritesheetAnimations();
+    initQuantitySelectorCards();
     initToggleCards();
   }
 
@@ -155,6 +179,7 @@
     const section = event.target?.querySelector?.('.bento-grid-container') || event.target;
     if (section?.matches?.('.bento-grid-container')) {
       initSpritesheetAnimations();
+      initQuantitySelectorCards();
       initToggleCards();
     }
   });
