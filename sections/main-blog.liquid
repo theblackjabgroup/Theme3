@@ -174,11 +174,11 @@
         let newIndex = currentIndex;
         let jumped = false;
 
-        if (currentIndex < cloneCount) {
-          newIndex = currentIndex + cardCount;
-          jumped = true;
-        } else if (currentIndex >= cloneCount + cardCount) {
-          newIndex = currentIndex - cardCount;
+        if (currentIndex < cloneCount || currentIndex >= cloneCount + cardCount) {
+          const relativeIndex = (currentIndex - cloneCount) % cardCount;
+          const adjustedRelativeIndex = relativeIndex < 0 ? relativeIndex + cardCount : relativeIndex;
+
+          newIndex = cloneCount + adjustedRelativeIndex;
           jumped = true;
         }
 
@@ -245,7 +245,7 @@
 
           if (closestIndex !== currentIndex) {
             currentIndex = closestIndex;
-            handleVisualUpdate(currentIndex, false, true); 
+            handleVisualUpdate(currentIndex, false, true);
           }
         });
       };
