@@ -1,0 +1,262 @@
+/* Matching Filter and Sort Drawer Design */
+
+/* Colors */
+:root {
+  --color-drawer-header: #365330;
+  --color-active-pill: #EAB0BD;
+  --color-active-pill-border: #365330;
+  --color-apply-btn: #EAB0BD;
+  --color-apply-btn-shadow: #365330;
+  --color-checkbox-bg: #EBE6DF;
+  --color-checkbox-border: #365330;
+  --color-checkbox-checked: #365330;
+  --color-range-track: #D2CDC6;
+  --color-range-thumb: #365330;
+}
+
+/* Headers & Titles */
+.facets-drawer__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0 20px 0;
+  margin-bottom: 24px;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.facets-drawer__title {
+  font-family: var(--font-heading-family);
+  font-size: 4.5rem;
+  font-weight: 800;
+  color: var(--color-drawer-header);
+  margin: 0;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.facets-drawer__close {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.facets-drawer__close svg {
+  width: 32px;
+  height: 32px;
+}
+
+/* Panel Inner Padding */
+.facets-drawer__panel-inner {
+  padding: 0;
+}
+
+/* Filter Sections Labels */
+.facets-drawer__panel-inner--filters .facets__summary-label {
+  font-family: var(--font-heading-family);
+  font-size: 1.4rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--color-drawer-header);
+  text-align: left;
+}
+
+/* Active Filters (Pills) */
+.facets-drawer__active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
+  align-items: center;
+}
+
+.active-facets__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-active-pill);
+  border: 1px solid var(--color-active-pill-border);
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--color-drawer-header);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.active-facets__button-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.active-facets__button-close svg {
+  width: 12px;
+  height: 12px;
+  stroke-width: 3;
+}
+
+.active-facets__clear-all .facets__reset {
+  font-family: var(--font-heading-family);
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--color-drawer-header);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-left: 8px;
+}
+
+/* Custom Checkbox (Rounded Rectangle) */
+.facet-checkbox {
+  position: relative;
+  padding: 12px 10px !important;
+  margin-bottom: 4px;
+}
+
+.facet-checkbox input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.facet-checkbox__custom {
+  display: inline-block;
+  width: 44px;
+  height: 28px;
+  background: var(--color-checkbox-bg);
+  border: 2px solid var(--color-checkbox-border);
+  border-radius: 10px;
+  position: relative;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.facet-checkbox input:checked ~ .facet-checkbox__custom {
+  background: var(--color-checkbox-bg);
+}
+
+.facet-checkbox input:checked ~ .facet-checkbox__custom::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 14px;
+  height: 10px;
+  border: solid var(--color-checkbox-checked);
+  border-width: 0 0 2.5px 2.5px;
+  transform: translate(-50%, -60%) rotate(-45deg);
+}
+
+.facet-checkbox__text {
+  font-family: var(--font-body-family);
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--color-drawer-header);
+  letter-spacing: 0.02em;
+}
+
+/* Custom Radio (Sort Indicators) */
+.facets-drawer__sort-option {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 12px 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  font-family: var(--font-body-family);
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--color-drawer-header);
+  text-align: left;
+  cursor: pointer;
+}
+
+.facet-radio__custom {
+  display: inline-block;
+  width: 44px;
+  height: 28px;
+  background: var(--color-checkbox-bg);
+  border: 2px solid var(--color-checkbox-border);
+  border-radius: 10px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.facets-drawer__sort-option--active .facet-radio__custom {
+  background: var(--color-checkbox-bg);
+}
+
+/* Price Range Inputs */
+.facets__price .field {
+  background: var(--color-checkbox-bg);
+  border: 1px solid var(--color-checkbox-border);
+  border-radius: 16px;
+  padding: 12px 16px;
+  flex: 1;
+}
+
+.facets__price .field__input {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-family: var(--font-body-family);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-drawer-header);
+  width: 100%;
+}
+
+.facets__price .field-currency {
+  display: none; /* Already in input or decorative */
+}
+
+/* APPLY Button (Pink 3D) */
+.facets-drawer__footer {
+  margin-top: 32px;
+}
+
+.facets-drawer__apply-button {
+  width: 100%;
+  background: var(--color-apply-btn);
+  border: 2px solid var(--color-apply-btn-shadow);
+  border-radius: 20px;
+  padding: 18px;
+  font-family: var(--font-heading-family);
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--color-apply-btn-shadow);
+  cursor: pointer;
+  box-shadow: 0 5px 0 0 var(--color-apply-btn-shadow);
+  transition: all 0.1s ease;
+  position: relative;
+  top: 0;
+}
+
+.facets-drawer__apply-button:hover {
+  top: 2px;
+  box-shadow: 0 3px 0 0 var(--color-apply-btn-shadow);
+}
+
+.facets-drawer__apply-button:active {
+  top: 5px;
+  box-shadow: 0 0 0 0 var(--color-apply-btn-shadow);
+}
+
+/* Mobile Adjustments */
+@media screen and (max-width: 749px) {
+  .facets-drawer__title {
+    font-size: 3.5rem;
+  }
+}

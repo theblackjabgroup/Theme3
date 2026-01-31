@@ -11,7 +11,9 @@
   z-index: 1000;
   display: flex;
   flex-direction: column;
-  background: var(--color-header-background, var(--color-background, #eae7e1));
+  background: color-mix(in srgb, var(--color-header-background, var(--color-background, #eae7e1)) 85%, transparent);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   overflow: hidden;
 }
 
@@ -621,7 +623,8 @@ body.mega-menu-open .dock-actions * {
   max-width: calc(100vw - 300px);
   max-height: 70vh;
   background: #EFEAE4;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-radius: 0;
   opacity: 1;
   visibility: hidden;
@@ -802,8 +805,8 @@ body.mega-menu-open .dock-actions * {
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  background: #ffffff;
-  border: 1px solid #e5e5e5;
+  background: color-mix(in srgb, var(--color-header-button-background, #ffffff) 85%, transparent) !important;
+  border: 1px solid color-mix(in srgb, var(--color-header-button-background, #e5e5e5) 20%, transparent);
   border-radius: 20px;
   position: fixed;
   top: 10px;
@@ -811,7 +814,8 @@ body.mega-menu-open .dock-actions * {
   right: 10px;
   width: calc(100% - 20px);
   z-index: 1000;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
   transform: translateY(0);
 }
@@ -1286,13 +1290,15 @@ body.mobile-menu-open .mobile-menu-content > *:not(.mobile-menu-close) {
 /* Main Content Adjustment - align with vertical header */
 body:not(.header-disabled) #MainContent,
 body:not(.header-disabled) main {
-  margin-left: var(--header-width, 230px);
-  width: calc(100% - var(--header-width, 230px));
-  transition: margin-left var(--transition-medium);
+  padding-left: var(--header-width, 230px);
+  margin-left: 0 !important;
+  width: 100% !important;
+  transition: padding-left var(--transition-medium);
 }
 
 body.header-disabled #MainContent,
 body.header-disabled main {
+  padding-left: 0;
   margin-left: 0;
 }
 
