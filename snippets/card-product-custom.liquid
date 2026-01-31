@@ -11,9 +11,7 @@
   - quick_add: {String} Quick add mode. Values: 'none', 'standard', 'bulk'. Default: 'none' (optional)
   - lazy_load: {Boolean} Image should be lazy loaded. Default: true (optional)
 {%- endcomment -%}
-
-{{ 'custom-card-base.css' | asset_url | stylesheet_tag }}
-{{ 'custom-product-card.css' | asset_url | stylesheet_tag }}
+{%- comment -%} Card CSS is loaded once at section level (e.g. main-collection-product-grid.liquid). {%- endcomment -%}
 
 {%- if card_product and card_product != empty -%}
   <div class="custom-product-card-wrapper">

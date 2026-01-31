@@ -1,17 +1,31 @@
 // Custom Facets JavaScript - Dropdowns + Drawer buttons (Filters, Sort)
 (function () {
   const DRAWER_ANIMATION_DURATION = 600;
+  const DRAWER_CLOSE_TIMEOUT_KEY = '_drawerCloseTimeoutId';
 
   function closeDrawerWithAnimation(details) {
     if (!details || !details.open) return;
+    if (details[DRAWER_CLOSE_TIMEOUT_KEY] != null) {
+      clearTimeout(details[DRAWER_CLOSE_TIMEOUT_KEY]);
+      details[DRAWER_CLOSE_TIMEOUT_KEY] = null;
+    }
     details.classList.add('facets-drawer--closing');
-    setTimeout(() => {
+    details[DRAWER_CLOSE_TIMEOUT_KEY] = setTimeout(() => {
+      details[DRAWER_CLOSE_TIMEOUT_KEY] = null;
+      if (!details.classList.contains('facets-drawer--closing')) return;
       details.removeAttribute('open');
       details.classList.remove('facets-drawer--closing', 'facets-drawer--open');
       if (!document.querySelector('.facets-drawer[open]')) {
         document.body.classList.remove('facets-drawer-open', 'overflow-hidden');
       }
     }, DRAWER_ANIMATION_DURATION);
+  }
+
+  function cancelDrawerCloseTimeout(details) {
+    if (details[DRAWER_CLOSE_TIMEOUT_KEY] != null) {
+      clearTimeout(details[DRAWER_CLOSE_TIMEOUT_KEY]);
+      details[DRAWER_CLOSE_TIMEOUT_KEY] = null;
+    }
   }
 
   function setupDrawerBehavior() {
@@ -24,6 +38,7 @@
       // When this drawer opens, close the other drawer, add open class for entry animation, add body class for blur
       details.addEventListener('toggle', function () {
         if (this.open) {
+          cancelDrawerCloseTimeout(this);
           this.classList.add('facets-drawer--open');
           document.body.classList.add('facets-drawer-open', 'overflow-hidden');
           document.querySelectorAll('.facets-drawer').forEach((other) => {
@@ -217,10 +232,7 @@
     const originalRenderFilters = FacetFiltersForm.renderFilters;
     FacetFiltersForm.renderFilters = function (html, event) {
       originalRenderFilters.call(this, html, event);
-      setTimeout(function () {
-        init();
-        setupPriceSliderSync();
-      }, 100);
+      setTimeout(init, 100);
     };
   }
 

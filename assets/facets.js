@@ -1,15 +1,31 @@
+function debounceWithCancel(fn, wait) {
+  let timer;
+  const debounced = function (...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn.apply(this, args), wait);
+  };
+  debounced.cancel = function () {
+    clearTimeout(timer);
+    timer = null;
+  };
+  return debounced;
+}
+
 class FacetFiltersForm extends HTMLElement {
   constructor() {
     super();
     this.onActiveFilterClick = this.onActiveFilterClick.bind(this);
 
-    this.debouncedOnSubmit = debounce((event) => {
+    this.debouncedOnSubmit = debounceWithCancel((event) => {
       this.onSubmitHandler(event);
     }, 800);
 
     const facetForm = this.querySelector('form');
     facetForm.addEventListener('input', this.debouncedOnSubmit.bind(this));
-    facetForm.addEventListener('submit', this.onSubmitHandler.bind(this));
+    facetForm.addEventListener('submit', (e) => {
+      this.debouncedOnSubmit.cancel();
+      this.onSubmitHandler(e);
+    });
 
     const facetWrapper = this.querySelector('#FacetsWrapperDesktop');
     if (facetWrapper) facetWrapper.addEventListener('keyup', onKeyUpEscape);
