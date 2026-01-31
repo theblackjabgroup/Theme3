@@ -220,15 +220,14 @@
     transform: translateY(0);
   }
 
-  /* Responsive: tablet */
+  /* Responsive Adjustments */
   @media screen and (max-width: 1200px) {
     #product-grid-{{ section.id }} {
       grid-template-columns: repeat({{ section.settings.columns_tablet | default: 2 }}, 1fr);
     }
   }
 
-  /* Responsive: mobile – same breakpoint (749px) as section padding/header so Columns (Mobile) applies correctly */
-  @media screen and (max-width: 749px) {
+  @media screen and (max-width: 900px) {
     #product-grid-{{ section.id }} {
       grid-template-columns: repeat({{ section.settings.columns_mobile | default: 1 }}, 1fr);
       gap: {{ section.settings.grid_gap_mobile | default: 16 }}px;
@@ -250,6 +249,7 @@
     #product-grid-{{ section.id }} .custom-product-card__title {
       font-size: {{ settings.product_card_title_font_size_mobile | default: 24 }}px !important;
     }
+  }
   }
 {%- endstyle -%}
 

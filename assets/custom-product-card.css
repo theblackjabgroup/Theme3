@@ -29,7 +29,8 @@
 
 .custom-product-card__title,
 .custom-product-card__description,
-.custom-product-card__footer {
+.custom-product-card__footer,
+.custom-product-card__badge {
   transition: transform 0.6s ease-out;
 }
 
