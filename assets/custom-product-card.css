@@ -19,10 +19,6 @@
   transition: transform 0.6s ease-out;
 }
 
-.custom-product-card:hover .custom-product-card__image-container::before {
-  transform: scaleY(0.8);
-}
-
 .custom-product-card__image {
   transition: transform 0.6s ease-out;
 }
