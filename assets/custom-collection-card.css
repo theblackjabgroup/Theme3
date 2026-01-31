@@ -1,0 +1,48 @@
+/* Collection card overrides. Base styles: custom-card-base.css */
+
+.custom-collection-card {
+  padding: 0 24px 24px 24px !important;
+}
+
+.custom-collection-card__price {
+  border: 1px solid var(--color-borders);
+  border-radius: 12px;
+  padding: 8px 16px;
+  font-family: var(--font-body-family, 'Courier New', Courier, monospace);
+  font-weight: 700;
+  font-size: 14px;
+  display: inline-block;
+  background: var(--color-header-button-background);
+  transition: all 0.3s ease;
+}
+
+.custom-collection-card__hover-description {
+  max-width: 90%;
+}
+
+/* Sync overlay/hover-area duration with content (0.4s) so animation feels unified */
+.custom-collection-card__hover-area {
+  transition: height 0.4s ease-out;
+}
+.custom-collection-card__hover-overlay {
+  transition: all 0.4s ease-out;
+}
+
+.custom-collection-card:hover .custom-collection-card__image {
+  transform: translateY(-80px) rotate(10deg);
+}
+
+.custom-collection-card:hover .custom-collection-card__price {
+  background: black;
+  color: white;
+  border-color: black;
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px);
+}
+
+.custom-collection-card:hover .custom-collection-card__badge,
+.custom-collection-card:hover .custom-collection-card__title,
+.custom-collection-card:hover .custom-collection-card__description,
+.custom-collection-card:hover .custom-collection-card__footer {
+  transform: translateY(-70px);
+}

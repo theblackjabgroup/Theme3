@@ -1,0 +1,67 @@
+{%- comment -%}
+  Renders a custom collection card matching the product card design
+
+  Accepts:
+  - collection: {Object} Collection Liquid object (required)
+  - show_badge: {Boolean} Show badge on card. Default: true (optional)
+  - section_settings: {Object} Section settings (optional)
+{%- endcomment -%}
+
+{%- if collection and collection != empty -%}
+  <div class="custom-collection-card-wrapper">
+  <a href="{{ collection.url }}" class="custom-collection-card">
+    <div class="custom-collection-card__image-container">
+      {%- if collection.featured_image -%}
+        <img
+          src="{{ collection.featured_image | image_url: width: 533 }}"
+          alt="{{ collection.featured_image.alt | escape }}"
+          class="custom-collection-card__image"
+          loading="lazy"
+          width="533"
+          height="{{ 533 | divided_by: collection.featured_image.aspect_ratio }}"
+        >
+      {%- else -%}
+        {{ 'collection-1' | placeholder_svg_tag: 'custom-collection-card__image placeholder-svg' }}
+      {%- endif -%}
+    </div>
+
+    {%- if show_badge != false -%}
+      <span class="custom-collection-card__badge">
+        {{- collection.all_products_count }}
+        {%- if collection.all_products_count == 1 -%}
+          item
+        {%- else -%}
+          items
+        {%- endif -%}
+      </span>
+    {%- endif -%}
+
+    <h3 class="custom-collection-card__title">
+      {{ collection.title }}
+    </h3>
+
+    {%- if collection.description != blank -%}
+      <p class="custom-collection-card__description">
+        {{ collection.description | strip_html | truncatewords: 12, '....' }}
+      </p>
+    {%- endif -%}
+
+    <div class="custom-collection-card__hover-area"></div>
+
+    <div class="custom-collection-card__overlay-clip">
+      <div class="custom-collection-card__hover-overlay">
+        <div class="custom-collection-card__hover-content">
+          {%- if collection.description != blank -%}
+            <p class="custom-collection-card__hover-description">
+              {{ collection.description | strip_html | truncatewords: 12, '....' | upcase }}
+            </p>
+          {%- endif -%}
+          <span class="custom-collection-card__hover-button share-story-submit">
+            {{- section_settings.overlay_button_text | default: 'Love that! (Check it out)' -}}
+          </span>
+        </div>
+      </div>
+    </div>
+  </a>
+  </div>
+{%- endif -%}

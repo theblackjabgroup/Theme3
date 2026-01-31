@@ -1,9 +1,634 @@
 /* Custom Facets Styling */
 
 .facets-container {
-  margin-bottom: 3rem;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+/* Ensure facets form chain is full width for horizontal (buttons) layout */
+.facets-container facet-filters-form.facets {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+
+.facets-container facet-filters-form.facets form {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Form must stretch so buttons row can span full width */
+.facets__form:has(.facets-buttons-drawers) {
+  justify-content: stretch !important;
+  width: 100% !important;
+}
+
+.facets__form:has(.facets-buttons-drawers) .facets-buttons-drawers {
+  flex: 1 1 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Two buttons (Filters, Sort) - Filter on far left, Sort on far right */
+.facets-buttons-drawers {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+.facets-drawer--filters {
+  flex-shrink: 0;
+}
+
+.facets-drawer--sort {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.facets-drawer {
+  position: relative;
+}
+
+/* 3D button style - same as submit-button snippet */
+.facets-drawer-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-primary-button-bg);
+  color: var(--color-primary-button-text, white);
+  border: 2px solid var(--color-primary-button-border);
+  padding: 12px 20px;
+  border-radius: 20px;
+  font-family: var(--font-heading-family);
+  font-weight: 700;
+  font-size: 1.2rem;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  cursor: pointer;
+  list-style: none;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0px 4px 0px 0px var(--color-shadow);
+  -webkit-tap-highlight-color: transparent;
+}
+.facets-container fieldset{
+  border: none;
+}
+
+.facets-drawer-trigger::-webkit-details-marker {
+  display: none;
+}
+
+.facets-drawer-trigger:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px 0px var(--color-shadow);
+}
+
+details.facets-drawer[open] .facets-drawer-trigger {
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px 0px var(--color-shadow);
+}
+
+/* Blur effect when facet drawer is open - same as header mega menu */
+main,
+#MainContent,
+footer,
+[id^="shopify-section-"]:not([id*="header"]):not(.floating-dock-header) {
+  transition: filter 0.3s ease, pointer-events 0.3s ease;
+}
+
+body.facets-drawer-open main,
+body.facets-drawer-open #MainContent,
+body.facets-drawer-open footer,
+body.facets-drawer-open [id^="shopify-section-"]:not([id*="header"]):not(.floating-dock-header) {
+  pointer-events: none;
+}
+
+body.facets-drawer-open .facets-container,
+body.facets-drawer-open .facets-container *,
+body.facets-drawer-open .facets-drawer,
+body.facets-drawer-open .facets-drawer * {
+  filter: none !important;
+  pointer-events: auto !important;
+}
+
+/* Drawer panel - base; position and animation set per drawer type */
+.facets-drawer__panel {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: 380px;
+  background: var(--color-background);
+  z-index: 1000;
+  overflow-y: auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Filters drawer - position; entry animation only when open (class added by JS) */
+.facets-drawer--filters .facets-drawer__panel {
+  left: 0;
+  right: auto;
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Entry animation - runs when drawer opens (facets-drawer--open added on open) */
+.facets-drawer--open.facets-drawer--filters .facets-drawer__panel {
+  animation: facets-drawer-slide-in-left 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes facets-drawer-slide-in-left {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Sort drawer - position; entry animation only when open */
+.facets-drawer--sort .facets-drawer__panel {
+  right: 0;
+  left: auto;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.facets-drawer--open.facets-drawer--sort .facets-drawer__panel {
+  animation: facets-drawer-slide-in-right 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes facets-drawer-slide-in-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Exit animations - slide out in same direction (closing) */
+.facets-drawer--closing.facets-drawer--filters .facets-drawer__panel {
+  animation: facets-drawer-slide-out-left 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes facets-drawer-slide-out-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.facets-drawer--closing.facets-drawer--sort .facets-drawer__panel {
+  animation: facets-drawer-slide-out-right 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes facets-drawer-slide-out-right {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* Filter drawer header */
+.facets-drawer__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--color-headings);
+}
+
+.facets-drawer__title {
+  font-family: var(--font-heading-family, serif);
+  font-weight: 800;
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  margin: 0;
+  color: var(--color-headings);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-transform: capitalize;
+}
+
+.facets-drawer__close {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  color: var(--color-headings);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease;
+}
+
+.facets-drawer__close:hover {
+  opacity: 0.7;
+}
+
+.facets-drawer__close svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+/* Tags section - right below header; shows applied filters as tags */
+.facets-drawer__tags {
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+}
+
+.facets-drawer__tags .facets-drawer__active-filters {
+  margin-bottom: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Active filter chips (tags) and CLEAR ALL on same line */
+.facets-drawer__active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.facets-drawer .active-facets__button {
+  display: inline-flex;
+  align-items: center;
+  background: var(--color-accent-pink);
+  color: var(--color-headings);
+  padding: 6px 12px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.95rem;
+  gap: 6px;
+  border: none;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.facets-drawer .active-facets__button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--color-headings) 20%, transparent);
+}
+
+.active-facets__button-close svg {
+  width: 5px;
+  height: 5px;
+}
+
+.active-facets__clear-all a {
+  color: var(--color-headings);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  margin-left: 6px;
+}
+
+/* Filter drawer: static headings (Availability, Price) */
+.facets-drawer__panel-inner--filters .facets-drawer__filter-group {
+  margin-bottom: 24px;
+  border: none;
+}
+
+.facets-drawer__panel-inner--filters .facets-drawer__filter-heading {
+  margin: 0 0 12px 0;
+  padding: 0;
+  font-family: monospace;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-headings);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: left;
+  background: transparent;
+  border: none;
+  cursor: default;
+}
+
+/* Checkbox styling */
+.facets-drawer .facets__item {
+  margin-bottom: 10px;
+}
+
+.facets-drawer .facet-checkbox {
+  padding: 0;
+  background: transparent !important;
+}
+
+.facets-drawer .facet-checkbox input[type="checkbox"] {
+  display: none;
+}
+
+.facets-drawer .facet-checkbox__custom {
+  width: 28px;
+  height: 20px;
+  border: 2px solid var(--color-headings);
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  background: transparent;
+  margin-right: 10px;
+  position: relative;
+  box-sizing: border-box;
+  box-shadow: 0px 3px 0px 0px var(--color-shadow);
+}
+
+.facets-drawer .facet-checkbox:hover .facet-checkbox__custom,
+.facets-drawer .facet-checkbox.active .facet-checkbox__custom,
+.facets-drawer .facet-checkbox input[type="checkbox"]:checked + .facet-checkbox__custom {
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px 0px var(--color-shadow);
+}
+
+.facets-drawer .facet-checkbox input[type="checkbox"]:checked + .facet-checkbox__custom {
+  background: var(--color-headings);
+}
+
+.facets-drawer .facet-checkbox input[type="checkbox"]:checked + .facet-checkbox__custom::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 8px;
+  height: 5px;
+  border-left: 2px solid var(--color-background);
+  border-bottom: 2px solid var(--color-background);
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.facets-drawer .facet-checkbox__text {
+  font-family: monospace;
+  font-size: 1.05rem;
+  color: var(--color-headings);
+  font-weight: 600;
+}
+
+/* Price range slider (above inputs) */
+.price-facet-slider {
+  margin-bottom: 12px;
+}
+
+.price-facet-slider__track {
+  position: relative;
+  height: 24px;
+  display: flex;
+  align-items: center;
+}
+
+.price-facet-slider__input {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  margin: 0;
+  height: 24px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  pointer-events: none;
+}
+
+.price-facet-slider__input--min {
+  z-index: 2;
+  pointer-events: none;
+}
+
+.price-facet-slider__input--min::-webkit-slider-thumb {
+  pointer-events: auto;
+}
+
+.price-facet-slider__input--min::-moz-range-thumb {
+  pointer-events: auto;
+}
+
+.price-facet-slider__input--max {
+  z-index: 1;
+  pointer-events: none;
+}
+
+.price-facet-slider__input--max::-webkit-slider-thumb {
+  pointer-events: auto;
+}
+
+.price-facet-slider__input--max::-moz-range-thumb {
+  pointer-events: auto;
+}
+
+.price-facet-slider__input::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--color-headings) 20%, transparent);
+}
+
+.price-facet-slider__input::-moz-range-track {
+  height: 6px;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--color-headings) 20%, transparent);
+}
+
+.price-facet-slider__input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-headings);
+  border: 2px solid var(--color-background);
+  cursor: pointer;
+  pointer-events: auto;
+  margin-top: -6px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.price-facet-slider__input::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-headings);
+  border: 2px solid var(--color-background);
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.price-facet-slider__input--min::-webkit-slider-thumb {
+  position: relative;
+  z-index: 2;
+}
+
+.price-facet-slider__input--min::-moz-range-thumb {
+  position: relative;
+  z-index: 2;
+}
+
+/* Price Range Inputs */
+.price-facet-inputs-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.price-facet-inputs-container .field {
+  flex: 1;
+  background: var(--color-input-bg);
+  border: 1px solid var(--color-headings);
+  border-radius: 8px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+}
+
+.price-facet-inputs-container .field-currency {
+  font-size: 0.9rem;
+  color: var(--color-headings);
+  margin-right: 4px;
+  font-family: monospace;
+}
+
+.price-facet-inputs-container .field__input {
+  border: none;
+  background: transparent;
+  width: 100%;
+  font-family: monospace;
+  font-size: 1rem;
+  color: var(--color-headings);
+  padding: 0;
+  font-weight: 700;
+}
+
+.price-range-separator {
+  color: var(--color-headings);
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+/* Sort drawer - match filter drawer style */
+.facets-drawer__panel-inner--sort {
+  margin-bottom: 0;
+}
+
+.facets-drawer__sort-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.facets-drawer--sort .facets-drawer__sort-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 12px;
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  font-family: monospace;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--color-headings);
+  text-align: left;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.facets-drawer--sort .facets-drawer__sort-option:hover {
+  opacity: 0.8;
+}
+
+.facets-drawer--sort .facets-drawer__sort-option--active {
+  background: transparent;
+}
+
+.facets-drawer--sort .facet-radio__custom {
+  width: 28px;
+  height: 20px;
+  border: 2px solid var(--color-headings);
+  border-radius: 6px;
+  background: transparent;
+  flex-shrink: 0;
+  position: relative;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-sizing: border-box;
+  box-shadow: 0px 3px 0px 0px var(--color-shadow);
+}
+
+.facets-drawer--sort .facets-drawer__sort-option:hover .facet-radio__custom,
+.facets-drawer--sort .facets-drawer__sort-option--active .facet-radio__custom {
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px 0px var(--color-shadow);
+}
+
+.facets-drawer--sort .facets-drawer__sort-option--active .facet-radio__custom {
+  background: var(--color-headings);
+}
+
+.facets-drawer--sort .facets-drawer__sort-option--active .facet-radio__custom::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 8px;
+  height: 5px;
+  border-left: 2px solid var(--color-background);
+  border-bottom: 2px solid var(--color-background);
+  transform: translate(-50%, -70%) rotate(-45deg);
+}
+
+/* Apply Button - 3D style */
+.facets-drawer__footer {
+  margin-top: 28px;
+  padding: 20px 0 24px;
   display: flex;
   justify-content: center;
+  align-items: center;
+}
+
+.facets-drawer__apply-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(100% - 40px);
+  max-width: 320px;
+  background: var(--color-accent-pink);
+  color: var(--color-headings);
+  border: 2px solid var(--color-headings);
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 1.15rem;
+  font-family: monospace;
+  cursor: pointer;
+  box-shadow: 0px 3px 0px 0px var(--color-shadow);
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.facets-drawer__apply-button:hover,
+.facets-drawer__apply-button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px 0px var(--color-shadow);
 }
 
 .facets__form {
@@ -13,6 +638,11 @@
   justify-content: center !important;
   width: 100%;
   flex-wrap: wrap;
+}
+
+/* Horizontal layout: form contains only facets-buttons-drawers, keep full width */
+facet-filters-form.facets .facets__form {
+  max-width: 100%;
 }
 
 .facets__wrapper {
@@ -32,7 +662,7 @@
   padding: 7px 20px !important;
   border-radius: 50px !important;
   border: 2px solid black !important;
-  background-color: white !important;
+  background-color: var(--color-header-button-background) !important;
   color: black !important;
   font-family: var(--font-body-family);
   font-weight: 700;
@@ -262,7 +892,7 @@ details[open] .facets__summary {
   padding: 10px 40px 10px 20px !important;
   border-radius: 50px !important;
   border: 2px solid black !important;
-  background-color: white !important;
+  background-color: var(--color-header-button-background) !important;
   font-family: var(--font-body-family);
   font-weight: 700;
   font-size: 1.2rem;

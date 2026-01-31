@@ -1,4 +1,6 @@
 {{ 'custom-collection-list.css' | asset_url | stylesheet_tag }}
+{{ 'custom-card-base.css' | asset_url | stylesheet_tag }}
+{{ 'custom-collection-card.css' | asset_url | stylesheet_tag }}
 {{ 'main-collection-product-grid.css' | asset_url | stylesheet_tag }}
 
 <style>
@@ -44,6 +46,8 @@
 
   .custom-collection-list__header-box {
     text-align: {{ section.settings.title_alignment }};
+    padding-top: {{ section.settings.header_padding_top | default: 0 }}px;
+    padding-bottom: {{ section.settings.header_padding_bottom | default: 40 }}px;
     {% if section.settings.title_margin_bottom != blank %}
       margin-bottom: {{ section.settings.title_margin_bottom }}px;
     {% endif %}
@@ -55,6 +59,19 @@
     {% endif %}
     {% if section.settings.title_font_weight != blank %}
       font-weight: {{ section.settings.title_font_weight }};
+    {% endif %}
+    line-height: {{ section.settings.title_line_height | default: 1.2 }};
+    letter-spacing: {{ section.settings.title_letter_spacing | default: 0 }}px;
+    text-transform: {{ section.settings.title_text_transform | default: 'none' }};
+  }
+
+  .custom-collection-list__header-box-description {
+    font-size: {{ section.settings.header_description_font_size | default: 16 }}px;
+    font-weight: {{ section.settings.header_description_font_weight | default: 400 }};
+    line-height: {{ section.settings.header_description_line_height | default: 1.5 }};
+    margin-top: {{ section.settings.header_description_margin_top | default: 10 }}px;
+    {% if section.settings.header_description_color != blank %}
+      color: {{ section.settings.header_description_color }};
     {% endif %}
   }
 
@@ -160,6 +177,10 @@
       font-size: {{ section.settings.title_font_size_mobile }}rem;
     }
 
+    .custom-collection-list__header-box-description {
+      font-size: {{ section.settings.header_description_font_size_mobile | default: 14 }}px;
+    }
+
     .custom-collection-card {
       padding: {{ section.settings.card_padding_top_mobile }}px {{ section.settings.card_padding_horizontal_mobile }}px {{ section.settings.card_padding_bottom_mobile }}px;
     }
@@ -258,47 +279,11 @@
       <ul class="custom-collection-list__grid" role="list">
         {%- for collection in collections -%}
           <li class="custom-collection-list__item">
-            <a href="{{ collection.url }}" class="custom-collection-card">
-              <div class="custom-collection-card__image-container">
-                {%- if collection.featured_image -%}
-                  <img
-                    src="{{ collection.featured_image | image_url: width: 533 }}"
-                    alt="{{ collection.featured_image.alt | escape }}"
-                    class="custom-collection-card__image"
-                    loading="lazy"
-                    width="533"
-                    height="{{ 533 | divided_by: collection.featured_image.aspect_ratio }}"
-                  >
-                {%- else -%}
-                  {{ 'collection-1' | placeholder_svg_tag: 'custom-collection-card__image placeholder-svg' }}
-                {%- endif -%}
-              </div>
-              {%- if section.settings.show_card_badge -%}
-                <span class="custom-collection-card__badge">
-                  {{- collection.all_products_count }}
-                  {%- if collection.all_products_count == 1 -%}
-                    item
-                  {%- else -%}
-                    items
-                  {%- endif -%}
-                </span>
-              {%- endif -%}
-              <h3 class="custom-collection-card__title">
-                {{ collection.title }}
-              </h3>
-
-              <div class="custom-collection-card__hover-area"></div>
-
-              <div class="custom-collection-card__overlay-clip">
-                <div class="custom-collection-card__hover-overlay">
-                  <div class="custom-collection-card__hover-content">
-                    <span class="custom-collection-card__hover-button share-story-submit">
-                      {{- section.settings.overlay_button_text | default: 'Love that! (Check it out)' -}}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </a>
+            {% render 'card-collection-custom',
+              collection: collection,
+              show_badge: section.settings.show_card_badge,
+              section_settings: section.settings
+            %}
           </li>
         {%- endfor -%}
       </ul>
@@ -361,7 +346,7 @@
       "id": "title_font_size",
       "label": "Title Font Size (rem)",
       "min": 1,
-      "max": 8,
+      "max": 10,
       "step": 0.1,
       "default": 3.2
     },
@@ -369,10 +354,40 @@
       "type": "range",
       "id": "title_font_weight",
       "label": "Title Font Weight",
-      "min": 400,
+      "min": 100,
       "max": 900,
       "step": 100,
       "default": 700
+    },
+    {
+      "type": "range",
+      "id": "title_line_height",
+      "label": "Title Line Height",
+      "min": 0.8,
+      "max": 2,
+      "step": 0.1,
+      "default": 1.2
+    },
+    {
+      "type": "range",
+      "id": "title_letter_spacing",
+      "label": "Title Letter Spacing (px)",
+      "min": -5,
+      "max": 10,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "title_text_transform",
+      "label": "Title Text Transform",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "uppercase", "label": "Uppercase" },
+        { "value": "lowercase", "label": "Lowercase" },
+        { "value": "capitalize", "label": "Capitalize" }
+      ],
+      "default": "none"
     },
     {
       "type": "range",
@@ -381,7 +396,80 @@
       "min": 0,
       "max": 100,
       "step": 5,
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Header Description Settings"
+    },
+    {
+      "type": "textarea",
+      "id": "header_box_description",
+      "label": "Header Box Description",
+      "default": "Explore our curated collections and find something you'll love. Each collection is thoughtfully put together to make shopping easy and enjoyable."
+    },
+    {
+      "type": "range",
+      "id": "header_description_font_size",
+      "label": "Description Font Size (px)",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "header_description_font_weight",
+      "label": "Description Font Weight",
+      "min": 300,
+      "max": 700,
+      "step": 100,
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "header_description_line_height",
+      "label": "Description Line Height",
+      "min": 1,
+      "max": 2,
+      "step": 0.1,
+      "default": 1.5
+    },
+    {
+      "type": "range",
+      "id": "header_description_margin_top",
+      "label": "Description Margin Top (px)",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "default": 10
+    },
+    {
+      "type": "color",
+      "id": "header_description_color",
+      "label": "Description Color"
+    },
+    {
+      "type": "header",
+      "content": "Header Container Spacing"
+    },
+    {
+      "type": "range",
+      "id": "header_padding_top",
+      "label": "Header Padding Top (px)",
+      "min": 0,
+      "max": 100,
+      "step": 5,
       "default": 0
+    },
+    {
+      "type": "range",
+      "id": "header_padding_bottom",
+      "label": "Header Padding Bottom (px)",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 40
     },
     {
       "type": "checkbox",
@@ -394,12 +482,6 @@
       "id": "badge_text",
       "label": "Header Badge Text",
       "default": "Fighting"
-    },
-    {
-      "type": "textarea",
-      "id": "header_box_description",
-      "label": "Header box description",
-      "default": "Explore our curated collections and find something you'll love. Each collection is thoughtfully put together to make shopping easy and enjoyable."
     },
     {
       "type": "header",
@@ -646,10 +728,19 @@
       "type": "range",
       "id": "title_font_size_mobile",
       "label": "Title Font Size - Mobile (rem)",
-      "min": 1.5,
+      "min": 1,
       "max": 5,
       "step": 0.1,
       "default": 2.5
+    },
+    {
+      "type": "range",
+      "id": "header_description_font_size_mobile",
+      "label": "Description Font Size - Mobile (px)",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "default": 14
     },
     {
       "type": "range",

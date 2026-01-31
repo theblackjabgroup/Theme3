@@ -11,16 +11,17 @@
   - quick_add: {String} Quick add mode. Values: 'none', 'standard', 'bulk'. Default: 'none' (optional)
   - lazy_load: {Boolean} Image should be lazy loaded. Default: true (optional)
 {%- endcomment -%}
+{%- comment -%} Card CSS is loaded once at section level (e.g. main-collection-product-grid.liquid). {%- endcomment -%}
 
 {%- if card_product and card_product != empty -%}
-  <div class="custom-collection-card-wrapper">
-    <a href="{{ card_product.url }}" class="custom-collection-card">
-      <div class="custom-collection-card__image-container">
+  <div class="custom-product-card-wrapper">
+    <a href="{{ card_product.url }}" class="custom-product-card">
+      <div class="custom-product-card__image-container">
         {%- if card_product.featured_media -%}
           <img
             src="{{ card_product.featured_media | image_url: width: 533 }}"
             alt="{{ card_product.featured_media.alt | escape }}"
-            class="custom-collection-card__image"
+            class="custom-product-card__image"
             {% unless lazy_load == false %}
               loading="lazy"
             {% endunless %}
@@ -28,49 +29,59 @@
             height="{{ 533 | divided_by: card_product.featured_media.aspect_ratio }}"
           >
         {%- else -%}
-          {{ 'product-apparel-2' | placeholder_svg_tag: 'custom-collection-card__image placeholder-svg' }}
+          {{ 'product-apparel-2' | placeholder_svg_tag: 'custom-product-card__image placeholder-svg' }}
         {%- endif -%}
       </div>
 
       {%- if show_badge != false -%}
-        <span class="custom-collection-card__badge">
+        <span class="custom-product-card__badge">
           {{- badge_text | default: 'Fighting' -}}
         </span>
       {%- endif -%}
 
-      <h3 class="custom-collection-card__title">
+      <h3 class="custom-product-card__title">
         {{ card_product.title }}
       </h3>
 
       {%- if card_product.description != blank -%}
-        <p class="custom-collection-card__description">
-          {{ card_product.description | strip_html | truncatewords: 20 }}
+        <p class="custom-product-card__description">
+          {{ card_product.description | strip_html | truncatewords: 12, '....' }}
+        </p>
+      {%- elsif fallback_description != blank -%}
+        <p class="custom-product-card__description">
+          {{ fallback_description | strip_html | truncatewords: 12, '....' }}
         </p>
       {%- else -%}
-        <p class="custom-collection-card__description">
-          {{ fallback_description | default: 'Discover our amazing product.' }}
+        <p class="custom-product-card__description">
+          {{ 'Discover our amazing product.' | strip_html | truncatewords: 12, '....' }}
         </p>
       {%- endif -%}
 
-      <div class="custom-collection-card__footer">
-        <div class="custom-collection-card__price">
+      <div class="custom-product-card__footer">
+        <div class="custom-product-card__price">
           {{ card_product.price | money }}
         </div>
       </div>
 
-      <div class="custom-collection-card__hover-area"></div>
+      <div class="custom-product-card__hover-area"></div>
 
-      <div class="custom-collection-card__overlay-clip">
-        <div class="custom-collection-card__hover-overlay">
-          <div class="custom-collection-card__hover-content">
-            <p class="custom-collection-card__hover-description">
-              {%- if card_product.description != blank -%}
-                {{ card_product.description | strip_html | truncatewords: 20 | upcase }}
-              {%- else -%}
-                {{ fallback_description | default: 'Discover our amazing product.' | upcase }}
-              {%- endif -%}
-            </p>
-            <span class="custom-collection-card__hover-button share-story-submit">
+      <div class="custom-product-card__overlay-clip">
+        <div class="custom-product-card__hover-overlay">
+          <div class="custom-product-card__hover-content">
+            {%- if card_product.description != blank -%}
+              <p class="custom-product-card__hover-description">
+                {{ card_product.description | strip_html | truncatewords: 12, '....' | upcase }}
+              </p>
+            {%- elsif fallback_description != blank -%}
+              <p class="custom-product-card__hover-description">
+                {{ fallback_description | default: 'Discover our amazing product.' | strip_html | truncatewords: 12, '....' | upcase }}
+              </p>
+            {%- else -%}
+              <p class="custom-product-card__hover-description">
+                {{ 'Discover our amazing product.' | strip_html | truncatewords: 12, '....' | upcase }}
+              </p>
+            {%- endif -%}
+            <span class="custom-product-card__hover-button share-story-submit">
               {{- overlay_button_text | default: 'Love that! (Check it out)' -}}
             </span>
           </div>
@@ -81,7 +92,7 @@
     {%- if quick_add != 'none' and quick_add != blank -%}
       {% assign product_form_id = 'quick-add-' | append: section_id | append: card_product.id %}
       {% if quick_add == 'standard' %}
-        <div class="quick-add no-js-hidden custom-collection-card__quick-add">
+        <div class="quick-add no-js-hidden custom-product-card__quick-add">
           {%- liquid
             assign qty_rules = false
             if card_product.selected_or_first_available_variant.quantity_rule.min > 1 or card_product.selected_or_first_available_variant.quantity_rule.max != null or card_product.selected_or_first_available_variant.quantity_rule.increment > 1
@@ -174,7 +185,7 @@
           <quick-add-bulk
             data-min="{{ card_product.selected_or_first_available_variant.quantity_rule.min }}"
             id="quick-add-bulk-{{ card_product.selected_or_first_available_variant.id }}-{{ section_id }}"
-            class="quick-add-bulk custom-collection-card__quick-add"
+            class="quick-add-bulk custom-product-card__quick-add"
             data-index="{{ card_product.selected_or_first_available_variant.id }}"
           >
             {% if card_product.selected_or_first_available_variant.available == false %}
@@ -197,7 +208,7 @@
             {% endif %}
           </quick-add-bulk>
         {% else %}
-          <div class="quick-add no-js-hidden custom-collection-card__quick-add">
+          <div class="quick-add no-js-hidden custom-product-card__quick-add">
             {%- liquid
               assign product_form_id = 'quick-add-' | append: section_id | append: card_product.id
               assign qty_rules = false

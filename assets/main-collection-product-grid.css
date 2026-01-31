@@ -1,316 +1,64 @@
 /* CSS for Main Collection Product Grid - Same design as collection list cards */
 
-/* Card Wrapper */
-.custom-collection-card-wrapper {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  flex: 1;
+/* Product Grid Header - Same design as collection list page header */
+.product-grid-header {
   width: 100%;
-}
-
-/* Product Card - Same design as collection list; uses header nav background */
-.custom-collection-card {
   background: var(--color-header-button-background);
   border: 1px solid var(--color-borders);
   border-radius: 24px;
-  padding: 0 24px 0px 24px !important;
+  padding: 24px;
+  margin-bottom: 20px !important;
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  position: relative;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: visible; /* Allow image to overflow */
-  text-decoration: none;
-  color: var(--color-text);
-  height: 100%;
-  flex: 1;
-  z-index: 2;
-}
-
-.custom-collection-card:hover {
-  border-color: var(--color-header-border, var(--color-headings));
-}
-
-/* Image Container */
-.custom-collection-card__image-container {
-  width: 100%;
-  height: 280px;
-  position: relative;
-  margin-bottom: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: visible; /* Allow image to overflow */
-  z-index: 3; /* Ensure image stays above overlay */
-  padding: 20px;
   box-sizing: border-box;
 }
 
-.custom-collection-card__image-container::before {
-  content: '';
-  position: absolute;
-  top: 20px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #D2CDC4;
-  border-radius: 10px;
-  z-index: -1;
-  transition: transform 0.4s ease-out;
-  transform-origin: top;
+.product-grid-header[style*="text-align: left"] {
+  align-items: flex-start;
 }
 
-.custom-collection-card:hover .custom-collection-card__image-container::before {
-  transform: scaleY(0.75);
+.product-grid-header[style*="text-align: right"] {
+  align-items: flex-end;
 }
 
-.custom-collection-card__image {
-  max-width: 150%;
-  max-height: 110%;
-  object-fit: contain;
-  transition: transform 0.4s ease-out;
-}
-
-/* Card Typography */
-.custom-collection-card__title {
-  font-family: var(--font-heading-family, sans-serif);
-  color: var(--color-header-logo-background);
-  font-size: 24px !important;
-  text-transform: capitalize;
-  transition: transform 0.4s ease-out;
-  /* Font size, weight, line-height, and margins are controlled by section settings */
-}
-
-.custom-collection-card__description {
-  font-family: var(--font-body-family, 'Courier New', Courier, monospace);
-  color: var(--color-text);
-  text-transform: uppercase;
-  min-height: 48px;
-  transition: transform 0.4s ease-out;
-  /* Font size, weight, line-height, and margins are controlled by section settings */
-}
-
-/* Card Footer */
-.custom-collection-card__footer {
-  margin-top: auto;
-  width: 100%;
-  transition: transform 0.4s ease-out;
-}
-
-.custom-collection-card__price {
-  border: 1px solid var(--color-borders);
-  border-radius: 12px;
-  padding: 8px 16px;
-  font-family: var(--font-body-family, 'Courier New', Courier, monospace);
-  font-weight: 700;
-  font-size: 14px;
-  display: inline-block;
-  background: var(--color-header-button-background);
-  transition: all 0.3s ease;
-}
-
-/* Hover Effects */
-.custom-collection-card__hover-area {
-  display: none;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: var(--color-header-button-background);
-  height: 0;
-  border-bottom-left-radius: 23px;
-  border-bottom-right-radius: 23px;
-  transition: height 0.3s ease;
-  z-index: 1;
-}
-
-/* Clipping container for overlay - clips overlay but allows image to overflow */
-.custom-collection-card__overlay-clip {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 24px;
-  overflow: hidden; /* Clip overlay animation within card boundaries */
-  z-index: 1;
-  pointer-events: none;
-}
-
-.custom-collection-card__hover-overlay {
-  position: absolute;
-  left: 20px;
-  right: 20px;
-  bottom: 20px;
-  background: var(--color-header-logo-background);
-  border-radius: 20px;
-  color: var(--color-header-button-background);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 1;
-  transform: translateY(140%);
-  visibility: hidden;
-  transition: all 0.4s ease-out;
-  z-index: 1;
-  padding: 10px 10px 20px 10px;
-  pointer-events: auto; /* Allow interaction with overlay content */
-}
-
-.custom-collection-card__hover-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 10px;
-  width: 100%;
-}
-
-.custom-collection-card__hover-description {
-  font-family: var(--font-body-family, sans-serif);
-  font-size: 14px;
-  line-height: 1.4;
+.product-grid-header__title {
+  font-family: var(--font-heading-family);
+  font-size: 3.8rem;
+  color: #306030;
   margin: 0;
-  font-weight: 400;
-  max-width: 90%;
 }
 
-.custom-collection-card__hover-button {
-  margin-top: 10px;
-}
-
-.custom-collection-card__badge {
-  /* Background, border, color, border-radius, text-transform are controlled by theme settings */
-  border-style: solid;
+/* Header description - same styling as collection list header box description */
+.product-grid-header__description {
   font-family: var(--font-body-family);
-  position: relative;
-  background-color: var(--color-header-button-background) !important;
-  z-index: 2;
-  transition: transform 0.4s ease-out;
-  /* Font size, weight, padding, margin, colors, border, and text-transform are controlled by theme settings */
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--color-text);
+  margin: 0;
+  max-width: 60ch;
 }
 
-/* Hover States */
-.custom-collection-card:hover .custom-collection-card__hover-area {
-  height: 120px; /* Expands pink area */
+/* Header badge - same styling as collection list header/card badge */
+.product-grid-header__badge {
+  order: -1;
+  font-family: var(--font-body-family);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 16px;
+  margin-bottom: 10px;
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #FF4D4D;
+  border: 1px solid #FF4D4D;
+  border-radius: 20px;
 }
 
-.custom-collection-card:hover .custom-collection-card__hover-overlay {
-  opacity: 1;
-  visibility: visible;
-}
-
-.custom-collection-card:hover .custom-collection-card__image {
-  transform: translateY(-80px) rotate(10deg);
-}
-
-.custom-collection-card:hover .custom-collection-card__price {
-  background: black;
-  color: white;
-  border-color: black;
-  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
-  transform: translateY(-5px);
-}
-
-.custom-collection-card:hover .custom-collection-card__badge {
-  transform: translateY(-80px);
-}
-
-.custom-collection-card:hover .custom-collection-card__title {
-  transform: translateY(-80px);
-}
-
-.custom-collection-card:hover .custom-collection-card__description {
-  transform: translateY(-80px);
-}
-
-.custom-collection-card:hover .custom-collection-card__footer {
-  transform: translateY(-80px);
-}
-
-.custom-collection-card:hover .custom-collection-card__hover-overlay {
-  transform: translateY(0);
-}
-
-/* Quick Add Styles */
-.custom-collection-card__quick-add {
-  margin-top: 16px;
-  width: 100%;
-}
-
-/* Responsive - Mobile */
-@media screen and (max-width: 900px) {
-  .custom-collection-card {
-    padding: 16px !important;
-  }
-
-  .custom-collection-card__image-container {
-    height: 220px;
-  }
-
-  .custom-collection-card__title {
-    font-size: 1.8rem !important;
-  }
-  
-  .custom-collection-card__hover-overlay {
-    padding: 10px;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    transform: translateY(140%);
-  }
-  
-  /* Reduce hover effects on mobile for better touch interaction */
-  .custom-collection-card:active .custom-collection-card__hover-overlay,
-  .custom-collection-card:hover .custom-collection-card__hover-overlay {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-  }
-  
-  .custom-collection-card:active .custom-collection-card__image,
-  .custom-collection-card:hover .custom-collection-card__image {
-    transform: translateY(-40px) rotate(5deg);
-  }
-  
-  .custom-collection-card:active .custom-collection-card__badge,
-  .custom-collection-card:hover .custom-collection-card__badge,
-  .custom-collection-card:active .custom-collection-card__title,
-  .custom-collection-card:hover .custom-collection-card__title,
-  .custom-collection-card:active .custom-collection-card__footer,
-  .custom-collection-card:hover .custom-collection-card__footer {
-    transform: translateY(-40px);
-  }
-
-  .custom-collection-card:active .custom-collection-card__image-container::before,
-  .custom-collection-card:hover .custom-collection-card__image-container::before {
-    transform: scaleY(0.8);
-  }
-}
-
-/* Responsive - Small Mobile */
 @media screen and (max-width: 600px) {
-  .custom-collection-card__image-container::before {
-    top: 0px;
-  }
-  
-  .custom-collection-card {
-    padding: 12px !important;
-  }
-
-  .custom-collection-card__image-container {
-    height: 180px;
-  }
-
-  .custom-collection-card__title {
-    font-size: 1.6rem !important;
-  }
-  
-  .custom-collection-card__hover-button {
-    padding: 8px 16px;
-    font-size: 12px;
+  .product-grid-header__title {
+    font-size: 32px;
   }
 }
+
+
