@@ -42,6 +42,7 @@
 
 .custom-collection-card:hover .custom-collection-card__badge,
 .custom-collection-card:hover .custom-collection-card__title,
+.custom-collection-card:hover .custom-collection-card__description,
 .custom-collection-card:hover .custom-collection-card__footer {
   transform: translateY(-70px);
 }

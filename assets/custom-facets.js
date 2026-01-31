@@ -151,7 +151,20 @@
         return (cents / 100).toFixed(2).replace(/\.?0+$/, '') || '0';
       }
       function displayToCents(val) {
-        const n = parseFloat(String(val).replace(/[^0-9.-]/g, '')) || 0;
+        const s = String(val).trim().replace(/\s/g, '');
+        if (!s) return 0;
+        const lastComma = s.lastIndexOf(',');
+        const lastDot = s.lastIndexOf('.');
+        const lastSep = lastComma > lastDot ? lastComma : lastDot;
+        let normalized;
+        if (lastSep === -1) {
+          normalized = s.replace(/[^0-9]/g, '') || '0';
+        } else {
+          const intPart = s.slice(0, lastSep).replace(/[^0-9]/g, '') || '0';
+          const decPart = s.slice(lastSep + 1).replace(/[^0-9]/g, '');
+          normalized = decPart ? intPart + '.' + decPart : intPart;
+        }
+        const n = parseFloat(normalized) || 0;
         return Math.round(Math.max(0, Math.min(maxCents, n * 100)));
       }
 
