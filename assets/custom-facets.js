@@ -70,6 +70,8 @@
 
     // Sort drawer apply button: close the drawer
     document.querySelectorAll('.facets-drawer__apply-button--sort').forEach((btn) => {
+      if (btn.dataset.applySortListener === 'true') return;
+      btn.dataset.applySortListener = 'true';
       btn.addEventListener('click', () => {
         const drawer = btn.closest('.facets-drawer');
         if (drawer) closeDrawerWithAnimation(drawer);
