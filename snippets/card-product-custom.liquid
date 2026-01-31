@@ -47,6 +47,14 @@
         <p class="custom-product-card__description">
           {{ card_product.description | strip_html | truncatewords: 12, '....' }}
         </p>
+      {%- elsif fallback_description != blank -%}
+        <p class="custom-product-card__description">
+          {{ fallback_description | strip_html | truncatewords: 12, '....' }}
+        </p>
+      {%- else -%}
+        <p class="custom-product-card__description">
+          {{ 'Discover our amazing product.' | strip_html | truncatewords: 12, '....' }}
+        </p>
       {%- endif -%}
 
       <div class="custom-product-card__footer">
@@ -63,6 +71,14 @@
             {%- if card_product.description != blank -%}
               <p class="custom-product-card__hover-description">
                 {{ card_product.description | strip_html | truncatewords: 12, '....' | upcase }}
+              </p>
+            {%- elsif fallback_description != blank -%}
+              <p class="custom-product-card__hover-description">
+                {{ fallback_description | default: 'Discover our amazing product.' | strip_html | truncatewords: 12, '....' | upcase }}
+              </p>
+            {%- else -%}
+              <p class="custom-product-card__hover-description">
+                {{ 'Discover our amazing product.' | strip_html | truncatewords: 12, '....' | upcase }}
               </p>
             {%- endif -%}
             <span class="custom-product-card__hover-button share-story-submit">

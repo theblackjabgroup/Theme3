@@ -104,7 +104,6 @@
 
 .custom-product-card__hover-area,
 .custom-collection-card__hover-area {
-  display: none;
   position: absolute;
   bottom: 0;
   left: 0;
