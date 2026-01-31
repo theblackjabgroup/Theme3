@@ -229,12 +229,16 @@
   .custom-product-card:hover .custom-product-card__badge,
   .custom-product-card:active .custom-product-card__title,
   .custom-product-card:hover .custom-product-card__title,
+  .custom-product-card:active .custom-product-card__description,
+  .custom-product-card:hover .custom-product-card__description,
   .custom-product-card:active .custom-product-card__footer,
   .custom-product-card:hover .custom-product-card__footer,
   .custom-collection-card:active .custom-collection-card__badge,
   .custom-collection-card:hover .custom-collection-card__badge,
   .custom-collection-card:active .custom-collection-card__title,
   .custom-collection-card:hover .custom-collection-card__title,
+  .custom-collection-card:active .custom-collection-card__description,
+  .custom-collection-card:hover .custom-collection-card__description,
   .custom-collection-card:active .custom-collection-card__footer,
   .custom-collection-card:hover .custom-collection-card__footer {
     transform: translateY(-40px);

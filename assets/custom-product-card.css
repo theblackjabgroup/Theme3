@@ -97,23 +97,7 @@
   width: 100%;
 }
 
-@media screen and (max-width: 900px) {
-  .custom-product-card:active .custom-product-card__image,
-  .custom-product-card:hover .custom-product-card__image {
-    transform: translateY(-40px) rotate(5deg);
-  }
 
-  .custom-product-card:active .custom-product-card__badge,
-  .custom-product-card:hover .custom-product-card__badge,
-  .custom-product-card:active .custom-product-card__title,
-  .custom-product-card:hover .custom-product-card__title,
-  .custom-product-card:active .custom-product-card__description,
-  .custom-product-card:hover .custom-product-card__description,
-  .custom-product-card:active .custom-product-card__footer,
-  .custom-product-card:hover .custom-product-card__footer {
-    transform: translateY(-40px);
-  }
-}
 
 /* Price button: smaller on mobile so it fits the card */
 @media screen and (max-width: 749px) {

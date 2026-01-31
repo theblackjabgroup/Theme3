@@ -6,14 +6,16 @@
   box-sizing: border-box;
 }
 
-/* Offset for vertical header */
-body:not(.header-disabled) .custom-footer {
-  margin-left: var(--header-width, 230px);
-  width: calc(100% - var(--header-width, 230px));
+/* Offset for vertical header - use media query so layout does not depend on JS */
+@media (min-width: 1025px) {
+  .custom-footer {
+    margin-left: var(--header-width, 230px);
+    width: calc(100% - var(--header-width, 230px));
+  }
 }
 
 @media (max-width: 1024px) {
-  body:not(.header-disabled) .custom-footer {
+  .custom-footer {
     margin-left: 0;
     width: 100%;
     padding: 20px 16px;

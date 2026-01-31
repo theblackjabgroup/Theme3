@@ -1287,19 +1287,16 @@ body.mobile-menu-open .mobile-menu-content > *:not(.mobile-menu-close) {
   stroke-width: 2;
 }
 
-/* Main Content Adjustment - align with vertical header */
-body:not(.header-disabled) #MainContent,
-body:not(.header-disabled) main {
-  padding-left: var(--header-width, 230px);
-  margin-left: 0 !important;
-  width: 100% !important;
-  transition: padding-left var(--transition-medium);
-}
-
-body.header-disabled #MainContent,
-body.header-disabled main {
-  padding-left: 0;
-  margin-left: 0;
+/* Main Content Adjustment - align with vertical header
+   Use media query so padding does not depend on JS (avoids content stuck under sidebar) */
+@media (min-width: 1025px) {
+  #MainContent,
+  main {
+    padding-left: var(--header-width, 230px);
+    margin-left: 0 !important;
+    width: 100% !important;
+    transition: padding-left var(--transition-medium);
+  }
 }
 
 body:not(.header-disabled) .vertical-sidebar-header {
@@ -1322,9 +1319,10 @@ body.header-disabled .vertical-sidebar-header {
     display: block;
   }
 
-  /* Reset main content margin and width on mobile */
+  /* Reset main content margin, width and sidebar padding on mobile */
   #MainContent,
   main {
+    padding-left: 0;
     margin-left: 0 !important;
     width: 100% !important;
     padding-top: 78px;
