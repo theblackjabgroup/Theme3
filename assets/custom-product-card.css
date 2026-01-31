@@ -111,6 +111,8 @@
   .custom-product-card:hover .custom-product-card__badge,
   .custom-product-card:active .custom-product-card__title,
   .custom-product-card:hover .custom-product-card__title,
+  .custom-product-card:active .custom-product-card__description,
+  .custom-product-card:hover .custom-product-card__description,
   .custom-product-card:active .custom-product-card__footer,
   .custom-product-card:hover .custom-product-card__footer {
     transform: translateY(-40px);

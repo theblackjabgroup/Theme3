@@ -20,6 +20,14 @@
   max-width: 90%;
 }
 
+/* Sync overlay/hover-area duration with content (0.4s) so animation feels unified */
+.custom-collection-card__hover-area {
+  transition: height 0.4s ease-out;
+}
+.custom-collection-card__hover-overlay {
+  transition: all 0.4s ease-out;
+}
+
 .custom-collection-card:hover .custom-collection-card__image {
   transform: translateY(-80px) rotate(10deg);
 }
@@ -35,21 +43,5 @@
 .custom-collection-card:hover .custom-collection-card__badge,
 .custom-collection-card:hover .custom-collection-card__title,
 .custom-collection-card:hover .custom-collection-card__footer {
-  transform: translateY(-80px);
-}
-
-@media screen and (max-width: 900px) {
-  .custom-collection-card:active .custom-collection-card__image,
-  .custom-collection-card:hover .custom-collection-card__image {
-    transform: translateY(-40px) rotate(5deg);
-  }
-
-  .custom-collection-card:active .custom-collection-card__badge,
-  .custom-collection-card:hover .custom-collection-card__badge,
-  .custom-collection-card:active .custom-collection-card__title,
-  .custom-collection-card:hover .custom-collection-card__title,
-  .custom-collection-card:active .custom-collection-card__footer,
-  .custom-collection-card:hover .custom-collection-card__footer {
-    transform: translateY(-40px);
-  }
+  transform: translateY(-70px);
 }

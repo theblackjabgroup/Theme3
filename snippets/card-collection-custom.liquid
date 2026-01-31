@@ -8,6 +8,7 @@
 {%- endcomment -%}
 
 {%- if collection and collection != empty -%}
+  <div class="custom-collection-card-wrapper">
   <a href="{{ collection.url }}" class="custom-collection-card">
     <div class="custom-collection-card__image-container">
       {%- if collection.featured_image -%}
@@ -62,4 +63,5 @@
       </div>
     </div>
   </a>
+  </div>
 {%- endif -%}

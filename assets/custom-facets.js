@@ -153,10 +153,14 @@
         maxInput.dispatchEvent(new Event('change', { bubbles: true }));
       }
       function syncMinFromInput() {
+        const raw = String(minInput.value).trim();
+        if (raw === '') return;
         const cents = displayToCents(minInput.value);
         minRange.value = Math.min(cents, Number(maxRange.value));
       }
       function syncMaxFromInput() {
+        const raw = String(maxInput.value).trim();
+        if (raw === '') return;
         const cents = displayToCents(maxInput.value);
         maxRange.value = Math.max(cents, Number(minRange.value) || 0);
       }
@@ -170,7 +174,8 @@
       maxInput.addEventListener('input', syncMaxFromInput);
       maxInput.addEventListener('change', syncMaxFromInput);
 
-      /* Initial sync from inputs to sliders (in case Liquid values differ) */
+      /* Initial sync from inputs to sliders only when inputs have values (e.g. after filter applied).
+         When empty (no price filter), leave sliders at Liquid-rendered values to avoid resetting max to 0. */
       syncMinFromInput();
       syncMaxFromInput();
     });
@@ -219,37 +224,24 @@
     };
   }
 
-  // Also listen for mutations in case filters are added dynamically
-  // Only observe the facets container to avoid unnecessary overhead
+  // Listen for mutations so filters/drawers added dynamically get behavior bound
   let debounceTimer;
+  function isRelevantNode(node) {
+    if (node.nodeType !== Node.ELEMENT_NODE) return false;
+    return (
+      node.classList?.contains('facets__disclosure') ||
+      node.classList?.contains('facets-drawer') ||
+      node.querySelector?.('.facets__disclosure') ||
+      node.querySelector?.('.facets-drawer')
+    );
+  }
   const observer = new MutationObserver(function (mutations) {
-    // Check if any mutation actually affects facet disclosures
     const hasRelevantMutation = mutations.some((mutation) => {
-      // Check added nodes
-      if (mutation.addedNodes.length > 0) {
-        for (let node of mutation.addedNodes) {
-          if (node.nodeType === Node.ELEMENT_NODE) {
-            // Check if the added node is a disclosure or contains one
-            if (node.classList?.contains('facets__disclosure') || node.querySelector?.('.facets__disclosure')) {
-              return true;
-            }
-          }
-        }
-      }
-      // Check removed nodes (in case disclosures are removed and re-added)
-      if (mutation.removedNodes.length > 0) {
-        for (let node of mutation.removedNodes) {
-          if (node.nodeType === Node.ELEMENT_NODE) {
-            if (node.classList?.contains('facets__disclosure') || node.querySelector?.('.facets__disclosure')) {
-              return true;
-            }
-          }
-        }
+      for (const node of [...mutation.addedNodes, ...mutation.removedNodes]) {
+        if (isRelevantNode(node)) return true;
       }
       return false;
     });
-
-    // Only run setup if there's a relevant mutation
     if (hasRelevantMutation) {
       clearTimeout(debounceTimer);
       debounceTimer = setTimeout(init, 100);
@@ -261,24 +253,4 @@
   if (targetElement) {
     observer.observe(targetElement, { childList: true, subtree: true });
   }
-
-  // Also observe for facets-drawer (horizontal layout)
-  const hasDrawerMutation = (mutations) =>
-    mutations.some((m) => {
-      for (const node of [...m.addedNodes, ...m.removedNodes]) {
-        if (
-          node.nodeType === Node.ELEMENT_NODE &&
-          (node.classList?.contains('facets-drawer') || node.querySelector?.('.facets-drawer'))
-        )
-          return true;
-      }
-      return false;
-    });
-  const drawerObserver = new MutationObserver((mutations) => {
-    if (hasDrawerMutation(mutations)) {
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(init, 100);
-    }
-  });
-  if (targetElement) drawerObserver.observe(targetElement, { childList: true, subtree: true });
 })();
