@@ -65,8 +65,6 @@ class CartDrawer extends HTMLElement {
       selectedVariantId: data.variantId,
       quantity: data.quantity,
       variants: data.variants || [],
-      priceFormatted: data.priceFormatted,
-      compareAtPriceFormatted: data.compareAtPriceFormatted,
     };
     const panel = this.querySelector('#CartDrawer-EditPanel');
     if (!panel) return;
@@ -108,7 +106,7 @@ class CartDrawer extends HTMLElement {
           }" data-edit-variant-btn data-variant-id="${variant ? variant.id : ''}">${value}</button>`;
         })
         .join('');
-    } else {
+    } else if (variantsWrap) {
       variantsWrap.innerHTML = '';
     }
 
@@ -204,6 +202,34 @@ class CartDrawer extends HTMLElement {
       }
     };
 
+    const restoreAndFail = (err) => {
+      const message = err && err.message ? err.message : "Couldn't switch variant. Your item has been restored.";
+      return fetch(window.routes?.cart_add_url || '/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: addPayload(originalVariantId, quantity),
+      })
+        .then((res) => res.json())
+        .then((addResponse) => {
+          if (addResponse && addResponse.status) {
+            throw new Error(addResponse.description || addResponse.message);
+          }
+          return refreshDrawer();
+        })
+        .then(() => {
+          if (updateBtn) {
+            updateBtn.disabled = false;
+            updateBtn.textContent = message;
+          }
+          setTimeout(() => {
+            if (updateBtn) updateBtn.textContent = 'Update Cart';
+          }, 4000);
+        })
+        .catch(() => {
+          refreshDrawer().finally(() => fail());
+        });
+    };
+
     if (selectedVariantId !== originalVariantId) {
       fetch(window.routes?.cart_change_url || '/cart/change.js', {
         method: 'POST',
@@ -225,7 +251,7 @@ class CartDrawer extends HTMLElement {
           return refreshDrawer();
         })
         .then(done)
-        .catch(fail);
+        .catch(restoreAndFail);
     } else {
       fetch(window.routes?.cart_change_url || '/cart/change.js', {
         method: 'POST',

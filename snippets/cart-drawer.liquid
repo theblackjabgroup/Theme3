@@ -298,8 +298,8 @@
   }
 
   .cart-drawer__item-remove:hover {
-    background: var(--cart-drawer-text);
-    background-color: var(--color-header-button-background);
+    background-color: var(--cart-drawer-text);
+    color: var(--cart-drawer-bg);
   }
 
   .cart-drawer__item-remove svg {
@@ -401,7 +401,8 @@
     gap: 6px;
   }
 
-  .cart-drawer__quantity-selector .quantity__button {
+  .cart-drawer__quantity-selector .quantity__button,
+  .cart-drawer__edit-quantity-row .quantity__button {
     width: 38px;
     height: 38px;
     background: var(--color-background);
@@ -419,17 +420,20 @@
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
 
-  .cart-drawer__quantity-selector .quantity__button:hover {
+  .cart-drawer__quantity-selector .quantity__button:hover,
+  .cart-drawer__edit-quantity-row .quantity__button:hover {
     transform: translateY(-4px);
     box-shadow: 0 6px 0 #000;
   }
 
-  .cart-drawer__quantity-selector .quantity__button:active {
+  .cart-drawer__quantity-selector .quantity__button:active,
+  .cart-drawer__edit-quantity-row .quantity__button:active {
     transform: translateY(1px);
     box-shadow: 0 1px 0 #000;
   }
 
-  .cart-drawer__quantity-input {
+  .cart-drawer__quantity-input,
+  .cart-drawer__edit-quantity-row .quantity__input {
     width: 32px !important;
     height: 32px !important;
     min-width: 32px;
@@ -447,19 +451,24 @@
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
 
-  .cart-drawer__quantity-input:hover {
+  .cart-drawer__quantity-input:hover,
+  .cart-drawer__edit-quantity-row .quantity__input:hover {
     transform: translateY(-4px);
     box-shadow: 0 6px 0 #000;
   }
 
   .cart-drawer__quantity-input:active,
-  .cart-drawer__quantity-input:focus {
+  .cart-drawer__quantity-input:focus,
+  .cart-drawer__edit-quantity-row .quantity__input:active,
+  .cart-drawer__edit-quantity-row .quantity__input:focus {
     transform: translateY(1px);
     box-shadow: 0 1px 0 #000;
   }
 
   .cart-drawer__quantity-input::-webkit-outer-spin-button,
-  .cart-drawer__quantity-input::-webkit-inner-spin-button {
+  .cart-drawer__quantity-input::-webkit-inner-spin-button,
+  .cart-drawer__edit-quantity-row .quantity__input::-webkit-outer-spin-button,
+  .cart-drawer__edit-quantity-row .quantity__input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
   }
@@ -483,8 +492,8 @@
   }
 
   .cart-drawer__edit-btn:hover {
-    background: var(--cart-drawer-text);
-    background-color: var(--color-header-button-background);
+    background-color: var(--cart-drawer-text);
+    color: var(--color-header-button-background);
   }
 
   /* Fixed footer: subtotal + checkout + GO TO BAG (does not scroll) */
@@ -755,63 +764,6 @@
     align-items: center;
     gap: 6px;
     margin-bottom: 8px;
-  }
-
-  .cart-drawer__edit-quantity-row .quantity__button {
-    width: 38px;
-    height: 38px;
-    background-color: var(--color-background);
-    border: 1px solid var(--color-headings);
-    border-radius: 10px;
-    cursor: pointer;
-    color: var(--color-headings);
-    font-size: 24px;
-    font-weight: 400;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 0 #000;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-
-  .cart-drawer__edit-quantity-row .quantity__button:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 0 #000;
-  }
-
-  .cart-drawer__edit-quantity-row .quantity__button:active {
-    transform: translateY(1px);
-    box-shadow: 0 1px 0 #000;
-  }
-
-  .cart-drawer__edit-quantity-row .quantity__input {
-    width: 32px !important;
-    height: 32px !important;
-    min-width: 32px;
-    min-height: 32px;
-    background: var(--color-headings) !important;
-    color: var(--color-background) !important;
-    border: 1px solid #000 !important;
-    border-radius: 10px;
-    text-align: center;
-    font-weight: 700 !important;
-    font-size: 16px !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    box-shadow: 0 2px 0 #000;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-
-  .cart-drawer__edit-quantity-row .quantity__input:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 0 #000;
-  }
-
-  .cart-drawer__edit-quantity-row .quantity__input:active,
-  .cart-drawer__edit-quantity-row .quantity__input:focus {
-    transform: translateY(1px);
-    box-shadow: 0 1px 0 #000;
   }
 
   .cart-drawer__edit-stock-wrap {
