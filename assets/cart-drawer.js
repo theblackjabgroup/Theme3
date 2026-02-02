@@ -59,12 +59,14 @@ class CartDrawer extends HTMLElement {
     } catch (err) {
       return;
     }
+    const variants = data.variants || [];
     this.editState = {
       lineIndex: data.lineIndex,
       originalVariantId: data.variantId,
       selectedVariantId: data.variantId,
       quantity: data.quantity,
-      variants: data.variants || [],
+      variants,
+      optionsWithValues: data.optionsWithValues || [],
     };
     const panel = this.querySelector('#CartDrawer-EditPanel');
     if (!panel) return;
@@ -82,7 +84,12 @@ class CartDrawer extends HTMLElement {
     }
     if (nameEl) nameEl.textContent = (data.title || '').toUpperCase();
     if (priceEl) {
-      if (data.compareAtPriceFormatted) {
+      if (
+        data.compareAtPriceFormatted &&
+        data.compareAtPrice != null &&
+        data.price != null &&
+        data.compareAtPrice > data.price
+      ) {
         priceEl.innerHTML = `<s>${data.compareAtPriceFormatted}</s> ${data.priceFormatted}`;
       } else {
         priceEl.textContent = data.priceFormatted;
@@ -96,22 +103,46 @@ class CartDrawer extends HTMLElement {
     if (stockEl) stockEl.textContent = data.available ? 'In Stock' : 'Out of Stock';
 
     if (variantsWrap && data.optionsWithValues && data.optionsWithValues.length > 0) {
-      const option = data.optionsWithValues[0];
-      variantsWrap.innerHTML = option.values
-        .map((value) => {
-          const variant = (data.variants || []).find((v) => v.options && v.options[0] === value);
-          const isSelected = variant && variant.id === data.variantId;
-          return `<button type="button" class="cart-drawer__edit-variant-btn ${
-            isSelected ? 'is-selected' : ''
-          }" data-edit-variant-btn data-variant-id="${variant ? variant.id : ''}">${value}</button>`;
-        })
-        .join('');
+      const currentVariant = variants.find((v) => v.id === data.variantId);
+      const currentOptions = currentVariant && currentVariant.options ? currentVariant.options.slice() : [];
+      variantsWrap.innerHTML = this.renderEditVariantButtons(
+        variants,
+        data.optionsWithValues,
+        currentOptions,
+        data.variantId
+      );
     } else if (variantsWrap) {
       variantsWrap.innerHTML = '';
     }
 
     panel.setAttribute('aria-hidden', 'false');
     this.classList.add('editing');
+  }
+
+  findVariantForOptionValue(variants, optionIndex, value, currentOptions) {
+    return variants.find(
+      (v) =>
+        v.options &&
+        v.options[optionIndex] === value &&
+        v.options.every((opt, j) => j === optionIndex || currentOptions[j] === undefined || opt === currentOptions[j])
+    );
+  }
+
+  renderEditVariantButtons(variants, optionsWithValues, currentOptions, selectedVariantId) {
+    return optionsWithValues
+      .map((option, optionIndex) => {
+        const buttons = (option.values || [])
+          .map((value) => {
+            const variant = this.findVariantForOptionValue(variants, optionIndex, value, currentOptions);
+            const isSelected = variant && variant.id === selectedVariantId;
+            return `<button type="button" class="cart-drawer__edit-variant-btn ${
+              isSelected ? 'is-selected' : ''
+            }" data-edit-variant-btn data-variant-id="${variant ? variant.id : ''}">${value}</button>`;
+          })
+          .join('');
+        return `<div class="cart-drawer__edit-option-row">${buttons}</div>`;
+      })
+      .join('');
   }
 
   selectEditVariant(variantId) {
@@ -121,13 +152,24 @@ class CartDrawer extends HTMLElement {
     this.editState.selectedVariantId = variantId;
     const panel = this.querySelector('#CartDrawer-EditPanel');
     if (!panel) return;
-    panel.querySelectorAll('[data-edit-variant-btn]').forEach((btn) => {
-      const id = parseInt(btn.getAttribute('data-variant-id'), 10);
-      btn.classList.toggle('is-selected', id === variantId);
-    });
+    const variantsWrap = panel.querySelector('[data-edit-variants]');
+    if (variantsWrap && this.editState.optionsWithValues && this.editState.optionsWithValues.length > 0) {
+      const currentOptions = (variant.options && variant.options.slice()) || [];
+      variantsWrap.innerHTML = this.renderEditVariantButtons(
+        this.editState.variants,
+        this.editState.optionsWithValues,
+        currentOptions,
+        variantId
+      );
+    }
     const priceEl = panel.querySelector('[data-edit-price]');
     if (priceEl) {
-      if (variant.compareAtPriceFormatted) {
+      if (
+        variant.compareAtPriceFormatted &&
+        variant.compareAtPrice != null &&
+        variant.price != null &&
+        variant.compareAtPrice > variant.price
+      ) {
         priceEl.innerHTML = `<s>${variant.compareAtPriceFormatted}</s> ${variant.priceFormatted}`;
       } else {
         priceEl.textContent = variant.priceFormatted;
