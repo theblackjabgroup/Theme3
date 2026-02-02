@@ -266,13 +266,11 @@ class CartDrawer extends HTMLElement {
           return refreshDrawer();
         })
         .then(() => {
+          this.closeEditPanel();
           if (updateBtn) {
             updateBtn.disabled = false;
-            updateBtn.textContent = message;
+            updateBtn.textContent = 'Update Cart';
           }
-          setTimeout(() => {
-            if (updateBtn) updateBtn.textContent = 'Update Cart';
-          }, 4000);
         })
         .catch(() => {
           refreshDrawer().finally(() => fail());
@@ -281,6 +279,7 @@ class CartDrawer extends HTMLElement {
 
     if (selectedVariantId !== originalVariantId) {
       let removalSucceeded = false;
+      let addSucceeded = false;
       fetch(window.routes?.cart_change_url || '/cart/change.js', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
@@ -302,11 +301,12 @@ class CartDrawer extends HTMLElement {
           if (response && response.status) {
             throw new Error(response.description || response.message);
           }
+          addSucceeded = true;
           return refreshDrawer();
         })
         .then(done)
         .catch((err) => {
-          if (removalSucceeded) restoreAndFail(err);
+          if (removalSucceeded && !addSucceeded) restoreAndFail(err);
           else fail();
         });
     } else {
