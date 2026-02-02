@@ -74,9 +74,8 @@
   height: 12px;
 }
 
-/* Drawer-style quantity: product page + cart drawer (segmented, dark green center, beige buttons) */
-.quantity.quantity--drawer-style,
-.cart-drawer__quantity-selector {
+/* Drawer-style quantity: product page (cart drawer has its own styles in cart-drawer.liquid) */
+.quantity.quantity--drawer-style {
   width: auto;
   height: auto;
   min-width: auto;
@@ -88,22 +87,18 @@
   padding: 0;
 }
 
-.quantity.quantity--drawer-style:hover,
-.cart-drawer__quantity-selector:hover {
+.quantity.quantity--drawer-style:hover {
   transform: none;
   box-shadow: none;
 }
 
 .quantity.quantity--drawer-style:has(button[name='minus']:active),
-.quantity.quantity--drawer-style:has(button[name='plus']:active),
-.cart-drawer__quantity-selector:has(button[name='minus']:active),
-.cart-drawer__quantity-selector:has(button[name='plus']:active) {
+.quantity.quantity--drawer-style:has(button[name='plus']:active) {
   animation: none;
   box-shadow: none;
 }
 
-.quantity.quantity--drawer-style .quantity__button,
-.cart-drawer__quantity-selector .quantity__button {
+.quantity.quantity--drawer-style .quantity__button {
   width: 38px;
   height: 38px;
   min-width: 38px;
@@ -120,27 +115,23 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.quantity.quantity--drawer-style .quantity__button:hover,
-.cart-drawer__quantity-selector .quantity__button:hover {
+.quantity.quantity--drawer-style .quantity__button:hover {
   transform: translateY(-4px);
   box-shadow: 0 6px 0 #000;
 }
 
-.quantity.quantity--drawer-style .quantity__button:active,
-.cart-drawer__quantity-selector .quantity__button:active {
+.quantity.quantity--drawer-style .quantity__button:active {
   transform: translateY(1px);
   box-shadow: 0 1px 0 #000;
 }
 
-.quantity.quantity--drawer-style .quantity__button svg,
-.cart-drawer__quantity-selector .quantity__button svg {
+.quantity.quantity--drawer-style .quantity__button svg {
   width: 18px;
   height: 18px;
 }
 
 .quantity.quantity--drawer-style .quantity__input,
-.quantity.quantity--drawer-style input,
-.cart-drawer__quantity-input {
+.quantity.quantity--drawer-style input {
   width: 35px !important;
   height: 35px !important;
   min-width: 35px;
@@ -161,8 +152,7 @@
 }
 
 .quantity.quantity--drawer-style .quantity__input:hover,
-.quantity.quantity--drawer-style input:hover,
-.cart-drawer__quantity-input:hover {
+.quantity.quantity--drawer-style input:hover {
   transform: translateY(-4px);
   box-shadow: 0 6px 0 #000;
 }
@@ -170,9 +160,7 @@
 .quantity.quantity--drawer-style .quantity__input:active,
 .quantity.quantity--drawer-style .quantity__input:focus,
 .quantity.quantity--drawer-style input:active,
-.quantity.quantity--drawer-style input:focus,
-.cart-drawer__quantity-input:active,
-.cart-drawer__quantity-input:focus {
+.quantity.quantity--drawer-style input:focus {
   transform: translateY(1px);
   box-shadow: 0 1px 0 #000;
 }
@@ -180,9 +168,7 @@
 .quantity.quantity--drawer-style .quantity__input::-webkit-outer-spin-button,
 .quantity.quantity--drawer-style .quantity__input::-webkit-inner-spin-button,
 .quantity.quantity--drawer-style input::-webkit-outer-spin-button,
-.quantity.quantity--drawer-style input::-webkit-inner-spin-button,
-.cart-drawer__quantity-input::-webkit-outer-spin-button,
-.cart-drawer__quantity-input::-webkit-inner-spin-button {
+.quantity.quantity--drawer-style input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }

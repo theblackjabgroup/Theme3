@@ -173,17 +173,24 @@ class CartDrawer extends HTMLElement {
       });
 
     const refreshDrawer = () => {
-      return fetch(`${window.routes?.cart_url || '/cart'}?section_id=cart-drawer`)
-        .then((res) => res.text())
-        .then((html) => {
+      return fetch(`${window.routes?.cart_url || '/cart'}?sections=cart-drawer,cart-icon-bubble`)
+        .then((res) => res.json())
+        .then((sections) => {
           const parser = new DOMParser();
-          const doc = parser.parseFromString(html, 'text/html');
-          const newInner = doc.querySelector('.drawer__inner');
-          const currentInner = this.querySelector('.drawer__inner');
-          if (newInner && currentInner) currentInner.innerHTML = newInner.innerHTML;
-          const bubbleSection = doc.querySelector('#shopify-section-cart-icon-bubble');
-          const currentBubble = document.getElementById('shopify-section-cart-icon-bubble');
-          if (bubbleSection && currentBubble) currentBubble.innerHTML = bubbleSection.innerHTML;
+          const cartDrawerHtml = sections['cart-drawer'];
+          if (cartDrawerHtml) {
+            const doc = parser.parseFromString(cartDrawerHtml, 'text/html');
+            const newInner = doc.querySelector('.drawer__inner');
+            const currentInner = this.querySelector('.drawer__inner');
+            if (newInner && currentInner) currentInner.innerHTML = newInner.innerHTML;
+          }
+          const bubbleHtml = sections['cart-icon-bubble'];
+          if (bubbleHtml) {
+            const bubbleDoc = parser.parseFromString(bubbleHtml, 'text/html');
+            const bubbleSection = bubbleDoc.querySelector('#shopify-section-cart-icon-bubble');
+            const currentBubble = document.getElementById('shopify-section-cart-icon-bubble');
+            if (bubbleSection && currentBubble) currentBubble.innerHTML = bubbleSection.innerHTML;
+          }
         });
     };
 
@@ -231,13 +238,18 @@ class CartDrawer extends HTMLElement {
     };
 
     if (selectedVariantId !== originalVariantId) {
+      let removalSucceeded = false;
       fetch(window.routes?.cart_change_url || '/cart/change.js', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: changePayload(0),
       })
         .then((res) => res.json())
-        .then(() => {
+        .then((changeResponse) => {
+          if (changeResponse && changeResponse.status) {
+            throw new Error(changeResponse.description || changeResponse.message);
+          }
+          removalSucceeded = true;
           return fetch(window.routes?.cart_add_url || '/cart/add.js', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
@@ -251,7 +263,10 @@ class CartDrawer extends HTMLElement {
           return refreshDrawer();
         })
         .then(done)
-        .catch(restoreAndFail);
+        .catch((err) => {
+          if (removalSucceeded) restoreAndFail(err);
+          else fail();
+        });
     } else {
       fetch(window.routes?.cart_change_url || '/cart/change.js', {
         method: 'POST',
@@ -313,6 +328,7 @@ class CartDrawer extends HTMLElement {
   }
 
   close() {
+    if (this.classList.contains('editing')) this.closeEditPanel();
     this.classList.remove('active');
     removeTrapFocus(this.activeElement);
     document.body.classList.remove('overflow-hidden', 'cart-drawer-open');
