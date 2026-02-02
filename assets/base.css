@@ -309,7 +309,6 @@ body {
 h1, h2, h3, h4 {
     font-weight: var(--heading-weight, var(--font-weight-bold));
     color: var(--heading-color, var(--color-headings));
-    margin-bottom: var(--spacing-m);
 }
 
 h1 { font-size: var(--h1-size); }
