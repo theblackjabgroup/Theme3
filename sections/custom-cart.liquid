@@ -1,3 +1,4 @@
+{{ 'component-quantity.css' | asset_url | stylesheet_tag }}
 {%- style -%}
   .custom-cart-section {
     padding: 0;
@@ -319,61 +320,6 @@
     display: block;
   }
 
-  .cart-item__quantity-cell {
-    width: 120px;
-    padding: 20px 0;
-  }
-
-  .cart-item__quantity-selector {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    border-radius: 20px;
-    padding: 8px 12px;
-    background: transparent;
-    width: fit-content;
-    margin: 0 auto;
-  }
-
-  .cart-item__quantity-btn {
-    font-family: var(--font-body-family);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #000;
-    font-size: 18px;
-    font-weight: var(--font-body-weight-bold);
-    width: 24px;
-    height: 24px;
-    transition: color 0.2s;
-  }
-
-  .cart-item__quantity-btn:hover {
-    color: #ff0000;
-  }
-
-  .cart-item__quantity-btn:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-  }
-
-  .cart-item__quantity-value {
-    font-family: var(--font-body-family);
-    min-width: 30px;
-    text-align: center;
-    font-size: 16px;
-    font-weight: var(--font-body-weight-bold);
-  }
-
-  .cart-item__quantity-input {
-    display: none;
-  }
-
   .cart-item__total-cell {
     font-family: var(--font-body-family);
     text-align: center;
@@ -643,27 +589,6 @@
       line-height: 1.3;
     }
 
-    .cart-item__quantity-cell {
-      width: 90px;
-      padding: 12px 5px;
-    }
-
-    .cart-item__quantity-selector {
-      padding: 6px 8px;
-      gap: 8px;
-    }
-
-    .cart-item__quantity-btn {
-      width: 20px;
-      height: 20px;
-      font-size: 16px;
-    }
-
-    .cart-item__quantity-value {
-      font-size: 14px;
-      min-width: 25px;
-    }
-
     .cart-item__total-cell {
       font-size: 14px;
       padding: 12px 5px;
@@ -777,22 +702,6 @@
       font-size: 12px;
     }
 
-    .cart-item__quantity-selector {
-      padding: 5px 6px;
-      gap: 6px;
-    }
-
-    .cart-item__quantity-btn {
-      width: 18px;
-      height: 18px;
-      font-size: 14px;
-    }
-
-    .cart-item__quantity-value {
-      font-size: 12px;
-      min-width: 20px;
-    }
-
     .cart-item__total-cell {
       font-size: 12px;
       min-width: 70px;
@@ -889,37 +798,7 @@
                       </a>
                     </td>
                     <td class="cart-item__quantity-cell">
-                      <div
-                        class="cart-item__quantity-selector"
-                        data-item-index="{{ item.index | plus: 1 }}"
-                        data-variant-id="{{ item.variant_id }}"
-                      >
-                        <button
-                          type="button"
-                          class="cart-item__quantity-btn cart-item__quantity-minus"
-                          aria-label="Decrease quantity"
-                        >
-                          −
-                        </button>
-                        <span class="cart-item__quantity-value">{{ item.quantity }}</span>
-                        <input
-                          type="number"
-                          name="updates[]"
-                          value="{{ item.quantity }}"
-                          min="0"
-                          class="cart-item__quantity-input"
-                          id="Quantity-{{ item.index | plus: 1 }}"
-                          data-index="{{ item.index | plus: 1 }}"
-                          data-variant-id="{{ item.variant_id }}"
-                        >
-                        <button
-                          type="button"
-                          class="cart-item__quantity-btn cart-item__quantity-plus"
-                          aria-label="Increase quantity"
-                        >
-                          +
-                        </button>
-                      </div>
+                      {% render 'quantity-selector', item: item %}
                     </td>
                     <td
                       class="cart-item__total-cell"
@@ -985,15 +864,17 @@
               >
             </div>
           {%- endif -%}
-          
-          <h1 class="cart-empty__title">{{ section.settings.empty_cart_title | default: 'Your cart is currently empty!' }}</h1>
-          
+
+          <h1 class="cart-empty__title">
+            {{ section.settings.empty_cart_title | default: 'Your cart is currently empty!' }}
+          </h1>
+
           {%- if section.settings.empty_cart_description != blank -%}
             <p class="cart-empty__description">{{ section.settings.empty_cart_description }}</p>
           {%- else -%}
             <p class="cart-empty__description">No products in the cart.</p>
           {%- endif -%}
-          
+
           <a href="{{ routes.all_products_collection_url }}" class="cart-empty__link">
             {{ section.settings.empty_cart_button_text | default: 'Return to shop' }}
           </a>

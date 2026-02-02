@@ -1,0 +1,42 @@
+{% comment %}
+  Quantity selector (cart page design)
+
+  Accepts:
+  - item: {Object} Cart item with quantity, variant_id, index
+
+  Usage:
+  {% render 'quantity-selector', item: item %}
+{% endcomment %}
+
+<div
+  class="cart-item__quantity-selector"
+  data-item-index="{{ item.index | plus: 1 }}"
+  data-variant-id="{{ item.variant_id }}"
+>
+  <button
+    type="button"
+    class="cart-item__quantity-btn cart-item__quantity-minus"
+    aria-label="{{ 'products.product.quantity.decrease' | t | default: 'Decrease quantity' }}"
+  >
+    −
+  </button>
+  <span class="cart-item__quantity-value">{{ item.quantity }}</span>
+  <input
+    type="number"
+    name="updates[]"
+    value="{{ item.quantity }}"
+    min="0"
+    class="cart-item__quantity-input"
+    id="Quantity-{{ item.index | plus: 1 }}"
+    data-index="{{ item.index | plus: 1 }}"
+    data-variant-id="{{ item.variant_id }}"
+    aria-label="{{ 'products.product.quantity.input_label' | t: product: item.product.title | default: 'Quantity' }}"
+  >
+  <button
+    type="button"
+    class="cart-item__quantity-btn cart-item__quantity-plus"
+    aria-label="{{ 'products.product.quantity.increase' | t | default: 'Increase quantity' }}"
+  >
+    +
+  </button>
+</div>
