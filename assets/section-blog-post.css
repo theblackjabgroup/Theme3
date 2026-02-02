@@ -5,21 +5,19 @@
 
 .article-header {
   text-align: center;
-  margin-bottom: var(--spacing-32);
+  background: var(--color-primary-button-bg);
+  margin-bottom: var(--spacing-8);
   max-width: 80rem;
   margin-left: auto;
   margin-right: auto;
   padding: var(--spacing-20);
-  border: 1px solid var(--color-borders);
-  border-radius: var(--radius-pill);
-  
-
+  border-radius: var(--radius-xl);
 }
 
 .article-category-pill {
   display: inline-block;
-  padding: var(--spacing-4) var(--spacing-5);
-  border-radius: var(--radius-pill);
+  padding: var(--spacing-5) var(--spacing-20);
+  border-radius: var(--radius-3xl);
   text-transform: uppercase;
   font-size: var(--font-size-sm);
   letter-spacing: var(--letter-spacing-wide);
@@ -44,14 +42,12 @@
   grid-template-columns: 1fr;
   max-width: var(--container-2xl);
   margin: 0 auto;
-  padding: 0 var(--spacing-8);
 }
 
 @media screen and (min-width: 990px) {
   .article-grid {
     grid-template-columns: 320px 1fr;
-    gap: var(--spacing-40);
-    padding: 0 var(--spacing-40);
+    gap: var(--spacing-8);
   }
   
   .article-sidebar {
@@ -61,13 +57,25 @@
   }
 }
 
+.article-sidebar {
+  background: var(--color-primary-button-bg);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-12);
+  margin-bottom: var(--spacing-8);
+}
+
+
 .article-image-wrapper {
-  border: 1px solid var(--color-borders);
   margin-bottom: var(--spacing-12);
-  aspect-ratio: 0.8;
+  aspect-ratio: 1;
   position: relative;
   overflow: hidden;
   background-color: var(--color-background);
+  border-radius: 50%;
+  width: 200px;
+  margin-left: auto;
+  margin-right: auto;
+  border: none;
 }
 
 .article-image {
@@ -104,7 +112,23 @@
 .article-tags-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 8px;
+}
+
+.tag-pill {
+  display: inline-block;
+  padding: 4px 12px;
+  border: 1px solid var(--color-accent-pink);
+  border-radius: 999px;
+  font-size: 12px;
+  background: var(--color-accent-pink-soft); 
+  color: var(--color-accent-pink);
+  transition: all 0.3s ease;
+}
+
+.tag-pill:hover {
+  background: var(--color-accent-pink);
+  color: #fff;
 }
 
 .article-content {
@@ -112,6 +136,26 @@
   line-height: 1.7;
   color: var(--color-text);
   font-family: var(--font-family-body);
+}
+
+.article-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-m);
+}
+
+.article-content-card {
+  width: 100%;
+  background: var(--color-primary-button-bg);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-12) var(--spacing-16);
+  margin-bottom: var(--spacing-8);
+}
+
+@media screen and (max-width: 749px) {
+  .article-content-card {
+    padding: var(--spacing-6) var(--spacing-8);
+  }
 }
 
 .article-content h2 {
@@ -165,7 +209,7 @@
 .custom-share-icons {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .custom-share-link {
@@ -211,83 +255,68 @@
 ========================================= */
 
 .article-comment-card {
-  background: var(--color-background);
-  border-radius: var(--radius-4xl);
+  background: var(--color-primary-button-bg);
+  border-radius: var(--radius-xl);
   padding: var(--spacing-18);
-  box-shadow: var(--shadow-xl);
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-15);
-  margin-top: var(--spacing-16);
-  border: var(--border-width-thin) solid var(--color-borders);
-}
+  gap: var(--spacing-12);
+  margin-top: var(--spacing-8);
+ }
 
 @media screen and (max-width: 749px) {
   .article-header {
     margin-bottom: var(--spacing-10);
+    padding: var(--spacing-8);
   }
   .article-comment-card {
     padding: var(--spacing-12);
     border-radius: var(--radius-2xl);
   }
+  
+  .article-sidebar {
+    text-align: center;
+  }
+  
+  .article-image-wrapper {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .article-meta-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .article-tags-container {
+    justify-content: center;
+  }
+  
+  .custom-share-icons {
+    justify-content: center;
+  }
 }
 
 .article-comment-field {
-  width: 100%;
-}
-
-.article-comment-label {
-  display: block;
-  font-weight: var(--font-weight-bold);
-  margin-bottom: var(--spacing-3);
-  font-size: var(--font-size-2xl);
-  font-family: var(--font-family-mono);
-  letter-spacing: var(--letter-spacing-wider);
-  position: relative;
-  overflow: hidden;
-  line-height: var(--line-height-tight);
-  cursor: default;
-}
-
-.article-comment-label-text {
-  display: inline-block;
-  transition: transform var(--transition-medium) var(--ease-cubic);
-}
-
-.article-comment-label::before {
-  content: attr(data-text);
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  color: currentColor;
-  transition: transform var(--transition-medium) var(--ease-cubic);
-}
-
-.article-comment-label:hover .article-comment-label-text {
-  transform: translateY(-100%);
-}
-
-.article-comment-label:hover::before {
-  transform: translateY(-100%);
+  width: 100% !important;
 }
 
 .article-comment-input {
   width: 100%;
-  padding: var(--spacing-6) var(--spacing-10);
-  border-radius: var(--radius-full);
-  border: var(--border-width-thin) solid var(--color-borders);
-  background: var(--color-background);
+  padding: var(--spacing-5);
+  border-radius: var(--radius-m);
+  background: var(--color-input-bg);
   font-size: var(--font-size-xl);
   outline: none;
   transition: all var(--transition-medium);
   font-family: var(--font-family-mono);
-  box-shadow: var(--shadow-m);
+  box-shadow: 0 2px 0 0 var(--color-primary-button-border);
 }
 
 .article-comment-input:focus {
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 2px 0 0 var(--color-primary-button-border);
+  border-color: var(--color-text);
 }
 
 .article-comment-input::placeholder {
@@ -297,23 +326,23 @@
 
 .article-comment-textarea {
   width: 100%;
-  padding: var(--spacing-12);
-  border-radius: var(--radius-3xl);
+  padding: var(--spacing-5);
+  border-radius: var(--radius-m);
   border: var(--border-width-thin) solid var(--color-borders);
-  background: var(--color-background);
+  background: var(--color-input-bg);
   font-size: var(--font-size-xl);
-  min-height: 200px;
+  min-height: 100px;
   resize: none;
   outline: none;
   font-family: var(--font-family-mono);
   line-height: var(--line-height-relaxed);
   transition: all var(--transition-medium);
-  box-shadow: var(--shadow-m);
+  box-shadow: 0 2px 0 0 var(--color-primary-button-border);
 }
 
 .article-comment-textarea:focus {
-  border-color: var(--color-borders);
-  box-shadow: var(--shadow-lg);
+  border-color: var(--color-text);
+  box-shadow: 0 2px 0 0 var(--color-primary-button-border);
 }
 
 .article-comment-textarea::placeholder {
@@ -323,7 +352,6 @@
 
 .article-comment-button:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
 }
 
 /* =========================================
@@ -331,16 +359,16 @@
 ========================================= */
 
 .article-posted-comment-card {
-  background: var(--color-background);
-  border-radius: var(--radius-3xl);
-  padding: var(--spacing-12);
-  box-shadow: var(--shadow-lg);
+  background: var(--color-primary-button-bg);
+  border-radius: var(--radius-m);
+  padding: var(--spacing-5);
+  box-shadow: 0 2px 0 0 var(--color-primary-button-border);
   margin-bottom: var(--spacing-8);
-  border: var(--border-width-thin) solid var(--color-borders);
+  border: var(--border-width-thin) solid var(--color-primary-button-border);
 }
 
 .article-posted-comment-card .circle-divider::before {
-  background-color: var(--color-background);
+  background-color: var(--color-primary-button-bg);
 }
 
 .article-posted-comment-card footer {
@@ -362,22 +390,22 @@
 
 .article-comment-card,
 .article-posted-comment-card {
-  background: var(--color-background);
-  border-color: var(--color-borders); 
+  background: var(--color-primary-button-bg);
   color: var(--color-text);
 }
 
 .article-comment-input,
 .article-comment-textarea {
-  background: var(--color-background);
-  border-color: var(--color-borders); 
+  background: var(--color-primary-button-bg);
+  border: var(--border-width-thin) solid var(--color-primary-button-border);
+  border-color: var(--color-primary-button-border); 
   color: var(--color-text);
 }
 
 .article-comment-input:focus,
 .article-comment-textarea:focus {
   border-color: var(--color-text);
-  box-shadow: 0 0 0 1px var(--color-text);
+  box-shadow: 0 2px 0 0 var(--color-primary-button-border);
 }
 
 .article-comment-label,

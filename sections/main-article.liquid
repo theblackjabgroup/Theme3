@@ -2,14 +2,24 @@
 
 {%- style -%}
   .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    padding-top: {{ section.settings.padding_mobile_top }}px;
+    padding-bottom: {{ section.settings.padding_mobile_bottom }}px;
+    margin-top: {{ section.settings.margin_top | times: 0.75 | round: 0 }}px;
+    margin-bottom: {{ section.settings.margin_bottom | times: 0.75 | round: 0 }}px;
+    margin-left: {{ section.settings.margin_mobile_left }}px;
+    margin-right: {{ section.settings.margin_mobile_right }}px;
+    width: auto;
   }
 
   @media screen and (min-width: 750px) {
     .section-{{ section.id }}-padding {
       padding-top: {{ section.settings.padding_top }}px;
       padding-bottom: {{ section.settings.padding_bottom }}px;
+      margin-top: {{ section.settings.margin_top }}px;
+      margin-bottom: {{ section.settings.margin_bottom }}px;
+      margin-left: {{ section.settings.margin_horizontal }}px;
+      margin-right: {{ section.settings.margin_horizontal }}px;
+      width: auto;
     }
   }
 
@@ -23,8 +33,8 @@
 <div class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }}">
   <article class="article-template" itemscope itemtype="http://schema.org/BlogPosting">
     <header class="article-header">
-      {%- if section.settings.show_category_pill and article.tags.size > 0 -%}
-        <span class="article-category-pill">{{ article.tags.first }}</span>
+      {%- if section.settings.show_category_pill -%}
+        <span class="article-category-pill">{{ section.settings.category_pill_text }}</span>
       {%- endif -%}
       <h1 class="article-template__title article-title" itemprop="headline">{{ article.title | escape }}</h1>
     </header>
@@ -66,10 +76,7 @@
             <span class="article-meta-label">TAGS</span>
             <div class="article-tags-container">
               {%- for tag in article.tags -%}
-                <span class="article-meta-value">{{ tag | upcase }}</span>
-                {%- unless forloop.last -%}
-                  <span class="article-meta-value">,</span>
-                {%- endunless %}
+                <span class="article-meta-value tag-pill">{{ tag | upcase }}</span>
               {%- endfor -%}
             </div>
           </div>
@@ -238,7 +245,7 @@
       </aside>
 
       <div class="article-right-column">
-        <div class="article-content rte" itemprop="articleBody">
+        <div class="article-content article-content-card rte" itemprop="articleBody">
           {{ article.content }}
         </div>
 
@@ -256,43 +263,6 @@
         {%- if blog.comments_enabled? -%}
           <div class="article-template__comment-wrapper background-secondary">
             <div id="comments" class="page-width page-width--narrow">
-              {%- if article.comments_count > 0 -%}
-                {%- assign anchor_id = '#Comments-' | append: article.id -%}
-                <h4 id="Comments-{{ article.id }}" tabindex="-1">
-                  {{ 'blogs.article.comments' | t: count: article.comments_count }}
-                </h4>
-                {% paginate article.comments by 5 %}
-                  <div class="article-template__comments">
-                    {%- if comment.status == 'pending' and comment.content -%}
-                      <article
-                        id="{{ comment.id }}"
-                        class="article-template__comments-comment article-posted-comment-card"
-                      >
-                        {{ comment.content }}
-                        <footer class="right">
-                          <span class="circle-divider caption-with-letter-spacing">{{ comment.author }}</span>
-                        </footer>
-                      </article>
-                    {%- endif -%}
-                    {%- for comment in article.comments -%}
-                      <article
-                        id="{{ comment.id }}"
-                        class="article-template__comments-comment article-posted-comment-card"
-                      >
-                        {{ comment.content }}
-                        <footer class="right">
-                          <span class="circle-divider caption-with-letter-spacing">{{ comment.author }}</span>
-                          <span class="caption-with-letter-spacing">
-                            {{- comment.created_at | time_tag: format: 'date' -}}
-                          </span>
-                        </footer>
-                      </article>
-                    {%- endfor -%}
-                    {% render 'pagination', paginate: paginate, anchor: anchor_id %}
-                  </div>
-                {% endpaginate %}
-              {%- endif -%}
-
               {% form 'new_comment', article %}
                 {%- liquid
                   assign post_message = 'blogs.article.success'
@@ -300,47 +270,40 @@
                     assign post_message = 'blogs.article.success_moderated'
                   endif
                 -%}
-                <h3>{{ 'blogs.article.comment_form_title' | t }}</h3>
-                {%- if form.errors -%}
-                  <div class="form__message" role="alert">
-                    <h3 class="form-status caption-large text-body" tabindex="-1" autofocus>
-                      {{ 'templates.contact.form.error_heading' | t }}
-                    </h3>
-                  </div>
-                  <ul class="form-status-list caption-large">
-                    {%- for field in form.errors -%}
-                      <li>
-                        <a href="#CommentForm-{{ field }}" class="link">
-                          {%- if form.errors.translated_fields[field] contains 'author' -%}
-                            {{ 'blogs.article.name' | t }}
-                          {%- elsif form.errors.translated_fields[field] contains 'body' -%}
-                            {{ 'blogs.article.message' | t }}
-                          {%- else -%}
-                            {{ form.errors.translated_fields[field] }}
-                          {%- endif -%}
-                          {{ form.errors.messages[field] }}
-                        </a>
-                      </li>
-                    {%- endfor -%}
-                  </ul>
-                {%- elsif form.posted_successfully? -%}
-                  <div class="form-status-list form__message" role="status">
-                    <h3 class="form-status" tabindex="-1" autofocus>
-                      {{ post_message | t }}
-                    </h3>
-                  </div>
-                {%- endif -%}
-
                 <!-- STYLED COMMENT CARD -->
                 <div class="article-comment-card">
+                  <h3>{{ 'blogs.article.comment_form_title' | t }}</h3>
+                  {%- if form.errors -%}
+                    <div class="form__message" role="alert">
+                      <h3 class="form-status caption-large text-body" tabindex="-1" autofocus>
+                        {{ 'templates.contact.form.error_heading' | t }}
+                      </h3>
+                    </div>
+                    <ul class="form-status-list caption-large">
+                      {%- for field in form.errors -%}
+                        <li>
+                          <a href="#CommentForm-{{ field }}" class="link">
+                            {%- if form.errors.translated_fields[field] contains 'author' -%}
+                              {{ 'blogs.article.name' | t }}
+                            {%- elsif form.errors.translated_fields[field] contains 'body' -%}
+                              {{ 'blogs.article.message' | t }}
+                            {%- else -%}
+                              {{ form.errors.translated_fields[field] }}
+                            {%- endif -%}
+                            {{ form.errors.messages[field] }}
+                          </a>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  {%- elsif form.posted_successfully? -%}
+                    <div class="form-status-list form__message" role="status">
+                      <h3 class="form-status" tabindex="-1" autofocus>
+                        {{ post_message | t }}
+                      </h3>
+                    </div>
+                  {%- endif -%}
+
                   <div class="article-comment-field">
-                    <label
-                      class="article-comment-label"
-                      for="CommentForm-author"
-                      data-text="{{ 'blogs.article.name' | t }}*"
-                    >
-                      <span class="article-comment-label-text">{{ 'blogs.article.name' | t }}*</span>
-                    </label>
                     <input
                       type="text"
                       name="comment[author]"
@@ -368,13 +331,6 @@
                   </div>
 
                   <div class="article-comment-field">
-                    <label
-                      class="article-comment-label"
-                      for="CommentForm-email"
-                      data-text="{{ 'blogs.article.email' | t }}*"
-                    >
-                      <span class="article-comment-label-text">{{ 'blogs.article.email' | t }}*</span>
-                    </label>
                     <input
                       type="email"
                       name="comment[email]"
@@ -402,13 +358,6 @@
                   </div>
 
                   <div class="article-comment-field">
-                    <label
-                      class="article-comment-label"
-                      for="CommentForm-body"
-                      data-text="{{ 'blogs.article.message' | t }}*"
-                    >
-                      <span class="article-comment-label-text">{{ 'blogs.article.message' | t }}*</span>
-                    </label>
                     <textarea
                       rows="5"
                       name="comment[body]"
@@ -441,6 +390,46 @@
                   {% render 'submit-button', text: button_text, type: 'submit', class: 'share-story-submit' %}
                 </div>
               {% endform %}
+
+              {%- if article.comments_count > 0 -%}
+                <!-- STYLED COMMENTS LIST CARD -->
+                <div class="article-comment-card">
+                  {%- assign anchor_id = '#Comments-' | append: article.id -%}
+                  <h4 id="Comments-{{ article.id }}" tabindex="-1">
+                    {{ 'blogs.article.comments' | t: count: article.comments_count }}
+                  </h4>
+                  {% paginate article.comments by 5 %}
+                    <div class="article-template__comments">
+                      {%- if comment.status == 'pending' and comment.content -%}
+                        <article
+                          id="{{ comment.id }}"
+                          class="article-template__comments-comment article-posted-comment-card"
+                        >
+                          {{ comment.content }}
+                          <footer class="right">
+                            <span class="circle-divider caption-with-letter-spacing">{{ comment.author }}</span>
+                          </footer>
+                        </article>
+                      {%- endif -%}
+                      {%- for comment in article.comments -%}
+                        <article
+                          id="{{ comment.id }}"
+                          class="article-template__comments-comment article-posted-comment-card"
+                        >
+                          {{ comment.content }}
+                          <footer class="right">
+                            <span class="circle-divider caption-with-letter-spacing">{{ comment.author }}</span>
+                            <span class="caption-with-letter-spacing">
+                              {{- comment.created_at | time_tag: format: 'date' -}}
+                            </span>
+                          </footer>
+                        </article>
+                      {%- endfor -%}
+                      {% render 'pagination', paginate: paginate, anchor: anchor_id %}
+                    </div>
+                  {% endpaginate %}
+                </div>
+              {%- endif -%}
             </div>
           </div>
         {%- endif -%}
@@ -474,6 +463,12 @@
       "id": "show_category_pill",
       "label": "Show category pill",
       "default": true
+    },
+    {
+      "type": "text",
+      "id": "category_pill_text",
+      "label": "Category Label",
+      "default": "Blog"
     },
     {
       "type": "color",
@@ -533,7 +528,8 @@
     {
       "type": "url",
       "id": "link_instagram",
-      "label": "Instagram Link"
+      "label": "Instagram Link",
+      "default": "/"
     },
     {
       "type": "header",
@@ -547,7 +543,8 @@
     {
       "type": "url",
       "id": "link_facebook",
-      "label": "Facebook Link"
+      "label": "Facebook Link",
+      "default": "/"
     },
     {
       "type": "header",
@@ -561,7 +558,8 @@
     {
       "type": "url",
       "id": "link_twitter",
-      "label": "Twitter Link"
+      "label": "Twitter Link",
+      "default": "/"
     },
     {
       "type": "header",
@@ -575,7 +573,8 @@
     {
       "type": "url",
       "id": "link_whatsapp",
-      "label": "WhatsApp Link"
+      "label": "WhatsApp Link",
+      "default": "/"
     },
     {
       "type": "header",
@@ -589,7 +588,8 @@
     {
       "type": "url",
       "id": "link_telegram",
-      "label": "Telegram Link"
+      "label": "Telegram Link",
+      "default": "/"
     },
     {
       "type": "header",
@@ -614,6 +614,84 @@
       "unit": "px",
       "label": "t:sections.all.padding.padding_bottom",
       "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile_top",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile Padding Top",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile Padding Bottom",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Margin"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_horizontal",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Desktop Margin Horizontal",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Mobile Margins"
+    },
+    {
+      "type": "range",
+      "id": "margin_mobile_left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile Margin Left",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "margin_mobile_right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile Margin Right",
+      "default": 10
     }
   ],
   "blocks": [
