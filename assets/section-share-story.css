@@ -3,7 +3,7 @@
 }
 .share-story-wrapper {
   display: flex;
-  gap: var(--gap-xxl); 
+  gap: var(--gap-l); 
   flex-direction: column;
   max-width: 1300px; 
   margin: var(--spacing-0) auto;
@@ -18,9 +18,9 @@
 
 .share-story-card {
   flex: 1;
-  border-radius: var(--radius-4xl);
-  background: var(--color-accent-pink);
-  padding: var(--spacing-20); 
+  border-radius: var(--radius-xl);
+  background: var(--color-primary-button-bg);
+  padding: var(--spacing-12) var(--spacing-16); 
   box-shadow: var(--shadow-xl);
   display: flex;
   flex-direction: column;
@@ -42,45 +42,43 @@
 }
 
 .share-story-badge {
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: var(--border-width-thin) solid var(--color-text);
   color: var(--color-text);
-  padding: var(--spacing-4) var(--spacing-8);
+  padding: var(--spacing-2) var(--spacing-8);
   border-radius: var(--radius-pill);
   font-weight: var(--font-weight-bold);
   text-transform: uppercase;
-  font-size: var(--font-size-md); 
+  font-size: var(--font-size-xs); 
   letter-spacing: var(--letter-spacing-widest);
-  width: fit-content;
-  margin-bottom: var(--spacing-15); 
-  font-family: var(--font-family-primary);
+  width: 100%;
+  margin-bottom: var(--spacing-8); 
+  font-family: var(--font-family-body);
   background: var(--color-transparent);
 }
 
 .share-story-title {
-  font-family: var(--font-family-primary);
-  font-size: var(--font-size-5xl);
-  line-height: 0.8;
-  font-weight: var(--font-weight-bold);
-  margin: var(--spacing-0) var(--spacing-0) var(--spacing-12) var(--spacing-0); 
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-3xl);
+  line-height: 1;
+  font-weight: var(--font-weight-normal);
+  margin-bottom: var(--spacing-8); 
   letter-spacing: var(--letter-spacing-wider);
   color: var(--color-headings);
 }
 
-.share-story-right .share-story-title {
-  max-width: 19ch; 
-}
-
 .share-story-subtitle {
-  font-size: var(--font-body-size);
+  font-size: var(--font-size-lg);
+  font-family: var(--font-family-body);
   line-height: var(--line-height-normal);
-  margin-bottom: var(--spacing-10); 
+  margin-bottom: var(--spacing-8); 
   color: var(--color-text);
-  max-width: 90%;
 }
 
 .share-story-field {
-  margin-bottom: var(--spacing-12); 
+  margin-bottom: var(--spacing-8); 
   width: 100%;
 }
 
@@ -95,7 +93,7 @@
   overflow: hidden;
   line-height: var(--line-height-tight);
   cursor: default;
-  padding-left: calc(var(--spacing-10) + var(--border-width-thin));
+  font-family: var(--font-family-body);
 }
 
 .share-story-label-text {
@@ -108,7 +106,6 @@
   content: attr(data-text);
   position: absolute;
   top: 100%;
-  left: calc(var(--spacing-10) + var(--border-width-thin));
   width: 100%;
   height: 100%;
   color: currentColor;
@@ -126,21 +123,21 @@
 .share-story-input {
   width: 100%;
   padding: var(--spacing-6) var(--spacing-10);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-m);
   border: var(--border-width-thin) solid var(--color-input-border);
   background: var(--color-input-bg);
   font-size: var(--font-size-lg);
   outline: none;
   transition: all var(--transition-medium);
   color: var(--color-input-text);
-  box-shadow: var(--shadow-m);
-  opacity: 0.5;
+  box-shadow: 0 2px 0 0 var(--color-primary-button-border);
+  opacity: 0.7;
   letter-spacing: var(--letter-spacing-wider);
 }
 
 .share-story-input:focus {
   border-color: var(--color-variant-selected-hover-border);
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 2px 0 0 var(--color-primary-button-border);
   opacity: 1;
 }
 
@@ -150,25 +147,25 @@
 
 .share-story-textarea {
   width: 100%;
-  padding: var(--spacing-12);
-  border-radius: var(--radius-3xl);
+  padding: var(--spacing-8);
+  border-radius: var(--radius-m);
   border: var(--border-width-thin) solid var(--color-input-border);
   background: var(--color-input-bg);
   font-size: var(--font-size-lg);
-  min-height: 190px;
+  min-height: 140px;
   resize: none;
   outline: none;
   line-height: var(--line-height-relaxed);
   color: var(--color-input-text);
   transition: all var(--transition-medium);
-  box-shadow: var(--shadow-m);
-  opacity: 0.5;
+  box-shadow: 0 2px 0 0 var(--color-primary-button-border);
+  opacity: 0.7;
   letter-spacing: var(--letter-spacing-wider);
 }
 
 .share-story-textarea:focus {
   border-color: var(--color-variant-selected-hover-border);
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 2px 0 0 var(--color-primary-button-border);
   opacity: 1;
 }
 
@@ -202,14 +199,14 @@
     padding: var(--spacing-12);
   }
   .share-story-title {
-    font-size: var(--font-size-5xl);
+    font-size: var(--font-size-3xl);
   }
   .share-story-footer-flex {
     flex-direction: column;
     align-items: stretch;
     gap: var(--spacing-12);
   }
-  .share-story-footer-flex .primary-button {
+  .share-story-footer-flex .share-story-submit {
     width: 100%;
   }
 }
