@@ -156,7 +156,7 @@
   display: none;
 }
 
-@media screen and (max-width: 989px) {
+@media screen and (max-width: 990px) {
   .cart-item__quantity-cell {
     width: 90px;
     padding: 12px 5px;
