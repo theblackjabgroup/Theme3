@@ -12,7 +12,6 @@
 <style>
   /* Figma: Bag drawer - warm beige #F5F0E1, dark green #2E473E, pink CTA #E0A8B8 */
   :root {
-    --cart-drawer-bg: #e9e6d7;
     --cart-drawer-text: #2e473e;
     --cart-drawer-text-muted: #7a8b7e;
     --cart-drawer-pink: #e0a8b8;
@@ -54,7 +53,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    background-color: var(--cart-drawer-bg);
+    background-color: var(--color-header-button-background);
   }
 
   body.cart-drawer-open main,
@@ -101,7 +100,7 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    background-color: var(--cart-drawer-bg);
+    background-color: var(--color-header-button-background);
     position: relative;
     z-index: 2;
     box-shadow: -4px 0 24px rgba(0, 0, 0, 0.05);
@@ -122,7 +121,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 20px 24px;
-    background-color: var(--cart-drawer-bg);
+    background-color: var(--color-header-button-background);
     border-bottom: 1px solid var(--cart-drawer-border);
     flex-shrink: 0;
   }
@@ -300,7 +299,7 @@
 
   .cart-drawer__item-remove:hover {
     background: var(--cart-drawer-text);
-    color: var(--cart-drawer-bg);
+    background-color: var(--color-header-button-background);
   }
 
   .cart-drawer__item-remove svg {
@@ -405,38 +404,58 @@
   .cart-drawer__quantity-selector .quantity__button {
     width: 38px;
     height: 38px;
-    background: #e9e6d7;
-    border: 1px solid var(--cart-drawer-text);
+    background: var(--color-background);
+    border: 1px solid var(--color-headings);
     border-radius: 10px;
     cursor: pointer;
-    color: var(--cart-drawer-text);
+    color: var(--color-headings);
     font-size: 24px;
     font-weight: 400;
     padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 0 var(--cart-drawer-text);
-    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    box-shadow: 0 2px 0 #000;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .cart-drawer__quantity-selector .quantity__button:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 0 #000;
   }
 
   .cart-drawer__quantity-selector .quantity__button:active {
     transform: translateY(1px);
-    box-shadow: 0 1px 0 var(--cart-drawer-text);
+    box-shadow: 0 1px 0 #000;
   }
 
   .cart-drawer__quantity-input {
-    width: 38px;
-    height: 38px;
-    background: var(--cart-drawer-text) !important;
-    color: #e9e6d7 !important;
-    border: none !important;
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px;
+    min-height: 32px;
+    background: var(--color-headings) !important;
+    color: var(--color-background) !important;
+    border: 1px solid #000 !important;
     border-radius: 10px;
     text-align: center;
     font-weight: 700 !important;
-    font-size: 18px !important;
+    font-size: 16px !important;
     padding: 0 !important;
     margin: 0 !important;
+    box-shadow: 0 2px 0 #000;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .cart-drawer__quantity-input:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 0 #000;
+  }
+
+  .cart-drawer__quantity-input:active,
+  .cart-drawer__quantity-input:focus {
+    transform: translateY(1px);
+    box-shadow: 0 1px 0 #000;
   }
 
   .cart-drawer__quantity-input::-webkit-outer-spin-button,
@@ -450,7 +469,7 @@
     align-items: center;
     justify-content: center;
     padding: 8px 32px;
-    background: var(--cart-drawer-bg);
+    background-color: var(--color-header-button-background);
     color: var(--cart-drawer-text);
     border: 1.5px solid var(--cart-drawer-text);
     border-radius: 10px;
@@ -465,7 +484,7 @@
 
   .cart-drawer__edit-btn:hover {
     background: var(--cart-drawer-text);
-    color: var(--cart-drawer-bg);
+    background-color: var(--color-header-button-background);
   }
 
   /* Fixed footer: subtotal + checkout + GO TO BAG (does not scroll) */
@@ -473,7 +492,7 @@
     flex-shrink: 0;
     padding: 20px 24px 24px;
     border-top: 1px solid var(--cart-drawer-border);
-    background-color: var(--cart-drawer-bg);
+    background-color: var(--color-header-button-background);
   }
 
   .cart-drawer__total-row {
@@ -603,6 +622,283 @@
     }
   }
 
+  /* Edit panel overlay (replaces list when editing an item) */
+  .cart-drawer__edit-panel {
+    display: none;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    background-color: var(--color-header-button-background);
+  }
+
+  cart-drawer.editing .cart-drawer__edit-panel {
+    display: flex;
+  }
+
+  cart-drawer.editing .drawer__scrollable {
+    display: none;
+  }
+
+  cart-drawer.editing .cart-drawer__sidebar {
+    display: none;
+  }
+
+  .cart-drawer__edit-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--cart-drawer-border);
+    flex-shrink: 0;
+  }
+
+  .cart-drawer__edit-panel-heading {
+    font-family: var(--font-heading-family);
+    font-size: 64px;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    margin: 0;
+    color: var(--cart-drawer-text);
+    line-height: 1;
+  }
+
+  .cart-drawer__edit-panel-close {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--cart-drawer-text);
+    padding: 0;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+  }
+
+  .cart-drawer__edit-panel-close:hover {
+    background: var(--cart-drawer-border);
+  }
+
+  .cart-drawer__edit-panel-close svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  .cart-drawer__edit-panel-body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .cart-drawer__edit-item-top {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .cart-drawer__edit-item-image-container {
+    width: 120px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--cart-drawer-item-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+  }
+
+  .cart-drawer__edit-item-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  .cart-drawer__edit-item-details {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .cart-drawer__edit-item-name {
+    font-family: var(--font-heading-family);
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    color: var(--cart-drawer-text);
+    line-height: 1.1;
+    text-transform: uppercase;
+    margin: 0 0 8px 0;
+  }
+
+  .cart-drawer__edit-item-price {
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--cart-drawer-text);
+    margin-bottom: 12px;
+  }
+
+  .cart-drawer__edit-item-price s {
+    color: var(--cart-drawer-text-muted);
+    font-size: 14px;
+    text-decoration: line-through;
+  }
+
+  .cart-drawer__edit-quantity-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+
+  .cart-drawer__edit-quantity-row .quantity__button {
+    width: 38px;
+    height: 38px;
+    background-color: var(--color-background);
+    border: 1px solid var(--color-headings);
+    border-radius: 10px;
+    cursor: pointer;
+    color: var(--color-headings);
+    font-size: 24px;
+    font-weight: 400;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 0 #000;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .cart-drawer__edit-quantity-row .quantity__button:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 0 #000;
+  }
+
+  .cart-drawer__edit-quantity-row .quantity__button:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 0 #000;
+  }
+
+  .cart-drawer__edit-quantity-row .quantity__input {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px;
+    min-height: 32px;
+    background: var(--color-headings) !important;
+    color: var(--color-background) !important;
+    border: 1px solid #000 !important;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: 700 !important;
+    font-size: 16px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: 0 2px 0 #000;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .cart-drawer__edit-quantity-row .quantity__input:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 0 #000;
+  }
+
+  .cart-drawer__edit-quantity-row .quantity__input:active,
+  .cart-drawer__edit-quantity-row .quantity__input:focus {
+    transform: translateY(1px);
+    box-shadow: 0 1px 0 #000;
+  }
+
+  .cart-drawer__edit-stock-wrap {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--cart-drawer-border);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .cart-drawer__edit-stock {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--cart-drawer-text);
+    margin-bottom: 12px;
+  }
+
+  .cart-drawer__edit-variants {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .cart-drawer__edit-variant-btn {
+    padding: 10px 20px;
+    background-color: var(--color-header-button-background);
+    color: var(--cart-drawer-text);
+    border: 1.5px solid var(--cart-drawer-text);
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: var(--font-heading-family);
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  .cart-drawer__edit-variant-btn:hover {
+    background: var(--cart-drawer-border);
+  }
+
+  .cart-drawer__edit-variant-btn.is-selected {
+    background: var(--cart-drawer-pink);
+    color: var(--cart-drawer-text);
+  }
+
+  .cart-drawer__edit-update-wrap {
+    margin-top: auto;
+    padding-top: 24px;
+    border-top: 1px solid var(--cart-drawer-border);
+    width: 100%;
+  }
+
+  .cart-drawer__edit-update-btn {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 24px;
+    background-color: var(--cart-drawer-pink);
+    color: var(--cart-drawer-text);
+    border: 2px solid var(--cart-drawer-text);
+    border-radius: 16px;
+    font-size: 22px;
+    font-weight: 900;
+    cursor: pointer;
+    text-transform: capitalize;
+    letter-spacing: -0.02em;
+    font-family: var(--font-heading-family);
+    line-height: 1;
+    box-shadow: 0 8px 0 var(--cart-drawer-text);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+  }
+
+  .cart-drawer__edit-update-btn:hover:not(:disabled) {
+    transform: translateY(2px);
+    box-shadow: 0 6px 0 var(--cart-drawer-text);
+  }
+
+  .cart-drawer__edit-update-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
   @media screen and (max-width: 640px) {
     .drawer__header {
       padding: 16px 20px;
@@ -631,6 +927,18 @@
 
     .cart-drawer__total-value {
       font-size: 20px;
+    }
+
+    .cart-drawer__edit-panel-heading {
+      font-size: 32px;
+    }
+
+    .cart-drawer__edit-item-image-container {
+      width: 72px;
+    }
+
+    .cart-drawer__edit-item-name {
+      font-size: 16px;
     }
   }
 </style>
@@ -671,6 +979,79 @@
           </a>
         </div>
       {%- else -%}
+        <div class="cart-drawer__edit-panel" id="CartDrawer-EditPanel" aria-hidden="true">
+          <div class="cart-drawer__edit-panel-header">
+            <h2 class="cart-drawer__edit-panel-heading">Edit</h2>
+            <button
+              type="button"
+              class="cart-drawer__edit-panel-close"
+              aria-label="{{ 'accessibility.close' | t }}"
+              data-edit-panel-close
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M18 6L6 18M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
+          <div class="cart-drawer__edit-panel-body">
+            <div class="cart-drawer__edit-item-top">
+              <div class="cart-drawer__edit-item-image-container">
+                <img class="cart-drawer__edit-item-image" src="" alt="" width="100" height="100" data-edit-image>
+              </div>
+              <div class="cart-drawer__edit-item-details">
+                <h3 class="cart-drawer__edit-item-name" data-edit-name></h3>
+                <div class="cart-drawer__edit-item-price" data-edit-price></div>
+                <div class="cart-drawer__edit-quantity-row">
+                  <quantity-input class="cart-drawer__quantity-selector" data-edit-quantity-wrapper>
+                    <button
+                      class="quantity__button"
+                      type="button"
+                      name="minus"
+                      aria-label="{{ 'products.product.quantity.decrease' | t | default: 'Decrease' }}"
+                      data-edit-qty-minus
+                    >
+                      −
+                    </button>
+                    <input
+                      class="quantity__input cart-drawer__quantity-input"
+                      type="number"
+                      name="edit_quantity"
+                      value="1"
+                      min="1"
+                      step="1"
+                      data-min="1"
+                      data-edit-qty-input
+                      aria-label="Quantity"
+                    >
+                    <button
+                      class="quantity__button"
+                      type="button"
+                      name="plus"
+                      aria-label="{{ 'products.product.quantity.increase' | t | default: 'Increase' }}"
+                      data-edit-qty-plus
+                    >
+                      +
+                    </button>
+                  </quantity-input>
+                </div>
+              </div>
+            </div>
+            <div class="cart-drawer__edit-stock-wrap">
+              <div class="cart-drawer__edit-stock" data-edit-stock>In Stock</div>
+              <div class="cart-drawer__edit-variants" data-edit-variants></div>
+            </div>
+            <div class="cart-drawer__edit-update-wrap">
+              <button type="button" class="cart-drawer__edit-update-btn" data-edit-update-btn>Update Cart</button>
+            </div>
+          </div>
+        </div>
+
         <div class="drawer__scrollable">
           <div class="drawer__header">
             <h2 class="drawer__heading">Bag</h2>
@@ -714,6 +1095,39 @@
                         {%- assign discount_pct = savings | times: 100 | divided_by: item.variant.compare_at_price -%}
                       {%- endif -%}
                       <div class="cart-drawer__item" id="CartDrawer-Item-{{ item.index | plus: 1 }}">
+                        <script
+                          type="application/json"
+                          id="CartDrawer-EditData-{{ item.index | plus: 1 }}"
+                          data-edit-data
+                        >
+                          {
+                            "lineIndex": {{ item.index | plus: 1 }},
+                            "variantId": {{ item.variant_id }},
+                            "quantity": {{ item.quantity }},
+                            "image": {{ item.image | image_url: width: 200 | json }},
+                            "title": {{ item.product.title | json }},
+                            "price": {{ item.final_price | json }},
+                            "priceFormatted": {{ item.final_price | money_without_trailing_zeros | json }},
+                            "compareAtPrice": {{ item.variant.compare_at_price | default: 0 | json }},
+                            "compareAtPriceFormatted": {% if item.variant.compare_at_price != blank %}{{ item.variant.compare_at_price | money_without_trailing_zeros | json }}{% else %}null{% endif %},
+                            "available": {{ item.variant.available | json }},
+                            "optionsWithValues": {{ item.product.options_with_values | json }},
+                            "variants": [
+                              {%- for v in item.product.variants -%}
+                                {
+                                  "id": {{ v.id }},
+                                  "title": {{ v.title | json }},
+                                  "options": [{% if v.option1 != blank %}{{ v.option1 | json }}{% endif %}{% if v.option2 != blank %}{% if v.option1 != blank %}, {% endif %}{{ v.option2 | json }}{% endif %}{% if v.option3 != blank %}{% if v.option1 != blank or v.option2 != blank %}, {% endif %}{{ v.option3 | json }}{% endif %}],
+                                  "price": {{ v.price }},
+                                  "priceFormatted": {{ v.price | money_without_trailing_zeros | json }},
+                                  "compareAtPrice": {{ v.compare_at_price | default: 0 }},
+                                  "compareAtPriceFormatted": {% if v.compare_at_price != blank %}{{ v.compare_at_price | money_without_trailing_zeros | json }}{% else %}null{% endif %},
+                                  "available": {{ v.available | json }}
+                                }{% unless forloop.last %},{% endunless %}
+                              {%- endfor -%}
+                            ]
+                          }
+                        </script>
                         <div class="cart-drawer__item-top">
                           <div class="cart-drawer__item-image-wrap">
                             {%- if has_compare and discount_pct > 0 -%}
@@ -810,7 +1224,15 @@
                               <span>+</span>
                             </button>
                           </quantity-input>
-                          <a href="{{ item.url }}" class="cart-drawer__edit-btn">Edit</a>
+                          <button
+                            type="button"
+                            class="cart-drawer__edit-btn"
+                            data-edit-trigger
+                            data-line-index="{{ item.index | plus: 1 }}"
+                            aria-label="Edit {{ item.product.title | escape }}"
+                          >
+                            Edit
+                          </button>
                         </div>
                       </div>
                     {%- endfor -%}

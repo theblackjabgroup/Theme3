@@ -108,22 +108,28 @@
   height: 38px;
   min-width: 38px;
   min-height: 38px;
-  background: #e9e6d7;
-  border: 1px solid #2e473e;
+  background-color: var(--color-header-button-background);
+  border: 1px solid var(--color-headings, #000);
   border-radius: 10px;
   cursor: pointer;
-  color: #2e473e;
+  color: var(--color-headings, #000);
   font-size: 24px;
   font-weight: 400;
   padding: 0;
-  box-shadow: 0 2px 0 #2e473e;
-  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  box-shadow: 0 2px 0 #000;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.quantity.quantity--drawer-style .quantity__button:hover,
+.cart-drawer__quantity-selector .quantity__button:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 0 #000;
 }
 
 .quantity.quantity--drawer-style .quantity__button:active,
 .cart-drawer__quantity-selector .quantity__button:active {
   transform: translateY(1px);
-  box-shadow: 0 1px 0 #2e473e;
+  box-shadow: 0 1px 0 #000;
 }
 
 .quantity.quantity--drawer-style .quantity__button svg,
@@ -135,21 +141,40 @@
 .quantity.quantity--drawer-style .quantity__input,
 .quantity.quantity--drawer-style input,
 .cart-drawer__quantity-input {
-  width: 38px !important;
-  height: 38px !important;
-  min-width: 38px;
-  min-height: 38px;
-  background: #2e473e !important;
-  color: #e9e6d7 !important;
-  border: none !important;
+  width: 35px !important;
+  height: 35px !important;
+  min-width: 35px;
+  min-height: 35px;
+  background: var(--color-header-logo-background) !important;
+  color: var(--color-background) !important;
+  border: 1px solid #000 !important;
   border-radius: 10px;
   text-align: center;
   font-weight: 700 !important;
-  font-size: 18px !important;
+  font-size: 16px !important;
   padding: 0 !important;
   margin: 0 !important;
+  box-shadow: 0 2px 0 #000;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   -moz-appearance: textfield;
   appearance: textfield;
+}
+
+.quantity.quantity--drawer-style .quantity__input:hover,
+.quantity.quantity--drawer-style input:hover,
+.cart-drawer__quantity-input:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 0 #000;
+}
+
+.quantity.quantity--drawer-style .quantity__input:active,
+.quantity.quantity--drawer-style .quantity__input:focus,
+.quantity.quantity--drawer-style input:active,
+.quantity.quantity--drawer-style input:focus,
+.cart-drawer__quantity-input:active,
+.cart-drawer__quantity-input:focus {
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 #000;
 }
 
 .quantity.quantity--drawer-style .quantity__input::-webkit-outer-spin-button,
