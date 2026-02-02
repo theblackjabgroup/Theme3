@@ -961,13 +961,12 @@
                 <h3 class="cart-drawer__edit-item-name" data-edit-name></h3>
                 <div class="cart-drawer__edit-item-price" data-edit-price></div>
                 <div class="cart-drawer__edit-quantity-row">
-                  <quantity-input class="cart-drawer__quantity-selector" data-edit-quantity-wrapper>
+                  <quantity-input class="cart-drawer__quantity-selector">
                     <button
                       class="quantity__button"
                       type="button"
                       name="minus"
                       aria-label="{{ 'products.product.quantity.decrease' | t | default: 'Decrease' }}"
-                      data-edit-qty-minus
                     >
                       −
                     </button>
@@ -987,7 +986,6 @@
                       type="button"
                       name="plus"
                       aria-label="{{ 'products.product.quantity.increase' | t | default: 'Increase' }}"
-                      data-edit-qty-plus
                     >
                       +
                     </button>

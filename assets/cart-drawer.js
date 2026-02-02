@@ -233,12 +233,21 @@ class CartDrawer extends HTMLElement {
           }, 4000);
         })
         .catch(() => {
-          refreshDrawer().finally(() => fail());
+          refreshDrawer().finally(() => {
+            if (updateBtn) {
+              updateBtn.disabled = false;
+              updateBtn.textContent = 'Item could not be updated. Please try again.';
+              setTimeout(() => {
+                if (updateBtn) updateBtn.textContent = 'Update Cart';
+              }, 4000);
+            }
+          });
         });
     };
 
     if (selectedVariantId !== originalVariantId) {
       let removalSucceeded = false;
+      let addSucceeded = false;
       fetch(window.routes?.cart_change_url || '/cart/change.js', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
@@ -260,11 +269,12 @@ class CartDrawer extends HTMLElement {
           if (response && response.status) {
             throw new Error(response.description || response.message);
           }
+          addSucceeded = true;
           return refreshDrawer();
         })
         .then(done)
         .catch((err) => {
-          if (removalSucceeded) restoreAndFail(err);
+          if (removalSucceeded && !addSucceeded) restoreAndFail(err);
           else fail();
         });
     } else {
@@ -321,7 +331,7 @@ class CartDrawer extends HTMLElement {
         const focusElement = this.querySelector('.drawer__inner') || this.querySelector('.drawer__close');
         trapFocus(containerToTrapFocusOn, focusElement);
       },
-      { once: true }
+      { once: true },
     );
 
     document.body.classList.add('overflow-hidden', 'cart-drawer-open');
