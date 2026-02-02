@@ -5,12 +5,23 @@ if (!customElements.get('accordion-item')) {
       constructor() {
         super();
         this.summary = this.querySelector('.accordion__summary');
-        this.summary.addEventListener('click', this.toggle.bind(this));
+        if (this.summary) {
+          this.summary.setAttribute('aria-expanded', this.hasAttribute('open'));
+          this.summary.addEventListener('click', this.toggle.bind(this));
+          this.summary.addEventListener('keydown', this.onKeydown.bind(this));
+        }
+      }
+
+      onKeydown(event) {
+        if (event.code === 'Enter' || event.code === 'Space') {
+          this.toggle(event);
+        }
       }
 
       toggle(event) {
         event.preventDefault();
         this.toggleAttribute('open');
+        this.summary.setAttribute('aria-expanded', this.hasAttribute('open'));
       }
     },
   );
