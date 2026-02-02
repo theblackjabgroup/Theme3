@@ -273,7 +273,10 @@ class CartDrawer extends HTMLElement {
           }
         })
         .catch(() => {
-          refreshDrawer().finally(() => fail());
+          refreshDrawer().finally(() => {
+            this.closeEditPanel();
+            fail();
+          });
         });
     };
 
