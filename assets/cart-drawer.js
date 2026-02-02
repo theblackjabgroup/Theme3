@@ -1,3 +1,13 @@
+function escapeHtml(str) {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 class CartDrawer extends HTMLElement {
   constructor() {
     super();
@@ -135,9 +145,18 @@ class CartDrawer extends HTMLElement {
           .map((value) => {
             const variant = this.findVariantForOptionValue(variants, optionIndex, value, currentOptions);
             const isSelected = variant && variant.id === selectedVariantId;
-            return `<button type="button" class="cart-drawer__edit-variant-btn ${
-              isSelected ? 'is-selected' : ''
-            }" data-edit-variant-btn data-variant-id="${variant ? variant.id : ''}">${value}</button>`;
+            const isUnavailable = !variant;
+            const baseClass = 'cart-drawer__edit-variant-btn';
+            const classes = [
+              baseClass,
+              isSelected ? 'is-selected' : '',
+              isUnavailable ? 'cart-drawer__edit-variant-btn--unavailable' : '',
+            ]
+              .filter(Boolean)
+              .join(' ');
+            return `<button type="button" class="${classes}" data-edit-variant-btn data-variant-id="${
+              variant ? variant.id : ''
+            }"${isUnavailable ? ' disabled aria-disabled="true"' : ''}>${escapeHtml(value)}</button>`;
           })
           .join('');
         return `<div class="cart-drawer__edit-option-row">${buttons}</div>`;

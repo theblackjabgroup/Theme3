@@ -820,6 +820,13 @@
     color: var(--cart-drawer-text);
   }
 
+  .cart-drawer__edit-variant-btn--unavailable,
+  .cart-drawer__edit-variant-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
   .cart-drawer__edit-update-wrap {
     margin-top: auto;
     padding-top: 24px;
