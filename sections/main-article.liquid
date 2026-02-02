@@ -304,6 +304,9 @@
                   {%- endif -%}
 
                   <div class="article-comment-field">
+                    <label for="CommentForm-author">
+                      {{ 'blogs.article.name' | t }}
+                    </label>
                     <input
                       type="text"
                       name="comment[author]"
@@ -331,6 +334,9 @@
                   </div>
 
                   <div class="article-comment-field">
+                    <label for="CommentForm-email">
+                      {{ 'blogs.article.email' | t }}
+                    </label>
                     <input
                       type="email"
                       name="comment[email]"
@@ -358,6 +364,9 @@
                   </div>
 
                   <div class="article-comment-field">
+                    <label for="CommentForm-body">
+                      {{ 'blogs.article.message' | t }}
+                    </label>
                     <textarea
                       rows="5"
                       name="comment[body]"
@@ -528,8 +537,7 @@
     {
       "type": "url",
       "id": "link_instagram",
-      "label": "Instagram Link",
-      "default": "/"
+      "label": "Instagram Link"
     },
     {
       "type": "header",
@@ -543,8 +551,7 @@
     {
       "type": "url",
       "id": "link_facebook",
-      "label": "Facebook Link",
-      "default": "/"
+      "label": "Facebook Link"
     },
     {
       "type": "header",
@@ -558,8 +565,7 @@
     {
       "type": "url",
       "id": "link_twitter",
-      "label": "Twitter Link",
-      "default": "/"
+      "label": "Twitter Link"
     },
     {
       "type": "header",
@@ -573,8 +579,7 @@
     {
       "type": "url",
       "id": "link_whatsapp",
-      "label": "WhatsApp Link",
-      "default": "/"
+      "label": "WhatsApp Link"
     },
     {
       "type": "header",
@@ -588,8 +593,7 @@
     {
       "type": "url",
       "id": "link_telegram",
-      "label": "Telegram Link",
-      "default": "/"
+      "label": "Telegram Link"
     },
     {
       "type": "header",
