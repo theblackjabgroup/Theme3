@@ -224,12 +224,16 @@ class CartDrawer extends HTMLElement {
           return refreshDrawer();
         })
         .then(() => {
-          if (updateBtn) {
-            updateBtn.disabled = false;
-            updateBtn.textContent = message;
+          const panel = this.querySelector('#CartDrawer-EditPanel');
+          const freshUpdateBtn = panel && panel.querySelector('[data-edit-update-btn]');
+          if (freshUpdateBtn) {
+            freshUpdateBtn.disabled = false;
+            freshUpdateBtn.textContent = message;
           }
           setTimeout(() => {
-            if (updateBtn) updateBtn.textContent = 'Update Cart';
+            const panel = this.querySelector('#CartDrawer-EditPanel');
+            const freshUpdateBtn = panel && panel.querySelector('[data-edit-update-btn]');
+            if (freshUpdateBtn) freshUpdateBtn.textContent = 'Update Cart';
           }, 4000);
         })
         .catch(() => {
@@ -321,7 +325,7 @@ class CartDrawer extends HTMLElement {
         const focusElement = this.querySelector('.drawer__inner') || this.querySelector('.drawer__close');
         trapFocus(containerToTrapFocusOn, focusElement);
       },
-      { once: true }
+      { once: true },
     );
 
     document.body.classList.add('overflow-hidden', 'cart-drawer-open');
