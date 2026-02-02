@@ -1,16 +1,23 @@
 {{ 'section-share-story.css' | asset_url | stylesheet_tag }}
-{{ 'component-primary-button.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    margin-top: {{ section.settings.margin_top | times: 0.75 | round: 0 }}px;
+    margin-bottom: {{ section.settings.margin_bottom | times: 0.75 | round: 0 }}px;
+    margin-left: {{ section.settings.margin_horizontal | times: 0.75 | round: 0 }}px;
+    margin-right: {{ section.settings.margin_horizontal | times: 0.75 | round: 0 }}px;
   }
 
   @media screen and (min-width: 750px) {
     .section-{{ section.id }}-padding {
       padding-top: {{ section.settings.padding_top }}px;
       padding-bottom: {{ section.settings.padding_bottom }}px;
+      margin-top: {{ section.settings.margin_top }}px;
+      margin-bottom: {{ section.settings.margin_bottom }}px;
+      margin-left: {{ section.settings.margin_horizontal }}px;
+      margin-right: {{ section.settings.margin_horizontal }}px;
     }
   }
 {%- endstyle -%}
@@ -97,7 +104,7 @@
                 %}
 
                 <div class="share-story-footer-flex">
-                  {% render 'primary-button', text: block.settings.button_text, type: 'submit' %}
+                  {% render 'submit-button', text: block.settings.button_text, type: 'submit' %}
                   <p class="share-story-disclaimer">
                     {{ block.settings.disclaimer }}
                   </p>
@@ -115,7 +122,7 @@
   "name": "Share Story",
   "tag": "section",
   "class": "section",
-  "disabled_on": {"groups": ["header", "footer"]},
+  "disabled_on": { "groups": ["header", "footer"] },
   "settings": [
     {
       "type": "color_scheme",
@@ -146,6 +153,40 @@
       "unit": "px",
       "label": "Padding Bottom",
       "default": 36
+    },
+    {
+      "type": "header",
+      "content": "Margin"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_horizontal",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Margin Horizontal",
+      "default": 10
     }
   ],
   "blocks": [
