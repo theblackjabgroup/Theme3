@@ -158,6 +158,7 @@ body.mega-menu-open .vertical-sidebar-inner {
 
 .vertical-sidebar-actions-row.profile-cart-row {
   display: flex;
+  flex-direction: row-reverse;
 }
 
 .vertical-sidebar-actions-row.search-row {
@@ -398,21 +399,43 @@ body.mega-menu-open .vertical-sidebar-inner {
   justify-content: flex-end;
 }
 
+/* Active nav item: match default style so it looks like other nav links */
 .header-nav-button.active {
-  border-color: var(--color-header-active-border, var(--color-accent-pink, #ec95ae));
+  background: var(--color-header-button-background, var(--color-header-background, var(--color-background, #eae7e1)));
+  color: var(--color-header-text, var(--color-headings, #365330));
+  border: var(--nav-border, none);
+  min-height: 100px;
+  padding: var(--nav-item-padding, 16px);
+  justify-content: flex-end;
+}
+
+/* Same hover animation as other nav links when hovering over active link */
+.header-nav-button.active:hover {
   background: var(--nav-hover-background, var(--color-header-button-hover-background, #306030));
   color: var(--nav-default-background, var(--color-header-button-background, var(--color-header-background, #eae7e1)));
-  min-height: 140px;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px color-mix(in srgb, var(--color-header-border, var(--color-headings, #365330)) 15%, transparent);
+  min-height: 197px;
   padding: calc(var(--nav-item-padding-top, 16px) + 20px) var(--nav-item-padding-right, 16px) var(--nav-item-padding-bottom, 16px) var(--nav-item-padding-left, 16px);
   justify-content: flex-end;
 }
 
 .header-nav-button.active.has-hover-icon .nav-icon-default {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.header-nav-button.active.has-hover-icon .nav-icon-hover {
   opacity: 0;
   transform: scale(0.8);
 }
 
-.header-nav-button.active.has-hover-icon .nav-icon-hover {
+.header-nav-button.active.has-hover-icon:hover .nav-icon-default {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.header-nav-button.active.has-hover-icon:hover .nav-icon-hover {
   opacity: 1;
   transform: scale(1);
 }

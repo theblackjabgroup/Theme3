@@ -3,9 +3,16 @@ class CartDrawer extends HTMLElement {
     super();
 
     this.addEventListener('keyup', (evt) => evt.code === 'Escape' && this.close());
+    this.addEventListener('click', (e) => {
+      if (e.target.closest('.drawer__close')) this.close();
+    });
     // Handle clicks outside the drawer content to close it
     document.addEventListener('click', (e) => {
-      if (this.classList.contains('active') && !e.target.closest('.drawer__inner') && !e.target.closest('#cart-icon-bubble')) {
+      if (
+        this.classList.contains('active') &&
+        !e.target.closest('.drawer__inner') &&
+        !e.target.closest('#cart-icon-bubble')
+      ) {
         this.close();
       }
       // Close when clicking on overlay

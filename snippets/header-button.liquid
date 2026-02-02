@@ -14,6 +14,7 @@
   - aria_label: Accessibility label
   - button_badge: Badge text/number to display (optional)
   - skip_nav_class: If true, don't apply header-nav-button class (optional)
+  - button_id: Optional ID for the element (e.g. cart-icon-bubble for cart drawer)
 {%- endcomment -%}
 
 {%- liquid
@@ -23,6 +24,7 @@
   assign button_icon_is_image = button_icon_is_image | default: false
   assign button_hover_icon_is_image = button_hover_icon_is_image | default: false
   assign skip_nav_class = skip_nav_class | default: false
+  assign button_id = button_id | default: ''
   if button_hover_icon != blank
     assign button_class = button_class | append: ' has-hover-icon'
   endif
@@ -37,6 +39,9 @@
   <a
     href="{{ button_url | default: '#' }}"
     class="{{ base_class }} {{ button_class }}"
+    {% if button_id != blank %}
+      id="{{ button_id }}"
+    {% endif %}
     {% if aria_label != blank %}
       aria-label="{{ aria_label }}"
     {% endif %}
@@ -82,6 +87,9 @@
   <button
     type="{{ button_type }}"
     class="{{ base_class }} {{ button_class }}"
+    {% if button_id != blank %}
+      id="{{ button_id }}"
+    {% endif %}
     {% if aria_label != blank %}
       aria-label="{{ aria_label }}"
     {% endif %}
