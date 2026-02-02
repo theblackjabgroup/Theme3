@@ -411,7 +411,7 @@ accordion-item {
   width: 16px;
   height: 16px;
   display: block;
-  transition: transform 0.4s ease;
+  transition: transform 0.6s ease;
 }
 
 .accordion__icon::before,
