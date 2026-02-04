@@ -48,7 +48,8 @@ class CartDrawer extends HTMLElement {
       if (
         this.classList.contains('active') &&
         !e.target.closest('.drawer__inner') &&
-        !e.target.closest('#cart-icon-bubble')
+        !e.target.closest('#cart-icon-bubble') &&
+        !e.target.closest('.cart-drawer-trigger')
       ) {
         this.close();
       }
@@ -350,20 +351,20 @@ class CartDrawer extends HTMLElement {
   }
 
   setHeaderCartIconAccessibility() {
-    const cartLink = document.querySelector('#cart-icon-bubble');
-    if (!cartLink) return;
-
-    cartLink.setAttribute('role', 'button');
-    cartLink.setAttribute('aria-haspopup', 'dialog');
-    cartLink.addEventListener('click', (event) => {
-      event.preventDefault();
-      this.open(cartLink);
-    });
-    cartLink.addEventListener('keydown', (event) => {
-      if (event.code.toUpperCase() === 'SPACE') {
+    const cartTriggers = document.querySelectorAll('#cart-icon-bubble, .cart-drawer-trigger');
+    cartTriggers.forEach((cartLink) => {
+      cartLink.setAttribute('role', 'button');
+      cartLink.setAttribute('aria-haspopup', 'dialog');
+      cartLink.addEventListener('click', (event) => {
         event.preventDefault();
         this.open(cartLink);
-      }
+      });
+      cartLink.addEventListener('keydown', (event) => {
+        if (event.code.toUpperCase() === 'SPACE') {
+          event.preventDefault();
+          this.open(cartLink);
+        }
+      });
     });
   }
 

@@ -46,33 +46,69 @@
   gap: 20px;
 }
 
+.newsletter-field {
+  background-color: var(--color-header-button-background); /* More accurate beige from design */
+  border-radius: 20px; /* Fully rounded ends */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border: none; /* No border in the design image */
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.02); /* Very subtle inset for depth */
+}
+
 .newsletter-label {
   display: block;
   font-size: 10px;
   font-family: var(--font-family-mono, monospace);
-  color: var(--color-text);
-  opacity: 0.6;
-  margin-bottom: 8px;
-  letter-spacing: 0.1em;
+  color: #4A6741; /* Darker green from design */
+  letter-spacing: 0.05em;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-bottom: 2px;
 }
-
-
 
 .newsletter-input {
   width: 100%;
-  padding: 18px 20px;
-  border-radius: 12px;
-  border: 1px solid var(--color-borders);
-  background-color: var(--color-header-button-background);
+  padding: 0;
+  border: none;
+  background-color: transparent;
   font-family: var(--font-family-mono, monospace);
-  font-size: 14px;
-  color: var(--color-input-text);
+  font-size: 14px; /* Larger font size as seen in design */
+  font-weight: 800; /* Extra bold */
+  color: #8BA385; /* Specific green from design */
   outline: none;
+  line-height: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 .newsletter-input::placeholder {
-  color: var(--color-input-text);
-  opacity: 0.6;
+  color: #8BA385;
+  opacity: 1;
+}
+
+@media (max-width: 1024px) {
+  .newsletter-field {
+    padding: 30px 40px;
+  }
+  
+  .newsletter-input {
+    font-size: 48px;
+  }
+}
+
+@media (max-width: 768px) {
+  .newsletter-field {
+    padding: 24px 30px;
+    border-radius: 50px;
+  }
+  
+  .newsletter-input {
+    font-size: 20px;
+  }
+  
+
 }
 
 /* Same structure as header .vertical-sidebar-actions-row: flex row per line */
@@ -308,18 +344,31 @@
 
 
 .copyright {
-  font-size: 11px;
-  font-family: var(--font-family-mono, monospace);
-  opacity: 0.8;
+  font-size: 13px;
+  font-family: var(--font-body-family); /* Using body family for better matching */
+  opacity: 0.9;
+  color: inherit;
+  font-weight: 400;
+}
+
+.copyright a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 0.2s ease;
+}
+
+.copyright a:hover {
+  opacity: 0.7;
 }
 
 .localization-pills {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 8px;
 }
 
-/* Footer localization form: style buttons like pills */
+/* Footer localization form: style buttons like pills (smaller size) */
 /* Manual 3D Button Replica for Footer Localization */
 .custom-3d-button {
   position: relative;
@@ -333,19 +382,20 @@
   z-index: 1;
   -webkit-tap-highlight-color: transparent;
   overflow: visible !important;
-  margin-bottom: 10px; /* Space for the 8px shadow */
+  margin-bottom: 6px; /* Space for the shadow */
 }
 
 .custom-3d-button__shadow {
   position: absolute;
-  top: 8px;
+  top: 6px;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 80%;
   background-color: #121212;
-  border-radius: 12px;
+  border-radius: 8px;
   z-index: 1;
 }
+
 
 .custom-3d-button__content {
   position: relative;
@@ -355,19 +405,19 @@
   justify-content: center;
   background-color: var(--color-primary-button-bg);
   color: var(--color-primary-button-text);
-  border: 2px solid var(--color-primary-button-border);
-  padding: 16px 32px;
-  border-radius: 12px;
-  font-size: 16px;
+  border: 1px solid var(--color-primary-button-border);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
   font-weight: 700;
   font-family: var(--font-heading-family);
   line-height: 1;
   transition: transform 0.2s cubic-bezier(0, 0, 0.2, 1);
-  gap: 12px;
+  gap: 0px;
 }
 
 .custom-3d-button:hover .custom-3d-button__content {
-  transform: translateY(-8px);
+  transform: translateY(-5px);
 }
 
 .custom-3d-button:active .custom-3d-button__content {
@@ -375,20 +425,12 @@
 }
 
 .footer-box .localization-pills .localization-flag {
-  width: 20px;
+  width: 16px;
   height: auto;
   border-radius: 2px;
   display: inline-block;
   vertical-align: middle;
-}
-
-.footer-box .localization-pills .localization-flag {
-  width: 20px;
-  height: auto;
-  border-radius: 2px;
-  display: inline-block;
-  vertical-align: middle;
-  margin-right: 8px;
+  margin-right: 6px;
 }
 
 .footer-box .localization-pills .language-name {
@@ -399,14 +441,14 @@
 .footer-box .localization-pills .submit-button__badge {
   background: transparent;
   padding: 0;
-  margin-left: 8px;
+  margin-left: 4px;
   display: flex;
   align-items: center;
 }
 
 .footer-box .localization-pills .submit-button__badge svg {
-  width: 10px;
-  height: 6px;
+  width: 8px;
+  height: 5px;
   display: block;
 }
 

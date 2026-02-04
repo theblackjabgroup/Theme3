@@ -56,6 +56,14 @@
       --nav-border: none;
     {%- endif -%}
 
+    /* Mobile Header Logo */
+    --mobile-logo-image-max-width: {{ section.settings.mobile_logo_image_max_width | default: 120 }}px;
+    --mobile-logo-image-max-height: {{ section.settings.mobile_logo_image_max_height | default: 40 }}px;
+    --mobile-logo-image-width: {% if section.settings.mobile_logo_image_width > 0 %}{{ section.settings.mobile_logo_image_width }}px{% else %}auto{% endif %};
+    --mobile-logo-image-height: {% if section.settings.mobile_logo_image_height > 0 %}{{ section.settings.mobile_logo_image_height }}px{% else %}auto{% endif %};
+    --mobile-logo-image-object-fit: {{ section.settings.mobile_logo_image_object_fit | default: 'contain' }};
+    --mobile-logo-font-size: {{ section.settings.mobile_logo_font_size | default: 20 }}px;
+    --mobile-logo-font-weight: {{ section.settings.mobile_logo_font_weight | default: 700 }};
   }
 </style>
 
@@ -106,12 +114,26 @@
           {%- else -%}
             {%- assign welcome_icon = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' -%}
           {%- endif -%}
+          {%- assign welcome_hover_icon = '' -%}
+          {%- if block.settings.button_icon_image_hover != blank -%}
+            {%- assign welcome_hover_icon = block.settings.button_icon_image_hover
+              | image_url: width: icon_size
+              | image_tag:
+                loading: 'lazy',
+                alt: 'Account',
+                class: 'button-icon-image',
+                width: icon_size,
+                height: icon_size
+            -%}
+          {%- endif -%}
           {%-
             render 'header-button',
             button_text: block.settings.button_text | default: 'Account',
             button_url: block.settings.login_url | default: routes.account_login_url,
             button_icon: welcome_icon,
             button_icon_is_image: block.settings.button_icon_image != blank,
+            button_hover_icon: welcome_hover_icon,
+            button_hover_icon_is_image: block.settings.button_icon_image_hover != blank,
             button_type: 'link',
             button_class: 'header-action-button header-action-button--user',
             aria_label: 'Account',
@@ -134,10 +156,19 @@
           {%- else -%}
             {%- assign cart_icon = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 22C9.55228 22 10 21.5523 10 21C10 20.4477 9.55228 20 9 20C8.44772 20 8 20.4477 8 21C8 21.5523 8.44772 22 9 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 22C20.5523 22 21 21.5523 21 21C21 20.4477 20.5523 20 20 20C19.4477 20 19 20.4477 19 21C19 21.5523 19.4477 22 20 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M1 1H5L7.68 13.39C7.77144 13.8504 8.02191 14.264 8.38755 14.5583C8.75318 14.8526 9.2107 15.009 9.68 15H19.4C19.8693 15.009 20.3268 14.8526 20.6925 14.5583C21.0581 14.264 21.3086 13.8504 21.4 13.39L23 6H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' -%}
           {%- endif -%}
+          {%- assign cart_hover_icon = '' -%}
+          {%- if block.settings.button_icon_image_hover != blank -%}
+            {%- assign cart_hover_icon = block.settings.button_icon_image_hover
+              | image_url: width: icon_size
+              | image_tag: loading: 'lazy', alt: 'Cart', class: 'button-icon-image', width: icon_size, height: icon_size
+            -%}
+          {%- endif -%}
           {%- if settings.cart_type == 'drawer' -%}
             {%- assign cart_button_id = 'cart-icon-bubble' -%}
+            {%- assign cart_button_class = 'header-action-button header-action-button--cart cart-drawer-trigger' -%}
           {%- else -%}
             {%- assign cart_button_id = '' -%}
+            {%- assign cart_button_class = 'header-action-button header-action-button--cart' -%}
           {%- endif -%}
           {%-
             render 'header-button',
@@ -145,8 +176,10 @@
             button_url: routes.cart_url,
             button_icon: cart_icon,
             button_icon_is_image: block.settings.button_icon_image != blank,
+            button_hover_icon: cart_hover_icon,
+            button_hover_icon_is_image: block.settings.button_icon_image_hover != blank,
             button_type: 'link',
-            button_class: 'header-action-button header-action-button--cart',
+            button_class: cart_button_class,
             aria_label: 'Cart',
             skip_nav_class: true,
             button_id: cart_button_id
@@ -177,6 +210,18 @@
           {%- else -%}
             {%- assign search_icon = '<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 19L14.65 14.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' -%}
           {%- endif -%}
+          {%- assign search_hover_icon = '' -%}
+          {%- if block.settings.button_icon_image_hover != blank -%}
+            {%- assign search_hover_icon = block.settings.button_icon_image_hover
+              | image_url: width: icon_size
+              | image_tag:
+                loading: 'lazy',
+                alt: 'Search',
+                class: 'button-icon-image',
+                width: icon_size,
+                height: icon_size
+            -%}
+          {%- endif -%}
           {%- if block.settings.button_url != blank -%}
             {%-
               render 'header-button',
@@ -184,6 +229,8 @@
               button_url: block.settings.button_url,
               button_icon: search_icon,
               button_icon_is_image: block.settings.button_icon_image != blank,
+              button_hover_icon: search_hover_icon,
+              button_hover_icon_is_image: block.settings.button_icon_image_hover != blank,
               button_type: 'link',
               button_class: 'header-action-button header-action-button--search',
               aria_label: 'Search',
@@ -196,6 +243,8 @@
               button_url: '',
               button_icon: search_icon,
               button_icon_is_image: block.settings.button_icon_image != blank,
+              button_hover_icon: search_hover_icon,
+              button_hover_icon_is_image: block.settings.button_icon_image_hover != blank,
               button_type: 'button',
               button_class: 'header-action-button header-action-button--search',
               aria_label: 'Search',
@@ -476,10 +525,11 @@
     <!-- Logo -->
     <div class="mobile-header-logo">
       {%- if section.settings.mobile_logo != blank -%}
+        {%- assign mobile_logo_width = section.settings.mobile_logo_image_max_width | default: 120 | at_least: 100 -%}
         <a href="{{ routes.root_url }}" class="mobile-logo-link">
           {{
             section.settings.mobile_logo
-            | image_url: width: 200
+            | image_url: width: mobile_logo_width
             | image_tag: loading: 'eager', alt: shop.name, class: 'mobile-logo-image'
           }}
         </a>
@@ -573,19 +623,116 @@
           {%- endfor -%}
         </ul>
 
-        <!-- Search Bar -->
-        <div class="mobile-menu-search">
-          <button
-            type="button"
-            class="mobile-menu-search-button"
-            aria-label="Search"
-            data-spotlight-search-toggle
-          >
-            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M19 19L14.65 14.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
+        <!-- Footer: Account, Cart, Search (same icons as desktop) -->
+        <div class="mobile-menu-footer">
+          <div class="mobile-menu-footer-row mobile-menu-footer-row--top">
+            {%- assign icon_size = section.settings.button_icon_size | default: 20 -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'welcome' -%}
+                {%- assign welcome_icon = '' -%}
+                {%- if block.settings.button_icon_image != blank -%}
+                  {%- assign welcome_icon = block.settings.button_icon_image
+                    | image_url: width: icon_size
+                    | image_tag:
+                      loading: 'lazy',
+                      alt: 'Account',
+                      class: 'mobile-menu-footer-icon-img',
+                      width: icon_size,
+                      height: icon_size
+                  -%}
+                {%- elsif block.settings.button_icon_svg != blank -%}
+                  {%- assign welcome_icon = block.settings.button_icon_svg -%}
+                {%- else -%}
+                  {%- assign welcome_icon = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' -%}
+                {%- endif -%}
+                <a
+                  href="{{ block.settings.login_url | default: routes.account_login_url }}"
+                  class="mobile-menu-footer-btn mobile-menu-footer-btn--account"
+                  aria-label="Account"
+                >
+                  <span class="mobile-menu-footer-icon {% if block.settings.button_icon_image != blank %}mobile-menu-footer-icon--image{% endif %}">
+                    {{- welcome_icon -}}
+                  </span>
+                </a>
+              {%- endif -%}
+            {%- endfor -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'cart' -%}
+                {%- assign cart_icon = '' -%}
+                {%- if block.settings.button_icon_image != blank -%}
+                  {%- assign cart_icon = block.settings.button_icon_image
+                    | image_url: width: icon_size
+                    | image_tag:
+                      loading: 'lazy',
+                      alt: 'Cart',
+                      class: 'mobile-menu-footer-icon-img',
+                      width: icon_size,
+                      height: icon_size
+                  -%}
+                {%- elsif block.settings.button_icon_svg != blank -%}
+                  {%- assign cart_icon = block.settings.button_icon_svg -%}
+                {%- else -%}
+                  {%- assign cart_icon = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 22C9.55228 22 10 21.5523 10 21C10 20.4477 9.55228 20 9 20C8.44772 20 8 20.4477 8 21C8 21.5523 8.44772 22 9 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 22C20.5523 22 21 21.5523 21 21C21 20.4477 20.5523 20 20 20C19.4477 20 19 20.4477 19 21C19 21.5523 19.4477 22 20 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M1 1H5L7.68 13.39C7.77144 13.8504 8.02191 14.264 8.38755 14.5583C8.75318 14.8526 9.2107 15.009 9.68 15H19.4C19.8693 15.009 20.3268 14.8526 20.6925 14.5583C21.0581 14.264 21.3086 13.8504 21.4 13.39L23 6H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' -%}
+                {%- endif -%}
+                <a
+                  href="{{ routes.cart_url }}"
+                  class="mobile-menu-footer-btn mobile-menu-footer-btn--cart{% if settings.cart_type == 'drawer' %} cart-drawer-trigger{% endif %}"
+                  aria-label="Cart"
+                >
+                  <span class="mobile-menu-footer-icon {% if block.settings.button_icon_image != blank %}mobile-menu-footer-icon--image{% endif %}">
+                    {{- cart_icon -}}
+                  </span>
+                  {%- if cart.item_count > 0 -%}
+                    <span class="mobile-menu-footer-badge">{{ cart.item_count }}</span>
+                  {%- endif -%}
+                </a>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+          <div class="mobile-menu-footer-row mobile-menu-footer-row--bottom">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'search' -%}
+                {%- assign search_icon = '' -%}
+                {%- if block.settings.button_icon_image != blank -%}
+                  {%- assign search_icon = block.settings.button_icon_image
+                    | image_url: width: icon_size
+                    | image_tag:
+                      loading: 'lazy',
+                      alt: 'Search',
+                      class: 'mobile-menu-footer-icon-img',
+                      width: icon_size,
+                      height: icon_size
+                  -%}
+                {%- elsif block.settings.button_icon_svg != blank -%}
+                  {%- assign search_icon = block.settings.button_icon_svg -%}
+                {%- else -%}
+                  {%- assign search_icon = '<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 19L14.65 14.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' -%}
+                {%- endif -%}
+                {%- if block.settings.button_url != blank -%}
+                  <a
+                    href="{{ block.settings.button_url }}"
+                    class="mobile-menu-footer-btn mobile-menu-footer-btn--search"
+                    aria-label="Search"
+                  >
+                    <span class="mobile-menu-footer-icon {% if block.settings.button_icon_image != blank %}mobile-menu-footer-icon--image{% endif %}">
+                      {{- search_icon -}}
+                    </span>
+                  </a>
+                {%- else -%}
+                  <button
+                    type="button"
+                    class="mobile-menu-footer-btn mobile-menu-footer-btn--search"
+                    aria-label="Search"
+                    data-spotlight-search-toggle
+                  >
+                    <span class="mobile-menu-footer-icon {% if block.settings.button_icon_image != blank %}mobile-menu-footer-icon--image{% endif %}">
+                      {{- search_icon -}}
+                    </span>
+                  </button>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
         </div>
       </nav>
     </div>
@@ -1142,6 +1289,86 @@
       "label": "Mobile Logo Text",
       "default": "Logo",
       "info": "Text displayed if no logo image is uploaded"
+    },
+    {
+      "type": "header",
+      "content": "Mobile Logo Image Size"
+    },
+    {
+      "type": "range",
+      "id": "mobile_logo_image_max_width",
+      "min": 60,
+      "max": 280,
+      "step": 4,
+      "unit": "px",
+      "label": "Logo max width",
+      "default": 120
+    },
+    {
+      "type": "range",
+      "id": "mobile_logo_image_max_height",
+      "min": 24,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Logo max height",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mobile_logo_image_width",
+      "min": 0,
+      "max": 280,
+      "step": 4,
+      "unit": "px",
+      "label": "Logo width",
+      "default": 0,
+      "info": "0 = auto (use max width)"
+    },
+    {
+      "type": "range",
+      "id": "mobile_logo_image_height",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Logo height",
+      "default": 0,
+      "info": "0 = auto (use max height)"
+    },
+    {
+      "type": "select",
+      "id": "mobile_logo_image_object_fit",
+      "label": "Logo object fit",
+      "options": [
+        { "value": "contain", "label": "Contain" },
+        { "value": "cover", "label": "Cover" },
+        { "value": "fill", "label": "Fill" }
+      ],
+      "default": "contain"
+    },
+    {
+      "type": "header",
+      "content": "Mobile Logo Text (when no image)"
+    },
+    {
+      "type": "range",
+      "id": "mobile_logo_font_size",
+      "min": 14,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Logo text font size",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "mobile_logo_font_weight",
+      "min": 400,
+      "max": 900,
+      "step": 100,
+      "label": "Logo text font weight",
+      "default": 700
     }
   ],
   "blocks": [
@@ -1171,6 +1398,12 @@
           "id": "button_icon_svg",
           "label": "Button Icon SVG Code",
           "info": "Paste SVG code for a custom icon. Use 'currentColor' for stroke/fill to match theme colors. If both image and SVG are provided, image will be used."
+        },
+        {
+          "type": "image_picker",
+          "id": "button_icon_image_hover",
+          "label": "Button Icon Image (Hover)",
+          "info": "Optional. Icon image to show when the button is hovered. Leave empty to keep the default icon on hover."
         },
         {
           "type": "url",
@@ -1206,6 +1439,12 @@
           "id": "button_icon_svg",
           "label": "Button Icon SVG Code",
           "info": "Paste SVG code for a custom icon. Use 'currentColor' for stroke/fill to match theme colors. If both image and SVG are provided, image will be used."
+        },
+        {
+          "type": "image_picker",
+          "id": "button_icon_image_hover",
+          "label": "Button Icon Image (Hover)",
+          "info": "Optional. Icon image to show when the button is hovered. Leave empty to keep the default icon on hover."
         },
         {
           "type": "url",
@@ -1284,6 +1523,12 @@
           "id": "button_icon_svg",
           "label": "Button Icon SVG Code",
           "info": "Paste SVG code for a custom icon. Use 'currentColor' for stroke/fill to match theme colors. If both image and SVG are provided, image will be used."
+        },
+        {
+          "type": "image_picker",
+          "id": "button_icon_image_hover",
+          "label": "Button Icon Image (Hover)",
+          "info": "Optional. Icon image to show when the button is hovered. Leave empty to keep the default icon on hover."
         }
       ]
     },

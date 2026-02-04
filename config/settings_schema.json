@@ -620,11 +620,10 @@
         "id": "cart_type",
         "label": "Cart type",
         "options": [
-          { "value": "notification", "label": "Notification" },
           { "value": "drawer", "label": "Drawer" },
           { "value": "page", "label": "Full page" }
         ],
-        "default": "notification"
+        "default": "drawer"
       }
     ]
   },

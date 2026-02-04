@@ -204,174 +204,192 @@
             {%- if border_color == blank and block.settings.card_background_color != blank -%}
               {%- assign border_color = block.settings.card_background_color -%}
             {%- endif -%}
-            <div
-              class="bento-card tag-card tag-card--{{ direction }} tag-card--align-{{ align }} tag-card--valign-{{ vertical_align }}{% if block.settings.card_background_color != blank %} has-custom-background{% endif %}"
-              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %}{% if border_color != blank %} border-color: {{ border_color }};{% endif %}{% if block.settings.card_text_color != blank %} color: {{ block.settings.card_text_color }};{% endif %}"
-              data-mobile-direction="{{ mobile_direction }}"
-              data-mobile-align="{{ mobile_align }}"
-              data-mobile-vertical-align="{{ mobile_vertical_align }}"
-              {% if block.settings.card_background_color != blank %}
-                data-background-color="{{ block.settings.card_background_color }}"
-              {% endif %}
-            >
-              <div class="tag-card-inner">
-                <div class="tag-card-text-group">
-                  {%- if block.settings.show_tag and block.settings.tag_text != blank -%}
-                    {%- assign tag_style = block.settings.tag_style | default: 'filled' -%}
-                    {%- assign tag_font_size = block.settings.tag_font_size | default: 11 -%}
-                    {%- assign tag_font_weight = block.settings.tag_font_weight | default: 600 -%}
-                    {%- assign mobile_tag_font_size = block.settings.mobile_tag_font_size | default: tag_font_size -%}
-                    {%- assign mobile_tag_font_weight = block.settings.mobile_tag_font_weight
-                      | default: tag_font_weight
-                    -%}
-                    <div
-                      class="tag-card-tag tag-card-tag--{{ tag_style }}"
-                      style="
-                        font-size: {{ tag_font_size }}px;
-                        font-weight: {{ tag_font_weight }};
-                        --mobile-tag-font-size: {{ mobile_tag_font_size }}px;
-                        --mobile-tag-font-weight: {{ mobile_tag_font_weight }};
-                        {%- if tag_style == 'filled' and block.settings.tag_bg_color != blank -%}
-                          background: {{ block.settings.tag_bg_color }} !important;
-                        {%- endif -%}
-                        {%- if tag_style == 'border' and block.settings.tag_border_color != blank -%}
-                          border-color: {{ block.settings.tag_border_color }} !important;
-                        {%- endif -%}
-                        {%- if block.settings.tag_text_color != blank -%}
-                          color: {{ block.settings.tag_text_color }} !important;
-                        {%- elsif tag_style == 'border' and block.settings.tag_border_color != blank -%}
-                          color: {{ block.settings.tag_border_color }} !important;
-                        {%- endif -%}
-                      "
-                    >
-                      {{ block.settings.tag_text }}
-                    </div>
-                  {%- endif -%}
-
-                  {%- if block.settings.show_text and block.settings.main_text != blank -%}
-                    {%- assign main_font_size = block.settings.main_text_font_size | default: 16 -%}
-                    {%- assign main_font_weight = block.settings.main_text_font_weight | default: 600 -%}
-                    {%- assign main_line_height = block.settings.main_text_line_height | default: 1.4 -%}
-                    {%- assign mobile_main_font_size = block.settings.mobile_main_text_font_size
-                      | default: main_font_size
-                    -%}
-                    {%- assign mobile_main_font_weight = block.settings.mobile_main_text_font_weight
-                      | default: main_font_weight
-                    -%}
-                    {%- assign mobile_main_line_height = block.settings.mobile_main_text_line_height
-                      | default: main_line_height
-                    -%}
-                    {%- assign main_display_type = block.settings.main_text_display_type | default: 'paragraph' -%}
-                    {%- if main_display_type == 'heading' -%}
-                      {%- assign plain_text = block.settings.main_text | strip_html -%}
-                      {%- assign words = plain_text | split: ' ' -%}
-                      <h3
-                        class="tag-card-main tag-card-main--heading"
-                        style="--desktop-main-font-size: {{ main_font_size }}px; --desktop-main-font-weight: {{ main_font_weight }}; --desktop-main-line-height: {{ main_line_height }}; --mobile-main-font-size: {{ mobile_main_font_size }}px; --mobile-main-font-weight: {{ mobile_main_font_weight }}; --mobile-main-line-height: {{ mobile_main_line_height }};{%- if block.settings.main_text_color != blank %} color: {{ block.settings.main_text_color }} !important;{% endif %}"
-                      >
-                        {%- for word in words -%}
-                          <span class="tag-card-word">{{ word }}</span>
-                          {%- unless forloop.last %} {% endunless %}
-                        {%- endfor -%}
-                      </h3>
-                    {%- else -%}
-                      <div
-                        class="tag-card-main tag-card-main--paragraph"
-                        style="--desktop-main-font-size: {{ main_font_size }}px; --desktop-main-font-weight: {{ main_font_weight }}; --desktop-main-line-height: {{ main_line_height }}; --mobile-main-font-size: {{ mobile_main_font_size }}px; --mobile-main-font-weight: {{ mobile_main_font_weight }}; --mobile-main-line-height: {{ mobile_main_line_height }};{%- if block.settings.main_text_color != blank %} color: {{ block.settings.main_text_color }} !important;{% endif %}"
-                      >
-                        {{ block.settings.main_text }}
-                      </div>
-                    {%- endif -%}
-                  {%- endif -%}
-                </div>
-
-                {%- if block.settings.show_icon and block.settings.icon_image != blank -%}
+            {%- assign tag_card_is_link = false -%}
+            {%- if block.settings.use_as_link and block.settings.link_url != blank -%}
+              {%- assign tag_card_is_link = true -%}
+            {%- endif -%}
+            {%- if tag_card_is_link -%}
+              <a
+                href="{{ block.settings.link_url }}"
+                class="bento-card tag-card tag-card--link tag-card--{{ direction }} tag-card--align-{{ align }} tag-card--valign-{{ vertical_align }}{% if block.settings.card_background_color != blank %} has-custom-background{% endif %}"
+                style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %}{% if border_color != blank %} border-color: {{ border_color }};{% endif %}{% if block.settings.card_text_color != blank %} color: {{ block.settings.card_text_color }};{% endif %}"
+                data-mobile-direction="{{ mobile_direction }}"
+                data-mobile-align="{{ mobile_align }}"
+                data-mobile-vertical-align="{{ mobile_vertical_align }}"
+                {% if block.settings.card_background_color != blank %}
+                  data-background-color="{{ block.settings.card_background_color }}"
+                {% endif %}
+              >
+            {%- else -%}
+              <div
+                class="bento-card tag-card tag-card--{{ direction }} tag-card--align-{{ align }} tag-card--valign-{{ vertical_align }}{% if block.settings.card_background_color != blank %} has-custom-background{% endif %}"
+                style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %}{% if border_color != blank %} border-color: {{ border_color }};{% endif %}{% if block.settings.card_text_color != blank %} color: {{ block.settings.card_text_color }};{% endif %}"
+                data-mobile-direction="{{ mobile_direction }}"
+                data-mobile-align="{{ mobile_align }}"
+                data-mobile-vertical-align="{{ mobile_vertical_align }}"
+                {% if block.settings.card_background_color != blank %}
+                  data-background-color="{{ block.settings.card_background_color }}"
+                {% endif %}
+              >
+            {%- endif -%}
+            <div class="tag-card-inner">
+              <div class="tag-card-text-group">
+                {%- if block.settings.show_tag and block.settings.tag_text != blank -%}
+                  {%- assign tag_style = block.settings.tag_style | default: 'filled' -%}
+                  {%- assign tag_font_size = block.settings.tag_font_size | default: 11 -%}
+                  {%- assign tag_font_weight = block.settings.tag_font_weight | default: 600 -%}
+                  {%- assign mobile_tag_font_size = block.settings.mobile_tag_font_size | default: tag_font_size -%}
+                  {%- assign mobile_tag_font_weight = block.settings.mobile_tag_font_weight
+                    | default: tag_font_weight
+                  -%}
                   <div
-                    class="tag-card-icon"
-                    style="--desktop-icon-size: {{ icon_size }}px; --mobile-icon-size: {{ mobile_icon_size }}px; width: var(--desktop-icon-size); height: var(--desktop-icon-size);"
+                    class="tag-card-tag tag-card-tag--{{ tag_style }}"
+                    style="
+                      font-size: {{ tag_font_size }}px;
+                      font-weight: {{ tag_font_weight }};
+                      --mobile-tag-font-size: {{ mobile_tag_font_size }}px;
+                      --mobile-tag-font-weight: {{ mobile_tag_font_weight }};
+                      {%- if tag_style == 'filled' and block.settings.tag_bg_color != blank -%}
+                        background: {{ block.settings.tag_bg_color }} !important;
+                      {%- endif -%}
+                      {%- if tag_style == 'border' and block.settings.tag_border_color != blank -%}
+                        border-color: {{ block.settings.tag_border_color }} !important;
+                      {%- endif -%}
+                      {%- if block.settings.tag_text_color != blank -%}
+                        color: {{ block.settings.tag_text_color }} !important;
+                      {%- elsif tag_style == 'border' and block.settings.tag_border_color != blank -%}
+                        color: {{ block.settings.tag_border_color }} !important;
+                      {%- endif -%}
+                    "
                   >
-                    <img
-                      src="{{ block.settings.icon_image | image_url: width: 160 }}"
-                      alt="{{ block.settings.main_text | escape }}"
-                      loading="lazy"
-                      width="{{ icon_size }}"
-                      height="{{ icon_size }}"
-                    >
+                    {{ block.settings.tag_text }}
                   </div>
                 {%- endif -%}
 
-                {%- if block.settings.show_image_strip -%}
-                  {%- assign has_images = false -%}
-                  {%- for i in (1..10) -%}
-                    {%- assign image_key = 'strip_image_' | append: i -%}
-                    {%- if block.settings[image_key] != blank -%}
-                      {%- assign has_images = true -%}
-                      {%- break -%}
-                    {%- endif -%}
-                  {%- endfor -%}
-
-                  {%- if has_images -%}
-                    <div
-                      class="tag-card-image-strip"
-                      style="--strip-width: {{ block.settings.strip_width | default: 80 }}px; --mobile-strip-width: {{ block.settings.mobile_strip_width | default: 60 }}px;"
+                {%- if block.settings.show_text and block.settings.main_text != blank -%}
+                  {%- assign main_font_size = block.settings.main_text_font_size | default: 16 -%}
+                  {%- assign main_font_weight = block.settings.main_text_font_weight | default: 600 -%}
+                  {%- assign main_line_height = block.settings.main_text_line_height | default: 1.4 -%}
+                  {%- assign mobile_main_font_size = block.settings.mobile_main_text_font_size
+                    | default: main_font_size
+                  -%}
+                  {%- assign mobile_main_font_weight = block.settings.mobile_main_text_font_weight
+                    | default: main_font_weight
+                  -%}
+                  {%- assign mobile_main_line_height = block.settings.mobile_main_text_line_height
+                    | default: main_line_height
+                  -%}
+                  {%- assign main_display_type = block.settings.main_text_display_type | default: 'paragraph' -%}
+                  {%- if main_display_type == 'heading' -%}
+                    {%- assign plain_text = block.settings.main_text | strip_html -%}
+                    {%- assign words = plain_text | split: ' ' -%}
+                    <h3
+                      class="tag-card-main tag-card-main--heading"
+                      style="--desktop-main-font-size: {{ main_font_size }}px; --desktop-main-font-weight: {{ main_font_weight }}; --desktop-main-line-height: {{ main_line_height }}; --mobile-main-font-size: {{ mobile_main_font_size }}px; --mobile-main-font-weight: {{ mobile_main_font_weight }}; --mobile-main-line-height: {{ mobile_main_line_height }};{%- if block.settings.main_text_color != blank %} color: {{ block.settings.main_text_color }} !important;{% endif %}"
                     >
-                      <div class="tag-card-image-strip-track">
-                        {%- comment -%} First set of images {%- endcomment -%}
-                        {%- for i in (1..10) -%}
-                          {%- assign image_key = 'strip_image_' | append: i -%}
-                          {%- if block.settings[image_key] != blank -%}
-                            <div class="tag-card-image-strip-item">
-                              {{
-                                block.settings[image_key]
-                                | image_url: width: 160
-                                | image_tag: loading: 'lazy', alt: ''
-                              }}
-                            </div>
-                          {%- endif -%}
-                        {%- endfor -%}
-                        {%- comment -%} Duplicate for seamless loop {%- endcomment -%}
-                        {%- for i in (1..10) -%}
-                          {%- assign image_key = 'strip_image_' | append: i -%}
-                          {%- if block.settings[image_key] != blank -%}
-                            <div class="tag-card-image-strip-item">
-                              {{
-                                block.settings[image_key]
-                                | image_url: width: 160
-                                | image_tag: loading: 'lazy', alt: ''
-                              }}
-                            </div>
-                          {%- endif -%}
-                        {%- endfor -%}
-                      </div>
-                    </div>
+                      {%- for word in words -%}
+                        <span class="tag-card-word">{{ word }}</span>
+                        {%- unless forloop.last %} {% endunless %}
+                      {%- endfor -%}
+                    </h3>
                   {%- else -%}
-                    {%- comment -%} Show default product placeholder images when no images are uploaded {%- endcomment -%}
                     <div
-                      class="tag-card-image-strip"
-                      style="--strip-width: {{ block.settings.strip_width | default: 80 }}px; --mobile-strip-width: {{ block.settings.mobile_strip_width | default: 60 }}px;"
+                      class="tag-card-main tag-card-main--paragraph"
+                      style="--desktop-main-font-size: {{ main_font_size }}px; --desktop-main-font-weight: {{ main_font_weight }}; --desktop-main-line-height: {{ main_line_height }}; --mobile-main-font-size: {{ mobile_main_font_size }}px; --mobile-main-font-weight: {{ mobile_main_font_weight }}; --mobile-main-line-height: {{ mobile_main_line_height }};{%- if block.settings.main_text_color != blank %} color: {{ block.settings.main_text_color }} !important;{% endif %}"
                     >
-                      <div class="tag-card-image-strip-track">
-                        {%- assign default_images = 'product-apparel-1,product-apparel-2,product-apparel-3,product-apparel-4,product-bag-1,product-bag-2,product-bottle-1,product-bottle-2'
-                          | split: ','
-                        -%}
-                        {%- comment -%} First set of default images {%- endcomment -%}
-                        {%- for default_image in default_images -%}
-                          <div class="tag-card-image-strip-item">
-                            {{ default_image | placeholder_svg_tag: 'tag-card-image-strip-placeholder' }}
-                          </div>
-                        {%- endfor -%}
-                        {%- comment -%} Duplicate for seamless loop {%- endcomment -%}
-                        {%- for default_image in default_images -%}
-                          <div class="tag-card-image-strip-item">
-                            {{ default_image | placeholder_svg_tag: 'tag-card-image-strip-placeholder' }}
-                          </div>
-                        {%- endfor -%}
-                      </div>
+                      {{ block.settings.main_text }}
                     </div>
                   {%- endif -%}
                 {%- endif -%}
               </div>
+
+              {%- if block.settings.show_icon and block.settings.icon_image != blank -%}
+                <div
+                  class="tag-card-icon"
+                  style="--desktop-icon-size: {{ icon_size }}px; --mobile-icon-size: {{ mobile_icon_size }}px; width: var(--desktop-icon-size); height: var(--desktop-icon-size);"
+                >
+                  <img
+                    src="{{ block.settings.icon_image | image_url: width: 160 }}"
+                    alt="{{ block.settings.main_text | escape }}"
+                    loading="lazy"
+                    width="{{ icon_size }}"
+                    height="{{ icon_size }}"
+                  >
+                </div>
+              {%- endif -%}
+
+              {%- if block.settings.show_image_strip -%}
+                {%- assign has_images = false -%}
+                {%- for i in (1..10) -%}
+                  {%- assign image_key = 'strip_image_' | append: i -%}
+                  {%- if block.settings[image_key] != blank -%}
+                    {%- assign has_images = true -%}
+                    {%- break -%}
+                  {%- endif -%}
+                {%- endfor -%}
+
+                {%- if has_images -%}
+                  <div
+                    class="tag-card-image-strip"
+                    style="--strip-width: {{ block.settings.strip_width | default: 80 }}px; --mobile-strip-width: {{ block.settings.mobile_strip_width | default: 60 }}px;"
+                  >
+                    <div class="tag-card-image-strip-track">
+                      {%- comment -%} First set of images {%- endcomment -%}
+                      {%- for i in (1..10) -%}
+                        {%- assign image_key = 'strip_image_' | append: i -%}
+                        {%- if block.settings[image_key] != blank -%}
+                          <div class="tag-card-image-strip-item">
+                            {{
+                              block.settings[image_key]
+                              | image_url: width: 160
+                              | image_tag: loading: 'lazy', alt: ''
+                            }}
+                          </div>
+                        {%- endif -%}
+                      {%- endfor -%}
+                      {%- comment -%} Duplicate for seamless loop {%- endcomment -%}
+                      {%- for i in (1..10) -%}
+                        {%- assign image_key = 'strip_image_' | append: i -%}
+                        {%- if block.settings[image_key] != blank -%}
+                          <div class="tag-card-image-strip-item">
+                            {{
+                              block.settings[image_key]
+                              | image_url: width: 160
+                              | image_tag: loading: 'lazy', alt: ''
+                            }}
+                          </div>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                {%- else -%}
+                  {%- comment -%} Show default product placeholder images when no images are uploaded {%- endcomment -%}
+                  <div
+                    class="tag-card-image-strip"
+                    style="--strip-width: {{ block.settings.strip_width | default: 80 }}px; --mobile-strip-width: {{ block.settings.mobile_strip_width | default: 60 }}px;"
+                  >
+                    <div class="tag-card-image-strip-track">
+                      {%- assign default_images = 'product-apparel-1,product-apparel-2,product-apparel-3,product-apparel-4,product-bag-1,product-bag-2,product-bottle-1,product-bottle-2'
+                        | split: ','
+                      -%}
+                      {%- comment -%} First set of default images {%- endcomment -%}
+                      {%- for default_image in default_images -%}
+                        <div class="tag-card-image-strip-item">
+                          {{ default_image | placeholder_svg_tag: 'tag-card-image-strip-placeholder' }}
+                        </div>
+                      {%- endfor -%}
+                      {%- comment -%} Duplicate for seamless loop {%- endcomment -%}
+                      {%- for default_image in default_images -%}
+                        <div class="tag-card-image-strip-item">
+                          {{ default_image | placeholder_svg_tag: 'tag-card-image-strip-placeholder' }}
+                        </div>
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                {%- endif -%}
+              {%- endif -%}
             </div>
+            {%- if tag_card_is_link -%}</a>{%- else -%}</div>{%- endif -%}
 
           {%- when 'content_card' -%}
             {%- assign direction = block.settings.layout_direction | default: 'column' -%}
@@ -775,19 +793,46 @@
             {%- assign font_weight = block.settings.font_weight | default: 700 -%}
             {%- assign mobile_font_size = block.settings.mobile_font_size | default: font_size -%}
             {%- assign mobile_font_weight = block.settings.mobile_font_weight | default: font_weight -%}
+            {%- assign has_text_2 = false -%}
+            {%- if block.settings.text_2 != blank -%}
+              {%- assign has_text_2 = true -%}
+            {%- endif -%}
+            {%- assign text_gap = block.settings.text_gap | default: 50 -%}
+            {%- assign marquee_direction = 'normal' -%}
+            {%- if block.settings.direction == 'right' -%}
+              {%- assign marquee_direction = 'reverse' -%}
+            {%- endif -%}
+            {%- style -%}
+              {{ block.settings.text_font | font_face: font_display: 'swap' }}
+              {{ block.settings.text_2_font | font_face: font_display: 'swap' }}
+              #shopify-section-{{ section.id }} .scrolling-text-card-{{ block.id }} .marquee-item--text-1 {
+                font-family: {{ block.settings.text_font.family }}, {{ block.settings.text_font.fallback_families }};
+                font-weight: {{ block.settings.text_font.weight }};
+                font-style: {{ block.settings.text_font.style }};
+              }
+              #shopify-section-{{ section.id }} .scrolling-text-card-{{ block.id }} .marquee-item--text-2 {
+                font-family: {{ block.settings.text_2_font.family }}, {{ block.settings.text_2_font.fallback_families }};
+                font-weight: {{ block.settings.text_2_font.weight }};
+                font-style: {{ block.settings.text_2_font.style }};
+              }
+            {%- endstyle -%}
             <div
-              class="bento-card scrolling-text-card"
-              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %}{% if block.settings.card_border_color != blank %} border-color: {{ block.settings.card_border_color }} !important;{% endif %} --desktop-font-size: {{ font_size }}px; --desktop-font-weight: {{ font_weight }}; --mobile-font-size: {{ mobile_font_size }}px; --mobile-font-weight: {{ mobile_font_weight }}; --animation-duration: {{ block.settings.animation_duration | default: 40 }}s;"
+              class="bento-card scrolling-text-card scrolling-text-card-{{ block.id }}"
+              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %}{% if block.settings.card_border_color != blank %} border-color: {{ block.settings.card_border_color }} !important;{% endif %}{% if block.settings.text_color != blank %} --marquee-text-color: {{ block.settings.text_color }};{% endif %} --desktop-font-size: {{ font_size }}px; --desktop-font-weight: {{ font_weight }}; --mobile-font-size: {{ mobile_font_size }}px; --mobile-font-weight: {{ mobile_font_weight }}; --animation-duration: {{ block.settings.animation_duration | default: 40 }}s; --marquee-direction: {{ marquee_direction }}; --item-gap: {{ text_gap }}px;"
             >
               <div class="marquee-track">
                 {%- for i in (1..20) -%}
                   <span
-                    class="marquee-item"
+                    class="marquee-item marquee-item--text-1"
                     {% if i > 1 %}
                       aria-hidden="true"
                     {% endif %}
                   >
-                    {{- block.settings.text -}}
+                    {%- if block.settings.link != blank -%}
+                      <a href="{{ block.settings.link }}" class="marquee-link">
+                    {%- endif -%}
+                    {{ block.settings.text }}
+                    {%- if block.settings.link != blank -%}</a>{%- endif -%}
                   </span>
                   <img
                     src="{% if block.settings.separator_image != blank %}{{ block.settings.separator_image | image_url: width: 40 }}{% else %}https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-collection-2_large.png?v=1530129132{% endif %}"
@@ -797,6 +842,26 @@
                     width="40"
                     height="40"
                   >
+                  {%- if has_text_2 -%}
+                    <span
+                      class="marquee-item marquee-item--text-2"
+                      aria-hidden="true"
+                    >
+                      {%- if block.settings.link != blank -%}
+                        <a href="{{ block.settings.link }}" class="marquee-link">
+                      {%- endif -%}
+                      {{ block.settings.text_2 }}
+                      {%- if block.settings.link != blank -%}</a>{%- endif -%}
+                    </span>
+                    <img
+                      src="{% if block.settings.separator_image != blank %}{{ block.settings.separator_image | image_url: width: 40 }}{% else %}https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-collection-2_large.png?v=1530129132{% endif %}"
+                      alt=""
+                      class="marquee-separator"
+                      aria-hidden="true"
+                      width="40"
+                      height="40"
+                    >
+                  {%- endif -%}
                 {%- endfor -%}
               </div>
             </div>
@@ -1883,6 +1948,23 @@
       "type": "tag_card",
       "name": "Tag Card",
       "settings": [
+        {
+          "type": "header",
+          "content": "Link"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_as_link",
+          "label": "Use card as link",
+          "default": false,
+          "info": "When enabled, the entire card becomes a clickable link."
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link URL",
+          "info": "Used when \"Use card as link\" is enabled."
+        },
         { "type": "checkbox", "id": "show_tag", "label": "Show tag", "default": true },
         { "type": "text", "id": "tag_text", "label": "Tag text", "default": "Tag Name" },
         {
@@ -2961,12 +3043,77 @@
       "type": "scrolling_text_card",
       "name": "Scrolling Text",
       "settings": [
-        { "type": "text", "id": "text", "label": "Text", "default": "&nbsp; Scrolling Text &nbsp;" },
+        {
+          "type": "header",
+          "content": "Text 1"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text 1",
+          "default": "<p>Scrolling Text</p>"
+        },
+        {
+          "type": "font_picker",
+          "id": "text_font",
+          "label": "Text 1 Font",
+          "default": "assistant_n4"
+        },
+        {
+          "type": "header",
+          "content": "Text 2 (Optional)"
+        },
+        {
+          "type": "richtext",
+          "id": "text_2",
+          "label": "Text 2",
+          "info": "Leave blank to repeat only Text 1. When set, Text 1 and Text 2 alternate in the marquee."
+        },
+        {
+          "type": "font_picker",
+          "id": "text_2_font",
+          "label": "Text 2 Font",
+          "default": "assistant_n4"
+        },
+        {
+          "type": "header",
+          "content": "Link"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link",
+          "info": "Makes the marquee content clickable (opens in same window)"
+        },
+        {
+          "type": "header",
+          "content": "Layout & spacing"
+        },
         {
           "type": "image_picker",
           "id": "separator_image",
           "label": "Separator Image",
           "info": "Image displayed between text repetitions"
+        },
+        {
+          "type": "range",
+          "id": "text_gap",
+          "min": 10,
+          "max": 150,
+          "step": 5,
+          "unit": "px",
+          "label": "Gap between items",
+          "default": 50
+        },
+        {
+          "type": "header",
+          "content": "Appearance"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color",
+          "info": "Overrides default text color for the marquee"
         },
         {
           "type": "range",
@@ -2978,6 +3125,16 @@
           "label": "Animation Duration",
           "default": 40,
           "info": "Lower values result in faster scrolling speed."
+        },
+        {
+          "type": "select",
+          "id": "direction",
+          "label": "Scroll direction",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "left"
         },
         {
           "type": "color",

@@ -403,8 +403,9 @@ body.facets-drawer-open .facets-drawer * {
   pointer-events: none;
 }
 
+/* Min on bottom so max thumb can sit on top and both thumbs are clickable */
 .price-facet-slider__input--min {
-  z-index: 2;
+  z-index: 1;
   pointer-events: none;
 }
 
@@ -416,8 +417,9 @@ body.facets-drawer-open .facets-drawer * {
   pointer-events: auto;
 }
 
+/* Max on top so its thumb is always clickable (min thumb gets clicks through transparent track) */
 .price-facet-slider__input--max {
-  z-index: 1;
+  z-index: 2;
   pointer-events: none;
 }
 
@@ -468,10 +470,20 @@ body.facets-drawer-open .facets-drawer * {
 
 .price-facet-slider__input--min::-webkit-slider-thumb {
   position: relative;
-  z-index: 2;
+  z-index: 1;
 }
 
 .price-facet-slider__input--min::-moz-range-thumb {
+  position: relative;
+  z-index: 1;
+}
+
+.price-facet-slider__input--max::-webkit-slider-thumb {
+  position: relative;
+  z-index: 2;
+}
+
+.price-facet-slider__input--max::-moz-range-thumb {
   position: relative;
   z-index: 2;
 }

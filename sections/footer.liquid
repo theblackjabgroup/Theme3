@@ -19,7 +19,7 @@
       "type": "text",
       "id": "email_placeholder",
       "label": "Email Placeholder",
-      "default": "YOUR EMAIL..."
+      "default": "Your email..."
     },
     {
       "type": "header",
@@ -181,10 +181,12 @@
       <div class="footer-left">
         <!-- Newsletter -->
         <div class="footer-newsletter">
-          <span class="newsletter-label">{{ section.settings.newsletter_heading }}</span>
           {% form 'customer', id: 'FooterNewsletter', class: 'footer-newsletter-form' %}
             <input type="hidden" name="contact[tags]" value="newsletter">
             <div class="newsletter-field">
+              <label class="newsletter-label" for="FooterNewsletterInput">
+                {{- section.settings.newsletter_heading -}}
+              </label>
               <input
                 id="FooterNewsletterInput"
                 type="email"
@@ -221,8 +223,9 @@
               <h2 class="box-heading">{{ section.settings.main_heading }}</h2>
               <div class="copyright">
                 <span>
-                  {{- 'now' | date: '%Y' }}
-                  {{ shop.name | upcase -}}
+                  {{ 'now' | date: '%Y' | prepend: 'Copyright © ' | append: ', ' -}}
+                  <a href="{{ routes.root_url }}">{{ shop.name }}</a>
+                  {{ powered_by_link }}
                 </span>
               </div>
             </div>
