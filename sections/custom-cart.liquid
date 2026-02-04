@@ -690,7 +690,9 @@
                               <a href="{{ item.url }}" class="cart-item-card__name">
                                 {{- item.product.title | upcase -}}
                               </a>
-                              <span class="cart-item-card__variant">{{ item.variant.title }}</span>
+                              {%- unless item.product.has_only_default_variant -%}
+                                <span class="cart-item-card__variant">{{ item.variant.title }}</span>
+                              {%- endunless -%}
                             </div>
                           </div>
 
@@ -704,6 +706,7 @@
                             class="cart-item-card__total"
                             data-item-index="{{ item.index | plus: 1 }}"
                             data-unit-price="{{ item.final_price }}"
+                            data-original-unit-price="{{ item.original_price }}"
                           >
                             {%- if item.original_line_price != item.final_line_price -%}
                               <s class="cart-item-card__old-price">{{ item.original_line_price | money }}</s>
@@ -717,7 +720,8 @@
                           {% render 'submit-button',
                             text: 'Edit',
                             class: 'cart-item-action-btn cart-item-edit-btn',
-                            url: '#'
+                            url: item.url,
+                            attributes: 'aria-label="Edit {{ item.product.title | escape }}"'
                           %}
                           {% render 'submit-button',
                             text: 'Remove',
@@ -755,6 +759,7 @@
                   <span class="cart-note-input__shadow" aria-hidden="true"></span>
                   <textarea
                     name="note"
+                    form="cart"
                     id="Cart-note"
                     class="cart-note-input"
                     placeholder="Order Note"
@@ -771,7 +776,12 @@
                   <span class="subtotal-value" id="cart-subtotal">{{ cart.total_price | money }}</span>
                 </div>
 
-                {% render 'submit-button', text: 'Proceed To Checkout', url: '/checkout', class: 'checkout-btn-3d' %}
+                {% render 'submit-button',
+                  text: 'Proceed To Checkout',
+                  type: 'submit',
+                  class: 'checkout-btn-3d',
+                  attributes: 'name=\"checkout\" form=\"cart\"'
+                %}
               </div>
 
               <!-- Payment Icons -->
@@ -947,59 +957,6 @@
     );
   })();
 
-  // Handle coupon form toggle
-  (function () {
-    const couponToggle = document.querySelector('[data-coupon-toggle]');
-    const couponForm = document.getElementById('coupon-form');
-    const couponInput = document.getElementById('coupon-code-input');
-    const couponApplyBtn = document.getElementById('coupon-apply-btn');
-
-    if (!couponToggle || !couponForm) return;
-
-    // Toggle coupon form when clicking on the toggle text
-    couponToggle.addEventListener('click', (e) => {
-      // Only toggle if clicking on the span or the toggle itself
-      if (e.target.closest('[data-coupon-toggle]')) {
-        couponForm.classList.toggle('active');
-        // Focus input when form opens
-        if (couponForm.classList.contains('active') && couponInput) {
-          setTimeout(() => {
-            couponInput.focus();
-          }, 100);
-        }
-      }
-    });
-
-    // Handle apply button click
-    if (couponApplyBtn && couponInput) {
-      couponApplyBtn.addEventListener('click', () => {
-        const couponCode = couponInput.value.trim();
-        if (couponCode) {
-          // Store discount code to apply at checkout
-          sessionStorage.setItem('cartDiscountCode', couponCode);
-
-          // Show success feedback
-          const originalText = couponApplyBtn.textContent;
-          couponApplyBtn.textContent = 'Applied!';
-          couponApplyBtn.style.backgroundColor = '#28a745';
-
-          setTimeout(() => {
-            couponApplyBtn.textContent = originalText;
-            couponApplyBtn.style.backgroundColor = '';
-          }, 2000);
-        }
-      });
-
-      // Allow Enter key to apply coupon
-      couponInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          couponApplyBtn.click();
-        }
-      });
-    }
-  })();
-
   // Handle real-time cart updates with plus/minus buttons
   (function () {
     let initialized = false;
@@ -1009,7 +966,6 @@
 
       const quantitySelectors = document.querySelectorAll('.cart-item__quantity-selector');
       const cartSubtotal = document.getElementById('cart-subtotal');
-      const cartTotal = document.getElementById('cart-total');
 
       if (!quantitySelectors.length) {
         setTimeout(initQuantitySelectors, 100);
@@ -1028,7 +984,7 @@
         }
 
         // Get the original format from the page or use provided format
-        const originalTotal = originalFormat || (cartTotal ? cartTotal.textContent.trim() : '');
+        const originalTotal = originalFormat || (cartSubtotal ? cartSubtotal.textContent.trim() : '');
         if (originalTotal) {
           // Extract currency symbol and format
           const currencyMatch = originalTotal.match(/^([^\d\s.,]+)/);
@@ -1075,9 +1031,11 @@
 
         // Get unit price from data attribute
         const unitPrice = parseInt(itemTotalCell.getAttribute('data-unit-price')) || 0;
+        const originalUnitPrice = parseInt(itemTotalCell.getAttribute('data-original-unit-price')) || 0;
 
         // Calculate new line total
         const newLineTotal = unitPrice * newQuantity;
+        const newOriginalLineTotal = originalUnitPrice * newQuantity;
 
         // Update quantity display
         quantityInput.value = newQuantity;
@@ -1085,10 +1043,17 @@
         // Update item total
         const formattedPrice = formatMoney(newLineTotal);
         const currentPriceSpan = itemTotalCell.querySelector('.cart-item-card__current-price');
+        const oldPriceSpan = itemTotalCell.querySelector('.cart-item-card__old-price');
         if (currentPriceSpan) {
           currentPriceSpan.textContent = formattedPrice;
         } else {
           itemTotalCell.textContent = formattedPrice;
+        }
+
+        // Update discounted item's original (strikethrough) line price, if present
+        if (oldPriceSpan && originalUnitPrice && originalUnitPrice !== unitPrice) {
+          const originalFormat = oldPriceSpan.textContent.trim();
+          oldPriceSpan.textContent = formatMoney(newOriginalLineTotal, originalFormat);
         }
 
         // Recalculate cart totals
@@ -1110,10 +1075,6 @@
         if (cartSubtotal) {
           const originalFormat = cartSubtotal.textContent.trim();
           cartSubtotal.textContent = formatMoney(totalPrice, originalFormat);
-        }
-        if (cartTotal) {
-          const originalFormat = cartTotal.textContent.trim();
-          cartTotal.textContent = formatMoney(totalPrice, originalFormat);
         }
       }
 
