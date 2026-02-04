@@ -735,8 +735,8 @@
                     <div class="cart-item-card__inner">
                       <!-- Image Section -->
                       <div class="cart-item-card__image-wrap">
-                        {%- if item.product.tags contains '16% off' -%}
-                          <div class="cart-item-card__badge">16% off</div>
+                        {%- if item.product.tags.size > 0 -%}
+                          <div class="cart-item-card__badge">{{ item.product.tags.first }}</div>
                         {%- endif -%}
                         <div class="cart-item-card__image-container">
                           {% if item.image %}
@@ -1212,8 +1212,11 @@
           }
         });
 
-        // Update cart via API
-        const body = JSON.stringify({ updates: updates });
+        const noteInput = document.getElementById('Cart-note');
+        const note = noteInput ? noteInput.value.trim() : '';
+
+        // Update cart via API (quantities + note)
+        const body = JSON.stringify({ updates: updates, note: note });
 
         fetch(`${window.routes.cart_update_url}`, {
           method: 'POST',
