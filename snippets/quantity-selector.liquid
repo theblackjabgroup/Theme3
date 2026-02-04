@@ -9,24 +9,24 @@
 {% endcomment %}
 
 <div
-  class="cart-item__quantity-selector"
+  class="quantity quantity--drawer-style cart-item__quantity-selector"
   data-item-index="{{ item.index | plus: 1 }}"
   data-variant-id="{{ item.variant_id }}"
 >
   <button
     type="button"
-    class="cart-item__quantity-btn cart-item__quantity-minus"
+    class="quantity__button cart-item__quantity-btn cart-item__quantity-minus"
+    name="minus"
     aria-label="{{ 'products.product.quantity.decrease' | t | default: 'Decrease quantity' }}"
   >
-    −
+    &minus;
   </button>
-  <span class="cart-item__quantity-value">{{ item.quantity }}</span>
   <input
     type="number"
     name="updates[]"
     value="{{ item.quantity }}"
     min="0"
-    class="cart-item__quantity-input"
+    class="quantity__input"
     id="Quantity-{{ item.index | plus: 1 }}"
     data-index="{{ item.index | plus: 1 }}"
     data-variant-id="{{ item.variant_id }}"
@@ -34,9 +34,10 @@
   >
   <button
     type="button"
-    class="cart-item__quantity-btn cart-item__quantity-plus"
+    class="quantity__button cart-item__quantity-btn cart-item__quantity-plus"
+    name="plus"
     aria-label="{{ 'products.product.quantity.increase' | t | default: 'Increase quantity' }}"
   >
-    +
+    &plus;
   </button>
 </div>
