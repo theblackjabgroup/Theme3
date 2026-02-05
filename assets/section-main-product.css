@@ -401,10 +401,7 @@ accordion-item {
   padding-bottom: var(--spacing-m); /* Keep spacing consistent */
 }
 
-/* Remove default marker if it somehow appears */
-.accordion__summary::-webkit-details-marker {
-  display: none;
-}
+
 
 .accordion__icon {
   position: relative;
