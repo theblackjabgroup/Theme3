@@ -4,14 +4,23 @@ if (!customElements.get('accordion-item')) {
     class AccordionItem extends HTMLElement {
       constructor() {
         super();
+        this.onSummaryClick = this.toggle.bind(this);
+        this.onSummaryKeydown = this.onKeydown.bind(this);
       }
 
       connectedCallback() {
         this.summary = this.querySelector('.accordion__summary');
         if (this.summary) {
           this.summary.setAttribute('aria-expanded', this.hasAttribute('open'));
-          this.summary.addEventListener('click', this.toggle.bind(this));
-          this.summary.addEventListener('keydown', this.onKeydown.bind(this));
+          this.summary.addEventListener('click', this.onSummaryClick);
+          this.summary.addEventListener('keydown', this.onSummaryKeydown);
+        }
+      }
+
+      disconnectedCallback() {
+        if (this.summary) {
+          this.summary.removeEventListener('click', this.onSummaryClick);
+          this.summary.removeEventListener('keydown', this.onSummaryKeydown);
         }
       }
 
