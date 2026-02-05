@@ -8,7 +8,7 @@ if (!customElements.get('product-form')) {
         this.form = this.querySelector('form');
         this.variantIdInput.disabled = false;
         this.form.addEventListener('submit', this.onSubmitHandler.bind(this));
-        this.cart = document.querySelector('cart-notification') || document.querySelector('cart-drawer');
+        this.cart = document.querySelector('cart-drawer') || document.querySelector('cart-notification');
         this.submitButton = this.querySelector('[type="submit"]');
         this.submitButtonText = this.submitButton.querySelector('span');
 
@@ -19,13 +19,19 @@ if (!customElements.get('product-form')) {
 
       onSubmitHandler(evt) {
         evt.preventDefault();
-        if (this.submitButton.getAttribute('aria-disabled') === 'true') return;
+        if (this.submitButton.getAttribute('aria-disabled') === 'true' || this.submitButton.disabled) return;
 
         this.handleErrorMessage();
 
         this.submitButton.setAttribute('aria-disabled', true);
+        this.submitButton.disabled = true;
         this.submitButton.classList.add('loading');
         this.querySelector('.loading__spinner').classList.remove('hidden');
+
+        // Lazy load cart element in case it wasn't ready during constructor
+        if (!this.cart) {
+          this.cart = document.querySelector('cart-drawer') || document.querySelector('cart-notification');
+        }
 
         const config = fetchConfig('javascript');
         config.headers['X-Requested-With'] = 'XMLHttpRequest';
@@ -35,7 +41,7 @@ if (!customElements.get('product-form')) {
         if (this.cart) {
           formData.append(
             'sections',
-            this.cart.getSectionsToRender().map((section) => section.id)
+            this.cart.getSectionsToRender().map((section) => section.id),
           );
           formData.append('sections_url', window.location.pathname);
           this.cart.setActiveElement(document.activeElement);
@@ -82,16 +88,16 @@ if (!customElements.get('product-form')) {
                 'modalClosed',
                 () => {
                   setTimeout(() => {
-                    CartPerformance.measure("add:paint-updated-sections", () => {
+                    CartPerformance.measure('add:paint-updated-sections', () => {
                       this.cart.renderContents(response);
                     });
                   });
                 },
-                { once: true }
+                { once: true },
               );
               quickAddModal.hide(true);
             } else {
-              CartPerformance.measure("add:paint-updated-sections", () => {
+              CartPerformance.measure('add:paint-updated-sections', () => {
                 this.cart.renderContents(response);
               });
             }
@@ -102,10 +108,13 @@ if (!customElements.get('product-form')) {
           .finally(() => {
             this.submitButton.classList.remove('loading');
             if (this.cart && this.cart.classList.contains('is-empty')) this.cart.classList.remove('is-empty');
-            if (!this.error) this.submitButton.removeAttribute('aria-disabled');
+
+            this.submitButton.removeAttribute('aria-disabled');
+            this.submitButton.disabled = false;
+
             this.querySelector('.loading__spinner').classList.add('hidden');
 
-            CartPerformance.measureFromEvent("add:user-action", evt);
+            CartPerformance.measureFromEvent('add:user-action', evt);
           });
       }
 
@@ -137,6 +146,6 @@ if (!customElements.get('product-form')) {
       get variantIdInput() {
         return this.form.querySelector('[name=id]');
       }
-    }
+    },
   );
 }

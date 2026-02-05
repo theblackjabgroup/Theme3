@@ -136,6 +136,7 @@
       {%- if badge != blank and badge != '0' -%}
         <span class="submit-button__badge">{{ badge }}</span>
       {%- endif -%}
+      {%- render 'loading-spinner' -%}
     </span>
   </button>
 {%- endif -%}

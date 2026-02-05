@@ -50,6 +50,9 @@
   #MainBlogContainer-{{ section.id }} .main-blog-card__image-wrapper {
     border-radius: {{ section.settings.image_border_radius }}px;
   }
+  #MainBlogContainer-{{ section.id }} {
+    --blog-card-transition-duration: {{ section.settings.animation_duration }}s;
+  }
 {%- endstyle -%}
 
 <div class="main-blog-slider color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-margin">
@@ -166,6 +169,20 @@
       let isAnimating = false;
       let scrollTimeout;
 
+      // Calculate dimensions once
+      const getCardMetrics = () => {
+        const firstCard = allCards[0];
+        if (!firstCard) return { cardWidth: 0, gap: 0, totalRealWidth: 0, cloneWidth: 0 };
+
+        const style = window.getComputedStyle(track);
+        const gap = parseFloat(style.gap) || 30; 
+        const cardWidth = firstCard.offsetWidth + gap;
+        const totalRealWidth = cardCount * cardWidth;
+        const cloneWidth = cloneCount * cardWidth;
+
+        return { cardWidth, gap, totalRealWidth, cloneWidth };
+      };
+
       requestAnimationFrame(() => {
         handleVisualUpdate(currentIndex, false);
       });
@@ -180,33 +197,38 @@
         setTimeout(() => {
           checkIndexBounds();
           isAnimating = false;
-        }, 800);
+        }, 800); // Matches CSS transition duration
       }
 
       function checkIndexBounds() {
         let newIndex = currentIndex;
         let jumped = false;
 
+        // Button-based jump logic
         if (currentIndex < cloneCount || currentIndex >= cloneCount + cardCount) {
           const relativeIndex = (currentIndex - cloneCount) % cardCount;
           const adjustedRelativeIndex = relativeIndex < 0 ? relativeIndex + cardCount : relativeIndex;
-
           newIndex = cloneCount + adjustedRelativeIndex;
           jumped = true;
         }
 
         if (jumped) {
-          container.classList.add('no-transition');
-          void container.offsetHeight;
-
-          handleVisualUpdate(newIndex, false);
-          currentIndex = newIndex;
-
-          void container.offsetHeight;
-          requestAnimationFrame(() => {
-            container.classList.remove('no-transition');
-          });
+          performJump(newIndex);
         }
+      }
+
+      function performJump(newIndex) {
+        container.classList.add('no-transition');
+
+        handleVisualUpdate(newIndex, false);
+        currentIndex = newIndex;
+
+        // Force reflow
+        void container.offsetHeight;
+
+        requestAnimationFrame(() => {
+          container.classList.remove('no-transition');
+        });
       }
 
       function handleVisualUpdate(index, animate, skipScroll = false) {
@@ -234,8 +256,33 @@
         });
       }
 
+      function checkInfiniteScroll() {
+        const { totalRealWidth, cloneWidth, cardWidth } = getCardMetrics();
+        if (totalRealWidth === 0) return;
+
+        const scrollLeft = container.scrollLeft;
+        const threshold = cardWidth; // Buffer of one card width
+
+        // If scrolled into Left Clone Zone
+        if (scrollLeft < cloneWidth - threshold) {
+          container.classList.add('no-transition');
+          container.scrollLeft += totalRealWidth;
+          void container.offsetHeight;
+          container.classList.remove('no-transition');
+        }
+        // If scrolled into Right Clone Zone
+        else if (scrollLeft > cloneWidth + totalRealWidth + threshold) {
+          container.classList.add('no-transition');
+          container.scrollLeft -= totalRealWidth;
+          void container.offsetHeight;
+          container.classList.remove('no-transition');
+        }
+      }
+
       const onScroll = () => {
         if (isAnimating) return;
+
+        checkInfiniteScroll();
 
         requestAnimationFrame(() => {
           if (isAnimating) return;
@@ -341,6 +388,16 @@
       "id": "color_scheme",
       "label": "t:sections.all.colors.label",
       "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "animation_duration",
+      "min": 0.5,
+      "max": 4.0,
+      "step": 0.1,
+      "unit": "s",
+      "label": "Animation Duration",
+      "default": 0.8
     },
     {
       "type": "header",

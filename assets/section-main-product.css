@@ -23,6 +23,13 @@
   background: var(--color-primary-button-bg);
   position: relative;
   margin-top: var(--section-margin-top, var(--spacing-6));
+  margin-bottom: var(--section-margin-bottom, 0px);
+  margin-left: var(--section-margin-horizontal, 0px);
+  margin-right: var(--section-margin-horizontal, 0px);
+  padding-top: var(--section-padding-top, 0px);
+  padding-bottom: var(--section-padding-bottom, 0px);
+  padding-left: var(--section-padding-horizontal, 0px);
+  padding-right: var(--section-padding-horizontal, 0px);
   border-radius: var(--section-border-radius, 14px);
 }
 
@@ -76,6 +83,9 @@
   display: block;
   height: 100%;
   width: 0;
+}
+.product-split-left {
+  padding-right: var(--section-padding-horizontal, 0px);
 }
 
 .product-left-inner {
@@ -224,7 +234,8 @@
   padding: 0;
   font-size: 1.2rem;
   white-space: nowrap;
-  min-width: 260px;
+  min-width: auto;
+  flex: 1 1 auto;
 }
 
 .product-form__buttons {
@@ -256,6 +267,7 @@
   position: relative;
   text-align: center;
   padding: 10px 0;
+  padding-left: var(--section-padding-horizontal, 0px);
   color: var(--color-text);
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -592,6 +604,15 @@ accordion-item[open] .accordion__wrapper {
   display: none;
 }
 
+@media (max-width: 1250px) {
+  .product-hero-section {
+    display: none;
+  }
+  .is-hero-slide {
+    display: flex;
+  }
+}
+
 @media (max-width: 989px) {
   .product-form__submit {
     padding: 0 30px;
@@ -606,6 +627,13 @@ accordion-item[open] .accordion__wrapper {
     height: auto;
     overflow: visible;
     margin-top: var(--section-margin-top-mobile, 0px);
+    margin-bottom: var(--section-margin-bottom-mobile, 0px);
+    margin-left: var(--section-margin-horizontal-mobile, 0px);
+    margin-right: var(--section-margin-horizontal-mobile, 0px);
+    padding-top: var(--section-padding-top-mobile, 0px);
+    padding-bottom: var(--section-padding-bottom-mobile, 0px);
+    padding-left: var(--section-padding-horizontal-mobile, 0px);
+    padding-right: var(--section-padding-horizontal-mobile, 0px);
   }
   .product-hero-section {
     display: none; 
@@ -653,9 +681,6 @@ accordion-item[open] .accordion__wrapper {
     border-top: 1px solid var(--color-primary-button-border);
   }
   
-  .product-actions-row form {
-    flex-grow: 1;
-  }
   .product-form__input label{
     min-width: 86px;
     height: 30px;
