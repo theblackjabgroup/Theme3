@@ -21,6 +21,7 @@ if (!customElements.get('product-form')) {
         evt.preventDefault();
         if (this.submitButton.getAttribute('aria-disabled') === 'true' || this.submitButton.disabled) return;
 
+        this.error = false; // Reset error state for new submission
         this.handleErrorMessage();
 
         this.submitButton.setAttribute('aria-disabled', true);
@@ -109,8 +110,11 @@ if (!customElements.get('product-form')) {
             this.submitButton.classList.remove('loading');
             if (this.cart && this.cart.classList.contains('is-empty')) this.cart.classList.remove('is-empty');
 
-            this.submitButton.removeAttribute('aria-disabled');
-            this.submitButton.disabled = false;
+            // Only re-enable button if NO error occurred (preserves Sold Out state)
+            if (!this.error) {
+              this.submitButton.removeAttribute('aria-disabled');
+              this.submitButton.disabled = false;
+            }
 
             this.querySelector('.loading__spinner').classList.add('hidden');
 

@@ -175,13 +175,15 @@
         if (!firstCard) return { cardWidth: 0, gap: 0, totalRealWidth: 0, cloneWidth: 0 };
 
         const style = window.getComputedStyle(track);
-        const gap = parseFloat(style.gap) || 30; 
+        const gap = parseFloat(style.gap) || 30;
         const cardWidth = firstCard.offsetWidth + gap;
         const totalRealWidth = cardCount * cardWidth;
         const cloneWidth = cloneCount * cardWidth;
 
         return { cardWidth, gap, totalRealWidth, cloneWidth };
       };
+
+      const animationDuration = {{ section.settings.animation_duration | times: 1000 }};
 
       requestAnimationFrame(() => {
         handleVisualUpdate(currentIndex, false);
@@ -197,7 +199,7 @@
         setTimeout(() => {
           checkIndexBounds();
           isAnimating = false;
-        }, 800); // Matches CSS transition duration
+        }, animationDuration); // Matches CSS transition duration
       }
 
       function checkIndexBounds() {
@@ -219,11 +221,11 @@
 
       function performJump(newIndex) {
         container.classList.add('no-transition');
+        void container.offsetHeight; // Force reflow
 
         handleVisualUpdate(newIndex, false);
         currentIndex = newIndex;
 
-        // Force reflow
         void container.offsetHeight;
 
         requestAnimationFrame(() => {
@@ -266,6 +268,7 @@
         // If scrolled into Left Clone Zone
         if (scrollLeft < cloneWidth - threshold) {
           container.classList.add('no-transition');
+          void container.offsetHeight; // Force reflow
           container.scrollLeft += totalRealWidth;
           void container.offsetHeight;
           container.classList.remove('no-transition');
@@ -273,6 +276,7 @@
         // If scrolled into Right Clone Zone
         else if (scrollLeft > cloneWidth + totalRealWidth + threshold) {
           container.classList.add('no-transition');
+          void container.offsetHeight; // Force reflow
           container.scrollLeft -= totalRealWidth;
           void container.offsetHeight;
           container.classList.remove('no-transition');

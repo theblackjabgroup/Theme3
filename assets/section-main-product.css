@@ -74,6 +74,7 @@
   z-index: 10;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  padding-right: var(--section-padding-horizontal, 0px);
 }
 .product-split-left::-webkit-scrollbar {
   display: none;
@@ -84,9 +85,7 @@
   height: 100%;
   width: 0;
 }
-.product-split-left {
-  padding-right: var(--section-padding-horizontal, 0px);
-}
+
 
 .product-left-inner {
   max-width: 480px;
