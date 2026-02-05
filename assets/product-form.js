@@ -8,13 +8,27 @@ if (!customElements.get('product-form')) {
         this.form = this.querySelector('form');
         this.variantIdInput.disabled = false;
         this.form.addEventListener('submit', this.onSubmitHandler.bind(this));
+
         this.cart = document.querySelector('cart-drawer') || document.querySelector('cart-notification');
         this.submitButton = this.querySelector('[type="submit"]');
-        this.submitButtonText = this.submitButton.querySelector('span');
+        this.submitButtonText =
+          this.submitButton.querySelector('.submit-button__text') || this.submitButton.querySelector('span');
 
         if (document.querySelector('cart-drawer')) this.submitButton.setAttribute('aria-haspopup', 'dialog');
 
         this.hideErrors = this.dataset.hideErrors === 'true';
+      }
+
+      connectedCallback() {
+        this.onFormChangeBound = this.onFormChange.bind(this);
+        // Listen to document to catch inputs outside the form tag but linked via form attribute
+        document.addEventListener('change', this.onFormChangeBound);
+      }
+
+      disconnectedCallback() {
+        if (this.onFormChangeBound) {
+          document.removeEventListener('change', this.onFormChangeBound);
+        }
       }
 
       onSubmitHandler(evt) {
@@ -135,6 +149,29 @@ if (!customElements.get('product-form')) {
         if (errorMessage) {
           this.errorMessage.textContent = errorMessage;
         }
+      }
+
+      // Reset error state when user changes variant/inputs
+      onFormChange(evt) {
+        // More robust check: is the changed input inside the same product section?
+        const sectionId = this.dataset.sectionId;
+        const sectionContainer = document.getElementById(`ProductSection-${sectionId}`);
+
+        // If we can't find the section or the target isn't inside it, ignore
+        if (!sectionContainer || !sectionContainer.contains(evt.target)) {
+          // Fallback: check form attribute just in case
+          if (evt.target.form !== this.form && evt.target.getAttribute('form') !== this.form.id) return;
+        }
+
+        this.error = false;
+        this.handleErrorMessage(); // Clear error text
+        this.submitButton.removeAttribute('aria-disabled');
+        this.submitButton.disabled = false;
+        this.submitButtonText.classList.remove('hidden');
+
+        // Hide sold out message if it exists
+        const soldOutMessage = this.submitButton.querySelector('.sold-out-message');
+        if (soldOutMessage) soldOutMessage.classList.add('hidden');
       }
 
       toggleSubmitButton(disable = true, text) {

@@ -133,6 +133,9 @@
       {%- if button_text != blank -%}
         <span class="submit-button__text">{{ button_text }}</span>
       {%- endif -%}
+      <span class="sold-out-message hidden">
+        {{ 'products.product.sold_out' | t | default: 'Sold Out' }}
+      </span>
       {%- if badge != blank and badge != '0' -%}
         <span class="submit-button__badge">{{ badge }}</span>
       {%- endif -%}
