@@ -163,6 +163,8 @@ if (!customElements.get('product-form')) {
           if (evt.target.form !== this.form && evt.target.getAttribute('form') !== this.form.id) return;
         }
 
+        if (!this.error) return;
+
         this.error = false;
         this.handleErrorMessage(); // Clear error text
         this.submitButton.removeAttribute('aria-disabled');
