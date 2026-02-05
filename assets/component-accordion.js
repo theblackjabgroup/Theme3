@@ -4,6 +4,9 @@ if (!customElements.get('accordion-item')) {
     class AccordionItem extends HTMLElement {
       constructor() {
         super();
+      }
+
+      connectedCallback() {
         this.summary = this.querySelector('.accordion__summary');
         if (this.summary) {
           this.summary.setAttribute('aria-expanded', this.hasAttribute('open'));
