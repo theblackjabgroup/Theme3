@@ -167,6 +167,16 @@ if (!customElements.get('product-form')) {
 
         this.error = false;
         this.handleErrorMessage(); // Clear error text
+
+        // Don't enable the button if the product is sold out or unavailable
+        if (
+          this.submitButtonText.textContent === window.variantStrings.soldOut ||
+          this.submitButtonText.textContent === window.variantStrings.unavailable
+        ) {
+          this.submitButton.disabled = true;
+          return;
+        }
+
         this.submitButton.removeAttribute('aria-disabled');
         this.submitButton.disabled = false;
         this.submitButtonText.classList.remove('hidden');
