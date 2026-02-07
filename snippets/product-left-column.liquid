@@ -158,9 +158,9 @@
 
           {% liquid
             if product.selected_or_first_available_variant.available
-              assign btn_text = 'ADD TO CART'
+              assign btn_text = 'products.product.add_to_cart' | t
             else
-              assign btn_text = 'Sold Out'
+              assign btn_text = 'products.product.sold_out' | t
             endif
           %}
 
