@@ -330,6 +330,10 @@
     "collection_list": {
       "view_all": "View all"
     },
+    "contact-form": {
+      "map_title": "Location map",
+      "map_no_address": "Add your address in Contact details to show the map."
+    },
     "collection_template": {
       "empty": "No products found",
       "title": "Collection",
