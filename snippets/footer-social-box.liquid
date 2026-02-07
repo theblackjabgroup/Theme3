@@ -20,7 +20,11 @@
   {%- assign has_hover_icon = true -%}
 {%- endif -%}
 
-<a href="{{ link | default: '#' }}" class="social-box{% if has_hover_icon %} social-box--has-hover-icon{% endif %}">
+<a
+  href="{{ link | default: '#' }}"
+  class="social-box{% if has_hover_icon %} social-box--has-hover-icon{% endif %}"
+  aria-label="{{ alt_text | escape }}"
+>
   {%- if image != blank -%}
     {%- if has_hover_icon -%}
       <span class="social-box__icon-wrap">
