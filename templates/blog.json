@@ -62,18 +62,12 @@
           "type": "card",
           "settings": {
           }
-        },
-        "card_3": {
-          "type": "card",
-          "settings": {
-          }
         }
       },
       "block_order": [
         "textbox",
         "card_1",
-        "card_2",
-        "card_3"
+        "card_2"
       ],
       "settings": {
       }
