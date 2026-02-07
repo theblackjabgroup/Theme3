@@ -45,7 +45,7 @@
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    background: var(--color-header-button-background);
+    background: {{ bg_color }};
     position: relative;
     overflow: hidden;
     padding: 20px;
@@ -190,12 +190,67 @@
   }
 
   @media (max-width: 768px) {
+    .template-404 {
+      height: auto;
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding: 16px;
+      margin: 12px;
+      border-radius: 16px;
+      align-items: {{ section.settings.content_vertical_position_mobile | default: 'center' }};
+      padding-bottom: 2rem;
+    }
+
+    .template-404__content {
+      gap: 1.25rem;
+      max-width: 100%;
+      padding: 0 0.5rem;
+    }
+
+    .template-404__image {
+      max-width: min({{ section.settings.image_max_width | default: 400 }}px, 100%);
+    }
+
     .template-404__scrolling-bg .scrolling-text-strip {
+      top: {{ section.settings.scrolling_text_vertical_position_mobile | default: 0 }}%;
+      left: {{ section.settings.scrolling_text_horizontal_position_mobile | default: 50 }}%;
       --item-font-size: clamp({{ section.settings.scrolling_text_font_size_min_mobile | default: 3 }}rem, {{ section.settings.scrolling_text_font_size_vw_mobile | default: 14 }}vw, {{ section.settings.scrolling_text_font_size_max_mobile | default: 8 }}rem);
     }
 
     .template-404__message {
       font-size: {{ section.settings.message_font_size_mobile | default: 15 }}px;
+      line-height: 1.5;
+    }
+
+    .template-404__button {
+      width: 100%;
+      max-width: 320px;
+    }
+
+    .template-404__button .share-story-submit {
+      width: 100%;
+    }
+
+    .template-404__video-placeholder {
+      min-height: 160px;
+      padding: 1rem;
+      font-size: 0.85rem;
+    }
+  }
+
+  @media (max-width: 389px) {
+    .template-404 {
+      padding: 12px;
+      margin: 8px;
+      border-radius: 12px;
+    }
+
+    .template-404__content {
+      gap: 1rem;
+    }
+
+    .template-404__button {
+      max-width: 100%;
     }
   }
 
@@ -348,6 +403,48 @@
       "label": "Scrolling text horizontal position",
       "info": "50 = centered",
       "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Mobile positioning"
+    },
+    {
+      "type": "paragraph",
+      "content": "These apply only on screens 768px wide and below."
+    },
+    {
+      "type": "range",
+      "id": "scrolling_text_vertical_position_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Scrolling text vertical position (mobile)",
+      "info": "0 = top, 100 = bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "scrolling_text_horizontal_position_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Scrolling text horizontal position (mobile)",
+      "info": "50 = centered",
+      "default": 50
+    },
+    {
+      "type": "select",
+      "id": "content_vertical_position_mobile",
+      "label": "Content vertical position (mobile)",
+      "options": [
+        { "value": "flex-start", "label": "Top" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Bottom" }
+      ],
+      "default": "center",
+      "info": "Where the message and button sit vertically on mobile."
     },
     {
       "type": "header",
