@@ -1,0 +1,39 @@
+name: Comment on PR (Manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: "Pull Request number (e.g. 123)"
+        required: true
+        type: number
+      comment_body:
+        description: "Comment text to post on the PR"
+        required: true
+        type: string
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Post comment to PR
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PR_COMMENT_PAT }}
+          script: |
+            const prNumber = Number(context.payload.inputs.pr_number);
+            const body = String(context.payload.inputs.comment_body || "").trim();
+
+            if (!Number.isInteger(prNumber) || prNumber <= 0) {
+              throw new Error(`Invalid pr_number: ${context.payload.inputs.pr_number}`);
+            }
+            if (!body) {
+              throw new Error("comment_body is empty");
+            }
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body
+            });
