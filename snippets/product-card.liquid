@@ -38,11 +38,6 @@
       class="dc-tooltip"
       style="--target-left: {{ percentage }}%; background: none; border: none; box-shadow: none; padding: 0;"
     >
-      <style>
-        .dc-tooltip::after {
-          display: none;
-        }
-      </style>
       <div
         class="dc-tooltip-svg-wrapper"
         style="position: relative; width: 48px; height: 30px; filter: drop-shadow(0px 1.6px 0px var(--color-primary-button-text));"
@@ -56,7 +51,9 @@
           class="dc-tooltip-content"
           style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-10deg); color: var(--dc-tooltip-text, #fff); width: 100%; text-align: center; font-size: 0.8rem; font-weight: bold;"
         >
-          {{ current_amount | default: 'Lorem' }}
+          <span class="dc-tooltip-val" data-value="{{ current_amount }}">
+            {{ current_amount | default: 'Lorem' }}
+          </span>
         </div>
       </div>
     </div>
