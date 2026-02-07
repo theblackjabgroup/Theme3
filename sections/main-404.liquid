@@ -236,8 +236,8 @@
             <img
               src="{{ hero_image | image_url: width: 400 }}"
               alt=""
-              width="200"
-              height="400"
+              width="{{ hero_image.width }}"
+              height="{{ hero_image.height }}"
               loading="eager"
             >
           {%- elsif hero_image_placeholder -%}

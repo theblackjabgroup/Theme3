@@ -13,8 +13,22 @@
 {%- assign svg = section.settings[svg_key] -%}
 {%- assign link = section.settings[link_key] -%}
 {%- assign alt_setting = section.settings[alt_key] -%}
-{%- assign alt_text = alt_setting | default: image.alt | default: 'Social link ' | append: i -%}
-{%- assign alt_text_hover = alt_setting | default: image_hover.alt | default: 'Social link ' | append: i -%}
+{%- if alt_setting != blank -%}
+  {%- assign alt_text = alt_setting -%}
+{%- elsif image.alt != blank -%}
+  {%- assign alt_text = image.alt -%}
+{%- else -%}
+  {%- assign alt_text = 'Social link ' | append: i -%}
+{%- endif -%}
+{%- if alt_setting != blank -%}
+  {%- assign alt_text_hover = alt_setting -%}
+{%- elsif image_hover.alt != blank -%}
+  {%- assign alt_text_hover = image_hover.alt -%}
+{%- elsif image.alt != blank -%}
+  {%- assign alt_text_hover = image.alt -%}
+{%- else -%}
+  {%- assign alt_text_hover = 'Social link ' | append: i -%}
+{%- endif -%}
 {%- assign has_hover_icon = false -%}
 {%- if image != blank and image_hover != blank -%}
   {%- assign has_hover_icon = true -%}
