@@ -84,7 +84,7 @@ class MobileHeader {
         }
         this.closeTransitionHandler = null;
       }
-      
+
       this.isClosing = false;
       this.menuDrawer.setAttribute('aria-hidden', 'false');
 
@@ -114,7 +114,7 @@ class MobileHeader {
   closeMenu() {
     if (this.menuDrawer) {
       const menuContent = this.menuDrawer.querySelector('.mobile-menu-content');
-      
+
       // Cancel any pending close transition handler from previous close attempts
       if (this.closeTransitionHandler && menuContent) {
         menuContent.removeEventListener('transitionend', this.closeTransitionHandler);
@@ -122,7 +122,7 @@ class MobileHeader {
       }
 
       this.isClosing = true;
-      
+
       // Set aria-hidden to true immediately to trigger the CSS transition
       this.menuDrawer.setAttribute('aria-hidden', 'true');
 
@@ -139,16 +139,16 @@ class MobileHeader {
         if (!this.isClosing) {
           return;
         }
-        
+
         // Double-check menu is still closed
         if (this.menuDrawer.getAttribute('aria-hidden') !== 'true') {
           return;
         }
-        
+
         document.body.classList.remove('mobile-menu-open');
         document.documentElement.classList.remove('mobile-menu-open');
         document.body.style.overflow = '';
-        
+
         this.closeTransitionHandler = null;
         this.isClosing = false;
       };
@@ -158,14 +158,14 @@ class MobileHeader {
         if (!this.isClosing || e.target !== menuContent) {
           return;
         }
-        
+
         // Double-check menu is still closed
         if (this.menuDrawer.getAttribute('aria-hidden') !== 'true') {
           return;
         }
-        
+
         cleanup();
-        
+
         if (menuContent) {
           menuContent.removeEventListener('transitionend', handleTransitionEnd);
         }
@@ -184,13 +184,17 @@ class MobileHeader {
       }, 800);
 
       if (menuContent) {
-        menuContent.addEventListener('transitionend', (e) => {
-          // Only handle transform transitions from menuContent itself, not child elements
-          if (e.target === menuContent && e.propertyName === 'transform') {
-            clearTimeout(fallbackTimeout);
-            handleTransitionEnd(e);
-          }
-        }, { once: true });
+        menuContent.addEventListener(
+          'transitionend',
+          (e) => {
+            // Only handle transform transitions from menuContent itself, not child elements
+            if (e.target === menuContent && e.propertyName === 'transform') {
+              clearTimeout(fallbackTimeout);
+              handleTransitionEnd(e);
+            }
+          },
+          { once: true },
+        );
       } else {
         // If menuContent not found, cleanup immediately
         clearTimeout(fallbackTimeout);

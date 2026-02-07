@@ -1,182 +1,749 @@
 {{ 'section-contact-form.css' | asset_url | stylesheet_tag }}
 
+{%- assign use_google_maps = false -%}
+{%- if section.settings.map_provider == 'google' and section.settings.google_maps_api_key != blank -%}
+  {%- assign use_google_maps = true -%}
+{%- endif -%}
+{%- capture newline -%}
+{%- endcapture -%}
+{%- assign map_address = section.settings.contact_address | strip | replace: newline, ', ' -%}
+{%- unless use_google_maps -%}
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  >
+{%- endunless -%}
+
 {%- style -%}
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
   }
-
   @media screen and (min-width: 750px) {
     .section-{{ section.id }}-padding {
       padding-top: {{ section.settings.padding_top }}px;
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+  .contact-page-{{ section.id }} {
+    --contact-accent: {{ section.settings.accent_color | default: '#4C6F4B' }};
+    --contact-bg: {{ section.settings.background_color | default: '#E8E6E0' }};
+    --contact-left-card-bg: {{ section.settings.left_card_background | default: '#F5F4EE' }};
+    --contact-card-bg: {{ section.settings.card_background | default: '#ffffff' }};
+    --contact-text: {{ section.settings.text_color | default: '#2d2d2d' }};
+    --contact-placeholder: {{ section.settings.placeholder_color | default: '#888' }};
+    --contact-map-height-min: {{ section.settings.map_height_min | default: 260 }}px;
+    --contact-card-radius: {{ section.settings.card_border_radius | default: 12 }}px;
+    --contact-card-padding: {{ section.settings.card_padding | default: 20 }}px;
+    --contact-form-card-padding: {{ section.settings.form_card_padding | default: 32 }}px;
+    --contact-input-padding-y: {{ section.settings.input_padding_vertical | default: 14 }}px;
+    --contact-input-padding-x: {{ section.settings.input_padding_horizontal | default: 18 }}px;
+    --contact-detail-icon-size: {{ section.settings.detail_icon_size | default: 40 }}px;
+    --contact-form-field-gap: {{ section.settings.form_field_gap | default: 16 }}px;
+    --contact-grid-gap: {{ section.settings.grid_gap | default: 20 }}px;
+    --contact-heading-size: {{ section.settings.heading_font_size | default: 22 }}px;
+    --contact-body-size: {{ section.settings.body_font_size | default: 16 }}px;
+    --contact-greeting-title-size: {{ section.settings.greeting_title_size | default: 28 }}px;
+    --contact-greeting-subtitle-size: {{ section.settings.greeting_subtitle_size | default: 18 }}px;
+    --contact-newsletter-heading-size: {{ section.settings.newsletter_heading_size | default: 24 }}px;
+    --contact-newsletter-desc-size: {{ section.settings.newsletter_desc_size | default: 15 }}px;
+    --contact-detail-text-size: {{ section.settings.detail_text_size | default: 15 }}px;
+  }
 {%- endstyle -%}
 
-<div class="color-{{ section.settings.color_scheme }} gradient">
-  <div class="contact page-width page-width--narrow section-{{ section.id }}-padding">
-    {%- if section.settings.heading != blank -%}
-      <h2 class="title title-wrapper--no-top-margin inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-        {{ section.settings.heading }}
-      </h2>
-    {%- else -%}
-      <h2 class="visually-hidden">{{ 'templates.contact.form.title' | t }}</h2>
-    {%- endif -%}
-    {%- liquid
-      assign contact_form_class = 'isolate'
-      if settings.animations_reveal_on_scroll
-        assign contact_form_class = 'isolate scroll-trigger animate--slide-in'
-      endif
-    -%}
-    {%- form 'contact', id: 'ContactForm', class: contact_form_class -%}
-      {%- if form.posted_successfully? -%}
-        <h2 class="form-status form-status-list form__message" tabindex="-1" autofocus>
-          {{- 'icon-success.svg' | inline_asset_content -}}
-          {{ 'templates.contact.form.post_success' | t }}
-        </h2>
-      {%- elsif form.errors -%}
-        <div class="form__message">
-          <h2 class="form-status caption-large text-body" role="alert" tabindex="-1" autofocus>
-            {{- 'icon-error.svg' | inline_asset_content -}}
-            {{ 'templates.contact.form.error_heading' | t }}
-          </h2>
-        </div>
-        <ul class="form-status-list caption-large" role="list">
-          <li>
-            <a href="#ContactForm-email" class="link">
-              {{ form.errors.translated_fields.email | capitalize }}
-              {{ form.errors.messages.email }}
-            </a>
-          </li>
-        </ul>
-      {%- endif -%}
-      <div class="contact__fields">
-        <div class="field">
-          <input
-            class="field__input"
-            autocomplete="name"
-            type="text"
-            id="ContactForm-name"
-            name="contact[{{ 'templates.contact.form.name' | t }}]"
-            value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
-            placeholder="{{ 'templates.contact.form.name' | t }}"
-          >
-          <label class="field__label" for="ContactForm-name">{{ 'templates.contact.form.name' | t }}</label>
-        </div>
-        <div class="field field--with-error">
-          <input
-            autocomplete="email"
-            type="email"
-            id="ContactForm-email"
-            class="field__input"
-            name="contact[email]"
-            spellcheck="false"
-            autocapitalize="off"
-            value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
-            aria-required="true"
-            {% if form.errors contains 'email' %}
-              aria-invalid="true"
-              aria-describedby="ContactForm-email-error"
-            {% endif %}
-            placeholder="{{ 'templates.contact.form.email' | t }}"
-          >
-          <label class="field__label" for="ContactForm-email">
-            {{- 'templates.contact.form.email' | t }}
-            <span aria-hidden="true">*</span></label
-          >
-          {%- if form.errors contains 'email' -%}
-            <small class="contact__field-error" id="ContactForm-email-error">
-              <span class="visually-hidden">{{ 'accessibility.error' | t }}</span>
-              <span class="form__message">
-                <span class="svg-wrapper">
-                  {{- 'icon-error.svg' | inline_asset_content -}}
-                </span>
-                {{- form.errors.translated_fields.email | capitalize }}
-                {{ form.errors.messages.email -}}
-              </span>
-            </small>
+<div class="contact-page contact-page-{{ section.id }} color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+  <div class="contact-page__inner page-width">
+    <div class="contact-page__grid">
+      {%- comment -%} Left: single card = Map (top, rounded top corners) + Contact details (bottom) {%- endcomment -%}
+      <div class="contact-page__left">
+        <div class="contact-page__left-card">
+          {%- if map_address != blank -%}
+            {%- if use_google_maps -%}
+              <div
+                class="contact-page__map contact-page__map--google contact-page__map-placeholder"
+                id="contact-map-google-{{ section.id }}"
+                data-address="{{ map_address | escape }}"
+                data-api-key="{{ section.settings.google_maps_api_key | strip | escape }}"
+                data-map-title="{{ 'sections.contact-form.map_title' | t | default: 'Location map' | escape }}"
+              ></div>
+            {%- else -%}
+              <div
+                id="contact-map-{{ section.id }}"
+                class="contact-page__map"
+                data-address="{{ map_address | escape }}"
+                data-zoom="{{ section.settings.map_zoom | default: 13 }}"
+              ></div>
+            {%- endif -%}
+          {%- else -%}
+            <div class="contact-page__map contact-page__map--empty" aria-hidden="true">
+              <p class="contact-page__map-empty-text">
+                {{
+                  'sections.contact-form.map_no_address'
+                  | t
+                  | default: 'Add your address in Contact details to show the map.'
+                }}
+              </p>
+            </div>
           {%- endif -%}
+          <div class="contact-page__details-wrap">
+            {%- if section.settings.contact_email != blank -%}
+              <div class="contact-page__detail">
+                <span class="contact-page__detail-icon" aria-hidden="true">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+                  </svg>
+                </span>
+                <a href="mailto:{{ section.settings.contact_email | strip }}" class="contact-page__detail-text">
+                  {{- section.settings.contact_email -}}
+                </a>
+              </div>
+            {%- endif -%}
+            {%- if section.settings.contact_phone != blank -%}
+              <div class="contact-page__detail">
+                <span class="contact-page__detail-icon" aria-hidden="true">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                  </svg>
+                </span>
+                <a
+                  href="tel:{{ section.settings.contact_phone | strip | replace: ' ', '' }}"
+                  class="contact-page__detail-text"
+                >
+                  {{- section.settings.contact_phone -}}
+                </a>
+              </div>
+            {%- endif -%}
+            {%- if section.settings.contact_address != blank -%}
+              <div class="contact-page__detail">
+                <span class="contact-page__detail-icon" aria-hidden="true">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path fill-rule="evenodd" d="m9.91 18.59 5.036-8.78c2.228-3.886-.525-8.777-4.942-8.777-4.385 0-7.147 4.822-4.992 8.713zM10.004 0C4.845 0 1.593 5.673 4.13 10.255l5.212 9.41a.64.64 0 0 0 1.12.009l5.358-9.342C18.445 5.755 15.202 0 10.004 0"/><path d="M13 6.796c0 1.76-1.399 3.187-3.124 3.187S6.752 8.556 6.752 6.796s1.399-3.187 3.124-3.187S13 5.036 13 6.796M9.876 8.949c1.166 0 2.11-.964 2.11-2.153s-.944-2.153-2.11-2.153-2.11.964-2.11 2.153.944 2.153 2.11 2.153"/>
+                  </svg>
+                </span>
+                <span class="contact-page__detail-text contact-page__detail-text--multiline">
+                  {{- section.settings.contact_address | newline_to_br -}}
+                </span>
+              </div>
+            {%- endif -%}
+          </div>
         </div>
       </div>
-      <div class="field">
-        <input
-          type="tel"
-          id="ContactForm-phone"
-          class="field__input"
-          autocomplete="tel"
-          name="contact[{{ 'templates.contact.form.phone' | t }}]"
-          pattern="[0-9\-]*"
-          value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
-          placeholder="{{ 'templates.contact.form.phone' | t }}"
-        >
-        <label class="field__label" for="ContactForm-phone">{{ 'templates.contact.form.phone' | t }}</label>
+
+      {%- comment -%} Right: Form {%- endcomment -%}
+      <div class="contact-page__right">
+        <div class="contact-page__card contact-page__form-card">
+          {%- if section.settings.greeting_title != blank or section.settings.greeting_subtitle != blank -%}
+            <div class="contact-page__greeting">
+              {%- if section.settings.greeting_title != blank -%}
+                <h2 class="contact-page__greeting-title">{{ section.settings.greeting_title }}</h2>
+              {%- endif -%}
+              {%- if section.settings.greeting_subtitle != blank -%}
+                <p class="contact-page__greeting-subtitle">{{ section.settings.greeting_subtitle }}</p>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+          {%- form 'contact', id: 'ContactForm', class: 'contact-page__form' -%}
+            {%- if form.posted_successfully? -%}
+              <p class="contact-page__form-status contact-page__form-status--success" tabindex="-1" autofocus>
+                {{- 'icon-success.svg' | inline_asset_content -}}
+                {{ 'templates.contact.form.post_success' | t }}
+              </p>
+            {%- elsif form.errors -%}
+              <div
+                class="contact-page__form-status contact-page__form-status--error"
+                role="alert"
+                tabindex="-1"
+                autofocus
+              >
+                {{- 'icon-error.svg' | inline_asset_content -}}
+                {{ 'templates.contact.form.error_heading' | t }}
+                <ul class="contact-page__form-errors">
+                  <li>
+                    <a href="#ContactForm-email">
+                      {{- form.errors.translated_fields.email | capitalize }}
+                      {{ form.errors.messages.email -}}
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            {%- endif -%}
+
+            <div class="contact-page__field">
+              <div class="contact-page__input-3d">
+                <span class="contact-page__input-shadow" aria-hidden="true"></span>
+                <input
+                  type="text"
+                  id="ContactForm-name"
+                  class="contact-page__input"
+                  name="contact[{{ 'templates.contact.form.name' | t }}]"
+                  autocomplete="name"
+                  value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+                  placeholder="{{ section.settings.placeholder_name | default: "I'm..." }}"
+                  aria-label="{{ section.settings.placeholder_name | default: "I'm..." }}"
+                >
+              </div>
+            </div>
+            <div class="contact-page__field">
+              <div class="contact-page__input-3d">
+                <span class="contact-page__input-shadow" aria-hidden="true"></span>
+                <input
+                  type="email"
+                  id="ContactForm-email"
+                  class="contact-page__input"
+                  name="contact[email]"
+                  autocomplete="email"
+                  spellcheck="false"
+                  autocapitalize="off"
+                  value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+                  placeholder="{{ section.settings.placeholder_email | default: 'Here is my Email...' }}"
+                  aria-label="{{ section.settings.placeholder_email | default: 'Here is my Email...' }}"
+                  required
+                  {% if form.errors contains 'email' %}
+                    aria-invalid="true"
+                  {% endif %}
+                >
+              </div>
+            </div>
+            <div class="contact-page__field">
+              <div class="contact-page__input-3d">
+                <span class="contact-page__input-shadow" aria-hidden="true"></span>
+                <input
+                  type="tel"
+                  id="ContactForm-phone"
+                  class="contact-page__input"
+                  name="contact[{{ 'templates.contact.form.phone' | t }}]"
+                  autocomplete="tel"
+                  value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+                  placeholder="{{ section.settings.placeholder_phone | default: 'Here is my Contact Number...' }}"
+                  aria-label="{{ section.settings.placeholder_phone | default: 'Here is my Contact Number...' }}"
+                >
+              </div>
+            </div>
+            <div class="contact-page__field">
+              <div class="contact-page__input-3d contact-page__input-3d--textarea">
+                <span class="contact-page__input-shadow" aria-hidden="true"></span>
+                <textarea
+                  id="ContactForm-body"
+                  class="contact-page__input contact-page__textarea"
+                  name="contact[{{ 'templates.contact.form.comment' | t }}]"
+                  rows="5"
+                  placeholder="{{ section.settings.placeholder_message | default: 'My message for KOKO is...' }}"
+                  aria-label="{{ section.settings.placeholder_message | default: 'My message for KOKO is...' }}"
+                >{{- form.body -}}</textarea>
+              </div>
+            </div>
+            <div class="contact-page__submit">
+              {%- render 'submit-button', text: section.settings.button_text | default: 'Send', type: 'submit', class: 'contact-page__submit-btn' -%}
+            </div>
+          {%- endform -%}
+        </div>
       </div>
-      <div class="field">
-        <textarea
-          rows="10"
-          id="ContactForm-body"
-          class="text-area field__input"
-          name="contact[{{ 'templates.contact.form.comment' | t }}]"
-          placeholder="{{ 'templates.contact.form.comment' | t }}"
-        >
-          {{- form.body -}}
-        </textarea>
-        <label class="form__label field__label" for="ContactForm-body">
-          {{- 'templates.contact.form.comment' | t -}}
-        </label>
+    </div>
+
+    {%- comment -%} Newsletter card: full width below the two cards {%- endcomment -%}
+    <div
+      class="contact-page__newsletter"
+      style="--newsletter-bg: {{ section.settings.newsletter_background | default: '#475742' }}; --newsletter-input-bg: {{ section.settings.newsletter_input_bg | default: '#e7e3da' }}; --newsletter-button-bg: {{ section.settings.newsletter_button_bg | default: '#d8a0a9' }};"
+    >
+      <div class="contact-page__newsletter-inner">
+        {%- if section.settings.newsletter_heading != blank -%}
+          <h2 class="contact-page__newsletter-title">{{ section.settings.newsletter_heading }}</h2>
+        {%- endif -%}
+        {%- if section.settings.newsletter_subheading != blank -%}
+          <p class="contact-page__newsletter-desc">{{ section.settings.newsletter_subheading }}</p>
+        {%- endif -%}
+        {%- form 'customer', id: 'ContactNewsletter', class: 'contact-page__newsletter-form' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <div class="contact-page__newsletter-row">
+            <div class="contact-page__newsletter-field">
+              <div class="contact-page__input-3d contact-page__input-3d--newsletter">
+                <span class="contact-page__input-shadow" aria-hidden="true"></span>
+                <input
+                  type="email"
+                  name="contact[email]"
+                  id="ContactNewsletterEmail"
+                  class="contact-page__input contact-page__newsletter-input"
+                  placeholder="{{ section.settings.newsletter_placeholder | default: 'Email Address' }}"
+                  aria-label="{{ section.settings.newsletter_placeholder | default: 'Email Address' }}"
+                  required
+                  value="{{ form.email }}"
+                >
+              </div>
+            </div>
+            <div class="contact-page__newsletter-submit-wrap">
+              {%- render 'submit-button', text: section.settings.newsletter_button_text | default: 'Subscribe', type: 'submit', class: 'contact-page__newsletter-submit-btn' -%}
+            </div>
+          </div>
+          {%- if form.posted_successfully? -%}
+            <p class="contact-page__newsletter-success" tabindex="-1" autofocus>
+              {{ 'newsletter.success' | t | default: 'Thanks for subscribing!' }}
+            </p>
+          {%- endif -%}
+        {%- endform -%}
       </div>
-      <div class="contact__button">
-        <button type="submit" class="button">
-          {{ 'templates.contact.form.send' | t }}
-        </button>
-      </div>
-    {%- endform -%}
+    </div>
   </div>
 </div>
+
+{%- if map_address != blank -%}
+  {%- if use_google_maps -%}
+    <script>
+      (function () {
+        var wrap = document.getElementById('contact-map-google-{{ section.id }}');
+        if (!wrap || !wrap.dataset.address || !wrap.dataset.apiKey) return;
+        var iframe = document.createElement('iframe');
+        iframe.className = 'contact-page__map-iframe';
+        iframe.setAttribute(
+          'src',
+          'https://www.google.com/maps/embed/v1/place?key=' +
+            encodeURIComponent(wrap.dataset.apiKey) +
+            '&q=' +
+            encodeURIComponent(wrap.dataset.address)
+        );
+        iframe.setAttribute('allowfullscreen', '');
+        iframe.setAttribute('loading', 'lazy');
+        iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
+        iframe.setAttribute('title', wrap.dataset.mapTitle || 'Location map');
+        wrap.appendChild(iframe);
+      })();
+    </script>
+  {%- else -%}
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+      defer
+    ></script>
+    <script defer>
+      (function () {
+        var mapEl = document.getElementById('contact-map-{{ section.id }}');
+        if (!mapEl || !mapEl.dataset.address) return;
+        var address = mapEl.dataset.address;
+        var zoom = parseInt(mapEl.dataset.zoom, 10) || 13;
+        var fallbackLat = 40.7484;
+        var fallbackLon = -73.9857;
+        function initMap(lat, lon) {
+          if (typeof L === 'undefined') return;
+          var map = L.map('contact-map-{{ section.id }}').setView([lat, lon], zoom);
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+          }).addTo(map);
+          L.marker([lat, lon]).addTo(map);
+        }
+        fetch('https://photon.komoot.io/api/?q=' + encodeURIComponent(address) + '&limit=1')
+          .then(function (r) {
+            return r.json();
+          })
+          .then(function (data) {
+            var lat = fallbackLat;
+            var lon = fallbackLon;
+            if (data && data.features && data.features.length > 0) {
+              var coords = data.features[0].geometry.coordinates;
+              if (coords && coords.length >= 2) {
+                lon = parseFloat(coords[0]);
+                lat = parseFloat(coords[1]);
+              }
+            }
+            initMap(lat, lon);
+          })
+          .catch(function () {
+            initMap(fallbackLat, fallbackLon);
+          });
+      })();
+    </script>
+  {%- endif -%}
+{%- endif -%}
 
 {% schema %}
 {
   "name": "t:sections.contact-form.name",
   "tag": "section",
   "class": "section",
-  "disabled_on": {
-    "groups": ["header", "footer"]
-  },
+  "disabled_on": { "groups": ["header", "footer"] },
   "settings": [
     {
-      "type": "inline_richtext",
-      "id": "heading",
-      "default": "t:sections.contact-form.settings.title.default",
-      "label": "t:sections.contact-form.settings.title.label"
+      "type": "header",
+      "content": "Map"
+    },
+    {
+      "type": "paragraph",
+      "content": "Map location is taken from the Address field in Contact details below. Enter your business address there to show it on the map."
+    },
+    {
+      "type": "range",
+      "id": "map_zoom",
+      "min": 1,
+      "max": 18,
+      "step": 1,
+      "label": "Map zoom level (OpenStreetMap)",
+      "default": 13,
+      "info": "Zoom level after the address is found. Ignored for Google Maps."
     },
     {
       "type": "select",
-      "id": "heading_size",
+      "id": "map_provider",
+      "label": "Map provider",
       "options": [
-        {
-          "value": "h2",
-          "label": "t:sections.all.heading_size.options__1.label"
-        },
-        {
-          "value": "h1",
-          "label": "t:sections.all.heading_size.options__2.label"
-        },
-        {
-          "value": "h0",
-          "label": "t:sections.all.heading_size.options__3.label"
-        },
-        {
-          "value": "hxl",
-          "label": "t:sections.all.heading_size.options__4.label"
-        },
-        {
-          "value": "hxxl",
-          "label": "t:sections.all.heading_size.options__5.label"
-        }
+        { "value": "openstreetmap", "label": "OpenStreetMap (Leaflet)" },
+        { "value": "google", "label": "Google Maps" }
       ],
-      "default": "h1",
-      "label": "t:sections.all.heading_size.label"
+      "default": "openstreetmap",
+      "info": "Google Maps requires an API key with Maps Embed API enabled."
+    },
+    {
+      "type": "text",
+      "id": "google_maps_api_key",
+      "label": "Google Maps API key",
+      "info": "Required when using Google Maps. Create a key in Google Cloud Console and enable 'Maps Embed API'."
+    },
+    {
+      "type": "header",
+      "content": "Contact details (left card)"
+    },
+    {
+      "type": "text",
+      "id": "contact_email",
+      "label": "Email",
+      "default": "koko@gmail.com"
+    },
+    {
+      "type": "text",
+      "id": "contact_phone",
+      "label": "Phone",
+      "default": "1235822572"
+    },
+    {
+      "type": "textarea",
+      "id": "contact_address",
+      "label": "Address",
+      "default": "350 5th Ave, New York, NY 10118, USA"
+    },
+    {
+      "type": "header",
+      "content": "Form (right card)"
+    },
+    {
+      "type": "text",
+      "id": "greeting_title",
+      "label": "Greeting title",
+      "default": "Hello!"
+    },
+    {
+      "type": "text",
+      "id": "greeting_subtitle",
+      "label": "Greeting subtitle",
+      "default": "Koko Club,"
+    },
+    {
+      "type": "text",
+      "id": "placeholder_name",
+      "label": "Name placeholder",
+      "default": "I'm..."
+    },
+    {
+      "type": "text",
+      "id": "placeholder_email",
+      "label": "Email placeholder",
+      "default": "Here is my Email..."
+    },
+    {
+      "type": "text",
+      "id": "placeholder_phone",
+      "label": "Phone placeholder",
+      "default": "Here is my Contact Number..."
+    },
+    {
+      "type": "text",
+      "id": "placeholder_message",
+      "label": "Message placeholder",
+      "default": "My message for KOKO is..."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Send button text",
+      "default": "Send"
+    },
+    {
+      "type": "header",
+      "content": "Newsletter card (below contact cards)"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Heading",
+      "default": "Subscribe To Our Newsletter"
+    },
+    {
+      "type": "textarea",
+      "id": "newsletter_subheading",
+      "label": "Subheading",
+      "default": "Be the first to know about new collections and exclusive offers"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_placeholder",
+      "label": "Email placeholder",
+      "default": "Email Address"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_button_text",
+      "label": "Button text",
+      "default": "Subscribe"
+    },
+    {
+      "type": "color",
+      "id": "newsletter_background",
+      "label": "Card background",
+      "default": "#475742"
+    },
+    {
+      "type": "color",
+      "id": "newsletter_input_bg",
+      "label": "Input background",
+      "default": "#e7e3da"
+    },
+    {
+      "type": "color",
+      "id": "newsletter_button_bg",
+      "label": "Subscribe button background",
+      "default": "#d8a0a9"
+    },
+    {
+      "type": "header",
+      "content": "Sizing"
+    },
+    {
+      "type": "range",
+      "id": "map_height_min",
+      "min": 120,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "label": "Map min height",
+      "default": 260
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Card border radius",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "min": 12,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Left card padding",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "form_card_padding",
+      "min": 16,
+      "max": 64,
+      "step": 4,
+      "unit": "px",
+      "label": "Form card padding",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "input_padding_vertical",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Input padding (vertical)",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "input_padding_horizontal",
+      "min": 12,
+      "max": 28,
+      "step": 2,
+      "unit": "px",
+      "label": "Input padding (horizontal)",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "detail_icon_size",
+      "min": 28,
+      "max": 56,
+      "step": 2,
+      "unit": "px",
+      "label": "Contact detail icon size",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "form_field_gap",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Gap between form fields",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "min": 12,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Gap between columns",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "min": 14,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Section heading size",
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "body_font_size",
+      "min": 13,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Body & input text size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "greeting_title_size",
+      "min": 18,
+      "max": 42,
+      "step": 1,
+      "unit": "px",
+      "label": "Greeting title size",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "greeting_subtitle_size",
+      "min": 14,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Greeting subtitle size",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "detail_text_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Contact detail text size",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "newsletter_heading_size",
+      "min": 16,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Newsletter heading size",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "newsletter_desc_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Newsletter description size",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Page background",
+      "default": "#E8E6E0"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card background (right form card)",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "left_card_background",
+      "label": "Left card background (map + contact)",
+      "default": "#F5F4EE"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent (icons, button)",
+      "default": "#3B5237"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#2d2d2d"
+    },
+    {
+      "type": "color",
+      "id": "placeholder_color",
+      "label": "Placeholder color",
+      "default": "#888888"
     },
     {
       "type": "color_scheme",
@@ -196,7 +763,7 @@
       "step": 4,
       "unit": "px",
       "label": "t:sections.all.padding.padding_top",
-      "default": 36
+      "default": 20
     },
     {
       "type": "range",
@@ -206,13 +773,9 @@
       "step": 4,
       "unit": "px",
       "label": "t:sections.all.padding.padding_bottom",
-      "default": 36
+      "default": 0
     }
   ],
-  "presets": [
-    {
-      "name": "t:sections.contact-form.presets.name"
-    }
-  ]
+  "presets": [{ "name": "t:sections.contact-form.presets.name" }]
 }
 {% endschema %}

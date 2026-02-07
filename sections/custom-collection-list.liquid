@@ -258,8 +258,8 @@
   <div class="page-width">
     {%- if section.settings.show_title and section.settings.title != blank -%}
       <div class="custom-collection-list__header-box" style="text-align: {{ section.settings.title_alignment }};">
-        {%- if section.settings.show_badge -%}
-          <span class="custom-collection-card__badge">{{ section.settings.badge_text | default: 'Fighting' }}</span>
+        {%- if section.settings.show_badge and section.settings.badge_text != blank -%}
+          <span class="custom-collection-card__badge">{{ section.settings.badge_text | escape }}</span>
         {%- endif -%}
         <h2 class="custom-collection-list__header-box-title">{{ section.settings.title | escape }}</h2>
         {%- if section.settings.header_box_description != blank -%}

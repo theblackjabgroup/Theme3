@@ -13,11 +13,11 @@
   "sections": {
     "footer": {
       "type": "footer",
-      "disabled": true,
+      "disabled": false,
       "settings": {
         "heading": "<p>Join Brandname World below, say “hi” <a href=\"#\">@brandname</a>, or <a href=\"#\">drop us an email</a>.</p>",
         "show_newsletter": true,
-        "email_placeholder": "Enter email",
+        "email_placeholder": "Your email...",
         "menu": "footer",
         "links_heading": "Also",
         "logo_width": 100,
