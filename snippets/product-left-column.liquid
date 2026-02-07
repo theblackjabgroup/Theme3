@@ -130,19 +130,48 @@
         product_form_id: product_form_id
       %}
 
-      {% form 'product', product, id: product_form_id %}
-        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-
-        {% liquid
-          if product.selected_or_first_available_variant.available
-            assign btn_text = 'ADD TO CART'
-          else
-            assign btn_text = 'Sold Out'
-          endif
+      <product-form class="product-form" data-section-id="{{ section.id }}">
+        {% form 'product',
+          product,
+          id: product_form_id,
+          class: 'form',
+          novalidate: 'novalidate',
+          data-type: 'add-to-cart-form'
         %}
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
 
-        {% render 'submit-button', text: btn_text, type: 'submit', class: 'share-story-submit product-form__submit' %}
-      {% endform %}
+          <div class="product-form__error-message-wrapper" role="alert" hidden>
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              class="icon icon-error"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M12 2L1 21H23L12 2Z" fill="#FFA000" stroke="#FFA000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 9V13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 17H12.01" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="product-form__error-message"></span>
+          </div>
+
+          {% liquid
+            if product.selected_or_first_available_variant.available
+              assign btn_text = 'products.product.add_to_cart' | t
+            else
+              assign btn_text = 'products.product.sold_out' | t
+            endif
+          %}
+
+          {% render 'submit-button',
+            text: btn_text,
+            type: 'submit',
+            class: 'share-story-submit product-form__submit',
+            is_add_to_cart: true
+          %}
+        {% endform %}
+      </product-form>
     </div>
   </div>
 </div>

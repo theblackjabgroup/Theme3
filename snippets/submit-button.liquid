@@ -133,8 +133,16 @@
       {%- if button_text != blank -%}
         <span class="submit-button__text">{{ button_text }}</span>
       {%- endif -%}
+      {%- if is_add_to_cart -%}
+        <span class="sold-out-message hidden">
+          {{ 'products.product.sold_out' | t | default: 'Sold Out' }}
+        </span>
+      {%- endif -%}
       {%- if badge != blank and badge != '0' -%}
         <span class="submit-button__badge">{{ badge }}</span>
+      {%- endif -%}
+      {%- if is_add_to_cart -%}
+        {%- render 'loading-spinner' -%}
       {%- endif -%}
     </span>
   </button>

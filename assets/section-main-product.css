@@ -23,6 +23,13 @@
   background: var(--color-primary-button-bg);
   position: relative;
   margin-top: var(--section-margin-top, var(--spacing-6));
+  margin-bottom: var(--section-margin-bottom, 0px);
+  margin-left: var(--section-margin-horizontal, 0px);
+  margin-right: var(--section-margin-horizontal, 0px);
+  padding-top: var(--section-padding-top, 0px);
+  padding-bottom: var(--section-padding-bottom, 0px);
+  padding-left: var(--section-padding-horizontal, 0px);
+  padding-right: var(--section-padding-horizontal, 0px);
   border-radius: var(--section-border-radius, 14px);
 }
 
@@ -67,6 +74,7 @@
   z-index: 10;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  padding-right: var(--section-padding-horizontal, 0px);
 }
 .product-split-left::-webkit-scrollbar {
   display: none;
@@ -77,6 +85,7 @@
   height: 100%;
   width: 0;
 }
+
 
 .product-left-inner {
   max-width: 480px;
@@ -224,7 +233,8 @@
   padding: 0;
   font-size: 1.2rem;
   white-space: nowrap;
-  min-width: 260px;
+  min-width: auto;
+  flex: 1 1 auto;
 }
 
 .product-form__buttons {
@@ -256,6 +266,7 @@
   position: relative;
   text-align: center;
   padding: 10px 0;
+  padding-left: var(--section-padding-horizontal, 0px);
   color: var(--color-text);
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -592,13 +603,20 @@ accordion-item[open] .accordion__wrapper {
   display: none;
 }
 
-@media (max-width: 989px) {
-  .product-form__submit {
-    padding: 0 30px;
+@media (max-width: 1250px) {
+  .product-hero-section {
+    display: none;
   }
   .is-hero-slide {
     display: flex;
   }
+}
+
+@media (max-width: 989px) {
+  .product-form__submit {
+    padding: 0 30px;
+  }
+
 
   .product-split-container {
     display: flex; 
@@ -606,6 +624,13 @@ accordion-item[open] .accordion__wrapper {
     height: auto;
     overflow: visible;
     margin-top: var(--section-margin-top-mobile, 0px);
+    margin-bottom: var(--section-margin-bottom-mobile, 0px);
+    margin-left: var(--section-margin-horizontal-mobile, 0px);
+    margin-right: var(--section-margin-horizontal-mobile, 0px);
+    padding-top: var(--section-padding-top-mobile, 0px);
+    padding-bottom: var(--section-padding-bottom-mobile, 0px);
+    padding-left: var(--section-padding-horizontal-mobile, 0px);
+    padding-right: var(--section-padding-horizontal-mobile, 0px);
   }
   .product-hero-section {
     display: none; 
@@ -653,9 +678,6 @@ accordion-item[open] .accordion__wrapper {
     border-top: 1px solid var(--color-primary-button-border);
   }
   
-  .product-actions-row form {
-    flex-grow: 1;
-  }
   .product-form__input label{
     min-width: 86px;
     height: 30px;
@@ -737,4 +759,76 @@ accordion-item[open] .accordion__wrapper {
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-bottom: var(--spacing-m, 16px);
+}
+
+/* =============================
+   ERROR MESSAGE
+============================= */
+.product-form {
+  position: relative; /* Anchor for absolute error message */
+}
+
+.product-form__error-message-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 12px;
+  
+  /* Absolute Positioning to prevent layout shift */
+  position: absolute;
+  bottom: 100%; /* Place above the button */
+  left: 0;
+  width: auto;
+  max-width: 100%;
+  
+  /* Alert Styling */
+  background: #ffffff;
+  padding: 8px 12px;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  border: 1px solid #ccc;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* Tooltip Arrow */
+.product-form__error-message-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 100%; /* Bottom of the bubble */
+  left: 20px; /* Position arrow */
+  border-width: 6px;
+  border-style: solid;
+  border-color: #ffffff transparent transparent transparent; /* Pointing down */
+}
+
+/* Border for the arrow (creating an outline effect) */
+.product-form__error-message-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 19px; /* 1px offset for border width diff */
+  border-width: 7px;
+  border-style: solid;
+  border-color: #ccc transparent transparent transparent;
+  z-index: -1;
+}
+
+.product-form__error-message-wrapper[hidden] {
+  display: none !important;
+}
+
+.product-form__error-message-wrapper .icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.product-form__error-message {
+  font-size: 13px;
+  line-height: 1.4;
+  color: #000000;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  margin: 0;
 }
