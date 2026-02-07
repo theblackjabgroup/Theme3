@@ -4,7 +4,7 @@
   Accepts:
   - card_product: {Object} Product Liquid object (required)
   - show_badge: {Boolean} Show badge on card. Default: true (optional)
-  - badge_text: {String} Badge text. Default: 'Fighting' (optional)
+  - badge_text: {String} Badge text. Only shown when not blank (optional)
   - overlay_button_text: {String} Overlay button text. Default: 'Love that! (Check it out)' (optional)
   - fallback_description: {String} Fallback text when product has no description. Default: 'Discover our amazing product.' (optional)
   - section_id: {String} The ID of the section that contains this card (optional)
@@ -33,9 +33,9 @@
         {%- endif -%}
       </div>
 
-      {%- if show_badge != false -%}
+      {%- if show_badge != false and badge_text != blank -%}
         <span class="custom-product-card__badge">
-          {{- badge_text | default: 'Fighting' -}}
+          {{- badge_text | escape -}}
         </span>
       {%- endif -%}
 
@@ -74,7 +74,13 @@
               </p>
             {%- elsif fallback_description != blank -%}
               <p class="custom-product-card__hover-description">
-                {{ fallback_description | default: 'Discover our amazing product.' | strip_html | truncatewords: 12, '....' | upcase }}
+                {{
+                  fallback_description
+                  | default: 'Discover our amazing product.'
+                  | strip_html
+                  | truncatewords: 12, '....'
+                  | upcase
+                }}
               </p>
             {%- else -%}
               <p class="custom-product-card__hover-description">

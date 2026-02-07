@@ -7,10 +7,14 @@
 {%- assign image_hover_key = 'social_' | append: i | append: '_image_hover' -%}
 {%- assign svg_key = 'social_' | append: i | append: '_svg' -%}
 {%- assign link_key = 'social_' | append: i | append: '_link' -%}
+{%- assign alt_key = 'social_' | append: i | append: '_alt' -%}
 {%- assign image = section.settings[image_key] -%}
 {%- assign image_hover = section.settings[image_hover_key] -%}
 {%- assign svg = section.settings[svg_key] -%}
 {%- assign link = section.settings[link_key] -%}
+{%- assign alt_setting = section.settings[alt_key] -%}
+{%- assign alt_text = alt_setting | default: image.alt | default: 'Social link ' | append: i -%}
+{%- assign alt_text_hover = alt_setting | default: image_hover.alt | default: 'Social link ' | append: i -%}
 {%- assign has_hover_icon = false -%}
 {%- if image != blank and image_hover != blank -%}
   {%- assign has_hover_icon = true -%}
@@ -23,7 +27,7 @@
         <span class="social-box__icon social-box__icon--default">
           <img
             src="{{ image | image_url: width: 80 }}"
-            alt=""
+            alt="{{ alt_text | escape }}"
             width="24"
             height="24"
             class="social-box__image"
@@ -33,7 +37,7 @@
         <span class="social-box__icon social-box__icon--hover">
           <img
             src="{{ image_hover | image_url: width: 80 }}"
-            alt=""
+            alt="{{ alt_text_hover | escape }}"
             width="24"
             height="24"
             class="social-box__image"
@@ -44,7 +48,7 @@
     {%- else -%}
       <img
         src="{{ image | image_url: width: 80 }}"
-        alt=""
+        alt="{{ alt_text | escape }}"
         width="24"
         height="24"
         class="social-box__image"

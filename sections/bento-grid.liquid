@@ -822,7 +822,7 @@
             >
               <div class="marquee-track">
                 {%- for i in (1..20) -%}
-                  <span
+                  <div
                     class="marquee-item marquee-item--text-1"
                     {% if i > 1 %}
                       aria-hidden="true"
@@ -833,7 +833,7 @@
                     {%- endif -%}
                     {{ block.settings.text }}
                     {%- if block.settings.link != blank -%}</a>{%- endif -%}
-                  </span>
+                  </div>
                   <img
                     src="{% if block.settings.separator_image != blank %}{{ block.settings.separator_image | image_url: width: 40 }}{% else %}https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-collection-2_large.png?v=1530129132{% endif %}"
                     alt=""
@@ -843,7 +843,7 @@
                     height="40"
                   >
                   {%- if has_text_2 -%}
-                    <span
+                    <div
                       class="marquee-item marquee-item--text-2"
                       aria-hidden="true"
                     >
@@ -852,7 +852,7 @@
                       {%- endif -%}
                       {{ block.settings.text_2 }}
                       {%- if block.settings.link != blank -%}</a>{%- endif -%}
-                    </span>
+                    </div>
                     <img
                       src="{% if block.settings.separator_image != blank %}{{ block.settings.separator_image | image_url: width: 40 }}{% else %}https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-collection-2_large.png?v=1530129132{% endif %}"
                       alt=""
