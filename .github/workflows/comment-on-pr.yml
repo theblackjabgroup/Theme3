@@ -1,4 +1,4 @@
-name: Repeat PR Comment (Manual + On Push)
+name: Bugbot Run (Manual + On Push)
 
 on:
   workflow_dispatch:
