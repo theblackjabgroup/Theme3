@@ -16,6 +16,7 @@
 
 .dc-eyebrow {
   text-transform: uppercase;
+  width: 80%;
   font-size: 0.7rem;
   letter-spacing: var(--letter-spacing-widest);
   color: var(--dc-eyebrow-color, var(--dc-text-color));
@@ -80,7 +81,6 @@
   font-size: 0.9rem;
   transform: translateX(-50%) rotate(5deg);
   border-radius: var(--radius-xs);
-  margin-bottom: var(--spacing-3);
   white-space: nowrap;
   box-shadow: var(--spacing-1) var(--spacing-1) var(--spacing-0) rgba(0,0,0,1);
   border: 1px solid var(--dc-tooltip-bg, );

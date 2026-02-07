@@ -164,7 +164,12 @@
             endif
           %}
 
-          {% render 'submit-button', text: btn_text, type: 'submit', class: 'share-story-submit product-form__submit' %}
+          {% render 'submit-button',
+            text: btn_text,
+            type: 'submit',
+            class: 'share-story-submit product-form__submit',
+            is_add_to_cart: true
+          %}
         {% endform %}
       </product-form>
     </div>
