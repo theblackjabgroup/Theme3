@@ -1676,5 +1676,162 @@
         "default": "light"
       }
     ]
+  },
+  {
+    "name": "Gift Card",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Text Customization"
+      },
+      {
+        "type": "text",
+        "id": "gift_card_title",
+        "label": "Title",
+        "default": "YOUR GIFT CARD"
+      },
+      {
+        "type": "text",
+        "id": "gift_card_subtext",
+        "label": "Footer Subtext",
+        "default": "USE CODE AT CHECKOUT TO REDEEM YOUR GIFT CARD :)"
+      },
+      {
+        "type": "text",
+        "id": "gift_card_card_label",
+        "label": "Card Label",
+        "default": "GIFT CARD"
+      },
+      {
+        "type": "header",
+        "content": "Font Sizes"
+      },
+      {
+        "type": "range",
+        "id": "gift_card_title_size",
+        "min": 20,
+        "max": 100,
+        "step": 2,
+        "unit": "px",
+        "label": "Title Font Size",
+        "default": 48
+      },
+      {
+        "type": "range",
+        "id": "gift_card_title_size_mobile",
+        "min": 16,
+        "max": 60,
+        "step": 2,
+        "unit": "px",
+        "label": "Title Font Size (Mobile)",
+        "default": 32
+      },
+      {
+        "type": "range",
+        "id": "gift_card_value_size",
+        "min": 20,
+        "max": 100,
+        "step": 2,
+        "unit": "px",
+        "label": "Value Font Size",
+        "default": 38
+      },
+      {
+        "type": "range",
+        "id": "gift_card_value_size_mobile",
+        "min": 16,
+        "max": 80,
+        "step": 2,
+        "unit": "px",
+        "label": "Value Font Size (Mobile)",
+        "default": 26
+      },
+      {
+        "type": "range",
+        "id": "gift_card_footer_size",
+        "min": 10,
+        "max": 30,
+        "step": 1,
+        "unit": "px",
+        "label": "Footer Font Size",
+        "default": 12
+      },
+      {
+        "type": "range",
+        "id": "gift_card_footer_size_mobile",
+        "min": 10,
+        "max": 24,
+        "step": 1,
+        "unit": "px",
+        "label": "Footer Font Size (Mobile)",
+        "default": 12
+      },
+      {
+        "type": "header",
+        "content": "Colors"
+      },
+      {
+        "type": "color",
+        "id": "gift_card_bg",
+        "label": "Page Background",
+        "default": "#e5e2da"
+      },
+      {
+        "type": "color",
+        "id": "gift_card_panel_bg",
+        "label": "Panel Background",
+        "default": "#ebe9e3"
+      },
+      {
+        "type": "color",
+        "id": "gift_card_text",
+        "label": "Text Color",
+        "default": "#2f4f2f"
+      },
+      {
+        "type": "color",
+        "id": "gift_card_accent",
+        "label": "Card Color",
+        "default": "#2f4f2f"
+      },
+      {
+        "type": "color",
+        "id": "gift_card_envelope_back",
+        "label": "Envelope Back Color",
+        "default": "#273827"
+      },
+      {
+        "type": "color",
+        "id": "gift_card_button_bg",
+        "label": "Button Background",
+        "default": "#273827"
+      },
+      {
+        "type": "color",
+        "id": "gift_card_button_text",
+        "label": "Button Text",
+        "default": "#e5e1da"
+      },
+      {
+        "type": "header",
+        "content": "Animation"
+      },
+      {
+        "type": "checkbox",
+        "id": "gift_card_animation_enabled",
+        "label": "Enable Card Bounce",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "gift_card_animation_duration",
+        "min": 1,
+        "max": 10,
+        "step": 0.5,
+        "unit": "s",
+        "label": "Bounce Interval",
+        "default": 3
+      }
+    ]
   }
 ]
