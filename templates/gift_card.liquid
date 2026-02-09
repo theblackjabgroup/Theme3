@@ -106,7 +106,7 @@
           >
             {% if is_expired %}
               <div class="gc-expired-stamp">
-                <span>EXPIRED</span>
+                <span>{{ 'gift_cards.issued.expired_stamp' | t }}</span>
               </div>
             {% endif %}
             <div class="gc-card-top">
@@ -138,7 +138,7 @@
 
         <p class="gc-footer-text">
           {% if is_expired %}
-            CONTACT THE OWNER IF IT SEEMS LIKE A MISTAKE
+            {{ 'gift_cards.issued.expired_subtext' | t }}
           {% else %}
             {{ settings.gift_card_subtext }}
           {% endif %}
@@ -158,12 +158,12 @@
             readonly
             id="gift-card-code"
           >
-          <button class="gc-copy-btn">COPY CODE</button>
+          <button class="gc-copy-btn">{{ 'gift_cards.issued.copy_button' | t }}</button>
         </div>
 
         <button class="gc-print-btn" onclick="window.print();">
           <span class="gc-print-btn__shadow"></span>
-          <span class="gc-print-btn__content">PRINT</span>
+          <span class="gc-print-btn__content">{{ 'gift_cards.issued.print_button' | t }}</span>
         </button>
       </div>
     </div>

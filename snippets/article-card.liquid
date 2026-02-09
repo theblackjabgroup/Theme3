@@ -8,7 +8,17 @@
   <div class="main-blog-card {{ custom_class }}">
     <div class="main-blog-card__image-wrapper">
       {%- if article.image -%}
-        {{ article.image | image_url: width: 600 | image_tag: loading: 'lazy', class: 'main-blog-card__image' }}
+        {%- liquid
+          assign loading_strategy = 'lazy'
+          if lazy_load == false
+            assign loading_strategy = 'eager'
+          endif
+        -%}
+        {{
+          article.image
+          | image_url: width: 600
+          | image_tag: loading: loading_strategy, class: 'main-blog-card__image'
+        }}
       {%- else -%}
         {{ 'image' | placeholder_svg_tag: 'main-blog-card__image' }}
       {%- endif -%}
