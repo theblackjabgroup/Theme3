@@ -12,7 +12,6 @@ body {
   margin: 0;
   padding: 0;
   background-color: var(--gc-bg);
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   color: var(--gc-text-color);
   min-height: 100vh;
   display: flex;
@@ -132,7 +131,6 @@ body {
 }
 
 .gc-card-label {
-  font-family: 'Courier New', Courier, monospace;
   font-size: clamp(0.5rem, 1.5vw, 0.7rem);
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -142,7 +140,6 @@ body {
 }
 
 .gc-card-value {
-  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   font-size: clamp(1.5rem, 6vw, 2.8rem);
   font-weight: 900;
   line-height: 1;
@@ -196,7 +193,6 @@ body {
 .gc-code-input {
   background: transparent;
   border: none;
-  font-family: 'Courier New', Courier, monospace;
   font-weight: bold;
   font-size: 1rem;
   color: var(--gc-text-color);
@@ -393,4 +389,67 @@ body {
   .gc-footer-text {
     margin-top: 20px;
   }
+}
+
+/* --- EXPIRED STATE OVERRIDES --- */
+.gc-container--expired {
+  /* Override Root Variables for this scope */
+  --gc-green: #3a4a3a; /* Darker/Desaturated Green */
+  --gc-bg: #e0ded9; /* Greyish Beige */
+  --gc-text-color: #3a4a3a; /* Match dark green */
+  --gc-input-bg: #d1cfca; /* Darker input bg */
+  --gc-envelope-inner: #a09e99; /* Example override if needed */
+}
+
+/* Specific Element Overrides in Expired State */
+.gc-container--expired .gc-title {
+    color: var(--gc-green); /* Ensure title matches dark green */
+    line-height: 0.9;
+}
+
+.gc-container--expired .gc-card {
+    /* Desaturate/Darken Card? Reference shows dark green card */
+    background-color: var(--gc-green) !important; 
+    color: var(--gc-bg) !important; /* Text becomes bg color */
+    box-shadow: none;
+}
+
+.gc-container--expired .gc-qr-container {
+    opacity: 0.8; /* Slight fade */
+}
+
+.gc-container--expired .gc-code-action-area {
+    background-color: #d1cfca; /* Explicit grey */
+    pointer-events: none; /* Disable interaction visually */
+}
+
+.gc-container--expired .gc-code-input {
+    color: #555; /* Dimmed text */
+    text-decoration: none; /* Or line-through if desired */
+}
+
+.gc-container--expired .gc-copy-btn {
+    display: none; /* Hide copy button */
+}
+
+/* EXPIRED STAMP */
+.gc-expired-stamp {
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-10deg);
+    border: 3px solid #e08e8e; /* Pinkish/Red */
+    border-radius: 8px;
+    padding: 5px 15px;
+    z-index: 10;
+    opacity: 0.9;
+    pointer-events: none;
+}
+
+.gc-expired-stamp span {
+    color: #e08e8e;
+    font-weight: 900;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
 }

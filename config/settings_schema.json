@@ -1802,8 +1802,20 @@
       },
       {
         "type": "color",
+        "id": "gift_card_envelope_front",
+        "label": "Envelope Front Color",
+        "default": "#D2CDC4"
+      },
+      {
+        "type": "color",
+        "id": "gift_card_button_face",
+        "label": "Button Face Color",
+        "default": "#2f4f2f"
+      },
+      {
+        "type": "color",
         "id": "gift_card_button_bg",
-        "label": "Button Background",
+        "label": "Button Shadow Color",
         "default": "#273827"
       },
       {
