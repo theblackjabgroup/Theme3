@@ -112,10 +112,9 @@
   background-color: var(--dc-bar-fill, #ff0000);
   border-radius: 50px;
   position: absolute;
-
+  right: -6px;
   top: 50%;
-  transform: translateY(-50%);
-}
+  transform: translateY(-50%);}
 
 .dc-ticks {
   display: flex;

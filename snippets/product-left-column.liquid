@@ -35,20 +35,20 @@
           {% endif %}
 
         {% when 'title' %}
-          <div class="product__title" style="max-width: {{ block.settings.title_width | default: 500 }}px; margin: 0 auto;" {{ block.shopify_attributes }}>
+          <div class="product__title" style="max-width: {{ block.settings.title_width | default: 500 }}px; margin-left: auto; margin-right: auto;" {{ block.shopify_attributes }}>
             <h1 style="font-size: {{ block.settings.title_font_size | default: 38 }}px;">{{ product.title }}</h1>
           </div>
 
         {% when 'tagline' %}
-          <div
-            class="product__tagline"
-            style="max-width: {{ block.settings.tagline_width | default: 500 }}px; font-size: {{ block.settings.tagline_font_size | default: 14 }}px;"
-            {{ block.shopify_attributes }}
-          >
-            {{
-              product.metafields.custom.tagline
-            }}
-          </div>
+          {% if product.metafields.custom.tagline != blank %}
+            <div
+              class="product__tagline"
+              style="max-width: {{ block.settings.tagline_width | default: 500 }}px; font-size: {{ block.settings.tagline_font_size | default: 14 }}px;"
+              {{ block.shopify_attributes }}
+            >
+              {{ product.metafields.custom.tagline }}
+            </div>
+          {% endif %}
 
         {% when 'mobile_slider' %}
           <!-- MOBILE SLIDER (Visible only on mobile) -->
