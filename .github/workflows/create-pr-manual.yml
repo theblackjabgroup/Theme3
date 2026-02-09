@@ -19,17 +19,16 @@ on:
         description: "PR description/body"
         required: false
         type: string
-      draft:
-        description: "Create as draft?"
-        required: false
-        type: boolean
-        default: false
+
+permissions:
+  contents: read
+  pull-requests: write
 
 jobs:
   create_pr:
     runs-on: ubuntu-latest
     steps:
-      - name: Create PR via GitHub API (auth as PAT user)
+      - name: Create PR via GitHub API (auth as PAT user, always ready for review)
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.PR_COMMENT_PAT }}
@@ -41,7 +40,6 @@ jobs:
             const target = String(context.payload.inputs.target_branch || "").trim();
             const title  = String(context.payload.inputs.title || "").trim();
             const body   = String(context.payload.inputs.body || "").trim();
-            const draft  = Boolean(context.payload.inputs.draft);
 
             if (!source) throw new Error("source_branch is required");
             if (!target) throw new Error("target_branch is required");
@@ -52,7 +50,7 @@ jobs:
             async function assertBranch(branch) {
               try {
                 await github.rest.repos.getBranch({ owner, repo, branch });
-              } catch (e) {
+              } catch {
                 throw new Error(`Branch not found: ${branch}`);
               }
             }
@@ -63,7 +61,8 @@ jobs:
             // head format is "OWNER:branch" for same-repo branches
             const head = `${owner}:${source}`;
             const existing = await github.rest.pulls.list({
-              owner, repo,
+              owner,
+              repo,
               state: "open",
               head,
               base: target,
@@ -76,7 +75,7 @@ jobs:
               return;
             }
 
-            // 3) Create PR
+            // 3) Create PR (explicitly NOT draft)
             const created = await github.rest.pulls.create({
               owner,
               repo,
@@ -84,7 +83,7 @@ jobs:
               base: target,
               title,
               body: body || undefined,
-              draft
+              draft: false
             });
 
-            core.notice(`Created PR: ${created.data.html_url}`);
+            core.notice(`Created PR (ready for review): ${created.data.html_url}`);
