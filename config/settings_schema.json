@@ -1825,6 +1825,36 @@
         "default": "#e5e1da"
       },
       {
+        "type": "range",
+        "id": "gift_card_button_radius",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "unit": "px",
+        "label": "Button Radius",
+        "default": 12
+      },
+      {
+        "type": "range",
+        "id": "gift_card_button_height",
+        "min": 30,
+        "max": 80,
+        "step": 1,
+        "unit": "px",
+        "label": "Button Height",
+        "default": 48
+      },
+      {
+        "type": "range",
+        "id": "gift_card_button_width",
+        "min": 100,
+        "max": 500,
+        "step": 10,
+        "unit": "px",
+        "label": "Button Max Width",
+        "default": 320
+      },
+      {
         "type": "header",
         "content": "Animation"
       },

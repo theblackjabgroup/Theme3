@@ -36,7 +36,9 @@
         --gc-btn-hover-bg: {{ settings.gift_card_button_text }};
         --gc-btn-hover-text: {{ settings.gift_card_button_bg }};
 
-        --gc-radius: var(--{{ settings.button_radius_token }}, 9999px);
+        --gc-radius: {{ settings.gift_card_button_radius }}px;
+        --gc-btn-height: {{ settings.gift_card_button_height }}px;
+        --gc-btn-max-width: {{ settings.gift_card_button_width }}px;
 
         {% if settings.gift_card_animation_enabled %}
           --gc-animation-duration: {{ settings.gift_card_animation_duration }}s;
