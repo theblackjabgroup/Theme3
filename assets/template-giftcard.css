@@ -1,1 +1,455 @@
-/* Cleared */
+:root {
+  --gc-bg: #e5e2da;
+  --gc-panel-bg: #ebe9e3;
+  --gc-green: #2f4f2f;
+  --gc-envelope-inner: #b8b6af;
+  --gc-envelope-outer: #ceccc5; 
+  --gc-input-bg: #d6d4ce;
+  --gc-text-color: #2f4f2f;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--gc-bg);
+  color: var(--gc-text-color);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gc-container {
+  display: flex;
+  gap: 20px;
+  width: 95%; /* Use more width */
+  max-width: 1600px; /* Increased from 1000px to cover more screen */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 800px) {
+  .gc-container {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+}
+
+/* PANELS */
+.gc-panel {
+  background-color: var(--gc-panel-bg);
+  border-radius: 24px;
+  flex: 1;
+  aspect-ratio: 1 / 1; /* Force square shape */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  width: 100%; /* Fill flex item */
+  padding: 60px; /* Increased padding for larger look */
+  box-sizing: border-box;
+}
+
+/* LEFT PANEL CONTENT */
+.gc-title {
+  font-size: 3rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  margin: 0 0 40px 0;
+  color: var(--gc-green);
+  text-align: center;
+  line-height: .9;
+  letter-spacing: -1px;
+}
+
+.gc-footer-text {
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+/* ENVELOPE GRAPHIC - SVG VERSION */
+.gc-envelope-container {
+  position: relative;
+  width: 100%;
+  max-width: 650px; /* Increased from 400px to fill panel */
+  aspect-ratio: 578 / 319;
+  display: flex;
+  justify-content: center;
+}
+
+.gc-envelope-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.gc-envelope-layer-back {
+    z-index: 0;
+}
+
+.gc-envelope-layer-front {
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* The Card inside */
+.gc-card {
+  position: absolute;
+  top: 10%; 
+  left: 50%;
+  transform: translateX(-50%);
+  width: 64%; /* Proportional to SVG width */
+  aspect-ratio: 1.586; /* Credit card ratio */
+  background-color: var(--gc-green);
+  border-radius: 12px;
+  z-index: 1; /* Sits between back and front layers */
+  padding: 5%;
+  box-sizing: border-box;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 -1px 4px rgba(0,0,0,0.1);
+  animation: var(--gc-animation-name, bounce) var(--gc-animation-duration, 3s) infinite ease-in-out;
+}
+
+@keyframes bounce {
+  0%, 40%, 100% {
+    transform: translateX(-50%) translateY(0);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); 
+  }
+  20% {
+    transform: translateX(-50%) translateY(-12px);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
+  }
+}
+
+.gc-card-label {
+  font-size: clamp(0.5rem, 1.5vw, 0.7rem);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.9;
+  margin-top: 15px; /* Added spacing from top edge */
+  display: block;
+}
+
+.gc-card-value {
+  font-size: clamp(1.5rem, 6vw, 2.8rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+.gc-card-visual {
+    position: absolute;
+    right: 5%;
+    bottom: 15%;
+    opacity: 0.15;
+    pointer-events: none;
+    line-height: 0;
+}
+
+.gc-logo-text {
+    font-size: 1.2em;
+    font-weight: 900;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    text-transform: uppercase;
+}
+
+/* RIGHT PANEL CONTENT */
+.gc-qr-container {
+  background-color: white;
+  padding: 15px;
+  border-radius: 20px;
+  border: 1px solid var(--gc-green);
+  margin-bottom: 30px;
+}
+
+.gc-qr-code img {
+  display: block;
+}
+
+.gc-code-action-area {
+  background-color: var(--gc-input-bg);
+  border-radius: 8px;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 320px;
+  margin-bottom: 30px;
+  box-sizing: border-box;
+}
+
+.gc-code-input {
+  background: transparent;
+  border: none;
+  font-weight: bold;
+  font-size: 1rem;
+  color: var(--gc-text-color);
+  width: 100%;
+  outline: none;
+  text-transform: uppercase;
+}
+
+.gc-copy-btn {
+  background: none;
+  border: none;
+  text-decoration: underline;
+  text-transform: uppercase;
+  font-size: 0.65rem;
+  font-weight: bold;
+  color: var(--gc-text-color);
+  cursor: pointer;
+  white-space: nowrap;
+  margin-left: 10px;
+  padding: 0;
+}
+
+.gc-print-btn {
+  position: relative;
+  display: inline-block;
+  background: transparent;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  width: 100%;
+  max-width: 320px;
+  height: 48px; /* Standard button height */
+  margin-top: 0;
+  text-transform: none;
+  z-index: 1;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.gc-print-btn * {
+  box-sizing: border-box;
+}
+
+.gc-print-btn__shadow {
+  position: absolute;
+  top: 3px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--gc-btn-hover-bg); /* Dark Green Shadow */
+  border-radius: var(--gc-radius);
+  z-index: -1;
+  transition: transform 0.4s ease;
+}
+
+.gc-print-btn__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--gc-green); /* Green Background */
+  color: var(--gc-btn-text); /* Beige Text */
+  border: 1px solid var(--gc-btn-border);
+  padding: 0 20px;
+  border-radius: var(--gc-radius);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  line-height: 1;
+  transition: transform 0.4s ease, background-color 0.2s, color 0.2s;
+  will-change: transform;
+  width: 100%;
+  height: 100%;
+}
+
+.gc-print-btn:not([disabled]):hover .gc-print-btn__content {
+  transform: translate(0, -4px);
+  /* Optional: Change colors on hover if desired, but 3D effect usually keeps base colors or slightly shifts */
+}
+
+.gc-print-btn:not([disabled]):active .gc-print-btn__content {
+  transform: translate(0, 1px);
+}
+
+.gc-print-btn:hover {
+  opacity: 1; /* Reset opacity from previous styles */
+}
+
+/* Print Optimization */
+@media print {
+  @page {
+    margin: 0.5cm;
+    size: auto;
+  }
+
+  body {
+    background-color: transparent !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    height: auto !important;
+    min-height: 0 !important;
+    display: block !important;
+  }
+
+  .gc-container {
+    width: 100% !important;
+    max-width: none !important;
+    height: auto !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    transform: scale(0.85); /* Scale down slightly to ensure fit */
+    transform-origin: top center;
+  }
+
+  .gc-panel {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    box-shadow: none !important;
+    margin-bottom: 20px !important;
+    border: 1px solid #ccc; /* Optional border for print clarity */
+    aspect-ratio: auto !important;
+    min-height: 0 !important;
+    padding: 30px !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Hide interactiv/unnecessary elements */
+  .gc-print-btn, 
+  .gc-copy-btn, 
+  .gc-footer-text {
+    display: none !important;
+  }
+
+  /* Make sure QR and Code are visible */
+  .gc-qr-container,
+  .gc-code-action-area {
+    display: flex !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    border: none !important; /* Remove border from containers for cleaner look */
+    box-shadow: none !important;
+  }
+  
+  /* Ensure code input text is black and visible */
+  .gc-code-input {
+    color: black !important;
+    text-align: center;
+    width: 100%;
+    font-size: 1.2rem;
+  }
+
+  /* Ensure the envelope/card is visible and high contrast */
+  .gc-envelope-container {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    max-width: 100% !important;
+  }
+}
+
+/* Tablet / Smaller Laptop Customizations */
+@media (max-width: 1200px) {
+  .gc-card-value {
+    font-size: 1.8rem; /* Reduced from clamp default */
+  }
+  
+  .gc-logo-text {
+    font-size: 0.8rem; /* Reduced */
+  }
+}
+  
+/* Mobile Customizations */
+@media (max-width: 600px) {
+  .gc-panel {
+    padding: 20px; /* Reduced padding for mobile */
+    min-height: auto; /* Allow height to shrink */
+    aspect-ratio: auto; /* Remove square aspect ratio constraint */
+  }
+
+  .gc-title {
+    font-size: 2rem; /* Smaller title */
+    margin-bottom: 20px;
+  }
+
+  .gc-envelope-container {
+    margin-bottom: 10px;
+  }
+  
+  .gc-footer-text {
+    margin-top: 20px;
+  }
+}
+
+/* --- EXPIRED STATE OVERRIDES --- */
+.gc-container--expired {
+  /* Override Root Variables for this scope */
+  --gc-green: #3a4a3a; /* Darker/Desaturated Green */
+  --gc-bg: #e0ded9; /* Greyish Beige */
+  --gc-text-color: #3a4a3a; /* Match dark green */
+  --gc-input-bg: #d1cfca; /* Darker input bg */
+  --gc-envelope-inner: #a09e99; /* Example override if needed */
+}
+
+/* Specific Element Overrides in Expired State */
+.gc-container--expired .gc-title {
+    color: var(--gc-green); /* Ensure title matches dark green */
+    line-height: 0.9;
+}
+
+.gc-container--expired .gc-card {
+    /* Desaturate/Darken Card? Reference shows dark green card */
+    background-color: var(--gc-green) !important; 
+    color: var(--gc-bg) !important; /* Text becomes bg color */
+    box-shadow: none;
+}
+
+.gc-container--expired .gc-qr-container {
+    opacity: 0.8; /* Slight fade */
+}
+
+.gc-container--expired .gc-code-action-area {
+    background-color: #d1cfca; /* Explicit grey */
+    pointer-events: none; /* Disable interaction visually */
+}
+
+.gc-container--expired .gc-code-input {
+    color: #555; /* Dimmed text */
+    text-decoration: none; /* Or line-through if desired */
+}
+
+.gc-container--expired .gc-copy-btn {
+    display: none; /* Hide copy button */
+}
+
+/* EXPIRED STAMP */
+.gc-expired-stamp {
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-10deg);
+    border: 3px solid #e08e8e; /* Pinkish/Red */
+    border-radius: 8px;
+    padding: 5px 15px;
+    z-index: 10;
+    opacity: 0.9;
+    pointer-events: none;
+}
+
+.gc-expired-stamp span {
+    color: #e08e8e;
+    font-weight: 900;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}

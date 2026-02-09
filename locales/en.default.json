@@ -511,9 +511,14 @@
       "add_to_apple_wallet": "Add to Apple Wallet",
       "qr_image_alt": "QR code — scan to redeem gift card",
       "copy_code": "Copy gift card code",
+      "copy_button": "Copy Code",
+      "print_button": "Print",
       "expiration_date": "Expires {{ expires_on }}",
       "copy_code_success": "Code copied successfully",
-      "expired": "Expired"
+      "expired": "Expired",
+      "expired_stamp": "Expired",
+      "expired_subtext": "Contact the owner if it seems like a mistake",
+      "expired_title_html": "OOPS!<br>SEEMS LIKE YOUR GIFT<br>CARD HAS EXPIRED"
     }
   },
   "recipient": {

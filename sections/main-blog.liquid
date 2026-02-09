@@ -39,7 +39,7 @@
       font-size: {{ section.settings.tag_size_desktop }}px;
     }
 
-    #MainBlogContainer-{{ section.id }} .main-blog-card.is-active .main-blog-card__title {
+    #MainBlogContainer-{{ section.id }} .main-blog-slider__slide.is-active .main-blog-card__title {
        font-size: calc({{ section.settings.title_size_desktop }}px + 4px);
     }
   }
@@ -71,35 +71,24 @@
       {%- endif -%}
 
       {%- for article in articles -%}
-        <div class="main-blog-card" data-index="{{ forloop.index0 }}">
-          <div class="main-blog-card__image-wrapper">
-            {%- if article.image -%}
-              {{ article.image | image_url: width: 600 | image_tag: loading: 'lazy', class: 'main-blog-card__image' }}
-            {%- else -%}
-              {{ 'image' | placeholder_svg_tag: 'main-blog-card__image' }}
-            {%- endif -%}
-          </div>
-          <div class="main-blog-card__content">
-            {%- if article.tags.size > 0 -%}
-              <span class="main-blog-card__tag">{{ article.tags.first }}</span>
-            {%- elsif section.settings.placeholder_tag_text != blank -%}
-              <span class="main-blog-card__tag">{{ section.settings.placeholder_tag_text }}</span>
-            {%- endif -%}
-
-            <h3 class="main-blog-card__title">
-              {{ article.title | default: 'Default Title' }}
-            </h3>
-
-            <div class="main-blog-card__excerpt">
-              {%- if article.excerpt.size > 0 -%}
-                {{ article.excerpt | strip_html | truncatewords: 15 }}
-              {%- else -%}
-                {{ article.content | strip_html | truncatewords: 15 }}
-              {%- endif -%}
-            </div>
-          </div>
-
-          {% render 'submit-button', text: 'Read more', url: article.url, class: 'main-blog-card__button' %}
+        <div class="main-blog-slider__slide" data-index="{{ forloop.index0 }}">
+          {% render 'article-card',
+            blog: blog_obj,
+            article: article,
+            media_height: 'fixed',
+            media_aspect_ratio: 'fixed',
+            show_image: true,
+            show_date: false,
+            show_author: false,
+            show_badge: false,
+            show_tags: true,
+            placeholder_tag_text: section.settings.placeholder_tag_text,
+            show_excerpt: true,
+            show_read_more_button: true,
+            cta_text: 'Read more',
+            custom_class: 'main-blog-card',
+            lazy_load: false
+          %}
         </div>
       {%- endfor -%}
     </div>
@@ -141,7 +130,7 @@
       const existingClones = track.querySelectorAll('.is-clone');
       existingClones.forEach((clone) => clone.remove());
 
-      let cards = Array.from(track.querySelectorAll('.main-blog-card'));
+      let cards = Array.from(track.querySelectorAll('.main-blog-slider__slide'));
 
       const cloneCount = 10;
       const cardCount = cards.length;
@@ -164,9 +153,9 @@
         }
       }
 
-      const allCards = Array.from(track.querySelectorAll('.main-blog-card'));
-      let currentIndex = cloneCount;
-      let isAnimating = false;
+       const allCards = Array.from(track.querySelectorAll('.main-blog-slider__slide'));
+       let currentIndex = cloneCount;
+       let isAnimating = false;
       let scrollTimeout;
 
       // Calculate dimensions once
