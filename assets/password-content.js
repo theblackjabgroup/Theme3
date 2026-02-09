@@ -1,5 +1,6 @@
 window.PasswordModal = {
   modal: null,
+  closeTimeout: null,
 
   init() {
     this.modal = document.getElementById('PasswordModal');
@@ -7,6 +8,10 @@ window.PasswordModal = {
 
   open() {
     if (!this.modal) this.init();
+    if (this.closeTimeout) {
+      clearTimeout(this.closeTimeout);
+      this.closeTimeout = null;
+    }
     this.modal.classList.add('open');
     this.modal.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
@@ -15,8 +20,10 @@ window.PasswordModal = {
   close() {
     if (!this.modal) this.init();
     this.modal.classList.remove('open');
-    setTimeout(() => {
+    if (this.closeTimeout) clearTimeout(this.closeTimeout);
+    this.closeTimeout = setTimeout(() => {
       this.modal.classList.add('hidden');
+      this.closeTimeout = null;
     }, 300); // Wait for fade out
     document.body.style.overflow = '';
   },
@@ -34,7 +41,7 @@ window.PasswordModal = {
 class PasswordCountdown {
   constructor(element) {
     this.element = element;
-    this.targetDate = new Date(element.dataset.date).getTime();
+    this.targetDate = new Date(element.dataset.date.trim()).getTime();
 
     this.elements = {
       days: element.querySelector('[data-days]'),
@@ -44,15 +51,19 @@ class PasswordCountdown {
     };
 
     this.update();
-    setInterval(this.update.bind(this), 1000);
+    this.interval = setInterval(this.update.bind(this), 1000);
   }
 
   update() {
     const now = new Date().getTime();
     const distance = this.targetDate - now;
 
-    if (distance < 0) {
-      // Expired logic if needed
+    if (isNaN(distance) || distance < 0) {
+      if (this.interval) {
+        clearInterval(this.interval);
+        this.interval = null;
+      }
+      this.resetDisplay();
       return;
     }
 
@@ -66,11 +77,23 @@ class PasswordCountdown {
     this.elements.minutes.innerText = minutes.toString().padStart(2, '0');
     this.elements.seconds.innerText = seconds.toString().padStart(2, '0');
   }
+
+  resetDisplay() {
+    Object.values(this.elements).forEach((el) => {
+      if (el) el.innerText = '00';
+    });
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   const countdown = document.querySelector('.password-countdown');
   if (countdown) {
     new PasswordCountdown(countdown);
+  }
+
+  // Auto-open modal if there are errors
+  const passwordInput = document.getElementById('Password');
+  if (passwordInput && passwordInput.getAttribute('aria-invalid') === 'true') {
+    window.PasswordModal.open();
   }
 });
