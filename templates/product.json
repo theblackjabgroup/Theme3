@@ -46,17 +46,77 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "product_tag": {
+          "type": "product_tag",
+          "settings": {
+            "tag_text": "LOREM",
+            "tag_text_color": "#000000",
+            "tag_border_color": "#000000",
+            "tag_bg_color": "rgba(0,0,0,0)"
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {
+            "title_width": 300,
+            "title_font_size": 38
+          }
+        },
+        "tagline": {
+          "type": "tagline",
+          "settings": {
+            "tagline_width": 300,
+            "tagline_font_size": 14
+          }
+        },
+        "mobile_slider": {
+          "type": "mobile_slider",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+            "price_font_size": 56,
+            "sale_price_font_size": 20
+          }
+        },
+        "stock_badge": {
+          "type": "stock_badge",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {}
+        },
+        "promo_text": {
+          "type": "promo_text",
+          "settings": {
+            "promo_text": "Sale Roasted Kaffeebohnen",
+            "promo_font_size": 12
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
         "collapsible_tab_1": {
           "type": "collapsible_tab",
           "settings": {
             "heading": "Geeky Details",
             "content": "<p>Here are the technical details of the product.</p>",
-            "custom_liquid": ""
+            "custom_liquid": "",
+            "heading_font_size": 18,
+            "heading_font_weight": "400",
+            "content_font_size": 16,
+            "content_font_weight": "400"
           }
         },
         "description": {
           "type": "description",
-          "settings": {}
+          "settings": {
+            "font_size": 18,
+            "font_weight": "400"
+          }
         },
         "icon_strip_1": {
           "type": "icon_strip",
@@ -64,7 +124,9 @@
             "text_1": "Designed in Milan with Love",
             "text_2": "Conversation Starter",
             "text_3": "Hug Magnet",
-            "text_4": "Supporting Non-Profit"
+            "text_4": "Supporting Non-Profit",
+            "font_size": 12,
+            "font_weight": "700"
           }
         },
         "feature_row_1": {
@@ -73,7 +135,11 @@
             "heading": "Delivery",
             "text": "<p>We haven't yet figured out how to make delivery teleport to your doorstep. So, while we'll do our best to get your order to you as quickly as possible, please be patient.</p>",
             "button_label": "Discover more",
-            "button_link": ""
+            "button_link": "",
+            "heading_font_size": 24,
+            "heading_font_weight": "700",
+            "text_font_size": 18,
+            "text_font_weight": "400"
           }
         },
         "marquee_1": {
@@ -84,7 +150,9 @@
             "direction": "normal",
             "show_border": true,
             "enable_custom_bg": false,
-            "bg_color": "#ffffff"
+            "bg_color": "#ffffff",
+            "font_size": 18,
+            "font_weight": "700"
           }
         },
         "feature_row_2": {
@@ -93,7 +161,11 @@
             "heading": "Material",
             "text": "<p>Made from 100% organic cotton, soft to the touch and kind to the planet.</p>",
             "button_label": "Read more",
-            "button_link": ""
+            "button_link": "",
+            "heading_font_size": 24,
+            "heading_font_weight": "700",
+            "text_font_size": 18,
+            "text_font_weight": "400"
           }
         },
         "feature_row_3": {
@@ -102,7 +174,11 @@
             "heading": "Care Instructions",
             "text": "<p>Wash cool, hang dry. Do not bleach. Love your clothes and they will love you back.</p>",
             "button_label": "Care Guide",
-            "button_link": ""
+            "button_link": "",
+            "heading_font_size": 24,
+            "heading_font_weight": "700",
+            "text_font_size": 18,
+            "text_font_weight": "400"
           }
         },
         "marquee_2": {
@@ -113,11 +189,22 @@
             "direction": "reverse",
             "show_border": true,
             "enable_custom_bg": false,
-            "bg_color": "#ffffff"
+            "bg_color": "#ffffff",
+            "font_size": 18,
+            "font_weight": "700"
           }
         }
       },
       "block_order": [
+        "product_tag",
+        "title",
+        "tagline",
+        "mobile_slider",
+        "price",
+        "stock_badge",
+        "variant_picker",
+        "promo_text",
+        "quantity_selector",
         "collapsible_tab_1",
         "description",
         "icon_strip_1",
@@ -135,19 +222,8 @@
         "margin_top_mobile": 8,
         "border_radius": 14,
         "color_scheme": "scheme-1",
-        "product_tag_enabled": true,
-        "product_tag_text": "LOREM",
-        "product_tag_text_color": "#000000",
-        "product_tag_border_color": "#000000",
-        "product_tag_bg_color": "rgba(0,0,0,0)",
-        "promo_text": "Sale Roasted Kaffeebohnen",
-        "tagline_width": 300,
-        "title_width": 300,
-        "title_font_size": 38,
-        "tagline_font_size": 14,
-        "price_font_size": 56,
-        "sale_price_font_size": 20,
-        "promo_font_size": 12
+        "block_gap": 24,
+        "right_block_gap": 40
       }
     }
   },
