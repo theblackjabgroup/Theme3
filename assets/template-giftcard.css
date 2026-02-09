@@ -224,8 +224,8 @@ body {
   cursor: pointer;
   text-decoration: none;
   width: 100%;
-  max-width: 320px;
-  height: 48px; /* Standard button height */
+  max-width: var(--gc-btn-max-width);
+  height: var(--gc-btn-height); /* Dynamic height */
   margin-top: 0;
   text-transform: none;
   z-index: 1;
