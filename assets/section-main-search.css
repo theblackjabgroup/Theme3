@@ -148,6 +148,31 @@
   height: 18px;
 }
 
+.main-search-page-header__reset {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  min-height: 28px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-headings, #365330);
+  cursor: pointer;
+}
+
+.main-search-page-header__reset.hidden {
+  display: none;
+}
+
+.main-search-page-header__reset .svg-wrapper svg {
+  width: 18px;
+  height: 18px;
+}
+
 .main-search-page-header__submit .svg-wrapper {
   display: flex;
   align-items: center;

@@ -590,6 +590,15 @@
               spellcheck="false"
             {%- endif -%}
           >
+          <button
+            type="reset"
+            class="mega-menu-search-reset{% if search.terms == blank %} hidden{% endif %}"
+            aria-label="{{ 'general.search.reset' | t }}"
+          >
+            <span class="svg-wrapper">
+              {{- 'icon-reset.svg' | inline_asset_content -}}
+            </span>
+          </button>
           <input type="hidden" name="options[prefix]" value="last">
         </div>
         {%- if settings.predictive_search_enabled -%}

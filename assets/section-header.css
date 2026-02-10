@@ -916,14 +916,39 @@ body.mega-menu-open .dock-actions * {
   height: 20px;
 }
 
+.mega-menu-search-reset {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #365330;
+  cursor: pointer;
+}
+
+.mega-menu-search-reset.hidden {
+  display: none;
+}
+
+.mega-menu-search-reset svg {
+  width: 20px;
+  height: 20px;
+}
+
 .mega-menu-predictive-search {
   max-height: 320px;
   overflow-y: auto;
   display: none;
 }
 
-.mega-menu-predictive-search[loading="true"],
-.mega-menu-predictive-search[results="true"] {
+/* Attributes are set on parent <predictive-search> by predictive-search.js */
+predictive-search[loading="true"] .mega-menu-predictive-search,
+predictive-search[results="true"] .mega-menu-predictive-search {
   display: block;
   margin-top: 26px;
   padding-top: 26px;

@@ -9,6 +9,17 @@ document.addEventListener('DOMContentLoaded', function () {
   // Delay (ms) for menu exit transform – keep overlay/blur until after this to avoid lag
   const MEGA_MENU_EXIT_DURATION = 1200;
 
+  // Single pending timer for deferred state check; cleared on open or when scheduling a new close to avoid race on rapid close/reopen
+  let megaMenuStateCheckTimer = null;
+
+  function scheduleDeferredStateCheck() {
+    if (megaMenuStateCheckTimer) clearTimeout(megaMenuStateCheckTimer);
+    megaMenuStateCheckTimer = setTimeout(() => {
+      checkMegaMenuState();
+      megaMenuStateCheckTimer = null;
+    }, MEGA_MENU_EXIT_DURATION);
+  }
+
   // Close all mega menus
   function closeAllMegaMenus(skipStateCheck = false) {
     megaMenuTriggers.forEach((trigger) => {
@@ -21,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Defer body class removal until after exit animation so overlay/blur don't animate during transform (avoids lag)
     if (!skipStateCheck) {
-      setTimeout(checkMegaMenuState, MEGA_MENU_EXIT_DURATION);
+      scheduleDeferredStateCheck();
     }
   }
 
@@ -63,8 +74,14 @@ document.addEventListener('DOMContentLoaded', function () {
       if (!menuIsHidden || triggerIsExpanded) {
         this.setAttribute('aria-expanded', 'false');
         menu.setAttribute('aria-hidden', 'true');
-        setTimeout(checkMegaMenuState, MEGA_MENU_EXIT_DURATION);
+        scheduleDeferredStateCheck();
         return;
+      }
+
+      // Opening a menu: cancel any pending close timer so an old timer can't remove mega-menu-open during this menu's lifecycle
+      if (megaMenuStateCheckTimer) {
+        clearTimeout(megaMenuStateCheckTimer);
+        megaMenuStateCheckTimer = null;
       }
 
       // Close all other menus first - do this synchronously to prevent race conditions

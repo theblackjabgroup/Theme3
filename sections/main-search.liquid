@@ -125,11 +125,9 @@
           <span class="main-search-page-header__breadcrumb-current">
             {%- if search.performed -%}
               {%- if search.results_count > 0 -%}
-                {{ 'templates.search.results_with_count' | t: count: search.results_count }} FOUND FOR "
-                {{- search.terms -}}
-                "
+                {{ 'templates.search.results_with_count_and_term' | t: count: search.results_count, terms: search.terms }}
               {%- else -%}
-                {{ 'templates.search.results_with_count' | t: count: 0 }} FOR "{{ search.terms }}"
+                {{ 'templates.search.results_with_count_and_term' | t: count: 0, terms: search.terms }}
               {%- endif -%}
             {%- else -%}
               {{ 'general.search.search' | t }}
@@ -138,7 +136,7 @@
         </nav>
         {%- if search.performed and search.terms != blank -%}
           <div class="main-search-page-header__related">
-            <span class="main-search-page-header__related-title">RELATED WORDS</span>
+            <span class="main-search-page-header__related-title">{{ 'templates.search.related_words' | t }}</span>
             <ul class="main-search-page-header__related-list">
               {%- assign related_terms = search.terms | split: ' ' -%}
               {%- for word in related_terms limit: 5 -%}
@@ -181,7 +179,7 @@
                 type="search"
                 name="q"
                 value="{{ search.terms | escape }}"
-                placeholder="SEARCH FOR MORE PRODUCTS"
+                placeholder="{{ 'general.search.placeholder' | t }}"
                 {%- if settings.predictive_search_enabled -%}
                   role="combobox"
                   aria-expanded="false"
@@ -195,6 +193,15 @@
                   spellcheck="false"
                 {%- endif -%}
               >
+              <button
+                type="reset"
+                class="main-search-page-header__reset{% if search.terms == blank %} hidden{% endif %}"
+                aria-label="{{ 'general.search.reset' | t }}"
+              >
+                <span class="svg-wrapper">
+                  {{- 'icon-reset.svg' | inline_asset_content -}}
+                </span>
+              </button>
               <label class="visually-hidden" for="Search-In-Template">{{ 'general.search.search' | t }}</label>
               <input name="options[prefix]" type="hidden" value="last">
             </div>
