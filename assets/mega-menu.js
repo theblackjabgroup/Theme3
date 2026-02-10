@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', function () {
   // Single pending timer for deferred state check; cleared on open or when scheduling a new close to avoid race on rapid close/reopen
   let megaMenuStateCheckTimer = null;
 
+  // Search popup focus timer; cleared on close so stale focus does not fire after popup is closed
+  let searchPopupFocusTimer = null;
+
   function scheduleDeferredStateCheck() {
     if (megaMenuStateCheckTimer) clearTimeout(megaMenuStateCheckTimer);
     megaMenuStateCheckTimer = setTimeout(() => {
@@ -20,8 +23,16 @@ document.addEventListener('DOMContentLoaded', function () {
     }, MEGA_MENU_EXIT_DURATION);
   }
 
+  function cancelSearchPopupFocusTimer() {
+    if (searchPopupFocusTimer) {
+      clearTimeout(searchPopupFocusTimer);
+      searchPopupFocusTimer = null;
+    }
+  }
+
   // Close all mega menus
   function closeAllMegaMenus(skipStateCheck = false) {
+    cancelSearchPopupFocusTimer();
     megaMenuTriggers.forEach((trigger) => {
       trigger.setAttribute('aria-expanded', 'false');
     });
@@ -72,6 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       // If menu is visible or trigger says expanded, close it
       if (!menuIsHidden || triggerIsExpanded) {
+        cancelSearchPopupFocusTimer();
         this.setAttribute('aria-expanded', 'false');
         menu.setAttribute('aria-hidden', 'true');
         scheduleDeferredStateCheck();
@@ -107,9 +119,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
       // Focus search input when search popup opens – after entry animation (1.2s) to avoid layout jank
       if (menu.id === 'HeaderSearchPopup') {
+        cancelSearchPopupFocusTimer();
         const searchInput = menu.querySelector('#HeaderSearchPopupInput');
         if (searchInput) {
-          setTimeout(() => searchInput.focus(), 1300);
+          searchPopupFocusTimer = setTimeout(() => {
+            searchPopupFocusTimer = null;
+            if (menu.getAttribute('aria-hidden') === 'false') searchInput.focus();
+          }, 1300);
         }
       }
     });
