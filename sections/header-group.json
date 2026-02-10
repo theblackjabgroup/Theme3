@@ -44,6 +44,23 @@
         "search-block": {
           "type": "search"
         },
+        "search-popup": {
+          "type": "search_popup",
+          "settings": {
+            "main_title": "Search",
+            "search_placeholder": "Search",
+            "menu": "main-menu",
+            "featured_title_1": "FEATURED",
+            "featured_title_2": "FEATURED",
+            "featured_title_3": "FEATURED",
+            "image_1": "",
+            "label_1": "",
+            "link_1": "",
+            "image_2": "",
+            "label_2": "",
+            "link_2": ""
+          }
+        },
         "cart-block": {
           "type": "cart"
         },
@@ -55,6 +72,7 @@
         "mega_menu_KCC3jE",
         "cart-block",
         "search-block",
+        "search-popup",
         "welcome-block",
         "mobile-menu-block"
       ],
