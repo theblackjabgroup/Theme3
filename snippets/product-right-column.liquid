@@ -15,7 +15,7 @@
   {% render 'product-image-slider', product: product, section: section %}
 
   <!-- DETAILS CONTENT -->
-  <div class="product-content-stack" style="--block-gap: {{ block_gap | default: 40 }}px;">
+  <div class="product-content-stack" style="--block-gap: {{ block_gap | default: 24 }}px;">
     {% assign accordion_count = 0 %}
     {% for block in section.blocks %}
       {% case block.type %}

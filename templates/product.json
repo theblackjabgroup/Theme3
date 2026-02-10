@@ -223,7 +223,7 @@
         "border_radius": 14,
         "color_scheme": "scheme-1",
         "block_gap": 24,
-        "right_block_gap": 40
+        "right_block_gap": 24
       }
     }
   },

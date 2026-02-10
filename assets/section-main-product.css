@@ -370,7 +370,7 @@
 }
 
 .product-content-stack > * {
-  margin-bottom: var(--block-gap, 40px);
+  margin-bottom: var(--block-gap, 24px);
 }
 
 .product-content-stack > *:last-child {
