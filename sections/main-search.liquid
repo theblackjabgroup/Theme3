@@ -134,19 +134,6 @@
             {%- endif -%}
           </span>
         </nav>
-        {%- if search.performed and search.terms != blank -%}
-          <div class="main-search-page-header__related">
-            <span class="main-search-page-header__related-title">{{ 'templates.search.related_words' | t }}</span>
-            <ul class="main-search-page-header__related-list">
-              {%- assign related_terms = search.terms | split: ' ' -%}
-              {%- for word in related_terms limit: 5 -%}
-                {%- if word != blank -%}
-                  <li>{{ word | strip | capitalize }}</li>
-                {%- endif -%}
-              {%- endfor -%}
-            </ul>
-          </div>
-        {%- endif -%}
       </div>
 
       <h1 class="main-search-page-header__title">
@@ -211,7 +198,9 @@
                 tabindex="-1"
                 id="predictive-search-results"
                 data-predictive-search
-              ></div>
+              >
+                {%- render 'loading-spinner', class: 'predictive-search__loading-state' -%}
+              </div>
               <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
             {%- endif -%}
           </form>
