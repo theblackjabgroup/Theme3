@@ -407,7 +407,7 @@
 @supports (padding: env(safe-area-inset-bottom)) {
   @media screen and (max-width: 749px) {
     .template-search {
-      padding-left: max(12px, env(safe-area-inset-left));
+      padding-left: max(16px, env(safe-area-inset-left));
       padding-right: max(16px, env(safe-area-inset-right));
     }
   }
