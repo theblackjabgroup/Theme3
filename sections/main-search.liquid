@@ -36,8 +36,6 @@
       --search-header-title-line-height: {{ section.settings.header_title_line_height | default: 90 }}%;
       --search-header-title-margin-top: {{ section.settings.header_title_margin_top | default: 8 }}px;
       --search-header-title-margin-bottom: {{ section.settings.header_title_margin_bottom | default: 24 }}px;
-      --search-header-related-title-font-size: {{ section.settings.header_related_title_font_size | default: 11 }}px;
-      --search-header-related-list-font-size: {{ section.settings.header_related_list_font_size | default: 12 }}px;
       --search-header-input-font-size: {{ section.settings.header_search_input_font_size | default: 14 }}px;
       --search-header-input-height: {{ section.settings.header_search_input_height | default: 44 }}px;
       --search-header-padding: {{ section.settings.header_padding | default: 20 }}px;
@@ -52,8 +50,6 @@
       .section-{{ section.id }}-padding .main-search-page-header {
         --search-header-breadcrumb-font-size: {{ section.settings.header_breadcrumb_font_size_mobile | default: 12 }}px;
         --search-header-title-font-size: {{ section.settings.header_title_font_size_mobile | default: 32 }}px;
-        --search-header-related-title-font-size: {{ section.settings.header_related_title_font_size_mobile | default: 10 }}px;
-        --search-header-related-list-font-size: {{ section.settings.header_related_list_font_size_mobile | default: 11 }}px;
         --search-header-input-font-size: {{ section.settings.header_search_input_font_size_mobile | default: 16 }}px;
         --search-header-input-height: {{ section.settings.header_search_input_height_mobile | default: 48 }}px;
         --search-header-padding: {{ section.settings.header_padding_mobile | default: 24 }}px;
@@ -115,8 +111,8 @@
 {%- endstyle -%}
 
 {% paginate search.results by 24 %}
-  <div class="template-search{% unless search.performed and search.results_count > 0 %} template-search--empty{% endunless %}{% if section.settings.header_stack_related_mobile %} template-search--stack-related{% endif %} section-{{ section.id }}-padding">
-    {%- comment -%} Search page header: breadcrumb, title, related words, search bar {%- endcomment -%}
+  <div class="template-search{% unless search.performed and search.results_count > 0 %} template-search--empty{% endunless %} section-{{ section.id }}-padding">
+    {%- comment -%} Search page header: breadcrumb, title, search bar {%- endcomment -%}
     <header class="main-search-page-header {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
       <div class="main-search-page-header__top">
         <nav class="main-search-page-header__breadcrumb" aria-label="{{ 'general.breadcrumbs.breadcrumb' | t }}">
@@ -495,26 +491,6 @@
     },
     {
       "type": "range",
-      "id": "header_related_title_font_size",
-      "min": 9,
-      "max": 16,
-      "step": 1,
-      "unit": "px",
-      "label": "Related words heading font size",
-      "default": 11
-    },
-    {
-      "type": "range",
-      "id": "header_related_list_font_size",
-      "min": 10,
-      "max": 18,
-      "step": 1,
-      "unit": "px",
-      "label": "Related words list font size",
-      "default": 12
-    },
-    {
-      "type": "range",
       "id": "header_search_input_font_size",
       "min": 12,
       "max": 20,
@@ -571,7 +547,7 @@
       "max": 24,
       "step": 2,
       "unit": "px",
-      "label": "Gap between breadcrumb and related words",
+      "label": "Gap between breadcrumb and title",
       "default": 12
     },
     {
@@ -617,26 +593,6 @@
       "unit": "px",
       "label": "Title font size (mobile)",
       "default": 28
-    },
-    {
-      "type": "range",
-      "id": "header_related_title_font_size_mobile",
-      "min": 9,
-      "max": 14,
-      "step": 1,
-      "unit": "px",
-      "label": "Related words heading font size (mobile)",
-      "default": 10
-    },
-    {
-      "type": "range",
-      "id": "header_related_list_font_size_mobile",
-      "min": 10,
-      "max": 16,
-      "step": 1,
-      "unit": "px",
-      "label": "Related words list font size (mobile)",
-      "default": 11
     },
     {
       "type": "range",
@@ -718,12 +674,6 @@
       "unit": "px",
       "label": "Header padding left (mobile)",
       "default": 16
-    },
-    {
-      "type": "checkbox",
-      "id": "header_stack_related_mobile",
-      "default": true,
-      "label": "Stack related words below breadcrumb on mobile"
     },
     {
       "type": "header",
