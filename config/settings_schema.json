@@ -1024,6 +1024,15 @@
       },
       {
         "type": "range",
+        "id": "collection_card_hover_button_border_radius",
+        "label": "Hover Button Border Radius (px)",
+        "min": 0,
+        "max": 100,
+        "step": 2,
+        "default": 20
+      },
+      {
+        "type": "range",
         "id": "collection_card_hover_content_gap",
         "label": "Hover Content Gap (px)",
         "min": 4,
@@ -1448,6 +1457,24 @@
         "label": "Hover Button Padding Horizontal (px)",
         "min": 12,
         "max": 40,
+        "step": 2,
+        "default": 20
+      },
+      {
+        "type": "range",
+        "id": "product_card_hover_button_border_radius",
+        "label": "Hover Overlay Button Border Radius (px)",
+        "min": 0,
+        "max": 100,
+        "step": 2,
+        "default": 20
+      },
+      {
+        "type": "range",
+        "id": "product_card_price_button_border_radius",
+        "label": "Price Button Border Radius (px)",
+        "min": 0,
+        "max": 100,
         "step": 2,
         "default": 20
       },

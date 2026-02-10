@@ -76,7 +76,13 @@
   {{ settings.product_card_hover_button_font_weight | default: 600 }}; --card-hover-button-padding-vertical:
   {{ settings.product_card_hover_button_padding_vertical | default: 10 }}px; --card-hover-button-padding-horizontal:
   {{ settings.product_card_hover_button_padding_horizontal | default: 20 }}px; --card-hover-content-gap:
-  {{ settings.product_card_hover_content_gap | default: 10 }}px; }
+  {{ settings.product_card_hover_content_gap | default: 10 }}px; --card-hover-button-border-radius:
+  {{ settings.product_card_hover_button_border_radius | default: 20 }}px; --card-price-button-border-radius:
+  {{ settings.product_card_price_button_border_radius | default: 20 }}px; }
+
+  #ProductGridContainer .custom-product-card .share-story-submit {
+    border-radius: var(--card-hover-button-border-radius);
+  }
 
   #ProductGridContainer .custom-product-card__title { font-size:
   {{ settings.product_card_title_font_size | default: 24 }}px !important; font-weight:

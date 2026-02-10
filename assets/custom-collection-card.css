@@ -2,47 +2,126 @@
 
 .custom-collection-card {
   padding: 0 24px 24px 24px !important;
+  transition: border-color 0.35s ease, box-shadow 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.custom-collection-card__price {
-  border: 1px solid var(--color-borders);
-  border-radius: 12px;
-  padding: 8px 16px;
-  font-family: var(--font-body-family, 'Courier New', Courier, monospace);
-  font-weight: 700;
-  font-size: 14px;
-  display: inline-block;
-  background: var(--color-header-button-background);
-  transition: all 0.3s ease;
+.custom-collection-card:hover {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  transform: translateY(-4px);
+}
+
+/* Image and content: same 1s overshoot for hover-in and hover-out */
+.custom-collection-card__image-container::before {
+  transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.custom-collection-card__image {
+  transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.custom-collection-card__badge,
+.custom-collection-card__title,
+.custom-collection-card__description {
+  transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.custom-collection-card__hover-overlay {
+  transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1),
+              opacity 0.4s ease-out,
+              visibility 0s linear 0.28s;
+}
+
+/* Hover out: overlay and button leave together; visibility delayed until slide ends (base has delay) */
+.custom-collection-card:not(:hover) .custom-collection-card__hover-overlay {
+  transition-duration: 1s, 1s, 0s;
+  transition-delay: 0s, 0s, 1s;
+  transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1), cubic-bezier(0.34, 1.56, 0.64, 1), linear;
+}
+
+.custom-collection-card__hover-content {
+  transition: opacity 0.4s ease-out 0.15s;
+}
+
+.custom-collection-card:not(:hover) .custom-collection-card__hover-content {
+  opacity: 0;
+}
+
+.custom-collection-card:hover .custom-collection-card__hover-content {
+  opacity: 1;
+}
+
+/* Hover: image lifts and tilts */
+.custom-collection-card:hover .custom-collection-card__image-container::before {
+  transform: scaleY(0.8);
+}
+
+.custom-collection-card:hover .custom-collection-card__image {
+  transform: translateY(-58px) rotate(8deg) scale(1.2);
+}
+
+/* Hover: content shifts up so overlay can sit at bottom */
+.custom-collection-card:hover .custom-collection-card__badge,
+.custom-collection-card:hover .custom-collection-card__title,
+.custom-collection-card:hover .custom-collection-card__description {
+  transform: translateY(-76px);
+}
+
+.custom-collection-card:hover .custom-collection-card__hover-overlay {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition-delay: 0s, 0s, 0s;
 }
 
 .custom-collection-card__hover-description {
   max-width: 90%;
 }
 
-/* Sync overlay/hover-area duration with content (0.4s) so animation feels unified */
-.custom-collection-card__hover-area {
-  transition: height 0.4s ease-out;
-}
-.custom-collection-card__hover-overlay {
-  transition: all 0.4s ease-out;
+/* Mobile: disable all hover effects (overrides rules above) */
+@media screen and (max-width: 749px) {
+  .custom-collection-card:hover {
+    transform: none !important;
+    box-shadow: none;
+  }
+
+  .custom-collection-card:hover .custom-collection-card__image-container::before {
+    transform: none !important;
+  }
+
+  .custom-collection-card:hover .custom-collection-card__image {
+    transform: none !important;
+  }
+
+  .custom-collection-card:hover .custom-collection-card__badge,
+  .custom-collection-card:hover .custom-collection-card__title,
+  .custom-collection-card:hover .custom-collection-card__description {
+    transform: none !important;
+  }
+
+  .custom-collection-card:hover .custom-collection-card__hover-overlay {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transform: translateY(140%) !important;
+  }
+
+  .custom-collection-card:hover .custom-collection-card__hover-content {
+    opacity: 0 !important;
+  }
 }
 
-.custom-collection-card:hover .custom-collection-card__image {
-  transform: translateY(-80px) rotate(10deg);
-}
+@media (prefers-reduced-motion: reduce) {
+  .custom-collection-card,
+  .custom-collection-card__image-container::before,
+  .custom-collection-card__image,
+  .custom-collection-card__badge,
+  .custom-collection-card__title,
+  .custom-collection-card__description,
+  .custom-collection-card__hover-overlay,
+  .custom-collection-card__hover-content {
+    transition-duration: 0.01ms !important;
+  }
 
-.custom-collection-card:hover .custom-collection-card__price {
-  background: black;
-  color: white;
-  border-color: black;
-  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
-  transform: translateY(-5px);
-}
-
-.custom-collection-card:hover .custom-collection-card__badge,
-.custom-collection-card:hover .custom-collection-card__title,
-.custom-collection-card:hover .custom-collection-card__description,
-.custom-collection-card:hover .custom-collection-card__footer {
-  transform: translateY(-70px);
+  .custom-collection-card:hover {
+    transform: none;
+  }
 }

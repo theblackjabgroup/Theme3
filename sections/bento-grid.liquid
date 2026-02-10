@@ -527,7 +527,7 @@
                     z-index: 10;
                     background-color: transparent;
                     {% if block.settings.image != blank %}
-                      background-image: url('{{ block.settings.image | image_url: width: 1920 }}');
+                      background-image: url('{{ block.settings.image | image_url: width: 5760 }}');
                     {% elsif 'spritesheet-prejudice.png' != blank %}
                       background-image: url('{{ 'spritesheet-prejudice.png' | asset_url }}');
                     {% endif %}

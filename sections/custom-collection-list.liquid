@@ -5,7 +5,7 @@
 
 <style>
   /* Submit button styles for hover overlay button */
-  .share-story-submit {
+  .custom-collection-list .share-story-submit {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -13,7 +13,7 @@
     color: var(--color-primary-button-text);
     border: 2px solid var(--color-primary-button-border);
     padding: 20px;
-    border-radius: 100px;
+    border-radius: var(--collection-card-hover-button-border-radius);
     font-size: 1.4rem;
     font-weight: 700;
     cursor: pointer;
@@ -28,11 +28,12 @@
     text-decoration: none;
   }
 
-  .share-story-submit:hover {
+  .custom-collection-list .share-story-submit:hover {
     transform: translate(2px, 2px);
     box-shadow: 0px 0px 0px 0px var(--color-shadow);
   }
   .custom-collection-list {
+    --collection-card-hover-button-border-radius: {{ settings.collection_card_hover_button_border_radius | default: 20 }}px;
     padding: {{ section.settings.section_padding_top }}px {{ section.settings.section_padding_horizontal }}px {{ section.settings.section_padding_bottom }}px;
     {% if section.settings.background_color != blank %}
       background-color: {{ section.settings.background_color }};
@@ -142,6 +143,7 @@
 
   .custom-collection-card__hover-button {
     /* Submit button snippet styles take precedence, these are overrides if needed */
+    border-radius: var(--collection-card-hover-button-border-radius) !important;
     {% if settings.collection_card_hover_button_font_size != blank %}
       font-size: {{ settings.collection_card_hover_button_font_size }}px !important;
     {% endif %}
@@ -563,13 +565,20 @@
       "default": 2
     },
     {
-      "type": "range",
+      "type": "select",
       "id": "columns_mobile",
       "label": "Columns (Mobile)",
-      "min": 1,
-      "max": 3,
-      "step": 1,
-      "default": 2
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ],
+      "default": "1"
     },
     {
       "type": "range",

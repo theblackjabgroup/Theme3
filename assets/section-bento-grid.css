@@ -1599,9 +1599,8 @@ a.tag-card.tag-card--link:hover {
   /* Each frame will be 1/N of the container width */
   background-size: calc(100% * var(--sprite-frames)) auto !important;
   background-repeat: no-repeat !important;
-  /* Ensure high-quality sharp rendering */
+  /* Sharper scaling for sprites (use crisp-edges for pixel art, auto for smooth) */
   image-rendering: -webkit-optimize-contrast;
-  image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
   /* Transition controlled by JavaScript */
   transition: background-position 0s;
@@ -1612,7 +1611,6 @@ a.tag-card.tag-card--link:hover {
   background-size: auto calc(100% * var(--sprite-frames)) !important;
   background-repeat: no-repeat !important;
   image-rendering: -webkit-optimize-contrast;
-  image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
   /* Transition controlled by JavaScript */
   transition: background-position 0s;
