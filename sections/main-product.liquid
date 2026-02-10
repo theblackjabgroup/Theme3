@@ -37,23 +37,11 @@
     product: product,
     section: section,
     product_form_id: product_form_id,
-    promo_text: section.settings.promo_text,
-    tagline_width: section.settings.tagline_width,
-    title_width: section.settings.title_width,
-    title_font_size: section.settings.title_font_size,
-    tagline_font_size: section.settings.tagline_font_size,
-    price_font_size: section.settings.price_font_size,
-    sale_price_font_size: section.settings.sale_price_font_size,
-    promo_font_size: section.settings.promo_font_size,
-    product_tag_enabled: section.settings.product_tag_enabled,
-    product_tag_text: section.settings.product_tag_text,
-    product_tag_text_color: section.settings.product_tag_text_color,
-    product_tag_border_color: section.settings.product_tag_border_color,
-    product_tag_bg_color: section.settings.product_tag_bg_color
+    block_gap: section.settings.block_gap
   %}
 
   <!-- RIGHT COLUMN -->
-  {% render 'product-right-column', product: product, section: section %}
+  {% render 'product-right-column', product: product, section: section, block_gap: section.settings.right_block_gap %}
 </div>
 
 <script>
@@ -354,16 +342,16 @@
         const invStats = inventoryInfo[currentVariant.id];
 
         if (stockBadge) {
+           stockBadge.style.display = 'inline-block';
+           
            if (currentVariant.available) {
-             stockBadge.style.display = 'inline-block';
-             
              if (invStats && invStats.management === 'shopify' && invStats.quantity > 0 && invStats.quantity <= 10) {
                stockBadge.textContent = `Only ${invStats.quantity} left in stock`;
              } else {
                stockBadge.textContent = 'In stock';
              }
            } else {
-             stockBadge.style.display = 'none';
+             stockBadge.textContent = 'Out of stock';
            }
         }
 
@@ -651,120 +639,189 @@
     },
     {
       "type": "header",
-      "content": "Product Tag (Above Title)"
+      "content": "Left Column Blocks"
     },
     {
-      "type": "checkbox",
-      "id": "product_tag_enabled",
-      "label": "Enable Tag",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "product_tag_text",
-      "label": "Tag Text",
-      "default": "LOREM"
-    },
-    {
-      "type": "color",
-      "id": "product_tag_text_color",
-      "label": "Tag Text Color",
-      "default": "#000000"
-    },
-    {
-      "type": "color",
-      "id": "product_tag_border_color",
-      "label": "Tag Border Color",
-      "default": "#000000"
-    },
-    {
-      "type": "color",
-      "id": "product_tag_bg_color",
-      "label": "Tag Background Color",
-      "default": "transparent"
+      "type": "range",
+      "id": "block_gap",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Gap Between Blocks",
+      "default": 24
     },
     {
       "type": "header",
-      "content": "Content"
-    },
-    {
-      "type": "text",
-      "id": "promo_text",
-      "label": "Promotional Text",
-      "default": "Sale Roasted Kaffeebohnen"
+      "content": "Right Column Blocks"
     },
     {
       "type": "range",
-      "id": "tagline_width",
-      "min": 200,
-      "max": 500,
-      "step": 10,
+      "id": "right_block_gap",
+      "min": 0,
+      "max": 80,
+      "step": 4,
       "unit": "px",
-      "label": "Tagline Max Width",
-      "default": 300
-    },
-    {
-      "type": "range",
-      "id": "title_width",
-      "min": 200,
-      "max": 800,
-      "step": 10,
-      "unit": "px",
-      "label": "Title Max Width",
-      "default": 300
-    },
-    {
-      "type": "range",
-      "id": "title_font_size",
-      "min": 20,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "label": "Title Font Size",
-      "default": 38
-    },
-    {
-      "type": "range",
-      "id": "tagline_font_size",
-      "min": 8,
-      "max": 40,
-      "step": 1,
-      "unit": "px",
-      "label": "Tagline Font Size",
-      "default": 14
-    },
-    {
-      "type": "range",
-      "id": "price_font_size",
-      "min": 20,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "label": "Main Price Font Size",
-      "default": 56
-    },
-    {
-      "type": "range",
-      "id": "sale_price_font_size",
-      "min": 10,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "label": "Sale Price (MRP) Font Size",
-      "default": 20
-    },
-    {
-      "type": "range",
-      "id": "promo_font_size",
-      "min": 8,
-      "max": 40,
-      "step": 1,
-      "unit": "px",
-      "label": "Promo Text Font Size",
-      "default": 12
+      "label": "Gap Between Blocks",
+      "default": 24
     }
   ],
   "blocks": [
+    {
+      "type": "product_tag",
+      "name": "Product Tag",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "tag_text",
+          "label": "Tag Text",
+          "default": "LOREM"
+        },
+        {
+          "type": "color",
+          "id": "tag_text_color",
+          "label": "Tag Text Color",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "tag_border_color",
+          "label": "Tag Border Color",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "tag_bg_color",
+          "label": "Tag Background Color",
+          "default": "transparent"
+        }
+      ]
+    },
+    {
+      "type": "title",
+      "name": "Product Title",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "range",
+          "id": "title_width",
+          "min": 200,
+          "max": 800,
+          "step": 10,
+          "unit": "px",
+          "label": "Title Max Width",
+          "default": 300
+        },
+        {
+          "type": "range",
+          "id": "title_font_size",
+          "min": 20,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Title Font Size",
+          "default": 38
+        }
+      ]
+    },
+    {
+      "type": "tagline",
+      "name": "Product Tagline",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "range",
+          "id": "tagline_width",
+          "min": 200,
+          "max": 500,
+          "step": 10,
+          "unit": "px",
+          "label": "Tagline Max Width",
+          "default": 300
+        },
+        {
+          "type": "range",
+          "id": "tagline_font_size",
+          "min": 8,
+          "max": 40,
+          "step": 1,
+          "unit": "px",
+          "label": "Tagline Font Size",
+          "default": 14
+        }
+      ]
+    },
+    {
+      "type": "mobile_slider",
+      "name": "Mobile Image Slider",
+      "limit": 1
+    },
+    {
+      "type": "price",
+      "name": "Product Price",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "range",
+          "id": "price_font_size",
+          "min": 20,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Main Price Font Size",
+          "default": 56
+        },
+        {
+          "type": "range",
+          "id": "sale_price_font_size",
+          "min": 10,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Sale Price (MRP) Font Size",
+          "default": 20
+        }
+      ]
+    },
+    {
+      "type": "stock_badge",
+      "name": "Stock Badge",
+      "limit": 1
+    },
+    {
+      "type": "variant_picker",
+      "name": "Variant Picker",
+      "limit": 1
+    },
+    {
+      "type": "promo_text",
+      "name": "Promo Text",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "promo_text",
+          "label": "Promotional Text",
+          "default": "Sale Roasted Kaffeebohnen"
+        },
+        {
+          "type": "range",
+          "id": "promo_font_size",
+          "min": 8,
+          "max": 40,
+          "step": 1,
+          "unit": "px",
+          "label": "Promo Text Font Size",
+          "default": 12
+        }
+      ]
+    },
+    {
+      "type": "quantity_selector",
+      "name": "Quantity & Buy Button",
+      "limit": 1
+    },
     {
       "type": "collapsible_tab",
       "name": "Accordion Tab",
@@ -785,13 +842,88 @@
           "id": "custom_liquid",
           "label": "Custom Liquid",
           "info": "Add app snippets or other Liquid code to create advanced customizations."
+        },
+        {
+          "type": "header",
+          "content": "Typography"
+        },
+        {
+          "type": "range",
+          "id": "heading_font_size",
+          "min": 12,
+          "max": 48,
+          "step": 1,
+          "unit": "px",
+          "label": "Heading Font Size",
+          "default": 18
+        },
+        {
+          "type": "select",
+          "id": "heading_font_weight",
+          "label": "Heading Font Weight",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "400"
+        },
+        {
+          "type": "range",
+          "id": "content_font_size",
+          "min": 12,
+          "max": 32,
+          "step": 1,
+          "unit": "px",
+          "label": "Content Font Size",
+          "default": 16
+        },
+        {
+          "type": "select",
+          "id": "content_font_weight",
+          "label": "Content Font Weight",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "400"
         }
       ]
     },
     {
       "type": "description",
       "name": "Description",
-      "limit": 1
+      "limit": 1,
+      "settings": [
+        {
+          "type": "range",
+          "id": "font_size",
+          "min": 12,
+          "max": 32,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size",
+          "default": 18
+        },
+        {
+          "type": "select",
+          "id": "font_weight",
+          "label": "Font Weight",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "400"
+        }
+      ]
     },
 
     {
@@ -829,6 +961,33 @@
             { "value": "reverse", "label": "Right" }
           ],
           "default": "normal"
+        },
+        {
+          "type": "header",
+          "content": "Typography"
+        },
+        {
+          "type": "range",
+          "id": "font_size",
+          "min": 12,
+          "max": 48,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size",
+          "default": 18
+        },
+        {
+          "type": "select",
+          "id": "font_weight",
+          "label": "Font Weight",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "700"
         },
         {
           "type": "header",
@@ -886,6 +1045,56 @@
           "type": "url",
           "id": "button_link",
           "label": "Button Link"
+        },
+        {
+          "type": "header",
+          "content": "Typography"
+        },
+        {
+          "type": "range",
+          "id": "heading_font_size",
+          "min": 12,
+          "max": 48,
+          "step": 1,
+          "unit": "px",
+          "label": "Heading Font Size",
+          "default": 24
+        },
+        {
+          "type": "select",
+          "id": "heading_font_weight",
+          "label": "Heading Font Weight",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "700"
+        },
+        {
+          "type": "range",
+          "id": "text_font_size",
+          "min": 12,
+          "max": 32,
+          "step": 1,
+          "unit": "px",
+          "label": "Text Font Size",
+          "default": 18
+        },
+        {
+          "type": "select",
+          "id": "text_font_weight",
+          "label": "Text Font Weight",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "400"
         }
       ]
     },
@@ -905,7 +1114,34 @@
         { "type": "text", "id": "text_3", "label": "Text", "default": "Hug Magnet" },
         { "type": "header", "content": "Item 4" },
         { "type": "image_picker", "id": "icon_4", "label": "Icon" },
-        { "type": "text", "id": "text_4", "label": "Text", "default": "Supporting Non-Profit" }
+        { "type": "text", "id": "text_4", "label": "Text", "default": "Supporting Non-Profit" },
+        {
+          "type": "header",
+          "content": "Typography"
+        },
+        {
+          "type": "range",
+          "id": "font_size",
+          "min": 8,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size",
+          "default": 12
+        },
+        {
+          "type": "select",
+          "id": "font_weight",
+          "label": "Font Weight",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "700"
+        }
       ]
     }
   ]

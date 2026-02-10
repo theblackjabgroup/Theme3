@@ -15,7 +15,7 @@
   {% render 'product-image-slider', product: product, section: section %}
 
   <!-- DETAILS CONTENT -->
-  <div class="product-content-stack">
+  <div class="product-content-stack" style="--block-gap: {{ block_gap | default: 24 }}px;">
     {% assign accordion_count = 0 %}
     {% for block in section.blocks %}
       {% case block.type %}
@@ -25,7 +25,10 @@
             {% assign accordion_count = accordion_count | plus: 1 %}
           {% endif %}
         {% when 'description' %}
-          <div class="product__description">{{ product.description }}</div>
+          <div class="product__description" style="
+            font-size: {{ block.settings.font_size | default: 18 }}px;
+            font-weight: {{ block.settings.font_weight | default: 400 }};
+          ">{{ product.description }}</div>
           {% comment %}
             {% when 'size_chart' %}
             <button class="size-chart-btn">{{ block.settings.button_label | default: 'View the size chart' }}</button>

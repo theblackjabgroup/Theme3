@@ -14,7 +14,12 @@
   {% assign script_loader_accordion = true %}
 {% endunless %}
 
-<accordion-item class="accordion">
+<accordion-item class="accordion" style="
+  --accordion-heading-font-size: {{ block.settings.heading_font_size | default: 18 }}px;
+  --accordion-heading-font-weight: {{ block.settings.heading_font_weight | default: 400 }};
+  --accordion-content-font-size: {{ block.settings.content_font_size | default: 16 }}px;
+  --accordion-content-font-weight: {{ block.settings.content_font_weight | default: 400 }};
+">
   <div
     class="accordion__summary"
     role="button"

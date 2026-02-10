@@ -2,176 +2,196 @@
   Product Left Column Snippet
   ------------------------------------------------------------------------------
   Renders the sticky left column containing product info, price, variants, and buy buttons.
+  Now uses blocks for flexible ordering and configuration.
 
   Usage:
   {% render 'product-left-column', product: product, section: section, product_form_id: 'product-form-id' %}
 
   Variables:
   - product: The product object.
-  - section: The section object (used for block unique IDs).
+  - section: The section object (used for block unique IDs and blocks).
   - product_form_id: The unique ID for the product form.
 {%- endcomment -%}
 <div class="product-split-left">
-  <div class="product-left-inner">
+  <div class="product-left-inner" style="--block-gap: {{ block_gap | default: 24 }}px;">
     {% assign current_variant = product.selected_or_first_available_variant %}
 
-    <!-- Custom Tag -->
-    {% if product_tag_enabled and product_tag_text != blank %}
-      <div
-        class="product-custom-tag"
-        style="
-          --tag-text-color: {{ product_tag_text_color | default: '#000000' }};
-          --tag-border-color: {{ product_tag_border_color | default: '#000000' }};
-          --tag-bg-color: {{ product_tag_bg_color | default: 'transparent' }};
-        "
-      >
-        {{ product_tag_text }}
-      </div>
-    {% endif %}
-
-    <div class="product__title" style="max-width: {{ title_width | default: 500 }}px; margin: 0 auto;">
-      <h1 style="font-size: {{ title_font_size | default: 38 }}px;">{{ product.title }}</h1>
-    </div>
-
-    <div
-      class="product__tagline"
-      style="max-width: {{ tagline_width | default: 500 }}px; margin: var(--spacing-l) auto; font-size: {{ tagline_font_size | default: 14 }}px;"
-    >
-      {{
-        product.metafields.custom.tagline
-        | default: 'T-SHIRT: ORGANIC COTTON UNISEX TEE INSPIRING RESILIENCE AND STRENGTH – TURN CHALLENGES INTO GROWTH EVERY DAY.'
-      }}
-    </div>
-
-    <!-- MOBILE SLIDER (Visible only on mobile) -->
-    <div class="mobile-product-slider">
-      {% render 'product-image-slider', product: product, section: section %}
-    </div>
-
-    <!-- NEW PRICE DISPLAY -->
-    <div class="product-price-container">
-      <span class="price-main" style="font-size: {{ price_font_size | default: 56 }}px;">
-        {{- current_variant.price | money_without_trailing_zeros -}}
-      </span>
-      <span
-        class="price-compare"
-        style="font-size: {{ sale_price_font_size | default: 20 }}px; {% unless current_variant.compare_at_price > current_variant.price %}display:none{% endunless %}"
-      >
-        {{ current_variant.compare_at_price | money_without_trailing_zeros }}
-      </span>
-    </div>
-
-    <!-- Stock Badge -->
-    <div class="stock-badge-wrapper product-type-badge-wrapper">
-      {% if product.available %}
-        <span class="stock-badge product-type-badge">
-          {% if current_variant.inventory_management == 'shopify'
-            and current_variant.inventory_quantity > 0
-            and current_variant.inventory_quantity <= 10
-          %}
-            Only {{ current_variant.inventory_quantity }} left in stock
-          {% else %}
-            In stock
-          {% endif %}
-        </span>
-      {% endif %}
-    </div>
-
-    {% unless product.has_only_default_variant %}
-      <div class="variant-picker-wrapper">
-        {% for option in product.options_with_values %}
-          <fieldset class="product-form__input product-form__input--{{ option.name | downcase }}">
-            {% unless option.name == 'Size' %}
-              <legend class="product-form__label">{{ option.name }}</legend>
-            {% endunless %}
-            <div class="variant-options-row">
-              {% for value in option.values %}
-                <input
-                  type="radio"
-                  id="{{ section.id }}-{{ option.position }}-{{ forloop.index }}"
-                  name="{{ option.name }}"
-                  value="{{ value | escape }}"
-                  form="{{ product_form_id }}"
-                  {% if option.selected_value == value %}
-                    checked
-                  {% endif %}
-                >
-                <label
-                  for="{{ section.id }}-{{ option.position }}-{{ forloop.index }}"
-                  {% if option.name == 'Color' %}
-                    class="color-swatch" style="background-color: {{ value | downcase | replace: ' ', '' }}"
-                  {% endif %}
-                >
-                  <span
-                    {% if option.name == 'Color' %}
-                      style="display:none"
-                    {% endif %}
-                  >
-                    {{- value -}}
-                  </span>
-                </label>
-              {% endfor %}
-            </div>
-          </fieldset>
-        {% endfor %}
-      </div>
-    {% endunless %}
-
-    <!-- PROMO TEXT -->
-    {% if promo_text != blank %}
-      <div class="sale-roasted-text" style="font-size: {{ promo_font_size | default: 12 }}px;">{{ promo_text }}</div>
-    {% endif %}
-
-    <div class="product-actions-row">
-      {% render 'quantity-input',
-        variant: current_variant,
-        min: 1,
-        is_product_form: true,
-        product_form_id: product_form_id
-      %}
-
-      <product-form class="product-form" data-section-id="{{ section.id }}">
-        {% form 'product',
-          product,
-          id: product_form_id,
-          class: 'form',
-          novalidate: 'novalidate',
-          data-type: 'add-to-cart-form'
-        %}
-          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-
-          <div class="product-form__error-message-wrapper" role="alert" hidden>
-            <svg
-              aria-hidden="true"
-              focusable="false"
-              class="icon icon-error"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+    {% for block in section.blocks %}
+      {% case block.type %}
+        
+        {% when 'product_tag' %}
+          {% if block.settings.tag_text != blank %}
+            <div
+              class="product-custom-tag"
+              style="
+                --tag-text-color: {{ block.settings.tag_text_color | default: '#000000' }};
+                --tag-border-color: {{ block.settings.tag_border_color | default: '#000000' }};
+                --tag-bg-color: {{ block.settings.tag_bg_color | default: 'transparent' }};
+              "
+              {{ block.shopify_attributes }}
             >
-              <path d="M12 2L1 21H23L12 2Z" fill="#FFA000" stroke="#FFA000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M12 9V13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M12 17H12.01" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span class="product-form__error-message"></span>
+              {{ block.settings.tag_text }}
+            </div>
+          {% endif %}
+
+        {% when 'title' %}
+          <div class="product__title" style="max-width: {{ block.settings.title_width | default: 500 }}px; margin-left: auto; margin-right: auto;" {{ block.shopify_attributes }}>
+            <h1 style="font-size: {{ block.settings.title_font_size | default: 38 }}px;">{{ product.title }}</h1>
           </div>
 
-          {% liquid
-            if product.selected_or_first_available_variant.available
-              assign btn_text = 'products.product.add_to_cart' | t
-            else
-              assign btn_text = 'products.product.sold_out' | t
-            endif
-          %}
+        {% when 'tagline' %}
+          {% if product.metafields.custom.tagline != blank %}
+            <div
+              class="product__tagline"
+              style="max-width: {{ block.settings.tagline_width | default: 500 }}px; font-size: {{ block.settings.tagline_font_size | default: 14 }}px;"
+              {{ block.shopify_attributes }}
+            >
+              {{ product.metafields.custom.tagline }}
+            </div>
+          {% endif %}
 
-          {% render 'submit-button',
-            text: btn_text,
-            type: 'submit',
-            class: 'share-story-submit product-form__submit',
-            is_add_to_cart: true
-          %}
-        {% endform %}
-      </product-form>
-    </div>
+        {% when 'mobile_slider' %}
+          <!-- MOBILE SLIDER (Visible only on mobile) -->
+          <div class="mobile-product-slider" {{ block.shopify_attributes }}>
+            {% render 'product-image-slider', product: product, section: section %}
+          </div>
+
+        {% when 'price' %}
+          <!-- PRICE DISPLAY -->
+          <div class="product-price-container" {{ block.shopify_attributes }}>
+            <span class="price-main" style="font-size: {{ block.settings.price_font_size | default: 56 }}px;">
+              {{- current_variant.price | money_without_trailing_zeros -}}
+            </span>
+            <span
+              class="price-compare"
+              style="font-size: {{ block.settings.sale_price_font_size | default: 20 }}px; {% unless current_variant.compare_at_price > current_variant.price %}display:none{% endunless %}"
+            >
+              {{ current_variant.compare_at_price | money_without_trailing_zeros }}
+            </span>
+          </div>
+
+        {% when 'stock_badge' %}
+          <!-- Stock Badge -->
+          <div class="stock-badge-wrapper product-type-badge-wrapper" {{ block.shopify_attributes }}>
+            <span class="stock-badge product-type-badge">
+              {% if product.available %}
+                {% if current_variant.inventory_management == 'shopify'
+                  and current_variant.inventory_quantity > 0
+                  and current_variant.inventory_quantity <= 10
+                %}
+                  Only {{ current_variant.inventory_quantity }} left in stock
+                {% else %}
+                  In stock
+                {% endif %}
+              {% else %}
+                Out of stock
+              {% endif %}
+            </span>
+          </div>
+
+        {% when 'variant_picker' %}
+          {% unless product.has_only_default_variant %}
+            <div class="variant-picker-wrapper" {{ block.shopify_attributes }}>
+              {% for option in product.options_with_values %}
+                <fieldset class="product-form__input product-form__input--{{ option.name | downcase }}">
+                  {% unless option.name == 'Size' %}
+                    <legend class="product-form__label">{{ option.name }}</legend>
+                  {% endunless %}
+                  <div class="variant-options-row">
+                    {% for value in option.values %}
+                      <input
+                        type="radio"
+                        id="{{ section.id }}-{{ option.position }}-{{ forloop.index }}"
+                        name="{{ option.name }}"
+                        value="{{ value | escape }}"
+                        form="{{ product_form_id }}"
+                        {% if option.selected_value == value %}
+                          checked
+                        {% endif %}
+                      >
+                      <label
+                        for="{{ section.id }}-{{ option.position }}-{{ forloop.index }}"
+                        {% if option.name == 'Color' %}
+                          class="color-swatch" style="background-color: {{ value | downcase | replace: ' ', '' }}"
+                        {% endif %}
+                      >
+                        <span
+                          {% if option.name == 'Color' %}
+                            style="display:none"
+                          {% endif %}
+                        >
+                          {{- value -}}
+                        </span>
+                      </label>
+                    {% endfor %}
+                  </div>
+                </fieldset>
+              {% endfor %}
+            </div>
+          {% endunless %}
+
+        {% when 'promo_text' %}
+          <!-- PROMO TEXT -->
+          {% if block.settings.promo_text != blank %}
+            <div class="sale-roasted-text" style="font-size: {{ block.settings.promo_font_size | default: 12 }}px;" {{ block.shopify_attributes }}>
+              {{ block.settings.promo_text }}
+            </div>
+          {% endif %}
+
+        {% when 'quantity_selector' %}
+          <div class="product-actions-row" {{ block.shopify_attributes }}>
+            {% render 'quantity-input',
+              variant: current_variant,
+              min: 1,
+              is_product_form: true,
+              product_form_id: product_form_id
+            %}
+
+            <product-form class="product-form" data-section-id="{{ section.id }}">
+              {% form 'product',
+                product,
+                id: product_form_id,
+                class: 'form',
+                novalidate: 'novalidate',
+                data-type: 'add-to-cart-form'
+              %}
+                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+                <div class="product-form__error-message-wrapper" role="alert" hidden>
+                  <svg
+                    aria-hidden="true"
+                    focusable="false"
+                    class="icon icon-error"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M12 2L1 21H23L12 2Z" fill="#FFA000" stroke="#FFA000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 9V13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 17H12.01" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span class="product-form__error-message"></span>
+                </div>
+
+                {% liquid
+                  if product.selected_or_first_available_variant.available
+                    assign btn_text = 'products.product.add_to_cart' | t
+                  else
+                    assign btn_text = 'products.product.sold_out' | t
+                  endif
+                %}
+
+                {% render 'submit-button',
+                  text: btn_text,
+                  type: 'submit',
+                  class: 'share-story-submit product-form__submit',
+                  is_add_to_cart: true
+                %}
+              {% endform %}
+            </product-form>
+          </div>
+
+      {% endcase %}
+    {% endfor %}
   </div>
 </div>
