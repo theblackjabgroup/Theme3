@@ -15,6 +15,7 @@
   - button_badge: Badge text/number to display (optional)
   - skip_nav_class: If true, don't apply header-nav-button class (optional)
   - button_id: Optional ID for the element (e.g. cart-icon-bubble for cart drawer)
+  - search_popup_id: If set, add data-mega-menu-trigger and aria-controls to open search popup (optional)
 {%- endcomment -%}
 
 {%- liquid
@@ -45,8 +46,10 @@
     {% if aria_label != blank %}
       aria-label="{{ aria_label }}"
     {% endif %}
-    {% if button_class contains 'search' %}
-      data-spotlight-search-toggle
+    {% if button_class contains 'search' and search_popup_id != blank %}
+      data-mega-menu-trigger
+      aria-controls="{{ search_popup_id }}"
+      aria-expanded="false"
     {% endif %}
   >
     {%- if button_icon != blank -%}
@@ -96,8 +99,10 @@
     {% if button_url != blank %}
       data-url="{{ button_url }}"
     {% endif %}
-    {% if button_class contains 'search' %}
-      data-spotlight-search-toggle
+    {% if button_class contains 'search' and search_popup_id != blank %}
+      data-mega-menu-trigger
+      aria-controls="{{ search_popup_id }}"
+      aria-expanded="false"
     {% endif %}
   >
     {%- if button_icon != blank -%}

@@ -35,9 +35,14 @@
       "next": "Next page",
       "previous": "Previous page"
     },
+    "breadcrumbs": {
+      "breadcrumb": "Breadcrumb",
+      "home": "Home"
+    },
     "search": {
       "search": "Search",
-      "reset": "Clear search term"
+      "reset": "Clear search term",
+      "placeholder": "Search for more products"
     },
     "cart": {
       "view": "View cart ({{ count }})",
