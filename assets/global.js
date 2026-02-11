@@ -245,8 +245,10 @@ class QuantityInput extends HTMLElement {
   onButtonClick(event) {
     event.preventDefault();
     const previousValue = this.input.value;
+    const max = this.input.max ? parseInt(this.input.max, 10) : null;
 
     if (event.target.name === 'plus') {
+      if (max != null && parseInt(this.input.value, 10) >= max) return;
       if (parseInt(this.input.dataset.min) > parseInt(this.input.step) && this.input.value == 0) {
         this.input.value = this.input.dataset.min;
       } else {
@@ -267,12 +269,20 @@ class QuantityInput extends HTMLElement {
     const value = parseInt(this.input.value);
     if (this.input.min) {
       const buttonMinus = this.querySelector(".quantity__button[name='minus']");
-      buttonMinus.classList.toggle('disabled', parseInt(value) <= parseInt(this.input.min));
+      if (buttonMinus) {
+        const atMin = parseInt(value) <= parseInt(this.input.min);
+        buttonMinus.classList.toggle('disabled', atMin);
+        buttonMinus.disabled = atMin;
+      }
     }
     if (this.input.max) {
-      const max = parseInt(this.input.max);
+      const max = parseInt(this.input.max, 10);
       const buttonPlus = this.querySelector(".quantity__button[name='plus']");
-      buttonPlus.classList.toggle('disabled', value >= max);
+      if (buttonPlus) {
+        const atMax = value >= max;
+        buttonPlus.classList.toggle('disabled', atMax);
+        buttonPlus.disabled = atMax;
+      }
     }
   }
 }

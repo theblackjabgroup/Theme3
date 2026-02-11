@@ -120,8 +120,7 @@
 }
 
 .vertical-sidebar-logo-link:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px color-mix(in srgb, var(--color-header-logo-background, var(--color-headings, #365330)) 30%, transparent);
+  /* Hover effect removed per design */
 }
 
 .vertical-sidebar-logo-text {
@@ -139,6 +138,54 @@
   height: var(--logo-image-height, auto);
   object-fit: var(--logo-image-object-fit, contain);
   display: block;
+}
+
+/* Logo orbit: 6 texts on a curved path around the logo (toggle in theme settings, off by default) */
+.vertical-sidebar-logo--orbit-on {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Orbit wrapper is absolutely positioned so it does not add layout space; link below sets section height */
+.logo-orbit-wrapper {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.logo-orbit-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.logo-orbit-track {
+  transform-origin: 60px 60px;
+  animation: logo-orbit-spin var(--logo-orbit-duration, 20s) linear infinite;
+}
+
+@keyframes logo-orbit-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.logo-orbit-svg-text {
+  fill: var(--color-header-logo-text, color-mix(in srgb, var(--color-header-logo-background, #306030) 60%, white));
+  font-size: var(--logo-orbit-font-size, 7px);
+  font-weight: var(--logo-orbit-font-weight, 600);
+  letter-spacing: var(--logo-orbit-letter-spacing, 0.1em);
+  text-transform: uppercase;
+  font-family: var(--font-heading-family), sans-serif;
+  opacity: 0.9;
+}
+
+.vertical-sidebar-logo--orbit-on .logo-orbit-center {
+  position: relative;
+  z-index: 1;
 }
 
 /* Actions Row (User, Cart, Search) */
