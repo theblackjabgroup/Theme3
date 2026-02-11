@@ -49,7 +49,8 @@ class CartDrawer extends HTMLElement {
         this.classList.contains('active') &&
         !e.target.closest('.drawer__inner') &&
         !e.target.closest('#cart-icon-bubble') &&
-        !e.target.closest('.cart-drawer-trigger')
+        !e.target.closest('.cart-drawer-trigger') &&
+        !e.target.closest('[data-open-cart-drawer-edit]')
       ) {
         this.close();
       }
@@ -59,6 +60,18 @@ class CartDrawer extends HTMLElement {
       }
     });
     this.setHeaderCartIconAccessibility();
+
+    // Cart page: when Edit is clicked, open drawer and show edit panel for that line
+    document.addEventListener('click', (e) => {
+      const trigger = e.target.closest('[data-open-cart-drawer-edit]');
+      if (!trigger) return;
+      e.preventDefault();
+      const lineIndex = trigger.getAttribute('data-line-index');
+      if (lineIndex) {
+        this.open();
+        this.openEditPanel(parseInt(lineIndex, 10));
+      }
+    });
   }
 
   openEditPanel(lineIndex) {
@@ -110,6 +123,18 @@ class CartDrawer extends HTMLElement {
       qtyInput.value = data.quantity;
       qtyInput.min = 1;
       qtyInput.setAttribute('min', '1');
+      const currentVariant = variants.find((v) => v.id === data.variantId);
+      const maxQty = this.getEditPanelMaxQuantity(currentVariant);
+      if (maxQty != null) {
+        qtyInput.max = maxQty;
+        qtyInput.setAttribute('max', String(maxQty));
+        qtyInput.setAttribute('data-max', String(maxQty));
+      } else {
+        qtyInput.removeAttribute('max');
+        qtyInput.removeAttribute('data-max');
+      }
+      const qtyWrapper = qtyInput.closest('quantity-input');
+      if (qtyWrapper && typeof qtyWrapper.validateQtyRules === 'function') qtyWrapper.validateQtyRules();
     }
     if (stockEl) stockEl.textContent = data.available ? 'In Stock' : 'Out of Stock';
 
@@ -128,6 +153,19 @@ class CartDrawer extends HTMLElement {
 
     panel.setAttribute('aria-hidden', 'false');
     this.classList.add('editing');
+  }
+
+  getEditPanelMaxQuantity(variant) {
+    if (!variant) return null;
+    let max = null;
+    if (variant.inventory_management === 'shopify' && variant.inventory_policy === 'deny') {
+      max = variant.inventory_quantity != null ? variant.inventory_quantity : null;
+    }
+    if (variant.quantity_rule_max != null) {
+      const ruleMax = parseInt(variant.quantity_rule_max, 10);
+      if (max == null || ruleMax < max) max = ruleMax;
+    }
+    return max;
   }
 
   findVariantForOptionValue(variants, optionIndex, value, currentOptions) {
@@ -197,6 +235,18 @@ class CartDrawer extends HTMLElement {
     }
     const stockEl = panel.querySelector('[data-edit-stock]');
     if (stockEl) stockEl.textContent = variant.available ? 'In Stock' : 'Out of Stock';
+    const qtyInput = panel.querySelector('[data-edit-qty-input]');
+    if (qtyInput) {
+      const maxQty = this.getEditPanelMaxQuantity(variant);
+      if (maxQty != null) {
+        qtyInput.max = maxQty;
+        qtyInput.setAttribute('max', String(maxQty));
+        qtyInput.setAttribute('data-max', String(maxQty));
+      } else {
+        qtyInput.removeAttribute('max');
+        qtyInput.removeAttribute('data-max');
+      }
+    }
   }
 
   closeEditPanel() {
@@ -210,7 +260,10 @@ class CartDrawer extends HTMLElement {
     if (!this.editState) return;
     const panel = this.querySelector('#CartDrawer-EditPanel');
     const qtyInput = panel && panel.querySelector('[data-edit-qty-input]');
-    const quantity = qtyInput ? Math.max(1, parseInt(qtyInput.value, 10) || 1) : this.editState.quantity;
+    let quantity = qtyInput ? Math.max(1, parseInt(qtyInput.value, 10) || 1) : this.editState.quantity;
+    const selectedVariant = this.editState.variants.find((v) => v.id === this.editState.selectedVariantId);
+    const maxQty = this.getEditPanelMaxQuantity(selectedVariant);
+    if (maxQty != null) quantity = Math.min(quantity, maxQty);
     const { lineIndex, originalVariantId, selectedVariantId } = this.editState;
     const updateBtn = panel && panel.querySelector('[data-edit-update-btn]');
     if (updateBtn) {

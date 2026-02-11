@@ -204,6 +204,17 @@
                             {{- 'icon-minus.svg' | inline_asset_content -}}
                           </span>
                         </button>
+                        {%- liquid
+                          assign fp_max_qty = null
+                          if product.selected_or_first_available_variant.inventory_management == 'shopify' and product.selected_or_first_available_variant.inventory_policy == 'deny'
+                            assign fp_max_qty = product.selected_or_first_available_variant.inventory_quantity
+                          endif
+                          if product.selected_or_first_available_variant.quantity_rule.max != null
+                            if fp_max_qty == null or product.selected_or_first_available_variant.quantity_rule.max < fp_max_qty
+                              assign fp_max_qty = product.selected_or_first_available_variant.quantity_rule.max
+                            endif
+                          endif
+                        -%}
                         <input
                           class="quantity__input"
                           type="number"
@@ -212,13 +223,14 @@
                           data-cart-quantity="{{ cart_qty }}"
                           data-min="{{ product.selected_or_first_available_variant.quantity_rule.min }}"
                           min="{{ product.selected_or_first_available_variant.quantity_rule.min }}"
-                          {% if product.selected_or_first_available_variant.quantity_rule.max != null %}
-                            data-max="{{ product.selected_or_first_available_variant.quantity_rule.max }}"
-                            max="{{ product.selected_or_first_available_variant.quantity_rule.max }}"
+                          {% if fp_max_qty != null %}
+                            data-max="{{ fp_max_qty }}"
+                            max="{{ fp_max_qty }}"
                           {% endif %}
                           step="{{ product.selected_or_first_available_variant.quantity_rule.increment }}"
                           value="{{ product.selected_or_first_available_variant.quantity_rule.min }}"
                           form="{{ product_form_id }}"
+                          readonly
                         >
                         <button class="quantity__button" name="plus" type="button">
                           <span class="visually-hidden">

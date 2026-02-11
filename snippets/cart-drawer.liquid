@@ -421,19 +421,12 @@
     align-items: center;
     justify-content: center;
     box-shadow: 0 2px 0 #000;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
 
-  .cart-drawer__quantity-selector .quantity__button:hover,
-  .cart-drawer__edit-quantity-row .quantity__button:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 0 #000;
-  }
-
-  .cart-drawer__quantity-selector .quantity__button:active,
-  .cart-drawer__edit-quantity-row .quantity__button:active {
-    transform: translateY(1px);
-    box-shadow: 0 1px 0 #000;
+  .cart-drawer__quantity-selector .quantity__button:disabled,
+  .cart-drawer__edit-quantity-row .quantity__button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 
   .cart-drawer__quantity-input,
@@ -452,21 +445,14 @@
     padding: 0 !important;
     margin: 0 !important;
     box-shadow: 0 2px 0 #000;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: default;
+    outline: none;
   }
 
-  .cart-drawer__quantity-input:hover,
-  .cart-drawer__edit-quantity-row .quantity__input:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 0 #000;
-  }
-
-  .cart-drawer__quantity-input:active,
   .cart-drawer__quantity-input:focus,
-  .cart-drawer__edit-quantity-row .quantity__input:active,
   .cart-drawer__edit-quantity-row .quantity__input:focus {
-    transform: translateY(1px);
-    box-shadow: 0 1px 0 #000;
+    outline: none;
+    box-shadow: 0 2px 0 #000;
   }
 
   .cart-drawer__quantity-input::-webkit-outer-spin-button,
@@ -997,6 +983,7 @@
                       data-min="1"
                       data-edit-qty-input
                       aria-label="Quantity"
+                      readonly
                     >
                     <button
                       class="quantity__button"
@@ -1091,7 +1078,11 @@
                                   "priceFormatted": {{ v.price | money_without_trailing_zeros | json }},
                                   "compareAtPrice": {{ v.compare_at_price | default: 0 }},
                                   "compareAtPriceFormatted": {% if v.compare_at_price != blank %}{{ v.compare_at_price | money_without_trailing_zeros | json }}{% else %}null{% endif %},
-                                  "available": {{ v.available | json }}
+                                  "available": {{ v.available | json }},
+                                  "inventory_quantity": {{ v.inventory_quantity | default: 0 | json }},
+                                  "inventory_management": {{ v.inventory_management | json }},
+                                  "inventory_policy": {{ v.inventory_policy | json }},
+                                  "quantity_rule_max": {{ v.quantity_rule.max | json }}
                                 }{% unless forloop.last %},{% endunless %}
                               {%- endfor -%}
                             ]
@@ -1164,6 +1155,17 @@
                             </div>
                           </div>
                         </div>
+                        {%- liquid
+                          assign drawer_max_qty = null
+                          if item.variant.inventory_management == 'shopify' and item.variant.inventory_policy == 'deny'
+                            assign drawer_max_qty = item.variant.inventory_quantity
+                          endif
+                          if item.variant.quantity_rule.max != null
+                            if drawer_max_qty == null or item.variant.quantity_rule.max < drawer_max_qty
+                              assign drawer_max_qty = item.variant.quantity_rule.max
+                            endif
+                          endif
+                        -%}
                         <div class="cart-drawer__quantity-row">
                           <quantity-input class="cart-drawer__quantity-selector">
                             <button
@@ -1183,6 +1185,11 @@
                               min="0"
                               id="Drawer-quantity-{{ item.index | plus: 1 }}"
                               aria-label="{{ 'products.product.quantity.input_label' | t: product: item.product.title | default: 'Quantity' }}"
+                              readonly
+                              {% if drawer_max_qty != null %}
+                                max="{{ drawer_max_qty }}"
+                                data-max="{{ drawer_max_qty }}"
+                              {% endif %}
                             >
                             <button
                               class="quantity__button"

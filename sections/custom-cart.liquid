@@ -373,6 +373,11 @@
     opacity: 0.7;
   }
 
+  .cart-note-input:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
   .cart-summary__totals {
     padding-top: 25px;
     margin-bottom: 30px;
@@ -787,11 +792,11 @@
 
                         <div class="cart-item-card__actions-separator" aria-hidden="true"></div>
                         <div class="cart-item-card__actions">
+                          {% capture edit_btn_attrs %}data-open-cart-drawer-edit data-line-index="{{ item.index | plus: 1 }}" aria-label="Edit {{ item.product.title | escape }}"{% endcapture %}
                           {% render 'submit-button',
                             text: 'Edit',
                             class: 'cart-item-action-btn cart-item-edit-btn',
-                            url: item.url,
-                            attributes: 'aria-label="Edit {{ item.product.title | escape }}"'
+                            attributes: edit_btn_attrs
                           %}
                           {% render 'submit-button',
                             text: 'Remove',
@@ -1129,6 +1134,16 @@
         }
       }
 
+      function updatePlusButtonState(selector) {
+        const plusBtn = selector.querySelector('.cart-item__quantity-plus');
+        const quantityInput = selector.querySelector('.quantity__input');
+        if (!plusBtn || !quantityInput) return;
+        const currentQty = parseInt(quantityInput.value.trim(), 10) || 0;
+        const maxQty = quantityInput.getAttribute('data-max');
+        const max = maxQty != null ? parseInt(maxQty, 10) : null;
+        plusBtn.disabled = max != null && currentQty >= max;
+      }
+
       quantitySelectors.forEach((selector) => {
         const minusBtn = selector.querySelector('.cart-item__quantity-minus');
         const plusBtn = selector.querySelector('.cart-item__quantity-plus');
@@ -1138,6 +1153,8 @@
         if (!minusBtn || !plusBtn || !quantityInput || !itemIndex) {
           return;
         }
+
+        updatePlusButtonState(selector);
 
         // Add event listeners
         minusBtn.addEventListener(
@@ -1149,6 +1166,7 @@
             const newQty = Math.max(0, currentQty - 1);
             if (newQty !== currentQty) {
               updateUIOnly(itemIndex, newQty);
+              updatePlusButtonState(selector);
             }
           },
           false
@@ -1160,8 +1178,13 @@
             e.preventDefault();
             e.stopPropagation();
             const currentQty = parseInt(quantityInput.value.trim()) || 0;
-            const newQty = currentQty + 1;
-            updateUIOnly(itemIndex, newQty);
+            const maxQty = quantityInput.getAttribute('data-max');
+            const max = maxQty != null ? parseInt(maxQty, 10) : null;
+            const newQty = max != null ? Math.min(currentQty + 1, max) : currentQty + 1;
+            if (newQty !== currentQty) {
+              updateUIOnly(itemIndex, newQty);
+              updatePlusButtonState(selector);
+            }
           },
           false
         );

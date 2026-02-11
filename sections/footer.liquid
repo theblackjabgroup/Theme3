@@ -162,6 +162,16 @@
       "default": "footer"
     },
     {
+      "type": "range",
+      "id": "menu_limit",
+      "min": 1,
+      "max": 30,
+      "step": 1,
+      "default": 30,
+      "label": "Maximum number of menu links to show",
+      "info": "Increase if not all footer menu items appear (e.g. set to 10 or more)."
+    },
+    {
       "type": "header",
       "content": "Design Settings"
     },
@@ -257,11 +267,15 @@
             <div class="footer-box__right">
               <nav class="box-nav">
                 <ul class="box-nav-list">
-                  {%- for link in linklists[section.settings.menu].links -%}
-                    <li>
-                      <a href="{{ link.url }}">{{ link.title | upcase }}</a>
-                    </li>
-                  {%- endfor -%}
+                  {%- assign footer_menu = linklists[section.settings.menu] -%}
+                  {%- assign menu_limit = section.settings.menu_limit | default: 30 -%}
+                  {%- if footer_menu != blank -%}
+                    {%- for link in footer_menu.links limit: menu_limit -%}
+                      <li>
+                        <a href="{{ link.url }}">{{ link.title | upcase }}</a>
+                      </li>
+                    {%- endfor -%}
+                  {%- endif -%}
                 </ul>
               </nav>
 

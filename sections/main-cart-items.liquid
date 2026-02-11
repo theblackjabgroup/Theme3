@@ -252,6 +252,17 @@
                                   {{- 'icon-minus.svg' | inline_asset_content -}}
                                 </span>
                               </button>
+                              {%- liquid
+                                assign main_cart_max_qty = null
+                                if item.variant.inventory_management == 'shopify' and item.variant.inventory_policy == 'deny'
+                                  assign main_cart_max_qty = item.variant.inventory_quantity
+                                endif
+                                if item.variant.quantity_rule.max != null
+                                  if main_cart_max_qty == null or item.variant.quantity_rule.max < main_cart_max_qty
+                                    assign main_cart_max_qty = item.variant.quantity_rule.max
+                                  endif
+                                endif
+                              -%}
                               <input
                                 class="quantity__input"
                                 data-quantity-variant-id="{{ item.variant.id }}"
@@ -262,14 +273,15 @@
                                 data-cart-quantity="{{ cart | item_count_for_variant: item.variant.id }}"
                                 min="0"
                                 data-min="{{ item.variant.quantity_rule.min }}"
-                                {% if item.variant.quantity_rule.max != null %}
-                                  max="{{ item.variant.quantity_rule.max }}"
+                                {% if main_cart_max_qty != null %}
+                                  max="{{ main_cart_max_qty }}"
                                 {% endif %}
                                 step="{{ item.variant.quantity_rule.increment }}"
                                 {% # theme-check-enable %}
                                 aria-label="{{ 'products.product.quantity.input_label' | t: product: item.product.title | escape }}"
                                 id="Quantity-{{ item.index | plus: 1 }}"
                                 data-index="{{ item.index | plus: 1 }}"
+                                readonly
                                 {% if can_update_quantity == false %}
                                   disabled
                                 {% endif %}

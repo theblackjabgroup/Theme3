@@ -259,6 +259,8 @@
   border-radius: 32px;
   padding: 32px;
   min-height: 280px;
+  height: auto;
+  overflow: visible;
   border: 1px solid var(--color-borders);
 }
 
@@ -295,7 +297,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 24px;
 }
 
@@ -315,6 +317,10 @@
   }
 }
 
+.box-nav {
+  overflow: visible;
+}
+
 .box-nav-list {
   list-style: none;
   padding: 0;
@@ -323,6 +329,7 @@
   flex-direction: column;
   gap: 8px;
   text-align: left;
+  overflow: visible;
 }
 
 @media (max-width: 768px) {
@@ -351,6 +358,17 @@
   opacity: 0.8;
 }
 
+/* Footer links (shop name, Powered by Shopify) use box text color, not browser default blue/purple */
+.footer-box .copyright a {
+  color: inherit;
+  text-decoration: none;
+  opacity: 1;
+}
+
+.footer-box .copyright a:hover {
+  opacity: 0.85;
+}
+
 .localization-pills {
   display: flex;
   flex-wrap: wrap;
@@ -376,10 +394,10 @@
 
 .custom-3d-button__shadow {
   position: absolute;
-  top: 5px;
+  top: 6px;
   left: 0;
   width: 100%;
-  height: 100%;
+  height:82%;
   background-color: #121212;
   border-radius: 8px;
   z-index: 1;
@@ -405,7 +423,7 @@
 }
 
 .custom-3d-button:hover .custom-3d-button__content {
-  transform: translateY(-5px);
+  transform: translateY(-2px);
 }
 
 .custom-3d-button:active .custom-3d-button__content {

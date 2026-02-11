@@ -1,0 +1,122 @@
+/* Featured collection scroller – horizontal scroll with custom product cards */
+
+.fcs {
+  width: 100%;
+  padding: var(--spacing-xxl, 2rem) 0;
+  overflow: hidden;
+}
+
+.fcs__container {
+  margin: 0 auto;
+  padding: 0 var(--padding-large, 1.5rem);
+}
+
+.fcs__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-section, 1rem);
+  margin-bottom: var(--spacing-xl, 1.5rem);
+}
+
+.fcs__title {
+  margin: 0;
+  color: inherit;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.fcs__shop-all {
+  flex-shrink: 0;
+}
+
+.fcs__viewport {
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  margin: 0 calc(-1 * var(--padding-large, 1.5rem));
+  padding: 0 var(--padding-large, 1.5rem);
+}
+
+.fcs__viewport::-webkit-scrollbar {
+  height: 6px;
+}
+
+.fcs__viewport::-webkit-scrollbar-track {
+  background: color-mix(in srgb, currentColor 0.08%, transparent);
+  border-radius: 3px;
+}
+
+.fcs__viewport::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, currentColor 0.25%, transparent);
+  border-radius: 3px;
+}
+
+.fcs__rail {
+  display: flex;
+  align-items: stretch;
+  gap: var(--spacing-l, 1.25rem);
+  list-style: none;
+  margin: 0;
+  padding: 0.25rem 0;
+  width: max-content;
+  min-width: 100%;
+}
+
+.fcs__item {
+  flex: 0 0 var(--fcs-card-width, 280px);
+  width: var(--fcs-card-width, 280px);
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.fcs__item .custom-product-card-wrapper {
+  height: 100%;
+  min-height: 320px;
+}
+
+.fcs__item .custom-product-card {
+  height: 100%;
+  min-height: 320px;
+}
+
+/* Placeholder when no collection */
+.fcs__item--placeholder .fcs__placeholder-card {
+  height: 100%;
+  min-height: 320px;
+  background: color-mix(in srgb, currentColor 0.06%, transparent);
+  border: 1px dashed color-mix(in srgb, currentColor 0.2%, transparent);
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1.5rem;
+}
+
+.fcs__placeholder-image {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 0.75rem;
+  opacity: 0.5;
+}
+
+.fcs__placeholder-image svg {
+  width: 100%;
+  height: 100%;
+}
+
+.fcs__placeholder-title {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.fcs__placeholder-desc {
+  font-size: 0.85rem;
+  margin: 0;
+  opacity: 0.8;
+}

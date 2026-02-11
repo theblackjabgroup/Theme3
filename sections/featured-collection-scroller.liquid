@@ -1,0 +1,213 @@
+{{ 'section-featured-collection-scroller.css' | asset_url | stylesheet_tag }}
+{{ 'custom-card-base.css' | asset_url | stylesheet_tag }}
+{{ 'custom-product-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-primary-button.css' | asset_url | stylesheet_tag }}
+
+{%- unless section.settings.quick_add == 'none' -%}
+  {{ 'quick-add.css' | asset_url | stylesheet_tag }}
+{%- endunless -%}
+{%- if section.settings.quick_add == 'standard' -%}
+  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+{%- if section.settings.quick_add == 'bulk' -%}
+  <script src="{{ 'quick-add-bulk.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'quantity-popover.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'price-per-item.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .custom-product-card .share-story-submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-primary-button-bg, #365330);
+    color: white;
+    border: 2px solid var(--color-primary-button-border, #365330);
+    padding: 16px 20px;
+    border-radius: var(--card-hover-button-border-radius, 12px);
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    width: fit-content;
+    box-shadow: 0 4px 0 0 var(--color-shadow, rgba(0,0,0,0.15));
+    transition: all 0.2s ease;
+    margin-top: 8px;
+    text-transform: none;
+    font-family: var(--font-heading-family);
+    letter-spacing: 0.02em;
+    line-height: 1;
+    text-decoration: none;
+  }
+  #shopify-section-{{ section.id }} .custom-product-card .share-story-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 0 var(--color-shadow, rgba(0,0,0,0.15));
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign featured_collection = section.settings.collection
+  assign products_to_show = section.settings.products_to_show | default: 12
+  assign scheme = section.settings.color_scheme
+  if scheme == blank
+    assign scheme = settings.color_schemes | first
+  endif
+  assign card_width = section.settings.card_width | default: 280
+-%}
+
+<section
+  class="fcs color-{{ scheme.id }}"
+  data-section-id="{{ section.id }}"
+  style="background-color: {{ scheme.settings.background }}; color: {{ scheme.settings.text }};"
+>
+  <div class="fcs__container">
+    <div class="fcs__header">
+      {%- if section.settings.title != blank -%}
+        <h2 class="fcs__title">{{ section.settings.title }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.show_shop_all and featured_collection != blank and featured_collection.url != blank -%}
+        {%- render 'primary-button',
+          text: section.settings.shop_all_label | default: 'Shop all',
+          link: featured_collection.url,
+          class: 'fcs__shop-all'
+        -%}
+      {%- endif -%}
+    </div>
+
+    <div class="fcs__viewport" tabindex="0" role="region" aria-label="{{ section.settings.title | default: 'Featured collection' }}">
+      <ul class="fcs__rail" role="list">
+        {%- if featured_collection != blank and featured_collection.products_count > 0 -%}
+          {%- for product in featured_collection.products limit: products_to_show -%}
+            <li class="fcs__item" role="listitem" style="--fcs-card-width: {{ card_width }}px;">
+              {%-
+                render 'card-product-custom',
+                card_product: product,
+                section_id: section.id,
+                quick_add: section.settings.quick_add,
+                lazy_load: forloop.index > 3,
+                show_badge: section.settings.show_card_badge,
+                badge_text: section.settings.card_badge_text,
+                overlay_button_text: section.settings.overlay_button_text,
+                fallback_description: section.settings.fallback_description
+              -%}
+            </li>
+          {%- endfor -%}
+        {%- else -%}
+          {%- for i in (1..6) -%}
+            <li class="fcs__item fcs__item--placeholder" role="listitem" style="--fcs-card-width: {{ card_width }}px;">
+              <div class="fcs__placeholder-card">
+                <div class="fcs__placeholder-image">{{ 'product-apparel-2' | placeholder_svg_tag }}</div>
+                <div class="fcs__placeholder-title">Product {{ i }}</div>
+                <p class="fcs__placeholder-desc">Add a collection in the section settings to show products.</p>
+              </div>
+            </li>
+          {%- endfor -%}
+        {%- endif -%}
+      </ul>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection scroller",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "Heading",
+      "default": "Featured collection"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 4,
+      "max": 24,
+      "step": 1,
+      "default": 12,
+      "label": "Maximum products to show"
+    },
+    {
+      "type": "range",
+      "id": "card_width",
+      "min": 220,
+      "max": 380,
+      "step": 20,
+      "unit": "px",
+      "label": "Card width",
+      "default": 280
+    },
+    {
+      "type": "checkbox",
+      "id": "show_shop_all",
+      "label": "Show Shop all link",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "shop_all_label",
+      "label": "Shop all label",
+      "default": "Shop all"
+    },
+    {
+      "type": "header",
+      "content": "Product card"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_card_badge",
+      "label": "Show badge on cards",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "card_badge_text",
+      "label": "Badge text",
+      "info": "Shown on all cards when badge is enabled"
+    },
+    {
+      "type": "text",
+      "id": "overlay_button_text",
+      "label": "Overlay button text",
+      "default": "Love that! (Check it out)"
+    },
+    {
+      "type": "textarea",
+      "id": "fallback_description",
+      "label": "Fallback description",
+      "info": "Used when a product has no description"
+    },
+    {
+      "type": "select",
+      "id": "quick_add",
+      "label": "Quick add",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "standard", "label": "Standard" },
+        { "value": "bulk", "label": "Bulk" }
+      ],
+      "default": "none"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection scroller"
+    }
+  ]
+}
+{% endschema %}

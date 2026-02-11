@@ -23,6 +23,13 @@
     --logo-image-height: {% if section.settings.logo_image_height > 0 %}{{ section.settings.logo_image_height }}px{% else %}auto{% endif %};
     --logo-image-object-fit: {{ section.settings.logo_image_object_fit | default: 'contain' }};
 
+    /* Logo orbit (when enabled) */
+    --logo-orbit-duration: {{ section.settings.logo_orbit_speed | default: 20 }}s;
+    --logo-orbit-radius: {{ section.settings.logo_orbit_radius | default: 44 }};
+    --logo-orbit-font-size: {{ section.settings.logo_orbit_font_size | default: 7 }}px;
+    --logo-orbit-font-weight: {{ section.settings.logo_orbit_font_weight | default: 600 }};
+    --logo-orbit-letter-spacing: {{ section.settings.logo_orbit_letter_spacing | default: 0.1 }}em;
+
     /* Action Buttons */
     --button-gap: {{ section.settings.button_gap | default: 12 }}px;
     --button-padding-top: {{ section.settings.button_padding_top | default: 14 }}px;
@@ -83,22 +90,66 @@
 <header class="vertical-sidebar-header desktop-header" id="shopify-section-header">
   <div class="vertical-sidebar-inner">
     <!-- Logo Section -->
-    <div class="vertical-sidebar-logo">
-      <a
-        href="{{ routes.root_url }}"
-        class="vertical-sidebar-logo-link vertical-sidebar-logo-link--{{ section.settings.logo_alignment | default: 'center' }}"
-      >
-        {%- if section.settings.logo != blank -%}
-          {%- assign logo_width = section.settings.logo_image_max_width | default: 140 -%}
-          {{
-            section.settings.logo
-            | image_url: width: logo_width
-            | image_tag: loading: 'eager', alt: shop.name, class: 'vertical-sidebar-logo-image'
-          }}
-        {%- else -%}
-          <span class="vertical-sidebar-logo-text">{{ section.settings.logo_text | default: shop.name }}</span>
-        {%- endif -%}
-      </a>
+    <div class="vertical-sidebar-logo {% if section.settings.logo_orbit_enabled %}vertical-sidebar-logo--orbit-on{% endif %}">
+      {%- if section.settings.logo_orbit_enabled -%}
+        {%- assign t1 = section.settings.logo_orbit_text_1 | default: 'Quality' -%}
+        {%- assign t2 = section.settings.logo_orbit_text_2 | default: 'Style' -%}
+        {%- assign t3 = section.settings.logo_orbit_text_3 | default: 'Trust' -%}
+        {%- assign t4 = section.settings.logo_orbit_text_4 | default: 'Design' -%}
+        {%- assign t5 = section.settings.logo_orbit_text_5 | default: 'Craft' -%}
+        {%- assign t6 = section.settings.logo_orbit_text_6 | default: 'You' -%}
+        {%- assign t7 = section.settings.logo_orbit_text_7 | default: 'Love' -%}
+        {%- assign orbit_r = section.settings.logo_orbit_radius | default: 44 -%}
+        {%- assign orbit_y = 60 | minus: orbit_r -%}
+        {%- assign orbit_fw = section.settings.logo_orbit_font_weight | default: 600 -%}
+        <div class="logo-orbit-wrapper" aria-hidden="true">
+          <svg class="logo-orbit-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <path id="logo-orbit-path-{{ section.id }}" d="M 60,{{ orbit_y }} A {{ orbit_r }},{{ orbit_r }} 0 1 1 59.99,{{ orbit_y }}" fill="none" />
+            </defs>
+            <g class="logo-orbit-track">
+              <text class="logo-orbit-svg-text" font-weight="{{ orbit_fw }}"><textPath href="#logo-orbit-path-{{ section.id }}" startOffset="0%">{{ t1 }}</textPath></text>
+              <text class="logo-orbit-svg-text" font-weight="{{ orbit_fw }}"><textPath href="#logo-orbit-path-{{ section.id }}" startOffset="14.29%">{{ t2 }}</textPath></text>
+              <text class="logo-orbit-svg-text" font-weight="{{ orbit_fw }}"><textPath href="#logo-orbit-path-{{ section.id }}" startOffset="28.57%">{{ t3 }}</textPath></text>
+              <text class="logo-orbit-svg-text" font-weight="{{ orbit_fw }}"><textPath href="#logo-orbit-path-{{ section.id }}" startOffset="42.86%">{{ t4 }}</textPath></text>
+              <text class="logo-orbit-svg-text" font-weight="{{ orbit_fw }}"><textPath href="#logo-orbit-path-{{ section.id }}" startOffset="57.14%">{{ t5 }}</textPath></text>
+              <text class="logo-orbit-svg-text" font-weight="{{ orbit_fw }}"><textPath href="#logo-orbit-path-{{ section.id }}" startOffset="71.43%">{{ t6 }}</textPath></text>
+              <text class="logo-orbit-svg-text" font-weight="{{ orbit_fw }}"><textPath href="#logo-orbit-path-{{ section.id }}" startOffset="85.71%">{{ t7 }}</textPath></text>
+            </g>
+          </svg>
+        </div>
+        <a
+          href="{{ routes.root_url }}"
+          class="vertical-sidebar-logo-link vertical-sidebar-logo-link--{{ section.settings.logo_alignment | default: 'center' }} logo-orbit-center"
+        >
+          {%- if section.settings.logo != blank -%}
+            {%- assign logo_width = section.settings.logo_image_max_width | default: 140 -%}
+            {{
+              section.settings.logo
+              | image_url: width: logo_width
+              | image_tag: loading: 'eager', alt: shop.name, class: 'vertical-sidebar-logo-image'
+            }}
+          {%- else -%}
+            <span class="vertical-sidebar-logo-text">{{ section.settings.logo_text | default: shop.name }}</span>
+          {%- endif -%}
+        </a>
+      {%- else -%}
+        <a
+          href="{{ routes.root_url }}"
+          class="vertical-sidebar-logo-link vertical-sidebar-logo-link--{{ section.settings.logo_alignment | default: 'center' }}"
+        >
+          {%- if section.settings.logo != blank -%}
+            {%- assign logo_width = section.settings.logo_image_max_width | default: 140 -%}
+            {{
+              section.settings.logo
+              | image_url: width: logo_width
+              | image_tag: loading: 'eager', alt: shop.name, class: 'vertical-sidebar-logo-image'
+            }}
+          {%- else -%}
+            <span class="vertical-sidebar-logo-text">{{ section.settings.logo_text | default: shop.name }}</span>
+          {%- endif -%}
+        </a>
+      {%- endif -%}
     </div>
 
     <!-- Profile and Cart Row -->
@@ -1159,6 +1210,116 @@
       ],
       "default": "contain",
       "info": "How the logo image should be resized to fit its container"
+    },
+    {
+      "type": "header",
+      "content": "Logo orbit"
+    },
+    {
+      "type": "checkbox",
+      "id": "logo_orbit_enabled",
+      "label": "Show orbiting text around logo",
+      "default": false,
+      "info": "Seven customizable texts revolve in a circle around the logo. Off by default."
+    },
+    {
+      "type": "text",
+      "id": "logo_orbit_text_1",
+      "label": "Orbit text 1",
+      "default": "Quality"
+    },
+    {
+      "type": "text",
+      "id": "logo_orbit_text_2",
+      "label": "Orbit text 2",
+      "default": "Style"
+    },
+    {
+      "type": "text",
+      "id": "logo_orbit_text_3",
+      "label": "Orbit text 3",
+      "default": "Trust"
+    },
+    {
+      "type": "text",
+      "id": "logo_orbit_text_4",
+      "label": "Orbit text 4",
+      "default": "Design"
+    },
+    {
+      "type": "text",
+      "id": "logo_orbit_text_5",
+      "label": "Orbit text 5",
+      "default": "Craft"
+    },
+    {
+      "type": "text",
+      "id": "logo_orbit_text_6",
+      "label": "Orbit text 6",
+      "default": "You"
+    },
+    {
+      "type": "text",
+      "id": "logo_orbit_text_7",
+      "label": "Orbit text 7",
+      "default": "Love"
+    },
+    {
+      "type": "header",
+      "content": "Logo orbit style"
+    },
+    {
+      "type": "range",
+      "id": "logo_orbit_speed",
+      "min": 8,
+      "max": 60,
+      "step": 2,
+      "unit": "s",
+      "label": "Orbit speed",
+      "default": 20,
+      "info": "Seconds for one full rotation"
+    },
+    {
+      "type": "range",
+      "id": "logo_orbit_radius",
+      "min": 32,
+      "max": 52,
+      "step": 2,
+      "label": "Orbit spacing",
+      "default": 44,
+      "info": "Distance of text from logo center"
+    },
+    {
+      "type": "range",
+      "id": "logo_orbit_font_size",
+      "min": 5,
+      "max": 12,
+      "step": 1,
+      "unit": "px",
+      "label": "Orbit font size",
+      "default": 7
+    },
+    {
+      "type": "select",
+      "id": "logo_orbit_font_weight",
+      "label": "Orbit font weight",
+      "options": [
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "range",
+      "id": "logo_orbit_letter_spacing",
+      "min": -0.1,
+      "max": 0.3,
+      "step": 0.1,
+      "unit": "em",
+      "label": "Orbit letter spacing",
+      "default": 0.1
     },
     {
       "type": "header",
