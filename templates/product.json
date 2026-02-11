@@ -225,10 +225,45 @@
         "block_gap": 24,
         "right_block_gap": 24
       }
+    },
+    "related_products": {
+      "type": "related-products",
+      "blocks": {
+        "header": {
+          "type": "header",
+          "settings": {
+            "heading": "RELATED PRODUCTS",
+            "button_text": "VIEW ALL",
+            "button_link": "",
+            "background_color": "#E5E1DA",
+            "border_radius": 12
+          }
+        }
+      },
+      "block_order": [
+        "header"
+      ],
+      "settings": {
+        "products_to_show": 8,
+        "show_badge": true,
+        "badge_text": "MATCHA",
+        "overlay_button_text": "Love that! (Check it out)",
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "margin_horizontal": 10,
+        "margin_top_mobile": 0,
+        "margin_bottom_mobile": 0,
+        "margin_horizontal_mobile": 10,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40
+      }
     }
   },
   "order": [
     "scrolling_text",
-    "main"
+    "main",
+    "related_products"
   ]
 }

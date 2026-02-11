@@ -59,6 +59,9 @@
         <div class="custom-product-card__price">
           {{ card_product.price | money }}
         </div>
+        <button class="custom-product-card__add-to-cart" type="button" onclick="window.location.href='{{ card_product.url }}'">
+          Add to cart
+        </button>
       </div>
 
       <div class="custom-product-card__overlay-clip">
