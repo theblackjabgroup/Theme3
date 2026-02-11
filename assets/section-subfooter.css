@@ -71,6 +71,18 @@
   letter-spacing: 0.05em;
 }
 
+.subfooter-powered a {
+  color: inherit;
+  text-decoration: none;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+}
+
+.subfooter-powered a:hover {
+  opacity: 0.8;
+}
 .subfooter-right {
   display: flex;
   align-items: center;
