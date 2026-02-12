@@ -2,23 +2,10 @@
 .related-products {
   margin-top: var(--margin-top, 0);
   margin-bottom: var(--margin-bottom, 0);
+  margin-left: var(--margin-horizontal, 0);
+  margin-right: var(--margin-horizontal, 0);
+  width: calc(100% - var(--margin-horizontal, 0) * 2);
   box-sizing: border-box;
-}
-
-@media (min-width: 1025px) {
-  .related-products {
-    margin-left:  var(--margin-horizontal, 0);
-    margin-right: var(--margin-horizontal, 0);
-    width: calc(100% - var(--margin-horizontal, 0) * 2);
-  }
-}
-
-@media (max-width: 1024px) {
-  .related-products {
-    margin-left: var(--margin-horizontal, 0);
-    margin-right: var(--margin-horizontal, 0);
-    width: calc(100% - var(--margin-horizontal, 0) * 2);
-  }
 }
 
 /* Header Banner */
@@ -87,7 +74,6 @@
 .related-products-header__button:hover {
   transform: translateY(-4px);
   box-shadow: 0 7px 0 var(--color-primary-button-border);
-  background: var(--color-pink-button-bg);
   background-color: var(--color-primary-button-bg);
   border-color: var(--color-primary-button-border);
   color: var(--color-primary-button-text);
@@ -129,19 +115,22 @@
   padding-bottom: 80px;
   margin-top: -80px;
   margin-bottom: -80px;
-  overflow: visible;
+  overflow-x: hidden;
+  overflow-y: visible;
 }
 
 @media screen and (max-width: 749px) {
   .related-products-container {
     padding-top: 100px;
     padding-bottom: 100px;
+    margin-top: -100px;
     margin-bottom: -100px;
   }
 }
 
 .related-products-wrapper {
-  overflow: visible;
+  overflow-x: hidden;
+  overflow-y: visible;
 }
 
 .related-products [id^="related-products-"] {
@@ -156,6 +145,7 @@
   scrollbar-width: none;
   -ms-overflow-style: none;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
   padding-top: 60px;
   padding-bottom: 60px;
   margin-top: -60px;
@@ -183,7 +173,7 @@
 @media screen and (max-width: 749px) {
   .related-products [id^="related-products-"] .grid__item {
     flex: 0 0 100%;
-    scroll-snap-align: center;
+    scroll-snap-align: start;
     min-height: 480px;
   }
   
@@ -288,6 +278,20 @@
 
 .related-products .custom-product-card__image-container::before {
   display: none;
+}
+
+/* Hide default quick-add UI when using overlay/footer for add-to-cart (form stays in DOM for submit) */
+.related-products .custom-product-card-wrapper--quick-add-overlay .custom-product-card__quick-add {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
 }
 
 .related-products .custom-product-card__image-container {

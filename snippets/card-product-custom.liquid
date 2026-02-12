@@ -9,12 +9,21 @@
   - fallback_description: {String} Fallback text when product has no description. Default: 'Discover our amazing product.' (optional)
   - section_id: {String} The ID of the section that contains this card (optional)
   - quick_add: {String} Quick add mode. Values: 'none', 'standard', 'bulk'. Default: 'none' (optional)
+  - quick_add_overlay: {Boolean} When true with quick_add standard, overlay and footer buttons add to cart. Default: false (optional)
+  - mobile_add_button_text: {String} Mobile add to cart button text. Default: 'Add to cart' (optional)
   - lazy_load: {Boolean} Image should be lazy loaded. Default: true (optional)
 {%- endcomment -%}
 {%- comment -%} Card CSS is loaded once at section level (e.g. main-collection-product-grid.liquid). {%- endcomment -%}
 
 {%- if card_product and card_product != empty -%}
-  <div class="custom-product-card-wrapper">
+  {%- assign product_form_id = 'quick-add-' | append: section_id | append: card_product.id -%}
+  {%- liquid
+    assign use_quick_add_overlay = false
+    if quick_add == 'standard' and quick_add_overlay
+      assign use_quick_add_overlay = true
+    endif
+  -%}
+  <div class="custom-product-card-wrapper{% if use_quick_add_overlay %} custom-product-card-wrapper--quick-add-overlay{% endif %}">
     <a href="{{ card_product.url }}" class="custom-product-card">
       <div class="custom-product-card__image-container">
         {%- if card_product.featured_media -%}
@@ -59,9 +68,20 @@
         <div class="custom-product-card__price">
           {{ card_product.price | money }}
         </div>
-        <button class="custom-product-card__add-to-cart" type="button" onclick="window.location.href='{{ card_product.url }}'">
-          Add to cart
-        </button>
+        {%- if use_quick_add_overlay -%}
+          <button
+            class="custom-product-card__add-to-cart"
+            type="button"
+            data-quick-add-trigger="{{ product_form_id }}-submit"
+            aria-label="{{ mobile_add_button_text | default: 'Add to cart' }}"
+          >
+            {{ mobile_add_button_text | default: 'Add to cart' }}
+          </button>
+        {%- else -%}
+          <button class="custom-product-card__add-to-cart" type="button" onclick="window.location.href='{{ card_product.url }}'">
+            Add to cart
+          </button>
+        {%- endif -%}
       </div>
 
       <div class="custom-product-card__overlay-clip">
@@ -86,16 +106,27 @@
                 {{ 'Discover our amazing product.' | strip_html | truncatewords: 12, '....' | upcase }}
               </p>
             {%- endif -%}
-            <span class="custom-product-card__hover-button share-story-submit">
-              {{- overlay_button_text | default: 'Love that! (Check it out)' -}}
-            </span>
+            {%- if use_quick_add_overlay -%}
+              <span
+                class="custom-product-card__hover-button share-story-submit"
+                role="button"
+                tabindex="0"
+                data-quick-add-trigger="{{ product_form_id }}-submit"
+                aria-label="{{ overlay_button_text | default: 'Love that! (Buy it)' }}"
+              >
+                {{- overlay_button_text | default: 'Love that! (Buy it)' -}}
+              </span>
+            {%- else -%}
+              <span class="custom-product-card__hover-button share-story-submit">
+                {{- overlay_button_text | default: 'Love that! (Check it out)' -}}
+              </span>
+            {%- endif -%}
           </div>
         </div>
       </div>
     </a>
 
     {%- if quick_add != 'none' and quick_add != blank -%}
-      {% assign product_form_id = 'quick-add-' | append: section_id | append: card_product.id %}
       {% if quick_add == 'standard' %}
         <div class="quick-add no-js-hidden custom-product-card__quick-add">
           {%- liquid

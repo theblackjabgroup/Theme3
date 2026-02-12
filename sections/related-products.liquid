@@ -1,4 +1,5 @@
 {{ 'section-related-products.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
 {{ 'custom-card-base.css' | asset_url | stylesheet_tag }}
 {{ 'custom-product-card.css' | asset_url | stylesheet_tag }}
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
@@ -61,7 +62,7 @@
 
 <div class="related-products section-{{ section.id }}-padding">
   <div class="page-width">
-{%- liquid
+    {%- liquid
       assign header_button_text = ''
       assign header_button_link = ''
       for block in section.blocks
@@ -75,13 +76,20 @@
     {%- for block in section.blocks -%}
       {%- case block.type -%}
         {%- when 'header' -%}
-          <div class="related-products-header-banner" {{ block.shopify_attributes }} style="background-color: {{ block.settings.background_color }}; border-radius: {{ block.settings.border_radius }}px;">
+          <div
+            class="related-products-header-banner"
+            {{ block.shopify_attributes }}
+            style="background-color: {{ block.settings.background_color }}; border-radius: {{ block.settings.border_radius }}px;"
+          >
             <div class="related-products-header-content">
               {%- if block.settings.heading != blank -%}
                 <h2 class="related-products-header__title">{{ block.settings.heading }}</h2>
               {%- endif -%}
               {%- if block.settings.button_text != blank -%}
-                <a href="{{ block.settings.button_link }}" class="related-products-header__button related-products-header__button--desktop button">
+                <a
+                  href="{{ block.settings.button_link }}"
+                  class="related-products-header__button related-products-header__button--desktop button"
+                >
                   {{ block.settings.button_text }}
                 </a>
               {%- endif -%}
@@ -107,9 +115,12 @@
                   show_badge: section.settings.show_badge,
                   badge_text: section.settings.badge_text,
                   overlay_button_text: section.settings.overlay_button_text,
+                  mobile_add_button_text: section.settings.mobile_add_button_text,
                   fallback_description: section.settings.fallback_description,
                   section_id: section.id,
-                  lazy_load: true
+                  lazy_load: true,
+                  quick_add: 'standard',
+                  quick_add_overlay: true
                 -%}
               </div>
             {%- endfor -%}
@@ -130,7 +141,10 @@
         </div>
 
         {%- if header_button_text != blank -%}
-          <a href="{{ header_button_link }}" class="related-products-header__button related-products-header__button--mobile button">
+          <a
+            href="{{ header_button_link }}"
+            class="related-products-header__button related-products-header__button--mobile button"
+          >
             {{ header_button_text }}
           </a>
         {%- endif -%}
@@ -140,68 +154,20 @@
 </div>
 
 <script>
-  class ProductRecommendations extends HTMLElement {
-    constructor() {
-      super();
+  (function () {
+    function handleQuickAddTrigger(e) {
+      const trigger = e.target.closest('[data-quick-add-trigger]');
+      if (!trigger) return;
+      if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+      e.preventDefault();
+      e.stopPropagation();
+      const targetId = trigger.getAttribute('data-quick-add-trigger');
+      const target = targetId ? document.getElementById(targetId) : null;
+      if (target) target.click();
     }
-
-    connectedCallback() {
-      const handleIntersection = (entries, observer) => {
-        if (!entries[0].isIntersecting) return;
-        observer.unobserve(this);
-
-        fetch(this.dataset.url)
-          .then((response) => response.text())
-          .then((text) => {
-            const html = document.createElement('div');
-            html.innerHTML = text;
-            const recommendations = html.querySelector('product-recommendations');
-
-            if (recommendations && recommendations.innerHTML.trim().length) {
-              this.innerHTML = recommendations.innerHTML;
-              this.initScrollNavigation();
-            }
-          })
-          .catch((e) => {
-            console.error(e);
-          });
-      };
-
-      new IntersectionObserver(handleIntersection.bind(this), { rootMargin: '0px 0px 400px 0px' }).observe(this);
-
-      if (this.querySelector('.scroll-nav')) {
-        this.initScrollNavigation();
-      }
-    }
-
-    initScrollNavigation() {
-      const container = this.querySelector('[id^="related-products-"]');
-      const prevButton = this.querySelector('.scroll-prev');
-      const nextButton = this.querySelector('.scroll-next');
-
-      if (!container || !prevButton || !nextButton) return;
-
-      const scrollAmount = container.querySelector('.grid__item')?.offsetWidth || 300;
-
-      prevButton.addEventListener('click', () => {
-        container.scrollBy({ left: -scrollAmount - 24, behavior: 'smooth' });
-      });
-
-      nextButton.addEventListener('click', () => {
-        container.scrollBy({ left: scrollAmount + 24, behavior: 'smooth' });
-      });
-
-      const updateButtons = () => {
-        prevButton.disabled = container.scrollLeft <= 0;
-        nextButton.disabled = container.scrollLeft >= container.scrollWidth - container.clientWidth - 10;
-      };
-
-      container.addEventListener('scroll', updateButtons);
-      updateButtons();
-    }
-  }
-
-  customElements.define('product-recommendations', ProductRecommendations);
+    document.addEventListener('click', handleQuickAddTrigger, true);
+    document.addEventListener('keydown', handleQuickAddTrigger, true);
+  })();
 </script>
 
 {% schema %}
@@ -280,8 +246,14 @@
     {
       "type": "text",
       "id": "overlay_button_text",
-      "label": "Overlay Button Text",
-      "default": "Love that! (Check it out)"
+      "label": "Overlay Button Text (Desktop)",
+      "default": "Love that! (Buy it)"
+    },
+    {
+      "type": "text",
+      "id": "mobile_add_button_text",
+      "label": "Add to Cart Button Text (Mobile)",
+      "default": "Add to cart"
     },
     {
       "type": "header",
