@@ -161,7 +161,7 @@
       </p>
 
       {% form 'customer', class: 'email-popup__form' %}
-        <div data-posted-successfully="{% if form.posted_successfully? %}true{% else %}false{% endif %}" hidden aria-hidden="true"></div>
+        <div data-posted-successfully="{% if form.posted_successfully? %}true{% else %}false{% endif %}" data-has-errors="{% if form.errors %}true{% else %}false{% endif %}" hidden aria-hidden="true"></div>
         <input type="hidden" name="contact[tags]" value="newsletter">
         <div class="email-popup__field-wrapper email-popup__field-wrapper--mobile-{{ section.settings.mobile_layout | default: 'row' }}">
           <input
@@ -224,10 +224,11 @@
     function init() {
       var postedEl = section.querySelector('[data-posted-successfully]');
       var postedSuccessfully = postedEl && postedEl.dataset.postedSuccessfully === 'true';
+      var hasErrors = postedEl && postedEl.dataset.hasErrors === 'true';
       var forceShow = typeof URLSearchParams !== 'undefined' && new URLSearchParams(window.location.search).get('email_popup') === '1';
-      if (postedSuccessfully || forceShow) {
+      if (postedSuccessfully || hasErrors || forceShow) {
         show();
-        if (!forceShow) try { localStorage.setItem(STORAGE_KEY, '1'); } catch (e) {}
+        if (postedSuccessfully) try { localStorage.setItem(STORAGE_KEY, '1'); } catch (e) {}
         return;
       }
       try {
