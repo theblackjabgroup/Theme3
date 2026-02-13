@@ -6,7 +6,7 @@
   z-index: 9999;
   pointer-events: none;
   visibility: hidden;
-  transition: visibility 0s 0.4s;
+  transition: visibility 0s var(--popup-animation-duration, 0.5s);
 }
 
 .email-popup--visible {
@@ -57,21 +57,23 @@
 .email-popup__panel--v-bottom { --popup-ty: 0; }
 
 /* Desktop: visible position */
-.email-popup--visible .email-popup__panel--v-top { transform: translate(var(--popup-tx, 0), 0); }
+.email-popup--visible .email-popup__panel--v-top { transform: translate(var(--popup-tx, 0), var(--popup-ty, 0)); }
 .email-popup--visible .email-popup__panel--v-center { transform: translate(var(--popup-tx, 0), var(--popup-ty, -50%)); }
-.email-popup--visible .email-popup__panel--v-bottom { transform: translate(var(--popup-tx, 0), 0); }
+.email-popup--visible .email-popup__panel--v-bottom { transform: translate(var(--popup-tx, 0), var(--popup-ty, 0)); }
 
-/* Hidden - slide off screen by animation direction */
-.email-popup:not(.email-popup--visible) .email-popup__panel--animate-top.email-popup__panel--v-top,
-.email-popup:not(.email-popup--visible) .email-popup__panel--animate-top.email-popup__panel--v-bottom { transform: translate(var(--popup-tx, 0), -100%); }
-.email-popup:not(.email-popup--visible) .email-popup__panel--animate-top.email-popup__panel--v-center { transform: translate(var(--popup-tx, 0), calc(var(--popup-ty, -50%) - 100vh)); }
-.email-popup:not(.email-popup--visible) .email-popup__panel--animate-bottom.email-popup__panel--v-top,
-.email-popup:not(.email-popup--visible) .email-popup__panel--animate-bottom.email-popup__panel--v-bottom { transform: translate(var(--popup-tx, 0), 100%); }
-.email-popup:not(.email-popup--visible) .email-popup__panel--animate-bottom.email-popup__panel--v-center { transform: translate(var(--popup-tx, 0), calc(var(--popup-ty, -50%) + 100vh)); }
-.email-popup:not(.email-popup--visible) .email-popup__panel--animate-left { transform: translate(-100%, var(--popup-ty, 0)); }
-.email-popup:not(.email-popup--visible) .email-popup__panel--animate-right { transform: translate(100%, var(--popup-ty, 0)); }
+/* Hidden - slide off screen by animation direction (desktop only) */
+@media screen and (min-width: 750px) {
+  .email-popup:not(.email-popup--visible) .email-popup__panel--animate-top.email-popup__panel--v-top,
+  .email-popup:not(.email-popup--visible) .email-popup__panel--animate-top.email-popup__panel--v-bottom { transform: translate(var(--popup-tx, 0), -100%); }
+  .email-popup:not(.email-popup--visible) .email-popup__panel--animate-top.email-popup__panel--v-center { transform: translate(var(--popup-tx, 0), calc(var(--popup-ty, -50%) - 100vh)); }
+  .email-popup:not(.email-popup--visible) .email-popup__panel--animate-bottom.email-popup__panel--v-top,
+  .email-popup:not(.email-popup--visible) .email-popup__panel--animate-bottom.email-popup__panel--v-bottom { transform: translate(var(--popup-tx, 0), 100%); }
+  .email-popup:not(.email-popup--visible) .email-popup__panel--animate-bottom.email-popup__panel--v-center { transform: translate(var(--popup-tx, 0), calc(var(--popup-ty, -50%) + 100vh)); }
+  .email-popup:not(.email-popup--visible) .email-popup__panel--animate-left { transform: translate(-100%, var(--popup-ty, 0)); }
+  .email-popup:not(.email-popup--visible) .email-popup__panel--animate-right { transform: translate(100%, var(--popup-ty, 0)); }
+}
 
-/* Mobile: override with mobile animation direction */
+/* Mobile: animation direction (mobile only) */
 @media screen and (max-width: 749px) {
   .email-popup:not(.email-popup--visible) .email-popup__panel--animate-mobile-top.email-popup__panel--v-mobile-top,
   .email-popup:not(.email-popup--visible) .email-popup__panel--animate-mobile-top.email-popup__panel--v-mobile-bottom { transform: translate(var(--popup-tx, 0), -100%); }
@@ -317,18 +319,44 @@
     padding: 40px 24px 32px;
   }
 
-  .email-popup__field-wrapper {
+  .email-popup__field-wrapper--mobile-row {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .email-popup__field-wrapper--mobile-row .email-popup__input {
+    flex: 1;
+    min-width: var(--popup-input-min-width, 120px);
+    width: auto;
+    height: var(--popup-input-height, 48px);
+    min-height: var(--popup-input-height, 48px);
+  }
+
+  .email-popup__field-wrapper--mobile-row .email-popup__submit {
+    flex: 0 0 auto;
+    width: var(--popup-button-width, 48px);
+    min-width: var(--popup-button-width, 48px);
+    height: var(--popup-button-height, 48px);
+    min-height: var(--popup-button-height, 48px);
+  }
+
+  .email-popup__field-wrapper--mobile-column {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .email-popup__input {
+  .email-popup__field-wrapper--mobile-column .email-popup__input {
+    flex: 0 0 auto;
     min-width: 0;
+    width: 100%;
     height: var(--popup-input-height, 48px);
+    min-height: var(--popup-input-height, 48px);
   }
 
-  .email-popup__submit {
+  .email-popup__field-wrapper--mobile-column .email-popup__submit {
+    flex: 0 0 auto;
     width: 100%;
     height: var(--popup-button-height, 48px);
+    min-height: var(--popup-button-height, 48px);
   }
 }

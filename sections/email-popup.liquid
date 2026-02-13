@@ -40,6 +40,13 @@
     --popup-button-width: {{ section.settings.button_width | default: 48 }}px;
     --popup-button-height: {{ section.settings.button_height | default: 48 }}px;
   }
+  #shopify-section-{{ section.id }} .email-popup__input {
+    min-width: {{ section.settings.input_min_width | default: 200 }}px !important;
+  }
+  #shopify-section-{{ section.id }} .email-popup__submit {
+    width: {{ section.settings.button_width | default: 48 }}px !important;
+    min-width: {{ section.settings.button_width | default: 48 }}px !important;
+  }
   @media screen and (max-width: 749px) {
     #shopify-section-{{ section.id }} .email-popup {
       --popup-width: {{ section.settings.popup_width_mobile }}px;
@@ -64,13 +71,39 @@
       {%- if section.settings.input_height_mobile > 0 -%}
         --popup-input-height: {{ section.settings.input_height_mobile }}px;
       {%- endif -%}
-      {%- if section.settings.button_width_mobile > 0 -%}
-        --popup-button-width: {{ section.settings.button_width_mobile }}px;
+      {%- if section.settings.mobile_layout != 'column' -%}
+        {%- if section.settings.input_min_width_mobile > 0 -%}
+          --popup-input-min-width: {{ section.settings.input_min_width_mobile }}px;
+        {%- endif -%}
+        {%- if section.settings.button_width_mobile > 0 -%}
+          --popup-button-width: {{ section.settings.button_width_mobile }}px;
+        {%- endif -%}
+      {%- else -%}
+        --popup-input-min-width: 0;
       {%- endif -%}
       {%- if section.settings.button_height_mobile > 0 -%}
         --popup-button-height: {{ section.settings.button_height_mobile }}px;
       {%- endif -%}
     }
+  }
+  @media screen and (max-width: 749px) {
+    {%- if section.settings.mobile_layout != 'column' -%}
+      #shopify-section-{{ section.id }} .email-popup__field-wrapper--mobile-row .email-popup__input {
+        min-width: {% if section.settings.input_min_width_mobile > 0 %}{{ section.settings.input_min_width_mobile }}{% else %}{{ section.settings.input_min_width | default: 200 }}{% endif %}px !important;
+      }
+      #shopify-section-{{ section.id }} .email-popup__field-wrapper--mobile-row .email-popup__submit {
+        width: {% if section.settings.button_width_mobile > 0 %}{{ section.settings.button_width_mobile }}{% else %}{{ section.settings.button_width | default: 48 }}{% endif %}px !important;
+        min-width: {% if section.settings.button_width_mobile > 0 %}{{ section.settings.button_width_mobile }}{% else %}{{ section.settings.button_width | default: 48 }}{% endif %}px !important;
+      }
+    {%- else -%}
+      #shopify-section-{{ section.id }} .email-popup__field-wrapper--mobile-column .email-popup__input {
+        min-width: 0 !important;
+      }
+      #shopify-section-{{ section.id }} .email-popup__field-wrapper--mobile-column .email-popup__submit {
+        width: 100% !important;
+        min-width: 0 !important;
+      }
+    {%- endif -%}
   }
 {%- endstyle -%}
 
@@ -128,8 +161,9 @@
       </p>
 
       {% form 'customer', class: 'email-popup__form' %}
+        <div data-posted-successfully="{% if form.posted_successfully? %}true{% else %}false{% endif %}" hidden aria-hidden="true"></div>
         <input type="hidden" name="contact[tags]" value="newsletter">
-        <div class="email-popup__field-wrapper">
+        <div class="email-popup__field-wrapper email-popup__field-wrapper--mobile-{{ section.settings.mobile_layout | default: 'row' }}">
           <input
             type="email"
             name="contact[email]"
@@ -172,14 +206,14 @@
     if (!section) return;
 
     const delay = parseInt(section.dataset.delay, 10) || 5;
-    const overlay = section.querySelector('.email-popup__overlay');
-    const panel = section.querySelector('.email-popup__panel');
     const closeBtns = section.querySelectorAll('[data-close]');
 
-    function hide() {
+    function hide(persist) {
       section.classList.remove('email-popup--visible');
       section.setAttribute('aria-hidden', 'true');
-      try { localStorage.setItem(STORAGE_KEY, '1'); } catch (e) {}
+      if (persist !== false) {
+        try { localStorage.setItem(STORAGE_KEY, '1'); } catch (e) {}
+      }
     }
 
     function show() {
@@ -188,6 +222,14 @@
     }
 
     function init() {
+      var postedEl = section.querySelector('[data-posted-successfully]');
+      var postedSuccessfully = postedEl && postedEl.dataset.postedSuccessfully === 'true';
+      var forceShow = typeof URLSearchParams !== 'undefined' && new URLSearchParams(window.location.search).get('email_popup') === '1';
+      if (postedSuccessfully || forceShow) {
+        show();
+        if (!forceShow) try { localStorage.setItem(STORAGE_KEY, '1'); } catch (e) {}
+        return;
+      }
       try {
         if (localStorage.getItem(STORAGE_KEY)) return;
       } catch (e) {}
@@ -195,15 +237,15 @@
     }
 
     closeBtns.forEach(function (btn) {
-      btn.addEventListener('click', hide);
+      btn.addEventListener('click', function () { hide(true); });
     });
 
     section.querySelector('form')?.addEventListener('submit', function () {
-      setTimeout(hide, 500);
+      setTimeout(function () { hide(false); }, 500);
     });
 
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && section.classList.contains('email-popup--visible')) hide();
+      if (e.key === 'Escape' && section.classList.contains('email-popup--visible')) hide(true);
     });
 
     if (document.readyState === 'loading') {
@@ -652,6 +694,17 @@
       "default": 14
     },
     {
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "Mobile layout",
+      "info": "Row = input and button on same line",
+      "options": [
+        { "value": "row", "label": "Row (same line)" },
+        { "value": "column", "label": "Column (stacked)" }
+      ],
+      "default": "row"
+    },
+    {
       "type": "range",
       "id": "input_button_gap",
       "min": 0,
@@ -710,7 +763,18 @@
       "unit": "px",
       "label": "Input height (Mobile)",
       "info": "0 = use desktop",
-      "default": 0
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "input_min_width_mobile",
+      "min": 0,
+      "max": 360,
+      "step": 20,
+      "unit": "px",
+      "label": "Input min width (Mobile)",
+      "info": "0 = use desktop. For row layout, min-width for input.",
+      "default": 60
     },
     {
       "type": "range",
@@ -721,7 +785,7 @@
       "unit": "px",
       "label": "Button width (Mobile)",
       "info": "0 = use desktop",
-      "default": 0
+      "default": 62
     },
     {
       "type": "range",
