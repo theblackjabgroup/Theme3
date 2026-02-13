@@ -297,16 +297,16 @@
           background_color: block.settings.header_background_color,
           border_radius: block.settings.header_border_radius
         %}
-      {%- endif -%}
+        {%- endif -%}
     {%- endfor -%}
 
-    {%- liquid
+        {%- liquid
       assign paginate_by = section.settings.collections_per_page | default: 12
       assign modulo_result = paginate_by | modulo: section.settings.columns_desktop
       if modulo_result != 0
         assign paginate_by = paginate_by | plus: section.settings.columns_desktop | minus: modulo_result
-      endif
-    -%}
+          endif
+        -%}
     {%- paginate collections by paginate_by -%}
       <ul class="custom-collection-list__grid" role="list">
         {%- for collection in collections -%}
