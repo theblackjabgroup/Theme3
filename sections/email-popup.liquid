@@ -1,0 +1,952 @@
+{{ 'section-email-popup.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .email-popup {
+    --popup-bg: {{ section.settings.background_color }};
+    --popup-overlay: {{ section.settings.overlay_color }};
+    --popup-heading-color: {{ section.settings.heading_color }};
+    --popup-text-color: {{ section.settings.text_color }};
+    --popup-envelope-color: {{ section.settings.envelope_color }};
+    --popup-input-bg: {{ section.settings.input_background }};
+    --popup-input-border: {{ section.settings.input_border_color }};
+    --popup-button-bg: {{ section.settings.button_background }};
+    --popup-button-icon: {{ section.settings.button_icon_color }};
+    --popup-close-color: {{ section.settings.close_button_color }};
+    --popup-close-width: {{ section.settings.close_button_width | default: 44 }}px;
+    --popup-close-height: {{ section.settings.close_button_height | default: 44 }}px;
+    --popup-close-icon-size: {{ section.settings.close_icon_size | default: 24 }}px;
+    --popup-close-top: {{ section.settings.close_button_top | default: 16 }}px;
+    --popup-close-right: {{ section.settings.close_button_right | default: 16 }}px;
+    --popup-width: {{ section.settings.popup_width_desktop }}px;
+    --popup-height: {{ section.settings.popup_height_desktop }}px;
+    --popup-envelope-size: {{ section.settings.envelope_size_desktop }}px;
+    --popup-offset-top: {{ section.settings.offset_top_desktop }}px;
+    --popup-offset-bottom: {{ section.settings.offset_bottom_desktop }}px;
+    --popup-offset-left: {{ section.settings.offset_left_desktop }}px;
+    --popup-offset-right: {{ section.settings.offset_right_desktop }}px;
+    --popup-animation-duration: {{ section.settings.animation_speed | times: 0.1 }}s;
+    --popup-heading-font-size: {{ section.settings.heading_font_size | default: 24 }}px;
+    --popup-heading-font-weight: {{ section.settings.heading_font_weight | default: 700 }};
+    --popup-description-font-size: {{ section.settings.description_font_size | default: 15 }}px;
+    --popup-description-font-weight: {{ section.settings.description_font_weight | default: 400 }};
+    --popup-input-font-size: {{ section.settings.input_font_size | default: 16 }}px;
+    --popup-input-font-weight: {{ section.settings.input_font_weight | default: 400 }};
+    --popup-input-border-radius: {{ section.settings.input_border_radius | default: 100 }}px;
+    --popup-input-button-gap: {{ section.settings.input_button_gap | default: 12 }}px;
+    --popup-input-height: {{ section.settings.input_height | default: 48 }}px;
+    --popup-input-min-width: {{ section.settings.input_min_width | default: 200 }}px;
+    --popup-button-width: {{ section.settings.button_width | default: 48 }}px;
+    --popup-button-height: {{ section.settings.button_height | default: 48 }}px;
+  }
+  #shopify-section-{{ section.id }} .email-popup__input {
+    min-width: {{ section.settings.input_min_width | default: 200 }}px !important;
+  }
+  #shopify-section-{{ section.id }} .email-popup__submit {
+    width: {{ section.settings.button_width | default: 48 }}px !important;
+    min-width: {{ section.settings.button_width | default: 48 }}px !important;
+  }
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section.id }} .email-popup {
+      --popup-width: {{ section.settings.popup_width_mobile }}px;
+      --popup-height: {{ section.settings.popup_height_mobile }}px;
+      --popup-envelope-size: {{ section.settings.envelope_size_mobile }}px;
+      --popup-offset-top: {{ section.settings.offset_top_mobile }}px;
+      --popup-offset-bottom: {{ section.settings.offset_bottom_mobile }}px;
+      --popup-offset-left: {{ section.settings.offset_left_mobile }}px;
+      --popup-offset-right: {{ section.settings.offset_right_mobile }}px;
+      --popup-animation-duration: {{ section.settings.animation_speed_mobile | times: 0.1 }}s;
+      {%- if section.settings.heading_font_size_mobile > 0 -%}
+        --popup-heading-font-size: {{ section.settings.heading_font_size_mobile }}px;
+      {%- endif -%}
+      {%- if section.settings.description_font_size_mobile > 0 -%}
+        --popup-description-font-size: {{ section.settings.description_font_size_mobile }}px;
+      {%- endif -%}
+      {%- if section.settings.input_font_size_mobile > 0 -%}
+        --popup-input-font-size: {{ section.settings.input_font_size_mobile }}px;
+      {%- endif -%}
+      {%- if section.settings.input_height_mobile > 0 -%}
+        --popup-input-height: {{ section.settings.input_height_mobile }}px;
+      {%- endif -%}
+      {%- if section.settings.mobile_layout != 'column' -%}
+        {%- if section.settings.input_min_width_mobile > 0 -%}
+          --popup-input-min-width: {{ section.settings.input_min_width_mobile }}px;
+        {%- endif -%}
+        {%- if section.settings.button_width_mobile > 0 -%}
+          --popup-button-width: {{ section.settings.button_width_mobile }}px;
+        {%- endif -%}
+      {%- else -%}
+        --popup-input-min-width: 0;
+      {%- endif -%}
+      {%- if section.settings.button_height_mobile > 0 -%}
+        --popup-button-height: {{ section.settings.button_height_mobile }}px;
+      {%- endif -%}
+    }
+  }
+  @media screen and (max-width: 749px) {
+    {%- if section.settings.mobile_layout != 'column' -%}
+      #shopify-section-{{ section.id }} .email-popup__field-wrapper--mobile-row .email-popup__input {
+        min-width: {% if section.settings.input_min_width_mobile > 0 %}{{ section.settings.input_min_width_mobile }}{% else %}{{ section.settings.input_min_width | default: 200 }}{% endif %}px !important;
+      }
+      #shopify-section-{{ section.id }} .email-popup__field-wrapper--mobile-row .email-popup__submit {
+        width: {% if section.settings.button_width_mobile > 0 %}{{ section.settings.button_width_mobile }}{% else %}{{ section.settings.button_width | default: 48 }}{% endif %}px !important;
+        min-width: {% if section.settings.button_width_mobile > 0 %}{{ section.settings.button_width_mobile }}{% else %}{{ section.settings.button_width | default: 48 }}{% endif %}px !important;
+      }
+    {%- else -%}
+      #shopify-section-{{ section.id }} .email-popup__field-wrapper--mobile-column .email-popup__input {
+        min-width: 0 !important;
+      }
+      #shopify-section-{{ section.id }} .email-popup__field-wrapper--mobile-column .email-popup__submit {
+        width: 100% !important;
+        min-width: 0 !important;
+      }
+    {%- endif -%}
+  }
+{%- endstyle -%}
+
+<div
+  id="EmailPopup-{{ section.id }}"
+  class="email-popup"
+  data-delay="{{ section.settings.delay_seconds }}"
+  data-section-id="{{ section.id }}"
+  aria-hidden="true"
+>
+  <div class="email-popup__overlay" data-close></div>
+  <div class="email-popup__panel email-popup__panel--v-{{ section.settings.position_vertical }} email-popup__panel--h-{{ section.settings.position_horizontal }} email-popup__panel--v-mobile-{{ section.settings.position_vertical_mobile }} email-popup__panel--h-mobile-{{ section.settings.position_horizontal_mobile }} email-popup__panel--animate-{{ section.settings.animation_direction }} email-popup__panel--animate-mobile-{{ section.settings.animation_direction_mobile }}" role="dialog" aria-modal="true" aria-labelledby="EmailPopupHeading-{{ section.id }}">
+    <button
+      type="button"
+      class="email-popup__close"
+      aria-label="{{ 'accessibility.close' | t | default: 'Close' }}"
+      data-close
+    >
+      {%- if section.settings.close_icon != blank -%}
+        <img src="{{ section.settings.close_icon | image_url: width: 80 }}" alt="" width="80" height="80" class="email-popup__close-icon" loading="eager">
+      {%- else -%}
+        {%- assign close_icon_name = section.settings.close_icon_name | default: 'close' -%}
+        {%- assign close_icon_asset = 'icon-' | append: close_icon_name | append: '.svg' -%}
+        <span class="email-popup__close-icon email-popup__close-icon--svg">{{ close_icon_asset | inline_asset_content }}</span>
+      {%- endif -%}
+    </button>
+
+    <div class="email-popup__content">
+      {%- if section.settings.logo != blank -%}
+        <div class="email-popup__logo">
+          <img src="{{ section.settings.logo | image_url: width: 120 }}" alt="" width="80" height="80" loading="eager">
+        </div>
+      {%- else -%}
+        <div class="email-popup__envelope" aria-hidden="true">
+          <svg class="email-popup__envelope-back" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 578 319" fill="none">
+            <path d="M283.98 3.21932C287.886 1.20004 292.529 1.20003 296.435 3.21932L431.516 73.0492C444.14 79.5753 439.499 98.657 425.288 98.657H155.127C140.916 98.657 136.275 79.5753 148.9 73.0492L283.98 3.21932Z" fill="currentColor"/>
+            <path d="M246.474 31.1906L83.0625 112.896L282.072 190.872H298.006L495.998 112.557L343.436 31.1906H246.474Z" fill="currentColor"/>
+          </svg>
+          <div class="email-popup__card" style="background-color: {{ section.settings.card_background }}; color: {{ section.settings.card_text_color }}; --card-text-size: {{ section.settings.card_text_size }}px;">
+            <span class="email-popup__card-text">{{ shop.name }}</span>
+          </div>
+          <svg class="email-popup__envelope-front" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 578 319" fill="none">
+            <path d="M287.278 188.214C288.936 187.528 290.799 187.528 292.457 188.214L497.002 272.753C503.862 275.588 501.835 285.8 494.412 285.8H85.3228C77.9004 285.8 75.8733 275.588 82.7329 272.753L287.278 188.214Z" fill="currentColor"/>
+            <path opacity="0.7" d="M289.47 205.327C283.711 203.083 283.711 194.935 289.47 192.691L492.347 113.647C496.792 111.915 501.589 115.194 501.589 119.965L501.589 278.053C501.589 282.824 496.792 286.103 492.347 284.371L289.47 205.327Z" fill="currentColor"/>
+            <path opacity="0.7" d="M288.229 205.327C293.988 203.083 293.988 194.935 288.229 192.691L85.3525 113.647C80.907 111.915 76.1104 115.194 76.1104 119.965L76.1104 278.053C76.1104 282.824 80.907 286.103 85.3525 284.371L288.229 205.327Z" fill="currentColor"/>
+          </svg>
+        </div>
+      {%- endif -%}
+
+      <h2 id="EmailPopupHeading-{{ section.id }}" class="email-popup__heading">
+        {{ section.settings.heading | default: 'Subscribe To Our Email' }}
+      </h2>
+      <p class="email-popup__text">
+        {{ section.settings.text | default: 'Be the first to know about new collections and exclusive offers' }}
+      </p>
+
+      {% form 'customer', class: 'email-popup__form' %}
+        <div data-posted-successfully="{% if form.posted_successfully? %}true{% else %}false{% endif %}" data-has-errors="{% if form.errors %}true{% else %}false{% endif %}" hidden aria-hidden="true"></div>
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <div class="email-popup__field-wrapper email-popup__field-wrapper--mobile-{{ section.settings.mobile_layout | default: 'row' }}">
+          <input
+            type="email"
+            name="contact[email]"
+            class="email-popup__input"
+            placeholder="{{ section.settings.placeholder | default: 'Email Address' }}"
+            aria-label="{{ section.settings.placeholder | default: 'Email Address' }}"
+            required
+            value="{{ form.email }}"
+            autocomplete="email"
+          >
+          <button type="submit" class="email-popup__submit" aria-label="{{ section.settings.submit_label | default: 'Subscribe' }}">
+            {%- if section.settings.submit_icon != blank -%}
+              <img src="{{ section.settings.submit_icon | image_url: width: 80 }}" alt="" width="20" height="20" class="email-popup__submit-icon" loading="eager">
+            {%- else -%}
+              {%- assign icon_name = section.settings.submit_icon_name | default: 'plane' -%}
+              {%- assign icon_asset = 'icon-' | append: icon_name | append: '.svg' -%}
+              <span class="email-popup__submit-icon email-popup__submit-icon--svg">{{ icon_asset | inline_asset_content }}</span>
+            {%- endif -%}
+          </button>
+        </div>
+        {%- if form.errors -%}
+          <small class="email-popup__error" id="EmailPopupError-{{ section.id }}">
+            {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
+          </small>
+        {%- endif -%}
+        {%- if form.posted_successfully? -%}
+          <p class="email-popup__success" tabindex="-1" autofocus>
+            {{ 'newsletter.success' | t | default: 'Thanks for subscribing!' }}
+          </p>
+        {%- endif -%}
+      {% endform %}
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const STORAGE_KEY = 'email_popup_dismissed';
+    const section = document.getElementById('EmailPopup-{{ section.id }}');
+    if (!section) return;
+
+    const delay = parseInt(section.dataset.delay, 10) || 5;
+    const closeBtns = section.querySelectorAll('[data-close]');
+
+    function hide(persist) {
+      section.classList.remove('email-popup--visible');
+      section.setAttribute('aria-hidden', 'true');
+      if (persist !== false) {
+        try { localStorage.setItem(STORAGE_KEY, '1'); } catch (e) {}
+      }
+    }
+
+    function show() {
+      section.classList.add('email-popup--visible');
+      section.setAttribute('aria-hidden', 'false');
+    }
+
+    var designMode = typeof Shopify !== 'undefined' && Shopify.designMode;
+
+    function init() {
+      var postedEl = section.querySelector('[data-posted-successfully]');
+      var postedSuccessfully = postedEl && postedEl.dataset.postedSuccessfully === 'true';
+      var hasErrors = postedEl && postedEl.dataset.hasErrors === 'true';
+      var forceShow = typeof URLSearchParams !== 'undefined' && new URLSearchParams(window.location.search).get('email_popup') === '1';
+      if (postedSuccessfully || hasErrors || forceShow) {
+        show();
+        if (postedSuccessfully) try { localStorage.setItem(STORAGE_KEY, '1'); } catch (e) {}
+        return;
+      }
+      if (!designMode) {
+        try {
+          if (localStorage.getItem(STORAGE_KEY)) return;
+        } catch (e) {}
+      }
+      setTimeout(show, delay * 1000);
+    }
+
+    closeBtns.forEach(function (btn) {
+      btn.addEventListener('click', function () { hide(!designMode); });
+    });
+
+    section.querySelector('form')?.addEventListener('submit', function () {
+      setTimeout(function () { hide(false); }, 500);
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && section.classList.contains('email-popup--visible')) hide(!designMode);
+    });
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Email Popup",
+  "tag": "section",
+  "class": "section-email-popup",
+  "enabled_on": {
+    "templates": ["index"]
+  },
+  "settings": [
+    {
+      "type": "range",
+      "id": "delay_seconds",
+      "min": 1,
+      "max": 15,
+      "step": 1,
+      "unit": "s",
+      "label": "Show after (seconds)",
+      "default": 5
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "select",
+      "id": "animation_direction",
+      "label": "Animation direction (Desktop)",
+      "options": [
+        { "value": "top", "label": "From top" },
+        { "value": "bottom", "label": "From bottom" },
+        { "value": "left", "label": "From left" },
+        { "value": "right", "label": "From right" }
+      ],
+      "default": "top"
+    },
+    {
+      "type": "range",
+      "id": "animation_speed",
+      "min": 2,
+      "max": 15,
+      "step": 1,
+      "label": "Animation speed (Desktop)",
+      "info": "2 = 0.2s, 5 = 0.5s, 15 = 1.5s",
+      "default": 5
+    },
+    {
+      "type": "select",
+      "id": "animation_direction_mobile",
+      "label": "Animation direction (Mobile)",
+      "options": [
+        { "value": "top", "label": "From top" },
+        { "value": "bottom", "label": "From bottom" },
+        { "value": "left", "label": "From left" },
+        { "value": "right", "label": "From right" }
+      ],
+      "default": "top"
+    },
+    {
+      "type": "range",
+      "id": "animation_speed_mobile",
+      "min": 2,
+      "max": 15,
+      "step": 1,
+      "label": "Animation speed (Mobile)",
+      "info": "2 = 0.2s, 5 = 0.5s, 15 = 1.5s",
+      "default": 5
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo / Icon",
+      "info": "Optional. Shows envelope (like gift card) if empty."
+    },
+    {
+      "type": "range",
+      "id": "card_text_size",
+      "min": 8,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Shop name font size (in envelope card)",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Size"
+    },
+    {
+      "type": "range",
+      "id": "popup_width_desktop",
+      "min": 320,
+      "max": 800,
+      "step": 20,
+      "unit": "px",
+      "label": "Popup width (Desktop)",
+      "default": 520
+    },
+    {
+      "type": "range",
+      "id": "popup_height_desktop",
+      "min": 300,
+      "max": 700,
+      "step": 20,
+      "unit": "px",
+      "label": "Popup height (Desktop)",
+      "default": 380
+    },
+    {
+      "type": "range",
+      "id": "popup_width_mobile",
+      "min": 280,
+      "max": 500,
+      "step": 20,
+      "unit": "px",
+      "label": "Popup width (Mobile)",
+      "default": 360
+    },
+    {
+      "type": "range",
+      "id": "popup_height_mobile",
+      "min": 350,
+      "max": 590,
+      "step": 20,
+      "unit": "px",
+      "label": "Popup height (Mobile)",
+      "default": 370
+    },
+    {
+      "type": "range",
+      "id": "envelope_size_desktop",
+      "min": 80,
+      "max": 220,
+      "step": 10,
+      "unit": "px",
+      "label": "Envelope size (Desktop)",
+      "default": 170
+    },
+    {
+      "type": "range",
+      "id": "envelope_size_mobile",
+      "min": 60,
+      "max": 160,
+      "step": 10,
+      "unit": "px",
+      "label": "Envelope size (Mobile)",
+      "default": 140
+    },
+    {
+      "type": "header",
+      "content": "Position"
+    },
+    {
+      "type": "select",
+      "id": "position_vertical",
+      "label": "Vertical position (Desktop)",
+      "options": [
+        { "value": "top", "label": "Top" },
+        { "value": "center", "label": "Center" },
+        { "value": "bottom", "label": "Bottom" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "position_horizontal",
+      "label": "Horizontal position (Desktop)",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "offset_top_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Offset from top (Desktop)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "offset_bottom_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Offset from bottom (Desktop)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "offset_left_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Offset from left (Desktop)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "offset_right_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Offset from right (Desktop)",
+      "default": 40
+    },
+    {
+      "type": "select",
+      "id": "position_vertical_mobile",
+      "label": "Vertical position (Mobile)",
+      "options": [
+        { "value": "top", "label": "Top" },
+        { "value": "center", "label": "Center" },
+        { "value": "bottom", "label": "Bottom" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "position_horizontal_mobile",
+      "label": "Horizontal position (Mobile)",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "offset_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Offset from top (Mobile)",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "offset_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Offset from bottom (Mobile)",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "offset_left_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Offset from left (Mobile)",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "offset_right_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Offset from right (Mobile)",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Subscribe To Our Email"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "min": 14,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading font size",
+      "default": 24
+    },
+    {
+      "type": "select",
+      "id": "heading_font_weight",
+      "label": "Heading font weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra bold" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Description",
+      "default": "Be the first to know about new collections and exclusive offers"
+    },
+    {
+      "type": "range",
+      "id": "description_font_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Description font size",
+      "default": 15
+    },
+    {
+      "type": "select",
+      "id": "description_font_weight",
+      "label": "Description font weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Email placeholder",
+      "default": "Email Address"
+    },
+    {
+      "type": "range",
+      "id": "input_font_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Email input font size",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "input_font_weight",
+      "label": "Email input font weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_mobile",
+      "min": 0,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading font size (Mobile)",
+      "info": "0 = use desktop size",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "description_font_size_mobile",
+      "min": 0,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Description font size (Mobile)",
+      "info": "0 = use desktop size",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "input_font_size_mobile",
+      "min": 0,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Email input font size (Mobile)",
+      "info": "0 = use desktop size",
+      "default": 0
+    },
+    {
+      "type": "text",
+      "id": "submit_label",
+      "label": "Submit button label (for screen readers)",
+      "default": "Subscribe"
+    },
+    {
+      "type": "image_picker",
+      "id": "submit_icon",
+      "label": "Submit button icon (custom)",
+      "info": "Upload a custom icon. If empty, uses the built-in icon below."
+    },
+    {
+      "type": "select",
+      "id": "submit_icon_name",
+      "label": "Submit button icon (built-in)",
+      "info": "Used when no custom icon is uploaded.",
+      "options": [
+        { "value": "plane", "label": "Plane (send)" },
+        { "value": "arrow", "label": "Arrow" },
+        { "value": "checkmark", "label": "Checkmark" },
+        { "value": "tick", "label": "Tick" }
+      ],
+      "default": "plane"
+    },
+    {
+      "type": "header",
+      "content": "Input & button"
+    },
+    {
+      "type": "range",
+      "id": "input_border_radius",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "info": "100 = pill shape (fully rounded)",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "Mobile layout",
+      "info": "Row = input and button on same line",
+      "options": [
+        { "value": "row", "label": "Row (same line)" },
+        { "value": "column", "label": "Column (stacked)" }
+      ],
+      "default": "row"
+    },
+    {
+      "type": "range",
+      "id": "input_button_gap",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Space between input and button",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "input_height",
+      "min": 36,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Input height",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "input_min_width",
+      "min": 120,
+      "max": 400,
+      "step": 20,
+      "unit": "px",
+      "label": "Input min width",
+      "default": 200
+    },
+    {
+      "type": "range",
+      "id": "button_width",
+      "min": 40,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Button width",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "button_height",
+      "min": 36,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Button height",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "input_height_mobile",
+      "min": 0,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "label": "Input height (Mobile)",
+      "info": "0 = use desktop",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "input_min_width_mobile",
+      "min": 0,
+      "max": 360,
+      "step": 20,
+      "unit": "px",
+      "label": "Input min width (Mobile)",
+      "info": "0 = use desktop. For row layout, min-width for input.",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "button_width_mobile",
+      "min": 0,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "label": "Button width (Mobile)",
+      "info": "0 = use desktop",
+      "default": 62
+    },
+    {
+      "type": "range",
+      "id": "button_height_mobile",
+      "min": 0,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "label": "Button height (Mobile)",
+      "info": "0 = use desktop",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Popup background",
+      "default": "#EBEBE1"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay background",
+      "default": "#282828"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#4F6B4F"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Description color",
+      "default": "#6D826D"
+    },
+    {
+      "type": "color",
+      "id": "envelope_color",
+      "label": "Envelope color",
+      "default": "#B8B6AF"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card background (inside envelope)",
+      "default": "#4F6B4F"
+    },
+    {
+      "type": "color",
+      "id": "card_text_color",
+      "label": "Card text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "input_background",
+      "label": "Input background",
+      "default": "#f2f0eb"
+    },
+    {
+      "type": "color",
+      "id": "input_border_color",
+      "label": "Input border",
+      "default": "#3f473e"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Submit button background",
+      "default": "#d6a9b4"
+    },
+    {
+      "type": "color",
+      "id": "button_icon_color",
+      "label": "Submit button icon",
+      "default": "#3f473e"
+    },
+    {
+      "type": "color",
+      "id": "close_button_color",
+      "label": "Close button color",
+      "default": "#4F6B4F"
+    },
+    {
+      "type": "header",
+      "content": "Close button"
+    },
+    {
+      "type": "range",
+      "id": "close_button_width",
+      "min": 24,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Close button width",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "close_button_height",
+      "min": 24,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Close button height",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "close_icon_size",
+      "min": 12,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Close icon size",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "close_button_top",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Close button offset from top",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "close_button_right",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Close button offset from right",
+      "default": 16
+    },
+    {
+      "type": "image_picker",
+      "id": "close_icon",
+      "label": "Close icon (custom)",
+      "info": "Upload a custom icon. If empty, uses the built-in icon below."
+    },
+    {
+      "type": "select",
+      "id": "close_icon_name",
+      "label": "Close icon (built-in)",
+      "info": "Used when no custom icon is uploaded.",
+      "options": [
+        { "value": "close", "label": "Close (X)" },
+        { "value": "close-small", "label": "Close small" },
+        { "value": "remove", "label": "Remove" }
+      ],
+      "default": "close"
+    }
+  ]
+}
+{% endschema %}

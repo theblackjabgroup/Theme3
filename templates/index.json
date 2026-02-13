@@ -153,6 +153,15 @@
         "card_border_radius": 20
       }
     },
+    "email_popup": {
+      "type": "email-popup",
+      "settings": {
+        "delay_seconds": 5,
+        "heading": "Subscribe To Our Email",
+        "text": "Be the first to know about new collections and exclusive offers",
+        "placeholder": "Email Address"
+      }
+    },
     "featured_collection": {
       "type": "featured-collection",
       "disabled": true,
@@ -168,6 +177,7 @@
   },
   "order": [
     "bento_grid",
-    "featured_collection"
+    "featured_collection",
+    "email_popup"
   ]
 }
