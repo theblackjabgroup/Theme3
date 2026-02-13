@@ -5,7 +5,11 @@
 {% endcomment %}
 
 {%- if article and article != empty -%}
-  <div class="main-blog-card {{ custom_class }}">
+  {%- if card_link -%}
+    <a href="{{ article.url }}" class="main-blog-card {{ custom_class }}" style="text-decoration: none; color: inherit; display: flex;">
+  {%- else -%}
+    <div class="main-blog-card {{ custom_class }}">
+  {%- endif -%}
     <div class="main-blog-card__image-wrapper">
       {%- if article.image -%}
         {%- liquid
@@ -50,5 +54,9 @@
     {%- if show_read_more_button -%}
       {% render 'submit-button', text: cta_text, url: article.url, class: 'main-blog-card__button' %}
     {%- endif -%}
-  </div>
+  {%- if card_link -%}
+    </a>
+  {%- else -%}
+    </div>
+  {%- endif -%}
 {%- endif -%}
