@@ -1,4 +1,4 @@
-{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'collection-card.css' | asset_url | stylesheet_tag }}
 {{ 'section-collection-list.css' | asset_url | stylesheet_tag }}
 
 <div class="page-width">
@@ -37,9 +37,9 @@
           {% endif %}
         >
           {% render 'card-collection',
-            card_collection: collection,
-            media_aspect_ratio: section.settings.image_ratio,
-            columns: 3
+            collection: collection,
+            show_badge: true,
+            section_settings: section.settings
           %}
         </li>
       {%- endfor -%}
