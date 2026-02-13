@@ -2,23 +2,23 @@
 
 <style>
   :root {
-    --header-width: {{ section.settings.header_width | default: 230 }}px;
+    --header-width: {{ section.settings.header_width | default: 200 }}px;
     --header-padding: {{ section.settings.header_padding | default: 24 }}px;
     --header-gap: {{ section.settings.header_gap | default: 24 }}px;
 
     /* Logo */
-    --logo-padding-top: {{ section.settings.logo_padding_top | default: 26 }}px;
-    --logo-padding-bottom: {{ section.settings.logo_padding_bottom | default: 26 }}px;
-    --logo-padding-left: {{ section.settings.logo_padding_left | default: 20 }}px;
-    --logo-padding-right: {{ section.settings.logo_padding_right | default: 20 }}px;
+    --logo-padding-top: {{ section.settings.logo_padding_top | default: 24 }}px;
+    --logo-padding-bottom: {{ section.settings.logo_padding_bottom | default: 24 }}px;
+    --logo-padding-left: {{ section.settings.logo_padding_left | default: 24 }}px;
+    --logo-padding-right: {{ section.settings.logo_padding_right | default: 24 }}px;
     --logo-padding: var(--logo-padding-top) var(--logo-padding-right) var(--logo-padding-bottom) var(--logo-padding-left);
     --logo-border-radius: {{ section.settings.logo_border_radius | default: 16 }}px;
-    --logo-font-size: {{ section.settings.logo_font_size | default: 28 }}px;
+    --logo-font-size: {{ section.settings.logo_font_size | default: 16 }}px;
     --logo-font-weight: {{ section.settings.logo_font_weight | default: 700 }};
     --logo-letter-spacing: {{ section.settings.logo_letter_spacing | default: -0.5 }}px;
     --color-header-logo-background: {{ section.settings.logo_background_color | default: '#306030' }};
-    --logo-image-max-width: {{ section.settings.logo_image_max_width | default: 140 }}px;
-    --logo-image-max-height: {{ section.settings.logo_image_max_height | default: 100 }}px;
+    --logo-image-max-width: {{ section.settings.logo_image_max_width | default: 80 }}px;
+    --logo-image-max-height: {{ section.settings.logo_image_max_height | default: 80 }}px;
     --logo-image-width: {% if section.settings.logo_image_width > 0 %}{{ section.settings.logo_image_width }}px{% else %}auto{% endif %};
     --logo-image-height: {% if section.settings.logo_image_height > 0 %}{{ section.settings.logo_image_height }}px{% else %}auto{% endif %};
     --logo-image-object-fit: {{ section.settings.logo_image_object_fit | default: 'contain' }};
@@ -26,35 +26,35 @@
     /* Logo orbit (when enabled) */
     --logo-orbit-duration: {{ section.settings.logo_orbit_speed | default: 20 }}s;
     --logo-orbit-radius: {{ section.settings.logo_orbit_radius | default: 44 }};
-    --logo-orbit-font-size: {{ section.settings.logo_orbit_font_size | default: 7 }}px;
+    --logo-orbit-font-size: {{ section.settings.logo_orbit_font_size | default: 8 }}px;
     --logo-orbit-font-weight: {{ section.settings.logo_orbit_font_weight | default: 600 }};
     --logo-orbit-letter-spacing: {{ section.settings.logo_orbit_letter_spacing | default: 0.1 }}em;
 
     /* Action Buttons */
-    --button-gap: {{ section.settings.button_gap | default: 12 }}px;
-    --button-padding-top: {{ section.settings.button_padding_top | default: 14 }}px;
-    --button-padding-bottom: {{ section.settings.button_padding_bottom | default: 14 }}px;
-    --button-padding-left: {{ section.settings.button_padding_left | default: 18 }}px;
-    --button-padding-right: {{ section.settings.button_padding_right | default: 18 }}px;
+    --button-gap: {{ section.settings.button_gap | default: 8 }}px;
+    --button-padding-top: {{ section.settings.button_padding_top | default: 12 }}px;
+    --button-padding-bottom: {{ section.settings.button_padding_bottom | default: 12 }}px;
+    --button-padding-left: {{ section.settings.button_padding_left | default: 16 }}px;
+    --button-padding-right: {{ section.settings.button_padding_right | default: 16 }}px;
     --button-padding: var(--button-padding-top) var(--button-padding-right) var(--button-padding-bottom) var(--button-padding-left);
     --button-font-size: {{ section.settings.button_font_size | default: 16 }}px;
-    --button-icon-size: {{ section.settings.button_icon_size | default: 20 }}px;
+    --button-icon-size: {{ section.settings.button_icon_size | default: 16 }}px;
 
     /* Navigation */
-    --nav-gap: {{ section.settings.nav_gap | default: 10 }}px;
+    --nav-gap: {{ section.settings.nav_gap | default: 8 }}px;
     --nav-animation-speed: {{ section.settings.nav_animation_speed | default: 0.8 }}s;
-    --nav-padding-top: {{ section.settings.nav_padding_top | default: 24 }}px;
-    --nav-padding-bottom: {{ section.settings.nav_padding_bottom | default: 24 }}px;
-    --nav-item-padding-top: {{ section.settings.nav_item_padding_top | default: 16 }}px;
-    --nav-item-padding-bottom: {{ section.settings.nav_item_padding_bottom | default: 16 }}px;
+    --nav-padding-top: {{ section.settings.nav_padding_top | default: 14 }}px;
+    --nav-padding-bottom: {{ section.settings.nav_padding_bottom | default: 14 }}px;
+    --nav-item-padding-top: {{ section.settings.nav_item_padding_top | default: 28 }}px;
+    --nav-item-padding-bottom: {{ section.settings.nav_item_padding_bottom | default: 28 }}px;
     --nav-item-padding-left: {{ section.settings.nav_item_padding_left | default: 16 }}px;
     --nav-item-padding-right: {{ section.settings.nav_item_padding_right | default: 16 }}px;
     --nav-item-padding: var(--nav-item-padding-top) var(--nav-item-padding-right) var(--nav-item-padding-bottom) var(--nav-item-padding-left);
-    --nav-font-size: {{ section.settings.nav_font_size | default: 16 }}px;
-    --nav-font-weight: {{ section.settings.nav_font_weight | default: 700 }};
-    --nav-letter-spacing: {{ section.settings.nav_letter_spacing | default: 0.5 }}px;
-    --nav-icon-size: {{ section.settings.nav_icon_size | default: 20 }}px;
-    --nav-caret-size: {{ section.settings.nav_caret_size | default: 10 }}px;
+    --nav-font-size: {{ section.settings.nav_font_size | default: 14 }}px;
+    --nav-font-weight: {{ section.settings.nav_font_weight | default: 500 }};
+    --nav-letter-spacing: {{ section.settings.nav_letter_spacing | default: 0 }}px;
+    --nav-icon-size: {{ section.settings.nav_icon_size | default: 24 }}px;
+    --nav-caret-size: {{ section.settings.nav_caret_size | default: 12 }}px;
     --nav-hover-background: {{ section.settings.nav_hover_background_color | default: '#306030' }};
     --nav-default-background: var(--color-header-button-background, var(--color-header-background, var(--color-background, #eae7e1)));
     {%- if section.settings.nav_show_borders -%}
@@ -134,7 +134,7 @@
           class="vertical-sidebar-logo-link vertical-sidebar-logo-link--{{ section.settings.logo_alignment | default: 'center' }} logo-orbit-center"
         >
           {%- if section.settings.logo != blank -%}
-            {%- assign logo_width = section.settings.logo_image_max_width | default: 140 -%}
+            {%- assign logo_width = section.settings.logo_image_max_width | default: 80 -%}
             {{
               section.settings.logo
               | image_url: width: logo_width
@@ -150,7 +150,7 @@
           class="vertical-sidebar-logo-link vertical-sidebar-logo-link--{{ section.settings.logo_alignment | default: 'center' }}"
         >
           {%- if section.settings.logo != blank -%}
-            {%- assign logo_width = section.settings.logo_image_max_width | default: 140 -%}
+            {%- assign logo_width = section.settings.logo_image_max_width | default: 80 -%}
             {{
               section.settings.logo
               | image_url: width: logo_width
@@ -169,7 +169,7 @@
         {%- if block.type == 'welcome' -%}
           {%- comment -%} Determine icon for welcome button {%- endcomment -%}
           {%- assign welcome_icon = '' -%}
-          {%- assign icon_size = section.settings.button_icon_size | default: 20 -%}
+          {%- assign icon_size = section.settings.button_icon_size | default: 16 -%}
           {%- if block.settings.button_icon_image != blank -%}
             {%- assign welcome_icon = block.settings.button_icon_image
               | image_url: width: icon_size
@@ -216,7 +216,7 @@
         {%- if block.type == 'cart' -%}
           {%- comment -%} Determine icon for cart button {%- endcomment -%}
           {%- assign cart_icon = '' -%}
-          {%- assign icon_size = section.settings.button_icon_size | default: 20 -%}
+          {%- assign icon_size = section.settings.button_icon_size | default: 16 -%}
           {%- if block.settings.button_icon_image != blank -%}
             {%- assign cart_icon = block.settings.button_icon_image
               | image_url: width: icon_size
@@ -265,7 +265,7 @@
         {%- if block.type == 'search' -%}
           {%- comment -%} Determine icon for search button {%- endcomment -%}
           {%- assign search_icon = '' -%}
-          {%- assign icon_size = section.settings.button_icon_size | default: 20 -%}
+          {%- assign icon_size = section.settings.button_icon_size | default: 16 -%}
           {%- if block.settings.button_icon_image != blank -%}
             {%- assign search_icon = block.settings.button_icon_image
               | image_url: width: icon_size
@@ -348,7 +348,7 @@
           {%- assign nav_icon_is_image = false -%}
           {%- assign nav_hover_icon = '' -%}
           {%- assign nav_hover_icon_is_image = false -%}
-          {%- assign icon_size = section.settings.nav_icon_size | default: 20 -%}
+          {%- assign icon_size = section.settings.nav_icon_size | default: 24 -%}
 
           {%- if custom_icon_block != null -%}
             {%- comment -%} Use custom icon from block {%- endcomment -%}
@@ -440,7 +440,7 @@
               {%- comment -%} Determine caret icon {%- endcomment -%}
               {%- assign caret_icon = '' -%}
               {%- assign caret_icon_is_image = false -%}
-              {%- assign caret_size = section.settings.nav_caret_size | default: 10 -%}
+              {%- assign caret_size = section.settings.nav_caret_size | default: 12 -%}
               {%- if section.settings.nav_caret_icon_image != blank -%}
                 {%- assign caret_icon = section.settings.nav_caret_icon_image
                   | image_url: width: caret_size
@@ -893,7 +893,7 @@
         <!-- Footer: Account, Cart, Search (same icons as desktop) -->
         <div class="mobile-menu-footer">
           <div class="mobile-menu-footer-row mobile-menu-footer-row--top">
-            {%- assign icon_size = section.settings.button_icon_size | default: 20 -%}
+            {%- assign icon_size = section.settings.button_icon_size | default: 16 -%}
             {%- for block in section.blocks -%}
               {%- if block.type == 'welcome' -%}
                 {%- assign welcome_icon = '' -%}
@@ -1057,7 +1057,7 @@
       "step": 10,
       "unit": "px",
       "label": "Header Width",
-      "default": 230,
+      "default": 200,
       "info": "Width of the vertical sidebar header"
     },
     {
@@ -1068,7 +1068,7 @@
       "step": 4,
       "unit": "px",
       "label": "Header Inner Padding",
-      "default": 24,
+      "default": 16,
       "info": "Padding around the header content"
     },
     {
@@ -1079,7 +1079,7 @@
       "step": 4,
       "unit": "px",
       "label": "Header Section Gap",
-      "default": 24,
+      "default": 8,
       "info": "Gap between header sections (logo, buttons, nav)"
     },
     {
@@ -1106,7 +1106,7 @@
       "step": 2,
       "unit": "px",
       "label": "Logo Padding Top",
-      "default": 26
+      "default": 24
     },
     {
       "type": "range",
@@ -1116,7 +1116,7 @@
       "step": 2,
       "unit": "px",
       "label": "Logo Padding Bottom",
-      "default": 26
+      "default": 24
     },
     {
       "type": "range",
@@ -1126,7 +1126,7 @@
       "step": 2,
       "unit": "px",
       "label": "Logo Padding Left",
-      "default": 20
+      "default": 24
     },
     {
       "type": "range",
@@ -1136,7 +1136,7 @@
       "step": 2,
       "unit": "px",
       "label": "Logo Padding Right",
-      "default": 20
+      "default": 24
     },
     {
       "type": "range",
@@ -1156,7 +1156,7 @@
       "step": 2,
       "unit": "px",
       "label": "Logo Font Size",
-      "default": 28
+      "default": 16
     },
     {
       "type": "select",
@@ -1200,7 +1200,7 @@
       "step": 10,
       "unit": "px",
       "label": "Logo Image Max Width",
-      "default": 140,
+      "default": 80,
       "info": "Maximum width of the logo image"
     },
     {
@@ -1211,7 +1211,7 @@
       "step": 10,
       "unit": "px",
       "label": "Logo Image Max Height",
-      "default": 100,
+      "default": 80,
       "info": "Maximum height of the logo image"
     },
     {
@@ -1336,7 +1336,7 @@
       "step": 1,
       "unit": "px",
       "label": "Orbit font size",
-      "default": 7
+      "default": 8
     },
     {
       "type": "select",
@@ -1372,7 +1372,7 @@
       "step": 2,
       "unit": "px",
       "label": "Button Gap",
-      "default": 12,
+      "default": 8,
       "info": "Gap between action buttons"
     },
     {
@@ -1383,7 +1383,7 @@
       "step": 2,
       "unit": "px",
       "label": "Button Padding Top",
-      "default": 14
+      "default": 12
     },
     {
       "type": "range",
@@ -1393,7 +1393,7 @@
       "step": 2,
       "unit": "px",
       "label": "Button Padding Bottom",
-      "default": 14
+      "default": 12
     },
     {
       "type": "range",
@@ -1403,7 +1403,7 @@
       "step": 2,
       "unit": "px",
       "label": "Button Padding Left",
-      "default": 18
+      "default": 16
     },
     {
       "type": "range",
@@ -1413,7 +1413,7 @@
       "step": 2,
       "unit": "px",
       "label": "Button Padding Right",
-      "default": 18
+      "default": 16
     },
     {
       "type": "range",
@@ -1433,7 +1433,7 @@
       "step": 2,
       "unit": "px",
       "label": "Button Icon Size",
-      "default": 20
+      "default": 16
     },
     {
       "type": "header",
@@ -1447,7 +1447,7 @@
       "step": 2,
       "unit": "px",
       "label": "Navigation Item Gap",
-      "default": 10,
+      "default": 8,
       "info": "Gap between navigation items"
     },
     {
@@ -1469,7 +1469,7 @@
       "step": 2,
       "unit": "px",
       "label": "Navigation Padding Top",
-      "default": 24
+      "default": 14
     },
     {
       "type": "range",
@@ -1479,7 +1479,7 @@
       "step": 2,
       "unit": "px",
       "label": "Navigation Padding Bottom",
-      "default": 24
+      "default": 14
     },
     {
       "type": "range",
@@ -1489,7 +1489,7 @@
       "step": 2,
       "unit": "px",
       "label": "Nav Item Padding Top",
-      "default": 16
+      "default": 28
     },
     {
       "type": "range",
@@ -1499,7 +1499,7 @@
       "step": 2,
       "unit": "px",
       "label": "Nav Item Padding Bottom",
-      "default": 16
+      "default": 28
     },
     {
       "type": "range",
@@ -1529,7 +1529,7 @@
       "step": 1,
       "unit": "px",
       "label": "Navigation Font Size",
-      "default": 16
+      "default": 14
     },
     {
       "type": "select",
@@ -1542,7 +1542,7 @@
         { "value": "700", "label": "Bold" },
         { "value": "800", "label": "Extra Bold" }
       ],
-      "default": "700"
+      "default": "500"
     },
     {
       "type": "range",
@@ -1552,7 +1552,7 @@
       "step": 0.1,
       "unit": "px",
       "label": "Navigation Letter Spacing",
-      "default": 0.5
+      "default": 0
     },
     {
       "type": "range",
@@ -1562,7 +1562,7 @@
       "step": 2,
       "unit": "px",
       "label": "Navigation Icon Size",
-      "default": 20
+      "default": 24
     },
     {
       "type": "color",
@@ -1615,7 +1615,7 @@
       "step": 1,
       "unit": "px",
       "label": "Caret Icon Size",
-      "default": 10,
+      "default": 12,
       "info": "Size of the dropdown caret icon"
     },
     {
