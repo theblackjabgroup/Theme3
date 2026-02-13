@@ -307,7 +307,7 @@
   .related-products .custom-product-card:hover .custom-product-card__badge,
   .related-products .custom-product-card:hover .custom-product-card__title,
   .related-products .custom-product-card:hover .custom-product-card__description,
-  .related-products .custom-product-card:hover .custom-product-card__footer {
+  .related-products .custom-product-card-wrapper:hover .custom-product-card__footer {
     transform: translateY(-52px) !important;
   }
 }
@@ -318,7 +318,7 @@
   .related-products .custom-product-card:hover .custom-product-card__badge,
   .related-products .custom-product-card:hover .custom-product-card__title,
   .related-products .custom-product-card:hover .custom-product-card__description,
-  .related-products .custom-product-card:hover .custom-product-card__footer {
+  .related-products .custom-product-card-wrapper:hover .custom-product-card__footer {
     transform: none !important;
   }
 }

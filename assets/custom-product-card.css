@@ -201,8 +201,8 @@
     height: 38px;
   }
 
-  .custom-product-card:hover .custom-product-card__price,
-  .custom-product-card:hover .custom-product-card__add-to-cart {
+  .custom-product-card-wrapper:hover .custom-product-card__price,
+  .custom-product-card-wrapper:hover .custom-product-card__add-to-cart {
     transform: none !important;
     box-shadow: 0 3px 0 0 var(--color-shadow) !important;
   }

@@ -1195,16 +1195,19 @@ class ProductRecommendations extends HTMLElement {
 
     if (!container || !prevButton || !nextButton) return;
 
-    const gap = 24;
-    const scrollAmount = (container.querySelector('.grid__item')?.offsetWidth || 300) + gap;
+    const getScrollAmount = () => {
+      const item = container.querySelector('.grid__item');
+      const gap = parseFloat(getComputedStyle(container).gap) || 24;
+      return (item?.offsetWidth || 300) + gap;
+    };
 
     prevButton.addEventListener('click', () => {
-      container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      container.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
     });
 
     nextButton.addEventListener('click', () => {
       const maxScroll = container.scrollWidth - container.clientWidth;
-      const nextScroll = Math.min(container.scrollLeft + scrollAmount, maxScroll);
+      const nextScroll = Math.min(container.scrollLeft + getScrollAmount(), maxScroll);
       container.scrollTo({ left: nextScroll, behavior: 'smooth' });
     });
 
