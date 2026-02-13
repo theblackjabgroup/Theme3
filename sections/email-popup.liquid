@@ -217,6 +217,8 @@
       section.setAttribute('aria-hidden', 'false');
     }
 
+    var designMode = typeof Shopify !== 'undefined' && Shopify.designMode;
+
     function init() {
       var postedEl = section.querySelector('[data-posted-successfully]');
       var postedSuccessfully = postedEl && postedEl.dataset.postedSuccessfully === 'true';
@@ -227,14 +229,16 @@
         if (postedSuccessfully) try { localStorage.setItem(STORAGE_KEY, '1'); } catch (e) {}
         return;
       }
-      try {
-        if (localStorage.getItem(STORAGE_KEY)) return;
-      } catch (e) {}
+      if (!designMode) {
+        try {
+          if (localStorage.getItem(STORAGE_KEY)) return;
+        } catch (e) {}
+      }
       setTimeout(show, delay * 1000);
     }
 
     closeBtns.forEach(function (btn) {
-      btn.addEventListener('click', function () { hide(true); });
+      btn.addEventListener('click', function () { hide(!designMode); });
     });
 
     section.querySelector('form')?.addEventListener('submit', function () {
@@ -242,7 +246,7 @@
     });
 
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && section.classList.contains('email-popup--visible')) hide(true);
+      if (e.key === 'Escape' && section.classList.contains('email-popup--visible')) hide(!designMode);
     });
 
     if (document.readyState === 'loading') {

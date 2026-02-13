@@ -65,24 +65,16 @@
 @media screen and (min-width: 750px) {
   .email-popup:not(.email-popup--visible) .email-popup__panel--animate-top { transform: translate(var(--popup-tx, 0), calc(var(--popup-ty, 0) - 100vh)); }
   .email-popup:not(.email-popup--visible) .email-popup__panel--animate-bottom { transform: translate(var(--popup-tx, 0), calc(var(--popup-ty, 0) + 100vh)); }
-  .email-popup:not(.email-popup--visible) .email-popup__panel--animate-left.email-popup__panel--h-left,
-  .email-popup:not(.email-popup--visible) .email-popup__panel--animate-left.email-popup__panel--h-right { transform: translate(-100%, var(--popup-ty, 0)); }
-  .email-popup:not(.email-popup--visible) .email-popup__panel--animate-left.email-popup__panel--h-center { transform: translate(calc(-50vw - 50%), var(--popup-ty, 0)); }
-  .email-popup:not(.email-popup--visible) .email-popup__panel--animate-right.email-popup__panel--h-left,
-  .email-popup:not(.email-popup--visible) .email-popup__panel--animate-right.email-popup__panel--h-right { transform: translate(100%, var(--popup-ty, 0)); }
-  .email-popup:not(.email-popup--visible) .email-popup__panel--animate-right.email-popup__panel--h-center { transform: translate(calc(50vw + 50%), var(--popup-ty, 0)); }
+  .email-popup:not(.email-popup--visible) .email-popup__panel--animate-left { transform: translate(-100vw, var(--popup-ty, 0)); }
+  .email-popup:not(.email-popup--visible) .email-popup__panel--animate-right { transform: translate(100vw, var(--popup-ty, 0)); }
 }
 
 /* Mobile: animation direction (mobile only) */
 @media screen and (max-width: 749px) {
   .email-popup:not(.email-popup--visible) .email-popup__panel--animate-mobile-top { transform: translate(var(--popup-tx, 0), calc(var(--popup-ty, 0) - 100vh)); }
   .email-popup:not(.email-popup--visible) .email-popup__panel--animate-mobile-bottom { transform: translate(var(--popup-tx, 0), calc(var(--popup-ty, 0) + 100vh)); }
-  .email-popup:not(.email-popup--visible) .email-popup__panel--animate-mobile-left.email-popup__panel--h-mobile-left,
-  .email-popup:not(.email-popup--visible) .email-popup__panel--animate-mobile-left.email-popup__panel--h-mobile-right { transform: translate(-100%, var(--popup-ty, 0)); }
-  .email-popup:not(.email-popup--visible) .email-popup__panel--animate-mobile-left.email-popup__panel--h-mobile-center { transform: translate(calc(-50vw - 50%), var(--popup-ty, 0)); }
-  .email-popup:not(.email-popup--visible) .email-popup__panel--animate-mobile-right.email-popup__panel--h-mobile-left,
-  .email-popup:not(.email-popup--visible) .email-popup__panel--animate-mobile-right.email-popup__panel--h-mobile-right { transform: translate(100%, var(--popup-ty, 0)); }
-  .email-popup:not(.email-popup--visible) .email-popup__panel--animate-mobile-right.email-popup__panel--h-mobile-center { transform: translate(calc(50vw + 50%), var(--popup-ty, 0)); }
+  .email-popup:not(.email-popup--visible) .email-popup__panel--animate-mobile-left { transform: translate(-100vw, var(--popup-ty, 0)); }
+  .email-popup:not(.email-popup--visible) .email-popup__panel--animate-mobile-right { transform: translate(100vw, var(--popup-ty, 0)); }
 }
 
 /* Mobile: override with mobile position classes */
