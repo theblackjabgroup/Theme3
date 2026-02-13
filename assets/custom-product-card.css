@@ -4,6 +4,34 @@
   color: var(--color-primary-button-text, white);
 }
 
+/* Hover overlay button: same styling as price (normal) button */
+.custom-product-card__hover-button.share-story-submit {
+  display: inline-block;
+  position: relative;
+  background-color: var(--color-primary-button-bg);
+  color: var(--color-primary-button-text, white);
+  border: 2px solid var(--color-primary-button-border);
+  padding: 12px 20px;
+  border-radius: var(--card-price-button-border-radius, 20px);
+  font-family: var(--font-heading-family);
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  box-shadow: 0px 4px 0px 0px var(--color-shadow);
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  margin-top: 10px;
+  text-transform: none;
+  min-width: auto;
+}
+
+.custom-product-card__hover-button.share-story-submit:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px 0px var(--color-shadow);
+}
+
 .custom-product-card {
   padding: var(--card-padding-top, 0) var(--card-padding-horizontal, 24px) var(--card-padding-bottom, 24px) !important;
   align-items: var(--card-align-items, center);
@@ -59,12 +87,6 @@
   gap: var(--card-hover-content-gap, 10px);
 }
 
-.custom-product-card__hover-button {
-  font-size: var(--card-hover-button-font-size, 12px) !important;
-  padding: var(--card-hover-button-padding-vertical, 12px) var(--card-hover-button-padding-horizontal, 20px) !important;
-  font-weight: var(--card-hover-button-font-weight, 600) !important;
-  min-width: auto !important;
-}
 
 .custom-product-card__badge {
   border: 1px solid #FF4D4D;

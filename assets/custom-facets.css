@@ -91,7 +91,7 @@ details.facets-drawer[open] .facets-drawer-trigger {
   box-shadow: 0px 0px 0px 0px var(--color-shadow);
 }
 
-/* Blur effect when facet drawer is open - same as header mega menu */
+/* Blur + overlay when facet drawer is open - same as cart drawer */
 main,
 #MainContent,
 footer,
@@ -99,6 +99,7 @@ footer,
   transition: filter 0.3s ease, pointer-events 0.3s ease;
 }
 
+/* Disable interaction with page content; blur comes from overlay backdrop only */
 body.facets-drawer-open main,
 body.facets-drawer-open #MainContent,
 body.facets-drawer-open footer,
@@ -106,38 +107,61 @@ body.facets-drawer-open [id^="shopify-section-"]:not([id*="header"]):not(.floati
   pointer-events: none;
 }
 
+/* Floating overlay (like cart drawer) – sits behind drawers, blurs the page */
+body.facets-drawer-open::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  z-index: 9998;
+  pointer-events: auto;
+  transition: opacity 0.3s ease;
+}
+
+/* Drawers sit above overlay and stay interactive */
 body.facets-drawer-open .facets-container,
 body.facets-drawer-open .facets-container *,
 body.facets-drawer-open .facets-drawer,
 body.facets-drawer-open .facets-drawer * {
-  filter: none !important;
   pointer-events: auto !important;
 }
 
-/* Drawer panel - base; position and animation set per drawer type */
+/* Floating drawer panel - same style as cart drawer (margin, radius, height) */
 .facets-drawer__panel {
   position: fixed;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  max-width: 380px;
+  top: 20px;
+  width: 30vw;
+  min-width: 360px;
+  max-width: 440px;
+  height: 95vh;
+  margin: 0;
   background: var(--color-background);
-  z-index: 1000;
+  z-index: 9999;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 20px;
   box-sizing: border-box;
+  border-radius: 20px;
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.05);
 }
 
-/* Filters drawer - position; entry animation only when open (class added by JS) */
+/* Filters drawer - left side */
 .facets-drawer--filters .facets-drawer__panel {
-  left: 0;
+  left: 20px;
   right: auto;
-  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.05);
+}
+
+/* Keep panel off-screen until open animation runs (prevents flash on open) */
+.facets-drawer--filters[open]:not(.facets-drawer--open):not(.facets-drawer--closing) .facets-drawer__panel {
+  transform: translateX(-100%);
 }
 
 /* Entry animation - runs when drawer opens (facets-drawer--open added on open) */
 .facets-drawer--open.facets-drawer--filters .facets-drawer__panel {
-  animation: facets-drawer-slide-in-left 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation: facets-drawer-slide-in-left 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 @keyframes facets-drawer-slide-in-left {
@@ -149,15 +173,20 @@ body.facets-drawer-open .facets-drawer * {
   }
 }
 
-/* Sort drawer - position; entry animation only when open */
+/* Sort drawer - right side */
 .facets-drawer--sort .facets-drawer__panel {
-  right: 0;
+  right: 20px;
   left: auto;
-  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.05);
+}
+
+/* Keep panel off-screen until open animation runs (prevents flash on open) */
+.facets-drawer--sort[open]:not(.facets-drawer--open):not(.facets-drawer--closing) .facets-drawer__panel {
+  transform: translateX(100%);
 }
 
 .facets-drawer--open.facets-drawer--sort .facets-drawer__panel {
-  animation: facets-drawer-slide-in-right 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation: facets-drawer-slide-in-right 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 @keyframes facets-drawer-slide-in-right {
@@ -171,7 +200,7 @@ body.facets-drawer-open .facets-drawer * {
 
 /* Exit animations - slide out in same direction (closing) */
 .facets-drawer--closing.facets-drawer--filters .facets-drawer__panel {
-  animation: facets-drawer-slide-out-left 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation: facets-drawer-slide-out-left 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 @keyframes facets-drawer-slide-out-left {
@@ -184,7 +213,7 @@ body.facets-drawer-open .facets-drawer * {
 }
 
 .facets-drawer--closing.facets-drawer--sort .facets-drawer__panel {
-  animation: facets-drawer-slide-out-right 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation: facets-drawer-slide-out-right 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 @keyframes facets-drawer-slide-out-right {
@@ -193,6 +222,20 @@ body.facets-drawer-open .facets-drawer * {
   }
   to {
     transform: translateX(100%);
+  }
+}
+
+/* Mobile: full-width drawer like cart (no floating) */
+@media screen and (max-width: 990px) {
+  .facets-drawer__panel {
+    top: 0;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100vw;
+    max-width: none;
+    min-width: 0;
+    height: 100vh;
+    border-radius: 0;
   }
 }
 
@@ -341,7 +384,6 @@ body.facets-drawer-open .facets-drawer * {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   background: transparent;
   margin-right: 10px;
   position: relative;
@@ -349,15 +391,9 @@ body.facets-drawer-open .facets-drawer * {
   box-shadow: 0px 3px 0px 0px var(--color-shadow);
 }
 
-.facets-drawer .facet-checkbox:hover .facet-checkbox__custom,
-.facets-drawer .facet-checkbox.active .facet-checkbox__custom,
-.facets-drawer .facet-checkbox input[type="checkbox"]:checked + .facet-checkbox__custom {
-  transform: translate(2px, 2px);
-  box-shadow: 0px 0px 0px 0px var(--color-shadow);
-}
-
 .facets-drawer .facet-checkbox input[type="checkbox"]:checked + .facet-checkbox__custom {
   background: var(--color-headings);
+  box-shadow: 0px 3px 0px 0px var(--color-shadow);
 }
 
 .facets-drawer .facet-checkbox input[type="checkbox"]:checked + .facet-checkbox__custom::after {
@@ -498,8 +534,7 @@ body.facets-drawer-open .facets-drawer * {
 
 .price-facet-inputs-container .field {
   flex: 1;
-  background: var(--color-input-bg);
-  border: 1px solid var(--color-headings);
+  border: 2px solid rgba(0,0,0,0.2);
   border-radius: 8px;
   padding: 8px 12px;
   display: flex;
@@ -559,11 +594,6 @@ body.facets-drawer-open .facets-drawer * {
   color: var(--color-headings);
   text-align: left;
   cursor: pointer;
-  transition: opacity 0.2s ease;
-}
-
-.facets-drawer--sort .facets-drawer__sort-option:hover {
-  opacity: 0.8;
 }
 
 .facets-drawer--sort .facets-drawer__sort-option--active {
@@ -578,19 +608,13 @@ body.facets-drawer-open .facets-drawer * {
   background: transparent;
   flex-shrink: 0;
   position: relative;
-  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   box-sizing: border-box;
   box-shadow: 0px 3px 0px 0px var(--color-shadow);
 }
 
-.facets-drawer--sort .facets-drawer__sort-option:hover .facet-radio__custom,
-.facets-drawer--sort .facets-drawer__sort-option--active .facet-radio__custom {
-  transform: translate(2px, 2px);
-  box-shadow: 0px 0px 0px 0px var(--color-shadow);
-}
-
 .facets-drawer--sort .facets-drawer__sort-option--active .facet-radio__custom {
   background: var(--color-headings);
+  box-shadow: 0px 3px 0px 0px var(--color-shadow);
 }
 
 .facets-drawer--sort .facets-drawer__sort-option--active .facet-radio__custom::after {
@@ -853,6 +877,7 @@ details[open] .facets__summary {
   display: flex;
   align-items: center;
   gap: 8px;
+
 }
 
 .facets__price .field-currency {
@@ -865,7 +890,6 @@ details[open] .facets__summary {
 .facets__price .field__input {
   flex: 1;
   padding: 10px 12px;
-  border: 2px solid rgba(0,0,0,0.2);
   border-radius: 8px;
   font-size: 0.95rem;
   font-weight: 500;

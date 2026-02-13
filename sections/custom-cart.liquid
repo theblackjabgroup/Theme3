@@ -138,25 +138,35 @@
     object-fit: contain;
   }
 
+  /* Sale badge - sale icon with X% off centered */
   .cart-item-card__badge {
     position: absolute;
     top: -15px;
     left: -15px;
-    background-color: var(--cart-pink);
-    color: var(--cart-green);
-    padding: 15px 10px;
-    border-radius: 50%;
-    font-size: 10px;
-    font-weight: 900;
-    z-index: 2;
     width: 60px;
     height: 60px;
+    z-index: 2;
+  }
+
+  .cart-item-card__badge-icon {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .cart-item-card__badge-text {
+    position: absolute;
+    inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    line-height: 1;
-    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 100%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    font-size: 10px;
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--cart-green);
+    padding: 4px;
   }
 
   .cart-item-card__info {
@@ -619,10 +629,11 @@
     .cart-item-card__badge {
       width: 50px;
       height: 50px;
-      font-size: 9px;
-      padding: 10px 6px;
       top: -10px;
       left: -10px;
+    }
+    .cart-item-card__badge-text {
+      font-size: 9px;
     }
     .cart-empty__container {
       padding: 24px 20px;
@@ -740,8 +751,18 @@
                     <div class="cart-item-card__inner">
                       <!-- Image Section -->
                       <div class="cart-item-card__image-wrap">
-                        {%- if item.product.tags.size > 0 -%}
-                          <div class="cart-item-card__badge">{{ item.product.tags.first }}</div>
+                        {%- assign has_compare = false -%}
+                        {%- assign discount_pct = 0 -%}
+                        {%- if item.variant.compare_at_price != blank and item.variant.compare_at_price > item.final_price -%}
+                          {%- assign has_compare = true -%}
+                          {%- assign savings = item.variant.compare_at_price | minus: item.final_price -%}
+                          {%- assign discount_pct = savings | times: 100 | divided_by: item.variant.compare_at_price -%}
+                        {%- endif -%}
+                        {%- if has_compare and discount_pct > 0 -%}
+                          <div class="cart-item-card__badge">
+                            <img class="cart-item-card__badge-icon" src="{{ 'sale-icons.svg' | asset_url }}" alt="" width="60" height="60" loading="lazy">
+                            <span class="cart-item-card__badge-text">{{ discount_pct }}%<br>off</span>
+                          </div>
                         {%- endif -%}
                         <div class="cart-item-card__image-container">
                           {% if item.image %}

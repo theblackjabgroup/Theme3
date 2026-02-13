@@ -47,8 +47,6 @@
     --contact-body-size: {{ section.settings.body_font_size | default: 16 }}px;
     --contact-greeting-title-size: {{ section.settings.greeting_title_size | default: 28 }}px;
     --contact-greeting-subtitle-size: {{ section.settings.greeting_subtitle_size | default: 18 }}px;
-    --contact-newsletter-heading-size: {{ section.settings.newsletter_heading_size | default: 24 }}px;
-    --contact-newsletter-desc-size: {{ section.settings.newsletter_desc_size | default: 15 }}px;
     --contact-detail-text-size: {{ section.settings.detail_text_size | default: 15 }}px;
   }
 {%- endstyle -%}
@@ -267,48 +265,6 @@
       </div>
     </div>
 
-    {%- comment -%} Newsletter card: full width below the two cards {%- endcomment -%}
-    <div
-      class="contact-page__newsletter"
-      style="--newsletter-bg: {{ section.settings.newsletter_background | default: '#475742' }}; --newsletter-input-bg: {{ section.settings.newsletter_input_bg | default: '#e7e3da' }}; --newsletter-button-bg: {{ section.settings.newsletter_button_bg | default: '#d8a0a9' }};"
-    >
-      <div class="contact-page__newsletter-inner">
-        {%- if section.settings.newsletter_heading != blank -%}
-          <h2 class="contact-page__newsletter-title">{{ section.settings.newsletter_heading }}</h2>
-        {%- endif -%}
-        {%- if section.settings.newsletter_subheading != blank -%}
-          <p class="contact-page__newsletter-desc">{{ section.settings.newsletter_subheading }}</p>
-        {%- endif -%}
-        {%- form 'customer', id: 'ContactNewsletter', class: 'contact-page__newsletter-form' -%}
-          <input type="hidden" name="contact[tags]" value="newsletter">
-          <div class="contact-page__newsletter-row">
-            <div class="contact-page__newsletter-field">
-              <div class="contact-page__input-3d contact-page__input-3d--newsletter">
-                <span class="contact-page__input-shadow" aria-hidden="true"></span>
-                <input
-                  type="email"
-                  name="contact[email]"
-                  id="ContactNewsletterEmail"
-                  class="contact-page__input contact-page__newsletter-input"
-                  placeholder="{{ section.settings.newsletter_placeholder | default: 'Email Address' }}"
-                  aria-label="{{ section.settings.newsletter_placeholder | default: 'Email Address' }}"
-                  required
-                  value="{{ form.email }}"
-                >
-              </div>
-            </div>
-            <div class="contact-page__newsletter-submit-wrap">
-              {%- render 'submit-button', text: section.settings.newsletter_button_text | default: 'Subscribe', type: 'submit', class: 'contact-page__newsletter-submit-btn' -%}
-            </div>
-          </div>
-          {%- if form.posted_successfully? -%}
-            <p class="contact-page__newsletter-success" tabindex="-1" autofocus>
-              {{ 'newsletter.success' | t | default: 'Thanks for subscribing!' }}
-            </p>
-          {%- endif -%}
-        {%- endform -%}
-      </div>
-    </div>
   </div>
 </div>
 
@@ -493,52 +449,6 @@
     },
     {
       "type": "header",
-      "content": "Newsletter card (below contact cards)"
-    },
-    {
-      "type": "text",
-      "id": "newsletter_heading",
-      "label": "Heading",
-      "default": "Subscribe To Our Newsletter"
-    },
-    {
-      "type": "textarea",
-      "id": "newsletter_subheading",
-      "label": "Subheading",
-      "default": "Be the first to know about new collections and exclusive offers"
-    },
-    {
-      "type": "text",
-      "id": "newsletter_placeholder",
-      "label": "Email placeholder",
-      "default": "Email Address"
-    },
-    {
-      "type": "text",
-      "id": "newsletter_button_text",
-      "label": "Button text",
-      "default": "Subscribe"
-    },
-    {
-      "type": "color",
-      "id": "newsletter_background",
-      "label": "Card background",
-      "default": "#475742"
-    },
-    {
-      "type": "color",
-      "id": "newsletter_input_bg",
-      "label": "Input background",
-      "default": "#e7e3da"
-    },
-    {
-      "type": "color",
-      "id": "newsletter_button_bg",
-      "label": "Subscribe button background",
-      "default": "#d8a0a9"
-    },
-    {
-      "type": "header",
       "content": "Sizing"
     },
     {
@@ -683,26 +593,6 @@
       "step": 1,
       "unit": "px",
       "label": "Contact detail text size",
-      "default": 15
-    },
-    {
-      "type": "range",
-      "id": "newsletter_heading_size",
-      "min": 16,
-      "max": 32,
-      "step": 1,
-      "unit": "px",
-      "label": "Newsletter heading size",
-      "default": 24
-    },
-    {
-      "type": "range",
-      "id": "newsletter_desc_size",
-      "min": 12,
-      "max": 20,
-      "step": 1,
-      "unit": "px",
-      "label": "Newsletter description size",
       "default": 15
     },
     {
