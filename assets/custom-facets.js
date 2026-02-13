@@ -72,6 +72,18 @@
       }
     });
 
+    // Click overlay/backdrop (outside panel) to close drawer – like cart drawer
+    if (!document.body.dataset.facetsOverlayClick) {
+      document.body.dataset.facetsOverlayClick = 'true';
+      document.addEventListener('click', function (e) {
+        if (!document.body.classList.contains('facets-drawer-open')) return;
+        if (e.target.closest('.facets-drawer__panel')) return;
+        if (e.target.closest('.facets-drawer-trigger')) return;
+        const openDrawer = document.querySelector('.facets-drawer[open]');
+        if (openDrawer) closeDrawerWithAnimation(openDrawer);
+      }, true);
+    }
+
     // Filters drawer APPLY button: submit form then close drawer
     document.querySelectorAll('.facets-drawer--filters .facets-drawer__apply-button').forEach((btn) => {
       if (btn.classList.contains('facets-drawer__apply-button--sort')) return;

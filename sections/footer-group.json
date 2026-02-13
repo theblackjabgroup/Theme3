@@ -14,6 +14,20 @@
     "footer": {
       "type": "footer",
       "disabled": false,
+      "blocks": {
+        "newsletter": {
+          "type": "newsletter",
+          "settings": {
+            "newsletter_heading": "SIGN UP FOR UPDATES",
+            "email_placeholder": "Your email..."
+          }
+        },
+        "social_icon_1": { "type": "social_icon", "settings": {} },
+        "social_icon_2": { "type": "social_icon", "settings": {} },
+        "social_icon_3": { "type": "social_icon", "settings": {} },
+        "social_icon_4": { "type": "social_icon", "settings": {} }
+      },
+      "block_order": ["newsletter", "social_icon_1", "social_icon_2", "social_icon_3", "social_icon_4"],
       "settings": {
         "heading": "<p>Join Brandname World below, say “hi” <a href=\"#\">@brandname</a>, or <a href=\"#\">drop us an email</a>.</p>",
         "show_newsletter": true,

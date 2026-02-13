@@ -30,7 +30,7 @@
     {{ localization.country | image_url: width: 32 | image_tag: loading: 'lazy', class: 'localization-flag' }}
   {%- endcapture -%}
   {%- capture button_text -%}
-    {{- localization.country.name }} | {{ localization.country.currency.iso_code -}}
+    {{- localization.country.name -}}
   {%- endcapture -%}
   {%- capture caret -%}
     {{ 'icon-caret.svg' | inline_asset_content }}

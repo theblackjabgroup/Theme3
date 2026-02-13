@@ -1,7 +1,13 @@
-document.addEventListener('DOMContentLoaded', function () {
+function init() {
   initFooterSocialHover();
   initFooterNewsletter();
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
 
 /**
  * Footer newsletter form (id: FooterNewsletter): AJAX submit, show success/error without reload.
@@ -84,40 +90,40 @@ function initFooterNewsletter() {
 }
 
 /**
- * Footer social icons: same expansion logic as header profile/cart row (vertical-header.js).
- * Each .footer-social-row is a flex row; hovered icon expands, sibling in row shrinks.
+ * Footer social icons: horizontal expand on hover (hovered icon grows, others shrink).
+ * Uses event delegation so it works when footer is loaded/re-rendered (e.g. theme editor).
  */
+var footerSocialHoverInitialized = false;
 function initFooterSocialHover() {
-  const rows = document.querySelectorAll('.footer-social-row');
-  if (!rows.length) return;
+  if (footerSocialHoverInitialized) return;
+  footerSocialHoverInitialized = true;
 
-  rows.forEach((row) => {
+  document.addEventListener('mouseover', function footerSocialMouseOver(e) {
+    const box = e.target.closest('.social-box');
+    if (!box) return;
+    const row = box.closest('.footer-social-row');
+    if (!row) return;
+    if (box.contains(e.relatedTarget)) return;
+
     const buttons = Array.from(row.querySelectorAll('.social-box'));
-    if (buttons.length === 0) return;
+    if (buttons.length < 2) return;
 
-    const isMultipleButtons = buttons.length > 1;
-
-    buttons.forEach((button) => {
-      button.addEventListener('mouseenter', () => {
-        if (isMultipleButtons) {
-          button.classList.add('is-expanded-horizontal');
-
-          buttons.forEach((otherButton) => {
-            if (otherButton !== button) {
-              otherButton.classList.add('is-shrunk-horizontal');
-            }
-          });
-        }
-      });
-
-      button.addEventListener('mouseleave', () => {
-        if (isMultipleButtons) {
-          button.classList.remove('is-expanded-horizontal');
-          buttons.forEach((otherButton) => {
-            otherButton.classList.remove('is-shrunk-horizontal');
-          });
-        }
-      });
+    buttons.forEach(function (b) {
+      b.classList.remove('is-expanded-horizontal', 'is-shrunk-horizontal');
     });
-  });
+    box.classList.add('is-expanded-horizontal');
+    buttons.forEach(function (b) {
+      if (b !== box) b.classList.add('is-shrunk-horizontal');
+    });
+  }, true);
+
+  document.addEventListener('mouseout', function footerSocialMouseOut(e) {
+    const row = e.target.closest('.footer-social-row');
+    if (!row) return;
+    if (row.contains(e.relatedTarget)) return;
+
+    row.querySelectorAll('.social-box').forEach(function (b) {
+      b.classList.remove('is-expanded-horizontal', 'is-shrunk-horizontal');
+    });
+  }, true);
 }

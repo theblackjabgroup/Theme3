@@ -7,22 +7,6 @@
   "settings": [
     {
       "type": "header",
-      "content": "Newsletter"
-    },
-    {
-      "type": "text",
-      "id": "newsletter_heading",
-      "label": "Newsletter Heading",
-      "default": "SIGN UP FOR UPDATES"
-    },
-    {
-      "type": "text",
-      "id": "email_placeholder",
-      "label": "Email Placeholder",
-      "default": "Your email..."
-    },
-    {
-      "type": "header",
       "content": "Color Schemes"
     },
     {
@@ -39,115 +23,7 @@
     },
     {
       "type": "header",
-      "content": "Social Media"
-    },
-    {
-      "type": "image_picker",
-      "id": "social_1_image",
-      "label": "Social Icon 1 (Image)"
-    },
-    {
-      "type": "image_picker",
-      "id": "social_1_image_hover",
-      "label": "Social Icon 1 (Image on hover)"
-    },
-    {
-      "type": "text",
-      "id": "social_1_svg",
-      "label": "Social Icon 1 (SVG fallback)"
-    },
-    {
-      "type": "url",
-      "id": "social_1_link",
-      "label": "Social Link 1"
-    },
-    {
-      "type": "text",
-      "id": "social_1_alt",
-      "label": "Social Icon 1 alt text",
-      "info": "Describe the icon for accessibility (e.g. Follow us on Instagram)"
-    },
-    {
-      "type": "image_picker",
-      "id": "social_2_image",
-      "label": "Social Icon 2 (Image)"
-    },
-    {
-      "type": "image_picker",
-      "id": "social_2_image_hover",
-      "label": "Social Icon 2 (Image on hover)"
-    },
-    {
-      "type": "text",
-      "id": "social_2_svg",
-      "label": "Social Icon 2 (SVG fallback)"
-    },
-    {
-      "type": "url",
-      "id": "social_2_link",
-      "label": "Social Link 2"
-    },
-    {
-      "type": "text",
-      "id": "social_2_alt",
-      "label": "Social Icon 2 alt text",
-      "info": "Describe the icon for accessibility"
-    },
-    {
-      "type": "image_picker",
-      "id": "social_3_image",
-      "label": "Social Icon 3 (Image)"
-    },
-    {
-      "type": "image_picker",
-      "id": "social_3_image_hover",
-      "label": "Social Icon 3 (Image on hover)"
-    },
-    {
-      "type": "text",
-      "id": "social_3_svg",
-      "label": "Social Icon 3 (SVG fallback)"
-    },
-    {
-      "type": "url",
-      "id": "social_3_link",
-      "label": "Social Link 3"
-    },
-    {
-      "type": "text",
-      "id": "social_3_alt",
-      "label": "Social Icon 3 alt text",
-      "info": "Describe the icon for accessibility"
-    },
-    {
-      "type": "image_picker",
-      "id": "social_4_image",
-      "label": "Social Icon 4 (Image)"
-    },
-    {
-      "type": "image_picker",
-      "id": "social_4_image_hover",
-      "label": "Social Icon 4 (Image on hover)"
-    },
-    {
-      "type": "text",
-      "id": "social_4_svg",
-      "label": "Social Icon 4 (SVG fallback)"
-    },
-    {
-      "type": "url",
-      "id": "social_4_link",
-      "label": "Social Link 4"
-    },
-    {
-      "type": "text",
-      "id": "social_4_alt",
-      "label": "Social Icon 4 alt text",
-      "info": "Describe the icon for accessibility"
-    },
-    {
-      "type": "header",
-      "content": "Main Box Content"
+      "content": "Footer content"
     },
     {
       "type": "text",
@@ -173,7 +49,7 @@
     },
     {
       "type": "header",
-      "content": "Design Settings"
+      "content": "Footer spacing"
     },
     {
       "type": "range",
@@ -194,6 +70,315 @@
       "unit": "px",
       "label": "Padding Bottom",
       "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Social icons style"
+    },
+    {
+      "type": "range",
+      "id": "social_icon_size",
+      "min": 24,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "label": "Icon size (desktop)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "social_icon_size_mobile",
+      "min": 16,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Icon size (mobile)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "social_box_height",
+      "min": 56,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "label": "Box height (desktop)",
+      "default": 92
+    },
+    {
+      "type": "range",
+      "id": "social_box_height_mobile",
+      "min": 40,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Box height (mobile)",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "social_gap",
+      "min": 4,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Gap between icons (desktop)",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "social_gap_mobile",
+      "min": 4,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Gap between icons (mobile)",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "social_border_radius",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "social_icons_per_row",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "label": "Icons per row (desktop)",
+      "default": 2,
+      "info": "Number of social icons per row on desktop"
+    },
+    {
+      "type": "range",
+      "id": "social_icons_per_row_mobile",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "label": "Icons per row (mobile)",
+      "default": 4,
+      "info": "Number of social icons per row on mobile"
+    },
+    {
+      "type": "range",
+      "id": "social_icon_animation_speed",
+      "min": 0.1,
+      "max": 1,
+      "step": 0.1,
+      "unit": "s",
+      "label": "Icon animation speed",
+      "default": 0.2,
+      "info": "Duration of expand/shrink and hover transitions"
+    },
+    {
+      "type": "header",
+      "content": "Language & currency selectors"
+    },
+    {
+      "type": "range",
+      "id": "selector_font_size",
+      "min": 11,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size",
+      "default": 13
+    },
+    {
+      "type": "select",
+      "id": "selector_font_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "range",
+      "id": "selector_letter_spacing",
+      "min": -0.5,
+      "max": 1,
+      "step": 0.1,
+      "unit": "px",
+      "label": "Letter spacing",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "selector_padding_top",
+      "min": 4,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Button padding top",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "selector_padding_bottom",
+      "min": 4,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Button padding bottom",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "selector_padding_left",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Button padding left",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "selector_padding_right",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Button padding right",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "selector_gap",
+      "min": 4,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Gap between selectors",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "selector_border_radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "selector_icon_size",
+      "min": 12,
+      "max": 28,
+      "step": 2,
+      "unit": "px",
+      "label": "Flag/icon size",
+      "default": 16
+    }
+  ],
+  "blocks": [
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "newsletter_heading", "label": "Heading", "default": "SIGN UP FOR UPDATES" },
+        { "type": "text", "id": "email_placeholder", "label": "Email placeholder", "default": "Email" },
+        {
+          "type": "header",
+          "content": "Typography"
+        },
+        {
+          "type": "font_picker",
+          "id": "newsletter_font",
+          "label": "Font",
+          "default": "assistant_n4"
+        },
+        {
+          "type": "range",
+          "id": "newsletter_font_size",
+          "min": 12,
+          "max": 72,
+          "step": 2,
+          "unit": "px",
+          "label": "Font size (desktop)",
+          "default": 20
+        },
+        {
+          "type": "range",
+          "id": "newsletter_font_size_mobile",
+          "min": 14,
+          "max": 48,
+          "step": 2,
+          "unit": "px",
+          "label": "Font size (mobile)",
+          "default": 32
+        },
+        {
+          "type": "select",
+          "id": "newsletter_font_weight",
+          "label": "Font weight",
+          "options": [
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" },
+            { "value": "800", "label": "Extra Bold" }
+          ],
+          "default": "800"
+        },
+        {
+          "type": "range",
+          "id": "newsletter_letter_spacing",
+          "min": -0.1,
+          "max": 0.2,
+          "step": 0.1,
+          "unit": "em",
+          "label": "Letter spacing",
+          "default": 0.1
+        },
+        {
+          "type": "range",
+          "id": "newsletter_field_padding",
+          "min": 12,
+          "max": 48,
+          "step": 2,
+          "unit": "px",
+          "label": "Field padding",
+          "default": 12
+        }
+      ]
+    },
+    {
+      "type": "social_icon",
+      "name": "Social icon",
+      "limit": 8,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "image_picker", "id": "image_hover", "label": "Image (hover)" },
+        { "type": "text", "id": "svg", "label": "SVG fallback" },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "text", "id": "alt", "label": "Alt text", "info": "Describe the icon for accessibility" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer",
+      "blocks": [
+        { "type": "newsletter" },
+        { "type": "social_icon" },
+        { "type": "social_icon" },
+        { "type": "social_icon" },
+        { "type": "social_icon" }
+      ]
     }
   ]
 }
@@ -201,52 +386,134 @@
 
 {{ 'section-footer.css' | asset_url | stylesheet_tag }}
 
+{%- capture newsletter_font_faces -%}
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'newsletter' and block.settings.newsletter_font -%}
+      {{ block.settings.newsletter_font | font_face: font_display: 'swap' }}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- if newsletter_font_faces != blank -%}
+  {%- style -%}{{ newsletter_font_faces }}{%- endstyle -%}
+{%- endif -%}
+
 {%- style -%}
   #shopify-section-{{ section.id }} {
     --padding-top: {{ section.settings.padding_top }}px;
     --padding-bottom: {{ section.settings.padding_bottom }}px;
+    --footer-social-icon-size: {{ section.settings.social_icon_size | default: 40 }}px;
+    --footer-social-icon-size-mobile: {{ section.settings.social_icon_size_mobile | default: 20 }}px;
+    --footer-social-box-height: {{ section.settings.social_box_height | default: 92 }}px;
+    --footer-social-box-height-mobile: {{ section.settings.social_box_height_mobile | default: 56 }}px;
+    --footer-social-gap: {{ section.settings.social_gap | default: 12 }}px;
+    --footer-social-gap-mobile: {{ section.settings.social_gap_mobile | default: 8 }}px;
+    --footer-social-border-radius: {{ section.settings.social_border_radius | default: 20 }}px;
+    --footer-social-icons-per-row: {{ section.settings.social_icons_per_row | default: 2 }};
+    --footer-social-icons-per-row-mobile: {{ section.settings.social_icons_per_row_mobile | default: 4 }};
+    --footer-social-animation-duration: {{ section.settings.social_icon_animation_speed | default: 0.2 }}s;
+    --footer-selector-font-size: {{ section.settings.selector_font_size | default: 13 }}px;
+    --footer-selector-font-weight: {{ section.settings.selector_font_weight | default: 700 }};
+    --footer-selector-letter-spacing: {{ section.settings.selector_letter_spacing | default: 0 }}px;
+    --footer-selector-padding-top: {{ section.settings.selector_padding_top | default: 8 }}px;
+    --footer-selector-padding-bottom: {{ section.settings.selector_padding_bottom | default: 8 }}px;
+    --footer-selector-padding-left: {{ section.settings.selector_padding_left | default: 16 }}px;
+    --footer-selector-padding-right: {{ section.settings.selector_padding_right | default: 16 }}px;
+    --footer-selector-gap: {{ section.settings.selector_gap | default: 8 }}px;
+    --footer-selector-border-radius: {{ section.settings.selector_border_radius | default: 8 }}px;
+    --footer-selector-icon-size: {{ section.settings.selector_icon_size | default: 16 }}px;
   }
 {%- endstyle -%}
 
 <footer class="custom-footer color-{{ section.settings.color_scheme }} gradient">
   <div class="footer-container">
     <div class="footer-layout">
-      <!-- LEFT COLUMN -->
+      <!-- LEFT COLUMN (blocks: newsletter, social – order in theme editor) -->
       <div class="footer-left">
-        <!-- Newsletter -->
-        <div class="footer-newsletter">
-          {% form 'customer', id: 'FooterNewsletter', class: 'footer-newsletter-form' %}
-            <input type="hidden" name="contact[tags]" value="newsletter">
-            <div class="newsletter-field">
-              <label class="newsletter-label" for="FooterNewsletterInput">
-                {{- section.settings.newsletter_heading -}}
-              </label>
-              <input
-                id="FooterNewsletterInput"
-                type="email"
-                name="contact[email]"
-                class="newsletter-input"
-                value="{{ form.email }}"
-                placeholder="{{ section.settings.email_placeholder }}"
-                required
-              >
+        {%- if section.blocks.size == 0 -%}
+          {%- comment -%} Fallback: add Newsletter and Social icon blocks in the theme editor {%- endcomment -%}
+          <div class="footer-newsletter">
+            {% form 'customer', id: 'FooterNewsletter', class: 'footer-newsletter-form' %}
+              <input type="hidden" name="contact[tags]" value="newsletter">
+              <div class="newsletter-field">
+                <label class="newsletter-label" for="FooterNewsletterInput-{{ section.id }}">SIGN UP FOR UPDATES</label>
+                <input
+                  id="FooterNewsletterInput-{{ section.id }}"
+                  type="email"
+                  name="contact[email]"
+                  class="newsletter-input"
+                  value="{{ form.email }}"
+                  placeholder=""
+                  required
+                >
+              </div>
+            {% endform %}
+          </div>
+        {%- else -%}
+          {%- assign in_social_grid = false -%}
+          {%- for block in section.blocks -%}
+            {%- case block.type -%}
+              {%- when 'newsletter' -%}
+                {%- if in_social_grid -%}
+                  </div>
+                  {%- assign in_social_grid = false -%}
+                {%- endif -%}
+                <div
+                  class="footer-newsletter"
+                  {{ block.shopify_attributes }}
+                  style="
+                    {%- if block.settings.newsletter_font -%}
+                      --newsletter-font-family: {{ block.settings.newsletter_font.family }}, {{ block.settings.newsletter_font.fallback_families }};
+                    {%- endif -%}
+                    --newsletter-font-size: {{ block.settings.newsletter_font_size | default: 20 }}px;
+                    --newsletter-font-size-mobile: {{ block.settings.newsletter_font_size_mobile | default: 32 }}px;
+                    --newsletter-font-weight: {{ block.settings.newsletter_font_weight | default: 800 }};
+                    --newsletter-letter-spacing: {{ block.settings.newsletter_letter_spacing | default: 0.1 }}em;
+                    --newsletter-field-padding: {{ block.settings.newsletter_field_padding | default: 12 }}px;
+                  "
+                >
+                  {% form 'customer', id: 'FooterNewsletter', class: 'footer-newsletter-form' %}
+                    <input type="hidden" name="contact[tags]" value="newsletter">
+                    <div class="newsletter-field">
+                      <input
+                        id="FooterNewsletterInput-{{ section.id }}-{{ block.id }}"
+                        type="email"
+                        name="contact[email]"
+                        class="newsletter-input"
+                        value="{{ form.email }}"
+                        placeholder="{{ block.settings.newsletter_heading | escape }}"
+                        required
+                      >
+                    </div>
+                  {% endform %}
+                </div>
+              {%- when 'social_icon' -%}
+                {%- assign next_index = forloop.index0 | plus: 1 -%}
+                {%- unless in_social_grid -%}
+                  <div class="footer-social-grid footer-social-row">
+                    {%- assign in_social_grid = true -%}
+                {%- endunless -%}
+                {%- render 'footer-social-box', block: block -%}
+                {%- assign is_last_social = false -%}
+                {%- if forloop.last -%}
+                  {%- assign is_last_social = true -%}
+                {%- elsif next_index >= section.blocks.size -%}
+                  {%- assign is_last_social = true -%}
+                {%- else -%}
+                  {%- assign next_block = section.blocks[next_index] -%}
+                  {%- if next_block.type != 'social_icon' -%}
+                    {%- assign is_last_social = true -%}
+                  {%- endif -%}
+                {%- endif -%}
+                {%- if is_last_social -%}
+                  </div>
+                  {%- assign in_social_grid = false -%}
+                {%- endif -%}
+            {%- endcase -%}
+          {%- endfor -%}
+          {%- if in_social_grid -%}
             </div>
-          {% endform %}
-        </div>
-
-        <!-- Social Icons: two flex rows (same expansion logic as header profile/cart row) -->
-        <div class="footer-social-grid">
-          <div class="footer-social-row">
-            {%- for i in (1..2) -%}
-              {%- render 'footer-social-box', section: section, index: i -%}
-            {%- endfor -%}
-          </div>
-          <div class="footer-social-row">
-            {%- for i in (3..4) -%}
-              {%- render 'footer-social-box', section: section, index: i -%}
-            {%- endfor -%}
-          </div>
-        </div>
+          {%- endif -%}
+        {%- endif -%}
       </div>
 
       <!-- RIGHT COLUMN (Green Box) -->
@@ -255,20 +522,20 @@
           <div class="footer-box__inner">
             <div class="footer-box__left">
               <h2 class="box-heading">{{ section.settings.main_heading }}</h2>
-              <div class="copyright">
-                <span>
-                  {{ 'now' | date: '%Y' | prepend: 'Copyright © ' | append: ', ' -}}
-                  <a href="{{ routes.root_url }}">{{ shop.name }}</a>
-                  {{ powered_by_link }}
-                </span>
-              </div>
             </div>
 
             <div class="footer-box__right">
               <nav class="box-nav">
-                <ul class="box-nav-list">
-                  {%- assign footer_menu = linklists[section.settings.menu] -%}
-                  {%- assign menu_limit = section.settings.menu_limit | default: 30 -%}
+                {%- assign footer_menu = linklists[section.settings.menu] -%}
+                {%- assign menu_limit = section.settings.menu_limit | default: 30 -%}
+                {%- assign link_count = 0 -%}
+                {%- if footer_menu != blank -%}
+                  {%- for link in footer_menu.links limit: menu_limit -%}
+                    {%- assign link_count = link_count | plus: 1 -%}
+                  {%- endfor -%}
+                {%- endif -%}
+
+                <ul class="box-nav-list{% if link_count <= 5 %} box-nav-list--single-column{% endif %}">
                   {%- if footer_menu != blank -%}
                     {%- for link in footer_menu.links limit: menu_limit -%}
                       <li>

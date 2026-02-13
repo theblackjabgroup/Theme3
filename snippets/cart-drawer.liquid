@@ -217,51 +217,35 @@
     object-fit: contain;
   }
 
-  /* 16% off badge - pink, starburst */
+  /* Sale badge - sale icon with X% off centered */
   .cart-drawer__item-badge {
     position: absolute;
     top: -10px;
     left: -10px;
-    width: 50px;
-    height: 50px;
-    background: var(--cart-drawer-pink);
-    color: var(--cart-drawer-text);
-    font-size: 10px;
-    font-weight: 900;
+    width: 56px;
+    height: 56px;
+    z-index: 2;
+  }
+
+  .cart-drawer__item-badge-icon {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .cart-drawer__item-badge-text {
+    position: absolute;
+    inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
+    font-size: 9px;
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--cart-drawer-text);
     padding: 4px;
-    line-height: 1;
-    z-index: 2;
-    clip-path: polygon(
-      50% 0%,
-      61% 10%,
-      75% 5%,
-      79% 19%,
-      93% 18%,
-      90% 32%,
-      100% 41%,
-      93% 54%,
-      98% 68%,
-      85% 74%,
-      81% 88%,
-      68% 87%,
-      58% 97%,
-      45% 90%,
-      32% 96%,
-      23% 84%,
-      9% 84%,
-      12% 70%,
-      2% 61%,
-      10% 48%,
-      3% 34%,
-      16% 29%,
-      17% 15%,
-      31% 18%,
-      39% 7%
-    );
   }
 
   .cart-drawer__item-details {
@@ -277,10 +261,6 @@
     justify-content: space-between;
     align-items: center;
     gap: 8px;
-  }
-
-  .cart-drawer__item-details-top > div {
-    max-width: 150px;
   }
 
   /* X remove button - right of product name */
@@ -1092,9 +1072,19 @@
                           <div class="cart-drawer__item-image-wrap">
                             {%- if has_compare and discount_pct > 0 -%}
                               <span class="cart-drawer__item-badge">
-                                {{- discount_pct }}%<br>
-                                off</span
-                              >
+                                <img
+                                  class="cart-drawer__item-badge-icon"
+                                  src="{{ 'sale-icons.svg' | asset_url }}"
+                                  alt=""
+                                  width="56"
+                                  height="56"
+                                  loading="lazy"
+                                >
+                                <span class="cart-drawer__item-badge-text">
+                                  {{- discount_pct }}%<br>
+                                  off</span
+                                >
+                              </span>
                             {%- endif -%}
                             <div class="cart-drawer__item-image-container">
                               {%- if item.image -%}
@@ -1112,8 +1102,12 @@
                           <div class="cart-drawer__item-details">
                             <div class="cart-drawer__item-details-top">
                               <div style="flex: 1;">
-                                <a href="{{ item.url }}" class="cart-drawer__item-name">
-                                  {{- item.product.title | upcase -}}
+                                <a
+                                  href="{{ item.url }}"
+                                  class="cart-drawer__item-name"
+                                  title="{{ item.product.title | escape }}"
+                                >
+                                  {{- item.product.title | upcase | truncatewords: 2, '.....' -}}
                                 </a>
                                 {%- unless item.product.has_only_default_variant -%}
                                   <div class="cart-drawer__item-variant">{{ item.variant.title }}</div>

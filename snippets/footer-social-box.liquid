@@ -1,33 +1,28 @@
 {%- comment -%}
   Renders one footer social icon box.
-  Usage: {% render 'footer-social-box', section: section, index: 1 %}
+  Usage: {% render 'footer-social-box', block: block %}
+  Block type social_icon: image, image_hover, svg, link, alt
 {%- endcomment -%}
-{%- assign i = index -%}
-{%- assign image_key = 'social_' | append: i | append: '_image' -%}
-{%- assign image_hover_key = 'social_' | append: i | append: '_image_hover' -%}
-{%- assign svg_key = 'social_' | append: i | append: '_svg' -%}
-{%- assign link_key = 'social_' | append: i | append: '_link' -%}
-{%- assign alt_key = 'social_' | append: i | append: '_alt' -%}
-{%- assign image = section.settings[image_key] -%}
-{%- assign image_hover = section.settings[image_hover_key] -%}
-{%- assign svg = section.settings[svg_key] -%}
-{%- assign link = section.settings[link_key] -%}
-{%- assign alt_setting = section.settings[alt_key] -%}
+{%- assign image = block.settings.image -%}
+{%- assign image_hover = block.settings.image_hover -%}
+{%- assign svg = block.settings.svg -%}
+{%- assign link = block.settings.link -%}
+{%- assign alt_setting = block.settings.alt -%}
 {%- if alt_setting != blank -%}
   {%- assign alt_text = alt_setting -%}
-{%- elsif image.alt != blank -%}
+{%- elsif image != blank and image.alt != blank -%}
   {%- assign alt_text = image.alt -%}
 {%- else -%}
-  {%- assign alt_text = 'Social link ' | append: i -%}
+  {%- assign alt_text = 'Social link' -%}
 {%- endif -%}
 {%- if alt_setting != blank -%}
   {%- assign alt_text_hover = alt_setting -%}
-{%- elsif image_hover.alt != blank -%}
+{%- elsif image_hover != blank and image_hover.alt != blank -%}
   {%- assign alt_text_hover = image_hover.alt -%}
-{%- elsif image.alt != blank -%}
+{%- elsif image != blank and image.alt != blank -%}
   {%- assign alt_text_hover = image.alt -%}
 {%- else -%}
-  {%- assign alt_text_hover = 'Social link ' | append: i -%}
+  {%- assign alt_text_hover = 'Social link' -%}
 {%- endif -%}
 {%- assign has_hover_icon = false -%}
 {%- if image != blank and image_hover != blank -%}
@@ -38,6 +33,7 @@
   href="{{ link | default: '#' }}"
   class="social-box{% if has_hover_icon %} social-box--has-hover-icon{% endif %}"
   aria-label="{{ alt_text | escape }}"
+  {% if block != blank %}{{ block.shopify_attributes }}{% endif %}
 >
   {%- if image != blank -%}
     {%- if has_hover_icon -%}
@@ -74,25 +70,16 @@
       >
     {%- endif -%}
   {%- elsif svg != blank -%}
-    {{ svg }}
+    <span class="social-box__icon-wrap">
+      <span class="social-box__icon social-box__icon--default">{{ svg }}</span>
+    </span>
   {%- else -%}
-    {%- case i -%}
-      {%- when 1 -%}
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.334 3.608 1.308.975.975 1.247 2.242 1.308 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.334 2.633-1.308 3.608-.975.975-2.242 1.247-3.608 1.308-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.334-3.608-1.308-.975-.975-1.247-2.242-1.308-3.608-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.062-1.366.334-2.633 1.308-3.608.975-.975 2.242-1.247 3.608-1.308 1.266-.058 1.646-.07 4.85-.07zm0-2.163c-3.259 0-3.667.014-4.947.072-1.277.057-2.148.258-2.911.553-.788.306-1.457.715-2.124 1.382-.667.667-1.076 1.336-1.382 2.124-.296.763-.496 1.634-.553 2.911-.058 1.28-.072 1.688-.072 4.947s.014 3.667.072 4.947c.057 1.277.258 2.148.553 2.911.306.788.715 1.457 1.382 2.124.667.667 1.336 1.076 2.124 1.382.763.296 1.634.496 2.911.553 1.28.058 1.688.072 4.947.072s3.667-.014 4.947-.072c1.277-.057 2.148-.258 2.911-.553.788-.306 1.457-.715 2.124-1.382.667-.667 1.336-1.076 2.124-1.382.763-.296 1.634-.496 2.911-.553 1.28-.058 1.688-.072 4.947-.072z"/><path d="M12 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-        </svg>
-      {%- when 2 -%}
-        <svg viewBox="0 0 24 24" fill="currentColor">
+    <span class="social-box__icon-wrap">
+      <span class="social-box__icon social-box__icon--default">
+        <svg viewBox="0 0 24 24" fill="currentColor" class="social-box__image" aria-hidden="true">
           <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 4-8 4z"/>
         </svg>
-      {%- when 3 -%}
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/>
-        </svg>
-      {%- when 4 -%}
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.334 3.608 1.308.975.975 1.247 2.242 1.308 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.334 2.633-1.308 3.608-.975.975-2.242 1.247-3.608 1.308-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.334-3.608-1.308-.975-.975-1.247-2.242-1.308-3.608-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.062-1.366.334-2.633 1.308-3.608.975-.975 2.242-1.247 3.608-1.308 1.266-.058 1.646-.07 4.85-.07zm0-2.163c-3.259 0-3.667.014-4.947.072-1.277.057-2.148.258-2.911.553-.788.306-1.457.715-2.124 1.382-.667.667-1.076 1.336-1.382 2.124-.296.763-.496 1.634-.553 2.911-.058 1.28-.072 1.688-.072 4.947s.014 3.667.072 4.947c.057 1.277.258 2.148.553 2.911.306.788.715 1.457 1.382 2.124.667.667 1.336 1.076 2.124 1.382.763.296 1.634.496 2.911.553 1.28.058 1.688.072 4.947.072s3.667-.014 4.947-.072c1.277-.057 2.148-.258 2.911-.553.788-.306 1.457-.715 2.124-1.382.667-.667 1.076-1.336 1.382-2.124.296-.763.496-1.634.553-2.911.058-1.28.072-1.688.072-4.947s-.014-3.667-.072-4.947c-.057-1.277-.258-2.148-.553-2.911-.306-.788-.715-1.457-1.382-2.124-.667-.667-1.336-1.076-2.124-1.382-.763-.296-1.634-.496-2.911-.553-1.28-.058-1.688-.072-4.947-.072z"/><path d="M12 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-        </svg>
-    {%- endcase -%}
+      </span>
+    </span>
   {%- endif -%}
 </a>
