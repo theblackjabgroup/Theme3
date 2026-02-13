@@ -239,3 +239,25 @@
   opacity: 1;
   pointer-events: auto;
 }
+
+/* Search grid: blog cards stretch to match product cards (main-blog retains original size) */
+#ProductGridContainer .product-grid {
+  align-items: stretch;
+}
+#ProductGridContainer .grid__item {
+  display: flex;
+}
+#ProductGridContainer .grid__item .main-blog-card {
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+}
+#ProductGridContainer .grid__item .main-blog-card__image-wrapper {
+  height: 250px;
+}
+@media screen and (max-width: 900px) {
+  #ProductGridContainer .grid__item .main-blog-card__image-wrapper {
+    height: 200px;
+  }
+}
