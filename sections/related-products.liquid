@@ -155,6 +155,9 @@
 
 <script>
   (function () {
+    if (window.__relatedProductsQuickAddRegistered) return;
+    window.__relatedProductsQuickAddRegistered = true;
+
     function handleQuickAddTrigger(e) {
       const trigger = e.target.closest('[data-quick-add-trigger]');
       if (!trigger) return;
@@ -365,16 +368,6 @@
       "unit": "px",
       "label": "Bottom Padding (Mobile)",
       "default": 40
-    }
-  ],
-  "presets": [
-    {
-      "name": "Related Products",
-      "blocks": [
-        {
-          "type": "header"
-        }
-      ]
     }
   ]
 }
