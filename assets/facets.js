@@ -344,7 +344,7 @@
       if (maxInput.value) minInput.setAttribute('data-max', maxInput.value);
       if (minInput.value) maxInput.setAttribute('data-min', minInput.value);
       if (minInput.value === '') maxInput.setAttribute('data-min', '0');
-      if (maxInput.value === '') maxInput.setAttribute('data-max', maxInput.getAttribute('data-max') || '');
+      if (maxInput.value === '') minInput.setAttribute('data-max', maxInput.getAttribute('data-max') || '');
     }
 
     adjustToValidValues(input) {

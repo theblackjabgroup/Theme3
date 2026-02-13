@@ -147,7 +147,7 @@
         show_badge: block.settings.show_badge,
         badge_text: block.settings.badge_text,
         title: block.settings.title | default: collection.title,
-        description: block.settings.header_description | default: collection.description,
+        description: block.settings.header_description | default: collection.description | strip_html,
         title_alignment: block.settings.title_alignment,
         title_font_size: block.settings.title_font_size,
         title_font_weight: block.settings.title_font_weight,
