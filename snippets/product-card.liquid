@@ -34,13 +34,14 @@
   </div>
 
   <div class="dc-progress-wrapper">
+    <div class="dc-progress-bar-container">
     <div
       class="dc-tooltip"
       style="--target-left: {{ percentage }}%; background: none; border: none; box-shadow: none; padding: 0;"
     >
       <div
         class="dc-tooltip-svg-wrapper"
-        style="position: relative; width: 48px; height: 30px; filter: drop-shadow(0px 1.6px 0px var(--color-primary-button-text));"
+        style="position: relative; filter: drop-shadow(0px 1.6px 0px var(--color-primary-button-text));"
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="48" height="30" viewBox="0 0 48 30" fill="none">
           <rect y="7.64" width="44" height="22" rx="8" transform="rotate(-10 0 7.64)" fill="var(--dc-tooltip-bg)" />
@@ -49,7 +50,7 @@
         </svg>
         <div
           class="dc-tooltip-content"
-          style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-10deg); color: var(--dc-tooltip-text, #fff); width: 100%; text-align: center; font-size: 0.8rem; font-weight: bold;"
+          style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-10deg); color: var(--dc-tooltip-text, #fff); width: 100%; text-align: center;"
         >
           <span class="dc-tooltip-val" data-value="{{ current_amount }}">
             {{ current_amount | default: 'Lorem' }}
@@ -75,6 +76,7 @@
     <div class="dc-goal-label">
       {{ goal_amount }}
       {{ currency_code }}
+    </div>
     </div>
   </div>
 </div>
