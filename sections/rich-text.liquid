@@ -1,8 +1,8 @@
 {{ 'section-rich-text.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
- {%- if request.visual_preview_mode -%}
-    {%- assign section_selector = '.rte-rich-text' -%}
+  {%- if request.visual_preview_mode -%}
+    {%- assign section_selector = '.rte-rich-text[data-section-id="' | append: section.id | append: '"]' -%}
   {%- else -%}
     {%- assign section_selector = '#shopify-section-' | append: section.id -%}
   {%- endif -%}
@@ -89,10 +89,13 @@
           border-radius: {{ block.settings.image_border_radius | default: 8 }}px;
         }
         {{ section_selector }} [data-block-id="{{ block.id }}"] .rte-rich-text__image-placeholder {
-          background-color: {{ block.settings.image_placeholder_color | default: '#F0A5B9' }};
+          background-color: {{ block.settings.image_placeholder_color | default: '#f5f5f5' }};
           border-radius: {{ block.settings.image_border_radius | default: 8 }}px;
           height: {{ block.settings.image_max_height | default: 330 }}px;
           min-height: {{ block.settings.image_min_height | default: 200 }}px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
     {%- endcase -%}
   {%- endfor -%}
@@ -157,10 +160,8 @@
                     >
                   </div>
                 {%- else -%}
-                  <div class="rte-rich-text__image-placeholder" role="img" aria-label="Image placeholder">
-                    <span class="rte-rich-text__image-placeholder-text">
-                      {{- block.settings.placeholder_label | default: 'Image' -}}
-                    </span>
+                  <div class="rte-rich-text__image-inner rte-rich-text__image-placeholder" role="img" aria-label="{{ block.settings.placeholder_label | default: 'Image' | escape }}">
+                    {{ 'lifestyle-1' | placeholder_svg_tag: 'rte-rich-text__placeholder-svg' }}
                   </div>
                 {%- endif -%}
               </div>
@@ -494,7 +495,7 @@
           "type": "image_picker",
           "id": "image",
           "label": "Image",
-          "info": "Leave blank to show a placeholder (pink square)"
+          "info": "Leave blank to show Shopify's default image placeholder"
         },
         {
           "type": "text",
@@ -546,7 +547,7 @@
           "type": "color",
           "id": "image_placeholder_color",
           "label": "Placeholder background (when no image)",
-          "default": "#F0A5B9"
+          "default": "#f5f5f5"
         },
         {
           "type": "range",
