@@ -1,5 +1,4 @@
 {% layout none %}
-
 <!doctype html>
 <html lang="{{ request.locale.iso_code }}">
   <head>
@@ -16,194 +15,17 @@
 
     {{ 'template-giftcard.css' | asset_url | stylesheet_tag }}
 
-    <style>
-      :root {
-        --gc-bg: {{ settings.gift_card_bg }};
-        --gc-panel-bg: {{ settings.gift_card_panel_bg }};
-        --gc-text-color: {{ settings.gift_card_text }};
-        --gc-green: {{ settings.gift_card_accent }};
-
-        --gc-title-size: {{ settings.gift_card_title_size }}px;
-        --gc-value-size: {{ settings.gift_card_value_size }}px;
-        --gc-footer-size: {{ settings.gift_card_footer_size }}px;
-        --gc-title-size-mobile: {{ settings.gift_card_title_size_mobile }}px;
-        --gc-value-size-mobile: {{ settings.gift_card_value_size_mobile }}px;
-        --gc-footer-size-mobile: {{ settings.gift_card_footer_size_mobile }}px;
-        --gc-btn-face: {{ settings.gift_card_button_face }};
-        --gc-btn-bg: {{ settings.gift_card_button_bg }};
-        --gc-btn-text: {{ settings.gift_card_button_text }};
-        --gc-btn-border: {{ settings.gift_card_button_bg }};
-        --gc-btn-hover-bg: {{ settings.gift_card_button_text }};
-        --gc-btn-hover-text: {{ settings.gift_card_button_bg }};
-
-        --gc-radius: {{ settings.gift_card_button_radius }}px;
-        --gc-btn-height: {{ settings.gift_card_button_height }}px;
-        --gc-btn-max-width: {{ settings.gift_card_button_width }}px;
-
-        {% if settings.gift_card_animation_enabled %}
-          --gc-animation-duration: {{ settings.gift_card_animation_duration }}s;
-          --gc-animation-name: bounce;
-        {% else %}
-          --gc-animation-duration: 0s;
-          --gc-animation-name: none;
-        {% endif %}
-      }
-
-      .gc-title { font-size: var(--gc-title-size); }
-      .gc-card-value { font-size: var(--gc-value-size); }
-      .gc-footer-text { font-size: var(--gc-footer-size); }
-      @media (max-width: 600px) {
-        .gc-title { font-size: var(--gc-title-size-mobile); }
-        .gc-card-value { font-size: var(--gc-value-size-mobile); }
-        .gc-footer-text { font-size: var(--gc-footer-size-mobile); }
-      }
-
-      .gc-print-btn__shadow { background-color: var(--gc-btn-bg); opacity: 0.5; }
-      .gc-print-btn__content { background-color: var(--gc-btn-face) !important; }
-    </style>
-
     {%- unless settings.type_header_font.system? -%}
       <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
     {%- endunless -%}
 
     {%- assign formatted_balance = gift_card.balance | money_without_trailing_zeros | strip_html -%}
-
     <title>{{ 'gift_cards.issued.title' | t: value: formatted_balance, shop: shop.name }}</title>
     <meta name="description" content="{{ 'gift_cards.issued.subtext' | t }}">
 
     {{ content_for_header }}
   </head>
-
   <body>
-    {%- assign is_expired = false -%}
-    {%- if gift_card.expired or gift_card.enabled != true -%}
-      {%- assign is_expired = true -%}
-    {%- endif -%}
-
-    <div class="gc-container{% if is_expired %} gc-container--expired{% endif %}">
-      <div class="gc-panel gc-left">
-        <h1 class="gc-title">
-          {% if is_expired %}
-            OOPS!<br>
-            SEEMS LIKE YOUR GIFT<br>
-            CARD HAS EXPIRED
-          {% else %}
-            {{ settings.gift_card_title }}
-          {% endif %}
-        </h1>
-
-        <div class="gc-envelope-container">
-          <svg
-            class="gc-envelope-svg gc-envelope-layer-back"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 578 319"
-            fill="none"
-          >
-            <path d="M283.98 3.21932C287.886 1.20004 292.529 1.20003 296.435 3.21932L431.516 73.0492C444.14 79.5753 439.499 98.657 425.288 98.657H155.127C140.916 98.657 136.275 79.5753 148.9 73.0492L283.98 3.21932Z" fill="{{ settings.gift_card_envelope_back }}"/>
-            <path d="M246.474 31.1906L83.0625 112.896L282.072 190.872H298.006L495.998 112.557L343.436 31.1906H246.474Z" fill="{{ settings.gift_card_envelope_back }}"/>
-          </svg>
-          <div
-            class="gc-card"
-            style="background-color: {{ settings.gift_card_accent }}; color: {{ settings.gift_card_bg }};"
-          >
-            {% if is_expired %}
-              <div class="gc-expired-stamp">
-                <span>{{ 'gift_cards.issued.expired_stamp' | t }}</span>
-              </div>
-            {% endif %}
-            <div class="gc-card-top">
-              <span class="gc-card-label">{{ settings.gift_card_card_label }}</span>
-            </div>
-            <div class="gc-card-value">
-              {% if settings.currency_code_enabled %}
-                {{ gift_card.balance | money_with_currency }}
-              {% else %}
-                {{ gift_card.balance | money }}
-              {% endif %}
-            </div>
-            <div class="gc-card-visual">
-              <span class="gc-logo-text">{{ shop.name }}</span>
-            </div>
-          </div>
-
-          <svg
-            class="gc-envelope-svg gc-envelope-layer-front"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 578 319"
-            fill="none"
-          >
-            <path d="M287.278 188.214C288.936 187.528 290.799 187.528 292.457 188.214L497.002 272.753C503.862 275.588 501.835 285.8 494.412 285.8H85.3228C77.9004 285.8 75.8733 275.588 82.7329 272.753L287.278 188.214Z" fill="{{ settings.gift_card_envelope_front }}"/>
-            <path opacity="0.7" d="M289.47 205.327C283.711 203.083 283.711 194.935 289.47 192.691L492.347 113.647C496.792 111.915 501.589 115.194 501.589 119.965L501.589 278.053C501.589 282.824 496.792 286.103 492.347 284.371L289.47 205.327Z" fill="{{ settings.gift_card_envelope_front }}"/>
-            <path opacity="0.7" d="M288.229 205.327C293.988 203.083 293.988 194.935 288.229 192.691L85.3525 113.647C80.907 111.915 76.1104 115.194 76.1104 119.965L76.1104 278.053C76.1104 282.824 80.907 286.103 85.3525 284.371L288.229 205.327Z" fill="{{ settings.gift_card_envelope_front }}"/>
-          </svg>
-        </div>
-
-        <p class="gc-footer-text">
-          {% if is_expired %}
-            {{ 'gift_cards.issued.expired_subtext' | t }}
-          {% else %}
-            {{ settings.gift_card_subtext }}
-          {% endif %}
-        </p>
-      </div>
-
-      <div class="gc-panel gc-right">
-        <div class="gc-qr-container">
-          <div class="gc-qr-code" data-identifier="{{ gift_card.qr_identifier }}"></div>
-        </div>
-
-        <div class="gc-code-action-area">
-          <input
-            type="text"
-            class="gc-code-input"
-            value="{{ gift_card.code | format_code }}"
-            readonly
-            id="gift-card-code"
-          >
-          <button class="gc-copy-btn">{{ 'gift_cards.issued.copy_button' | t }}</button>
-        </div>
-
-        <button class="gc-print-btn" onclick="window.print();">
-          <span class="gc-print-btn__shadow"></span>
-          <span class="gc-print-btn__content">{{ 'gift_cards.issued.print_button' | t }}</span>
-        </button>
-      </div>
-    </div>
-
-    <div hidden>
-      <span id="a11y-new-window-message">{{ 'accessibility.link_messages.new_window' | t }}</span>
-    </div>
-
-    <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        var qrCodeContainer = document.querySelector('.gc-qr-code');
-        if (qrCodeContainer) {
-          new QRCode(qrCodeContainer, {
-            text: qrCodeContainer.dataset.identifier,
-            width: 150,
-            height: 150,
-          });
-        }
-
-        const copyBtn = document.querySelector('.gc-copy-btn');
-        const codeInput = document.getElementById('gift-card-code');
-        let isMessageDisplayed = false;
-
-        copyBtn.addEventListener('click', function () {
-          if (isMessageDisplayed) return;
-
-          navigator.clipboard.writeText(codeInput.value).then(function () {
-            const originalText = copyBtn.innerText;
-            copyBtn.innerText = 'COPIED';
-            isMessageDisplayed = true;
-
-            setTimeout(function () {
-              copyBtn.innerText = originalText;
-              isMessageDisplayed = false;
-            }, 2000);
-          });
-        });
-      });
-    </script>
+    {% section 'gift-card' %}
   </body>
 </html>

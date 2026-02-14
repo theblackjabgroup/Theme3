@@ -59,7 +59,7 @@ body {
   font-weight: 900;
   text-transform: uppercase;
   margin: 0 0 40px 0;
-  color: var(--gc-green);
+  color: var(--gc-title-color, var(--gc-green));
   text-align: center;
   line-height: .9;
   letter-spacing: -1px;
@@ -147,26 +147,51 @@ body {
 }
 
 .gc-card-visual {
-    position: absolute;
-    right: 5%;
-    bottom: 15%;
-    opacity: 0.15;
-    pointer-events: none;
-    line-height: 0;
+  position: absolute;
+  opacity: 1;
+  pointer-events: none;
+  line-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Horizontal alignment */
+.gc-card-visual--align-left { left: 0%; right: auto; }
+.gc-card-visual--align-center { left: 50%; right: auto; transform: translateX(-50%); }
+.gc-card-visual--align-right { right: 0%; left: auto; }
+
+/* Vertical position */
+.gc-card-visual--pos-top { top: 15%; bottom: auto; }
+.gc-card-visual--pos-center { top: 50%; bottom: auto; transform: translateY(-50%); }
+.gc-card-visual--pos-bottom { bottom: 15%; top: auto; }
+
+/* Combined center (both align and position) */
+.gc-card-visual--align-center.gc-card-visual--pos-center { transform: translate(-50%, -50%); }
+
+.gc-card-logo-img {
+  width: var(--gc-card-logo-width, 48px);
+  height: var(--gc-card-logo-height, 48px);
+  object-fit: contain;
+  transform: rotate(var(--gc-card-logo-rotation, 0deg));
+}
+
+.gc-card-visual .gc-logo-text {
+  transform: rotate(calc(180deg + var(--gc-card-logo-rotation, 0deg)));
 }
 
 .gc-logo-text {
-    font-size: 1.2em;
-    font-weight: 900;
-    writing-mode: vertical-rl;
-    text-orientation: mixed;
-    transform: rotate(180deg);
-    text-transform: uppercase;
+  font-size: 1.2em;
+  font-weight: 900;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  text-transform: uppercase;
 }
 
 /* RIGHT PANEL CONTENT */
 .gc-qr-container {
-  background-color: white;
+  background-color: var(--gc-qr-bg, #ffffff);
   padding: 15px;
   border-radius: 20px;
   border: 1px solid var(--gc-green);
@@ -178,41 +203,50 @@ body {
 }
 
 .gc-code-action-area {
-  background-color: var(--gc-input-bg);
-  border-radius: 8px;
-  padding: 12px 20px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 16px;
   width: 100%;
-  max-width: 320px;
+  max-width: 380px;
   margin-bottom: 30px;
   box-sizing: border-box;
+}
+
+.gc-code-box {
+  background-color: var(--gc-input-bg);
+  border-radius: 16px;
+  padding: 16px 24px;
+  flex: 1;
+  min-width: 0;
 }
 
 .gc-code-input {
   background: transparent;
   border: none;
-  font-weight: bold;
+  font-weight: 500;
   font-size: 1rem;
   color: var(--gc-text-color);
   width: 100%;
   outline: none;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .gc-copy-btn {
   background: none;
   border: none;
   text-decoration: underline;
+  text-underline-offset: 3px;
   text-transform: uppercase;
-  font-size: 0.65rem;
-  font-weight: bold;
+  font-size: 0.75rem;
+  font-weight: 500;
   color: var(--gc-text-color);
   cursor: pointer;
   white-space: nowrap;
-  margin-left: 10px;
   padding: 0;
+  min-width: 5.5rem;
+  flex-shrink: 0;
+  letter-spacing: 0.5px;
 }
 
 .gc-print-btn {
@@ -334,11 +368,15 @@ body {
 
   /* Make sure QR and Code are visible */
   .gc-qr-container,
-  .gc-code-action-area {
-    display: flex !important;
+  .gc-code-action-area,
+  .gc-code-box {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
-    border: none !important; /* Remove border from containers for cleaner look */
+  }
+  
+  .gc-code-action-area {
+    display: flex !important;
+    border: none !important;
     box-shadow: none !important;
   }
   
@@ -403,7 +441,7 @@ body {
 
 /* Specific Element Overrides in Expired State */
 .gc-container--expired .gc-title {
-    color: var(--gc-green); /* Ensure title matches dark green */
+    color: var(--gc-title-color, var(--gc-green)); /* Use heading color, fallback to accent */
     line-height: 0.9;
 }
 
@@ -419,9 +457,12 @@ body {
 }
 
 .gc-container--expired .gc-code-action-area {
-    background-color: #d1cfca; /* Explicit grey */
     pointer-events: none; /* Disable interaction visually */
-}
+  }
+
+.gc-container--expired .gc-code-box {
+    background-color: #d1cfca; /* Explicit grey for expired state */
+  }
 
 .gc-container--expired .gc-code-input {
     color: #555; /* Dimmed text */
