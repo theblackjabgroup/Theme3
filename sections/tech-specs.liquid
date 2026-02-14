@@ -84,7 +84,7 @@
   }
 
   #shopify-section-{{ section.id }} .dc-progress-bar-container {
-    width: {{ section.settings.bar_track_width }}%;
+    width: var(--dc-bar-track-width);
     {%- if section.settings.bar_track_width < 100 -%}
     margin-left: auto;
     margin-right: auto;
