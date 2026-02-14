@@ -29,22 +29,82 @@
     }
   }
 
-  .sc-grid {
+  #shopify-section-{{ section.id }} .sc-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 30px;
+    gap: {{ section.settings.card_spacing }}px;
   }
 
   @media screen and (min-width: 750px) {
-    .sc-grid {
+    #shopify-section-{{ section.id }} .sc-grid {
       grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
     }
   }
 
-  .sc-heading {
+  #shopify-section-{{ section.id }} .sc-heading {
     text-align: center;
     margin-bottom: 40px;
     color: var(--heading-color);
+    font-size: {{ section.settings.heading_font_size }}px;
+    font-weight: {{ section.settings.heading_font_weight }};
+  }
+
+  #shopify-section-{{ section.id }} .dc-eyebrow,
+  #shopify-section-{{ section.id }} .dc-textbox-eyebrow {
+    font-size: {{ section.settings.eyebrow_font_size }}px;
+    font-weight: {{ section.settings.eyebrow_font_weight }};
+  }
+
+  #shopify-section-{{ section.id }} .dc-title,
+  #shopify-section-{{ section.id }} .dc-textbox-title {
+    font-size: {{ section.settings.title_font_size }}px;
+    font-weight: {{ section.settings.title_font_weight }};
+  }
+
+  #shopify-section-{{ section.id }} .dc-text,
+  #shopify-section-{{ section.id }} .dc-textbox-text {
+    font-size: {{ section.settings.body_font_size }}px;
+    font-weight: {{ section.settings.body_font_weight }};
+  }
+
+  #shopify-section-{{ section.id }} .dc-textbox-list li,
+  #shopify-section-{{ section.id }} .dc-list-text {
+    font-size: {{ section.settings.list_font_size }}px;
+    font-weight: {{ section.settings.list_font_weight }};
+  }
+
+  #shopify-section-{{ section.id }} .dc-tooltip-content {
+    font-size: {{ section.settings.tooltip_font_size }}px;
+    font-weight: {{ section.settings.tooltip_font_weight }};
+  }
+
+  #shopify-section-{{ section.id }} .dc-goal-label {
+    font-size: {{ section.settings.goal_label_font_size }}px;
+    font-weight: {{ section.settings.goal_label_font_weight }};
+  }
+
+  #shopify-section-{{ section.id }} .dc-progress-bar-container {
+    width: {{ section.settings.bar_track_width }}%;
+    {%- if section.settings.bar_track_width < 100 -%}
+    margin-left: auto;
+    margin-right: auto;
+    {%- endif -%}
+  }
+
+  #shopify-section-{{ section.id }} .dc-bar-track {
+    height: {{ section.settings.bar_track_height }}px;
+    width: 100%;
+  }
+
+  #shopify-section-{{ section.id }} .dc-tooltip-svg-wrapper {
+    width: {{ section.settings.tooltip_height | times: 1.6 | round: 0 }}px;
+    height: {{ section.settings.tooltip_height }}px;
+  }
+
+  #shopify-section-{{ section.id }} .dc-tooltip-svg-wrapper svg {
+    width: 100%;
+    height: 100%;
+    display: block;
   }
 {%- endstyle -%}
 
@@ -65,6 +125,23 @@
           --dc-bar-fill: {{ block.settings.progress_fill | default: '#ff0000' }};
           --dc-bar-track: {{ block.settings.progress_track | default: '#fce8e8' }};
           --dc-eyebrow-color: {{ block.settings.eyebrow_color }};
+          --dc-bar-track-width: {{ section.settings.bar_track_width }}%;
+          {%- if block.type == 'textbox' -%}
+            --dc-card-border-radius: {{ block.settings.card_border_radius }}px;
+          {%- elsif block.type == 'card' -%}
+            --dc-card-border-radius: {{ block.settings.card_border_radius }}px;
+            {%- if block.settings.image != blank -%}
+              --dc-image-width: {{ block.settings.override_image_width }}px;
+              --dc-image-height: {{ block.settings.override_image_height }}px;
+              --dc-image-margin-top: {{ block.settings.override_image_margin_top }}px;
+              --dc-image-margin-bottom: {{ block.settings.override_image_margin_bottom }}px;
+            {%- else -%}
+              --dc-image-width: {{ block.settings.product_image_width }}px;
+              --dc-image-height: {{ block.settings.product_image_height }}px;
+              --dc-image-margin-top: {{ block.settings.product_image_margin_top }}px;
+              --dc-image-margin-bottom: {{ block.settings.product_image_margin_bottom }}px;
+            {%- endif -%}
+          {%- endif -%}
         "
         {{ block.shopify_attributes }}
       >
@@ -146,6 +223,169 @@
       "default": "#000000"
     },
     {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "min": 16,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading font size",
+      "default": 42
+    },
+    {
+      "type": "select",
+      "id": "heading_font_weight",
+      "label": "Heading font weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra bold" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_font_size",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Eyebrow/Tag font size",
+      "default": 11
+    },
+    {
+      "type": "select",
+      "id": "eyebrow_font_weight",
+      "label": "Eyebrow/Tag font weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra bold" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size",
+      "min": 14,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "label": "Card title font size",
+      "default": 24
+    },
+    {
+      "type": "select",
+      "id": "title_font_weight",
+      "label": "Card title font weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra bold" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "range",
+      "id": "body_font_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Body text font size",
+      "default": 15
+    },
+    {
+      "type": "select",
+      "id": "body_font_weight",
+      "label": "Body text font weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "range",
+      "id": "list_font_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "List items font size",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "list_font_weight",
+      "label": "List items font weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "range",
+      "id": "tooltip_font_size",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Tooltip font size",
+      "default": 13
+    },
+    {
+      "type": "select",
+      "id": "tooltip_font_weight",
+      "label": "Tooltip font weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra bold" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "range",
+      "id": "goal_label_font_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Goal label font size",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "goal_label_font_weight",
+      "label": "Goal label font weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra bold" }
+      ],
+      "default": "800"
+    },
+    {
       "type": "range",
       "id": "columns_desktop",
       "min": 1,
@@ -155,10 +395,57 @@
       "label": "Columns on Desktop"
     },
     {
+      "type": "range",
+      "id": "card_spacing",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Spacing between cards",
+      "default": 32
+    },
+    {
       "type": "text",
       "id": "currency",
       "label": "Currency Code",
       "default": "CHF"
+    },
+    {
+      "type": "header",
+      "content": "Progress bar"
+    },
+    {
+      "type": "range",
+      "id": "bar_track_height",
+      "min": 3,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Bar track height",
+      "default": 7,
+      "info": "Thickness of the progress bar track"
+    },
+    {
+      "type": "range",
+      "id": "bar_track_width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Bar track length",
+      "default": 100,
+      "info": "Horizontal width of the progress bar"
+    },
+    {
+      "type": "range",
+      "id": "tooltip_height",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Tooltip height",
+      "default": 30,
+      "info": "Height of the progress tooltip (width scales proportionally)"
     },
     {
       "type": "header",
@@ -273,6 +560,16 @@
           "default": "#306030"
         },
         {
+          "type": "range",
+          "id": "card_border_radius",
+          "min": 0,
+          "max": 48,
+          "step": 4,
+          "unit": "px",
+          "label": "Card border radius",
+          "default": 32
+        },
+        {
           "type": "color",
           "id": "text_color",
           "label": "Card Text",
@@ -307,6 +604,94 @@
           "label": "Image (Override)"
         },
         {
+          "type": "header",
+          "content": "Product Image"
+        },
+        {
+          "type": "range",
+          "id": "product_image_width",
+          "min": 80,
+          "max": 400,
+          "step": 10,
+          "unit": "px",
+          "label": "Product image width",
+          "default": 200
+        },
+        {
+          "type": "range",
+          "id": "product_image_height",
+          "min": 80,
+          "max": 400,
+          "step": 10,
+          "unit": "px",
+          "label": "Product image height",
+          "default": 160
+        },
+        {
+          "type": "range",
+          "id": "product_image_margin_top",
+          "min": 0,
+          "max": 40,
+          "step": 4,
+          "unit": "px",
+          "label": "Product image margin top",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "product_image_margin_bottom",
+          "min": 0,
+          "max": 40,
+          "step": 4,
+          "unit": "px",
+          "label": "Product image margin bottom",
+          "default": 0
+        },
+        {
+          "type": "header",
+          "content": "Image Override"
+        },
+        {
+          "type": "range",
+          "id": "override_image_width",
+          "min": 80,
+          "max": 400,
+          "step": 10,
+          "unit": "px",
+          "label": "Override image width",
+          "default": 200
+        },
+        {
+          "type": "range",
+          "id": "override_image_height",
+          "min": 80,
+          "max": 400,
+          "step": 10,
+          "unit": "px",
+          "label": "Override image height",
+          "default": 160
+        },
+        {
+          "type": "range",
+          "id": "override_image_margin_top",
+          "min": 0,
+          "max": 40,
+          "step": 4,
+          "unit": "px",
+          "label": "Override image margin top",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "override_image_margin_bottom",
+          "min": 0,
+          "max": 40,
+          "step": 4,
+          "unit": "px",
+          "label": "Override image margin bottom",
+          "default": 0
+        },
+        {
           "type": "text",
           "id": "title",
           "label": "Title (Override)",
@@ -335,6 +720,16 @@
           "id": "bg_color",
           "label": "Card Background",
           "default": "#E5E1DA"
+        },
+        {
+          "type": "range",
+          "id": "card_border_radius",
+          "min": 0,
+          "max": 48,
+          "step": 4,
+          "unit": "px",
+          "label": "Card border radius",
+          "default": 32
         },
         {
           "type": "color",
