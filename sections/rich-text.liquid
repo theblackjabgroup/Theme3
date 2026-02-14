@@ -1,7 +1,13 @@
 {{ 'section-rich-text.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
-  #shopify-section-{{ section.id }} {
+ {%- if request.visual_preview_mode -%}
+    {%- assign section_selector = '.rte-rich-text' -%}
+  {%- else -%}
+    {%- assign section_selector = '#shopify-section-' | append: section.id -%}
+  {%- endif -%}
+
+  {{ section_selector }} {
     --rte-header-margin-bottom: {{ section.settings.header_margin_bottom }}px;
     --rte-context-block-spacing: {{ section.settings.context_block_spacing }}px;
   }
@@ -22,12 +28,12 @@
     }
   }
 
-  #shopify-section-{{ section.id }} .rte-rich-text__outer {
+  {{ section_selector }} .rte-rich-text__outer {
     background-color: {{ section.settings.outer_background }};
   }
 
-  #shopify-section-{{ section.id }} .rte-rich-text__header-card,
-  #shopify-section-{{ section.id }} .rte-rich-text__context-card {
+  {{ section_selector }} .rte-rich-text__header-card,
+  {{ section_selector }} .rte-rich-text__context-card {
     background-color: {{ section.settings.content_background }};
     border: 1px solid {{ section.settings.content_border }};
     border-radius: {{ section.settings.content_border_radius }}px;
@@ -38,21 +44,21 @@
     {%- endif -%}
   }
 
-  #shopify-section-{{ section.id }} .rte-rich-text__header-card {
+  {{ section_selector }} .rte-rich-text__header-card {
     margin-bottom: var(--rte-header-margin-bottom);
   }
 
-  #shopify-section-{{ section.id }} .rte-rich-text__context-card .rte-rich-text__body + .rte-rich-text__body,
-  #shopify-section-{{ section.id }} .rte-rich-text__context-card .rte-rich-text__body + .rte-rich-text__image-wrapper,
-  #shopify-section-{{ section.id }} .rte-rich-text__context-card .rte-rich-text__image-wrapper + .rte-rich-text__body,
-  #shopify-section-{{ section.id }} .rte-rich-text__context-card .rte-rich-text__image-wrapper + .rte-rich-text__image-wrapper {
+  {{ section_selector }} .rte-rich-text__context-card .rte-rich-text__body + .rte-rich-text__body,
+  {{ section_selector }} .rte-rich-text__context-card .rte-rich-text__body + .rte-rich-text__image-wrapper,
+  {{ section_selector }} .rte-rich-text__context-card .rte-rich-text__image-wrapper + .rte-rich-text__body,
+  {{ section_selector }} .rte-rich-text__context-card .rte-rich-text__image-wrapper + .rte-rich-text__image-wrapper {
     margin-top: var(--rte-context-block-spacing);
   }
 
   {%- for block in section.blocks -%}
     {%- case block.type -%}
       {%- when 'header' -%}
-        #shopify-section-{{ section.id }} [data-block-id="{{ block.id }}"] .rte-rich-text__tag {
+        {{ section_selector }} [data-block-id="{{ block.id }}"] .rte-rich-text__tag {
           background-color: {{ block.settings.tag_background | default: '#F5F4F0' }};
           color: {{ block.settings.tag_text_color | default: '#2a2a2a' }};
           border-color: {{ block.settings.tag_border | default: '#d4d4d4' }};
@@ -60,29 +66,29 @@
           padding: {{ block.settings.tag_padding_vertical | default: 8 }}px {{ block.settings.tag_padding_horizontal | default: 16 }}px;
           font-size: {{ block.settings.tag_font_size | default: 12 }}px;
         }
-        #shopify-section-{{ section.id }} [data-block-id="{{ block.id }}"] .rte-rich-text__title {
+        {{ section_selector }} [data-block-id="{{ block.id }}"] .rte-rich-text__title {
           color: {{ block.settings.title_color | default: '#4A6E58' }};
           font-size: {{ block.settings.title_font_size | default: 42 }}px;
         }
       {%- when 'context_text' -%}
-        #shopify-section-{{ section.id }} [data-block-id="{{ block.id }}"] {
+        {{ section_selector }} [data-block-id="{{ block.id }}"] {
           color: {{ block.settings.body_text_color | default: '#333333' }};
           font-size: {{ block.settings.body_font_size | default: 16 }}px;
           line-height: {{ block.settings.body_line_height | default: 1.7 }};
         }
-        #shopify-section-{{ section.id }} [data-block-id="{{ block.id }}"] h1,
-        #shopify-section-{{ section.id }} [data-block-id="{{ block.id }}"] h2,
-        #shopify-section-{{ section.id }} [data-block-id="{{ block.id }}"] h3 {
+        {{ section_selector }} [data-block-id="{{ block.id }}"] h1,
+        {{ section_selector }} [data-block-id="{{ block.id }}"] h2,
+        {{ section_selector }} [data-block-id="{{ block.id }}"] h3 {
           color: {{ block.settings.heading_color | default: '#4A6E58' }};
           font-size: {{ block.settings.heading_font_size | default: 18 }}px;
         }
       {%- when 'context_image' -%}
-        #shopify-section-{{ section.id }} [data-block-id="{{ block.id }}"] .rte-rich-text__image-inner {
+        {{ section_selector }} [data-block-id="{{ block.id }}"] .rte-rich-text__image-inner {
           height: {{ block.settings.image_max_height | default: 330 }}px;
           max-height: {{ block.settings.image_max_height | default: 330 }}px;
           border-radius: {{ block.settings.image_border_radius | default: 8 }}px;
         }
-        #shopify-section-{{ section.id }} [data-block-id="{{ block.id }}"] .rte-rich-text__image-placeholder {
+        {{ section_selector }} [data-block-id="{{ block.id }}"] .rte-rich-text__image-placeholder {
           background-color: {{ block.settings.image_placeholder_color | default: '#F0A5B9' }};
           border-radius: {{ block.settings.image_border_radius | default: 8 }}px;
           height: {{ block.settings.image_max_height | default: 330 }}px;
@@ -118,43 +124,49 @@
     {%- endfor -%}
 
     {%- if has_context_blocks -%}
-    <div class="rte-rich-text__context-card">
-      {%- for block in section.blocks -%}
-        {%- case block.type -%}
-          {%- when 'context_text' -%}
-            <div class="rte-rich-text__body rte rte-rich-text__body--{{ block.settings.text_alignment | default: 'left' }}" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
-              {{ block.settings.text }}
-            </div>
+      <div class="rte-rich-text__context-card">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'context_text' -%}
+              <div
+                class="rte-rich-text__body rte rte-rich-text__body--{{ block.settings.text_alignment | default: 'left' }}"
+                data-block-id="{{ block.id }}"
+                {{ block.shopify_attributes }}
+              >
+                {{ block.settings.text }}
+              </div>
 
-          {%- when 'context_image' -%}
-            <div class="rte-rich-text__image-wrapper" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
-              {%- if block.settings.image != blank -%}
-                <div class="rte-rich-text__image-inner">
-                  <img
-                    srcset="
-                      {%- if block.settings.image.width >= 550 -%}{{ block.settings.image | image_url: width: 550 }} 550w{%- if block.settings.image.width >= 1100 -%}, {%- endif -%}{%- endif -%}
-                      {%- if block.settings.image.width >= 1100 -%}{{ block.settings.image | image_url: width: 1100 }} 1100w{%- if block.settings.image.width >= 1500 -%}, {%- endif -%}{%- endif -%}
-                      {%- if block.settings.image.width >= 1500 -%}{{ block.settings.image | image_url: width: 1500 }} 1500w{%- endif -%}
-                      {%- if block.settings.image.width < 550 -%}{{ block.settings.image | image_url: width: block.settings.image.width }} {{ block.settings.image.width }}w{%- endif -%}
-                    "
-                    src="{{ block.settings.image | image_url: width: 1100 }}"
-                    sizes="(min-width: 750px) {{ section.settings.content_max_width | minus: section.settings.content_padding | minus: section.settings.content_padding }}px, 100vw"
-                    alt="{{ block.settings.image.alt | escape }}"
-                    loading="lazy"
-                    width="{{ block.settings.image.width }}"
-                    height="{{ block.settings.image.height }}"
-                    class="rte-rich-text__image rte-rich-text__image--{{ block.settings.image_fit | default: 'cover' }}"
-                  >
-                </div>
-              {%- else -%}
-                <div class="rte-rich-text__image-placeholder" role="img" aria-label="Image placeholder">
-                  <span class="rte-rich-text__image-placeholder-text">{{ block.settings.placeholder_label | default: 'Image' }}</span>
-                </div>
-              {%- endif -%}
-            </div>
-        {%- endcase -%}
-      {%- endfor -%}
-    </div>
+            {%- when 'context_image' -%}
+              <div class="rte-rich-text__image-wrapper" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
+                {%- if block.settings.image != blank -%}
+                  <div class="rte-rich-text__image-inner">
+                    <img
+                      srcset="
+                        {%- if block.settings.image.width >= 550 -%}{{ block.settings.image | image_url: width: 550 }} 550w{%- if block.settings.image.width >= 1100 -%}, {%- endif -%}{%- endif -%}
+                        {%- if block.settings.image.width >= 1100 -%}{{ block.settings.image | image_url: width: 1100 }} 1100w{%- if block.settings.image.width >= 1500 -%}, {%- endif -%}{%- endif -%}
+                        {%- if block.settings.image.width >= 1500 -%}{{ block.settings.image | image_url: width: 1500 }} 1500w{%- endif -%}
+                        {%- if block.settings.image.width < 550 -%}{{ block.settings.image | image_url: width: block.settings.image.width }} {{ block.settings.image.width }}w{%- endif -%}
+                      "
+                      src="{{ block.settings.image | image_url: width: 1100 }}"
+                      sizes="(min-width: 750px) {{ section.settings.content_max_width | minus: section.settings.content_padding | minus: section.settings.content_padding }}px, 100vw"
+                      alt="{{ block.settings.image.alt | escape }}"
+                      loading="lazy"
+                      width="{{ block.settings.image.width }}"
+                      height="{{ block.settings.image.height }}"
+                      class="rte-rich-text__image rte-rich-text__image--{{ block.settings.image_fit | default: 'cover' }}"
+                    >
+                  </div>
+                {%- else -%}
+                  <div class="rte-rich-text__image-placeholder" role="img" aria-label="Image placeholder">
+                    <span class="rte-rich-text__image-placeholder-text">
+                      {{- block.settings.placeholder_label | default: 'Image' -}}
+                    </span>
+                  </div>
+                {%- endif -%}
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
     {%- endif -%}
   </div>
 </div>
@@ -176,7 +188,7 @@
       "type": "color",
       "id": "outer_background",
       "label": "Outer background",
-      "default": "#1a1a1a"
+      "default": "#D2CDC4"
     },
     {
       "type": "color",
