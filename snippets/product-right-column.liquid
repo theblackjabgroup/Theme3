@@ -40,9 +40,11 @@
           <div class="product-content-stack" style="--block-gap: {{ block_gap | default: 24 }}px;">
           {%- assign in_content_stack = true -%}
         {%- endunless -%}
-        <div class="product__description" style="
-          font-size: {{ block.settings.font_size | default: 18 }}px;
-          font-weight: {{ block.settings.font_weight | default: 400 }};
+        <div class="product__description product__description--customizable" style="
+          --description-font-size: {{ block.settings.font_size | default: 18 }}px;
+          --description-font-size-mobile: {{ block.settings.font_size_mobile | default: 16 }}px;
+          --description-font-weight: {{ block.settings.font_weight | default: 400 }};
+          --description-font-weight-mobile: {{ block.settings.font_weight_mobile | default: 400 }};
         " {{ block.shopify_attributes }}>{{ product.description }}</div>
 
       {%- when 'marquee' -%}

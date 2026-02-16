@@ -23,15 +23,57 @@
   assign quantity_height = 44
   assign variant_height = 46
   assign media_arrows_height = 38
+  assign variant_border_radius = 14
+  assign variant_border_radius_mobile = 14
+  assign variant_font_size = 14
+  assign variant_font_size_mobile = 14
+  assign variant_font_weight = 600
+  assign variant_font_weight_mobile = 600
+  assign variant_padding_vertical = 13
+  assign variant_padding_vertical_mobile = 12
+  assign variant_padding_horizontal = 28
+  assign variant_padding_horizontal_mobile = 20
+  assign variant_gap = 24
+  assign variant_gap_mobile = 16
+  assign quantity_border_radius = 10
+  assign quantity_border_radius_mobile = 10
+  assign add_to_cart_border_radius = 14
+  assign add_to_cart_border_radius_mobile = 14
+  assign arrows_border_radius = 14
+  assign add_to_cart_font_size = 14
+  assign add_to_cart_font_size_mobile = 14
+  assign add_to_cart_font_weight = 700
+  assign add_to_cart_font_weight_mobile = 700
 
   for block in section.blocks
     if block.type == 'quantity_selector'
       assign add_to_cart_height = block.settings.add_to_cart_height | default: 38
       assign quantity_height = block.settings.quantity_height | default: 44
+      assign quantity_border_radius = block.settings.quantity_border_radius | default: 10
+      assign quantity_border_radius_mobile = block.settings.quantity_border_radius_mobile | default: 10
+      assign add_to_cart_border_radius = block.settings.add_to_cart_border_radius | default: 14
+      assign add_to_cart_border_radius_mobile = block.settings.add_to_cart_border_radius_mobile | default: 14
+      assign add_to_cart_font_size = block.settings.add_to_cart_font_size | default: 14
+      assign add_to_cart_font_size_mobile = block.settings.add_to_cart_font_size_mobile | default: 14
+      assign add_to_cart_font_weight = block.settings.add_to_cart_font_weight | default: 700
+      assign add_to_cart_font_weight_mobile = block.settings.add_to_cart_font_weight_mobile | default: 700
     elsif block.type == 'variant_picker'
       assign variant_height = block.settings.variant_height | default: 46
+      assign variant_border_radius = block.settings.border_radius | default: 14
+      assign variant_border_radius_mobile = block.settings.border_radius_mobile | default: 14
+      assign variant_font_size = block.settings.font_size | default: 14
+      assign variant_font_size_mobile = block.settings.font_size_mobile | default: 14
+      assign variant_font_weight = block.settings.font_weight | default: 600
+      assign variant_font_weight_mobile = block.settings.font_weight_mobile | default: 600
+      assign variant_padding_vertical = block.settings.padding_vertical | default: 13
+      assign variant_padding_vertical_mobile = block.settings.padding_vertical_mobile | default: 12
+      assign variant_padding_horizontal = block.settings.padding_horizontal | default: 28
+      assign variant_padding_horizontal_mobile = block.settings.padding_horizontal_mobile | default: 20
+      assign variant_gap = block.settings.gap | default: 24
+      assign variant_gap_mobile = block.settings.gap_mobile | default: 16
     elsif block.type == 'product_media'
       assign media_arrows_height = block.settings.media_arrows_height | default: 38
+      assign arrows_border_radius = block.settings.arrows_border_radius | default: 14
     endif
   endfor
 -%}
@@ -58,6 +100,27 @@
     --product-quantity-height: {{ quantity_height }}px;
     --product-variant-height: {{ variant_height }}px;
     --product-media-arrows-height: {{ media_arrows_height }}px;
+    --product-variant-border-radius: {{ variant_border_radius }}px;
+    --product-variant-border-radius-mobile: {{ variant_border_radius_mobile }}px;
+    --product-variant-font-size: {{ variant_font_size }}px;
+    --product-variant-font-size-mobile: {{ variant_font_size_mobile }}px;
+    --product-variant-font-weight: {{ variant_font_weight }};
+    --product-variant-font-weight-mobile: {{ variant_font_weight_mobile }};
+    --product-variant-padding-vertical: {{ variant_padding_vertical }}px;
+    --product-variant-padding-vertical-mobile: {{ variant_padding_vertical_mobile }}px;
+    --product-variant-padding-horizontal: {{ variant_padding_horizontal }}px;
+    --product-variant-padding-horizontal-mobile: {{ variant_padding_horizontal_mobile }}px;
+    --product-variant-gap: {{ variant_gap }}px;
+    --product-variant-gap-mobile: {{ variant_gap_mobile }}px;
+    --product-quantity-border-radius: {{ quantity_border_radius }}px;
+    --product-quantity-border-radius-mobile: {{ quantity_border_radius_mobile }}px;
+    --product-add-to-cart-border-radius: {{ add_to_cart_border_radius }}px;
+    --product-add-to-cart-border-radius-mobile: {{ add_to_cart_border_radius_mobile }}px;
+    --product-media-arrows-border-radius: {{ arrows_border_radius }}px;
+    --product-add-to-cart-font-size: {{ add_to_cart_font_size }}px;
+    --product-add-to-cart-font-size-mobile: {{ add_to_cart_font_size_mobile }}px;
+    --product-add-to-cart-font-weight: {{ add_to_cart_font_weight }};
+    --product-add-to-cart-font-weight-mobile: {{ add_to_cart_font_weight_mobile }};
   "
 >
   <!-- HERO SECTION (Floating Absolute) -->
@@ -312,6 +375,16 @@
           submitBtn.disabled = true;
           submitBtn.style.opacity = '0.8';
           submitBtn.style.cursor = 'not-allowed';
+        }
+        // Clear pickup availability for invalid variant combination
+        const pickupAvailability = sectionContainer.querySelector('pickup-availability');
+        if (pickupAvailability) {
+          if (typeof pickupAvailability.update === 'function') {
+            pickupAvailability.update(null);
+          } else {
+            pickupAvailability.removeAttribute('available');
+            pickupAvailability.innerHTML = '';
+          }
         }
       } else {
         // Variant exists
@@ -743,6 +816,76 @@
           "id": "tag_bg_color",
           "label": "Tag Background Color",
           "default": "transparent"
+        },
+        {
+          "type": "range",
+          "id": "border_radius",
+          "min": 0,
+          "max": 50,
+          "step": 2,
+          "unit": "px",
+          "label": "Border radius (Desktop)",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "border_radius_mobile",
+          "min": 0,
+          "max": 50,
+          "step": 2,
+          "unit": "px",
+          "label": "Border radius (Mobile)",
+          "default": 50
+        },
+        {
+          "type": "header",
+          "content": "Typography"
+        },
+        {
+          "type": "range",
+          "id": "font_size",
+          "min": 8,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size (Desktop)",
+          "default": 12
+        },
+        {
+          "type": "range",
+          "id": "font_size_mobile",
+          "min": 8,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size (Mobile)",
+          "default": 11
+        },
+        {
+          "type": "select",
+          "id": "font_weight",
+          "label": "Font Weight (Desktop)",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "500"
+        },
+        {
+          "type": "select",
+          "id": "font_weight_mobile",
+          "label": "Font Weight (Mobile)",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "500"
         }
       ]
     },
@@ -768,8 +911,18 @@
           "max": 100,
           "step": 1,
           "unit": "px",
-          "label": "Title Font Size",
+          "label": "Title Font Size (Desktop)",
           "default": 38
+        },
+        {
+          "type": "range",
+          "id": "title_font_size_mobile",
+          "min": 16,
+          "max": 60,
+          "step": 1,
+          "unit": "px",
+          "label": "Title Font Size (Mobile)",
+          "default": 28
         }
       ]
     },
@@ -795,15 +948,47 @@
           "max": 40,
           "step": 1,
           "unit": "px",
-          "label": "Tagline Font Size",
+          "label": "Tagline Font Size (Desktop)",
           "default": 14
+        },
+        {
+          "type": "range",
+          "id": "tagline_font_size_mobile",
+          "min": 8,
+          "max": 32,
+          "step": 1,
+          "unit": "px",
+          "label": "Tagline Font Size (Mobile)",
+          "default": 12
         }
       ]
     },
     {
       "type": "mobile_slider",
       "name": "Mobile Image Slider",
-      "limit": 1
+      "limit": 1,
+      "settings": [
+        {
+          "type": "range",
+          "id": "arrows_height",
+          "min": 28,
+          "max": 64,
+          "step": 2,
+          "unit": "px",
+          "label": "Arrows height",
+          "default": 38
+        },
+        {
+          "type": "range",
+          "id": "arrows_border_radius",
+          "min": 0,
+          "max": 50,
+          "step": 2,
+          "unit": "px",
+          "label": "Arrows border radius",
+          "default": 14
+        }
+      ]
     },
     {
       "type": "product_media",
@@ -819,6 +1004,16 @@
           "unit": "px",
           "label": "Media Slider Arrows Height",
           "default": 38
+        },
+        {
+          "type": "range",
+          "id": "arrows_border_radius",
+          "min": 0,
+          "max": 50,
+          "step": 2,
+          "unit": "px",
+          "label": "Arrows border radius",
+          "default": 14
         }
       ]
     },
@@ -834,8 +1029,18 @@
           "max": 100,
           "step": 1,
           "unit": "px",
-          "label": "Main Price Font Size",
+          "label": "Main Price Font Size (Desktop)",
           "default": 56
+        },
+        {
+          "type": "range",
+          "id": "price_font_size_mobile",
+          "min": 20,
+          "max": 72,
+          "step": 1,
+          "unit": "px",
+          "label": "Main Price Font Size (Mobile)",
+          "default": 40
         },
         {
           "type": "range",
@@ -844,15 +1049,77 @@
           "max": 100,
           "step": 1,
           "unit": "px",
-          "label": "Sale Price (MRP) Font Size",
+          "label": "Sale Price (MRP) Font Size (Desktop)",
           "default": 20
+        },
+        {
+          "type": "range",
+          "id": "sale_price_font_size_mobile",
+          "min": 10,
+          "max": 40,
+          "step": 1,
+          "unit": "px",
+          "label": "Sale Price Font Size (Mobile)",
+          "default": 16
         }
       ]
     },
     {
       "type": "stock_badge",
       "name": "Stock Badge",
-      "limit": 1
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Typography"
+        },
+        {
+          "type": "range",
+          "id": "font_size",
+          "min": 10,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size (Desktop)",
+          "default": 14
+        },
+        {
+          "type": "range",
+          "id": "font_size_mobile",
+          "min": 10,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size (Mobile)",
+          "default": 13
+        },
+        {
+          "type": "select",
+          "id": "font_weight",
+          "label": "Font Weight (Desktop)",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "400"
+        },
+        {
+          "type": "select",
+          "id": "font_weight_mobile",
+          "label": "Font Weight (Mobile)",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "400"
+        }
+      ]
     },
     {
       "type": "variant_picker",
@@ -868,6 +1135,140 @@
           "unit": "px",
           "label": "Variant Buttons Height",
           "default": 46
+        },
+        {
+          "type": "range",
+          "id": "border_radius",
+          "min": 0,
+          "max": 50,
+          "step": 2,
+          "unit": "px",
+          "label": "Border radius (Desktop)",
+          "default": 14
+        },
+        {
+          "type": "range",
+          "id": "border_radius_mobile",
+          "min": 0,
+          "max": 50,
+          "step": 2,
+          "unit": "px",
+          "label": "Border radius (Mobile)",
+          "default": 14
+        },
+        {
+          "type": "header",
+          "content": "Typography"
+        },
+        {
+          "type": "range",
+          "id": "font_size",
+          "min": 10,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size (Desktop)",
+          "default": 14
+        },
+        {
+          "type": "range",
+          "id": "font_size_mobile",
+          "min": 10,
+          "max": 22,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size (Mobile)",
+          "default": 14
+        },
+        {
+          "type": "select",
+          "id": "font_weight",
+          "label": "Font Weight (Desktop)",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "600"
+        },
+        {
+          "type": "select",
+          "id": "font_weight_mobile",
+          "label": "Font Weight (Mobile)",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "600"
+        },
+        {
+          "type": "header",
+          "content": "Spacing"
+        },
+        {
+          "type": "range",
+          "id": "padding_vertical",
+          "min": 4,
+          "max": 40,
+          "step": 1,
+          "unit": "px",
+          "label": "Button Padding Vertical (Desktop)",
+          "default": 13
+        },
+        {
+          "type": "range",
+          "id": "padding_vertical_mobile",
+          "min": 4,
+          "max": 32,
+          "step": 1,
+          "unit": "px",
+          "label": "Button Padding Vertical (Mobile)",
+          "default": 12
+        },
+        {
+          "type": "range",
+          "id": "padding_horizontal",
+          "min": 8,
+          "max": 60,
+          "step": 1,
+          "unit": "px",
+          "label": "Button Padding Horizontal (Desktop)",
+          "default": 28
+        },
+        {
+          "type": "range",
+          "id": "padding_horizontal_mobile",
+          "min": 8,
+          "max": 48,
+          "step": 1,
+          "unit": "px",
+          "label": "Button Padding Horizontal (Mobile)",
+          "default": 20
+        },
+        {
+          "type": "range",
+          "id": "gap",
+          "min": 4,
+          "max": 48,
+          "step": 2,
+          "unit": "px",
+          "label": "Gap Between Variants (Desktop)",
+          "default": 24
+        },
+        {
+          "type": "range",
+          "id": "gap_mobile",
+          "min": 4,
+          "max": 32,
+          "step": 2,
+          "unit": "px",
+          "label": "Gap Between Variants (Mobile)",
+          "default": 16
         }
       ]
     },
@@ -889,8 +1290,18 @@
           "max": 40,
           "step": 1,
           "unit": "px",
-          "label": "Promo Text Font Size",
+          "label": "Promo Text Font Size (Desktop)",
           "default": 12
+        },
+        {
+          "type": "range",
+          "id": "promo_font_size_mobile",
+          "min": 8,
+          "max": 32,
+          "step": 1,
+          "unit": "px",
+          "label": "Promo Text Font Size (Mobile)",
+          "default": 11
         }
       ]
     },
@@ -906,13 +1317,36 @@
           "max": 24,
           "step": 1,
           "unit": "px",
-          "label": "Font size",
+          "label": "Font size (Desktop)",
           "default": 14
+        },
+        {
+          "type": "range",
+          "id": "font_size_mobile",
+          "min": 10,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "label": "Font size (Mobile)",
+          "default": 13
         },
         {
           "type": "select",
           "id": "font_weight",
-          "label": "Font weight",
+          "label": "Font weight (Desktop)",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "400"
+        },
+        {
+          "type": "select",
+          "id": "font_weight_mobile",
+          "label": "Font weight (Mobile)",
           "options": [
             { "value": "300", "label": "Light" },
             { "value": "400", "label": "Normal" },
@@ -925,7 +1359,19 @@
         {
           "type": "select",
           "id": "location_font_weight",
-          "label": "Location name font weight",
+          "label": "Location name font weight (Desktop)",
+          "options": [
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "700"
+        },
+        {
+          "type": "select",
+          "id": "location_font_weight_mobile",
+          "label": "Location name font weight (Mobile)",
           "options": [
             { "value": "400", "label": "Normal" },
             { "value": "500", "label": "Medium" },
@@ -970,6 +1416,96 @@
           "unit": "px",
           "label": "Quantity Selector Height",
           "default": 44
+        },
+        {
+          "type": "range",
+          "id": "quantity_border_radius",
+          "min": 0,
+          "max": 50,
+          "step": 2,
+          "unit": "px",
+          "label": "Quantity selector border radius (Desktop)",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "quantity_border_radius_mobile",
+          "min": 0,
+          "max": 50,
+          "step": 2,
+          "unit": "px",
+          "label": "Quantity selector border radius (Mobile)",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "add_to_cart_border_radius",
+          "min": 0,
+          "max": 50,
+          "step": 2,
+          "unit": "px",
+          "label": "Add to cart border radius (Desktop)",
+          "default": 14
+        },
+        {
+          "type": "range",
+          "id": "add_to_cart_border_radius_mobile",
+          "min": 0,
+          "max": 50,
+          "step": 2,
+          "unit": "px",
+          "label": "Add to cart border radius (Mobile)",
+          "default": 14
+        },
+        {
+          "type": "header",
+          "content": "Add to Cart Typography"
+        },
+        {
+          "type": "range",
+          "id": "add_to_cart_font_size",
+          "min": 10,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size (Desktop)",
+          "default": 14
+        },
+        {
+          "type": "range",
+          "id": "add_to_cart_font_size_mobile",
+          "min": 10,
+          "max": 22,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size (Mobile)",
+          "default": 14
+        },
+        {
+          "type": "select",
+          "id": "add_to_cart_font_weight",
+          "label": "Font Weight (Desktop)",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "700"
+        },
+        {
+          "type": "select",
+          "id": "add_to_cart_font_weight_mobile",
+          "label": "Font Weight (Mobile)",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "700"
         }
       ]
     },
@@ -1005,13 +1541,36 @@
           "max": 48,
           "step": 1,
           "unit": "px",
-          "label": "Heading Font Size",
+          "label": "Heading Font Size (Desktop)",
           "default": 18
+        },
+        {
+          "type": "range",
+          "id": "heading_font_size_mobile",
+          "min": 12,
+          "max": 36,
+          "step": 1,
+          "unit": "px",
+          "label": "Heading Font Size (Mobile)",
+          "default": 16
         },
         {
           "type": "select",
           "id": "heading_font_weight",
-          "label": "Heading Font Weight",
+          "label": "Heading Font Weight (Desktop)",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "400"
+        },
+        {
+          "type": "select",
+          "id": "heading_font_weight_mobile",
+          "label": "Heading Font Weight (Mobile)",
           "options": [
             { "value": "300", "label": "Light" },
             { "value": "400", "label": "Normal" },
@@ -1028,13 +1587,36 @@
           "max": 32,
           "step": 1,
           "unit": "px",
-          "label": "Content Font Size",
+          "label": "Content Font Size (Desktop)",
           "default": 16
+        },
+        {
+          "type": "range",
+          "id": "content_font_size_mobile",
+          "min": 12,
+          "max": 28,
+          "step": 1,
+          "unit": "px",
+          "label": "Content Font Size (Mobile)",
+          "default": 15
         },
         {
           "type": "select",
           "id": "content_font_weight",
-          "label": "Content Font Weight",
+          "label": "Content Font Weight (Desktop)",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "400"
+        },
+        {
+          "type": "select",
+          "id": "content_font_weight_mobile",
+          "label": "Content Font Weight (Mobile)",
           "options": [
             { "value": "300", "label": "Light" },
             { "value": "400", "label": "Normal" },
@@ -1058,13 +1640,36 @@
           "max": 32,
           "step": 1,
           "unit": "px",
-          "label": "Font Size",
+          "label": "Font Size (Desktop)",
           "default": 18
+        },
+        {
+          "type": "range",
+          "id": "font_size_mobile",
+          "min": 12,
+          "max": 28,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size (Mobile)",
+          "default": 16
         },
         {
           "type": "select",
           "id": "font_weight",
-          "label": "Font Weight",
+          "label": "Font Weight (Desktop)",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "400"
+        },
+        {
+          "type": "select",
+          "id": "font_weight_mobile",
+          "label": "Font Weight (Mobile)",
           "options": [
             { "value": "300", "label": "Light" },
             { "value": "400", "label": "Normal" },
@@ -1124,13 +1729,23 @@
           "max": 48,
           "step": 1,
           "unit": "px",
-          "label": "Font Size",
+          "label": "Font Size (Desktop)",
           "default": 18
+        },
+        {
+          "type": "range",
+          "id": "font_size_mobile",
+          "min": 12,
+          "max": 36,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size (Mobile)",
+          "default": 16
         },
         {
           "type": "select",
           "id": "font_weight",
-          "label": "Font Weight",
+          "label": "Font Weight (Desktop)",
           "options": [
             { "value": "300", "label": "Light" },
             { "value": "400", "label": "Normal" },
@@ -1139,6 +1754,19 @@
             { "value": "700", "label": "Bold" }
           ],
           "default": "700"
+        },
+        {
+          "type": "select",
+          "id": "font_weight_mobile",
+          "label": "Font Weight (Mobile)",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "600"
         },
         {
           "type": "header",
@@ -1208,13 +1836,36 @@
           "max": 48,
           "step": 1,
           "unit": "px",
-          "label": "Heading Font Size",
+          "label": "Heading Font Size (Desktop)",
           "default": 24
+        },
+        {
+          "type": "range",
+          "id": "heading_font_size_mobile",
+          "min": 12,
+          "max": 36,
+          "step": 1,
+          "unit": "px",
+          "label": "Heading Font Size (Mobile)",
+          "default": 20
         },
         {
           "type": "select",
           "id": "heading_font_weight",
-          "label": "Heading Font Weight",
+          "label": "Heading Font Weight (Desktop)",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "700"
+        },
+        {
+          "type": "select",
+          "id": "heading_font_weight_mobile",
+          "label": "Heading Font Weight (Mobile)",
           "options": [
             { "value": "300", "label": "Light" },
             { "value": "400", "label": "Normal" },
@@ -1231,13 +1882,36 @@
           "max": 32,
           "step": 1,
           "unit": "px",
-          "label": "Text Font Size",
+          "label": "Text Font Size (Desktop)",
           "default": 18
+        },
+        {
+          "type": "range",
+          "id": "text_font_size_mobile",
+          "min": 12,
+          "max": 28,
+          "step": 1,
+          "unit": "px",
+          "label": "Text Font Size (Mobile)",
+          "default": 16
         },
         {
           "type": "select",
           "id": "text_font_weight",
-          "label": "Text Font Weight",
+          "label": "Text Font Weight (Desktop)",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "400"
+        },
+        {
+          "type": "select",
+          "id": "text_font_weight_mobile",
+          "label": "Text Font Weight (Mobile)",
           "options": [
             { "value": "300", "label": "Light" },
             { "value": "400", "label": "Normal" },
@@ -1277,13 +1951,23 @@
           "max": 24,
           "step": 1,
           "unit": "px",
-          "label": "Font Size",
+          "label": "Font Size (Desktop)",
           "default": 12
+        },
+        {
+          "type": "range",
+          "id": "font_size_mobile",
+          "min": 8,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size (Mobile)",
+          "default": 11
         },
         {
           "type": "select",
           "id": "font_weight",
-          "label": "Font Weight",
+          "label": "Font Weight (Desktop)",
           "options": [
             { "value": "300", "label": "Light" },
             { "value": "400", "label": "Normal" },
@@ -1292,6 +1976,19 @@
             { "value": "700", "label": "Bold" }
           ],
           "default": "700"
+        },
+        {
+          "type": "select",
+          "id": "font_weight_mobile",
+          "label": "Font Weight (Mobile)",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "600"
         }
       ]
     }

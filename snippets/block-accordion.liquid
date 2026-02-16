@@ -16,9 +16,13 @@
 
 <accordion-item class="accordion" style="
   --accordion-heading-font-size: {{ block.settings.heading_font_size | default: 18 }}px;
+  --accordion-heading-font-size-mobile: {{ block.settings.heading_font_size_mobile | default: 16 }}px;
   --accordion-heading-font-weight: {{ block.settings.heading_font_weight | default: 400 }};
+  --accordion-heading-font-weight-mobile: {{ block.settings.heading_font_weight_mobile | default: 400 }};
   --accordion-content-font-size: {{ block.settings.content_font_size | default: 16 }}px;
+  --accordion-content-font-size-mobile: {{ block.settings.content_font_size_mobile | default: 15 }}px;
   --accordion-content-font-weight: {{ block.settings.content_font_weight | default: 400 }};
+  --accordion-content-font-weight-mobile: {{ block.settings.content_font_weight_mobile | default: 400 }};
 ">
   <div
     class="accordion__summary"
