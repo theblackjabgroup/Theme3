@@ -78,6 +78,10 @@
     margin-right: 8px;
   }
 
+  .share-story-submit.submit-button--icon-only .submit-button__icon {
+    margin-right: 0;
+  }
+
   .submit-button__text {
     position: relative;
   }
@@ -107,6 +111,9 @@
   {%- assign button_class = 'share-story-submit ' | append: class -%}
 {%- else -%}
   {%- assign button_class = 'share-story-submit' -%}
+{%- endif -%}
+{%- if icon_only -%}
+  {%- assign button_class = button_class | append: ' submit-button--icon-only' -%}
 {%- endif -%}
 
 {%- if url != blank -%}

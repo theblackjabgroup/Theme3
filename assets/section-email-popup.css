@@ -287,10 +287,6 @@
   z-index: 0;
 }
 
-.email-popup__submit-wrap .email-popup__submit .submit-button__icon {
-  margin: 0;
-}
-
 .email-popup__submit-wrap .email-popup__submit .submit-button__icon img,
 .email-popup__submit-wrap .email-popup__submit .submit-button__icon svg {
   width: 20px;
