@@ -120,7 +120,6 @@ if (!customElements.get('pickup-availability-drawer')) {
 
       hide() {
         this.removeAttribute('open');
-        this.classList.remove('animate');
         document.body.removeEventListener('click', this.onBodyClick);
         document.body.classList.remove('overflow-hidden', 'pickup-drawer-open');
         removeTrapFocus(this.focusElement);
