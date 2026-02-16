@@ -62,6 +62,18 @@
             "title_font_size": 38
           }
         },
+        "divider": {
+          "type": "divider",
+          "settings": {
+            "width": 1,
+            "width_mobile": 1,
+            "length": 80,
+            "length_mobile": 80,
+            "color": "#9a9a9a",
+            "style": "solid",
+            "spacing": 8
+          }
+        },
         "tagline": {
           "type": "tagline",
           "settings": {
@@ -204,6 +216,7 @@
       "block_order": [
         "product_tag",
         "title",
+        "divider",
         "tagline",
         "mobile_slider",
         "price",

@@ -52,50 +52,60 @@
     aria-modal="true"
     aria-labelledby="PickupAvailabilityHeading"
   >
+    <div class="pickup-drawer__overlay" aria-hidden="true"></div>
+    <div class="pickup-drawer__inner">
     <div class="pickup-availability-header">
-      <h2 class="h3 pickup-availability-drawer-title" id="PickupAvailabilityHeading">
-        {{ product_variant.product.title | escape }}
+      <h2 class="pickup-availability-drawer-title" id="PickupAvailabilityHeading">
+        {{ 'products.product.pickup_availability.title' | t }}
       </h2>
       <button class="pickup-availability-drawer-button" type="button" aria-label="{{ 'accessibility.close' | t }}">
         {{- 'icon-close.svg' | inline_asset_content -}}
       </button>
     </div>
 
-    {%- unless product_variant.product.has_only_default_variant -%}
-      <p class="pickup-availability-variant">
-        {%- for product_option in product_variant.product.options_with_values -%}
-          {{ product_option.name | escape }}:&nbsp;
-          {%- for value in product_option.values -%}
-            {%- if product_option.selected_value == value -%}
-              <span>{{ value | escape }}</span>
-            {%- endif -%}
+    <div class="pickup-availability-product-info">
+      <p class="pickup-availability-product-title">{{ product_variant.product.title | escape }}</p>
+      {%- unless product_variant.product.has_only_default_variant -%}
+        <p class="pickup-availability-variant">
+          {%- for product_option in product_variant.product.options_with_values -%}
+            {%- for value in product_option.values -%}
+              {%- if product_option.selected_value == value -%}
+                {{ value | escape }}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- unless forloop.last -%}, {%- endunless -%}
           {%- endfor -%}
-          {%- unless forloop.last -%},&nbsp;{%- endunless -%}
-        {%- endfor -%}
-      </p>
-    {%- endunless -%}
+        </p>
+      {%- endunless -%}
+    </div>
 
     <ul class="pickup-availability-list list-unstyled" role="list" data-store-availability-drawer-content>
       {%- for availability in pick_up_availabilities -%}
         <li class="pickup-availability-list__item">
-          <h3 class="h4">{{ availability.location.name | escape }}</h3>
-          <p class="pickup-availability-preview caption-large">
-            {%- if availability.available -%}
+          <h3 class="pickup-availability-location-name">{{ availability.location.name | escape }}</h3>
+          {%- if availability.available -%}
+            <p class="pickup-availability-status pickup-availability-status--available">
+              <span class="pickup-availability-status-icon" aria-hidden="true"></span>
               {{ 'products.product.pickup_availability.pick_up_available' | t }},
               {{ availability.pick_up_time | downcase }}
-            {%- endif -%}
-          </p>
+            </p>
+          {%- else -%}
+            <p class="pickup-availability-status pickup-availability-status--unavailable">
+              {{ 'products.product.pickup_availability.pick_up_unavailable' | t }}
+            </p>
+          {%- endif -%}
 
           {%- assign address = availability.location.address -%}
           <address class="pickup-availability-address">
             {{ address | format_address }}
 
             {%- if address.phone.size > 0 -%}
-              <p>{{ address.phone }}</p>
+              <p class="pickup-availability-phone">{{ address.phone }}</p>
             {%- endif -%}
           </address>
         </li>
       {%- endfor -%}
     </ul>
+    </div>
   </pickup-availability-drawer>
 {%- endif -%}

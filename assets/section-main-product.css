@@ -111,7 +111,51 @@
 }
 .product__tagline--customizable {
   font-size: var(--tagline-font-size, var(--font-size-md));
+  font-weight: var(--tagline-font-weight, 400);
+  color: var(--tagline-text-color, var(--color-text));
 }
+
+/* Divider Line Block */
+.product-divider {
+  width: var(--divider-length, 80%);
+  height: 0;
+  border: none;
+  margin-left: auto;
+  margin-right: auto;
+  /* margin-bottom inherited from .product-left-inner > * for block gap */
+}
+
+/* Solid: use border */
+.product-divider--solid {
+  border-top: var(--divider-width, 1px) solid var(--divider-color, #9a9a9a);
+}
+
+/* Dashed: use repeating gradient for customizable spacing */
+.product-divider--dashed {
+  height: var(--divider-width, 1px);
+  background: repeating-linear-gradient(
+    to right,
+    var(--divider-color, #9a9a9a) 0,
+    var(--divider-color, #9a9a9a) 8px,
+    transparent 8px,
+    transparent calc(8px + var(--divider-spacing, 8px))
+  );
+}
+
+/* Dotted: use repeating radial gradient for customizable spacing */
+.product-divider--dotted {
+  height: 4px;
+  min-height: 4px;
+  background-image: radial-gradient(
+    circle at center,
+    var(--divider-color, #9a9a9a) 2px,
+    transparent 2px
+  );
+  background-size: calc(4px + var(--divider-spacing, 8px)) 100%;
+  background-repeat: repeat-x;
+  background-position: 0 center;
+}
+
 .product-type-badge span {
   display: inline-block;
   padding: var(--spacing-4) var(--spacing-6);
@@ -870,7 +914,7 @@ accordion-item[open] .accordion__wrapper {
   }
 
   body {
-    padding-bottom: 0;
+    padding-bottom: 70px;
   }
 
   .product-actions-row {
@@ -985,6 +1029,9 @@ accordion-item[open] .accordion__wrapper {
     border-radius: var(--product-variant-border-radius-mobile, 14px);
     font-size: var(--product-variant-font-size-mobile, var(--product-variant-font-size, 14px));
     font-weight: var(--product-variant-font-weight-mobile, var(--product-variant-font-weight, 600));
+  }
+  /* Padding only for text variant options (Size, etc.) - color swatches keep padding: 0 */
+  .product-form__input:not(.product-form__input--color) label {
     padding: var(--product-variant-padding-vertical-mobile, var(--product-variant-padding-vertical, 12px)) var(--product-variant-padding-horizontal-mobile, var(--product-variant-padding-horizontal, 20px));
   }
   .variant-options-row {
@@ -1021,6 +1068,7 @@ accordion-item[open] .accordion__wrapper {
   }
   .product__tagline--customizable {
     font-size: var(--tagline-font-size-mobile, var(--tagline-font-size));
+    font-weight: var(--tagline-font-weight-mobile, var(--tagline-font-weight));
   }
   .price-main {
     font-size: var(--price-font-size-mobile, var(--price-font-size, 40px));
@@ -1069,6 +1117,10 @@ accordion-item[open] .accordion__wrapper {
   .icon-strip-text {
     font-size: var(--icon-strip-font-size-mobile, var(--icon-strip-font-size));
     font-weight: var(--icon-strip-font-weight-mobile, var(--icon-strip-font-weight));
+  }
+  .product-divider {
+    width: var(--divider-length-mobile, var(--divider-length, 80%));
+    border-top-width: var(--divider-width-mobile, var(--divider-width, 1px));
   }
 }
 
