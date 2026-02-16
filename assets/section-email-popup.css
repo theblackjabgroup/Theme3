@@ -251,38 +251,54 @@
   outline: none;
 }
 
-.email-popup__submit {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--popup-button-width, 48px);
-  height: var(--popup-button-height, 48px);
-  margin: 0;
-  padding: 0;
-  border: 1.5px solid var(--popup-input-border, #3f473e);
-  background: var(--popup-button-bg, #d6a9b4);
-  color: var(--popup-button-icon, #3f473e);
-  cursor: pointer;
-  transition: opacity 0.2s ease;
-  box-sizing: border-box;
+/* Submit button (submit-button snippet) – full styling, hover, animation */
+.email-popup__submit-wrap {
   flex-shrink: 0;
+  display: flex;
+  isolation: isolate;
+}
+
+.email-popup__submit-wrap .email-popup__submit {
+  width: var(--popup-button-width, 48px) !important;
+  min-width: var(--popup-button-width, 48px) !important;
+  height: var(--popup-button-height, 48px) !important;
+  padding: 0;
+  background: var(--popup-heading-color);
+  border-radius: 14px;
+  box-shadow: 0 3px 0 0 var(--popup-heading-color);
+}
+
+.email-popup__submit-wrap .email-popup__submit .submit-button__content {
+  padding: 0;
+  background-color: var(--popup-button-bg, #d6a9b4);
+  color: var(--popup-button-icon, #3f473e);
+  border-color: var(--popup-input-border, #3f473e);
   border-radius: var(--popup-input-border-radius, 100px);
-  box-shadow: 0 3px 0 0 var(--popup-input-border, #3f473e);
 }
 
-.email-popup__submit:hover {
-  opacity: 0.9;
+.email-popup__submit-wrap .email-popup__submit .submit-button__shadow {
+  position: absolute;
+  top: 3px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--popup-button-shadow, #2d2d2d);
+  border-radius: var(--popup-input-border-radius, 100px);
+  z-index: 0;
 }
 
-.email-popup__submit-icon,
-.email-popup__submit-icon--svg svg,
-.email-popup__submit img.email-popup__submit-icon {
+.email-popup__submit-wrap .email-popup__submit .submit-button__icon {
+  margin: 0;
+}
+
+.email-popup__submit-wrap .email-popup__submit .submit-button__icon img,
+.email-popup__submit-wrap .email-popup__submit .submit-button__icon svg {
   width: 20px;
   height: 20px;
   display: block;
 }
 
-.email-popup__submit-icon--svg svg {
+.email-popup__submit-wrap .email-popup__submit .submit-button__icon svg {
   fill: currentColor;
 }
 
@@ -324,12 +340,8 @@
     min-height: var(--popup-input-height, 48px);
   }
 
-  .email-popup__field-wrapper--mobile-row .email-popup__submit {
+  .email-popup__field-wrapper--mobile-row .email-popup__submit-wrap {
     flex: 0 0 auto;
-    width: var(--popup-button-width, 48px);
-    min-width: var(--popup-button-width, 48px);
-    height: var(--popup-button-height, 48px);
-    min-height: var(--popup-button-height, 48px);
   }
 
   .email-popup__field-wrapper--mobile-column {
@@ -345,10 +357,13 @@
     min-height: var(--popup-input-height, 48px);
   }
 
-  .email-popup__field-wrapper--mobile-column .email-popup__submit {
+  .email-popup__field-wrapper--mobile-column .email-popup__submit-wrap {
     flex: 0 0 auto;
     width: 100%;
-    height: var(--popup-button-height, 48px);
-    min-height: var(--popup-button-height, 48px);
+  }
+
+  .email-popup__field-wrapper--mobile-column .email-popup__submit-wrap .email-popup__submit {
+    width: 100% !important;
+    min-width: 0 !important;
   }
 }
