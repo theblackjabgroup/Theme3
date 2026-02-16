@@ -18,7 +18,6 @@
 
     {% for block in section.blocks %}
       {% case block.type %}
-        
         {% when 'product_tag' %}
           {% if block.settings.tag_text != blank %}
             <div
@@ -35,7 +34,11 @@
           {% endif %}
 
         {% when 'title' %}
-          <div class="product__title" style="max-width: {{ block.settings.title_width | default: 500 }}px; margin-left: auto; margin-right: auto;" {{ block.shopify_attributes }}>
+          <div
+            class="product__title"
+            style="max-width: {{ block.settings.title_width | default: 500 }}px; margin-left: auto; margin-right: auto;"
+            {{ block.shopify_attributes }}
+          >
             <h1 style="font-size: {{ block.settings.title_font_size | default: 38 }}px;">{{ product.title }}</h1>
           </div>
 
@@ -133,7 +136,11 @@
         {% when 'promo_text' %}
           <!-- PROMO TEXT -->
           {% if block.settings.promo_text != blank %}
-            <div class="sale-roasted-text" style="font-size: {{ block.settings.promo_font_size | default: 12 }}px;" {{ block.shopify_attributes }}>
+            <div
+              class="sale-roasted-text"
+              style="font-size: {{ block.settings.promo_font_size | default: 12 }}px;"
+              {{ block.shopify_attributes }}
+            >
               {{ block.settings.promo_text }}
             </div>
           {% endif %}
@@ -191,6 +198,46 @@
             </product-form>
           </div>
 
+        {% when 'pickup_availability' %}
+          {%- assign pick_up_availabilities = current_variant.store_availabilities | where: 'pick_up_enabled', true -%}
+          {%- assign pickup_scheme = section.settings.color_scheme -%}
+          {%- if pickup_scheme == blank -%}
+            {%- assign pickup_scheme = settings.color_schemes | first -%}
+          {%- endif -%}
+          <div
+            class="product-pickup-availability-wrapper"
+            style="
+              --pickup-font-size: {{ block.settings.font_size | default: 14 }}px;
+              --pickup-font-weight: {{ block.settings.font_weight | default: 400 }};
+              --pickup-location-font-weight: {{ block.settings.location_font_weight | default: 700 }};
+              --pickup-spacing: {{ block.settings.spacing | default: 8 }}px;
+            "
+            {{ block.shopify_attributes }}
+          >
+            <pickup-availability
+              class="product__pickup-availabilities"
+              {% if current_variant.available and pick_up_availabilities.size > 0 %}
+                available
+              {% endif %}
+              data-root-url="{{ routes.root_url }}"
+              data-variant-id="{{ current_variant.id }}"
+              data-product-page-color-scheme="gradient color-{{ pickup_scheme.id }}"
+            >
+              <template>
+                <pickup-availability-preview class="pickup-availability-preview">
+                  <span class="svg-wrapper">
+                    {{- 'icon-unavailable.svg' | inline_asset_content -}}
+                  </span>
+                  <div class="pickup-availability-info">
+                    <p class="caption-large">{{ 'products.product.pickup_availability.unavailable' | t }}</p>
+                    <button class="pickup-availability-button link link--text underlined-link">
+                      {{ 'products.product.pickup_availability.refresh' | t }}
+                    </button>
+                  </div>
+                </pickup-availability-preview>
+              </template>
+            </pickup-availability>
+          </div>
       {% endcase %}
     {% endfor %}
   </div>

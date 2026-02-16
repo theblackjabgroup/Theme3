@@ -159,6 +159,7 @@
   transition: transform 0.4s ease, box-shadow 0.4s ease;
   padding: 13px 28px;
   min-width: 108px;
+  min-height: var(--product-variant-height, 46px);
   color: var(--color-primary-button-text);
 }
 
@@ -180,10 +181,74 @@
   background: var(--color-accent-pink);
   color: var(--color-primary-button-border);
 }
+
+/* Sold-out variant: gray styling */
+.product-variant-sold-out .product-form__input input:checked + label {
+  background: var(--color-accent-light-grey);
+  color: var(--color-text);
+  border-color: var(--color-text);
+  box-shadow: 0 3px 0 var(--color-text);
+  cursor: default;
+}
+
+.product-variant-sold-out .product-form__input input:checked + label:hover,
+.product-variant-sold-out .product-form__input input:checked + label:active {
+  transform: none;
+  box-shadow: 0 3px 0 var(--color-text);
+}
+
+.product-variant-sold-out .product-form__input--color input:checked + label {
+  background: var(--color-accent-light-grey);
+  border-color: var(--color-text);
+  box-shadow: 0 3px 0 var(--color-text);
+}
+
+.product-variant-sold-out .product-form__input--color input:checked + label:hover,
+.product-variant-sold-out .product-form__input--color input:checked + label:active {
+  transform: none;
+  box-shadow: 0 3px 0 var(--color-text);
+}
+
+/* Sold-out: quantity selector gray */
+.product-variant-sold-out .product-actions-row .quantity.quantity--drawer-style .quantity__button {
+  background-color: var(--color-accent-light-grey);
+  border-color: var(--color-text);
+  color: var(--color-text);
+  box-shadow: 0 2px 0 var(--color-text);
+}
+
+.product-variant-sold-out .product-actions-row .quantity.quantity--drawer-style .quantity__input,
+.product-variant-sold-out .product-actions-row .quantity.quantity--drawer-style input {
+  background: var(--color-accent-light-grey) !important;
+  color: var(--color-text) !important;
+  border-color: var(--color-text) !important;
+  box-shadow: 0 2px 0 var(--color-text) !important;
+}
+
+/* Sold-out: add to cart button */
+.product-variant-sold-out .product-form__submit .submit-button__content,
+.product-variant-sold-out .product-form__submit .submit-button__shadow {
+  transition: none;
+  transform: none;
+}
+
+.product-variant-sold-out .product-form__submit:hover .submit-button__content,
+.product-variant-sold-out .product-form__submit:active .submit-button__content,
+.product-variant-sold-out .product-form__submit:hover .submit-button__shadow,
+.product-variant-sold-out .product-form__submit:active .submit-button__shadow {
+  transform: none;
+}
+
+.product-variant-sold-out .product-form__submit .submit-button__content {
+  background-color: var(--color-accent-light-grey);
+  cursor: not-allowed;
+}
+
 .product-form__input--color label {
   border-radius: var(--radius-l);
   width: 58px;
-  height: 46px;
+  height: var(--product-variant-height, 46px);
+  min-height: var(--product-variant-height, 46px);
   padding: 0;
 }
 .product-form__input--color input:checked + label {
@@ -230,6 +295,22 @@
   gap: var(--spacing-m);
 }
 
+/* Quantity selector height (product page) */
+.product-actions-row .quantity.quantity--drawer-style .quantity__button {
+  width: var(--product-quantity-height, 44px);
+  height: var(--product-quantity-height, 44px);
+  min-width: var(--product-quantity-height, 44px);
+  min-height: var(--product-quantity-height, 44px);
+}
+
+.product-actions-row .quantity.quantity--drawer-style .quantity__input,
+.product-actions-row .quantity.quantity--drawer-style input {
+  width: calc(var(--product-quantity-height, 44px) - 8px) !important;
+  height: calc(var(--product-quantity-height, 44px) - 8px) !important;
+  min-width: calc(var(--product-quantity-height, 44px) - 8px) !important;
+  min-height: calc(var(--product-quantity-height, 44px) - 8px) !important;
+}
+
 .product-form__submit.share-story-submit {
   margin-top: 0;
   padding: 0;
@@ -237,11 +318,21 @@
   white-space: nowrap;
   min-width: auto;
   flex: 1 1 auto;
+  height: var(--product-add-to-cart-height, 38px);
+}
+
+.product-form__submit .submit-button__content {
+  height: var(--product-add-to-cart-height, 38px);
+  min-height: var(--product-add-to-cart-height, 38px);
+  padding: 0 20px;
+  box-sizing: border-box;
 }
 
 @media (min-width: 990px) {
   .product-form__submit .submit-button__content {
     min-width: 234px;
+    height: var(--product-add-to-cart-height, 38px);
+    min-height: var(--product-add-to-cart-height, 38px);
   }
 }
 
@@ -263,6 +354,84 @@
 }
 
 /* =============================
+   PICKUP AVAILABILITY BLOCK
+============================= */
+.product-pickup-availability-wrapper {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  min-height: 50px;
+  padding: 12px 0;
+}
+
+.product__pickup-availabilities {
+  display: block;
+  width: 100%;
+  color: var(--color-text);
+}
+
+.product__pickup-availabilities pickup-availability-preview,
+.product__pickup-availabilities .pickup-availability-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--pickup-spacing, 8px);
+}
+
+.product__pickup-availabilities .pickup-availability-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--pickup-spacing, 8px);
+}
+
+.product__pickup-availabilities .pickup-availability-info .caption-large,
+.product__pickup-availabilities .pickup-availability-info p {
+  font-size: var(--pickup-font-size, 14px);
+  font-weight: var(--pickup-font-weight, 400);
+  line-height: 1.4;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.product__pickup-availabilities .pickup-availability-info .caption-large .color-foreground,
+.product__pickup-availabilities .pickup-availability-info .color-foreground {
+  font-weight: var(--pickup-location-font-weight, 700);
+  color: inherit;
+}
+
+.product__pickup-availabilities .pickup-availability-info .caption {
+  font-size: var(--pickup-font-size, 14px);
+  font-weight: var(--pickup-font-weight, 400);
+  color: var(--color-text);
+  margin: 0;
+  opacity: 0.9;
+  padding-left: 1em;
+}
+
+.product__pickup-availabilities .pickup-availability-button {
+  font-size: var(--pickup-font-size, 14px);
+  font-weight: var(--pickup-font-weight, 400);
+  color: var(--color-primary-button-border);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 0 0 1em;
+  font-family: inherit;
+}
+
+.product__pickup-availabilities .pickup-availability-button:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* Hide icon - no icon in pickup availability */
+.product__pickup-availabilities .svg-wrapper {
+  display: none;
+}
+
+/* =============================
    RIGHT COLUMN (Slider & Details)
 ============================= */
 .product-split-right {
@@ -280,6 +449,18 @@
 }
 .product-split-right::-webkit-scrollbar {
   display: none;
+}
+
+.product-split-right > * {
+  margin-bottom: var(--block-gap, 24px);
+}
+
+.product-split-right > *:last-child {
+  margin-bottom: 0;
+}
+
+.product-media-block-wrapper {
+  width: 100%;
 }
 
 .product-media-wrapper {
@@ -332,7 +513,8 @@
   top: 50%;
   transform: translateY(-50%);
   width: 84px;
-  height: 38px;
+  height: var(--product-media-arrows-height, 38px);
+  min-height: var(--product-media-arrows-height, 38px);
   border-radius: var(--radius-l);
   border: var(--border-width-thin) solid var(--color-primary-button-border);
   background: var(--color-primary-button-bg);
@@ -665,8 +847,9 @@ accordion-item[open] .accordion__wrapper {
   }
   
   /* Hide the right-column slider on mobile */
-  .product-split-right .product-media-wrapper {
-    display: none; 
+  .product-split-right .product-media-wrapper,
+  .product-split-right .product-media-block-wrapper {
+    display: none;
   }
 
   body {
@@ -690,14 +873,18 @@ accordion-item[open] .accordion__wrapper {
   
   .product-form__input label{
     min-width: 86px;
-    height: 30px;
+    min-height: var(--product-variant-height, 46px);
   }
   
   .product-form__submit {
     width: 80%;
-    height: 44px; 
+    min-height: var(--product-add-to-cart-height, 38px);
     font-size: 16px;
     padding: 0;
+  }
+
+  .product-form__submit .submit-button__content {
+    min-height: var(--product-add-to-cart-height, 38px);
   }
 
   .marquee-wrapper {

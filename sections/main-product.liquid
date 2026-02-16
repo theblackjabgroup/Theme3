@@ -1,5 +1,16 @@
 {% assign product_form_id = 'product-form-' | append: section.id %}
 {{ 'section-main-product.css' | asset_url | stylesheet_tag }}
+{%- assign has_pickup_block = false -%}
+{%- for block in section.blocks -%}
+  {%- if block.type == 'pickup_availability' -%}
+    {%- assign has_pickup_block = true -%}
+    {%- break -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- if has_pickup_block -%}
+  {{ 'component-pickup-availability.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'pickup-availability.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
 <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
 
 {%- liquid
@@ -7,10 +18,26 @@
   if scheme == blank
     assign scheme = settings.color_schemes | first
   endif
+
+  assign add_to_cart_height = 38
+  assign quantity_height = 44
+  assign variant_height = 46
+  assign media_arrows_height = 38
+
+  for block in section.blocks
+    if block.type == 'quantity_selector'
+      assign add_to_cart_height = block.settings.add_to_cart_height | default: 38
+      assign quantity_height = block.settings.quantity_height | default: 44
+    elsif block.type == 'variant_picker'
+      assign variant_height = block.settings.variant_height | default: 46
+    elsif block.type == 'product_media'
+      assign media_arrows_height = block.settings.media_arrows_height | default: 38
+    endif
+  endfor
 -%}
 
 <div
-  class="product-split-container color-{{ scheme.id }} gradient"
+  class="product-split-container color-{{ scheme.id }} gradient{% if product.selected_or_first_available_variant.available == false %} product-variant-sold-out{% endif %}"
   id="ProductSection-{{ section.id }}"
   style="
     --hero-image-max-width: {{ section.settings.hero_image_max_width }}px;
@@ -27,6 +54,10 @@
     --section-padding-horizontal: {{ section.settings.padding_horizontal }}px;
     --section-padding-horizontal-mobile: {{ section.settings.padding_horizontal_mobile }}px;
     --section-border-radius: {{ section.settings.border_radius }}px;
+    --product-add-to-cart-height: {{ add_to_cart_height }}px;
+    --product-quantity-height: {{ quantity_height }}px;
+    --product-variant-height: {{ variant_height }}px;
+    --product-media-arrows-height: {{ media_arrows_height }}px;
   "
 >
   <!-- HERO SECTION (Floating Absolute) -->
@@ -269,6 +300,7 @@
       const submitBtn = sectionContainer.querySelector('.product-form__submit');
       
       if (!currentVariant) {
+        sectionContainer.classList.add('product-variant-sold-out');
         // Variant doesn't exist
         if (submitBtn) {
           const btnText = submitBtn.querySelector('.submit-button__text');
@@ -278,7 +310,7 @@
             submitBtn.textContent = 'Unavailable';
           }
           submitBtn.disabled = true;
-          submitBtn.style.opacity = '0.5';
+          submitBtn.style.opacity = '0.8';
           submitBtn.style.cursor = 'not-allowed';
         }
       } else {
@@ -293,7 +325,14 @@
         newUrl.searchParams.set('variant', currentVariant.id);
         window.history.replaceState({ path: newUrl.toString() }, '', newUrl);
 
-       // 3. Update Button State (Status Only)
+        // 3. Update sold-out state (variant + quantity styling)
+        if (currentVariant.available) {
+          sectionContainer.classList.remove('product-variant-sold-out');
+        } else {
+          sectionContainer.classList.add('product-variant-sold-out');
+        }
+
+        // 4. Update Button State (Status Only)
         if (submitBtn) {
            const btnText = submitBtn.querySelector('.submit-button__text');
            
@@ -315,12 +354,12 @@
                 submitBtn.textContent = 'Sold Out';
              }
              submitBtn.disabled = true;
-             submitBtn.style.opacity = '0.5';
+             submitBtn.style.opacity = '0.8';
              submitBtn.style.cursor = 'not-allowed';
            }
         }
 
-        // 4. Update Price Display
+        // 5. Update Price Display
         const priceMain = sectionContainer.querySelector('.price-main');
         const priceCompare = sectionContainer.querySelector('.price-compare');
         
@@ -337,7 +376,7 @@
             }
         }
 
-        // 5. Update Stock Badge
+        // 6. Update Stock Badge
         const stockBadge = sectionContainer.querySelector('.stock-badge');
         const invStats = inventoryInfo[currentVariant.id];
 
@@ -355,7 +394,7 @@
            }
         }
 
-        // 6. Update Quantity Max
+        // 7. Update Quantity Max
         const qtyInput = sectionContainer.querySelector('.quantity__input');
         if (qtyInput) {
           let maxQty = null;
@@ -384,7 +423,7 @@
             delete qtyInput.dataset.max;
           }
 
-          // 7. Update Quantity Min & Step
+          // 8. Update Quantity Min & Step
           if (currentVariant.quantity_rule) {
              const minQty = currentVariant.quantity_rule.min || 1;
              const stepQty = currentVariant.quantity_rule.increment || 1;
@@ -397,6 +436,15 @@
              if (parseInt(qtyInput.value) < minQty) {
                qtyInput.value = minQty;
              }
+          }
+        }
+
+        // 9. Update Pickup Availability
+        const pickupAvailability = sectionContainer.querySelector('pickup-availability');
+        if (pickupAvailability) {
+          pickupAvailability.dataset.variantId = currentVariant.id;
+          if (typeof pickupAvailability.update === 'function') {
+            pickupAvailability.update(currentVariant);
           }
         }
       }
@@ -758,6 +806,23 @@
       "limit": 1
     },
     {
+      "type": "product_media",
+      "name": "Desktop Image Slider",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "range",
+          "id": "media_arrows_height",
+          "min": 28,
+          "max": 64,
+          "step": 2,
+          "unit": "px",
+          "label": "Media Slider Arrows Height",
+          "default": 38
+        }
+      ]
+    },
+    {
       "type": "price",
       "name": "Product Price",
       "limit": 1,
@@ -792,7 +857,19 @@
     {
       "type": "variant_picker",
       "name": "Variant Picker",
-      "limit": 1
+      "limit": 1,
+      "settings": [
+        {
+          "type": "range",
+          "id": "variant_height",
+          "min": 32,
+          "max": 64,
+          "step": 2,
+          "unit": "px",
+          "label": "Variant Buttons Height",
+          "default": 46
+        }
+      ]
     },
     {
       "type": "promo_text",
@@ -818,9 +895,83 @@
       ]
     },
     {
+      "type": "pickup_availability",
+      "name": "Pickup Availability",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "range",
+          "id": "font_size",
+          "min": 10,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "label": "Font size",
+          "default": 14
+        },
+        {
+          "type": "select",
+          "id": "font_weight",
+          "label": "Font weight",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "400"
+        },
+        {
+          "type": "select",
+          "id": "location_font_weight",
+          "label": "Location name font weight",
+          "options": [
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "700"
+        },
+        {
+          "type": "range",
+          "id": "spacing",
+          "min": 0,
+          "max": 24,
+          "step": 2,
+          "unit": "px",
+          "label": "Spacing between lines",
+          "default": 8
+        }
+      ]
+    },
+    {
       "type": "quantity_selector",
       "name": "Quantity & Buy Button",
-      "limit": 1
+      "limit": 1,
+      "settings": [
+        {
+          "type": "range",
+          "id": "add_to_cart_height",
+          "min": 36,
+          "max": 80,
+          "step": 2,
+          "unit": "px",
+          "label": "Add to Cart Button Height",
+          "default": 38
+        },
+        {
+          "type": "range",
+          "id": "quantity_height",
+          "min": 32,
+          "max": 64,
+          "step": 2,
+          "unit": "px",
+          "label": "Quantity Selector Height",
+          "default": 44
+        }
+      ]
     },
     {
       "type": "collapsible_tab",

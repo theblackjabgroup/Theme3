@@ -99,6 +99,12 @@
           "type": "quantity_selector",
           "settings": {}
         },
+        "product_media": {
+          "type": "product_media",
+          "settings": {
+            "media_arrows_height": 38
+          }
+        },
         "collapsible_tab_1": {
           "type": "collapsible_tab",
           "settings": {
@@ -205,6 +211,7 @@
         "variant_picker",
         "promo_text",
         "quantity_selector",
+        "product_media",
         "collapsible_tab_1",
         "description",
         "icon_strip_1",
