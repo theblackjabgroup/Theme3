@@ -36,7 +36,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: var(--color-primary-button-hover-bg);
+    background-color: var(--color-primary-button-border);
     border-radius: var(--radius-l);
     z-index: -1;
     transition: transform 0.4s ease;
@@ -78,13 +78,17 @@
     margin-right: 8px;
   }
 
+  .share-story-submit.submit-button--icon-only .submit-button__icon {
+    margin-right: 0;
+  }
+
   .submit-button__text {
     position: relative;
   }
 
   .submit-button__badge {
     margin-left: 8px;
-    background: var(--color-primary-button-hover-bg);
+    background: var(--color-primary-button-border);
     color: var(--color-primary-button-text);
     padding: 2px 6px;
     border-radius: 12px;
@@ -101,11 +105,15 @@
 </style>
 
 {%- assign button_text = text | default: 'Button' -%}
+{%- assign icon_only = icon_only | default: false -%}
 {%- assign button_type = type | default: 'button' -%}
 {%- if class != blank -%}
   {%- assign button_class = 'share-story-submit ' | append: class -%}
 {%- else -%}
   {%- assign button_class = 'share-story-submit' -%}
+{%- endif -%}
+{%- if icon_only -%}
+  {%- assign button_class = button_class | append: ' submit-button--icon-only' -%}
 {%- endif -%}
 
 {%- if url != blank -%}
@@ -115,7 +123,7 @@
       {%- if icon != blank -%}
         <span class="submit-button__icon">{{ icon }}</span>
       {%- endif -%}
-      {%- if button_text != blank -%}
+      {%- if button_text != blank and icon_only != true -%}
         <span class="submit-button__text">{{ button_text }}</span>
       {%- endif -%}
       {%- if badge != blank and badge != '0' -%}
@@ -130,7 +138,7 @@
       {%- if icon != blank -%}
         <span class="submit-button__icon">{{ icon }}</span>
       {%- endif -%}
-      {%- if button_text != blank -%}
+      {%- if button_text != blank and icon_only != true -%}
         <span class="submit-button__text">{{ button_text }}</span>
       {%- endif -%}
       {%- if is_add_to_cart -%}
