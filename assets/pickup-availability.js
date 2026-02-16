@@ -95,8 +95,6 @@ if (!customElements.get('pickup-availability-drawer')) {
 
         const closeBtn = this.querySelector('.pickup-availability-drawer-button');
         if (closeBtn) closeBtn.addEventListener('click', () => this.hide());
-        const overlay = this.querySelector('.pickup-drawer__overlay');
-        if (overlay) overlay.addEventListener('click', () => this.hide());
 
         this.addEventListener('keyup', (event) => {
           if (event.code.toUpperCase() === 'ESCAPE') this.hide();
@@ -105,10 +103,6 @@ if (!customElements.get('pickup-availability-drawer')) {
 
       handleBodyClick(evt) {
         const target = evt.target;
-        if (target.classList.contains('pickup-drawer__overlay')) {
-          this.hide();
-          return;
-        }
         if (
           target != this &&
           !target.closest('pickup-availability-drawer') &&
@@ -123,6 +117,14 @@ if (!customElements.get('pickup-availability-drawer')) {
         document.body.removeEventListener('click', this.onBodyClick);
         document.body.classList.remove('overflow-hidden', 'pickup-drawer-open');
         removeTrapFocus(this.focusElement);
+
+        const onTransitionEnd = (e) => {
+          if (e.target === this && e.propertyName === 'transform' && !this.hasAttribute('open')) {
+            this.classList.remove('animate');
+            this.removeEventListener('transitionend', onTransitionEnd);
+          }
+        };
+        this.addEventListener('transitionend', onTransitionEnd);
       }
 
       show(focusElement) {
