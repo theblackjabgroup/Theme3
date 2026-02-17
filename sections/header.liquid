@@ -617,7 +617,19 @@
       <h2 class="mega-menu-title">{{ search_popup_title }}</h2>
     </div>
 
-    {%- comment -%} Search field (same as mega menu styling) {%- endcomment -%}
+    {%- comment -%} Search field – icon from Theme settings (Search) {%- endcomment -%}
+    {%- assign search_input_icon = '' -%}
+    {%- if settings.search_icon_image != blank -%}
+      {%- assign search_input_icon = settings.search_icon_image
+        | image_url: width: 40
+        | image_tag: loading: 'lazy', alt: '', width: 20, height: 20, class: 'mega-menu-search-submit-icon-img'
+      -%}
+    {%- elsif settings.search_icon_svg != blank -%}
+      {%- assign search_input_icon = settings.search_icon_svg -%}
+    {%- endif -%}
+    {%- if search_input_icon == '' -%}
+      {%- assign search_input_icon = '<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20"><path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 19L14.65 14.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' -%}
+    {%- endif -%}
     <div class="mega-menu-search-content">
       {%- if settings.predictive_search_enabled -%}
         <predictive-search class="mega-menu-search-form" data-loading-text="{{ 'accessibility.loading' | t }}">
@@ -628,9 +640,7 @@
         <div class="mega-menu-search-field">
           <label class="visually-hidden" for="HeaderSearchPopupInput">{{ search_popup_title }}</label>
           <button type="submit" class="mega-menu-search-submit" aria-label="{{ search_popup_title }}">
-            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20">
-              <path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 19L14.65 14.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+            {{- search_input_icon -}}
           </button>
           <input
             class="mega-menu-search-input"
@@ -652,15 +662,6 @@
               spellcheck="false"
             {%- endif -%}
           >
-          <button
-            type="reset"
-            class="mega-menu-search-reset{% if search.terms == blank %} hidden{% endif %}"
-            aria-label="{{ 'general.search.reset' | t }}"
-          >
-            <span class="svg-wrapper">
-              {{- 'icon-reset.svg' | inline_asset_content -}}
-            </span>
-          </button>
           <input type="hidden" name="options[prefix]" value="last">
         </div>
         {%- if settings.predictive_search_enabled -%}
@@ -793,7 +794,10 @@
       {%- endif -%}
       {%- if section.settings.mobile_logo != blank -%}
         {%- assign mobile_logo_width = section.settings.mobile_logo_image_max_width | default: 120 | at_least: 100 -%}
-        <a href="{{ routes.root_url }}" class="mobile-logo-link {% if section.settings.mobile_logo_orbit_enabled %}mobile-logo-link--orbit-center{% endif %}">
+        <a
+          href="{{ routes.root_url }}"
+          class="mobile-logo-link {% if section.settings.mobile_logo_orbit_enabled %}mobile-logo-link--orbit-center{% endif %}"
+        >
           {{
             section.settings.mobile_logo
             | image_url: width: mobile_logo_width
@@ -801,7 +805,10 @@
           }}
         </a>
       {%- else -%}
-        <a href="{{ routes.root_url }}" class="mobile-logo-link {% if section.settings.mobile_logo_orbit_enabled %}mobile-logo-link--orbit-center{% endif %}">
+        <a
+          href="{{ routes.root_url }}"
+          class="mobile-logo-link {% if section.settings.mobile_logo_orbit_enabled %}mobile-logo-link--orbit-center{% endif %}"
+        >
           <span class="mobile-logo-text">{{ section.settings.mobile_logo_text | default: shop.name }}</span>
         </a>
       {%- endif -%}

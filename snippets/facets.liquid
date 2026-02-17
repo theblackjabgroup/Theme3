@@ -44,11 +44,14 @@
 
         {% if enable_filtering or enable_sorting %}
           {% if filter_type == 'horizontal' %}
-            {% comment %} Two 3D buttons (Filters, Sort) that open separate drawers {% endcomment %}
+            {% comment %} Two 3D buttons (Filters, Sort) – submit-button snippet structure {% endcomment %}
             <div class="facets-buttons-drawers" id="FacetsWrapperDesktop">
               {% if enable_filtering %}
                 <details class="facets-drawer facets-drawer--filters" id="FacetsDrawerFilters">
-                  <summary class="facets-drawer-trigger">{{ 'products.facets.filter_button' | t }}</summary>
+                  <summary class="facets-drawer-trigger share-story-submit">
+                    <span class="submit-button__shadow"></span>
+                    <span class="submit-button__content">{{ 'products.facets.filter_button' | t }}</span>
+                  </summary>
                   <div class="facets-drawer__panel">
                     <div class="facets-drawer__header">
                       <h2 class="facets-drawer__title">Filter</h2>
@@ -237,7 +240,10 @@
               {% endif %}
               {% if enable_sorting %}
                 <details class="facets-drawer facets-drawer--sort" id="FacetsDrawerSort">
-                  <summary class="facets-drawer-trigger">{{ 'products.facets.sort_button' | t }}</summary>
+                  <summary class="facets-drawer-trigger share-story-submit">
+                    <span class="submit-button__shadow"></span>
+                    <span class="submit-button__content">{{ 'products.facets.sort_button' | t }}</span>
+                  </summary>
                   <div class="facets-drawer__panel">
                     <div class="facets-drawer__header">
                       <h2 class="facets-drawer__title">Sort</h2>

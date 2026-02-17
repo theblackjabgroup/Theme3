@@ -958,9 +958,12 @@ body.mega-menu-open .dock-actions * {
   background: #306030;
 }
 
-.mega-menu-search-submit svg {
+.mega-menu-search-submit svg,
+.mega-menu-search-submit .mega-menu-search-submit-icon-img {
   width: 20px;
   height: 20px;
+  display: block;
+  object-fit: contain;
 }
 
 .mega-menu-search-reset {

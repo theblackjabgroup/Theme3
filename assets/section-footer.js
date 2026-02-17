@@ -101,19 +101,26 @@ function initFooterSocialHover() {
   document.addEventListener('mouseover', function footerSocialMouseOver(e) {
     const box = e.target.closest('.social-box');
     if (!box) return;
-    const row = box.closest('.footer-social-row');
-    if (!row) return;
+    const grid = box.closest('.footer-social-row');
+    if (!grid) return;
     if (box.contains(e.relatedTarget)) return;
 
-    const buttons = Array.from(row.querySelectorAll('.social-box'));
+    const buttons = Array.from(grid.querySelectorAll('.social-box'));
     if (buttons.length < 2) return;
+
+    let perRow = parseInt(grid.getAttribute('data-icons-per-row') || '4', 10);
+    if (window.matchMedia('(max-width: 768px)').matches) {
+      perRow = parseInt(grid.getAttribute('data-icons-per-row-mobile') || '4', 10);
+    }
+    const hoveredIndex = buttons.indexOf(box);
+    const hoveredRow = Math.floor(hoveredIndex / perRow);
 
     buttons.forEach(function (b) {
       b.classList.remove('is-expanded-horizontal', 'is-shrunk-horizontal');
     });
     box.classList.add('is-expanded-horizontal');
-    buttons.forEach(function (b) {
-      if (b !== box) b.classList.add('is-shrunk-horizontal');
+    buttons.forEach(function (b, i) {
+      if (b !== box && Math.floor(i / perRow) === hoveredRow) b.classList.add('is-shrunk-horizontal');
     });
   }, true);
 

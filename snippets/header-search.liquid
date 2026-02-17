@@ -3,9 +3,12 @@
 
   Accepts:
   - input_id: {String} Id for the search input element (required)
+  - search_icon_image: {Image} Optional image for the search submit icon
+  - search_icon_svg: {String} Optional SVG HTML for the search submit icon (use currentColor to match theme)
 
   Usage:
-  {% render 'header-search', input_id: 'My-Id'%}
+  {% render 'header-search', input_id: 'My-Id' %}
+  {% render 'header-search', input_id: 'My-Id', search_icon_image: section.settings.search_icon %}
 {% endcomment %}
 
 <details-modal class="header__search">
@@ -64,18 +67,15 @@
             >
             <label class="field__label" for="{{ input_id }}">{{ 'general.search.search' | t }}</label>
             <input type="hidden" name="options[prefix]" value="last">
-            <button
-              type="reset"
-              class="reset__button field__button{% if search.terms == blank %} hidden{% endif %}"
-              aria-label="{{ 'general.search.reset' | t }}"
-            >
-              <span class="svg-wrapper">
-                {{- 'icon-reset.svg' | inline_asset_content -}}
-              </span>
-            </button>
             <button class="search__button field__button" aria-label="{{ 'general.search.search' | t }}">
               <span class="svg-wrapper">
-                {{- 'icon-search.svg' | inline_asset_content -}}
+                {%- if search_icon_image != blank -%}
+                  {{- search_icon_image | image_url: width: 40 | image_tag: loading: 'lazy', alt: '', width: 20, height: 20, class: 'search__button-icon-img' -}}
+                {%- elsif search_icon_svg != blank -%}
+                  {{- search_icon_svg -}}
+                {%- else -%}
+                  {{- 'icon-search.svg' | inline_asset_content -}}
+                {%- endif -%}
               </span>
             </button>
           </div>

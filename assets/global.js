@@ -255,14 +255,12 @@ class QuantityInput extends HTMLElement {
         this.input.stepUp();
       }
     } else {
-      this.input.stepDown();
+      const min = this.input.min ? parseInt(this.input.min, 10) : 0;
+      const current = parseInt(this.input.value, 10) || min;
+      if (current > min) this.input.stepDown();
     }
 
     if (previousValue !== this.input.value) this.input.dispatchEvent(this.changeEvent);
-
-    if (this.input.dataset.min === previousValue && event.target.name === 'minus') {
-      this.input.value = parseInt(this.input.min);
-    }
   }
 
   validateQtyRules() {

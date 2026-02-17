@@ -150,20 +150,20 @@
       "id": "social_icons_per_row",
       "min": 2,
       "max": 8,
-      "step": 1,
+      "step": 2,
       "label": "Icons per row (desktop)",
       "default": 4,
-      "info": "Number of social icons per row on desktop"
+      "info": "Number of social icons per row on desktop (even only)"
     },
     {
       "type": "range",
       "id": "social_icons_per_row_mobile",
       "min": 2,
       "max": 8,
-      "step": 1,
+      "step": 2,
       "label": "Icons per row (mobile)",
       "default": 4,
-      "info": "Number of social icons per row on mobile"
+      "info": "Number of social icons per row on mobile (even only)"
     },
     {
       "type": "range",
@@ -489,7 +489,7 @@
               {%- when 'social_icon' -%}
                 {%- assign next_index = forloop.index0 | plus: 1 -%}
                 {%- unless in_social_grid -%}
-                  <div class="footer-social-grid footer-social-row">
+                  <div class="footer-social-grid footer-social-row" data-icons-per-row="{{ section.settings.social_icons_per_row | default: 2 }}" data-icons-per-row-mobile="{{ section.settings.social_icons_per_row_mobile | default: 4 }}">
                     {%- assign in_social_grid = true -%}
                 {%- endunless -%}
                 {%- render 'footer-social-box', block: block -%}

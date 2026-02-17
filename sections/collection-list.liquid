@@ -34,6 +34,10 @@
   }
   .custom-collection-list {
     --collection-card-hover-button-border-radius: {{ settings.collection_card_hover_button_border_radius | default: 20 }}px;
+    --collection-card-hover-button-font-size: {{ settings.collection_card_hover_button_font_size | default: 14 }}px;
+    --collection-card-hover-button-font-weight: {{ settings.collection_card_hover_button_font_weight | default: 700 }};
+    --collection-card-hover-button-padding-vertical: {{ settings.collection_card_hover_button_padding_vertical | default: 10 }}px;
+    --collection-card-hover-button-padding-horizontal: {{ settings.collection_card_hover_button_padding_horizontal | default: 20 }}px;
     padding: {{ section.settings.section_padding_top }}px {{ section.settings.section_padding_horizontal }}px {{ section.settings.section_padding_bottom }}px;
     {% if section.settings.background_color != blank %}
       background-color: {{ section.settings.background_color }};
@@ -110,19 +114,7 @@
     font-weight: {{ settings.collection_card_hover_description_font_weight | default: 400 }};
   }
 
-  .custom-collection-card__hover-button {
-    /* Submit button snippet styles take precedence, these are overrides if needed */
-    border-radius: var(--collection-card-hover-button-border-radius) !important;
-    {% if settings.collection_card_hover_button_font_size != blank %}
-      font-size: {{ settings.collection_card_hover_button_font_size }}px !important;
-    {% endif %}
-    {% if settings.collection_card_hover_button_font_weight != blank %}
-      font-weight: {{ settings.collection_card_hover_button_font_weight }} !important;
-    {% endif %}
-    {% if settings.collection_card_hover_button_padding_vertical != blank or settings.collection_card_hover_button_padding_horizontal != blank %}
-      padding: {{ settings.collection_card_hover_button_padding_vertical | default: 10 }}px {{ settings.collection_card_hover_button_padding_horizontal | default: 20 }}px !important;
-    {% endif %}
-  }
+  /* Overlay button uses submit-button snippet; settings via CSS variables above, styled in card-base.css */
 
   .custom-collection-card__hover-content {
     gap: {{ settings.collection_card_hover_content_gap | default: 10 }}px;
@@ -142,6 +134,9 @@
 
     .custom-collection-list {
       padding: {{ section.settings.section_padding_top_mobile }}px {{ section.settings.section_padding_horizontal_mobile }}px {{ section.settings.section_padding_bottom_mobile }}px;
+      --collection-card-hover-button-font-size: {{ settings.collection_card_hover_button_font_size_mobile | default: 12 }}px;
+      --collection-card-hover-button-padding-vertical: {{ settings.collection_card_hover_button_padding_vertical_mobile | default: 8 }}px;
+      --collection-card-hover-button-padding-horizontal: {{ settings.collection_card_hover_button_padding_horizontal_mobile | default: 16 }}px;
     }
 
     .custom-collection-card {
@@ -200,15 +195,6 @@
       {% endif %}
     }
 
-    .custom-collection-card__hover-button {
-      {% if settings.collection_card_hover_button_font_size_mobile != blank %}
-        font-size: {{ settings.collection_card_hover_button_font_size_mobile }}px !important;
-      {% endif %}
-      {% if settings.collection_card_hover_button_padding_vertical_mobile != blank or settings.collection_card_hover_button_padding_horizontal_mobile != blank %}
-        padding: {{ settings.collection_card_hover_button_padding_vertical_mobile | default: 8 }}px {{ settings.collection_card_hover_button_padding_horizontal_mobile | default: 16 }}px !important;
-      {% endif %}
-    }
-
     .custom-collection-card__hover-content {
       {% if settings.collection_card_hover_content_gap_mobile != blank %}
         gap: {{ settings.collection_card_hover_content_gap_mobile }}px;
@@ -258,16 +244,16 @@
           background_color: block.settings.header_background_color,
           border_radius: block.settings.header_border_radius
         %}
-        {%- endif -%}
+      {%- endif -%}
     {%- endfor -%}
 
-        {%- liquid
+    {%- liquid
       assign paginate_by = section.settings.collections_per_page | default: 12
       assign modulo_result = paginate_by | modulo: section.settings.columns_desktop
       if modulo_result != 0
         assign paginate_by = paginate_by | plus: section.settings.columns_desktop | minus: modulo_result
-          endif
-        -%}
+      endif
+    -%}
     {%- paginate collections by paginate_by -%}
       <ul class="custom-collection-list__grid" role="list">
         {%- for collection in collections -%}
@@ -291,6 +277,7 @@
 {% schema %}
 {
   "name": "Collection list",
+  "disabled_on": { "groups": ["header", "footer"] },
   "settings": [
     {
       "type": "header",

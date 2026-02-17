@@ -101,9 +101,12 @@
   cursor: pointer;
 }
 
-.main-search-page-header__submit .svg-wrapper svg {
+.main-search-page-header__submit .svg-wrapper svg,
+.main-search-page-header__submit .main-search-page-header__submit-icon-img {
   width: 18px;
   height: 18px;
+  display: block;
+  object-fit: contain;
 }
 
 .main-search-page-header__reset {
