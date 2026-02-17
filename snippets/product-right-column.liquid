@@ -2,6 +2,7 @@
   Product Right Column Snippet
   ------------------------------------------------------------------------------
   Renders the scrollable right column with image slider and detail blocks.
+  Desktop image slider is rendered from the Product Media Gallery block when present.
 
   Usage:
   {% render 'product-right-column', product: product, section: section %}
@@ -10,36 +11,65 @@
   - product: The product object.
   - section: The section object (to iterate over blocks).
 {%- endcomment -%}
-<div class="product-split-right">
-  <!-- IMAGE SLIDER -->
-  {% render 'product-image-slider', product: product, section: section %}
+<div class="product-split-right" style="--block-gap: {{ block_gap | default: 24 }}px;">
+  {%- assign accordion_count = 0 -%}
+  {%- assign in_content_stack = false -%}
+  {%- for block in section.blocks -%}
+    {%- case block.type -%}
+      {%- when 'product_media' -%}
+        {%- if in_content_stack -%}
+          </div>
+          {%- assign in_content_stack = false -%}
+        {%- endif -%}
+        <div class="product-media-block-wrapper" {{ block.shopify_attributes }}>
+          {% render 'product-image-slider', product: product, section: section, block: block %}
+        </div>
 
-  <!-- DETAILS CONTENT -->
-  <div class="product-content-stack" style="--block-gap: {{ block_gap | default: 24 }}px;">
-    {% assign accordion_count = 0 %}
-    {% for block in section.blocks %}
-      {% case block.type %}
-        {% when 'collapsible_tab' %}
-          {% if accordion_count < 2 %}
-            {% render 'block-accordion', block: block %}
-            {% assign accordion_count = accordion_count | plus: 1 %}
-          {% endif %}
-        {% when 'description' %}
-          <div class="product__description" style="
-            font-size: {{ block.settings.font_size | default: 18 }}px;
-            font-weight: {{ block.settings.font_weight | default: 400 }};
-          ">{{ product.description }}</div>
-          {% comment %}
-            {% when 'size_chart' %}
-            <button class="size-chart-btn">{{ block.settings.button_label | default: 'View the size chart' }}</button>
-          {% endcomment %}
-        {% when 'marquee' %}
-          {% render 'block-marquee', block: block %}
-        {% when 'feature_row' %}
-          {% render 'block-feature-row', block: block %}
-        {% when 'icon_strip' %}
-          {% render 'block-icon-strip', block: block %}
-      {% endcase %}
-    {% endfor %}
-  </div>
+      {%- when 'collapsible_tab' -%}
+        {%- unless in_content_stack -%}
+          <div class="product-content-stack" style="--block-gap: {{ block_gap | default: 24 }}px;">
+          {%- assign in_content_stack = true -%}
+        {%- endunless -%}
+        {%- if accordion_count < 2 -%}
+          {% render 'block-accordion', block: block %}
+          {%- assign accordion_count = accordion_count | plus: 1 -%}
+        {%- endif -%}
+
+      {%- when 'description' -%}
+        {%- unless in_content_stack -%}
+          <div class="product-content-stack" style="--block-gap: {{ block_gap | default: 24 }}px;">
+          {%- assign in_content_stack = true -%}
+        {%- endunless -%}
+        <div class="product__description product__description--customizable" style="
+          --description-font-size: {{ block.settings.font_size | default: 18 }}px;
+          --description-font-size-mobile: {{ block.settings.font_size_mobile | default: 16 }}px;
+          --description-font-weight: {{ block.settings.font_weight | default: 400 }};
+          --description-font-weight-mobile: {{ block.settings.font_weight_mobile | default: 400 }};
+        " {{ block.shopify_attributes }}>{{ product.description }}</div>
+
+      {%- when 'marquee' -%}
+        {%- unless in_content_stack -%}
+          <div class="product-content-stack" style="--block-gap: {{ block_gap | default: 24 }}px;">
+          {%- assign in_content_stack = true -%}
+        {%- endunless -%}
+        {% render 'block-marquee', block: block %}
+
+      {%- when 'feature_row' -%}
+        {%- unless in_content_stack -%}
+          <div class="product-content-stack" style="--block-gap: {{ block_gap | default: 24 }}px;">
+          {%- assign in_content_stack = true -%}
+        {%- endunless -%}
+        {% render 'block-feature-row', block: block %}
+
+      {%- when 'icon_strip' -%}
+        {%- unless in_content_stack -%}
+          <div class="product-content-stack" style="--block-gap: {{ block_gap | default: 24 }}px;">
+          {%- assign in_content_stack = true -%}
+        {%- endunless -%}
+        {% render 'block-icon-strip', block: block %}
+    {%- endcase -%}
+  {%- endfor -%}
+  {%- if in_content_stack -%}
+    </div>
+  {%- endif -%}
 </div>

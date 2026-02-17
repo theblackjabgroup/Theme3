@@ -1,1 +1,282 @@
-/* Cleared */
+/* Pickup Availability - Product Page Block */
+pickup-availability {
+  display: block;
+}
+
+pickup-availability[available] {
+  min-height: 4rem;
+}
+
+.pickup-availability-preview {
+  align-items: flex-start;
+  display: flex;
+  gap: 0.2rem;
+}
+
+/* Hide icon - no icon in pickup availability */
+.pickup-availability-preview .svg-wrapper {
+  display: none;
+}
+
+.pickup-availability-button {
+  background-color: transparent;
+  border: none;
+  color: var(--color-primary-button-border);
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 0.06rem;
+  padding: 0 0 0.2rem;
+  text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.pickup-availability-preview .caption-large,
+.pickup-availability-preview .caption,
+.pickup-availability-preview p {
+  color: var(--color-text);
+}
+
+.pickup-availability-info * {
+  margin: 0 0 0.6rem;
+}
+
+.pickup-availability-info *:last-child {
+  margin-bottom: 0;
+}
+
+/* =============================
+   Pickup Availability Drawer
+   Matches cart drawer: width, animation, overlay, body blur
+============================= */
+pickup-availability-drawer {
+  visibility: hidden;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 30vw;
+  min-width: 360px;
+  max-width: 440px;
+  height: 95vh;
+  z-index: 9999;
+  margin: 20px;
+  border-radius: 20px;
+  overflow: hidden;
+  transform: translateX(110%);
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+pickup-availability-drawer[open] {
+  pointer-events: auto;
+  transform: translateX(0);
+}
+
+pickup-availability-drawer.animate {
+  visibility: visible;
+}
+
+/* Body blur when pickup drawer is open */
+body.pickup-drawer-open main,
+body.pickup-drawer-open #MainContent,
+body.pickup-drawer-open footer,
+body.pickup-drawer-open [id^='shopify-section-']:not(pickup-availability-drawer),
+body.pickup-drawer-open .floating-dock-header,
+body.pickup-drawer-open .mobile-header,
+body.pickup-drawer-open header {
+  filter: blur(4px);
+  transition: filter 0.3s ease;
+  pointer-events: none;
+}
+
+body.pickup-drawer-open pickup-availability-drawer,
+body.pickup-drawer-open pickup-availability-drawer * {
+  filter: none !important;
+  pointer-events: auto !important;
+}
+
+/* Inner drawer panel */
+.pickup-drawer__inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: var(--color-background);
+  position: relative;
+  z-index: 2;
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.05);
+  border-radius: 20px;
+}
+
+@media screen and (max-width: 990px) {
+  pickup-availability-drawer {
+    width: 100vw;
+    max-width: none;
+    min-width: 0;
+    height: 100vh;
+    margin: 0;
+    border-radius: 0;
+  }
+
+  .pickup-drawer__inner {
+    border-radius: 0;
+  }
+}
+
+/* Drawer Header */
+.pickup-availability-header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding: 1.6rem 2rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
+}
+
+.pickup-availability-drawer-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--color-text);
+}
+
+.pickup-availability-drawer-button {
+  background-color: transparent;
+  border: none;
+  color: var(--color-text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.8rem;
+  width: 2.8rem;
+  padding: 0;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.pickup-availability-drawer-button:hover {
+  background-color: color-mix(in srgb, var(--color-text) 8%, transparent);
+}
+
+.pickup-availability-drawer-button svg {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+/* Product Info Section */
+.pickup-availability-product-info {
+  padding: 1.6rem 2rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
+}
+
+.pickup-availability-product-title {
+  margin: 0 0 0.4rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text);
+}
+
+.pickup-availability-variant {
+  margin: 0;
+  font-size: 1.3rem;
+  color: var(--color-text);
+  opacity: 0.9;
+}
+
+/* Location List */
+.pickup-availability-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.pickup-availability-list__item {
+  padding: 1.6rem 2rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
+}
+
+.pickup-availability-list__item:last-child {
+  border-bottom: none;
+}
+
+.pickup-availability-list__item > * {
+  margin: 0;
+}
+
+.pickup-availability-list__item > * + * {
+  margin-top: 0.8rem;
+}
+
+.pickup-availability-location-name {
+  margin: 0 0 0.4rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text);
+}
+
+/* Availability Status with Checkmark */
+.pickup-availability-status {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.3rem;
+  line-height: 1.4;
+  color: var(--color-text);
+}
+
+.pickup-availability-status--available {
+  color: var(--color-text);
+}
+
+.pickup-availability-status-icon {
+  flex-shrink: 0;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  background-color: var(--color-success-background, #0a5c0a);
+  display: inline-block;
+  position: relative;
+}
+
+.pickup-availability-status-icon::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  width: 0.5rem;
+  height: 0.9rem;
+  margin-left: -0.35rem;
+  margin-top: -0.55rem;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.pickup-availability-status--unavailable {
+  color: var(--color-text);
+  opacity: 0.8;
+}
+
+/* Address */
+.pickup-availability-address {
+  font-style: normal;
+  font-size: 1.3rem;
+  line-height: 1.6;
+  color: var(--color-text);
+  opacity: 0.9;
+}
+
+.pickup-availability-address p {
+  margin: 0.4rem 0 0;
+}
+
+.pickup-availability-phone {
+  font-weight: 500;
+}
