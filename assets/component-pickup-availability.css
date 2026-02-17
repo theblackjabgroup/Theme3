@@ -115,6 +115,7 @@ body.pickup-drawer-open pickup-availability-drawer * {
     width: 100vw;
     max-width: none;
     min-width: 0;
+    height: 100vh;
     margin: 0;
     border-radius: 0;
   }

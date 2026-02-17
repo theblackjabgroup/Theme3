@@ -5,9 +5,11 @@ if (!customElements.get('pickup-availability')) {
       constructor() {
         super();
 
+        const template = this.querySelector('template');
+        this.errorHtml = template ? template.content.firstElementChild.cloneNode(true) : null;
+
         if (!this.hasAttribute('available')) return;
 
-        this.errorHtml = this.querySelector('template').content.firstElementChild.cloneNode(true);
         this.onClickRefreshList = this.onClickRefreshList.bind(this);
         this.fetchAvailability(this.dataset.variantId);
       }
@@ -51,9 +53,11 @@ if (!customElements.get('pickup-availability')) {
 
       renderError() {
         this.innerHTML = '';
-        this.appendChild(this.errorHtml);
+        if (!this.errorHtml) return;
 
-        this.querySelector('button').addEventListener('click', this.onClickRefreshList);
+        this.appendChild(this.errorHtml);
+        const btn = this.querySelector('button');
+        if (btn) btn.addEventListener('click', this.onClickRefreshList);
       }
 
       renderPreview(sectionInnerHTML) {

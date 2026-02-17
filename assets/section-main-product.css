@@ -1122,6 +1122,19 @@ accordion-item[open] .accordion__wrapper {
     width: var(--divider-length-mobile, var(--divider-length, 80%));
     border-top-width: var(--divider-width-mobile, var(--divider-width, 1px));
   }
+  .product-divider--dashed {
+    height: var(--divider-width-mobile, var(--divider-width, 1px));
+  }
+  .product-divider--dotted {
+    height: var(--divider-width-mobile, var(--divider-width, 4px));
+    min-height: var(--divider-width-mobile, var(--divider-width, 4px));
+    background-image: radial-gradient(
+      circle at center,
+      var(--divider-color, #9a9a9a) calc(var(--divider-width-mobile, var(--divider-width, 4px)) / 2),
+      transparent calc(var(--divider-width-mobile, var(--divider-width, 4px)) / 2)
+    );
+    background-size: calc(var(--divider-width-mobile, var(--divider-width, 4px)) + var(--divider-spacing, 8px)) 100%;
+  }
 }
 
 /* =============================
