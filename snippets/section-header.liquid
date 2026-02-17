@@ -1,0 +1,131 @@
+{% comment %}
+  Renders a section header with badge, title, and description.
+
+  Accepts:
+  - id: {String} Unique ID for styling
+  - badge_text: {String} Badge text
+  - title: {String} Section title
+  - description: {String} Section description
+  - title_alignment: {String} Text alignment (left, center, right)
+  - show_badge: {Boolean} Whether to show the badge
+  - title_font_size: {Number} Font size in rem or px
+  - title_font_weight: {Number} Font weight
+  - title_line_height: {Number} Line height
+  - title_letter_spacing: {Number} Letter spacing
+  - title_text_transform: {String} Text transform
+  - title_margin_bottom: {Number} Bottom margin
+  - description_font_size: {Number} Font size for description
+  - description_font_weight: {Number} Font weight for description
+  - description_line_height: {Number} Line height for description
+  - description_margin_top: {Number} Top margin for description
+  - description_color: {String} Color for description
+  - header_padding_top: {Number} Top padding for the header container
+  - header_padding_bottom: {Number} Bottom padding for the header container
+  - header_padding_horizontal: {Number} Horizontal padding for the header container
+  - background_color: {String} Background color for the header container
+  - border_radius: {Number} Border radius in px for the header container
+{% endcomment %}
+
+<div
+  class="section-header-snippet section-header-snippet-{{ id }} page-width"
+  style="text-align: {{ title_alignment | default: 'center' }};"
+>
+  {%- if show_badge and badge_text != blank -%}
+    <span class="section-header-snippet__badge">{{ badge_text | escape }}</span>
+  {%- endif -%}
+
+  {%- if title != blank -%}
+    <h1 class="section-header-snippet__title">{{ title | escape }}</h1>
+  {%- endif -%}
+
+  {%- if description != blank -%}
+    <p class="section-header-snippet__description">{{ description }}</p>
+  {%- endif -%}
+</div>
+
+<style>
+  .section-header-snippet-{{ id }} {
+    padding-top: {{ header_padding_top | default: 0 }}px;
+    padding-bottom: {{ header_padding_bottom | default: 40 }}px;
+    padding-left: {{ header_padding_horizontal | default: 20 }}px;
+    padding-right: {{ header_padding_horizontal | default: 20 }}px;
+    {%- if background_color != blank -%}
+      background-color: {{ background_color }};
+    {%- endif -%}
+    border-radius: {{ border_radius | default: 20 }}px;
+    {%- if title_margin_bottom != blank -%}
+      margin-bottom: {{ title_margin_bottom }}px;
+    {%- endif -%}
+  }
+
+  .section-header-snippet-{{ id }} .section-header-snippet__title {
+    {%- if title_font_size != blank -%}
+      font-size: {{ title_font_size }}{% if title_font_size > 10 %}px{% else %}rem{% endif %};
+    {%- endif -%}
+    {%- if title_font_weight != blank -%}
+      font-weight: {{ title_font_weight }};
+    {%- endif -%}
+    line-height: {{ title_line_height | default: 1.2 }};
+    letter-spacing: {{ title_letter_spacing | default: 0 }}px;
+    text-transform: {{ title_text_transform | default: 'none' }};
+    margin: 0;
+    {%- if title_text_color != blank -%}
+      color: {{ title_text_color }};
+    {%- endif -%}
+  }
+
+  .section-header-snippet-{{ id }} .section-header-snippet__badge {
+    display: inline-block;
+    {%- if badge_font_size != blank -%}
+      font-size: {{ badge_font_size }}px;
+    {%- endif -%}
+    {%- if badge_font_weight != blank -%}
+      font-weight: {{ badge_font_weight }};
+    {%- endif -%}
+    {%- if badge_padding_vertical != blank or badge_padding_horizontal != blank -%}
+      padding: {{ badge_padding_vertical | default: 4 }}px {{ badge_padding_horizontal | default: 16 }}px;
+    {%- endif -%}
+    {%- if badge_margin_bottom != blank -%}
+      margin-bottom: {{ badge_margin_bottom }}px;
+    {%- endif -%}
+    {%- if badge_background_color != blank -%}
+      background-color: {{ badge_background_color }};
+    {%- endif -%}
+    {%- if badge_text_color != blank -%}
+      color: {{ badge_text_color }};
+    {%- endif -%}
+    border: {{ badge_border_width | default: 1 }}px solid {{ badge_border_color | default: 'rgba(0,0,0,0.15)' }};
+    border-radius: {{ badge_border_radius | default: 20 }}px;
+    {%- if badge_text_transform != blank -%}
+      text-transform: {{ badge_text_transform }};
+    {%- endif -%}
+  }
+
+  .section-header-snippet-{{ id }} .section-header-snippet__description {
+    {%- if description_font_size != blank -%}
+      font-size: {{ description_font_size }}px;
+    {%- endif -%}
+    {%- if description_font_weight != blank -%}
+      font-weight: {{ description_font_weight }};
+    {%- endif -%}
+    line-height: {{ description_line_height | default: 1.5 }};
+    margin-top: {{ description_margin_top | default: 10 }}px;
+    margin-bottom: 0;
+    {%- if description_color != blank -%}
+      color: {{ description_color }};
+    {%- endif -%}
+  }
+
+  @media screen and (max-width: 749px) {
+    .section-header-snippet-{{ id }} .section-header-snippet__title {
+      {%- if title_font_size_mobile != blank -%}
+        font-size: {{ title_font_size_mobile }}{% if title_font_size_mobile > 10 %}px{% else %}rem{% endif %};
+      {%- endif -%}
+    }
+    .section-header-snippet-{{ id }} .section-header-snippet__description {
+      {%- if description_font_size_mobile != blank -%}
+        font-size: {{ description_font_size_mobile }}px;
+      {%- endif -%}
+    }
+  }
+</style>

@@ -726,14 +726,40 @@
     {%- if cart != empty -%}
       <div class="cart-layout-container">
         <!-- Breadcrumbs & Heading -->
-        <div class="cart-header-section">
-          <div class="cart-title-box">
-            <h1 class="cart-title-text">YOUR SHOPPING BAG</h1>
-            <p class="cart-subtitle-text">
-              Almost there! Secure your finds with a quick checkout to bring your desired items home.
-            </p>
-          </div>
-        </div>
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'header' -%}
+            <div class="cart-header-section">
+              <div class="cart-title-box">
+                {% render 'section-header',
+                  id: block.id,
+                  show_badge: block.settings.show_badge,
+                  badge_text: block.settings.badge_text,
+                  title: block.settings.title,
+                  description: block.settings.subtitle,
+                  title_alignment: block.settings.title_alignment,
+                  title_font_size: block.settings.title_font_size,
+                  title_font_weight: block.settings.title_font_weight,
+                  title_line_height: block.settings.title_line_height,
+                  title_letter_spacing: block.settings.title_letter_spacing,
+                  title_text_transform: block.settings.title_text_transform,
+                  title_margin_bottom: block.settings.title_margin_bottom,
+                  header_padding_top: block.settings.header_padding_top,
+                  header_padding_bottom: block.settings.header_padding_bottom,
+                  header_padding_horizontal: block.settings.header_padding_horizontal,
+                  description_font_size: block.settings.subtitle_font_size,
+                  description_font_weight: block.settings.subtitle_font_weight,
+                  description_line_height: block.settings.subtitle_line_height,
+                  description_color: block.settings.subtitle_color,
+                  description_margin_top: block.settings.subtitle_margin_top,
+                  title_font_size_mobile: block.settings.title_font_size_mobile,
+                  description_font_size_mobile: block.settings.subtitle_font_size_mobile,
+                  background_color: block.settings.header_background_color,
+                  border_radius: block.settings.header_border_radius
+                %}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
 
         <div class="cart-grid">
           <!-- Left Column: Cart Items -->
@@ -753,15 +779,27 @@
                       <div class="cart-item-card__image-wrap">
                         {%- assign has_compare = false -%}
                         {%- assign discount_pct = 0 -%}
-                        {%- if item.variant.compare_at_price != blank and item.variant.compare_at_price > item.final_price -%}
+                        {%- if item.variant.compare_at_price != blank
+                          and item.variant.compare_at_price > item.final_price
+                        -%}
                           {%- assign has_compare = true -%}
                           {%- assign savings = item.variant.compare_at_price | minus: item.final_price -%}
                           {%- assign discount_pct = savings | times: 100 | divided_by: item.variant.compare_at_price -%}
                         {%- endif -%}
                         {%- if has_compare and discount_pct > 0 -%}
                           <div class="cart-item-card__badge">
-                            <img class="cart-item-card__badge-icon" src="{{ 'sale-icons.svg' | asset_url }}" alt="" width="60" height="60" loading="lazy">
-                            <span class="cart-item-card__badge-text">{{ discount_pct }}%<br>off</span>
+                            <img
+                              class="cart-item-card__badge-icon"
+                              src="{{ 'sale-icons.svg' | asset_url }}"
+                              alt=""
+                              width="60"
+                              height="60"
+                              loading="lazy"
+                            >
+                            <span class="cart-item-card__badge-text">
+                              {{- discount_pct }}%<br>
+                              off</span
+                            >
                           </div>
                         {%- endif -%}
                         <div class="cart-item-card__image-container">
@@ -1286,7 +1324,7 @@
 
 {% schema %}
 {
-  "name": "Custom Cart",
+  "name": "Cart",
   "settings": [
     {
       "type": "header",
@@ -1324,9 +1362,225 @@
       "info": "Text for the return to shop link"
     }
   ],
+  "blocks": [
+    {
+      "type": "header",
+      "name": "Section Header",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "YOUR SHOPPING BAG"
+        },
+        {
+          "type": "textarea",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "Almost there! Secure your finds with a quick checkout to bring your desired items home."
+        },
+        {
+          "type": "select",
+          "id": "title_alignment",
+          "label": "Title Alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_badge",
+          "label": "Show badge",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Badge text",
+          "info": "Leave blank when badge is hidden"
+        },
+        {
+          "type": "range",
+          "id": "title_font_size",
+          "label": "Title Font Size (rem)",
+          "min": 1,
+          "max": 10,
+          "step": 0.1,
+          "default": 3.2
+        },
+        {
+          "type": "range",
+          "id": "title_font_weight",
+          "label": "Title Font Weight",
+          "min": 100,
+          "max": 900,
+          "step": 100,
+          "default": 700
+        },
+        {
+          "type": "range",
+          "id": "title_line_height",
+          "label": "Title Line Height",
+          "min": 0.8,
+          "max": 2,
+          "step": 0.1,
+          "default": 1.2
+        },
+        {
+          "type": "range",
+          "id": "title_letter_spacing",
+          "label": "Title Letter Spacing (px)",
+          "min": -5,
+          "max": 10,
+          "step": 1,
+          "default": 0
+        },
+        {
+          "type": "select",
+          "id": "title_text_transform",
+          "label": "Title Text Transform",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "uppercase", "label": "Uppercase" },
+            { "value": "lowercase", "label": "Lowercase" },
+            { "value": "capitalize", "label": "Capitalize" }
+          ],
+          "default": "none"
+        },
+        {
+          "type": "range",
+          "id": "title_margin_bottom",
+          "label": "Title Bottom Margin (px)",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "default": 20
+        },
+        {
+          "type": "range",
+          "id": "title_font_size_mobile",
+          "label": "Title Font Size - Mobile (rem)",
+          "min": 1,
+          "max": 6,
+          "step": 0.1,
+          "default": 1.8
+        },
+        {
+          "type": "header",
+          "content": "Subtitle Styling"
+        },
+        {
+          "type": "range",
+          "id": "subtitle_font_size",
+          "label": "Subtitle Font Size (px)",
+          "min": 12,
+          "max": 24,
+          "step": 1,
+          "default": 18
+        },
+        {
+          "type": "range",
+          "id": "subtitle_font_weight",
+          "label": "Subtitle Font Weight",
+          "min": 300,
+          "max": 700,
+          "step": 100,
+          "default": 400
+        },
+        {
+          "type": "range",
+          "id": "subtitle_line_height",
+          "label": "Subtitle Line Height",
+          "min": 1,
+          "max": 2,
+          "step": 0.1,
+          "default": 1.5
+        },
+        {
+          "type": "range",
+          "id": "subtitle_margin_top",
+          "label": "Subtitle Margin Top (px)",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "default": 10
+        },
+        {
+          "type": "color",
+          "id": "subtitle_color",
+          "label": "Subtitle Color"
+        },
+        {
+          "type": "range",
+          "id": "subtitle_font_size_mobile",
+          "label": "Subtitle Font Size - Mobile (px)",
+          "min": 10,
+          "max": 20,
+          "step": 1,
+          "default": 16
+        },
+        {
+          "type": "color",
+          "id": "header_background_color",
+          "label": "Header background color",
+          "default": "#E5E2DA",
+          "info": "Leave blank for transparent"
+        },
+        {
+          "type": "range",
+          "id": "header_border_radius",
+          "label": "Header border radius (px)",
+          "min": 0,
+          "max": 100,
+          "step": 2,
+          "default": 20
+        },
+        {
+          "type": "header",
+          "content": "Spacing"
+        },
+        {
+          "type": "range",
+          "id": "header_padding_top",
+          "label": "Header Padding Top (px)",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "default": 40
+        },
+        {
+          "type": "range",
+          "id": "header_padding_bottom",
+          "label": "Header Padding Bottom (px)",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "default": 40
+        },
+        {
+          "type": "range",
+          "id": "header_padding_horizontal",
+          "label": "Header Padding Horizontal (px)",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "default": 20
+        }
+      ]
+    }
+  ],
   "presets": [
     {
-      "name": "Custom Cart"
+      "name": "Cart",
+      "blocks": [
+        {
+          "type": "header"
+        }
+      ]
     }
   ]
 }

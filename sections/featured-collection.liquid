@@ -1,6 +1,6 @@
 {{ 'section-featured-collection.css' | asset_url | stylesheet_tag }}
-{{ 'custom-card-base.css' | asset_url | stylesheet_tag }}
-{{ 'custom-product-card.css' | asset_url | stylesheet_tag }}
+{{ 'card-base.css' | asset_url | stylesheet_tag }}
+{{ 'product-card.css' | asset_url | stylesheet_tag }}
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
 {%- unless section.settings.quick_add == 'none' -%}
   {{ 'quick-add.css' | asset_url | stylesheet_tag }}
@@ -88,7 +88,7 @@
             <div class="fc3d-card fc3d-card--custom" data-fc3d-card role="listitem">
               <div class="fc3d-card__custom">
                 {%-
-                  render 'card-product-custom',
+                  render 'card-product',
                   card_product: product,
                   section_id: section.id,
                   quick_add: section.settings.quick_add,
@@ -106,7 +106,7 @@
             <div class="fc3d-card fc3d-card--custom" data-fc3d-card data-fc3d-card-clone role="listitem">
               <div class="fc3d-card__custom">
                 {%-
-                  render 'card-product-custom',
+                  render 'card-product',
                   card_product: product,
                   section_id: section.id,
                   quick_add: section.settings.quick_add,

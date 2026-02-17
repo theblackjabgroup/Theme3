@@ -1,12 +1,19 @@
 {
   "sections": {
     "main": {
-      "type": "custom-cart",
-      "settings": {
-      }
+      "type": "cart",
+      "settings": {},
+      "blocks": {
+        "section_header": {
+          "type": "header",
+          "settings": {
+            "title": "YOUR SHOPPING BAG",
+            "subtitle": "Almost there! Secure your finds with a quick checkout to bring your desired items home."
+          }
+        }
+      },
+      "block_order": ["section_header"]
     }
   },
-  "order": [
-    "main"
-  ]
+  "order": ["main"]
 }

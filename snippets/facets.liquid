@@ -15,8 +15,8 @@
 {{ 'component-show-more.css' | asset_url | stylesheet_tag }}
 {{ 'component-swatch-input.css' | asset_url | stylesheet_tag }}
 {{ 'component-swatch.css' | asset_url | stylesheet_tag }}
-{{ 'custom-facets.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'custom-facets.js' | asset_url }}" defer="defer"></script>
+{{ 'facets.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
 
 {%- liquid
   assign sort_by = results.sort_by | default: results.default_sort_by

@@ -1,7 +1,7 @@
 {{ 'section-related-products.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
-{{ 'custom-card-base.css' | asset_url | stylesheet_tag }}
-{{ 'custom-product-card.css' | asset_url | stylesheet_tag }}
+{{ 'card-base.css' | asset_url | stylesheet_tag }}
+{{ 'product-card.css' | asset_url | stylesheet_tag }}
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
 
@@ -110,7 +110,7 @@
           >
             {%- for product_item in recommendations.products limit: section.settings.products_to_show -%}
               <div class="grid__item">
-                {%- render 'card-product-custom',
+                {%- render 'card-product',
                   card_product: product_item,
                   show_badge: section.settings.show_badge,
                   badge_text: section.settings.badge_text,

@@ -1,6 +1,6 @@
 {{ 'section-featured-collection-scroller.css' | asset_url | stylesheet_tag }}
-{{ 'custom-card-base.css' | asset_url | stylesheet_tag }}
-{{ 'custom-product-card.css' | asset_url | stylesheet_tag }}
+{{ 'card-base.css' | asset_url | stylesheet_tag }}
+{{ 'product-card.css' | asset_url | stylesheet_tag }}
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
 {{ 'component-primary-button.css' | asset_url | stylesheet_tag }}
 
@@ -82,7 +82,7 @@
           {%- for product in featured_collection.products limit: products_to_show -%}
             <li class="fcs__item" role="listitem" style="--fcs-card-width: {{ card_width }}px;">
               {%-
-                render 'card-product-custom',
+                render 'card-product',
                 card_product: product,
                 section_id: section.id,
                 quick_add: section.settings.quick_add,

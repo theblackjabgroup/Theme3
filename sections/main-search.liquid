@@ -1,13 +1,13 @@
 {{ 'template-collection.css' | asset_url | stylesheet_tag }}
 {{ 'section-main-search.css' | asset_url | stylesheet_tag }}
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
-{{ 'custom-card-base.css' | asset_url | stylesheet_tag }}
-{{ 'custom-product-card.css' | asset_url | stylesheet_tag }}
+{{ 'card-base.css' | asset_url | stylesheet_tag }}
+{{ 'product-card.css' | asset_url | stylesheet_tag }}
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
 {{ 'section-main-blog.css' | asset_url | stylesheet_tag }}
 
 {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
-  {{ 'component-facets.css' | asset_url | stylesheet_tag }}
+  {{ 'facets.css' | asset_url | stylesheet_tag }}
   <script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}
 
@@ -62,7 +62,7 @@
       }
     }
 
-    /* Syncing card-product-custom variables from main-collection-product-grid */
+    /* Syncing card-product variables from main-collection-product-grid */
     #ProductGridContainer .custom-product-card
   { --card-padding-top: {{ settings.card_padding_top | default: 0 }}px; --card-padding-horizontal:
   {{ settings.card_padding_horizontal | default: 24 }}px; --card-padding-bottom:
@@ -347,7 +347,7 @@
                   >
                     {%- case item.object_type -%}
                       {%- when 'product' -%}
-                        {% render 'card-product-custom',
+                        {% render 'card-product',
                           card_product: item,
                           section_id: section.id,
                           lazy_load: lazy_load,
