@@ -70,7 +70,11 @@
           ></div>
 
         {% when 'tagline' %}
-          {% assign tagline_content = block.settings.tagline_text | strip | default: product.metafields.custom.tagline %}
+          {% assign tagline_raw = block.settings.tagline_text | strip %}
+          {% assign tagline_content = tagline_raw | default: product.metafields.custom.tagline %}
+          {% if tagline_content == 'Add your tagline' or tagline_content == 'Add a tagline' %}
+            {% assign tagline_content = product.metafields.custom.tagline %}
+          {% endif %}
           {% if tagline_content != blank %}
             <div
               class="product__tagline product__tagline--customizable"
