@@ -512,12 +512,15 @@ class CartDrawer extends HTMLElement {
     const ref = originalFormat || '';
     const currencyMatch = ref.match(/^([^\d\s.,]+)/);
     const currencySymbol = currencyMatch ? currencyMatch[1] : '';
-    const numberMatch = ref.match(/[\d,]+\.?\d*/);
-    const hasDecimals = numberMatch && numberMatch[0].includes('.');
     const amount = (cents / 100).toFixed(2);
     const parts = amount.split('.');
     const wholePart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     const decimalPart = parts[1];
+
+    // Check if original format had decimals OR if the new value has cents
+    const numberMatch = ref.match(/[\d,]+\.?\d*/);
+    const hasDecimals = (numberMatch && numberMatch[0].includes('.')) || (decimalPart && decimalPart !== '00');
+
     const numStr = wholePart + (hasDecimals ? '.' + decimalPart : '');
     return currencySymbol ? currencySymbol + ' ' + numStr : numStr;
   }
@@ -631,46 +634,7 @@ class CartDrawer extends HTMLElement {
 
 customElements.define('cart-drawer', CartDrawer);
 
-const MIN_QUANTITY = 1;
-
 class CartDrawerItems extends CartItems {
-  constructor() {
-    super();
-    this.addEventListener('click', this.onQuantityButtonClick.bind(this));
-  }
-
-  onQuantityButtonClick(e) {
-    const selector = e.target.closest('.cart-item__quantity-selector');
-    if (!selector || !selector.closest('cart-drawer-items')) return;
-    const minusBtn = selector.querySelector('.cart-item__quantity-minus');
-    const plusBtn = selector.querySelector('.cart-item__quantity-plus');
-    const input = selector.querySelector('.quantity__input');
-    if (!input) return;
-    const itemIndex = selector.getAttribute('data-item-index');
-    if (!itemIndex) return;
-
-    const currentQty = parseInt(input.value.trim(), 10) || MIN_QUANTITY;
-    const maxQty = input.getAttribute('data-max');
-    const max = maxQty != null ? parseInt(maxQty, 10) : null;
-    let newQty = currentQty;
-
-    if (e.target === minusBtn || minusBtn?.contains(e.target)) {
-      e.preventDefault();
-      e.stopPropagation();
-      newQty = Math.max(MIN_QUANTITY, currentQty - 1);
-    } else if (e.target === plusBtn || plusBtn?.contains(e.target)) {
-      e.preventDefault();
-      e.stopPropagation();
-      newQty = max != null ? Math.min(currentQty + 1, max) : currentQty + 1;
-    } else {
-      return;
-    }
-
-    if (newQty === currentQty) return;
-    input.value = newQty;
-    input.dispatchEvent(new Event('change', { bubbles: true }));
-  }
-
   getSectionsToRender() {
     return [
       {

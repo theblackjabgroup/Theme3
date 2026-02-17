@@ -60,7 +60,8 @@
       id="EditPanel-quantity"
     {% else %}
       name="updates[]"
-      id="Quantity-{{ line_index }}"
+      {%- assign prefix = id_prefix | default: 'Quantity-' -%}
+      id="{{ prefix }}{{ line_index }}"
       data-index="{{ line_index }}"
       data-variant-id="{{ variant_id }}"
     {% endif %}

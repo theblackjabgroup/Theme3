@@ -45,8 +45,8 @@ class CartItems extends HTMLElement {
   }
 
   resetQuantityInput(id) {
-    const input = this.querySelector(`#Quantity-${id}`);
-    input.value = input.getAttribute('value');
+    const input = this.querySelector(`#Quantity-${id}`) || this.querySelector(`#Drawer-quantity-${id}`);
+    if (input) input.value = input.getAttribute('value');
     this.isEnterPressed = false;
   }
 
@@ -242,7 +242,7 @@ class CartItems extends HTMLElement {
                   document.getElementById(`Quantity-${lineIndex}`) ||
                   itemEl.querySelector('.quantity__input');
                 if (qtyInput) qtyInput.value = item.quantity;
-                if (selector) {
+                if (selector && qtyInput) {
                   const minusBtn = selector.querySelector('.cart-item__quantity-minus');
                   const plusBtn = selector.querySelector('.cart-item__quantity-plus');
                   const maxQty = qtyInput.getAttribute('data-max');

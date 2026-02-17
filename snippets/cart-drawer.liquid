@@ -1206,7 +1206,7 @@
                         -%}
                         <div class="cart-drawer__quantity-row">
                           <div class="cart-drawer__quantity-selector-wrap cart-drawer__quantity-selector">
-                            {% render 'quantity-selector', item: item %}
+                            {% render 'quantity-selector', item: item, id_prefix: 'Drawer-quantity-' %}
                           </div>
                           {% capture edit_btn_attrs %}data-edit-trigger data-line-index="{{ item.index | plus: 1 }}" aria-label="Edit {{ item.product.title | escape }}"{% endcapture %}
                           {% render 'submit-button',
