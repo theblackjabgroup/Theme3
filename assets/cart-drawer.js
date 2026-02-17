@@ -52,7 +52,11 @@ class CartDrawer extends HTMLElement {
         const minusBtn = listSelector.querySelector('.cart-item__quantity-minus');
         const plusBtn = listSelector.querySelector('.cart-item__quantity-plus');
         const itemIndex = listSelector.getAttribute('data-item-index');
-        if (input && itemIndex && (e.target.closest('.cart-item__quantity-minus') || e.target.closest('.cart-item__quantity-plus'))) {
+        if (
+          input &&
+          itemIndex &&
+          (e.target.closest('.cart-item__quantity-minus') || e.target.closest('.cart-item__quantity-plus'))
+        ) {
           e.preventDefault();
           e.stopPropagation();
           const MIN_QTY = 1;
@@ -212,7 +216,7 @@ class CartDrawer extends HTMLElement {
         variants,
         data.optionsWithValues,
         currentOptions,
-        data.variantId
+        data.variantId,
       );
     } else if (variantsWrap) {
       variantsWrap.innerHTML = '';
@@ -240,7 +244,7 @@ class CartDrawer extends HTMLElement {
       (v) =>
         v.options &&
         v.options[optionIndex] === value &&
-        v.options.every((opt, j) => j === optionIndex || currentOptions[j] === undefined || opt === currentOptions[j])
+        v.options.every((opt, j) => j === optionIndex || currentOptions[j] === undefined || opt === currentOptions[j]),
     );
   }
 
@@ -284,7 +288,7 @@ class CartDrawer extends HTMLElement {
         this.editState.variants,
         this.editState.optionsWithValues,
         currentOptions,
-        variantId
+        variantId,
       );
     }
     const priceEl = panel.querySelector('[data-edit-price]');
@@ -333,9 +337,16 @@ class CartDrawer extends HTMLElement {
     if (maxQty != null) quantity = Math.min(quantity, maxQty);
     const { lineIndex, originalVariantId, selectedVariantId } = this.editState;
     const updateBtn = panel && panel.querySelector('[data-edit-update-btn]');
+    const updateButtonText = (text) => {
+      if (!updateBtn) return;
+      const textSpan = updateBtn.querySelector('.submit-button__text');
+      if (textSpan) textSpan.textContent = text;
+      else updateBtn.textContent = text;
+    };
+
     if (updateBtn) {
       updateBtn.disabled = true;
-      updateBtn.textContent = 'Updating…';
+      updateButtonText('Updating…');
     }
 
     const changePayload = (qty) =>
@@ -380,14 +391,14 @@ class CartDrawer extends HTMLElement {
       this.closeEditPanel();
       if (updateBtn) {
         updateBtn.disabled = false;
-        updateBtn.textContent = 'Update Cart';
+        updateButtonText('Update Cart');
       }
     };
 
     const fail = () => {
       if (updateBtn) {
         updateBtn.disabled = false;
-        updateBtn.textContent = 'Update Cart';
+        updateButtonText('Update Cart');
       }
     };
 
@@ -409,7 +420,7 @@ class CartDrawer extends HTMLElement {
           this.closeEditPanel();
           if (updateBtn) {
             updateBtn.disabled = false;
-            updateBtn.textContent = 'Update Cart';
+            updateButtonText('Update Cart');
           }
         })
         .catch(() => {
@@ -500,7 +511,7 @@ class CartDrawer extends HTMLElement {
     if (typeof cents === 'string') return cents;
     const ref = originalFormat || '';
     const currencyMatch = ref.match(/^([^\d\s.,]+)/);
-    const currencySymbol = currencyMatch ? currencyMatch[1] : 'Rs.';
+    const currencySymbol = currencyMatch ? currencyMatch[1] : '';
     const numberMatch = ref.match(/[\d,]+\.?\d*/);
     const hasDecimals = numberMatch && numberMatch[0].includes('.');
     const amount = (cents / 100).toFixed(2);
@@ -547,7 +558,7 @@ class CartDrawer extends HTMLElement {
         const focusElement = this.querySelector('.drawer__inner') || this.querySelector('.drawer__close');
         trapFocus(containerToTrapFocusOn, focusElement);
       },
-      { once: true }
+      { once: true },
     );
 
     document.body.classList.add('overflow-hidden', 'cart-drawer-open');

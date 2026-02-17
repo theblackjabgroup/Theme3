@@ -392,9 +392,11 @@ if (!customElements.get('cart-note')) {
           'input',
           debounce((event) => {
             const body = JSON.stringify({ note: event.target.value });
-            fetch(`${routes.cart_update_url}`, { ...fetchConfig(), ...{ body } }).then(() =>
-              CartPerformance.measureFromEvent('note-update:user-action', event),
-            );
+            fetch(`${routes.cart_update_url}`, { ...fetchConfig(), ...{ body } }).then(() => {
+              if (typeof CartPerformance !== 'undefined') {
+                CartPerformance.measureFromEvent('note-update:user-action', event);
+              }
+            });
           }, ON_CHANGE_DEBOUNCE_TIMER),
         );
       }
