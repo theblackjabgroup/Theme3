@@ -1102,7 +1102,7 @@ accordion-item[open] .accordion__wrapper {
     font-size: var(--accordion-content-font-size-mobile, var(--accordion-content-font-size));
     font-weight: var(--accordion-content-font-weight-mobile, var(--accordion-content-font-weight));
   }
-  .marquee-item--pill {
+  .marquee-item {
     font-size: var(--marquee-font-size-mobile, var(--marquee-font-size));
     font-weight: var(--marquee-font-weight-mobile, var(--marquee-font-weight));
   }

@@ -40,7 +40,7 @@
   endif
 -%}
 
-<div class="marquee-scroll color-{{ scheme.id }}" id="shopify-section-{{ section.id }}">
+<div class="marquee-scroll color-{{ scheme.id }}">
   {%- for block in section.blocks -%}
     {%- liquid
       assign scroll_dir = 'normal'
@@ -234,7 +234,7 @@
       "step": 4,
       "unit": "px",
       "label": "Bottom padding",
-      "default": 24
+      "default": 0
     }
   ],
   "max_blocks": 3,
@@ -547,7 +547,7 @@
         {
           "type": "range",
           "id": "strip_padding",
-          "min": 8,
+          "min": 0,
           "max": 48,
           "step": 2,
           "unit": "px",
