@@ -96,6 +96,8 @@
     --section-padding-horizontal: {{ section.settings.padding_horizontal }}px;
     --section-padding-horizontal-mobile: {{ section.settings.padding_horizontal_mobile }}px;
     --section-border-radius: {{ section.settings.border_radius }}px;
+    --mobile-column-gap: {{ section.settings.mobile_column_gap | default: 16 }}px;
+    --mobile-column-border-radius: {{ section.settings.mobile_column_border_radius | default: 12 }}px;
     --product-add-to-cart-height: {{ add_to_cart_height }}px;
     --product-quantity-height: {{ quantity_height }}px;
     --product-variant-height: {{ variant_height }}px;
@@ -126,16 +128,20 @@
   <!-- HERO SECTION (Floating Absolute) -->
   {% render 'product-hero-image', product: product, section: section %}
 
-  <!-- LEFT COLUMN -->
-  {% render 'product-left-column',
-    product: product,
-    section: section,
-    product_form_id: product_form_id,
-    block_gap: section.settings.block_gap
-  %}
+  <!-- CARD 1: LEFT COLUMN -->
+  <div class="product-mobile-card product-mobile-card--left product-column-appear">
+    {% render 'product-left-column',
+      product: product,
+      section: section,
+      product_form_id: product_form_id,
+      block_gap: section.settings.block_gap
+    %}
+  </div>
 
-  <!-- RIGHT COLUMN -->
-  {% render 'product-right-column', product: product, section: section, block_gap: section.settings.right_block_gap %}
+  <!-- CARD 2: RIGHT COLUMN -->
+  <div class="product-mobile-card product-mobile-card--right product-column-appear">
+    {% render 'product-right-column', product: product, section: section, block_gap: section.settings.right_block_gap %}
+  </div>
 </div>
 
 <script>
@@ -215,22 +221,58 @@
       updateButtons();
     });
 
+    const leftCol = sectionContainer.querySelector('.product-split-left');
+    const rightCol = sectionContainer.querySelector('.product-split-right');
+
     // ---------------------------------------------------------
-    // SCROLL ANIMATION
+    // SCROLL EXPAND ANIMATION
+    // Elements start smaller, expand to full when scrolled into view
+    // Mobile: viewport root (page scrolls). Desktop: column root (column scrolls)
     // ---------------------------------------------------------
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-    sectionContainer.querySelectorAll('.feature-row').forEach((row) => {
-      observer.observe(row);
-    });
+    const isMobile = window.innerWidth < 990;
+
+    function createScrollExpandObserver(root) {
+      return new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('product-scroll-expand--visible');
+            }
+          });
+        },
+        {
+          root: root ?? null,
+          rootMargin: isMobile ? '0px 0px 80px 0px' : '0px 0px -20px 0px',
+          threshold: isMobile ? 0.6 : 0.8
+        }
+      );
+    }
+
+    const leftTargets = leftCol ? leftCol.querySelectorAll('.product-left-inner > *:not(.product-actions-row)') : [];
+    const rightTargets = rightCol ? new Set([
+      rightCol.querySelector('.product-media-block-wrapper'),
+      rightCol.querySelector('.product__description'),
+      ...rightCol.querySelectorAll('.product-content-stack > *:not(.marquee-wrapper)'),
+      ...rightCol.querySelectorAll('accordion-item')
+    ]) : new Set();
+
+    if (leftCol) {
+      const leftObserver = createScrollExpandObserver(isMobile ? null : leftCol);
+      leftTargets.forEach((el) => {
+        el.classList.add('product-scroll-expand');
+        leftObserver.observe(el);
+      });
+    }
+
+    if (rightCol) {
+      const rightObserver = createScrollExpandObserver(isMobile ? null : rightCol);
+      rightTargets.forEach((el) => {
+        if (el) {
+          el.classList.add('product-scroll-expand');
+          rightObserver.observe(el);
+        }
+      });
+    }
 
     // ---------------------------------------------------------
     // SCROLL HIJACKING (Desktop Only)
@@ -626,7 +668,7 @@
       "step": 4,
       "unit": "px",
       "label": "Top Margin",
-      "default": 0
+      "default": 16
     },
     {
       "type": "range",
@@ -636,7 +678,7 @@
       "step": 2,
       "unit": "px",
       "label": "Top Margin (Mobile)",
-      "default": 0
+      "default": 8
     },
     {
       "type": "range",
@@ -646,7 +688,7 @@
       "step": 4,
       "unit": "px",
       "label": "Bottom Margin",
-      "default": 0
+      "default": 16
     },
     {
       "type": "range",
@@ -666,7 +708,7 @@
       "step": 10,
       "unit": "px",
       "label": "Horizontal Margin (Left/Right)",
-      "default": 10
+      "default": 20
     },
     {
       "type": "range",
@@ -676,7 +718,7 @@
       "step": 2,
       "unit": "px",
       "label": "Horizontal Margin Mobile (Left/Right)",
-      "default": 0
+      "default": 16
     },
     {
       "type": "header",
@@ -700,7 +742,7 @@
       "step": 2,
       "unit": "px",
       "label": "Top Padding (Mobile)",
-      "default": 0
+      "default": 20
     },
     {
       "type": "range",
@@ -710,7 +752,7 @@
       "step": 4,
       "unit": "px",
       "label": "Bottom Padding",
-      "default": 0
+      "default": 20
     },
     {
       "type": "range",
@@ -740,7 +782,7 @@
       "step": 2,
       "unit": "px",
       "label": "Horizontal Padding Mobile (Left/Right)",
-      "default": 0
+      "default": 20
     },
     {
       "type": "range",
@@ -760,6 +802,30 @@
     },
     {
       "type": "header",
+      "content": "Mobile Column Cards"
+    },
+    {
+      "type": "range",
+      "id": "mobile_column_gap",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "label": "Gap Between Cards",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "mobile_column_border_radius",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Border Radius",
+      "default": 12
+    },
+    {
+      "type": "header",
       "content": "Left Column Blocks"
     },
     {
@@ -770,7 +836,7 @@
       "step": 4,
       "unit": "px",
       "label": "Gap Between Blocks",
-      "default": 24
+      "default": 16
     },
     {
       "type": "header",
@@ -784,7 +850,7 @@
       "step": 4,
       "unit": "px",
       "label": "Gap Between Blocks",
-      "default": 24
+      "default": 16
     }
   ],
   "blocks": [
@@ -803,19 +869,19 @@
           "type": "color",
           "id": "tag_text_color",
           "label": "Tag Text Color",
-          "default": "#000000"
+          "default": "#273827"
         },
         {
           "type": "color",
           "id": "tag_border_color",
           "label": "Tag Border Color",
-          "default": "#000000"
+          "default": "#273827"
         },
         {
           "type": "color",
           "id": "tag_bg_color",
           "label": "Tag Background Color",
-          "default": "transparent"
+          "default": "rgba(0,0,0,0)"
         },
         {
           "type": "range",
@@ -912,7 +978,7 @@
           "step": 1,
           "unit": "px",
           "label": "Title Font Size (Desktop)",
-          "default": 38
+          "default": 44
         },
         {
           "type": "range",
@@ -1143,7 +1209,7 @@
           "step": 1,
           "unit": "px",
           "label": "Main Price Font Size (Desktop)",
-          "default": 56
+          "default": 24
         },
         {
           "type": "range",
@@ -1153,7 +1219,7 @@
           "step": 1,
           "unit": "px",
           "label": "Main Price Font Size (Mobile)",
-          "default": 40
+          "default": 24
         },
         {
           "type": "range",
@@ -1163,7 +1229,7 @@
           "step": 1,
           "unit": "px",
           "label": "Sale Price (MRP) Font Size (Desktop)",
-          "default": 20
+          "default": 16
         },
         {
           "type": "range",
@@ -1655,7 +1721,7 @@
           "step": 1,
           "unit": "px",
           "label": "Heading Font Size (Desktop)",
-          "default": 18
+          "default": 16
         },
         {
           "type": "range",
@@ -1678,7 +1744,7 @@
             { "value": "600", "label": "Semi Bold" },
             { "value": "700", "label": "Bold" }
           ],
-          "default": "400"
+          "default": "600"
         },
         {
           "type": "select",
@@ -1701,7 +1767,7 @@
           "step": 1,
           "unit": "px",
           "label": "Content Font Size (Desktop)",
-          "default": 16
+          "default": 14
         },
         {
           "type": "range",
@@ -1754,7 +1820,7 @@
           "step": 1,
           "unit": "px",
           "label": "Font Size (Desktop)",
-          "default": 18
+          "default": 14
         },
         {
           "type": "range",
@@ -1843,7 +1909,7 @@
           "step": 1,
           "unit": "px",
           "label": "Font Size (Desktop)",
-          "default": 18
+          "default": 16
         },
         {
           "type": "range",
@@ -1950,7 +2016,7 @@
           "step": 1,
           "unit": "px",
           "label": "Heading Font Size (Desktop)",
-          "default": 24
+          "default": 16
         },
         {
           "type": "range",
@@ -1996,7 +2062,7 @@
           "step": 1,
           "unit": "px",
           "label": "Text Font Size (Desktop)",
-          "default": 18
+          "default": 14
         },
         {
           "type": "range",

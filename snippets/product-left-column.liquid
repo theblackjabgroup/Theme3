@@ -12,7 +12,7 @@
   - section: The section object (used for block unique IDs and blocks).
   - product_form_id: The unique ID for the product form.
 {%- endcomment -%}
-<div class="product-split-left">
+<div class="product-split-left product-column-appear">
   <div class="product-left-inner" style="--block-gap: {{ block_gap | default: 24 }}px;">
     {% assign current_variant = product.selected_or_first_available_variant %}
 

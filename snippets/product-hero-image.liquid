@@ -9,7 +9,7 @@
   Variables:
   - product: The product object.
 {%- endcomment -%}
-<div class="product-hero-section">
+<div class="product-hero-section product-hero-drag-in">
   {% assign hero_image = null %}
   {% for media in product.media %}
     {% if media.media_type == 'image' %}
