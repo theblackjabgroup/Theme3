@@ -965,8 +965,8 @@ accordion-item[open] .accordion__wrapper {
     margin-right: var(--section-margin-horizontal-mobile, 0px);
     padding-top: var(--section-padding-top-mobile, 0px);
     padding-bottom: var(--section-padding-bottom-mobile, 0px);
-    padding-left: var(--section-padding-horizontal-mobile, 0px);
-    padding-right: var(--section-padding-horizontal-mobile, 0px);
+    padding-left: 0;
+    padding-right: 0;
   }
   .product-hero-section {
     display: none; 
@@ -975,7 +975,6 @@ accordion-item[open] .accordion__wrapper {
   /* Two-card layout: each card wraps one column */
   .product-mobile-card {
     display: block;
-    margin: 0 var(--mobile-column-margin, 8px);
     border-radius: var(--mobile-column-border-radius, 12px);
     background: var(--color-primary-button-bg);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
