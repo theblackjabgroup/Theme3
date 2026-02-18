@@ -18,8 +18,8 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   height: 100vh;
-  overflow: hidden; 
-  background: var(--color-primary-button-bg);
+  overflow: hidden;
+  background: var(--color-background);
   position: relative;
   margin-top: var(--section-margin-top, var(--spacing-6));
   margin-bottom: var(--section-margin-bottom, 0px);
@@ -27,8 +27,6 @@
   margin-right: var(--section-margin-horizontal, 0px);
   padding-top: var(--section-padding-top, 0px);
   padding-bottom: var(--section-padding-bottom, 0px);
-  padding-left: var(--section-padding-horizontal, 0px);
-  padding-right: var(--section-padding-horizontal, 0px);
   border-radius: var(--section-border-radius, 14px);
 }
 
@@ -42,9 +40,27 @@
   transform: translate(-50%, -50%);
   width: 100%;
   max-width: var(--hero-image-max-width, 400px);
-  z-index: 2;
+  z-index: 5;
   pointer-events: none;
   display: flex;
+}
+
+/* Hero drag-in from top animation */
+@media (prefers-reduced-motion: no-preference) {
+  .product-hero-section.product-hero-drag-in {
+    animation: product-hero-drag-in 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  @keyframes product-hero-drag-in {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -200%);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+    }
+  }
 }
 
 .product-hero-image {
@@ -53,27 +69,99 @@
   height: auto;
   filter: drop-shadow(0px var(--spacing-10) 30px rgba(0, 0, 0, 0.3));
   transition: transform var(--transition-fast);
-  pointer-events: auto;
+  pointer-events: none;
   display: block;
 }
 .product-hero-image:hover {
   transform: scale(1.02);
 }
 
+/* =============================
+   COLUMN APPEAR ANIMATION
+   Desktop: columns expand. Mobile: cards expand.
+============================= */
+@media (prefers-reduced-motion: no-preference) {
+  /* Desktop: columns expand from small to full */
+  @media (min-width: 990px) {
+    .product-split-left.product-column-appear,
+    .product-split-right.product-column-appear {
+      animation: product-column-expand-in 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    .product-split-left.product-column-appear {
+      transform-origin: right center;
+    }
+
+    .product-split-right.product-column-appear {
+      transform-origin: left center;
+    }
+
+    @keyframes product-column-expand-in {
+      from {
+        opacity: 0.7;
+        transform: scale(0.88);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  }
+
+  /* Mobile: cards expand (opacity-only to avoid breaking sticky button) */
+  @media (max-width: 989px) {
+    .product-mobile-card.product-column-appear {
+      animation: product-column-appear-mobile 0.6s ease-out forwards;
+    }
+
+    @keyframes product-column-appear-mobile {
+      from {
+        opacity: 0.7;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+/* =============================
+   SCROLL EXPAND ANIMATION
+   Elements start smaller, expand to full on scroll into view
+============================= */
+@media (prefers-reduced-motion: no-preference) {
+  .product-scroll-expand {
+    opacity: 0.85;
+    transform: scale(0.9);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .product-scroll-expand.product-scroll-expand--visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
 
 /* =============================
    LEFT COLUMN
 ============================= */
+/* Mobile card wrappers - transparent on desktop */
+.product-mobile-card {
+  display: contents;
+}
+
 .product-split-left {
-  height: 90vh;
+  height: 100vh;
   overflow-y: auto;
   position: relative;
   display: flex;
   align-items: center;
-  z-index: 10;
+  z-index: 1;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  padding-left: var(--section-padding-horizontal, 0px);
   padding-right: var(--section-padding-horizontal, 0px);
+  background: var(--color-primary-button-bg);
 }
 .product-split-left::-webkit-scrollbar {
   display: none;
@@ -500,6 +588,7 @@
   text-align: center;
   padding: 10px 0;
   padding-left: var(--section-padding-horizontal, 0px);
+  padding-right: var(--section-padding-horizontal, 0px);
   color: var(--color-text);
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -765,15 +854,8 @@ accordion-item[open] .accordion__wrapper {
 }
 
 .feature-row {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
   text-align: left;
   color: var(--color-text);
-}
-.feature-row.visible {
-  opacity: 1;
-  transform: translateY(0);
 }
 .feature-icon {
   display: block;
@@ -874,6 +956,7 @@ accordion-item[open] .accordion__wrapper {
   .product-split-container {
     display: flex; 
     flex-direction: column;
+    gap: var(--mobile-column-gap, 16px);
     height: auto;
     overflow: visible;
     margin-top: var(--section-margin-top-mobile, 0px);
@@ -888,19 +971,35 @@ accordion-item[open] .accordion__wrapper {
   .product-hero-section {
     display: none; 
   }
+
+  /* Two-card layout: each card wraps one column */
+  .product-mobile-card {
+    display: block;
+    margin: 0 var(--mobile-column-margin, 8px);
+    border-radius: var(--mobile-column-border-radius, 12px);
+    background: var(--color-primary-button-bg);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--color-borders, rgba(0, 0, 0, 0.08));
+    overflow: hidden;
+  }
+  .product-mobile-card--left {
+    order: 1;
+    position: relative;
+    z-index: 2;
+  }
+  .product-mobile-card--right {
+    order: 2;
+    position: relative;
+    z-index: 1;
+  }
   
-  .product-split-left {
-    order: 1; 
-    padding: var(--spacing-m) var(--spacing-xl);
+  .product-split-left,
+  .product-split-right {
+    padding: var(--spacing-m) var(--section-padding-horizontal-mobile, 0px) var(--spacing-m);
     height: auto;
     overflow: visible;
     display: block;
-  }
-  .product-split-right {
-    order: 2; 
-    padding: 0 var(--spacing-xl);
-    height: auto;
-    overflow: visible;
+    background: transparent;
   }
   
   .mobile-product-slider {

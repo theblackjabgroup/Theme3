@@ -11,7 +11,7 @@
   - product: The product object.
   - section: The section object (to iterate over blocks).
 {%- endcomment -%}
-<div class="product-split-right" style="--block-gap: {{ block_gap | default: 24 }}px;">
+<div class="product-split-right product-column-appear" style="--block-gap: {{ block_gap | default: 24 }}px;">
   {%- assign accordion_count = 0 -%}
   {%- assign in_content_stack = false -%}
   {%- for block in section.blocks -%}
