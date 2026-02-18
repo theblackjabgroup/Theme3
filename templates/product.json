@@ -6,42 +6,21 @@
         "strip_1": {
           "type": "scrolling_strip",
           "settings": {
-            "text": "<p>FREE SHIPPING WORLDWIDE</p>",
-            "icon": "shopify://shop_images/Vector.svg",
-            "icon_width": 22,
-            "text_font": "assistant_n4",
-            "text_2": "",
-            "text_2_font": "assistant_n4",
-            "link": "",
-            "strip_width": 95,
-            "alignment": "center",
-            "padding": 10,
-            "text_gap": 50,
-            "transparent_background": false,
-            "bg_color": "#e5e1da",
-            "text_color": "#000000",
-            "font_size": 22,
-            "direction": "left",
-            "speed": 20,
-            "angle": 0,
-            "tilt_margin": 0,
-            "enable_border": false,
-            "border_color": "#000000",
-            "border_radius": 14,
-            "border_width": 1
+            "text": "<p>kōkō</p>",
+            "pill_bg": "#2E473E",
+            "pill_color": "#E8E4DC",
+            "orbit_text": "KOKO",
+            "circle_bg": "#E0A8B8",
+            "orbit_text_color": "#2E473E",
+            "strip_bg": "transparent",
+            "direction": "left"
           }
         }
       },
       "block_order": [
         "strip_1"
       ],
-      "settings": {
-        "vertical_gap": 0,
-        "vertical_gap_mobile": 0,
-        "color_scheme": "",
-        "padding_top": 24,
-        "padding_bottom": 0
-      }
+      "settings": {}
     },
     "main": {
       "type": "main-product",
