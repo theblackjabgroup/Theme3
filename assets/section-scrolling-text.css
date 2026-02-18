@@ -101,7 +101,7 @@
   font-weight: 600;
   letter-spacing: 0.08em;
   word-spacing: var(--orbit-text-gap, 4px);
-  text-transform: uppercase;
+  text-transform: var(--orbit-text-transform, uppercase);
 }
 
 @keyframes marquee-orbit {

@@ -34,6 +34,7 @@
       --orbit-font-size: {{ block.settings.orbit_font_size_mobile | default: block.settings.orbit_font_size }}px !important;
       --orbit-text-gap: {{ block.settings.orbit_text_gap_mobile | default: block.settings.orbit_text_gap }}px !important;
       --orbit-speed: {{ block.settings.orbit_speed_mobile | default: block.settings.orbit_speed }}s !important;
+      --orbit-text-transform: {{ block.settings.orbit_text_transform_mobile | default: block.settings.orbit_text_transform }} !important;
     }
   }
   {%- endfor -%}
@@ -82,6 +83,7 @@
         --orbit-font-size: {{ block.settings.orbit_font_size }}px;
         --orbit-text-gap: {% assign og = block.settings.orbit_text_gap %}{% if og == nil %}{% assign og = 8 %}{% endif %}{{ og }}px;
         --orbit-color: {{ block.settings.orbit_text_color }};
+        --orbit-text-transform: {{ block.settings.orbit_text_transform }};
         --circle-width: {{ block.settings.circle_width }}px;
         --circle-height: {{ block.settings.circle_height }}px;
         --circle-bg: {{ block.settings.circle_bg }};
@@ -90,75 +92,49 @@
       "
     >
       <div class="marquee-scroll__track">
-        <div class="marquee-scroll__content">
-        {%- for i in (1..12) -%}
-          <div class="marquee-scroll__group">
-            <span class="marquee-scroll__orbit">
-              <span class="marquee-scroll__orbit-ring">
-                <svg class="marquee-scroll__orbit-svg" viewBox="0 0 120 120" aria-hidden="true">
-                  <defs>
-                    <path id="orbit-path-{{ block.id }}-{{ i }}" d="M 18,60 A 42,42 0 0 1 102,60 A 42,42 0 0 1 18,60" fill="none" />
-                  </defs>
-                  <g class="marquee-scroll__orbit-track">
-                    <text>
-                      <textPath href="#orbit-path-{{ block.id }}-{{ i }}">
-                        {{ block.settings.orbit_text }} {{ block.settings.orbit_text }} {{ block.settings.orbit_text }} {{ block.settings.orbit_text }} {{ block.settings.orbit_text }} {{ block.settings.orbit_text }}
-                      </textPath>
-                    </text>
-                  </g>
-                </svg>
-              </span>
-              <span class="marquee-scroll__orbit-center">
-                {%- if block.settings.circle_icon != blank -%}
-                  {{
-                    block.settings.circle_icon
-                    | image_url: width: 96
-                    | image_tag: class: 'marquee-scroll__icon', loading: 'lazy', alt: ''
-                  }}
-                {%- else -%}
-                  <span class="marquee-scroll__icon-placeholder"></span>
-                {%- endif -%}
-              </span>
-            </span>
-
-            <span class="marquee-scroll__pill">{{ block.settings.text }}</span>
+        {%- for content_copy in (1..2) -%}
+          {%- if content_copy == 1 -%}
+            {%- assign orbit_path_prefix = 'orbit-path-' -%}
+            {%- assign content_aria_hidden = false -%}
+          {%- else -%}
+            {%- assign orbit_path_prefix = 'orbit-path-dup-' -%}
+            {%- assign content_aria_hidden = true -%}
+          {%- endif -%}
+          <div class="marquee-scroll__content"{% if content_aria_hidden %} aria-hidden="true"{% endif %}>
+            {%- for i in (1..12) -%}
+              <div class="marquee-scroll__group">
+                <span class="marquee-scroll__orbit">
+                  <span class="marquee-scroll__orbit-ring">
+                    <svg class="marquee-scroll__orbit-svg" viewBox="0 0 120 120" aria-hidden="true">
+                      <defs>
+                        <path id="{{ orbit_path_prefix }}{{ block.id }}-{{ i }}" d="M 18,60 A 42,42 0 0 1 102,60 A 42,42 0 0 1 18,60" fill="none" />
+                      </defs>
+                      <g class="marquee-scroll__orbit-track">
+                        <text>
+                          <textPath href="#{{ orbit_path_prefix }}{{ block.id }}-{{ i }}">
+                            {{ block.settings.orbit_text }} {{ block.settings.orbit_text }} {{ block.settings.orbit_text }} {{ block.settings.orbit_text }} {{ block.settings.orbit_text }} {{ block.settings.orbit_text }}
+                          </textPath>
+                        </text>
+                      </g>
+                    </svg>
+                  </span>
+                  <span class="marquee-scroll__orbit-center">
+                    {%- if block.settings.circle_icon != blank -%}
+                      {{
+                        block.settings.circle_icon
+                        | image_url: width: 96
+                        | image_tag: class: 'marquee-scroll__icon', loading: 'lazy', alt: ''
+                      }}
+                    {%- else -%}
+                      <span class="marquee-scroll__icon-placeholder"></span>
+                    {%- endif -%}
+                  </span>
+                </span>
+                <span class="marquee-scroll__pill">{{ block.settings.text }}</span>
+              </div>
+            {%- endfor -%}
           </div>
         {%- endfor -%}
-        </div>
-        <div class="marquee-scroll__content" aria-hidden="true">
-        {%- for i in (1..12) -%}
-          <div class="marquee-scroll__group">
-            <span class="marquee-scroll__orbit">
-              <span class="marquee-scroll__orbit-ring">
-                <svg class="marquee-scroll__orbit-svg" viewBox="0 0 120 120" aria-hidden="true">
-                  <defs>
-                    <path id="orbit-path-dup-{{ block.id }}-{{ i }}" d="M 18,60 A 42,42 0 0 1 102,60 A 42,42 0 0 1 18,60" fill="none" />
-                  </defs>
-                  <g class="marquee-scroll__orbit-track">
-                    <text>
-                      <textPath href="#orbit-path-dup-{{ block.id }}-{{ i }}">
-                        {{ block.settings.orbit_text }} {{ block.settings.orbit_text }} {{ block.settings.orbit_text }} {{ block.settings.orbit_text }} {{ block.settings.orbit_text }} {{ block.settings.orbit_text }}
-                      </textPath>
-                    </text>
-                  </g>
-                </svg>
-              </span>
-              <span class="marquee-scroll__orbit-center">
-                {%- if block.settings.circle_icon != blank -%}
-                  {{
-                    block.settings.circle_icon
-                    | image_url: width: 96
-                    | image_tag: class: 'marquee-scroll__icon', loading: 'lazy', alt: ''
-                  }}
-                {%- else -%}
-                  <span class="marquee-scroll__icon-placeholder"></span>
-                {%- endif -%}
-              </span>
-            </span>
-            <span class="marquee-scroll__pill">{{ block.settings.text }}</span>
-          </div>
-        {%- endfor -%}
-        </div>
       </div>
     </div>
   {%- endfor -%}
@@ -397,6 +373,17 @@
           "default": "KOKO"
         },
         {
+          "type": "select",
+          "id": "orbit_text_transform",
+          "label": "Orbit text style",
+          "options": [
+            { "value": "uppercase", "label": "Uppercase (capitalize)" },
+            { "value": "lowercase", "label": "Lowercase (small)" },
+            { "value": "none", "label": "As typed" }
+          ],
+          "default": "uppercase"
+        },
+        {
           "type": "range",
           "id": "circle_width",
           "min": 48,
@@ -531,6 +518,17 @@
           "unit": "%",
           "label": "Icon height (mobile)",
           "default": 100
+        },
+        {
+          "type": "select",
+          "id": "orbit_text_transform_mobile",
+          "label": "Orbit text style (mobile)",
+          "options": [
+            { "value": "uppercase", "label": "Uppercase (capitalize)" },
+            { "value": "lowercase", "label": "Lowercase (small)" },
+            { "value": "none", "label": "As typed" }
+          ],
+          "default": "uppercase"
         },
         {
           "type": "range",
