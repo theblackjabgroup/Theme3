@@ -68,12 +68,8 @@
   max-width: var(--hero-image-max-width, 400px);
   height: auto;
   filter: drop-shadow(0px var(--spacing-10) 30px rgba(0, 0, 0, 0.3));
-  transition: transform var(--transition-fast);
   pointer-events: none;
   display: block;
-}
-.product-hero-image:hover {
-  transform: scale(1.02);
 }
 
 /* =============================

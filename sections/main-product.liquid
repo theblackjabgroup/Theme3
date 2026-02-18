@@ -97,7 +97,6 @@
     --section-padding-horizontal-mobile: {{ section.settings.padding_horizontal_mobile }}px;
     --section-border-radius: {{ section.settings.border_radius }}px;
     --mobile-column-gap: {{ section.settings.mobile_column_gap | default: 16 }}px;
-    --mobile-column-margin: {{ section.settings.mobile_column_margin | default: 8 }}px;
     --mobile-column-border-radius: {{ section.settings.mobile_column_border_radius | default: 12 }}px;
     --product-add-to-cart-height: {{ add_to_cart_height }}px;
     --product-quantity-height: {{ quantity_height }}px;
@@ -231,7 +230,6 @@
     // Mobile: viewport root (page scrolls). Desktop: column root (column scrolls)
     // ---------------------------------------------------------
     const isMobile = window.innerWidth < 990;
-    const scrollRoot = isMobile ? null : undefined;
 
     function createScrollExpandObserver(root) {
       return new IntersectionObserver(
