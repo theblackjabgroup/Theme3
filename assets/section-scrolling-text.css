@@ -121,14 +121,14 @@
 }
 
 .marquee-scroll__icon {
-  width: 58%;
-  height: 58%;
+  width: var(--icon-width, 58%);
+  height: var(--icon-height, 58%);
   object-fit: contain;
 }
 
 .marquee-scroll__icon-placeholder {
-  width: 40%;
-  height: 40%;
+  width: var(--icon-width, 58%);
+  height: var(--icon-height, 58%);
   background: color-mix(in srgb, var(--orbit-color, #2E473E) 25%, transparent);
   border-radius: 50%;
 }

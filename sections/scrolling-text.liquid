@@ -10,8 +10,12 @@
   }
   @media (max-width: 749px) {
     #shopify-section-{{ section.id }} .marquee-scroll {
-      --section-margin-left: {{ section.settings.margin_left_mobile | default: section.settings.margin_left }}px !important;
-      --section-margin-right: {{ section.settings.margin_right_mobile | default: section.settings.margin_right }}px !important;
+      {%- assign ml = section.settings.margin_left_mobile -%}
+      {%- if ml == nil -%}{%- assign ml = section.settings.margin_left -%}{%- endif -%}
+      --section-margin-left: {{ ml }}px !important;
+      {%- assign mr = section.settings.margin_right_mobile -%}
+      {%- if mr == nil -%}{%- assign mr = section.settings.margin_right -%}{%- endif -%}
+      --section-margin-right: {{ mr }}px !important;
     }
   }
   {%- for block in section.blocks -%}
@@ -25,6 +29,8 @@
       --strip-border-radius: {{ block.settings.strip_border_radius_mobile | default: block.settings.strip_border_radius }}px !important;
       --circle-width: {{ block.settings.circle_width_mobile | default: block.settings.circle_width }}px !important;
       --circle-height: {{ block.settings.circle_height_mobile | default: block.settings.circle_height }}px !important;
+      --icon-width: {{ block.settings.icon_width_mobile | default: block.settings.icon_width | default: 58 }}% !important;
+      --icon-height: {{ block.settings.icon_height_mobile | default: block.settings.icon_height | default: 58 }}% !important;
       --orbit-font-size: {{ block.settings.orbit_font_size_mobile | default: block.settings.orbit_font_size }}px !important;
       --orbit-text-gap: {{ block.settings.orbit_text_gap_mobile | default: block.settings.orbit_text_gap }}px !important;
       --orbit-speed: {{ block.settings.orbit_speed_mobile | default: block.settings.orbit_speed }}s !important;
@@ -74,11 +80,13 @@
         --orbit-speed: {{ block.settings.orbit_speed }}s;
         --orbit-direction: {{ orbit_dir }};
         --orbit-font-size: {{ block.settings.orbit_font_size }}px;
-        --orbit-text-gap: {{ block.settings.orbit_text_gap | default: 4 }}px;
+        --orbit-text-gap: {% assign og = block.settings.orbit_text_gap %}{% if og == nil %}{% assign og = 8 %}{% endif %}{{ og }}px;
         --orbit-color: {{ block.settings.orbit_text_color }};
         --circle-width: {{ block.settings.circle_width }}px;
         --circle-height: {{ block.settings.circle_height }}px;
         --circle-bg: {{ block.settings.circle_bg }};
+        --icon-width: {{ block.settings.icon_width | default: 58 }}%;
+        --icon-height: {{ block.settings.icon_height | default: 58 }}%;
       "
     >
       <div class="marquee-scroll__track">
@@ -415,6 +423,26 @@
           "default": "#E0A8B8"
         },
         {
+          "type": "range",
+          "id": "icon_width",
+          "min": 20,
+          "max": 100,
+          "step": 2,
+          "unit": "%",
+          "label": "Icon width",
+          "default": 100
+        },
+        {
+          "type": "range",
+          "id": "icon_height",
+          "min": 20,
+          "max": 100,
+          "step": 2,
+          "unit": "%",
+          "label": "Icon height",
+          "default": 100
+        },
+        {
           "type": "color",
           "id": "orbit_text_color",
           "label": "Orbit text color",
@@ -483,6 +511,26 @@
           "unit": "px",
           "label": "Circle height (mobile)",
           "default": 48
+        },
+        {
+          "type": "range",
+          "id": "icon_width_mobile",
+          "min": 20,
+          "max": 100,
+          "step": 2,
+          "unit": "%",
+          "label": "Icon width (mobile)",
+          "default": 100
+        },
+        {
+          "type": "range",
+          "id": "icon_height_mobile",
+          "min": 20,
+          "max": 100,
+          "step": 2,
+          "unit": "%",
+          "label": "Icon height (mobile)",
+          "default": 100
         },
         {
           "type": "range",
