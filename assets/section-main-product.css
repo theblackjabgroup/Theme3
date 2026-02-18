@@ -1044,9 +1044,9 @@ accordion-item[open] .accordion__wrapper {
   }
 
   .marquee-wrapper {
-    margin-left: calc(var(--spacing-xl) * -1);
-    margin-right: calc(var(--spacing-xl) * -1);
-    width: calc(100% + (var(--spacing-xl) * 2));
+    margin-left: calc(var(--section-padding-horizontal-mobile, 0px) * -1);
+    margin-right: calc(var(--section-padding-horizontal-mobile, 0px) * -1);
+    width: calc(100% + (var(--section-padding-horizontal-mobile, 0px) * 2));
     border-left: none;
     border-right: none;
   }

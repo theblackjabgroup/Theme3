@@ -251,7 +251,6 @@
     const leftTargets = leftCol ? leftCol.querySelectorAll('.product-left-inner > *:not(.product-actions-row)') : [];
     const rightTargets = rightCol ? new Set([
       rightCol.querySelector('.product-media-block-wrapper'),
-      rightCol.querySelector('.product-media-wrapper'),
       rightCol.querySelector('.product__description'),
       ...rightCol.querySelectorAll('.product-content-stack > *:not(.marquee-wrapper)'),
       ...rightCol.querySelectorAll('accordion-item')
