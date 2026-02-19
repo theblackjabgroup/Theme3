@@ -62,6 +62,43 @@ class MobileHeader {
         this.closeMenu();
       }
     });
+
+    // Handle action button clicks in mobile menu footer (Search, Cart, etc.)
+    this.initActionButtons();
+  }
+
+  initActionButtons() {
+    const footerButtons = document.querySelectorAll('.mobile-menu-footer-btn');
+    footerButtons.forEach((btn) => {
+      btn.addEventListener(
+        'click',
+        (e) => {
+          // Only intercept if menu is open and we haven't already delayed this click
+          if (this.menuDrawer?.getAttribute('aria-hidden') === 'false' && !btn.hasAttribute('data-action-delayed')) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+
+            // Close the menu first
+            this.closeMenu();
+
+            // After closing animation is mostly done, trigger the action
+            // Using 1250ms to ensure the 1200ms header close is fully finished
+            setTimeout(() => {
+              btn.setAttribute('data-action-delayed', 'true');
+              if (btn.tagName === 'A' && btn.href && !btn.classList.contains('cart-drawer-trigger')) {
+                window.location.href = btn.href;
+              } else {
+                btn.click();
+              }
+              // Remove the attribute after a short delay so it can be clicked again
+              setTimeout(() => btn.removeAttribute('data-action-delayed'), 500);
+            }, 1250);
+          }
+        },
+        true,
+      ); // Use capture phase to intercept before other listeners (like cart-drawer)
+    });
   }
 
   toggleMenu() {
@@ -126,11 +163,9 @@ class MobileHeader {
       // Set aria-hidden to true immediately to trigger the CSS transition
       this.menuDrawer.setAttribute('aria-hidden', 'true');
 
-      // Trigger the transform animation first by removing the open state
+      // Force reflow to ensure the transition starts
       if (menuContent) {
-        // Force reflow to ensure the transition starts
         menuContent.offsetHeight;
-        menuContent.style.transform = 'translateY(-100%)';
       }
 
       // Wait for animation to complete before cleaning up body classes
@@ -181,7 +216,7 @@ class MobileHeader {
           menuContent.removeEventListener('transitionend', this.closeTransitionHandler);
         }
         this.closeTransitionHandler = null;
-      }, 800);
+      }, 1300);
 
       if (menuContent) {
         menuContent.addEventListener(

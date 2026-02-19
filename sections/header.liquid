@@ -527,37 +527,37 @@
         </div>
 
         {%- comment -%} Featured Columns Section {%- endcomment -%}
-        <div class="mega-menu-featured-columns">
-          {%- assign total_links = link.links.size -%}
-          {%- assign links_per_column = total_links | divided_by: 3.0 | ceil -%}
-
-          {%- for i in (1..3) -%}
-            {%- assign featured_title_key = 'featured_title_' | append: i -%}
-            {%- assign featured_title = matching_block.settings[featured_title_key] | default: 'FEATURED' -%}
-            {%- assign start_index = i | minus: 1 | times: links_per_column -%}
-            {%- assign end_index = start_index | plus: links_per_column | minus: 1 -%}
-            {%- if i == 3 -%}
-              {%- assign end_index = total_links | minus: 1 -%}
-            {%- endif -%}
-            <div class="mega-menu-column">
-              <h3 class="mega-menu-featured-header">
-                <span class="mega-menu-featured-bullet"></span>
-                {{ featured_title }}
-              </h3>
-              <ul class="mega-menu-column-list">
-                {%- for j in (start_index..end_index) -%}
-                  {%- if j >= 0 and j < total_links and link.links[j] -%}
-                    <li class="mega-menu-column-item">
-                      <a href="{{ link.links[j].url }}" class="mega-menu-column-link">
-                        {{ link.links[j].title }}
-                      </a>
-                    </li>
+        {%- if matching_block.settings.menu != blank -%}
+          {%- assign mega_menu_nav = linklists[matching_block.settings.menu] -%}
+          {%- if mega_menu_nav != blank and mega_menu_nav.links != blank -%}
+            <div class="mega-menu-featured-columns">
+              {%- for link in mega_menu_nav.links -%}
+                <div class="mega-menu-column">
+                  <h3 class="mega-menu-featured-header">
+                    <span class="mega-menu-featured-bullet"></span>
+                    {{ link.title }}
+                  </h3>
+                  {%- if link.links != blank -%}
+                    <ul class="mega-menu-column-list">
+                      {%- for childlink in link.links -%}
+                        <li class="mega-menu-column-item">
+                          <a href="{{ childlink.url }}" class="mega-menu-column-link">
+                            {{ childlink.title }}
+                          </a>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
                   {%- endif -%}
-                {%- endfor -%}
-              </ul>
+                </div>
+              {%- endfor -%}
             </div>
-          {%- endfor -%}
-        </div>
+          {%- endif -%}
+        {%- else -%}
+          {%- comment -%}
+            Fallback to old behavior if no menu selected? Or just hide?
+            User said "exactly like search popup" which uses its own menu setting.
+          {%- endcomment -%}
+        {%- endif -%}
 
         {%- comment -%} Image Cards Section {%- endcomment -%}
         {%- if matching_block != null -%}
@@ -615,6 +615,17 @@
   <div class="mega-menu-inner">
     <div class="mega-menu-header">
       <h2 class="mega-menu-title">{{ search_popup_title }}</h2>
+      <button
+        type="button"
+        class="mega-menu-close-button mobile-only"
+        aria-label="Close search"
+        data-mega-menu-trigger
+        aria-controls="HeaderSearchPopup"
+      >
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
     </div>
 
     {%- comment -%} Search field – icon customization {%- endcomment -%}
@@ -698,70 +709,124 @@
       {%- endif -%}
     </div>
 
-    {%- comment -%} Featured columns and image cards {%- endcomment -%}
-    {%- if search_popup_block != blank -%}
-      {%- comment -%} Featured columns (same as mega menu) {%- endcomment -%}
-      {%- if search_popup_block.settings.menu != blank -%}
-        {%- assign search_popup_menu = linklists[search_popup_block.settings.menu] -%}
-        {%- if search_popup_menu != blank and search_popup_menu.links != blank -%}
-          <div class="mega-menu-featured-columns">
-            {%- for link in search_popup_menu.links -%}
-              <div class="mega-menu-column">
-                <h3 class="mega-menu-featured-header">
-                  <span class="mega-menu-featured-bullet"></span>
-                  {{ link.title }}
-                </h3>
-                {%- if link.links != blank -%}
-                  <ul class="mega-menu-column-list">
-                    {%- for childlink in link.links -%}
-                      <li class="mega-menu-column-item">
-                        <a href="{{ childlink.url }}" class="mega-menu-column-link">
-                          {{ childlink.title }}
-                        </a>
-                      </li>
-                    {%- endfor -%}
-                  </ul>
+    {%- comment -%} Desktop Rich Content for Search Popup {%- endcomment -%}
+    <div class="v-desktop">
+      {%- if search_popup_block != blank -%}
+        {%- if search_popup_block.settings.menu != blank -%}
+          {%- assign search_popup_menu = linklists[search_popup_block.settings.menu] -%}
+          {%- if search_popup_menu != blank and search_popup_menu.links != blank -%}
+            <div class="mega-menu-featured-columns">
+              {%- for link in search_popup_menu.links -%}
+                <div class="mega-menu-column">
+                  <h3 class="mega-menu-featured-header">
+                    <span class="mega-menu-featured-bullet"></span>
+                    {{ link.title }}
+                  </h3>
+                  {%- if link.links != blank -%}
+                    <ul class="mega-menu-column-list">
+                      {%- for childlink in link.links -%}
+                        <li class="mega-menu-column-item">
+                          <a href="{{ childlink.url }}" class="mega-menu-column-link">
+                            {{ childlink.title }}
+                          </a>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
+                </div>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        {%- endif -%}
+
+        {%- liquid
+          assign img_1 = search_popup_block.settings.image_1
+          assign img_2 = search_popup_block.settings.image_2
+        -%}
+        {%- if img_1 != blank or img_2 != blank -%}
+          <div class="mega-menu-images">
+            <div class="mega-menu-image-grid">
+              {%- for i in (1..2) -%}
+                {%- liquid
+                  assign img_key = 'image_' | append: i
+                  assign link_key = 'link_' | append: i
+                  assign label_key = 'label_' | append: i
+                  assign img = search_popup_block.settings[img_key]
+                  assign url = search_popup_block.settings[link_key]
+                  assign label = search_popup_block.settings[label_key]
+                -%}
+                {%- if img != blank -%}
+                  <a href="{{ url | default: '#' }}" class="mega-menu-image-card">
+                    <div class="mega-menu-image-wrapper">
+                      {{ img | image_url: width: 400 | image_tag: loading: 'lazy', class: 'mega-menu-image' }}
+                    </div>
+                    {%- if label != blank -%}
+                      <div class="mega-menu-image-label">{{ label }}</div>
+                    {%- endif -%}
+                  </a>
                 {%- endif -%}
-              </div>
-            {%- endfor -%}
+              {%- endfor -%}
+            </div>
           </div>
         {%- endif -%}
       {%- endif -%}
+    </div>
 
-      {%- comment -%} Image cards (same as mega menu) {%- endcomment -%}
-      {%- liquid
-        assign img_1 = search_popup_block.settings.image_1
-        assign img_2 = search_popup_block.settings.image_2
-      -%}
-      {%- if img_1 != blank or img_2 != blank -%}
-        <div class="mega-menu-images">
-          <div class="mega-menu-image-grid">
-            {%- for i in (1..2) -%}
-              {%- liquid
-                assign img_key = 'image_' | append: i
-                assign link_key = 'link_' | append: i
-                assign label_key = 'label_' | append: i
-                assign img = search_popup_block.settings[img_key]
-                assign url = search_popup_block.settings[link_key]
-                assign label = search_popup_block.settings[label_key]
-              -%}
-              {%- if img != blank -%}
-                <a href="{{ url | default: '#' }}" class="mega-menu-image-card">
-                  <div class="mega-menu-image-wrapper">
-                    {{ img | image_url: width: 400 | image_tag: loading: 'lazy', class: 'mega-menu-image' }}
-                  </div>
-                  {%- if label != blank -%}
-                    <div class="mega-menu-image-label">
-                      {{ label }}
-                    </div>
+    {%- comment -%} Mobile Rich Mega Menu Content for Search Popup {%- endcomment -%}
+    <div class="mobile-mega-menu-content v-mobile">
+      {%- if search_popup_block != blank -%}
+        {%- if search_popup_block.settings.menu != blank -%}
+          {%- assign search_popup_menu = linklists[search_popup_block.settings.menu] -%}
+          {%- if search_popup_menu != blank and search_popup_menu.links != blank -%}
+            <div class="mobile-mega-menu-columns">
+              {%- for m_link in search_popup_menu.links -%}
+                <div class="mobile-mega-menu-column">
+                  <h4 class="mobile-mega-menu-column-title">
+                    <span class="mobile-mega-menu-bullet"></span>
+                    {{ m_link.title }}
+                  </h4>
+                  {%- if m_link.links != blank -%}
+                    <ul class="mobile-mega-menu-column-list">
+                      {%- for m_childlink in m_link.links -%}
+                        <li class="mobile-mega-menu-column-item">
+                          <a href="{{ m_childlink.url }}" class="mobile-mega-menu-column-link">
+                            {{ m_childlink.title }}
+                          </a>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
                   {%- endif -%}
-                </a>
-              {%- endif -%}
-            {%- endfor -%}
-          </div>
+                </div>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        {%- endif -%}
+
+        {%- comment -%} Mobile Image Cards for Search Popup {%- endcomment -%}
+        <div class="mobile-mega-menu-images">
+          {%- for i in (1..2) -%}
+            {%- liquid
+              assign img_key = 'image_' | append: i
+              assign link_key = 'link_' | append: i
+              assign label_key = 'label_' | append: i
+              assign img = search_popup_block.settings[img_key]
+              assign url = search_popup_block.settings[link_key]
+              assign label = search_popup_block.settings[label_key]
+            -%}
+            {%- if img != blank -%}
+              <a href="{{ url | default: '#' }}" class="mobile-mega-menu-image-card">
+                <div class="mobile-mega-menu-image-wrapper">
+                  {{ img | image_url: width: 600 | image_tag: loading: 'lazy', class: 'mobile-mega-menu-image' }}
+                </div>
+                {%- if label != blank -%}
+                  <div class="mobile-mega-menu-image-label">{{ label }}</div>
+                {%- endif -%}
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
         </div>
       {%- endif -%}
-    {%- endif -%}
+    </div>
   </div>
 </div>
 
@@ -882,18 +947,87 @@
                     </svg>
                   </button>
                 </div>
+                {%- assign matching_block = null -%}
+                {%- for block in section.blocks -%}
+                  {%- if block.type == 'mega_menu' and block.settings.link_name == link.title -%}
+                    {%- assign matching_block = block -%}
+                    {%- break -%}
+                  {%- endif -%}
+                {%- endfor -%}
+
                 <ul class="mobile-submenu" data-parent="{{ link_handle }}">
-                  {%- for childlink in link.links -%}
-                    <li class="mobile-submenu-item">
-                      <a
-                        href="{{ childlink.url }}"
-                        class="mobile-submenu-link {% if childlink.active %}active{% endif %}"
-                      >
-                        {{ childlink.title | upcase }}
-                      </a>
-                    </li>
-                  {%- endfor -%}
+                  {%- if matching_block != null -%}
+                    {%- comment -%} Mobile Rich Mega Menu Content {%- endcomment -%}
+                    <div class="mobile-mega-menu-content">
+                      {%- if matching_block.settings.menu != blank -%}
+                        {%- assign mega_menu_nav = linklists[matching_block.settings.menu] -%}
+                        {%- if mega_menu_nav != blank and mega_menu_nav.links != blank -%}
+                          <div class="mobile-mega-menu-columns">
+                            {%- for m_link in mega_menu_nav.links -%}
+                              <div class="mobile-mega-menu-column">
+                                <h4 class="mobile-mega-menu-column-title">
+                                  <span class="mobile-mega-menu-bullet"></span>
+                                  {{ m_link.title }}
+                                </h4>
+                                {%- if m_link.links != blank -%}
+                                  <ul class="mobile-mega-menu-column-list">
+                                    {%- for m_childlink in m_link.links -%}
+                                      <li class="mobile-mega-menu-column-item">
+                                        <a href="{{ m_childlink.url }}" class="mobile-mega-menu-column-link">
+                                          {{ m_childlink.title }}
+                                        </a>
+                                      </li>
+                                    {%- endfor -%}
+                                  </ul>
+                                {%- endif -%}
+                              </div>
+                            {%- endfor -%}
+                          </div>
+                        {%- endif -%}
+                      {%- endif -%}
+
+                      {%- comment -%} Mobile Image Cards {%- endcomment -%}
+                      <div class="mobile-mega-menu-images">
+                        {%- for i in (1..2) -%}
+                          {%- assign img_key = 'image_' | append: i -%}
+                          {%- assign link_key = 'link_' | append: i -%}
+                          {%- assign label_key = 'label_' | append: i -%}
+                          {%- assign img = matching_block.settings[img_key] -%}
+                          {%- assign url = matching_block.settings[link_key] -%}
+                          {%- assign label = matching_block.settings[label_key] -%}
+
+                          {%- if img != blank -%}
+                            <a href="{{ url | default: '#' }}" class="mobile-mega-menu-image-card">
+                              <div class="mobile-mega-menu-image-wrapper">
+                                {{
+                                  img
+                                  | image_url: width: 600
+                                  | image_tag: loading: 'lazy', class: 'mobile-mega-menu-image'
+                                }}
+                              </div>
+                              {%- if label != blank -%}
+                                <div class="mobile-mega-menu-image-label">{{ label }}</div>
+                              {%- endif -%}
+                            </a>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </div>
+                    </div>
+                  {%- else -%}
+                    {%- comment -%} Standard Submenu Fallback {%- endcomment -%}
+                    {%- for childlink in link.links -%}
+                      <li class="mobile-submenu-item">
+                        <a
+                          href="{{ childlink.url }}"
+                          class="mobile-submenu-link {% if childlink.active %}active{% endif %}"
+                        >
+                          {{ childlink.title | upcase }}
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  {%- endif -%}
                 </ul>
+
               {%- else -%}
                 <a href="{{ link.url }}" class="mobile-menu-link {% if link.active %}active{% endif %}">
                   <span class="mobile-menu-link-text">{{ link.title | upcase }}</span>
@@ -2130,25 +2264,13 @@
         },
         {
           "type": "header",
-          "content": "Featured Sections"
+          "content": "Menu Sections"
         },
         {
-          "type": "text",
-          "id": "featured_title_1",
-          "label": "Featured Column 1 Title",
-          "default": "FEATURED"
-        },
-        {
-          "type": "text",
-          "id": "featured_title_2",
-          "label": "Featured Column 2 Title",
-          "default": "FEATURED"
-        },
-        {
-          "type": "text",
-          "id": "featured_title_3",
-          "label": "Featured Column 3 Title",
-          "default": "FEATURED"
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "info": "Top-level links from this menu are shown as column headers, and their children are shown as list items below."
         },
         {
           "type": "header",
