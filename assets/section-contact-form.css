@@ -251,6 +251,13 @@
   height: 20px;
 }
 
+.contact-page__detail-icon-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
 .contact-page__detail-text {
   font-size: var(--contact-detail-text-size, 15px);
   line-height: 1.45;
@@ -330,6 +337,15 @@
 .contact-page__form-errors a {
   color: inherit;
   text-decoration: underline;
+}
+
+/* Send button: full width of form */
+.contact-page__submit-btn {
+  width: 230px  !important;
+}
+
+.contact-page__submit .share-story-submit {
+  width: 230px  !important;
 }
 
 /* Inputs: 3D style like submit button (shadow layer extends below, content on top) */

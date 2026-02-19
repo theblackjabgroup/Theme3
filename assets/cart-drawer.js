@@ -34,13 +34,78 @@ class CartDrawer extends HTMLElement {
       }
       if (e.target.closest('[data-edit-variant-btn]')) {
         e.preventDefault();
+        e.stopPropagation();
         const btn = e.target.closest('[data-edit-variant-btn]');
         const variantId = parseInt(btn.getAttribute('data-variant-id'), 10);
         if (variantId && this.editState) this.selectEditVariant(variantId);
       }
       if (e.target.closest('[data-edit-update-btn]')) {
         e.preventDefault();
+        e.stopPropagation();
         this.updateCartFromEditPanel();
+      }
+      // Drawer list: quantity selector +/- (same behaviour as cart page – update input, qty label, subtotal, then trigger change)
+      const editPanel = this.querySelector('#CartDrawer-EditPanel');
+      const listSelector = e.target.closest('.cart-item__quantity-selector');
+      if (listSelector && (!editPanel || !editPanel.contains(listSelector))) {
+        const input = listSelector.querySelector('.quantity__input[name="updates[]"]');
+        const minusBtn = listSelector.querySelector('.cart-item__quantity-minus');
+        const plusBtn = listSelector.querySelector('.cart-item__quantity-plus');
+        const itemIndex = listSelector.getAttribute('data-item-index');
+        if (
+          input &&
+          itemIndex &&
+          (e.target.closest('.cart-item__quantity-minus') || e.target.closest('.cart-item__quantity-plus'))
+        ) {
+          e.preventDefault();
+          e.stopPropagation();
+          const MIN_QTY = 1;
+          const currentQty = parseInt(input.value.trim(), 10) || MIN_QTY;
+          const maxQty = input.getAttribute('data-max');
+          const max = maxQty != null ? parseInt(maxQty, 10) : null;
+          let newQty = currentQty;
+          if (e.target.closest('.cart-item__quantity-minus')) {
+            newQty = Math.max(MIN_QTY, currentQty - 1);
+          } else {
+            newQty = max != null ? Math.min(currentQty + 1, max) : currentQty + 1;
+          }
+          if (newQty !== currentQty) {
+            input.value = newQty;
+            if (minusBtn) minusBtn.disabled = newQty <= 1;
+            if (plusBtn) plusBtn.disabled = max != null && newQty >= max;
+            const itemEl = listSelector.closest('.cart-drawer__item');
+            const qtyLabel = itemEl && itemEl.querySelector('.cart-drawer__item-qty-value');
+            if (qtyLabel) qtyLabel.textContent = newQty;
+            this.recalculateDrawerSubtotal();
+            input.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+          return;
+        }
+      }
+      // Edit panel: quantity selector +/- (snippet has no quantity-input, so handle here)
+      const editSelector = editPanel && e.target.closest('.cart-item__quantity-selector');
+      if (editPanel && editSelector && editPanel.contains(editSelector)) {
+        const input = editSelector.querySelector('[data-edit-qty-input]');
+        const minusBtn = editSelector.querySelector('.cart-item__quantity-minus');
+        const plusBtn = editSelector.querySelector('.cart-item__quantity-plus');
+        if (!input) return;
+        const min = 1;
+        const max = input.getAttribute('data-max') ? parseInt(input.getAttribute('data-max'), 10) : null;
+        let qty = parseInt(input.value, 10) || min;
+        if (e.target.closest('.cart-item__quantity-minus')) {
+          e.preventDefault();
+          e.stopPropagation();
+          qty = Math.max(min, qty - 1);
+        } else if (e.target.closest('.cart-item__quantity-plus')) {
+          e.preventDefault();
+          e.stopPropagation();
+          qty = max != null ? Math.min(qty + 1, max) : qty + 1;
+        } else {
+          return;
+        }
+        input.value = qty;
+        if (minusBtn) minusBtn.disabled = qty <= min;
+        if (plusBtn) plusBtn.disabled = max != null && qty >= max;
       }
     });
     // Handle clicks outside the drawer content to close it
@@ -133,8 +198,14 @@ class CartDrawer extends HTMLElement {
         qtyInput.removeAttribute('max');
         qtyInput.removeAttribute('data-max');
       }
-      const qtyWrapper = qtyInput.closest('quantity-input');
-      if (qtyWrapper && typeof qtyWrapper.validateQtyRules === 'function') qtyWrapper.validateQtyRules();
+      const selector = qtyInput.closest('.cart-item__quantity-selector');
+      if (selector) {
+        const minusBtn = selector.querySelector('.cart-item__quantity-minus');
+        const plusBtn = selector.querySelector('.cart-item__quantity-plus');
+        const qty = parseInt(qtyInput.value, 10) || 1;
+        if (minusBtn) minusBtn.disabled = qty <= 1;
+        if (plusBtn) plusBtn.disabled = maxQty != null && qty >= maxQty;
+      }
     }
     if (stockEl) stockEl.textContent = data.available ? 'In Stock' : 'Out of Stock';
 
@@ -145,7 +216,7 @@ class CartDrawer extends HTMLElement {
         variants,
         data.optionsWithValues,
         currentOptions,
-        data.variantId
+        data.variantId,
       );
     } else if (variantsWrap) {
       variantsWrap.innerHTML = '';
@@ -173,7 +244,7 @@ class CartDrawer extends HTMLElement {
       (v) =>
         v.options &&
         v.options[optionIndex] === value &&
-        v.options.every((opt, j) => j === optionIndex || currentOptions[j] === undefined || opt === currentOptions[j])
+        v.options.every((opt, j) => j === optionIndex || currentOptions[j] === undefined || opt === currentOptions[j]),
     );
   }
 
@@ -217,7 +288,7 @@ class CartDrawer extends HTMLElement {
         this.editState.variants,
         this.editState.optionsWithValues,
         currentOptions,
-        variantId
+        variantId,
       );
     }
     const priceEl = panel.querySelector('[data-edit-price]');
@@ -266,9 +337,16 @@ class CartDrawer extends HTMLElement {
     if (maxQty != null) quantity = Math.min(quantity, maxQty);
     const { lineIndex, originalVariantId, selectedVariantId } = this.editState;
     const updateBtn = panel && panel.querySelector('[data-edit-update-btn]');
+    const updateButtonText = (text) => {
+      if (!updateBtn) return;
+      const textSpan = updateBtn.querySelector('.submit-button__text');
+      if (textSpan) textSpan.textContent = text;
+      else updateBtn.textContent = text;
+    };
+
     if (updateBtn) {
       updateBtn.disabled = true;
-      updateBtn.textContent = 'Updating…';
+      updateButtonText('Updating…');
     }
 
     const changePayload = (qty) =>
@@ -313,14 +391,14 @@ class CartDrawer extends HTMLElement {
       this.closeEditPanel();
       if (updateBtn) {
         updateBtn.disabled = false;
-        updateBtn.textContent = 'Update Cart';
+        updateButtonText('Update Cart');
       }
     };
 
     const fail = () => {
       if (updateBtn) {
         updateBtn.disabled = false;
-        updateBtn.textContent = 'Update Cart';
+        updateButtonText('Update Cart');
       }
     };
 
@@ -342,7 +420,7 @@ class CartDrawer extends HTMLElement {
           this.closeEditPanel();
           if (updateBtn) {
             updateBtn.disabled = false;
-            updateBtn.textContent = 'Update Cart';
+            updateButtonText('Update Cart');
           }
         })
         .catch(() => {
@@ -403,6 +481,50 @@ class CartDrawer extends HTMLElement {
     }
   }
 
+  /**
+   * Recalculate drawer subtotal from DOM (same approach as cart page).
+   * Sums (data-unit-price × quantity) for each .cart-drawer__item and updates #cart-drawer-total.
+   */
+  recalculateDrawerSubtotal() {
+    const totalEl = document.getElementById('cart-drawer-total');
+    const footerValues = document.querySelectorAll('.cart-drawer__footer-value');
+    const elementsToUpdate = totalEl ? [totalEl, ...footerValues] : [...footerValues];
+    if (elementsToUpdate.length === 0) return;
+
+    let totalPrice = 0;
+    const items = this.querySelectorAll('.cart-drawer__item[data-unit-price]');
+    items.forEach((itemEl) => {
+      const unitPrice = parseInt(itemEl.getAttribute('data-unit-price'), 10) || 0;
+      const input = itemEl.querySelector('.quantity__input[name="updates[]"]');
+      const qty = parseInt(input?.value?.trim(), 10) || 0;
+      totalPrice += unitPrice * qty;
+    });
+
+    const originalFormat = totalEl ? totalEl.textContent.trim() : '';
+    const formatted = this.formatDrawerMoney(totalPrice, originalFormat);
+    elementsToUpdate.forEach((el) => {
+      el.textContent = formatted;
+    });
+  }
+
+  formatDrawerMoney(cents, originalFormat) {
+    if (typeof cents === 'string') return cents;
+    const ref = originalFormat || '';
+    const currencyMatch = ref.match(/^([^\d\s.,]+)/);
+    const currencySymbol = currencyMatch ? currencyMatch[1] : '';
+    const amount = (cents / 100).toFixed(2);
+    const parts = amount.split('.');
+    const wholePart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    const decimalPart = parts[1];
+
+    // Check if original format had decimals OR if the new value has cents
+    const numberMatch = ref.match(/[\d,]+\.?\d*/);
+    const hasDecimals = (numberMatch && numberMatch[0].includes('.')) || (decimalPart && decimalPart !== '00');
+
+    const numStr = wholePart + (hasDecimals ? '.' + decimalPart : '');
+    return currencySymbol ? currencySymbol + ' ' + numStr : numStr;
+  }
+
   setHeaderCartIconAccessibility() {
     const cartTriggers = document.querySelectorAll('#cart-icon-bubble, .cart-drawer-trigger');
     cartTriggers.forEach((cartLink) => {
@@ -439,7 +561,7 @@ class CartDrawer extends HTMLElement {
         const focusElement = this.querySelector('.drawer__inner') || this.querySelector('.drawer__close');
         trapFocus(containerToTrapFocusOn, focusElement);
       },
-      { once: true }
+      { once: true },
     );
 
     document.body.classList.add('overflow-hidden', 'cart-drawer-open');

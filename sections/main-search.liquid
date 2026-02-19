@@ -11,10 +11,6 @@
   <script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}
 
-{% if section.settings.image_shape == 'blob' %}
-  {{ 'mask-blobs.css' | asset_url | stylesheet_tag }}
-{%- endif -%}
-
 <script src="{{ 'main-search.js' | asset_url }}" defer="defer"></script>
 
 {%- liquid
@@ -79,7 +75,13 @@
   {{ settings.product_card_hover_button_padding_horizontal | default: 20 }}px; --card-hover-content-gap:
   {{ settings.product_card_hover_content_gap | default: 10 }}px; --card-hover-button-border-radius:
   {{ settings.product_card_hover_button_border_radius | default: 20 }}px; --card-price-button-border-radius:
-  {{ settings.product_card_price_button_border_radius | default: 20 }}px; }
+  {{ settings.product_card_price_button_border_radius | default: 20 }}px; --card-price-font-size:
+  {{ settings.product_card_price_font_size | default: 16 }}px; --card-price-font-weight:
+  {{ settings.product_card_price_font_weight | default: 700 }}; --card-price-padding-vertical:
+  {{ settings.product_card_price_padding_vertical | default: 10 }}px; --card-price-padding-horizontal:
+  {{ settings.product_card_price_padding_horizontal | default: 18 }}px; --card-price-border-width:
+  {{ settings.product_card_price_border_width | default: 1 }}px; --card-price-border-radius:
+  {{ settings.product_card_price_border_radius | default: 20 }}px; }
 
   #ProductGridContainer .custom-product-card .share-story-submit {
     border-radius: var(--card-hover-button-border-radius);
@@ -113,7 +115,10 @@
   {{ settings.card_padding_horizontal_mobile | default: 16 }}px; --card-padding-bottom:
   {{ settings.card_padding_bottom_mobile | default: 20 }}px; --card-image-height:
   {{ settings.image_height_mobile | default: 200 }}px; --card-image-margin-bottom:
-  {{ settings.image_margin_bottom_mobile | default: 16 }}px; } #ProductGridContainer .custom-product-card__title {
+  {{ settings.image_margin_bottom_mobile | default: 16 }}px; --card-price-font-size:
+  {{ settings.product_card_price_font_size_mobile | default: 14 }}px; --card-price-padding-vertical:
+  {{ settings.product_card_price_padding_vertical_mobile | default: 8 }}px; --card-price-padding-horizontal:
+  {{ settings.product_card_price_padding_horizontal_mobile | default: 14 }}px; } #ProductGridContainer .custom-product-card__title {
   font-size: {{ settings.product_card_title_font_size_mobile | default: 24 }}px !important; } }
 {%- endstyle -%}
 
@@ -163,7 +168,13 @@
                 aria-label="{{ 'general.search.search' | t }}"
               >
                 <span class="svg-wrapper">
-                  {{- 'icon-search.svg' | inline_asset_content -}}
+                  {%- if settings.search_icon_image != blank -%}
+                    {{- settings.search_icon_image | image_url: width: 40 | image_tag: loading: 'lazy', alt: '', width: 20, height: 20, class: 'main-search-page-header__submit-icon-img' -}}
+                  {%- elsif settings.search_icon_svg != blank -%}
+                    {{- settings.search_icon_svg -}}
+                  {%- else -%}
+                    {{- 'icon-search.svg' | inline_asset_content -}}
+                  {%- endif -%}
                 </span>
               </button>
               <input
@@ -186,15 +197,6 @@
                   spellcheck="false"
                 {%- endif -%}
               >
-              <button
-                type="reset"
-                class="main-search-page-header__reset{% if search.terms == blank %} hidden{% endif %}"
-                aria-label="{{ 'general.search.reset' | t }}"
-              >
-                <span class="svg-wrapper">
-                  {{- 'icon-reset.svg' | inline_asset_content -}}
-                </span>
-              </button>
               <label class="visually-hidden" for="Search-In-Template">{{ 'general.search.search' | t }}</label>
               <input name="options[prefix]" type="hidden" value="last">
             </div>
@@ -359,8 +361,8 @@
                         {% render 'article-card',
                           article: item,
                           show_image: true,
-                          show_date: section.settings.article_show_date,
-                          show_author: section.settings.article_show_author,
+                          show_date: true,
+                          show_author: false,
                           show_badge: true,
                           show_excerpt: true,
                           card_link: true,
@@ -403,9 +405,6 @@
     {%- endif -%}
   </div>
 {% endpaginate %}
-{% if section.settings.image_shape == 'arch' %}
-  {{ 'mask-arch.svg' | inline_asset_content }}
-{%- endif -%}
 
 {% schema %}
 {
@@ -689,50 +688,6 @@
     },
     {
       "type": "header",
-      "content": "t:sections.main-search.settings.header__1.content"
-    },
-    {
-      "type": "select",
-      "id": "image_shape",
-      "options": [
-        {
-          "value": "default",
-          "label": "t:sections.all.image_shape.options__1.label"
-        },
-        {
-          "value": "arch",
-          "label": "t:sections.all.image_shape.options__2.label"
-        },
-        {
-          "value": "blob",
-          "label": "t:sections.all.image_shape.options__3.label"
-        },
-        {
-          "value": "chevronleft",
-          "label": "t:sections.all.image_shape.options__4.label"
-        },
-        {
-          "value": "chevronright",
-          "label": "t:sections.all.image_shape.options__5.label"
-        },
-        {
-          "value": "diamond",
-          "label": "t:sections.all.image_shape.options__6.label"
-        },
-        {
-          "value": "parallelogram",
-          "label": "t:sections.all.image_shape.options__7.label"
-        },
-        {
-          "value": "round",
-          "label": "t:sections.all.image_shape.options__8.label"
-        }
-      ],
-      "default": "default",
-      "label": "t:sections.all.image_shape.label"
-    },
-    {
-      "type": "header",
       "content": "t:sections.main-collection-product-grid.settings.header__1.content"
     },
     {
@@ -767,22 +722,6 @@
       "id": "enable_sorting",
       "default": true,
       "label": "t:sections.main-collection-product-grid.settings.enable_sorting.label"
-    },
-    {
-      "type": "header",
-      "content": "t:sections.main-search.settings.header__2.content"
-    },
-    {
-      "type": "checkbox",
-      "id": "article_show_date",
-      "default": true,
-      "label": "t:sections.main-search.settings.article_show_date.label"
-    },
-    {
-      "type": "checkbox",
-      "id": "article_show_author",
-      "default": false,
-      "label": "t:sections.main-search.settings.article_show_author.label"
     },
     {
       "type": "header",

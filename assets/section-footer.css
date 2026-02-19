@@ -178,7 +178,7 @@
   box-shadow: 0 4px 8px color-mix(in srgb, var(--color-header-border, var(--color-headings, #365330)) 15%, transparent);
 }
 
-/* Horizontal expansion only (no vertical scale or lift) */
+/* Horizontal expansion: hovered grows, others in same row shrink (JS only shrinks same-row) */
 .social-box.is-expanded-horizontal {
   flex: 1.3 1 0;
   z-index: 1;

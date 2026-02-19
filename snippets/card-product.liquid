@@ -23,70 +23,76 @@
       assign use_quick_add_overlay = true
     endif
   -%}
+  {%- assign overlay_btn_text = overlay_button_text | default: 'Love that! (Check it out)' -%}
+  {%- if use_quick_add_overlay -%}
+    {%- assign overlay_btn_text = overlay_button_text | default: 'Love that! (Buy it)' -%}
+  {%- endif -%}
   <div class="custom-product-card-wrapper{% if use_quick_add_overlay %} custom-product-card-wrapper--quick-add-overlay{% endif %}">
-    <a href="{{ card_product.url }}" class="custom-product-card">
-      <div class="custom-product-card__image-container">
-        {%- if card_product.featured_media -%}
-          <img
-            src="{{ card_product.featured_media | image_url: width: 533 }}"
-            alt="{{ card_product.featured_media.alt | escape }}"
-            class="custom-product-card__image"
-            {% unless lazy_load == false %}
-              loading="lazy"
-            {% endunless %}
-            width="533"
-            height="{{ 533 | divided_by: card_product.featured_media.aspect_ratio }}"
-          >
-        {%- else -%}
-          {{ 'product-apparel-2' | placeholder_svg_tag: 'custom-product-card__image placeholder-svg' }}
-        {%- endif -%}
-      </div>
-
-      {%- if show_badge != false and badge_text != blank -%}
-        <span class="custom-product-card__badge">
-          {{- badge_text | escape -}}
-        </span>
-      {%- endif -%}
-
-      <div class="custom-product-card__title">{{ card_product.title }}</div>
-
-      {%- if card_product.description != blank -%}
-        <p class="custom-product-card__description">
-          {{ card_product.description | strip_html | truncatewords: 12, '....' }}
-        </p>
-      {%- elsif fallback_description != blank -%}
-        <p class="custom-product-card__description">
-          {{ fallback_description | strip_html | truncatewords: 12, '....' }}
-        </p>
-      {%- else -%}
-        <p class="custom-product-card__description">
-          {{ 'Discover our amazing product.' | strip_html | truncatewords: 12, '....' }}
-        </p>
-      {%- endif -%}
-
-      <div class="custom-product-card__footer">
-        <div class="custom-product-card__price">
-          {{ card_product.price | money }}
+    <div class="custom-product-card">
+      <a href="{{ card_product.url }}" class="custom-product-card__main-link">
+        <div class="custom-product-card__image-container">
+          {%- if card_product.featured_media -%}
+            <img
+              src="{{ card_product.featured_media | image_url: width: 533 }}"
+              alt="{{ card_product.featured_media.alt | escape }}"
+              class="custom-product-card__image"
+              {% unless lazy_load == false %}
+                loading="lazy"
+              {% endunless %}
+              width="533"
+              height="{{ 533 | divided_by: card_product.featured_media.aspect_ratio }}"
+            >
+          {%- else -%}
+            {{ 'product-apparel-2' | placeholder_svg_tag: 'custom-product-card__image placeholder-svg' }}
+          {%- endif -%}
         </div>
-        {%- if use_quick_add_overlay -%}
-          <button
-            class="custom-product-card__add-to-cart"
-            type="button"
-            data-quick-add-trigger="{{ product_form_id }}-submit"
-            aria-label="{{ mobile_add_button_text | default: 'Add to cart' }}"
-          >
-            {{ mobile_add_button_text | default: 'Add to cart' }}
-          </button>
-        {%- else -%}
-          <button
-            class="custom-product-card__add-to-cart"
-            type="button"
-            onclick="window.location.href='{{ card_product.url }}'"
-          >
-            Add to cart
-          </button>
+
+        {%- if show_badge != false and badge_text != blank -%}
+          <span class="custom-product-card__badge">
+            {{- badge_text | escape -}}
+          </span>
         {%- endif -%}
-      </div>
+
+        <div class="custom-product-card__title">{{ card_product.title | truncatewords: 3 }}</div>
+
+        {%- if card_product.description != blank -%}
+          <p class="custom-product-card__description">
+            {{ card_product.description | strip_html | truncatewords: 12, '....' }}
+          </p>
+        {%- elsif fallback_description != blank -%}
+          <p class="custom-product-card__description">
+            {{ fallback_description | strip_html | truncatewords: 12, '....' }}
+          </p>
+        {%- else -%}
+          <p class="custom-product-card__description">
+            {{ 'Discover our amazing product.' | strip_html | truncatewords: 12, '....' }}
+          </p>
+        {%- endif -%}
+
+        <div class="custom-product-card__footer">
+          <div class="custom-product-card__price">
+            {{ card_product.price | money }}
+          </div>
+          {%- if use_quick_add_overlay -%}
+            <button
+              class="custom-product-card__add-to-cart"
+              type="button"
+              data-quick-add-trigger="{{ product_form_id }}-submit"
+              aria-label="{{ mobile_add_button_text | default: 'Add to cart' }}"
+            >
+              {{ mobile_add_button_text | default: 'Add to cart' }}
+            </button>
+          {%- else -%}
+            <button
+              class="custom-product-card__add-to-cart"
+              type="button"
+              onclick="window.location.href='{{ card_product.url }}'"
+            >
+              Add to cart
+            </button>
+          {%- endif -%}
+        </div>
+      </a>
 
       <div class="custom-product-card__overlay-clip">
         <div class="custom-product-card__hover-overlay">
@@ -111,24 +117,26 @@
               </p>
             {%- endif -%}
             {%- if use_quick_add_overlay -%}
-              <span
-                class="custom-product-card__hover-button share-story-submit"
-                role="button"
-                tabindex="0"
-                data-quick-add-trigger="{{ product_form_id }}-submit"
-                aria-label="{{ overlay_button_text | default: 'Love that! (Buy it)' }}"
-              >
-                {{- overlay_button_text | default: 'Love that! (Buy it)' -}}
-              </span>
+              {%- liquid
+                assign quick_add_attrs = 'data-quick-add-trigger="' | append: product_form_id | append: '-submit" aria-label="' | append: overlay_btn_text | escape | append: '"'
+              -%}
+              {%- render 'submit-button',
+                text: overlay_btn_text,
+                type: 'button',
+                class: 'custom-product-card__hover-button',
+                attributes: quick_add_attrs
+              -%}
             {%- else -%}
-              <span class="custom-product-card__hover-button share-story-submit">
-                {{- overlay_button_text | default: 'Love that! (Check it out)' -}}
-              </span>
+              {%- render 'submit-button',
+                url: card_product.url,
+                text: overlay_btn_text,
+                class: 'custom-product-card__hover-button'
+              -%}
             {%- endif -%}
           </div>
         </div>
       </div>
-    </a>
+    </div>
 
     {%- if quick_add != 'none' and quick_add != blank -%}
       {% if quick_add == 'standard' %}

@@ -70,6 +70,12 @@
     --card-hover-content-gap: {{ settings.product_card_hover_content_gap | default: 10 }}px;
     --card-hover-button-border-radius: {{ settings.product_card_hover_button_border_radius | default: 20 }}px;
     --card-price-button-border-radius: {{ settings.product_card_price_button_border_radius | default: 20 }}px;
+    --card-price-font-size: {{ settings.product_card_price_font_size | default: 16 }}px;
+    --card-price-font-weight: {{ settings.product_card_price_font_weight | default: 700 }};
+    --card-price-padding-vertical: {{ settings.product_card_price_padding_vertical | default: 10 }}px;
+    --card-price-padding-horizontal: {{ settings.product_card_price_padding_horizontal | default: 18 }}px;
+    --card-price-border-width: {{ settings.product_card_price_border_width | default: 1 }}px;
+    --card-price-border-radius: {{ settings.product_card_price_border_radius | default: 20 }}px;
     transition: all 0.3s ease;
   }
 
@@ -129,6 +135,9 @@
       --card-hover-button-padding-vertical: {{ settings.product_card_hover_button_padding_vertical_mobile | default: 8 }}px;
       --card-hover-button-padding-horizontal: {{ settings.product_card_hover_button_padding_horizontal_mobile | default: 16 }}px;
       --card-hover-content-gap: {{ settings.product_card_hover_content_gap_mobile | default: 8 }}px;
+      --card-price-font-size: {{ settings.product_card_price_font_size_mobile | default: 14 }}px;
+      --card-price-padding-vertical: {{ settings.product_card_price_padding_vertical_mobile | default: 8 }}px;
+      --card-price-padding-horizontal: {{ settings.product_card_price_padding_horizontal_mobile | default: 14 }}px;
     }
 
     #product-grid-{{ section.id }} .custom-product-card__title {
@@ -277,6 +286,7 @@
 {% schema %}
 {
   "name": "t:sections.main-collection-product-grid.name",
+  "disabled_on": { "groups": ["header", "footer"] },
   "class": "section",
   "settings": [
     {
@@ -406,18 +416,6 @@
       "id": "badge_text",
       "label": "Header Badge Text",
       "info": "Leave blank to hide the header badge"
-    },
-    {
-      "type": "text",
-      "id": "header_badge",
-      "label": "Header Badge Text (Legacy)",
-      "info": "Deprecated - use 'Header Badge Text' above"
-    },
-    {
-      "type": "text",
-      "id": "header_title",
-      "label": "Header Title Override (Legacy)",
-      "info": "Deprecated - use 'Section Title' above"
     },
     {
       "type": "textarea",

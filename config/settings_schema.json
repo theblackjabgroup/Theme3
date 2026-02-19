@@ -557,6 +557,62 @@
           { "value": "shadow_2", "label": "Elevation 2" }
         ],
         "default": "none"
+      },
+      {
+        "type": "header",
+        "content": "Sale Badge"
+      },
+      {
+        "type": "color",
+        "id": "sale_badge_bg",
+        "label": "Background color",
+        "default": "#E0A8B8"
+      },
+      {
+        "type": "color",
+        "id": "sale_badge_text",
+        "label": "Text color",
+        "default": "#2E473E"
+      },
+      {
+        "type": "range",
+        "id": "sale_badge_size",
+        "label": "Badge size",
+        "min": 40,
+        "max": 100,
+        "step": 2,
+        "unit": "px",
+        "default": 60
+      },
+      {
+        "type": "range",
+        "id": "sale_badge_rotation",
+        "label": "Text rotation",
+        "min": -45,
+        "max": 45,
+        "step": 1,
+        "unit": "deg",
+        "default": -15
+      },
+      {
+        "type": "range",
+        "id": "sale_badge_percent_size",
+        "label": "Percentage font size",
+        "min": 8,
+        "max": 30,
+        "step": 1,
+        "unit": "px",
+        "default": 15
+      },
+      {
+        "type": "range",
+        "id": "sale_badge_label_size",
+        "label": "Label font size",
+        "min": 6,
+        "max": 20,
+        "step": 1,
+        "unit": "px",
+        "default": 9
       }
     ]
   },
@@ -1479,11 +1535,96 @@
         "default": 20
       },
       {
+        "type": "header",
+        "content": "Price display"
+      },
+      {
+        "type": "range",
+        "id": "product_card_price_font_size",
+        "label": "Price Font Size (px)",
+        "min": 10,
+        "max": 28,
+        "step": 1,
+        "default": 16
+      },
+      {
+        "type": "range",
+        "id": "product_card_price_font_weight",
+        "label": "Price Font Weight",
+        "min": 300,
+        "max": 900,
+        "step": 100,
+        "default": 700
+      },
+      {
+        "type": "range",
+        "id": "product_card_price_padding_vertical",
+        "label": "Price Padding Vertical (px)",
+        "min": 4,
+        "max": 24,
+        "step": 1,
+        "default": 10
+      },
+      {
+        "type": "range",
+        "id": "product_card_price_padding_horizontal",
+        "label": "Price Padding Horizontal (px)",
+        "min": 8,
+        "max": 40,
+        "step": 1,
+        "default": 18
+      },
+      {
+        "type": "range",
+        "id": "product_card_price_border_width",
+        "label": "Price Border Width (px)",
+        "min": 0,
+        "max": 8,
+        "step": 1,
+        "default": 1
+      },
+      {
+        "type": "range",
+        "id": "product_card_price_border_radius",
+        "label": "Price Border Radius (px)",
+        "min": 0,
+        "max": 100,
+        "step": 2,
+        "default": 20
+      },
+      {
+        "type": "range",
+        "id": "product_card_price_font_size_mobile",
+        "label": "Price Font Size - Mobile (px)",
+        "min": 10,
+        "max": 22,
+        "step": 1,
+        "default": 14
+      },
+      {
+        "type": "range",
+        "id": "product_card_price_padding_vertical_mobile",
+        "label": "Price Padding Vertical - Mobile (px)",
+        "min": 4,
+        "max": 20,
+        "step": 1,
+        "default": 8
+      },
+      {
+        "type": "range",
+        "id": "product_card_price_padding_horizontal_mobile",
+        "label": "Price Padding Horizontal - Mobile (px)",
+        "min": 8,
+        "max": 32,
+        "step": 1,
+        "default": 14
+      },
+      {
         "type": "range",
         "id": "product_card_hover_content_gap",
         "label": "Hover Content Gap (px)",
         "min": 4,
-        "max": 20,
+        "max": 30,
         "step": 2,
         "default": 10
       },
@@ -1637,6 +1778,18 @@
         "id": "predictive_search_enabled",
         "label": "Enable predictive search",
         "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "search_icon_image",
+        "label": "Search input icon (image)",
+        "info": "Icon in the search field on the search page. Leave empty for default magnifying glass."
+      },
+      {
+        "type": "html",
+        "id": "search_icon_svg",
+        "label": "Search input icon (SVG)",
+        "info": "Paste SVG code for a custom icon. Use 'currentColor' to match theme. Ignored if image is set."
       }
     ]
   },

@@ -18,6 +18,7 @@
   if hero_media_type == 'image' and hero_image == blank
     assign hero_image_placeholder = true
   endif
+  assign hero_image_width = section.settings.image_max_width | default: 400 | times: 2
 
   assign youtube_url = section.settings.youtube_url | default: ''
   assign yt_id = ''
@@ -330,7 +331,7 @@
         {%- when 'image' -%}
           {%- if hero_image != blank -%}
             <img
-              src="{{ hero_image | image_url: width: 400 }}"
+              src="{{ hero_image | image_url: width: hero_image_width }}"
               alt=""
               width="{{ hero_image.width }}"
               height="{{ hero_image.height }}"

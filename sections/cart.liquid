@@ -143,8 +143,8 @@
     position: absolute;
     top: -15px;
     left: -15px;
-    width: 60px;
-    height: 60px;
+    width: {{ settings.sale_badge_size }}px;
+    height: {{ settings.sale_badge_size }}px;
     z-index: 2;
   }
 
@@ -152,21 +152,31 @@
     display: block;
     width: 100%;
     height: 100%;
-    object-fit: contain;
   }
 
   .cart-item-card__badge-text {
     position: absolute;
     inset: 0;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    font-size: 10px;
-    font-weight: 900;
-    line-height: 1.1;
-    color: var(--cart-green);
-    padding: 4px;
+    font-weight: 950;
+    color: {{ settings.sale_badge_text }};
+    transform: rotate({{ settings.sale_badge_rotation }}deg);
+    line-height: 0.8;
+  }
+
+  .cart-item-card__badge-text span:first-child {
+    font-size: {{ settings.sale_badge_percent_size }}px;
+    letter-spacing: -0.02em;
+  }
+
+  .cart-item-card__badge-text span:last-child {
+    font-size: {{ settings.sale_badge_label_size }}px;
+    text-transform: uppercase;
+    margin-top: 1px;
   }
 
   .cart-item-card__info {
@@ -458,27 +468,33 @@
 
   /* Empty cart state */
   .cart-empty {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    padding: 40px 20px;
+    display: flex !important;
+    align-items: start !important;
+    justify-content: start !important;
+    min-height: calc(100vh - 40px) !important;
     text-align: center;
+    box-sizing: border-box;
   }
 
   .cart-empty__container {
-    max-width: 480px;
-    background-color: var(--cart-card-bg);
-    border-radius: 20px;
-    padding: 48px 40px;
+    flex-grow: 1;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    min-height: 95vh !important;
+    background-color: #E2DDD5 !important;
+    border-radius: 20px !important;
     box-sizing: border-box;
   }
 
   .cart-empty__image {
-    margin-bottom: 24px;
-    border-radius: 16px;
-    overflow: hidden;
-    background-color: #d8d4c7;
+    margin-bottom: 40px !important;
+    border-radius: 0 !important;
+    background-color: transparent !important;
+    max-width: 400px;
   }
 
   .cart-empty__image img {
@@ -489,56 +505,113 @@
   }
 
   .cart-empty__title {
-    font-family: var(--font-heading-family);
-    font-size: clamp(28px, 4vw, 36px);
-    font-weight: 900;
-    color: var(--cart-green);
-    margin: 0 0 12px 0;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
+    font-family: var(--font-heading-family) !important;
+    font-size: clamp(32px, 5vw, 56px) !important;
+    font-weight: 900 !important;
+    color: #4B5E26 !important;
+    margin: 0 !important;
+    max-width: 500px !important;
+    line-height: 1 !important;
+    letter-spacing: -0.04em !important;
+    text-transform: uppercase !important;
   }
 
   .cart-empty__description {
-    font-size: 16px;
-    color: var(--cart-green);
-    opacity: 0.85;
+    font-family: var(--font-body-family) !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: #4B5E26 !important;
+        max-width: 350px !important;
+
+    margin-top: 20px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+    opacity: 0.9;
     line-height: 1.5;
-    margin: 0 0 24px 0;
   }
 
   .cart-empty__link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 48px;
-    padding: 14px 28px;
-    font-size: 15px;
-    font-weight: 800;
-    color: var(--cart-card-bg);
-    background-color: var(--cart-green);
-    border: 1px solid var(--cart-border);
-    border-radius: 14px;
-    text-decoration: none;
-    transition: opacity 0.2s ease;
+    display: none !important;
   }
 
-  .cart-empty__link:hover {
-    opacity: 0.9;
-  }
 
-  @media screen and (max-width: 1024px) {
+  /* Tablet: stack columns, constrain summary width for readability */
+  @media screen and (max-width: 1224px) {
+    .custom-cart-section {
+      padding: 16px 20px;
+    }
+    .cart-layout-container {
+      max-width: 100%;
+    }
     .cart-grid {
       flex-direction: column;
+      gap: 24px;
+      align-items: stretch;
+    }
+    .cart-items-column {
+      min-width: 0;
     }
     .cart-summary-column {
       width: 100%;
+      margin: 0 auto;
       position: static;
+      order: 2;
+    }
+    .cart-header-section {
+      margin-bottom: 18px;
+    }
+    .cart-title-box {
+      padding: 32px 24px;
+      border-radius: 18px;
+    }
+    .cart-title-text {
+      font-size: clamp(28px, 5vw, 44px);
+    }
+    .cart-subtitle-text {
+      font-size: 16px;
+    }
+    .cart-items-header-row {
+      padding: 16px 24px;
+      font-size: 13px;
+      border-radius: 16px;
+    }
+    .cart-item-card__inner {
+      padding: 20px 22px;
+      gap: 24px;
+    }
+    .cart-item-card__image-wrap {
+      width: 160px;
+      flex-shrink: 0;
+    }
+    .cart-item-card__details {
+      max-width: 100%;
+    }
+    .cart-item-card__name {
+      font-size: 20px;
+    }
+    .cart-summary-card {
+      padding: 24px;
+      border-radius: 18px;
+    }
+    .cart-summary__totals {
+      padding-top: 20px;
+      margin-bottom: 24px;
+    }
+    .subtotal-label,
+    .subtotal-value {
+      font-size: 19px;
     }
   }
 
   @media screen and (max-width: 768px) {
     .custom-cart-section {
       padding: 12px 16px;
+    }
+    .cart-grid {
+      gap: 20px;
+    }
+    .cart-summary-column {
+      max-width: 100%;
     }
     .cart-header-section {
       margin-bottom: 16px;
@@ -788,18 +861,18 @@
                         {%- endif -%}
                         {%- if has_compare and discount_pct > 0 -%}
                           <div class="cart-item-card__badge">
-                            <img
+                            <svg
                               class="cart-item-card__badge-icon"
-                              src="{{ 'sale-icons.svg' | asset_url }}"
-                              alt=""
-                              width="60"
-                              height="60"
-                              loading="lazy"
+                              viewBox="0 0 73 72"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
                             >
+                              <path fill-rule="evenodd" clip-rule="evenodd" d="M35.4998 0.192998C35.2716 0.281184 33.9937 1.42531 32.66 2.73551L30.235 5.11767L27.1847 3.84233C23.928 2.48044 23.381 2.36984 22.345 2.86378C21.6431 3.19852 21.1746 4.05584 19.6395 7.81496L18.8248 9.80986L15.2277 9.86009C11.2814 9.91539 11.2098 9.93273 10.3732 11.0364C10.0563 11.4545 10.0274 11.7503 9.98095 15.0406L9.93068 18.5935L6.78384 19.8784C3.04052 21.4069 2.64762 21.7184 2.64762 23.1572C2.64762 23.8877 2.86216 24.542 3.8907 26.95L5.13377 29.86L2.74054 32.2389C1.42413 33.5473 0.267503 34.8246 0.170108 35.0774C-0.0593592 35.6723 -0.0562067 36.5867 0.176745 37.0397C0.27779 37.2362 1.4384 38.4689 2.75597 39.7787L5.15135 42.1604L3.80442 45.2597C2.59553 48.0414 2.46843 48.4309 2.56383 49.0612C2.75481 50.3237 3.27065 50.6987 6.78285 52.1297L9.93068 53.4119L9.98078 56.9684C10.0274 60.2624 10.0563 60.5582 10.3732 60.9763C11.2098 62.08 11.2814 62.0973 15.2277 62.1529L18.8248 62.2035L19.9863 64.9957C20.625 66.5315 21.3183 68.036 21.5267 68.3395C21.9295 68.9259 22.9758 69.5465 23.5615 69.5465C23.9476 69.5465 27.0256 68.3811 29.0816 67.4564L30.3786 66.8731L32.8148 69.2653C35.2612 71.6674 35.7369 72.0011 36.7135 72C37.5132 71.9992 38.104 71.5594 40.5507 69.1439C41.785 67.9256 42.823 66.9287 42.8578 66.9287C42.8925 66.9287 44.2564 67.4942 45.8887 68.1851C49.0481 69.5228 49.7352 69.6636 50.6984 69.1717C51.4113 68.8075 51.6157 68.4503 52.9963 65.1576L54.2089 62.2658L57.7546 62.184C61.7078 62.0929 61.9388 62.0337 62.7183 60.9131C63.1141 60.3437 63.1269 60.2317 63.1785 56.8582L63.2316 53.389L65.7503 52.3627C69.5439 50.8169 69.8175 50.6627 70.1855 49.8635C70.3594 49.4859 70.5014 48.9561 70.5014 48.6862C70.5012 48.4162 69.9477 46.8015 69.2713 45.0982L68.0415 42.001L70.3383 39.6866C73.9094 36.0882 73.9059 35.8838 70.2142 32.2076L67.7961 29.7996L69.0695 26.8586C70.4725 23.6184 70.5984 22.9548 69.9938 21.9902C69.585 21.338 69.0051 21.0303 65.5727 19.6445L63.0425 18.6231V15.324C63.0425 12.2279 63.0196 11.98 62.6691 11.2956C62.4231 10.8151 62.0695 10.4414 61.6321 10.2002C61.0053 9.85436 60.7787 9.83391 57.5459 9.83129L54.1233 9.82867L52.9205 6.97465C51.4984 3.60019 51.2836 3.2247 50.5643 2.8574C49.5603 2.34448 48.9063 2.47749 45.7251 3.84086L42.7599 5.11178L40.409 2.81322C37.625 0.0913965 36.843 -0.325974 35.4998 0.192998Z" fill="{{ settings.sale_badge_bg }}"/>
+                            </svg>
                             <span class="cart-item-card__badge-text">
-                              {{- discount_pct }}%<br>
-                              off</span
-                            >
+                              <span>{{- discount_pct }}%</span>
+                              <span>off</span>
+                            </span>
                           </div>
                         {%- endif -%}
                         <div class="cart-item-card__image-container">
@@ -857,10 +930,12 @@
                             class: 'cart-item-action-btn cart-item-edit-btn',
                             attributes: edit_btn_attrs
                           %}
+                          {% capture remove_btn_attrs %}data-line-index="{{ item.index | plus: 1 }}" aria-label="Remove {{ item.product.title | escape }}"{% endcapture %}
                           {% render 'submit-button',
                             text: 'Remove',
                             url: item.url_to_remove,
-                            class: 'cart-item-action-btn cart-item-remove-btn'
+                            class: 'cart-item-action-btn cart-item-remove-btn',
+                            attributes: remove_btn_attrs
                           %}
                         </div>
                       </div>
@@ -943,19 +1018,9 @@
             </div>
           {%- endif -%}
 
-          <h1 class="cart-empty__title">
-            {{ section.settings.empty_cart_title | default: 'Your cart is currently empty!' }}
-          </h1>
+          <h1 class="cart-empty__title">YOUR SHOPPING CART IS EMPTY</h1>
 
-          {%- if section.settings.empty_cart_description != blank -%}
-            <p class="cart-empty__description">{{ section.settings.empty_cart_description }}</p>
-          {%- else -%}
-            <p class="cart-empty__description">No products in the cart.</p>
-          {%- endif -%}
-
-          <a href="{{ routes.all_products_collection_url }}" class="cart-empty__link">
-            {{ section.settings.empty_cart_button_text | default: 'Return to shop' }}
-          </a>
+          <p class="cart-empty__description">BUT IT DOESN'T HAVE TO BE. LETS ADD SOME ITEMS.</p>
         </div>
       </div>
     {%- endif -%}
@@ -1079,7 +1144,7 @@
     function initQuantitySelectors() {
       if (initialized) return;
 
-      const quantitySelectors = document.querySelectorAll('.cart-item__quantity-selector');
+      const quantitySelectors = document.querySelectorAll('.cart-item-card__quantity .cart-item__quantity-selector');
       const cartSubtotal = document.getElementById('cart-subtotal');
 
       if (!quantitySelectors.length) {
@@ -1193,14 +1258,24 @@
         }
       }
 
+      const MIN_QUANTITY = 1;
+
       function updatePlusButtonState(selector) {
         const plusBtn = selector.querySelector('.cart-item__quantity-plus');
         const quantityInput = selector.querySelector('.quantity__input');
         if (!plusBtn || !quantityInput) return;
-        const currentQty = parseInt(quantityInput.value.trim(), 10) || 0;
+        const currentQty = parseInt(quantityInput.value.trim(), 10) || MIN_QUANTITY;
         const maxQty = quantityInput.getAttribute('data-max');
         const max = maxQty != null ? parseInt(maxQty, 10) : null;
         plusBtn.disabled = max != null && currentQty >= max;
+      }
+
+      function updateMinusButtonState(selector) {
+        const minusBtn = selector.querySelector('.cart-item__quantity-minus');
+        const quantityInput = selector.querySelector('.quantity__input');
+        if (!minusBtn || !quantityInput) return;
+        const currentQty = parseInt(quantityInput.value.trim(), 10) || MIN_QUANTITY;
+        minusBtn.disabled = currentQty <= MIN_QUANTITY;
       }
 
       quantitySelectors.forEach((selector) => {
@@ -1214,6 +1289,7 @@
         }
 
         updatePlusButtonState(selector);
+        updateMinusButtonState(selector);
 
         // Add event listeners
         minusBtn.addEventListener(
@@ -1221,11 +1297,12 @@
           function (e) {
             e.preventDefault();
             e.stopPropagation();
-            const currentQty = parseInt(quantityInput.value.trim()) || 0;
-            const newQty = Math.max(0, currentQty - 1);
+            const currentQty = parseInt(quantityInput.value.trim(), 10) || MIN_QUANTITY;
+            const newQty = Math.max(MIN_QUANTITY, currentQty - 1);
             if (newQty !== currentQty) {
               updateUIOnly(itemIndex, newQty);
               updatePlusButtonState(selector);
+              updateMinusButtonState(selector);
             }
           },
           false
@@ -1243,6 +1320,7 @@
             if (newQty !== currentQty) {
               updateUIOnly(itemIndex, newQty);
               updatePlusButtonState(selector);
+              updateMinusButtonState(selector);
             }
           },
           false
@@ -1269,6 +1347,34 @@
         initQuantitySelectors();
       }
     }, 500);
+  })();
+
+  // Remove button: use cart API then reload (works in storefront and theme editor)
+  (function () {
+    const cartForm = document.getElementById('cart');
+    if (!cartForm || !window.routes || !window.routes.cart_change_url) return;
+
+    cartForm.addEventListener('click', function (e) {
+      const removeBtn = e.target.closest('.cart-item-remove-btn');
+      if (!removeBtn || !removeBtn.href) return;
+      const line = removeBtn.getAttribute('data-line-index');
+      if (!line) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      fetch(window.routes.cart_change_url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ line: parseInt(line, 10), quantity: 0 }),
+      })
+        .then(() => {})
+        .catch(() => {})
+        .finally(() => {
+          // Reload current URL so editor preview keeps its context (path + query)
+          window.location.reload();
+        });
+    });
   })();
 
   // Handle checkout button - update cart via API first, then redirect
@@ -1325,6 +1431,7 @@
 {% schema %}
 {
   "name": "Cart",
+  "enabled_on": { "templates": ["cart"] },
   "settings": [
     {
       "type": "header",
