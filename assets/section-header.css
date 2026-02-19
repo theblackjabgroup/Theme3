@@ -896,27 +896,19 @@ body.mega-menu-open .dock-actions * {
   align-items: center;
   gap: 10px;
   width: 100%;
-  padding: 8px 12px;
   background: #EFEAE4;
   border: 2px solid #365330;
   border-radius: 12px;
-  box-shadow: 0 6px 0 0 #1b2e1b;
+  box-shadow: 0 3px 0 0 #1b2e1b;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   position: relative;
   margin-bottom: 0;
   box-sizing: border-box;
 }
 
-.mega-menu-search-field:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 0 0 #1b2e1b;
-}
 
-.mega-menu-search-field:active,
-.mega-menu-search-field:focus-within {
-  transform: translateY(4px);
-  box-shadow: 0 2px 0 0 #1b2e1b;
-}
+
+
 
 .mega-menu-search-input {
   flex: 1;
@@ -946,17 +938,13 @@ body.mega-menu-open .dock-actions * {
   height: 40px;
   padding: 0;
   border: none;
+  background-color: transparent;
   border-radius: 8px;
-  background: #365330;
-  color: #EFEAE4;
+  color: #365330;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.mega-menu-search-submit:hover {
-  transform: scale(1.05);
-  background: #306030;
-}
 
 .mega-menu-search-submit svg,
 .mega-menu-search-submit .mega-menu-search-submit-icon-img {

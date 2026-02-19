@@ -468,27 +468,33 @@
 
   /* Empty cart state */
   .cart-empty {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    padding: 40px 20px;
+    display: flex !important;
+    align-items: start !important;
+    justify-content: start !important;
+    min-height: calc(100vh - 40px) !important;
     text-align: center;
+    box-sizing: border-box;
   }
 
   .cart-empty__container {
-    max-width: 480px;
-    background-color: var(--cart-card-bg);
-    border-radius: 20px;
-    padding: 48px 40px;
+    flex-grow: 1;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    min-height: 95vh !important;
+    background-color: #E2DDD5 !important;
+    border-radius: 20px !important;
     box-sizing: border-box;
   }
 
   .cart-empty__image {
-    margin-bottom: 24px;
-    border-radius: 16px;
-    overflow: hidden;
-    background-color: #d8d4c7;
+    margin-bottom: 40px !important;
+    border-radius: 0 !important;
+    background-color: transparent !important;
+    max-width: 400px;
   }
 
   .cart-empty__image img {
@@ -499,42 +505,35 @@
   }
 
   .cart-empty__title {
-    font-family: var(--font-heading-family);
-    font-size: clamp(28px, 4vw, 36px);
-    font-weight: 900;
-    color: var(--cart-green);
-    margin: 0 0 12px 0;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
+    font-family: var(--font-heading-family) !important;
+    font-size: clamp(32px, 5vw, 56px) !important;
+    font-weight: 900 !important;
+    color: #4B5E26 !important;
+    margin: 0 !important;
+    max-width: 500px !important;
+    line-height: 1 !important;
+    letter-spacing: -0.04em !important;
+    text-transform: uppercase !important;
   }
 
   .cart-empty__description {
-    font-size: 16px;
-    color: var(--cart-green);
-    opacity: 0.85;
+    font-family: var(--font-body-family) !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: #4B5E26 !important;
+        max-width: 350px !important;
+
+    margin-top: 20px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+    opacity: 0.9;
     line-height: 1.5;
-    margin: 0 0 24px 0;
   }
 
   .cart-empty__link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 48px;
-    padding: 14px 28px;
-    font-size: 15px;
-    font-weight: 800;
-    color: var(--cart-card-bg);
-    background-color: var(--cart-green);
-    border: 1px solid var(--cart-border);
-    border-radius: 14px;
-    text-decoration: none;
-    transition: opacity 0.2s ease;
+    display: none !important;
   }
 
-  .cart-empty__link:hover {
-    opacity: 0.9;
-  }
 
   /* Tablet: stack columns, constrain summary width for readability */
   @media screen and (max-width: 1224px) {
@@ -1019,19 +1018,9 @@
             </div>
           {%- endif -%}
 
-          <h1 class="cart-empty__title">
-            {{ section.settings.empty_cart_title | default: 'Your cart is currently empty!' }}
-          </h1>
+          <h1 class="cart-empty__title">YOUR SHOPPING CART IS EMPTY</h1>
 
-          {%- if section.settings.empty_cart_description != blank -%}
-            <p class="cart-empty__description">{{ section.settings.empty_cart_description }}</p>
-          {%- else -%}
-            <p class="cart-empty__description">No products in the cart.</p>
-          {%- endif -%}
-
-          <a href="{{ routes.all_products_collection_url }}" class="cart-empty__link">
-            {{ section.settings.empty_cart_button_text | default: 'Return to shop' }}
-          </a>
+          <p class="cart-empty__description">BUT IT DOESN'T HAVE TO BE. LETS ADD SOME ITEMS.</p>
         </div>
       </div>
     {%- endif -%}

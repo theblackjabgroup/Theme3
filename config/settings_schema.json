@@ -1624,7 +1624,7 @@
         "id": "product_card_hover_content_gap",
         "label": "Hover Content Gap (px)",
         "min": 4,
-        "max": 20,
+        "max": 30,
         "step": 2,
         "default": 10
       },
