@@ -7,6 +7,7 @@ class MobileHeader {
     this.scrollThreshold = 10; // Minimum scroll distance to trigger hide/show
     this.closeTransitionHandler = null; // Track the close transition handler
     this.isClosing = false; // Track if menu is currently closing
+    this.actionTimeout = null; // Track pending footer action timeouts
 
     // Initialize scroll handler for mobile header
     this.initScrollHandler();
@@ -84,15 +85,19 @@ class MobileHeader {
 
             // After closing animation is mostly done, trigger the action
             // Using 1250ms to ensure the 1200ms header close is fully finished
-            setTimeout(() => {
-              btn.setAttribute('data-action-delayed', 'true');
-              if (btn.tagName === 'A' && btn.href && !btn.classList.contains('cart-drawer-trigger')) {
-                window.location.href = btn.href;
-              } else {
-                btn.click();
+            this.actionTimeout = setTimeout(() => {
+              // Safety check: Only proceed if menu is still closed
+              if (this.menuDrawer?.getAttribute('aria-hidden') !== 'false') {
+                btn.setAttribute('data-action-delayed', 'true');
+                if (btn.tagName === 'A' && btn.href && !btn.classList.contains('cart-drawer-trigger')) {
+                  window.location.href = btn.href;
+                } else {
+                  btn.click();
+                }
+                // Remove the attribute after a short delay so it can be clicked again
+                setTimeout(() => btn.removeAttribute('data-action-delayed'), 500);
               }
-              // Remove the attribute after a short delay so it can be clicked again
-              setTimeout(() => btn.removeAttribute('data-action-delayed'), 500);
+              this.actionTimeout = null;
             }, 1250);
           }
         },
@@ -113,6 +118,12 @@ class MobileHeader {
 
   openMenu() {
     if (this.menuDrawer) {
+      // Cancel any pending footer actions if menu is reopened
+      if (this.actionTimeout) {
+        clearTimeout(this.actionTimeout);
+        this.actionTimeout = null;
+      }
+
       // Cancel any pending close transition handler
       if (this.closeTransitionHandler) {
         const menuContent = this.menuDrawer.querySelector('.mobile-menu-content');
