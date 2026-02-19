@@ -173,7 +173,7 @@
       align-self: {% if block.settings.label_alignment_desktop == 'left' %}flex-start{% elsif block.settings.label_alignment_desktop == 'right' %}flex-end{% else %}center{% endif %};
     }
     #shopify-section-{{ section.id }} .article-sidebar .article-tags-container {
-      grid-template-columns: repeat({{ block.settings.tags_per_row_desktop | default: 3 }}, 1fr);
+      grid-template-columns: repeat({{ block.settings.tags_per_row_desktop | default: 2 }}, 1fr);
       justify-content: {% if block.settings.value_alignment_desktop == 'left' %}start{% elsif block.settings.value_alignment_desktop == 'right' %}end{% else %}center{% endif %};
     }
     #shopify-section-{{ section.id }} .article-sidebar .custom-share-icons {

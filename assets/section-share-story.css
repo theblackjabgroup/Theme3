@@ -161,7 +161,6 @@
   font-size: var(--share-story-placeholder-font-size, var(--font-size-lg));
   font-weight: var(--share-story-placeholder-font-weight, 400);
   line-height: var(--share-story-placeholder-line-height, 1.5);
-  min-height: 140px;
   resize: none;
   outline: none;
   color: var(--color-input-text);

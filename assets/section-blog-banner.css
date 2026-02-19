@@ -111,7 +111,7 @@
   margin: 0 0 0 auto;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 750px) {
   .content-hero__eyebrow {
     font-size: var(--eyebrow-font-size-mobile, 11px);
     line-height: var(--eyebrow-line-height-mobile, 1.2);
