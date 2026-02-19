@@ -526,36 +526,57 @@
         </div>
 
         {%- comment -%} Featured Columns Section {%- endcomment -%}
-        {%- if matching_block.settings.menu != blank -%}
-          {%- assign mega_menu_nav = linklists[matching_block.settings.menu] -%}
-          {%- if mega_menu_nav != blank and mega_menu_nav.links != blank -%}
-            <div class="mega-menu-featured-columns">
-              {%- for link in mega_menu_nav.links -%}
-                <div class="mega-menu-column">
-                  <h3 class="mega-menu-featured-header">
-                    <span class="mega-menu-featured-bullet"></span>
-                    {{ link.title }}
-                  </h3>
-                  {%- if link.links != blank -%}
-                    <ul class="mega-menu-column-list">
-                      {%- for childlink in link.links -%}
-                        <li class="mega-menu-column-item">
-                          <a href="{{ childlink.url }}" class="mega-menu-column-link">
-                            {{ childlink.title }}
-                          </a>
-                        </li>
-                      {%- endfor -%}
-                    </ul>
-                  {%- endif -%}
-                </div>
-              {%- endfor -%}
-            </div>
-          {%- endif -%}
-        {%- else -%}
-          {%- comment -%}
-            Fallback to old behavior if no menu selected? Or just hide?
-            User said "exactly like search popup" which uses its own menu setting.
-          {%- endcomment -%}
+        {%- liquid
+          assign mega_menu_nav = null
+          if matching_block.settings.menu != blank
+            assign mega_menu_nav = linklists[matching_block.settings.menu]
+          endif
+        -%}
+        {%- if mega_menu_nav != blank and mega_menu_nav.links != blank -%}
+          <div class="mega-menu-featured-columns">
+            {%- for nav_link in mega_menu_nav.links -%}
+              <div class="mega-menu-column">
+                <h3 class="mega-menu-featured-header">
+                  <span class="mega-menu-featured-bullet"></span>
+                  {{ nav_link.title }}
+                </h3>
+                {%- if nav_link.links != blank -%}
+                  <ul class="mega-menu-column-list">
+                    {%- for nav_childlink in nav_link.links -%}
+                      <li class="mega-menu-column-item">
+                        <a href="{{ nav_childlink.url }}" class="mega-menu-column-link">
+                          {{ nav_childlink.title }}
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- elsif link.links != blank -%}
+          {%- comment -%} Fallback to standard child links if no custom menu is selected {%- endcomment -%}
+          <div class="mega-menu-featured-columns">
+            {%- for childlink in link.links -%}
+              <div class="mega-menu-column">
+                <h3 class="mega-menu-featured-header">
+                  <span class="mega-menu-featured-bullet"></span>
+                  {{ childlink.title }}
+                </h3>
+                {%- if childlink.links != blank -%}
+                  <ul class="mega-menu-column-list">
+                    {%- for grandlink in childlink.links -%}
+                      <li class="mega-menu-column-item">
+                        <a href="{{ grandlink.url }}" class="mega-menu-column-link">
+                          {{ grandlink.title }}
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+          </div>
         {%- endif -%}
 
         {%- comment -%} Image Cards Section {%- endcomment -%}
@@ -961,31 +982,57 @@
                     <li class="mobile-mega-menu-wrapper">
                       {%- comment -%} Mobile Rich Mega Menu Content {%- endcomment -%}
                       <div class="mobile-mega-menu-content">
-                        {%- if matching_block.settings.menu != blank -%}
-                          {%- assign mega_menu_nav = linklists[matching_block.settings.menu] -%}
-                          {%- if mega_menu_nav != blank and mega_menu_nav.links != blank -%}
-                            <div class="mobile-mega-menu-columns">
-                              {%- for m_link in mega_menu_nav.links -%}
-                                <div class="mobile-mega-menu-column">
-                                  <h4 class="mobile-mega-menu-column-title">
-                                    <span class="mobile-mega-menu-bullet"></span>
-                                    {{ m_link.title }}
-                                  </h4>
-                                  {%- if m_link.links != blank -%}
-                                    <ul class="mobile-mega-menu-column-list">
-                                      {%- for m_childlink in m_link.links -%}
-                                        <li class="mobile-mega-menu-column-item">
-                                          <a href="{{ m_childlink.url }}" class="mobile-mega-menu-column-link">
-                                            {{ m_childlink.title }}
-                                          </a>
-                                        </li>
-                                      {%- endfor -%}
-                                    </ul>
-                                  {%- endif -%}
-                                </div>
-                              {%- endfor -%}
-                            </div>
-                          {%- endif -%}
+                        {%- liquid
+                          assign mega_menu_nav = null
+                          if matching_block.settings.menu != blank
+                            assign mega_menu_nav = linklists[matching_block.settings.menu]
+                          endif
+                        -%}
+                        {%- if mega_menu_nav != blank and mega_menu_nav.links != blank -%}
+                          <div class="mobile-mega-menu-columns">
+                            {%- for m_link in mega_menu_nav.links -%}
+                              <div class="mobile-mega-menu-column">
+                                <h4 class="mobile-mega-menu-column-title">
+                                  <span class="mobile-mega-menu-bullet"></span>
+                                  {{ m_link.title }}
+                                </h4>
+                                {%- if m_link.links != blank -%}
+                                  <ul class="mobile-mega-menu-column-list">
+                                    {%- for m_childlink in m_link.links -%}
+                                      <li class="mobile-mega-menu-column-item">
+                                        <a href="{{ m_childlink.url }}" class="mobile-mega-menu-column-link">
+                                          {{ m_childlink.title }}
+                                        </a>
+                                      </li>
+                                    {%- endfor -%}
+                                  </ul>
+                                {%- endif -%}
+                              </div>
+                            {%- endfor -%}
+                          </div>
+                        {%- elsif link.links != blank -%}
+                          {%- comment -%} Fallback to standard child links for mobile {%- endcomment -%}
+                          <div class="mobile-mega-menu-columns">
+                            {%- for m_child in link.links -%}
+                              <div class="mobile-mega-menu-column">
+                                <h4 class="mobile-mega-menu-column-title">
+                                  <span class="mobile-mega-menu-bullet"></span>
+                                  {{ m_child.title }}
+                                </h4>
+                                {%- if m_child.links != blank -%}
+                                  <ul class="mobile-mega-menu-column-list">
+                                    {%- for m_grand in m_child.links -%}
+                                      <li class="mobile-mega-menu-column-item">
+                                        <a href="{{ m_grand.url }}" class="mobile-mega-menu-column-link">
+                                          {{ m_grand.title }}
+                                        </a>
+                                      </li>
+                                    {%- endfor -%}
+                                  </ul>
+                                {%- endif -%}
+                              </div>
+                            {%- endfor -%}
+                          </div>
                         {%- endif -%}
 
                         {%- comment -%} Mobile Image Cards {%- endcomment -%}
