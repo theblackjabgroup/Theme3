@@ -7,6 +7,7 @@ class MobileHeader {
     this.scrollThreshold = 10; // Minimum scroll distance to trigger hide/show
     this.closeTransitionHandler = null; // Track the close transition handler
     this.isClosing = false; // Track if menu is currently closing
+    this.actionTimeout = null; // Track pending footer action timeouts
 
     // Initialize scroll handler for mobile header
     this.initScrollHandler();
@@ -62,6 +63,47 @@ class MobileHeader {
         this.closeMenu();
       }
     });
+
+    // Handle action button clicks in mobile menu footer (Search, Cart, etc.)
+    this.initActionButtons();
+  }
+
+  initActionButtons() {
+    const footerButtons = document.querySelectorAll('.mobile-menu-footer-btn');
+    footerButtons.forEach((btn) => {
+      btn.addEventListener(
+        'click',
+        (e) => {
+          // Only intercept if menu is open and we haven't already delayed this click
+          if (this.menuDrawer?.getAttribute('aria-hidden') === 'false' && !btn.hasAttribute('data-action-delayed')) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+
+            // Close the menu first
+            this.closeMenu();
+
+            // After closing animation is mostly done, trigger the action
+            // Using 1250ms to ensure the 1200ms header close is fully finished
+            this.actionTimeout = setTimeout(() => {
+              // Safety check: Only proceed if menu is still closed
+              if (this.menuDrawer?.getAttribute('aria-hidden') !== 'false') {
+                btn.setAttribute('data-action-delayed', 'true');
+                if (btn.tagName === 'A' && btn.href && !btn.classList.contains('cart-drawer-trigger')) {
+                  window.location.href = btn.href;
+                } else {
+                  btn.click();
+                }
+                // Remove the attribute after a short delay so it can be clicked again
+                setTimeout(() => btn.removeAttribute('data-action-delayed'), 500);
+              }
+              this.actionTimeout = null;
+            }, 1250);
+          }
+        },
+        true,
+      ); // Use capture phase to intercept before other listeners (like cart-drawer)
+    });
   }
 
   toggleMenu() {
@@ -76,6 +118,12 @@ class MobileHeader {
 
   openMenu() {
     if (this.menuDrawer) {
+      // Cancel any pending footer actions if menu is reopened
+      if (this.actionTimeout) {
+        clearTimeout(this.actionTimeout);
+        this.actionTimeout = null;
+      }
+
       // Cancel any pending close transition handler
       if (this.closeTransitionHandler) {
         const menuContent = this.menuDrawer.querySelector('.mobile-menu-content');
@@ -126,11 +174,9 @@ class MobileHeader {
       // Set aria-hidden to true immediately to trigger the CSS transition
       this.menuDrawer.setAttribute('aria-hidden', 'true');
 
-      // Trigger the transform animation first by removing the open state
+      // Force reflow to ensure the transition starts
       if (menuContent) {
-        // Force reflow to ensure the transition starts
         menuContent.offsetHeight;
-        menuContent.style.transform = 'translateY(-100%)';
       }
 
       // Wait for animation to complete before cleaning up body classes
@@ -181,7 +227,7 @@ class MobileHeader {
           menuContent.removeEventListener('transitionend', this.closeTransitionHandler);
         }
         this.closeTransitionHandler = null;
-      }, 800);
+      }, 1300);
 
       if (menuContent) {
         menuContent.addEventListener(
