@@ -25,6 +25,8 @@
   }
   #MainBlogContainer-{{ section.id }} .main-blog-card__tag {
     font-size: {{ section.settings.tag_size_mobile }}px;
+    border-radius: {{ section.settings.tag_border_radius_mobile }}px;
+    padding: {{ section.settings.tag_padding_vertical_mobile }}px {{ section.settings.tag_padding_horizontal_mobile }}px;
   }
 
   /* Desktop Font Sizes */
@@ -37,6 +39,8 @@
     }
     #MainBlogContainer-{{ section.id }} .main-blog-card__tag {
       font-size: {{ section.settings.tag_size_desktop }}px;
+      border-radius: {{ section.settings.tag_border_radius_desktop }}px;
+      padding: {{ section.settings.tag_padding_vertical_desktop }}px {{ section.settings.tag_padding_horizontal_desktop }}px;
     }
 
     #MainBlogContainer-{{ section.id }} .main-blog-slider__slide.is-active .main-blog-card__title {
@@ -52,6 +56,18 @@
   }
   #MainBlogContainer-{{ section.id }} {
     --blog-card-transition-duration: {{ section.settings.animation_duration }}s;
+  }
+
+  .section-{{ section.id }}-margin .main-blog-slider__controls {
+    padding-top: {{ section.settings.arrows_padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.arrows_padding_bottom_mobile }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-margin .main-blog-slider__controls {
+      padding-top: {{ section.settings.arrows_padding_top_desktop }}px;
+      padding-bottom: {{ section.settings.arrows_padding_bottom_desktop }}px;
+    }
   }
 {%- endstyle -%}
 
@@ -536,6 +552,50 @@
     },
     {
       "type": "header",
+      "content": "Arrows Padding"
+    },
+    {
+      "type": "range",
+      "id": "arrows_padding_top_desktop",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Above Arrows (Desktop)",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "arrows_padding_bottom_desktop",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Below Arrows (Desktop)",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "arrows_padding_top_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Above Arrows (Mobile)",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "arrows_padding_bottom_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Below Arrows (Mobile)",
+      "default": 10
+    },
+    {
+      "type": "header",
       "content": "Borders"
     },
     {
@@ -557,6 +617,66 @@
       "unit": "px",
       "label": "Image Border Radius",
       "default": 10
+    },
+    {
+      "type": "range",
+      "id": "tag_border_radius_desktop",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Tag Border Radius (Desktop)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "tag_border_radius_mobile",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Tag Border Radius (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "tag_padding_vertical_desktop",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Tag Padding Vertical (Desktop)",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "tag_padding_horizontal_desktop",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Tag Padding Horizontal (Desktop)",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "tag_padding_vertical_mobile",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Tag Padding Vertical (Mobile)",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "tag_padding_horizontal_mobile",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Tag Padding Horizontal (Mobile)",
+      "default": 12
     }
   ]
 }

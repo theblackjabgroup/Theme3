@@ -12,6 +12,12 @@
     --gc-title-size-mobile: {{ section.settings.title_size_mobile }}px;
     --gc-value-size-mobile: {{ section.settings.value_size_mobile }}px;
     --gc-footer-size-mobile: {{ section.settings.footer_size_mobile }}px;
+    --gc-code-size: {{ section.settings.code_size }}px;
+    --gc-code-size-mobile: {{ section.settings.code_size_mobile }}px;
+    --gc-logo-text-size: {{ section.settings.logo_text_size }}px;
+    --gc-logo-text-size-mobile: {{ section.settings.logo_text_size_mobile }}px;
+    --gc-logo-text-padding: {{ section.settings.logo_text_padding }}px;
+    --gc-logo-text-padding-mobile: {{ section.settings.logo_text_padding_mobile }}px;
     --gc-btn-face: {{ section.settings.button_face }};
     --gc-btn-bg: {{ section.settings.button_bg }};
     --gc-btn-text: {{ section.settings.button_text }};
@@ -36,10 +42,14 @@
   .gc-title { font-size: var(--gc-title-size); }
   .gc-card-value { font-size: var(--gc-value-size); }
   .gc-footer-text { font-size: var(--gc-footer-size); }
+  .gc-code-input { font-size: var(--gc-code-size); }
+  .gc-logo-text { font-size: var(--gc-logo-text-size); padding: var(--gc-logo-text-padding); }
   @media (max-width: 600px) {
     .gc-title { font-size: var(--gc-title-size-mobile); }
     .gc-card-value { font-size: var(--gc-value-size-mobile); }
     .gc-footer-text { font-size: var(--gc-footer-size-mobile); }
+    .gc-code-input { font-size: var(--gc-code-size-mobile); }
+    .gc-logo-text { font-size: var(--gc-logo-text-size-mobile); padding: var(--gc-logo-text-padding-mobile); }
   }
 
   .gc-print-btn__shadow { background-color: var(--gc-btn-bg); opacity: 0.5; }
@@ -312,6 +322,46 @@
       "default": 0
     },
     {
+      "type": "range",
+      "id": "logo_text_size",
+      "min": 8,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Store Name Font Size (when no logo)",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "logo_text_size_mobile",
+      "min": 8,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Store Name Font Size (Mobile, when no logo)",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "logo_text_padding",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Store Name Padding (when no logo)",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "logo_text_padding_mobile",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Store Name Padding (Mobile, when no logo)",
+      "default": 6
+    },
+    {
       "type": "header",
       "content": "Font Sizes"
     },
@@ -374,6 +424,26 @@
       "unit": "px",
       "label": "Footer Font Size (Mobile)",
       "default": 12
+    },
+    {
+      "type": "range",
+      "id": "code_size",
+      "min": 12,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "label": "Code Font Size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "code_size_mobile",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Code Font Size (Mobile)",
+      "default": 14
     },
     {
       "type": "header",

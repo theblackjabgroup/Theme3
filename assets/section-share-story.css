@@ -84,14 +84,14 @@
 
 .share-story-label {
   display: block;
-  font-weight: var(--font-weight-bold);
+  font-weight: var(--share-story-label-font-weight, var(--font-weight-bold));
   margin-bottom: var(--spacing-3);
-  font-size: var(--font-size-lg);
+  font-size: var(--share-story-label-font-size, var(--font-size-lg));
   color: var(--color-text);
   letter-spacing: var(--letter-spacing-wider);
   position: relative;
   overflow: hidden;
-  line-height: var(--line-height-tight);
+  line-height: var(--share-story-label-line-height, var(--line-height-tight));
   cursor: default;
   font-family: var(--font-family-body);
 }
@@ -121,12 +121,15 @@
 }
 
 .share-story-input {
-  width: 100%;
+  width: var(--share-story-input-width, 100%);
+  min-height: var(--share-story-input-height, 48px);
   padding: var(--spacing-6) var(--spacing-10);
   border-radius: var(--radius-m);
   border: var(--border-width-thin) solid var(--color-input-border);
   background: var(--color-input-bg);
-  font-size: var(--font-size-lg);
+  font-size: var(--share-story-placeholder-font-size, var(--font-size-lg));
+  font-weight: var(--share-story-placeholder-font-weight, 400);
+  line-height: var(--share-story-placeholder-line-height, 1.5);
   outline: none;
   transition: all var(--transition-medium);
   color: var(--color-input-text);
@@ -143,19 +146,23 @@
 
 .share-story-input::placeholder {
   color: var(--color-input-text);
+  font-size: var(--share-story-placeholder-font-size, var(--font-size-lg));
+  font-weight: var(--share-story-placeholder-font-weight, 400);
+  line-height: var(--share-story-placeholder-line-height, 1.5);
 }
 
 .share-story-textarea {
-  width: 100%;
+  width: var(--share-story-input-width, 100%);
+  min-height: 140px;
   padding: var(--spacing-8);
   border-radius: var(--radius-m);
   border: var(--border-width-thin) solid var(--color-input-border);
   background: var(--color-input-bg);
-  font-size: var(--font-size-lg);
-  min-height: 140px;
+  font-size: var(--share-story-placeholder-font-size, var(--font-size-lg));
+  font-weight: var(--share-story-placeholder-font-weight, 400);
+  line-height: var(--share-story-placeholder-line-height, 1.5);
   resize: none;
   outline: none;
-  line-height: var(--line-height-relaxed);
   color: var(--color-input-text);
   transition: all var(--transition-medium);
   box-shadow: 0 2px 0 0 var(--color-primary-button-border);
@@ -171,6 +178,9 @@
 
 .share-story-textarea::placeholder {
   color: var(--color-input-text);
+  font-size: var(--share-story-placeholder-font-size, var(--font-size-lg));
+  font-weight: var(--share-story-placeholder-font-weight, 400);
+  line-height: var(--share-story-placeholder-line-height, 1.5);
 }
 
 

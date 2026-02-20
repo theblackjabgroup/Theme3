@@ -8,6 +8,24 @@
     margin-bottom: {{ section.settings.margin_bottom | times: 0.75 | round: 0 }}px;
     margin-left: {{ section.settings.margin_horizontal | times: 0.75 | round: 0 }}px;
     margin-right: {{ section.settings.margin_horizontal | times: 0.75 | round: 0 }}px;
+    --share-story-input-height: {{ section.settings.input_height_mobile }}px;
+    --share-story-input-width: {{ section.settings.input_width_mobile }}%;
+    --share-story-label-font-size: {{ section.settings.label_font_size_mobile }}px;
+    --share-story-label-font-weight: {{ section.settings.label_font_weight_mobile }};
+    --share-story-label-line-height: {{ section.settings.label_line_height_mobile | divided_by: 100.0 }};
+    --share-story-placeholder-font-size: {{ section.settings.placeholder_font_size_mobile }}px;
+    --share-story-placeholder-font-weight: {{ section.settings.placeholder_font_weight_mobile }};
+    --share-story-placeholder-line-height: {{ section.settings.placeholder_line_height_mobile | divided_by: 100.0 }};
+  }
+
+  #shopify-section-{{ section.id }} .share-story-wrapper {
+    gap: {{ section.settings.cards_gap_mobile }}px;
+  }
+
+  @media screen and (min-width: 990px) {
+    #shopify-section-{{ section.id }} .share-story-wrapper {
+      gap: {{ section.settings.cards_gap_desktop }}px;
+    }
   }
 
   @media screen and (min-width: 750px) {
@@ -18,8 +36,96 @@
       margin-bottom: {{ section.settings.margin_bottom }}px;
       margin-left: {{ section.settings.margin_horizontal }}px;
       margin-right: {{ section.settings.margin_horizontal }}px;
+      --share-story-input-height: {{ section.settings.input_height_desktop }}px;
+      --share-story-input-width: {{ section.settings.input_width_desktop }}%;
+      --share-story-label-font-size: {{ section.settings.label_font_size_desktop }}px;
+      --share-story-label-font-weight: {{ section.settings.label_font_weight_desktop }};
+      --share-story-label-line-height: {{ section.settings.label_line_height_desktop | divided_by: 100.0 }};
+      --share-story-placeholder-font-size: {{ section.settings.placeholder_font_size_desktop }}px;
+      --share-story-placeholder-font-weight: {{ section.settings.placeholder_font_weight_desktop }};
+      --share-story-placeholder-line-height: {{ section.settings.placeholder_line_height_desktop | divided_by: 100.0 }};
     }
   }
+
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'profile_card' -%}
+      #shopify-section-{{ section.id }} .share-story-left {
+        border-radius: {{ block.settings.card_border_radius_mobile }}px;
+        padding: {{ block.settings.card_padding_vertical_mobile }}px {{ block.settings.card_padding_horizontal_mobile }}px;
+      }
+      #shopify-section-{{ section.id }} .share-story-left .share-story-badge {
+        font-size: {{ block.settings.tag_font_size_mobile }}px;
+        font-weight: {{ block.settings.tag_font_weight_mobile }};
+        line-height: {{ block.settings.tag_line_height_mobile | divided_by: 100.0 }};
+        border-radius: {{ block.settings.tag_border_radius_mobile }}px;
+        padding: {{ block.settings.tag_padding_vertical_mobile }}px {{ block.settings.tag_padding_horizontal_mobile }}px;
+      }
+      #shopify-section-{{ section.id }} .share-story-left .share-story-title {
+        font-size: {{ block.settings.title_font_size_mobile }}px;
+        font-weight: {{ block.settings.title_font_weight_mobile }};
+        line-height: {{ block.settings.title_line_height_mobile | divided_by: 100.0 }};
+      }
+      #shopify-section-{{ section.id }} .share-story-left .share-story-subtitle {
+        font-size: {{ block.settings.description_font_size_mobile }}px;
+        font-weight: {{ block.settings.description_font_weight_mobile }};
+        line-height: {{ block.settings.description_line_height_mobile | divided_by: 100.0 }};
+      }
+      @media screen and (min-width: 750px) {
+        #shopify-section-{{ section.id }} .share-story-left {
+          border-radius: {{ block.settings.card_border_radius_desktop }}px;
+          padding: {{ block.settings.card_padding_vertical_desktop }}px {{ block.settings.card_padding_horizontal_desktop }}px;
+        }
+        #shopify-section-{{ section.id }} .share-story-left .share-story-badge {
+          font-size: {{ block.settings.tag_font_size_desktop }}px;
+          font-weight: {{ block.settings.tag_font_weight_desktop }};
+          line-height: {{ block.settings.tag_line_height_desktop | divided_by: 100.0 }};
+          border-radius: {{ block.settings.tag_border_radius_desktop }}px;
+          padding: {{ block.settings.tag_padding_vertical_desktop }}px {{ block.settings.tag_padding_horizontal_desktop }}px;
+        }
+        #shopify-section-{{ section.id }} .share-story-left .share-story-title {
+          font-size: {{ block.settings.title_font_size_desktop }}px;
+          font-weight: {{ block.settings.title_font_weight_desktop }};
+          line-height: {{ block.settings.title_line_height_desktop | divided_by: 100.0 }};
+        }
+        #shopify-section-{{ section.id }} .share-story-left .share-story-subtitle {
+          font-size: {{ block.settings.description_font_size_desktop }}px;
+          font-weight: {{ block.settings.description_font_weight_desktop }};
+          line-height: {{ block.settings.description_line_height_desktop | divided_by: 100.0 }};
+        }
+      }
+    {%- elsif block.type == 'story_card' -%}
+      #shopify-section-{{ section.id }} .share-story-right {
+        border-radius: {{ block.settings.card_border_radius_mobile }}px;
+        padding: {{ block.settings.card_padding_vertical_mobile }}px {{ block.settings.card_padding_horizontal_mobile }}px;
+      }
+      #shopify-section-{{ section.id }} .share-story-right .share-story-title {
+        font-size: {{ block.settings.title_font_size_mobile }}px;
+        font-weight: {{ block.settings.title_font_weight_mobile }};
+        line-height: {{ block.settings.title_line_height_mobile | divided_by: 100.0 }};
+      }
+      #shopify-section-{{ section.id }} .share-story-right .share-story-disclaimer {
+        font-size: {{ block.settings.disclaimer_font_size_mobile }}px;
+        font-weight: {{ block.settings.disclaimer_font_weight_mobile }};
+        line-height: {{ block.settings.disclaimer_line_height_mobile | divided_by: 100.0 }};
+      }
+      @media screen and (min-width: 750px) {
+        #shopify-section-{{ section.id }} .share-story-right {
+          border-radius: {{ block.settings.card_border_radius_desktop }}px;
+          padding: {{ block.settings.card_padding_vertical_desktop }}px {{ block.settings.card_padding_horizontal_desktop }}px;
+        }
+        #shopify-section-{{ section.id }} .share-story-right .share-story-title {
+          font-size: {{ block.settings.title_font_size_desktop }}px;
+          font-weight: {{ block.settings.title_font_weight_desktop }};
+          line-height: {{ block.settings.title_line_height_desktop | divided_by: 100.0 }};
+        }
+        #shopify-section-{{ section.id }} .share-story-right .share-story-disclaimer {
+          font-size: {{ block.settings.disclaimer_font_size_desktop }}px;
+          font-weight: {{ block.settings.disclaimer_font_weight_desktop }};
+          line-height: {{ block.settings.disclaimer_line_height_desktop | divided_by: 100.0 }};
+        }
+      }
+    {%- endif -%}
+  {%- endfor -%}
 {%- endstyle -%}
 
 <div class="share-story-section section-{{ section.id }}-padding color-{{ section.settings.color_scheme }}">
@@ -187,7 +293,227 @@
       "unit": "px",
       "label": "Margin Horizontal",
       "default": 10
-    }
+    },
+    {
+      "type": "header",
+      "content": "Cards"
+    },
+    {
+      "type": "range",
+      "id": "cards_gap_desktop",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Gap Between Cards (Desktop)",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "cards_gap_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Gap Between Cards (Mobile)",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Input (Desktop)"
+    },
+    {
+      "type": "range",
+      "id": "input_height_desktop",
+      "min": 32,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Input Height",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "input_width_desktop",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Input Width",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Input (Mobile)"
+    },
+    {
+      "type": "range",
+      "id": "input_height_mobile",
+      "min": 36,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "label": "Input Height",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "input_width_mobile",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Input Width",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Label (Desktop)"
+    },
+    {
+      "type": "range",
+      "id": "label_font_size_desktop",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Font Size",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "label_font_weight_desktop",
+      "label": "Font Weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "range",
+      "id": "label_line_height_desktop",
+      "min": 100,
+      "max": 200,
+      "step": 5,
+      "unit": "%",
+      "label": "Line Height",
+      "default": 120
+    },
+    {
+      "type": "header",
+      "content": "Label (Mobile)"
+    },
+    {
+      "type": "range",
+      "id": "label_font_size_mobile",
+      "min": 12,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Font Size",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "label_font_weight_mobile",
+      "label": "Font Weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "range",
+      "id": "label_line_height_mobile",
+      "min": 100,
+      "max": 200,
+      "step": 5,
+      "unit": "%",
+      "label": "Line Height",
+      "default": 120
+    },
+    {
+      "type": "header",
+      "content": "Placeholder (Desktop)"
+    },
+    {
+      "type": "range",
+      "id": "placeholder_font_size_desktop",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Font Size",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "placeholder_font_weight_desktop",
+      "label": "Font Weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "range",
+      "id": "placeholder_line_height_desktop",
+      "min": 100,
+      "max": 200,
+      "step": 5,
+      "unit": "%",
+      "label": "Line Height",
+      "default": 150
+    },
+    {
+      "type": "header",
+      "content": "Placeholder (Mobile)"
+    },
+    {
+      "type": "range",
+      "id": "placeholder_font_size_mobile",
+      "min": 12,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Font Size",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "placeholder_font_weight_mobile",
+      "label": "Font Weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "range",
+      "id": "placeholder_line_height_mobile",
+      "min": 100,
+      "max": 200,
+      "step": 5,
+      "unit": "%",
+      "label": "Line Height",
+      "default": 150
+    },
   ],
   "blocks": [
     {
@@ -216,6 +542,340 @@
           "id": "subtitle",
           "label": "Subtitle",
           "default": "Don't be shy, tell us a bit about yourself"
+        },
+        {
+          "type": "header",
+          "content": "Card & Tag (Desktop)"
+        },
+        {
+          "type": "range",
+          "id": "card_border_radius_desktop",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": "Card Border Radius",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "card_padding_vertical_desktop",
+          "min": 0,
+          "max": 80,
+          "step": 4,
+          "unit": "px",
+          "label": "Card Padding Vertical",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "card_padding_horizontal_desktop",
+          "min": 0,
+          "max": 80,
+          "step": 4,
+          "unit": "px",
+          "label": "Card Padding Horizontal",
+          "default": 12
+        },
+        {
+          "type": "range",
+          "id": "tag_font_size_desktop",
+          "min": 8,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "label": "Tag Font Size",
+          "default": 10
+        },
+        {
+          "type": "select",
+          "id": "tag_font_weight_desktop",
+          "label": "Tag Font Weight",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "700"
+        },
+        {
+          "type": "range",
+          "id": "tag_line_height_desktop",
+          "min": 100,
+          "max": 200,
+          "step": 5,
+          "unit": "%",
+          "label": "Tag Line Height",
+          "default": 120
+        },
+        {
+          "type": "range",
+          "id": "tag_border_radius_desktop",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": "Tag Border Radius",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "tag_padding_vertical_desktop",
+          "min": 0,
+          "max": 24,
+          "step": 2,
+          "unit": "px",
+          "label": "Tag Padding Vertical",
+          "default": 8
+        },
+        {
+          "type": "range",
+          "id": "tag_padding_horizontal_desktop",
+          "min": 0,
+          "max": 48,
+          "step": 2,
+          "unit": "px",
+          "label": "Tag Padding Horizontal",
+          "default": 32
+        },
+        {
+          "type": "range",
+          "id": "title_font_size_desktop",
+          "min": 16,
+          "max": 48,
+          "step": 1,
+          "unit": "px",
+          "label": "Title Font Size",
+          "default": 24
+        },
+        {
+          "type": "select",
+          "id": "title_font_weight_desktop",
+          "label": "Title Font Weight",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "400"
+        },
+        {
+          "type": "range",
+          "id": "title_line_height_desktop",
+          "min": 100,
+          "max": 200,
+          "step": 5,
+          "unit": "%",
+          "label": "Title Line Height",
+          "default": 100
+        },
+        {
+          "type": "header",
+          "content": "Card & Tag (Mobile)"
+        },
+        {
+          "type": "range",
+          "id": "card_border_radius_mobile",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": "Card Border Radius",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "card_padding_vertical_mobile",
+          "min": 0,
+          "max": 80,
+          "step": 4,
+          "unit": "px",
+          "label": "Card Padding Vertical",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "card_padding_horizontal_mobile",
+          "min": 0,
+          "max": 80,
+          "step": 4,
+          "unit": "px",
+          "label": "Card Padding Horizontal",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "tag_font_size_mobile",
+          "min": 8,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "label": "Tag Font Size",
+          "default": 10
+        },
+        {
+          "type": "select",
+          "id": "tag_font_weight_mobile",
+          "label": "Tag Font Weight",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "700"
+        },
+        {
+          "type": "range",
+          "id": "tag_line_height_mobile",
+          "min": 100,
+          "max": 200,
+          "step": 5,
+          "unit": "%",
+          "label": "Tag Line Height",
+          "default": 120
+        },
+        {
+          "type": "range",
+          "id": "tag_border_radius_mobile",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": "Tag Border Radius",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "tag_padding_vertical_mobile",
+          "min": 0,
+          "max": 24,
+          "step": 2,
+          "unit": "px",
+          "label": "Tag Padding Vertical",
+          "default": 8
+        },
+        {
+          "type": "range",
+          "id": "tag_padding_horizontal_mobile",
+          "min": 0,
+          "max": 48,
+          "step": 2,
+          "unit": "px",
+          "label": "Tag Padding Horizontal",
+          "default": 32
+        },
+        {
+          "type": "range",
+          "id": "title_font_size_mobile",
+          "min": 16,
+          "max": 40,
+          "step": 1,
+          "unit": "px",
+          "label": "Title Font Size",
+          "default": 24
+        },
+        {
+          "type": "select",
+          "id": "title_font_weight_mobile",
+          "label": "Title Font Weight",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "400"
+        },
+        {
+          "type": "range",
+          "id": "title_line_height_mobile",
+          "min": 100,
+          "max": 200,
+          "step": 5,
+          "unit": "%",
+          "label": "Title Line Height",
+          "default": 100
+        },
+        {
+          "type": "header",
+          "content": "Description (Desktop)"
+        },
+        {
+          "type": "range",
+          "id": "description_font_size_desktop",
+          "min": 12,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size",
+          "default": 16
+        },
+        {
+          "type": "select",
+          "id": "description_font_weight_desktop",
+          "label": "Font Weight",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "400"
+        },
+        {
+          "type": "range",
+          "id": "description_line_height_desktop",
+          "min": 100,
+          "max": 200,
+          "step": 5,
+          "unit": "%",
+          "label": "Line Height",
+          "default": 150
+        },
+        {
+          "type": "header",
+          "content": "Description (Mobile)"
+        },
+        {
+          "type": "range",
+          "id": "description_font_size_mobile",
+          "min": 12,
+          "max": 22,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size",
+          "default": 16
+        },
+        {
+          "type": "select",
+          "id": "description_font_weight_mobile",
+          "label": "Font Weight",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "400"
+        },
+        {
+          "type": "range",
+          "id": "description_line_height_mobile",
+          "min": 100,
+          "max": 200,
+          "step": 5,
+          "unit": "%",
+          "label": "Line Height",
+          "default": 150
         },
         {
           "type": "header",
@@ -281,6 +941,214 @@
           "id": "title",
           "label": "Title",
           "default": "Share your story with other fighters."
+        },
+        {
+          "type": "header",
+          "content": "Card & Title (Desktop)"
+        },
+        {
+          "type": "range",
+          "id": "card_border_radius_desktop",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": "Card Border Radius",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "card_padding_vertical_desktop",
+          "min": 0,
+          "max": 80,
+          "step": 4,
+          "unit": "px",
+          "label": "Card Padding Vertical",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "card_padding_horizontal_desktop",
+          "min": 0,
+          "max": 80,
+          "step": 4,
+          "unit": "px",
+          "label": "Card Padding Horizontal",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "title_font_size_desktop",
+          "min": 16,
+          "max": 48,
+          "step": 1,
+          "unit": "px",
+          "label": "Title Font Size",
+          "default": 24
+        },
+        {
+          "type": "select",
+          "id": "title_font_weight_desktop",
+          "label": "Title Font Weight",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "400"
+        },
+        {
+          "type": "range",
+          "id": "title_line_height_desktop",
+          "min": 100,
+          "max": 200,
+          "step": 5,
+          "unit": "%",
+          "label": "Title Line Height",
+          "default": 100
+        },
+        {
+          "type": "header",
+          "content": "Card & Title (Mobile)"
+        },
+        {
+          "type": "range",
+          "id": "card_border_radius_mobile",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": "Card Border Radius",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "card_padding_vertical_mobile",
+          "min": 0,
+          "max": 80,
+          "step": 4,
+          "unit": "px",
+          "label": "Card Padding Vertical",
+          "default": 48
+        },
+        {
+          "type": "range",
+          "id": "card_padding_horizontal_mobile",
+          "min": 0,
+          "max": 80,
+          "step": 4,
+          "unit": "px",
+          "label": "Card Padding Horizontal",
+          "default": 48
+        },
+        {
+          "type": "range",
+          "id": "title_font_size_mobile",
+          "min": 16,
+          "max": 40,
+          "step": 1,
+          "unit": "px",
+          "label": "Title Font Size",
+          "default": 24
+        },
+        {
+          "type": "select",
+          "id": "title_font_weight_mobile",
+          "label": "Title Font Weight",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "400"
+        },
+        {
+          "type": "range",
+          "id": "title_line_height_mobile",
+          "min": 100,
+          "max": 200,
+          "step": 5,
+          "unit": "%",
+          "label": "Title Line Height",
+          "default": 100
+        },
+        {
+          "type": "header",
+          "content": "Disclaimer (Desktop)"
+        },
+        {
+          "type": "range",
+          "id": "disclaimer_font_size_desktop",
+          "min": 10,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size",
+          "default": 16
+        },
+        {
+          "type": "select",
+          "id": "disclaimer_font_weight_desktop",
+          "label": "Font Weight",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "400"
+        },
+        {
+          "type": "range",
+          "id": "disclaimer_line_height_desktop",
+          "min": 100,
+          "max": 200,
+          "step": 5,
+          "unit": "%",
+          "label": "Line Height",
+          "default": 150
+        },
+        {
+          "type": "header",
+          "content": "Disclaimer (Mobile)"
+        },
+        {
+          "type": "range",
+          "id": "disclaimer_font_size_mobile",
+          "min": 10,
+          "max": 22,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size",
+          "default": 16
+        },
+        {
+          "type": "select",
+          "id": "disclaimer_font_weight_mobile",
+          "label": "Font Weight",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "400"
+        },
+        {
+          "type": "range",
+          "id": "disclaimer_line_height_mobile",
+          "min": 100,
+          "max": 200,
+          "step": 5,
+          "unit": "%",
+          "label": "Line Height",
+          "default": 150
         },
         {
           "type": "header",

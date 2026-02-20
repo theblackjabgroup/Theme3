@@ -2,11 +2,41 @@
   "sections": {
     "main": {
       "type": "main-article",
-      "blocks": {},
-      "block_order": []
+      "blocks": {
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "show_category_pill": true,
+            "category_pill_text": "Blog",
+            "pill_color": "#ff5500"
+          }
+        },
+        "image_and_socials": {
+          "type": "image_and_socials",
+          "settings": {
+            "show_author": true,
+            "show_date": true,
+            "show_tags": true,
+            "show_share": true,
+            "link_instagram": "/",
+            "link_facebook": "/",
+            "link_twitter": "/",
+            "link_whatsapp": "/",
+            "link_telegram": "/"
+          }
+        },
+        "content": {
+          "type": "content",
+          "settings": {}
+        },
+        "comment_box": {
+          "type": "comment_box",
+          "settings": {}
+        }
+      },
+      "block_order": ["heading", "image_and_socials", "content", "comment_box"],
+      "settings": {}
     }
   },
-  "order": [
-    "main"
-  ]
+  "order": ["main"]
 }
