@@ -86,61 +86,15 @@
   transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* Custom product card in scroll slot – enough height so content isn’t cut off */
+/* Custom product card in scroll slot */
 .fc3d-card--custom {
   aspect-ratio: auto;
-  min-height: 480px;
   align-self: stretch;
 }
 
 .fc3d-card--custom .fc3d-card__custom {
   width: 100%;
   height: 100%;
-  min-height: 480px;
-}
-
-.fc3d-card--custom .custom-product-card-wrapper {
-  height: 100%;
-  min-height: 480px;
-}
-
-.fc3d-card--custom .custom-product-card {
-  height: 100%;
-  min-height: 480px;
-  overflow: hidden;
-}
-
-/* Keep image above the hover overlay so it doesn’t slip behind */
-.fc3d-card--custom .custom-product-card__image-container {
-  z-index: 10;
-  position: relative;
-}
-
-/* Prevent clipping: fit image inside container (base uses max-height 110% which overflows and gets clipped) */
-.fc3d-card--custom .custom-product-card__image {
-  max-height: 100%;
-}
-
-.fc3d-card--custom .custom-product-card__overlay-clip {
-  z-index: 2;
-}
-
-/* Truncate description so price stays visible and cards stay consistent */
-.fc3d-card--custom .custom-product-card__description {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 1.3;
-}
-
-.fc3d-card--custom .custom-product-card__title {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
 }
 
 .fc3d-card.is-center {
@@ -148,7 +102,7 @@
 }
 
 .fc3d-card.is-center .fc3d-card__inner {
-  transform: rotateZ(-5deg) scale(1.1) ;
+  transform: none;
 }
 
 .fc3d-card__inner {
@@ -165,13 +119,13 @@
 }
 
 .fc3d-card.is-center:hover .fc3d-card__inner {
-  animation: wind-flip-hover 1.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: none;
   will-change: transform;
 }
 
 /* Smooth flip back when hover ends */
 .fc3d-card.is-center:not(:hover) .fc3d-card__inner {
-  animation: wind-flip-back 0.8s ease-in-out forwards;
+  animation: none;
 }
 .fc3d-card__face {
   position: absolute;
@@ -190,39 +144,7 @@
   transform: rotateY(180deg) translateZ(0); /* Add translateZ */
 }
 
-@keyframes wind-flip-hover {
-  0% {
-    transform: rotateZ(-5deg) scale(1.1) rotateY(0deg);
-  }
-  20% {
-    transform: rotateZ(-5deg) scale(1.1) rotateY(10deg);
-  }
-  40% {
-    transform: rotateZ(-5deg) scale(1.1) rotateY(0deg);
-  }
-  45% {
-    transform: rotateZ(-5deg) scale(1.1) rotateY(20deg);
-  }
-  /* Flip to the target position */
 
-  /* Slight overshoot */
-  65% {
-    transform: rotateZ(-5deg) scale(1.1) rotateY(195deg);
-  }
-  /* Settle at exactly 180deg */
-  100% {
-    transform: rotateZ(-5deg) scale(1.1) rotateY(180deg);
-  }
-}
-
-@keyframes wind-flip-back {
-  0% {
-    transform: rotateZ(-5deg) scale(1.1) rotateY(180deg);
-  }
-  100% {
-    transform: rotateZ(-5deg) scale(1.1) rotateY(0deg);
-  }
-}
 
 .fc3d-card__link {
   display: block;
@@ -263,6 +185,22 @@
 
 .fc3d-card.is-center .fc3d-card__face--back .fc3d-card__link {
   background-color: #ffb3d9;
+}
+
+/* Featured collection slider: keep cards stable without tilt/rotation on interaction */
+.fc3d .custom-product-card:hover .custom-product-card__image,
+.fc3d .custom-product-card:active .custom-product-card__image,
+.fc3d .custom-product-card:hover .custom-product-card__badge,
+.fc3d .custom-product-card:active .custom-product-card__badge,
+.fc3d .custom-product-card:hover .custom-product-card__title,
+.fc3d .custom-product-card:active .custom-product-card__title,
+.fc3d .custom-product-card:hover .custom-product-card__description,
+.fc3d .custom-product-card:active .custom-product-card__description,
+.fc3d .custom-product-card:hover .custom-product-card__footer,
+.fc3d .custom-product-card:active .custom-product-card__footer,
+.fc3d .custom-product-card:hover .custom-product-card__image-container::before,
+.fc3d .custom-product-card:active .custom-product-card__image-container::before {
+  transform: none !important;
 }
 
 /* Main content */
@@ -511,18 +449,47 @@
     scroll-behavior: auto;
   }
   .fc3d-card.is-center:hover .fc3d-card__inner {
-    transform: scale(1.1) rotateY(180deg) rotateZ(-5deg);
+    transform: none;
     animation: none !important;
   }
 }
 
 @media screen and (max-width: 768px) {
+  .fc3d {
+    padding: 12px 0 18px;
+  }
   .fc3d__container {
-    padding: 0 var(--padding-medium);
+    padding: 0 14px;
   }
   .fc3d__header {
+    margin-bottom: 18px;
     flex-direction: column;
     align-items: flex-start;
+    gap: 14px;
+    padding: 18px 16px;
+    border-radius: 16px;
+  }
+
+  .fc3d__title {
+    font-size: clamp(2rem, 10.5vw, 2.85rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+  }
+
+  .fc3d__shop-all {
+    width: 100%;
+  }
+
+  .fc3d__shop-all .submit-button {
+    width: 100%;
+  }
+
+  .fc3d__shop-all .submit-button__content {
+    width: 100%;
+    justify-content: center;
+    font-size: clamp(1.2rem, 6vw, 1.65rem);
+    line-height: 1.05;
+    padding: 12px 18px !important;
   }
   
   .fc3d__header .primary-button {
@@ -530,13 +497,22 @@
     min-width: unset;
   }
   .fc3d__rail {
-    scroll-padding: 20vw;
-    gap: var(--spacing-m);
+    gap: 0;
+    scroll-padding: 0;
+    padding-inline: 0;
+    padding-bottom: 10px;
   }
   .fc3d-card {
-    width: clamp(160px, 35vw, 220px);
+    width: 100%;
   }
-  .fc3d-card.is-center {
-    transform: rotate(3deg);
+
+  .fc3d__controls {
+    margin-top: 10px;
+  }
+
+  .fc3d__nav {
+    width: 50px;
+    height: 44px;
+    font-size: 20px;
   }
 }
