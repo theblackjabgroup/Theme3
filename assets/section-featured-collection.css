@@ -144,39 +144,7 @@
   transform: rotateY(180deg) translateZ(0); /* Add translateZ */
 }
 
-@keyframes wind-flip-hover {
-  0% {
-    transform: rotateZ(-5deg) scale(1.1) rotateY(0deg);
-  }
-  20% {
-    transform: rotateZ(-5deg) scale(1.1) rotateY(10deg);
-  }
-  40% {
-    transform: rotateZ(-5deg) scale(1.1) rotateY(0deg);
-  }
-  45% {
-    transform: rotateZ(-5deg) scale(1.1) rotateY(20deg);
-  }
-  /* Flip to the target position */
 
-  /* Slight overshoot */
-  65% {
-    transform: rotateZ(-5deg) scale(1.1) rotateY(195deg);
-  }
-  /* Settle at exactly 180deg */
-  100% {
-    transform: rotateZ(-5deg) scale(1.1) rotateY(180deg);
-  }
-}
-
-@keyframes wind-flip-back {
-  0% {
-    transform: rotateZ(-5deg) scale(1.1) rotateY(180deg);
-  }
-  100% {
-    transform: rotateZ(-5deg) scale(1.1) rotateY(0deg);
-  }
-}
 
 .fc3d-card__link {
   display: block;
