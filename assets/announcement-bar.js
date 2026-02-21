@@ -1,36 +1,28 @@
 class AnnouncementBar extends HTMLElement {
   constructor() {
     super();
-    this.container = this;
-    this.closeButton = this.querySelector('.announcement-bar__close');
-    this.storageKey = 'announcement-bar-dismissed';
-
-    if (this.closeButton) {
-      this.closeButton.addEventListener('click', this.dismiss.bind(this));
-    }
-
-    this.checkDismissal();
     this.initCountdown();
+    this.initPillLinks();
   }
 
-  checkDismissal() {
-    if (sessionStorage.getItem(this.storageKey)) {
-      this.setAttribute('hidden', '');
-    }
-  }
-
-  dismiss() {
-    this.setAttribute('hidden', '');
-    sessionStorage.setItem(this.storageKey, 'true');
+  /* Make pill[data-href] elements clickable */
+  initPillLinks() {
+    this.querySelectorAll('.ab-pill[data-href]').forEach((pill) => {
+      pill.addEventListener('click', () => {
+        const href = pill.dataset.href;
+        if (href) window.location.href = href;
+      });
+    });
   }
 
   initCountdown() {
     const countdowns = this.querySelectorAll('[data-countdown]');
     countdowns.forEach((countdown) => {
       const targetDate = new Date(countdown.dataset.countdown).getTime();
+      if (isNaN(targetDate)) return;
 
       const update = () => {
-        const now = new Date().getTime();
+        const now = Date.now();
         const distance = targetDate - now;
 
         if (distance < 0) {
@@ -38,30 +30,28 @@ class AnnouncementBar extends HTMLElement {
           return;
         }
 
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        const days = Math.floor(distance / 86400000);
+        const hours = Math.floor((distance % 86400000) / 3600000);
+        const minutes = Math.floor((distance % 3600000) / 60000);
+        const seconds = Math.floor((distance % 60000) / 1000);
+
+        const pad = (n) => n.toString().padStart(2, '0');
 
         const dBox = countdown.querySelector('.d');
         const hBox = countdown.querySelector('.h');
         const mBox = countdown.querySelector('.m');
         const sBox = countdown.querySelector('.s');
 
-        if (dBox) dBox.innerText = days.toString().padStart(2, '0');
-        if (hBox) hBox.innerText = hours.toString().padStart(2, '0');
-        if (mBox) mBox.innerText = minutes.toString().padStart(2, '0');
-        if (sBox) sBox.innerText = seconds.toString().padStart(2, '0');
+        if (dBox) dBox.textContent = pad(days);
+        if (hBox) hBox.textContent = pad(hours);
+        if (mBox) mBox.textContent = pad(minutes);
+        if (sBox) sBox.textContent = pad(seconds);
       };
 
       update();
-      const intervalId = setInterval(() => {
+      const id = setInterval(() => {
         update();
-        const now = new Date().getTime();
-        const distance = targetDate - now;
-        if (distance < 0) {
-          clearInterval(intervalId);
-        }
+        if (Date.now() >= targetDate) clearInterval(id);
       }, 1000);
     });
   }
