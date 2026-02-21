@@ -766,6 +766,7 @@
     const rightSlides = Array.from(root.querySelectorAll('[data-card-slide]'));
     const navButtons = Array.from(root.querySelectorAll('[data-nav]'));
     const total = Number(root.dataset.slideCount || 0);
+    const transitionDuration = Number({{ section.settings.slide_transition_speed_ms | json }}) || 600;
 
     if (total <= 1) {
       navButtons.forEach((button) => {
@@ -797,7 +798,12 @@
       next.classList.add(direction === 'next' ? 'is-enter-next' : 'is-enter-prev');
       next.classList.add('is-active');
 
+      let didCleanup = false;
+      let fallbackTimer;
       const cleanup = () => {
+        if (didCleanup) return;
+        didCleanup = true;
+        window.clearTimeout(fallbackTimer);
         current.classList.remove('is-active', 'is-leaving');
         current.hidden = true;
         current.classList.remove('is-exit-next', 'is-exit-prev');
@@ -806,6 +812,7 @@
       };
 
       next.addEventListener('animationend', cleanup, { once: true });
+      fallbackTimer = window.setTimeout(cleanup, transitionDuration + 120);
     };
 
     const goTo = (nextIndex, direction = 'next') => {
