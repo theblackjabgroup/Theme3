@@ -294,18 +294,21 @@
     pointer-events: none;
     background: transparent;
     z-index: 1;
+    transform: translate3d(0, 0, 0);
+    transform-origin: center center;
+    backface-visibility: hidden;
+    will-change: transform;
   }
 
   #shopify-section-{{ section.id }} .bb-slideshow__left-slide.is-active {
-    position: relative;
+    position: absolute;
+    inset: 0;
     opacity: 1;
     pointer-events: auto;
     z-index: 1;
   }
 
   #shopify-section-{{ section.id }} .bb-slideshow__left-slide.is-leaving {
-    position: absolute;
-    inset: 0;
     opacity: 1;
     z-index: 2;
     pointer-events: none;
@@ -334,23 +337,23 @@
   }
 
   @keyframes bbSlideOutUp-{{ section.id }} {
-    from { transform: translateY(0); }
-    to { transform: translateY(-100%); }
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d(0, -100%, 0); }
   }
 
   @keyframes bbSlideInFromBottom-{{ section.id }} {
-    from { transform: translateY(100%); }
-    to { transform: translateY(0); }
+    from { transform: translate3d(0, 100%, 0); }
+    to { transform: translate3d(0, 0, 0); }
   }
 
   @keyframes bbSlideOutDown-{{ section.id }} {
-    from { transform: translateY(0); }
-    to { transform: translateY(100%); }
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d(0, 100%, 0); }
   }
 
   @keyframes bbSlideInFromTop-{{ section.id }} {
-    from { transform: translateY(-100%); }
-    to { transform: translateY(0); }
+    from { transform: translate3d(0, -100%, 0); }
+    to { transform: translate3d(0, 0, 0); }
   }
 
   #shopify-section-{{ section.id }} .bb-slideshow__left-chip {
@@ -454,12 +457,7 @@
       display: flex;
     justify-content: space-between;
     gap: 14px;
-    }
-
-
-
-  #shopify-section-{{ section.id }} .bb-slideshow__stage-nav {
-    position: absolute;
+       position: absolute;
     left: 20px;
     right: 20px;
     top: calc(40% - 10px);
@@ -467,7 +465,8 @@
     margin-top: 0;
     z-index: 4;
     pointer-events: none;
-  }
+    }
+
 
   #shopify-section-{{ section.id }} .bb-slideshow__stage-nav-button {
     pointer-events: auto;
@@ -624,6 +623,11 @@
     #shopify-section-{{ section.id }} .bb-slideshow__left-stage {
       height: auto;
       min-height: 0;
+    }
+
+    #shopify-section-{{ section.id }} .bb-slideshow__left-slide.is-active {
+      position: relative;
+      inset: auto;
     }
 
     #shopify-section-{{ section.id }} .bb-slideshow__right {
