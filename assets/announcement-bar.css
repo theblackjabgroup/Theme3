@@ -19,8 +19,8 @@
 
 
   /* ── Desktop: indent to clear the fixed vertical sidebar ── */
-  margin-left: var(--header-width, 200px);
-  width: calc(100% - var(--header-width, 200px));
+  margin-left: var(--header-width, 230px);
+  width: calc(100% - var(--header-width, 230px));
 }
 
 .announcement-bar.is-sticky {
@@ -150,8 +150,6 @@
   .announcement-bar {
     margin-left: 0;
     width: 100%;
-      padding-top: 85px;
-
   }
 
   /* On mobile the bar should NOT be fixed — let it scroll with the page */

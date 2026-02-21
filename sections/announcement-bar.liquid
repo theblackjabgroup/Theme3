@@ -61,19 +61,28 @@
     "
   >
     <div class="announcement-bar__inner">
-      <div class="ab-marquee" aria-hidden="true">
+      <div class="ab-marquee" role="marquee">
         {%- comment -%}
           Render blocks twice — the CSS @keyframes moves -50% so the second
           copy fills the gap, creating a seamless infinite loop.
+          Only the duplicate (pass 2) is aria-hidden to avoid duplicate content for screen readers.
         {%- endcomment -%}
         {%- for pass in (1..2) -%}
-          <div class="ab-marquee__set">
+          <div
+            class="ab-marquee__set"
+            {% if pass == 2 %}
+              aria-hidden="true"
+            {% endif %}
+          >
             {%- for block in section.blocks -%}
               {%- case block.type -%}
                 {%- when 'announcement' -%}
                   {%- assign block_pill_bg = block.settings.pill_bg_color -%}
                   <span
                     class="ab-pill"
+                    {% if pass == 1 %}
+                      {{- block.shopify_attributes -}}
+                    {% endif %}
                     {% if block.settings.link != blank %}
                       role="link"
                       data-href="{{ block.settings.link }}"
@@ -100,7 +109,12 @@
                   </span>
 
                 {%- when 'countdown' -%}
-                  <span class="ab-pill">
+                  <span
+                    class="ab-pill"
+                    {% if pass == 1 %}
+                      {{- block.shopify_attributes -}}
+                    {% endif %}
+                  >
                     {%- if block.settings.label != blank -%}
                       {{ block.settings.label | escape }}&nbsp;
                     {%- endif -%}
