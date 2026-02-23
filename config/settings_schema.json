@@ -1795,17 +1795,246 @@
   },
 
   {
-    "name": "Swatches",
+    "name": "Selectors",
     "settings": [
       {
+        "type": "header",
+        "content": "Typography"
+      },
+      {
+        "type": "range",
+        "id": "selector_font_size",
+        "min": 11,
+        "max": 22,
+        "step": 1,
+        "unit": "px",
+        "label": "Font size",
+        "default": 13
+      },
+      {
         "type": "select",
-        "id": "swatch_shape_token",
-        "label": "Swatch shape",
+        "id": "selector_font_weight",
+        "label": "Font weight",
         "options": [
-          { "value": "radius_small", "label": "Square (small radius)" },
-          { "value": "radius_pill", "label": "Pill / circle" }
+          { "value": "500", "label": "Medium" },
+          { "value": "600", "label": "Semi Bold" },
+          { "value": "700", "label": "Bold" },
+          { "value": "800", "label": "Extra Bold" }
         ],
-        "default": "radius_small"
+        "default": "700"
+      },
+      {
+        "type": "range",
+        "id": "selector_letter_spacing",
+        "min": -0.5,
+        "max": 1,
+        "step": 0.1,
+        "unit": "px",
+        "label": "Letter spacing",
+        "default": 0
+      },
+      {
+        "type": "select",
+        "id": "selector_text_transform",
+        "label": "Text transform",
+        "options": [
+          { "value": "uppercase", "label": "Uppercase" },
+          { "value": "capitalize", "label": "Capitalize" },
+          { "value": "none", "label": "None" }
+        ],
+        "default": "uppercase"
+      },
+      {
+        "type": "header",
+        "content": "Spacing and sizing"
+      },
+      {
+        "type": "range",
+        "id": "selector_padding_top",
+        "min": 0,
+        "max": 24,
+        "step": 2,
+        "unit": "px",
+        "label": "Button padding top",
+        "default": 8
+      },
+      {
+        "type": "range",
+        "id": "selector_padding_bottom",
+        "min": 0,
+        "max": 24,
+        "step": 2,
+        "unit": "px",
+        "label": "Button padding bottom",
+        "default": 8
+      },
+      {
+        "type": "range",
+        "id": "selector_padding_left",
+        "min": 0,
+        "max": 40,
+        "step": 2,
+        "unit": "px",
+        "label": "Button padding left",
+        "default": 16
+      },
+      {
+        "type": "range",
+        "id": "selector_padding_right",
+        "min": 0,
+        "max": 40,
+        "step": 2,
+        "unit": "px",
+        "label": "Button padding right",
+        "default": 16
+      },
+      {
+        "type": "range",
+        "id": "selector_gap",
+        "min": 0,
+        "max": 24,
+        "step": 1,
+        "unit": "px",
+        "label": "Gap between selectors",
+        "default": 8
+      },
+      {
+        "type": "range",
+        "id": "selector_border_radius",
+        "min": 0,
+        "max": 24,
+        "step": 2,
+        "unit": "px",
+        "label": "Border radius",
+        "default": 8
+      },
+      {
+        "type": "range",
+        "id": "selector_border_width",
+        "min": 0,
+        "max": 3,
+        "step": 1,
+        "unit": "px",
+        "label": "Border width",
+        "default": 1
+      },
+      {
+        "type": "range",
+        "id": "selector_icon_size",
+        "min": 12,
+        "max": 28,
+        "step": 2,
+        "unit": "px",
+        "label": "Flag/icon size",
+        "default": 16
+      },
+      {
+        "type": "range",
+        "id": "selector_flag_gap",
+        "min": 0,
+        "max": 16,
+        "step": 1,
+        "unit": "px",
+        "label": "Gap after flag",
+        "default": 6
+      },
+      {
+        "type": "range",
+        "id": "selector_caret_gap",
+        "min": 0,
+        "max": 12,
+        "step": 1,
+        "unit": "px",
+        "label": "Gap before caret",
+        "default": 4
+      },
+      {
+        "type": "range",
+        "id": "selector_caret_width",
+        "min": 6,
+        "max": 16,
+        "step": 1,
+        "unit": "px",
+        "label": "Caret width",
+        "default": 8
+      },
+      {
+        "type": "range",
+        "id": "selector_caret_height",
+        "min": 4,
+        "max": 12,
+        "step": 1,
+        "unit": "px",
+        "label": "Caret height",
+        "default": 5
+      },
+      {
+        "type": "header",
+        "content": "Colors and effect"
+      },
+      {
+        "type": "color",
+        "id": "selector_bg_color",
+        "label": "Button background",
+        "default": "#f0ede8"
+      },
+      {
+        "type": "color",
+        "id": "selector_text_color",
+        "label": "Button text",
+        "default": "#2d3f29"
+      },
+      {
+        "type": "color",
+        "id": "selector_border_color",
+        "label": "Button border",
+        "default": "#121212"
+      },
+      {
+        "type": "color",
+        "id": "selector_shadow_color",
+        "label": "3D shadow",
+        "default": "#121212"
+      },
+      {
+        "type": "range",
+        "id": "selector_shadow_offset",
+        "min": 0,
+        "max": 12,
+        "step": 1,
+        "unit": "px",
+        "label": "Shadow offset",
+        "default": 6
+      },
+      {
+        "type": "range",
+        "id": "selector_hover_lift",
+        "min": 0,
+        "max": 6,
+        "step": 1,
+        "unit": "px",
+        "label": "Hover lift",
+        "default": 2
+      },
+      {
+        "type": "range",
+        "id": "selector_transition_speed",
+        "min": 0.1,
+        "max": 0.6,
+        "step": 0.1,
+        "unit": "s",
+        "label": "Transition speed",
+        "default": 0.2
+      },
+      {
+        "type": "range",
+        "id": "selector_disclosure_offset",
+        "min": 0,
+        "max": 24,
+        "step": 1,
+        "unit": "px",
+        "label": "Dropdown offset",
+        "default": 8
       }
     ]
   },

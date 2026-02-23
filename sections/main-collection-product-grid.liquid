@@ -186,7 +186,19 @@
         title_font_size_mobile: block.settings.title_font_size_mobile,
         description_font_size_mobile: block.settings.header_description_font_size_mobile,
         background_color: block.settings.header_background_color,
-        border_radius: block.settings.header_border_radius
+        border_radius: block.settings.header_border_radius,
+        show_image: block.settings.show_header_image,
+        header_image: block.settings.header_image,
+        image_alignment: block.settings.header_image_alignment,
+        image_width_percent: block.settings.header_image_width_percent,
+        image_width_percent_mobile: block.settings.header_image_width_percent_mobile,
+        image_max_width: block.settings.header_image_max_width,
+        image_height: block.settings.header_image_height,
+        image_height_mobile: block.settings.header_image_height_mobile,
+        image_object_fit: block.settings.header_image_object_fit,
+        image_border_radius: block.settings.header_image_border_radius,
+        image_margin_top: block.settings.header_image_margin_top,
+        image_margin_bottom: block.settings.header_image_margin_bottom
       %}
     {%- endif -%}
   {%- endfor -%}
@@ -1349,6 +1361,122 @@
           "max": 20,
           "step": 1,
           "default": 14
+        },
+        {
+          "type": "header",
+          "content": "Header Image"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_header_image",
+          "label": "Show header image",
+          "default": true
+        },
+        {
+          "type": "image_picker",
+          "id": "header_image",
+          "label": "Header image"
+        },
+        {
+          "type": "select",
+          "id": "header_image_alignment",
+          "label": "Image alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "range",
+          "id": "header_image_width_percent",
+          "label": "Image width (%)",
+          "min": 20,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 100
+        },
+        {
+          "type": "range",
+          "id": "header_image_width_percent_mobile",
+          "label": "Image width mobile (%)",
+          "min": 20,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 100
+        },
+        {
+          "type": "range",
+          "id": "header_image_max_width",
+          "label": "Image max width (px)",
+          "min": 200,
+          "max": 1800,
+          "step": 20,
+          "unit": "px",
+          "default": 1200
+        },
+        {
+          "type": "range",
+          "id": "header_image_height",
+          "label": "Image height (px)",
+          "min": 120,
+          "max": 700,
+          "step": 10,
+          "unit": "px",
+          "default": 320
+        },
+        {
+          "type": "range",
+          "id": "header_image_height_mobile",
+          "label": "Image height mobile (px)",
+          "min": 100,
+          "max": 500,
+          "step": 10,
+          "unit": "px",
+          "default": 220
+        },
+        {
+          "type": "select",
+          "id": "header_image_object_fit",
+          "label": "Image fit",
+          "options": [
+            { "value": "cover", "label": "Cover" },
+            { "value": "contain", "label": "Contain" }
+          ],
+          "default": "cover"
+        },
+        {
+          "type": "range",
+          "id": "header_image_border_radius",
+          "label": "Image border radius (px)",
+          "min": 0,
+          "max": 80,
+          "step": 2,
+          "unit": "px",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "header_image_margin_top",
+          "label": "Image margin top (px)",
+          "min": 0,
+          "max": 80,
+          "step": 2,
+          "unit": "px",
+          "default": 20
+        },
+        {
+          "type": "range",
+          "id": "header_image_margin_bottom",
+          "label": "Image margin bottom (px)",
+          "min": 0,
+          "max": 80,
+          "step": 2,
+          "unit": "px",
+          "default": 0
         }
       ]
     }

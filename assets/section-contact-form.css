@@ -14,7 +14,12 @@
   .contact-page__grid {
     display: grid;
     grid-template-columns: 1fr;
+
+
   }
+      .contact-page {
+  margin-top: 70px;
+}
 
   .contact-page__left {
     order: 2;
@@ -114,7 +119,7 @@
   }
 
   .contact-page__left-card {
-    padding: 12px;
+    padding: var(--contact-card-padding-mobile, 16px);
   }
 
   .contact-page__form-card {
@@ -243,7 +248,7 @@
   justify-content: center;
   background: var(--contact-accent, #3B5237);
   color: #fff;
-  border-radius: 14px;
+  border-radius: var(--contact-detail-icon-radius, 14px);
 }
 
 .contact-page__detail-icon svg {
@@ -405,7 +410,7 @@
 .contact-page__input:focus {
   border-color: var(--contact-accent, #4C6F4B);
   outline: none;
-  box-shadow: 0 0 0 3px rgba(76, 111, 75, 1);
+  box-shadow: none;
 }
 
 .contact-page__input-3d:focus-within .contact-page__input-shadow {

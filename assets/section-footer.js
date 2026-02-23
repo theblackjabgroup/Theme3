@@ -10,82 +10,90 @@ if (document.readyState === 'loading') {
 }
 
 /**
- * Footer newsletter form (id: FooterNewsletter): AJAX submit, show success/error without reload.
+ * Footer newsletter forms: AJAX submit with graceful fallback to native submit.
  */
 function initFooterNewsletter() {
-  const form = document.getElementById('FooterNewsletter');
-  if (!form) return;
+  const forms = document.querySelectorAll('.footer-newsletter-form');
+  if (!forms.length) return;
 
-  const input = form.querySelector('#FooterNewsletterInput') || form.querySelector('.newsletter-input');
-  if (!input) return;
+  forms.forEach((form) => {
+    if (form.dataset.newsletterBound === 'true') return;
+    form.dataset.newsletterBound = 'true';
 
-  let isSubmitting = false;
+    const input = form.querySelector('.newsletter-input');
+    if (!input) return;
 
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    if (isSubmitting) return;
+    let isSubmitting = false;
 
-    isSubmitting = true;
-    const submitBtn = form.querySelector('[type="submit"]');
-    if (submitBtn) submitBtn.disabled = true;
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (isSubmitting) return;
 
-    const existingMessages = form.querySelectorAll('.newsletter-message');
-    existingMessages.forEach((el) => el.remove());
+      isSubmitting = true;
+      const submitBtn = form.querySelector('[type="submit"]');
+      if (submitBtn) submitBtn.disabled = true;
 
-    const formData = new FormData(form);
-    const url = form.getAttribute('action');
+      const existingMessages = form.querySelectorAll('.newsletter-message');
+      existingMessages.forEach((el) => el.remove());
 
-    fetch(url, {
-      method: 'POST',
-      body: formData,
-    })
-      .then((response) => {
-        if (response.url && response.url.includes('/challenge')) {
-          window.location.href = response.url;
-          return;
-        }
-        return response.text();
+      const formData = new FormData(form);
+      const url = form.getAttribute('action') || window.location.pathname;
+
+      fetch(url, {
+        method: 'POST',
+        body: formData,
+        credentials: 'same-origin',
       })
-      .then((html) => {
-        if (!html) return;
+        .then((response) => {
+          if (response.url && response.url.includes('/challenge')) {
+            window.location.href = response.url;
+            return null;
+          }
+          if (!response.ok) return null;
+          return response.text();
+        })
+        .then((html) => {
+          if (!html) {
+            HTMLFormElement.prototype.submit.call(form);
+            return;
+          }
 
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
 
-        const successMessage = doc.querySelector('.form__message--success, .note--success, [data-success]');
-        const errorMessage =
-          doc.querySelector('.form__message--error, .note--error, .errors, [data-error]') ||
-          doc.querySelector('.form-status.is-error');
+          const successMessage = doc.querySelector('.form__message--success, .note--success, [data-success]');
+          const errorMessage =
+            doc.querySelector('.form__message--error, .note--error, .errors, [data-error]') ||
+            doc.querySelector('.form-status.is-error');
 
-        if (successMessage) {
-          input.value = '';
-          const msg = document.createElement('div');
-          msg.className = 'newsletter-message newsletter-message--success';
-          msg.textContent = successMessage.textContent?.trim() || 'Thanks for subscribing.';
-          form.appendChild(msg);
-        } else if (errorMessage) {
-          const msg = document.createElement('div');
-          msg.className = 'newsletter-message newsletter-message--error';
-          msg.textContent = errorMessage.textContent?.trim() || 'Something went wrong. Please try again.';
-          form.appendChild(msg);
-        } else {
-          const msg = document.createElement('div');
-          msg.className = 'newsletter-message newsletter-message--error';
-          msg.textContent = 'Unable to subscribe at this moment. Please try again later.';
-          form.appendChild(msg);
-        }
-      })
-      .catch((error) => {
-        console.error('Newsletter error:', error);
-        const msg = document.createElement('div');
-        msg.className = 'newsletter-message newsletter-message--error';
-        msg.textContent = 'Something went wrong. Please check your connection and try again.';
-        form.appendChild(msg);
-      })
-      .finally(() => {
-        if (submitBtn) submitBtn.disabled = false;
-        isSubmitting = false;
-      });
+          if (successMessage) {
+            input.value = '';
+            const msg = document.createElement('div');
+            msg.className = 'newsletter-message newsletter-message--success';
+            msg.textContent = successMessage.textContent?.trim() || 'Thanks for subscribing.';
+            form.appendChild(msg);
+            return;
+          }
+
+          if (errorMessage) {
+            const msg = document.createElement('div');
+            msg.className = 'newsletter-message newsletter-message--error';
+            msg.textContent = errorMessage.textContent?.trim() || 'Something went wrong. Please try again.';
+            form.appendChild(msg);
+            return;
+          }
+
+          HTMLFormElement.prototype.submit.call(form);
+        })
+        .catch((error) => {
+          console.error('Newsletter error:', error);
+          HTMLFormElement.prototype.submit.call(form);
+        })
+        .finally(() => {
+          if (submitBtn) submitBtn.disabled = false;
+          isSubmitting = false;
+        });
+    });
   });
 }
 

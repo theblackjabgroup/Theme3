@@ -528,12 +528,21 @@
         {%- comment -%} Featured Columns Section {%- endcomment -%}
         {%- liquid
           assign mega_menu_nav = null
+          assign mega_menu_link_gap = 12
+          assign mega_menu_mobile_link_gap = 10
+          if matching_block != null
+            assign mega_menu_link_gap = matching_block.settings.link_spacing | default: 12
+            assign mega_menu_mobile_link_gap = matching_block.settings.mobile_link_spacing | default: 10
+          endif
           if matching_block.settings.menu != blank
             assign mega_menu_nav = linklists[matching_block.settings.menu]
           endif
         -%}
         {%- if mega_menu_nav != blank and mega_menu_nav.links != blank -%}
-          <div class="mega-menu-featured-columns">
+          <div
+            class="mega-menu-featured-columns{% if mega_menu_nav.links.size > 3 %} mega-menu-featured-columns--multirow{% endif %}"
+            style="--mega-menu-link-gap: {{ mega_menu_link_gap }}px; --mobile-mega-menu-link-gap: {{ mega_menu_mobile_link_gap }}px;"
+          >
             {%- for nav_link in mega_menu_nav.links -%}
               <div class="mega-menu-column">
                 <h3 class="mega-menu-featured-header">
@@ -542,7 +551,7 @@
                 </h3>
                 {%- if nav_link.links != blank -%}
                   <ul class="mega-menu-column-list">
-                    {%- for nav_childlink in nav_link.links -%}
+                    {%- for nav_childlink in nav_link.links limit: 6 -%}
                       <li class="mega-menu-column-item">
                         <a href="{{ nav_childlink.url }}" class="mega-menu-column-link">
                           {{ nav_childlink.title }}
@@ -556,7 +565,10 @@
           </div>
         {%- elsif link.links != blank -%}
           {%- comment -%} Fallback to standard child links if no custom menu is selected {%- endcomment -%}
-          <div class="mega-menu-featured-columns">
+          <div
+            class="mega-menu-featured-columns{% if link.links.size > 3 %} mega-menu-featured-columns--multirow{% endif %}"
+            style="--mega-menu-link-gap: {{ mega_menu_link_gap }}px; --mobile-mega-menu-link-gap: {{ mega_menu_mobile_link_gap }}px;"
+          >
             {%- for childlink in link.links -%}
               <div class="mega-menu-column">
                 <h3 class="mega-menu-featured-header">
@@ -565,7 +577,7 @@
                 </h3>
                 {%- if childlink.links != blank -%}
                   <ul class="mega-menu-column-list">
-                    {%- for grandlink in childlink.links -%}
+                    {%- for grandlink in childlink.links limit: 6 -%}
                       <li class="mega-menu-column-item">
                         <a href="{{ grandlink.url }}" class="mega-menu-column-link">
                           {{ grandlink.title }}
@@ -581,7 +593,10 @@
 
         {%- comment -%} Image Cards Section {%- endcomment -%}
         {%- if matching_block != null -%}
-          <div class="mega-menu-images">
+          <div
+            class="mega-menu-images"
+            style="--mega-menu-image-gap: {{ matching_block.settings.image_spacing | default: 10 }}px; --mobile-mega-menu-image-gap: {{ matching_block.settings.mobile_image_spacing | default: 15 }}px;"
+          >
             <div class="mega-menu-image-grid">
               {%- for i in (1..2) -%}
                 {%- assign img_key = 'image_' | append: i -%}
@@ -616,12 +631,20 @@
 {%- if search_popup_block != blank -%}
   {%- assign search_popup_title = search_popup_block.settings.main_title | default: 'Search' -%}
   {%- assign search_popup_placeholder = search_popup_block.settings.search_placeholder | default: '' -%}
+  {%- assign search_popup_link_gap = search_popup_block.settings.link_spacing | default: 12 -%}
+  {%- assign search_popup_mobile_link_gap = search_popup_block.settings.mobile_link_spacing | default: 10 -%}
+  {%- assign search_popup_image_gap = search_popup_block.settings.image_spacing | default: 10 -%}
+  {%- assign search_popup_mobile_image_gap = search_popup_block.settings.mobile_image_spacing | default: 15 -%}
   {%- if search_popup_placeholder == '' -%}
     {%- assign search_popup_placeholder = 'general.search.search' | t -%}
   {%- endif -%}
 {%- else -%}
   {%- assign search_popup_title = 'Search' -%}
   {%- assign search_popup_placeholder = 'general.search.search' | t -%}
+  {%- assign search_popup_link_gap = 12 -%}
+  {%- assign search_popup_mobile_link_gap = 10 -%}
+  {%- assign search_popup_image_gap = 10 -%}
+  {%- assign search_popup_mobile_image_gap = 15 -%}
 {%- endif -%}
 <div
   id="HeaderSearchPopup"
@@ -735,7 +758,10 @@
         {%- if search_popup_block.settings.menu != blank -%}
           {%- assign search_popup_menu = linklists[search_popup_block.settings.menu] -%}
           {%- if search_popup_menu != blank and search_popup_menu.links != blank -%}
-            <div class="mega-menu-featured-columns">
+            <div
+              class="mega-menu-featured-columns{% if search_popup_menu.links.size > 3 %} mega-menu-featured-columns--multirow{% endif %}"
+              style="--mega-menu-link-gap: {{ search_popup_link_gap }}px; --mobile-mega-menu-link-gap: {{ search_popup_mobile_link_gap }}px;"
+            >
               {%- for link in search_popup_menu.links -%}
                 <div class="mega-menu-column">
                   <h3 class="mega-menu-featured-header">
@@ -744,7 +770,7 @@
                   </h3>
                   {%- if link.links != blank -%}
                     <ul class="mega-menu-column-list">
-                      {%- for childlink in link.links -%}
+                      {%- for childlink in link.links limit: 6 -%}
                         <li class="mega-menu-column-item">
                           <a href="{{ childlink.url }}" class="mega-menu-column-link">
                             {{ childlink.title }}
@@ -764,7 +790,10 @@
           assign img_2 = search_popup_block.settings.image_2
         -%}
         {%- if img_1 != blank or img_2 != blank -%}
-          <div class="mega-menu-images">
+          <div
+            class="mega-menu-images"
+            style="--mega-menu-image-gap: {{ search_popup_image_gap }}px; --mobile-mega-menu-image-gap: {{ search_popup_mobile_image_gap }}px;"
+          >
             <div class="mega-menu-image-grid">
               {%- for i in (1..2) -%}
                 {%- liquid
@@ -798,7 +827,10 @@
         {%- if search_popup_block.settings.menu != blank -%}
           {%- assign search_popup_menu = linklists[search_popup_block.settings.menu] -%}
           {%- if search_popup_menu != blank and search_popup_menu.links != blank -%}
-            <div class="mobile-mega-menu-columns">
+            <div
+              class="mobile-mega-menu-columns"
+              style="--mobile-mega-menu-link-gap: {{ search_popup_mobile_link_gap }}px;"
+            >
               {%- for m_link in search_popup_menu.links -%}
                 <div class="mobile-mega-menu-column">
                   <h4 class="mobile-mega-menu-column-title">
@@ -807,7 +839,7 @@
                   </h4>
                   {%- if m_link.links != blank -%}
                     <ul class="mobile-mega-menu-column-list">
-                      {%- for m_childlink in m_link.links -%}
+                      {%- for m_childlink in m_link.links limit: 6 -%}
                         <li class="mobile-mega-menu-column-item">
                           <a href="{{ m_childlink.url }}" class="mobile-mega-menu-column-link">
                             {{ m_childlink.title }}
@@ -824,7 +856,10 @@
 
         {%- comment -%} Mobile Image Cards for Search Popup {%- endcomment -%}
         {%- if search_popup_block.settings.image_1 != blank or search_popup_block.settings.image_2 != blank -%}
-          <div class="mobile-mega-menu-images">
+          <div
+            class="mobile-mega-menu-images"
+            style="--mobile-mega-menu-image-gap: {{ search_popup_mobile_image_gap }}px;"
+          >
             {%- for i in (1..2) -%}
               {%- liquid
                 assign img_key = 'image_' | append: i
@@ -989,7 +1024,10 @@
                           endif
                         -%}
                         {%- if mega_menu_nav != blank and mega_menu_nav.links != blank -%}
-                          <div class="mobile-mega-menu-columns">
+                          <div
+                            class="mobile-mega-menu-columns"
+                            style="--mobile-mega-menu-link-gap: {{ matching_block.settings.mobile_link_spacing | default: 10 }}px;"
+                          >
                             {%- for m_link in mega_menu_nav.links -%}
                               <div class="mobile-mega-menu-column">
                                 <h4 class="mobile-mega-menu-column-title">
@@ -998,7 +1036,7 @@
                                 </h4>
                                 {%- if m_link.links != blank -%}
                                   <ul class="mobile-mega-menu-column-list">
-                                    {%- for m_childlink in m_link.links -%}
+                                    {%- for m_childlink in m_link.links limit: 6 -%}
                                       <li class="mobile-mega-menu-column-item">
                                         <a href="{{ m_childlink.url }}" class="mobile-mega-menu-column-link">
                                           {{ m_childlink.title }}
@@ -1012,7 +1050,10 @@
                           </div>
                         {%- elsif link.links != blank -%}
                           {%- comment -%} Fallback to standard child links for mobile {%- endcomment -%}
-                          <div class="mobile-mega-menu-columns">
+                          <div
+                            class="mobile-mega-menu-columns"
+                            style="--mobile-mega-menu-link-gap: {{ matching_block.settings.mobile_link_spacing | default: 10 }}px;"
+                          >
                             {%- for m_child in link.links -%}
                               <div class="mobile-mega-menu-column">
                                 <h4 class="mobile-mega-menu-column-title">
@@ -1021,7 +1062,7 @@
                                 </h4>
                                 {%- if m_child.links != blank -%}
                                   <ul class="mobile-mega-menu-column-list">
-                                    {%- for m_grand in m_child.links -%}
+                                    {%- for m_grand in m_child.links limit: 6 -%}
                                       <li class="mobile-mega-menu-column-item">
                                         <a href="{{ m_grand.url }}" class="mobile-mega-menu-column-link">
                                           {{ m_grand.title }}
@@ -1037,7 +1078,10 @@
 
                         {%- comment -%} Mobile Image Cards {%- endcomment -%}
                         {%- if matching_block.settings.image_1 != blank or matching_block.settings.image_2 != blank -%}
-                          <div class="mobile-mega-menu-images">
+                          <div
+                            class="mobile-mega-menu-images"
+                            style="--mobile-mega-menu-image-gap: {{ matching_block.settings.mobile_image_spacing | default: 15 }}px;"
+                          >
                             {%- for i in (1..2) -%}
                               {%- assign img_key = 'image_' | append: i -%}
                               {%- assign link_key = 'link_' | append: i -%}
@@ -1067,7 +1111,7 @@
                     </li>
                   {%- else -%}
                     {%- comment -%} Standard Submenu Fallback {%- endcomment -%}
-                    {%- for childlink in link.links -%}
+                    {%- for childlink in link.links limit: 6 -%}
                       <li class="mobile-submenu-item">
                         <a
                           href="{{ childlink.url }}"
@@ -2124,10 +2168,54 @@
           "label": "Menu",
           "info": "Top-level links from this menu are shown as column headers, and their children are shown as list items below."
         },
+        {
+          "type": "header",
+          "content": "Link Spacing"
+        },
+        {
+          "type": "range",
+          "id": "link_spacing",
+          "min": 0,
+          "max": 32,
+          "step": 1,
+          "unit": "px",
+          "label": "Desktop link spacing",
+          "default": 4
+        },
+        {
+          "type": "range",
+          "id": "mobile_link_spacing",
+          "min": 0,
+          "max": 28,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile link spacing",
+          "default": 10
+        },
 
         {
           "type": "header",
           "content": "Image Cards"
+        },
+        {
+          "type": "range",
+          "id": "image_spacing",
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "unit": "px",
+          "label": "Desktop image spacing",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "mobile_image_spacing",
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile image spacing",
+          "default": 15
         },
         {
           "type": "header",
@@ -2326,7 +2414,51 @@
         },
         {
           "type": "header",
+          "content": "Link Spacing"
+        },
+        {
+          "type": "range",
+          "id": "link_spacing",
+          "min": 0,
+          "max": 32,
+          "step": 1,
+          "unit": "px",
+          "label": "Desktop link spacing",
+          "default": 12
+        },
+        {
+          "type": "range",
+          "id": "mobile_link_spacing",
+          "min": 0,
+          "max": 28,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile link spacing",
+          "default": 10
+        },
+        {
+          "type": "header",
           "content": "Image Cards"
+        },
+        {
+          "type": "range",
+          "id": "image_spacing",
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "unit": "px",
+          "label": "Desktop image spacing",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "mobile_image_spacing",
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile image spacing",
+          "default": 15
         },
         {
           "type": "header",
