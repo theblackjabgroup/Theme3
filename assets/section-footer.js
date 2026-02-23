@@ -47,12 +47,15 @@ function initFooterNewsletter() {
         .then((response) => {
           if (response.url && response.url.includes('/challenge')) {
             window.location.href = response.url;
-            return null;
+            return '__CHALLENGE_REDIRECT__';
           }
           if (!response.ok) return null;
           return response.text();
         })
         .then((html) => {
+          if (html === '__CHALLENGE_REDIRECT__') {
+            return;
+          }
           if (!html) {
             HTMLFormElement.prototype.submit.call(form);
             return;
