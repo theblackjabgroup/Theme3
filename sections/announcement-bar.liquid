@@ -32,7 +32,7 @@
     assign font_size = section.settings.font_size | default: 14
     assign font_weight = section.settings.font_weight | default: '700'
     assign text_tf = section.settings.text_transform | default: 'uppercase'
-    assign pause_hover = section.settings.pause_on_hover | default: true
+    assign pause_hover = section.settings.pause_on_hover | default: true, allow_false: true
     assign sep_img = section.settings.separator_image
   -%}
 
