@@ -110,6 +110,13 @@
 <div
   class="bento-grid-container color-{{ scheme.id }}"
   id="bento-grid-{{ section.id }}"
+  data-page-load-animate
+  data-page-load-selector=".bento-grid > .bento-block-wrapper"
+  data-page-load-duration="2000"
+  data-page-load-stagger="0"
+  data-page-load-scale="0.82"
+  data-page-load-origin="center bottom"
+  data-page-load-distance="16"
   style="{%- unless section.settings.section_background_color != blank and section.settings.section_background_color != 'rgba(0,0,0,0)' -%}background-color: {{ scheme.settings.background }} !important; {%- endunless -%}color: {{ scheme.settings.text }} !important;"
 >
   <div class="bento-grid">
@@ -795,84 +802,6 @@
                   </div>
                 </div>
               {%- endif -%}
-            </div>
-
-          {%- when 'scrolling_text_card' -%}
-            {%- assign font_size = block.settings.font_size | default: 24 -%}
-            {%- assign font_weight = block.settings.font_weight | default: 700 -%}
-            {%- assign mobile_font_size = block.settings.mobile_font_size | default: font_size -%}
-            {%- assign mobile_font_weight = block.settings.mobile_font_weight | default: font_weight -%}
-            {%- assign has_text_2 = false -%}
-            {%- if block.settings.text_2 != blank -%}
-              {%- assign has_text_2 = true -%}
-            {%- endif -%}
-            {%- assign text_gap = block.settings.text_gap | default: 50 -%}
-            {%- assign marquee_direction = 'normal' -%}
-            {%- if block.settings.direction == 'right' -%}
-              {%- assign marquee_direction = 'reverse' -%}
-            {%- endif -%}
-            {%- style -%}
-              {{ block.settings.text_font | font_face: font_display: 'swap' }}
-              {{ block.settings.text_2_font | font_face: font_display: 'swap' }}
-              #shopify-section-{{ section.id }} .scrolling-text-card-{{ block.id }} .marquee-item--text-1 {
-                font-family: {{ block.settings.text_font.family }}, {{ block.settings.text_font.fallback_families }};
-                font-weight: {{ block.settings.text_font.weight }};
-                font-style: {{ block.settings.text_font.style }};
-              }
-              #shopify-section-{{ section.id }} .scrolling-text-card-{{ block.id }} .marquee-item--text-2 {
-                font-family: {{ block.settings.text_2_font.family }}, {{ block.settings.text_2_font.fallback_families }};
-                font-weight: {{ block.settings.text_2_font.weight }};
-                font-style: {{ block.settings.text_2_font.style }};
-              }
-            {%- endstyle -%}
-            <div
-              class="bento-card scrolling-text-card scrolling-text-card-{{ block.id }}"
-              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %}{% if block.settings.card_border_color != blank %} border-color: {{ block.settings.card_border_color }} !important;{% endif %}{% if block.settings.text_color != blank %} --marquee-text-color: {{ block.settings.text_color }};{% endif %} --desktop-font-size: {{ font_size }}px; --desktop-font-weight: {{ font_weight }}; --mobile-font-size: {{ mobile_font_size }}px; --mobile-font-weight: {{ mobile_font_weight }}; --animation-duration: {{ block.settings.animation_duration | default: 40 }}s; --marquee-direction: {{ marquee_direction }}; --item-gap: {{ text_gap }}px;"
-            >
-              <div class="marquee-track">
-                {%- for i in (1..20) -%}
-                  <div
-                    class="marquee-item marquee-item--text-1"
-                    {% if i > 1 %}
-                      aria-hidden="true"
-                    {% endif %}
-                  >
-                    {%- if block.settings.link != blank -%}
-                      <a href="{{ block.settings.link }}" class="marquee-link">
-                    {%- endif -%}
-                    {{ block.settings.text }}
-                    {%- if block.settings.link != blank -%}</a>{%- endif -%}
-                  </div>
-                  <img
-                    src="{% if block.settings.separator_image != blank %}{{ block.settings.separator_image | image_url: width: 40 }}{% else %}https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-collection-2_large.png?v=1530129132{% endif %}"
-                    alt=""
-                    class="marquee-separator"
-                    aria-hidden="true"
-                    width="40"
-                    height="40"
-                  >
-                  {%- if has_text_2 -%}
-                    <div
-                      class="marquee-item marquee-item--text-2"
-                      aria-hidden="true"
-                    >
-                      {%- if block.settings.link != blank -%}
-                        <a href="{{ block.settings.link }}" class="marquee-link">
-                      {%- endif -%}
-                      {{ block.settings.text_2 }}
-                      {%- if block.settings.link != blank -%}</a>{%- endif -%}
-                    </div>
-                    <img
-                      src="{% if block.settings.separator_image != blank %}{{ block.settings.separator_image | image_url: width: 40 }}{% else %}https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-collection-2_large.png?v=1530129132{% endif %}"
-                      alt=""
-                      class="marquee-separator"
-                      aria-hidden="true"
-                      width="40"
-                      height="40"
-                    >
-                  {%- endif -%}
-                {%- endfor -%}
-              </div>
             </div>
 
           {%- when 'toggle_card' -%}
@@ -3157,215 +3086,6 @@
       ]
     },
     {
-      "type": "scrolling_text_card",
-      "name": "Scrolling Text",
-      "settings": [
-        {
-          "type": "header",
-          "content": "Text 1"
-        },
-        {
-          "type": "richtext",
-          "id": "text",
-          "label": "Text 1",
-          "default": "<p>Scrolling Text</p>"
-        },
-        {
-          "type": "font_picker",
-          "id": "text_font",
-          "label": "Text 1 Font",
-          "default": "assistant_n4"
-        },
-        {
-          "type": "header",
-          "content": "Text 2 (Optional)"
-        },
-        {
-          "type": "richtext",
-          "id": "text_2",
-          "label": "Text 2",
-          "info": "Leave blank to repeat only Text 1. When set, Text 1 and Text 2 alternate in the marquee."
-        },
-        {
-          "type": "font_picker",
-          "id": "text_2_font",
-          "label": "Text 2 Font",
-          "default": "assistant_n4"
-        },
-        {
-          "type": "header",
-          "content": "Link"
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "Link",
-          "info": "Makes the marquee content clickable (opens in same window)"
-        },
-        {
-          "type": "header",
-          "content": "Layout & spacing"
-        },
-        {
-          "type": "image_picker",
-          "id": "separator_image",
-          "label": "Separator Image",
-          "info": "Image displayed between text repetitions"
-        },
-        {
-          "type": "range",
-          "id": "text_gap",
-          "min": 10,
-          "max": 150,
-          "step": 5,
-          "unit": "px",
-          "label": "Gap between items",
-          "default": 50
-        },
-        {
-          "type": "header",
-          "content": "Appearance"
-        },
-        {
-          "type": "color",
-          "id": "text_color",
-          "label": "Text color",
-          "info": "Overrides default text color for the marquee"
-        },
-        {
-          "type": "range",
-          "id": "animation_duration",
-          "min": 5,
-          "max": 100,
-          "step": 5,
-          "unit": "s",
-          "label": "Animation Duration",
-          "default": 40,
-          "info": "Lower values result in faster scrolling speed."
-        },
-        {
-          "type": "select",
-          "id": "direction",
-          "label": "Scroll direction",
-          "options": [
-            { "value": "left", "label": "Left" },
-            { "value": "right", "label": "Right" }
-          ],
-          "default": "left"
-        },
-        {
-          "type": "color",
-          "id": "card_background_color",
-          "label": "Card Background Color",
-          "default": "#ffffff",
-          "info": "Background color for this card"
-        },
-        {
-          "type": "color",
-          "id": "card_border_color",
-          "label": "Card Border Color",
-          "info": "Border color for this card. If not set, will use the default border color."
-        },
-        {
-          "type": "header",
-          "content": "Typography"
-        },
-        {
-          "type": "range",
-          "id": "font_size",
-          "min": 12,
-          "max": 48,
-          "step": 1,
-          "unit": "px",
-          "label": "Font size",
-          "default": 24
-        },
-        {
-          "type": "select",
-          "id": "font_weight",
-          "label": "Font weight",
-          "options": [
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" }
-          ],
-          "default": "700"
-        },
-        {
-          "type": "header",
-          "content": "Mobile Typography"
-        },
-        {
-          "type": "range",
-          "id": "mobile_font_size",
-          "min": 12,
-          "max": 48,
-          "step": 1,
-          "unit": "px",
-          "label": "Mobile Font size",
-          "default": 16,
-          "info": "Font size on mobile devices"
-        },
-        {
-          "type": "select",
-          "id": "mobile_font_weight",
-          "label": "Mobile Font weight",
-          "options": [
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" }
-          ],
-          "default": "700"
-        },
-        {
-          "type": "header",
-          "content": "Desktop Layout"
-        },
-        {
-          "type": "range",
-          "id": "column_span",
-          "min": 0.1,
-          "max": 9,
-          "step": 0.1,
-          "label": "Column Span",
-          "default": 2
-        },
-        { "type": "range", "id": "row_span", "min": 0.1, "max": 6, "step": 0.1, "label": "Row Span", "default": 1 },
-        {
-          "type": "header",
-          "content": "Mobile Layout"
-        },
-        {
-          "type": "range",
-          "id": "mobile_column_span",
-          "min": 0.1,
-          "max": 2,
-          "step": 0.1,
-          "label": "Mobile Column Span",
-          "default": 2,
-          "info": "Column span on mobile devices (max 2 columns on mobile grid)"
-        },
-        {
-          "type": "range",
-          "id": "mobile_row_span",
-          "min": 0.1,
-          "max": 6,
-          "step": 0.1,
-          "label": "Mobile Row Span",
-          "default": 1
-        },
-        {
-          "type": "checkbox",
-          "id": "hide_on_mobile",
-          "label": "Hide on Mobile",
-          "default": false,
-          "info": "Hide this card on mobile devices"
-        }
-      ]
-    },
-    {
       "type": "toggle_card",
       "name": "Toggle Switch Card",
       "settings": [
@@ -3548,7 +3268,6 @@
           "type": "content_card",
           "settings": { "column_span": 2.6, "row_span": 4.0, "card_background_color": "#306030" }
         },
-        { "type": "scrolling_text_card", "settings": { "column_span": 2.5, "row_span": 0.8 } },
         { "type": "button_card", "settings": { "column_span": 2.0, "row_span": 1.1 } }
       ]
     }

@@ -53,7 +53,8 @@
     }
 
     static renderPage(searchParams, event, updateURLHash = true) {
-      FacetFiltersForm.searchParamsPrev = searchParams;
+      const effectiveSearchParams = FacetFiltersForm.buildEffectiveSearchParams(searchParams);
+      FacetFiltersForm.searchParamsPrev = effectiveSearchParams;
       const sections = FacetFiltersForm.getSections();
       if (!sections.length) return;
 
@@ -70,7 +71,7 @@
       if (countContainerDesktop) countContainerDesktop.classList.add('loading');
 
       sections.forEach((section) => {
-        const url = `${window.location.pathname}?section_id=${section.section}&${searchParams}`;
+        const url = `${window.location.pathname}?section_id=${section.section}&${effectiveSearchParams}`;
         const filterDataUrl = (element) => element.url === url;
 
         FacetFiltersForm.filterData.some(filterDataUrl)
@@ -78,7 +79,7 @@
           : FacetFiltersForm.renderSectionFromFetch(url, event);
       });
 
-      if (updateURLHash) FacetFiltersForm.updateURLHash(searchParams);
+      if (updateURLHash) FacetFiltersForm.updateURLHash(effectiveSearchParams);
     }
 
     static renderSectionFromFetch(url, event) {
@@ -167,8 +168,9 @@
             }
           }
           const parent = elementToRender.parentElement;
-          if (parent) {
-            const insertBefore = document.querySelector(`#${parent.id} .js-filter`);
+          if (parent?.id) {
+            const parentInDom = document.getElementById(parent.id);
+            const insertBefore = parentInDom?.querySelector('.js-filter');
             if (insertBefore) insertBefore.before(elementToRender);
           }
         }
@@ -255,6 +257,31 @@
       );
     }
 
+    static buildEffectiveSearchParams(searchParams) {
+      const persistentParams = new URLSearchParams();
+      const currentParams = new URLSearchParams(window.location.search);
+
+      currentParams.forEach((value, key) => {
+        if (key.startsWith('filter.')) return;
+        if (key === 'sort_by') return;
+        if (key === 'page') return;
+        if (key === 'section_id') return;
+        persistentParams.set(key, value);
+      });
+
+      const incomingParams = new URLSearchParams(searchParams || '');
+      const replacedKeys = new Set();
+      incomingParams.forEach((value, key) => {
+        if (!replacedKeys.has(key)) {
+          persistentParams.delete(key);
+          replacedKeys.add(key);
+        }
+        persistentParams.append(key, value);
+      });
+
+      return persistentParams.toString();
+    }
+
     static getSections() {
       const productGridContainer = document.getElementById('ProductGridContainer');
       let productGrid = null;
@@ -301,11 +328,17 @@
     onActiveFilterClick(event) {
       event.preventDefault();
       FacetFiltersForm.toggleActiveFacets();
-      const url =
-        event.currentTarget?.href?.indexOf('?') === -1
-          ? ''
-          : event.currentTarget.href.slice(event.currentTarget.href.indexOf('?') + 1);
-      FacetFiltersForm.renderPage(url);
+      const link = event.currentTarget?.closest?.('a[href]') || event.target?.closest?.('a[href]');
+      if (!link) return;
+
+      const targetUrl = new URL(link.href, window.location.origin);
+      if (targetUrl.pathname !== window.location.pathname) {
+        window.location.href = targetUrl.toString();
+        return;
+      }
+
+      const url = targetUrl.search ? targetUrl.search.slice(1) : '';
+      FacetFiltersForm.renderPage(url, event);
     }
   }
 
@@ -407,6 +440,59 @@
       clearTimeout(details[DRAWER_CLOSE_TIMEOUT_KEY]);
       details[DRAWER_CLOSE_TIMEOUT_KEY] = null;
     }
+  }
+
+  function clearDrawerFiltersLocally(panel, clearLink) {
+    const form = panel.closest('form') || document.getElementById('FacetFiltersForm');
+    if (!form) return;
+
+    if (clearLink) {
+      clearLink.textContent = 'CLEARING...';
+      clearLink.classList.add('is-clearing');
+      clearLink.setAttribute('aria-disabled', 'true');
+    }
+
+    form.querySelectorAll('input[type="checkbox"]:checked').forEach((input) => {
+      input.checked = false;
+    });
+
+    form.querySelectorAll('.facet-checkbox.active, .mobile-facets__label.active').forEach((label) => {
+      label.classList.remove('active');
+    });
+
+    form.querySelectorAll('price-range').forEach((priceRangeEl) => {
+      const sliderEl = priceRangeEl.querySelector('.price-facet-slider');
+      const maxCents = Number(sliderEl?.dataset.priceRangeMax) || 0;
+      const maxDisplay = (maxCents / 100).toFixed(2).replace(/\.?0+$/, '') || '0';
+      const minInput = priceRangeEl.querySelector('.price-facet-input-min');
+      const maxInput = priceRangeEl.querySelector('.price-facet-input-max');
+
+      if (minInput) {
+        minInput.value = '';
+        minInput.setAttribute('data-max', maxDisplay);
+      }
+
+      if (maxInput) {
+        maxInput.value = '';
+        maxInput.setAttribute('data-min', '0');
+      }
+    });
+
+    form.querySelectorAll('.price-facet-slider').forEach((sliderEl) => {
+      const minRange = sliderEl.querySelector('.price-facet-slider__input--min');
+      const maxRange = sliderEl.querySelector('.price-facet-slider__input--max');
+      const maxCents = Number(sliderEl.dataset.priceRangeMax) || 0;
+      if (minRange) minRange.value = String(minRange.min || 0);
+      if (maxRange) maxRange.value = String(maxRange.max || maxCents);
+    });
+
+    form.querySelectorAll('details.js-filter .facets__selected').forEach((countEl) => {
+      countEl.classList.add('hidden');
+      countEl.textContent = '(0)';
+    });
+
+    const activeFilters = panel.querySelector('.facets-drawer__active-facets-container');
+    if (activeFilters) activeFilters.innerHTML = '';
   }
 
   function setupDrawerBehavior() {
@@ -515,10 +601,20 @@
         if (!isClearAll && !isTagRemove) return;
         e.preventDefault();
         e.stopPropagation();
+
+        if (isClearAll) {
+          clearDrawerFiltersLocally(panel, link);
+          return;
+        }
+
         if (typeof FacetFiltersForm !== 'undefined') {
-          const url = link.href && link.href.indexOf('?') !== -1
-            ? link.href.slice(link.href.indexOf('?') + 1)
-            : '';
+          const targetUrl = new URL(link.href, window.location.origin);
+          if (targetUrl.pathname !== window.location.pathname) {
+            window.location.href = targetUrl.toString();
+            return;
+          }
+
+          const url = targetUrl.search ? targetUrl.search.slice(1) : '';
           FacetFiltersForm.toggleActiveFacets && FacetFiltersForm.toggleActiveFacets();
           FacetFiltersForm.renderPage(url);
         }

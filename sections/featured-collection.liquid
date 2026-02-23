@@ -2,18 +2,6 @@
 {{ 'card-base.css' | asset_url | stylesheet_tag }}
 {{ 'product-card.css' | asset_url | stylesheet_tag }}
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
-{%- unless section.settings.quick_add == 'none' -%}
-  {{ 'quick-add.css' | asset_url | stylesheet_tag }}
-{%- endunless -%}
-{%- if section.settings.quick_add == 'standard' -%}
-  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
-{%- endif -%}
-{%- if section.settings.quick_add == 'bulk' -%}
-  <script src="{{ 'quick-add-bulk.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'quantity-popover.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'price-per-item.js' | asset_url }}" defer="defer"></script>
-{%- endif -%}
 <script src="{{ 'section-featured-collection.js' | asset_url }}" defer="defer"></script>
 
 {%- style -%}
@@ -91,7 +79,7 @@
                   render 'card-product',
                   card_product: product,
                   section_id: section.id,
-                  quick_add: section.settings.quick_add,
+                  quick_add: 'none',
                   lazy_load: forloop.index > 3,
                   show_badge: section.settings.show_card_badge,
                   badge_text: section.settings.card_badge_text,
@@ -109,7 +97,7 @@
                   render 'card-product',
                   card_product: product,
                   section_id: section.id,
-                  quick_add: section.settings.quick_add,
+                  quick_add: 'none',
                   lazy_load: true,
                   show_badge: section.settings.show_card_badge,
                   badge_text: section.settings.card_badge_text,
@@ -148,50 +136,18 @@
     </div>
 
     <div class="fc3d__controls" style="gap: {{ section.settings.nav_button_spacing | default: 16 }}px;">
-      <button 
-        class="fc3d__nav fc3d__nav--prev" 
-        type="button" 
-        data-fc3d-prev 
-        aria-label="Previous"
-        style="
-          width: {{ section.settings.nav_button_width | default: 64 }}px;
-          height: {{ section.settings.nav_button_height | default: 56 }}px;
-          padding: {{ section.settings.nav_button_padding | default: 0 }}px;
-          font-size: {{ section.settings.nav_button_font_size | default: 24 }}px;
-          {% if section.settings.nav_button_prev_image != blank %}
-            background-image: url('{{ section.settings.nav_button_prev_image | image_url: width: 200 }}');
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
-          {% endif %}
-        "
-      >
-        {% if section.settings.nav_button_prev_image == blank %}
-          <span aria-hidden="true" style="font-size: {{ section.settings.nav_button_font_size | default: 24 }}px;">←</span>
-        {% endif %}
-      </button>
-      <button 
-        class="fc3d__nav fc3d__nav--next" 
-        type="button" 
-        data-fc3d-next 
-        aria-label="Next"
-        style="
-          width: {{ section.settings.nav_button_width | default: 64 }}px;
-          height: {{ section.settings.nav_button_height | default: 56 }}px;
-          padding: {{ section.settings.nav_button_padding | default: 0 }}px;
-          font-size: {{ section.settings.nav_button_font_size | default: 24 }}px;
-          {% if section.settings.nav_button_next_image != blank %}
-            background-image: url('{{ section.settings.nav_button_next_image | image_url: width: 200 }}');
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
-          {% endif %}
-        "
-      >
-        {% if section.settings.nav_button_next_image == blank %}
-          <span aria-hidden="true" style="font-size: {{ section.settings.nav_button_font_size | default: 24 }}px;">→</span>
-        {% endif %}
-      </button>
+      {% render 'submit-button',
+        text: '←',
+        type: 'button',
+        class: 'fc3d__nav fc3d__nav--prev',
+        attributes: 'data-fc3d-prev aria-label="Previous"'
+      %}
+      {% render 'submit-button',
+        text: '→',
+        type: 'button',
+        class: 'fc3d__nav fc3d__nav--next',
+        attributes: 'data-fc3d-next aria-label="Next"'
+      %}
     </div>
   </div>
 </section>
@@ -275,17 +231,6 @@
       "id": "fallback_description",
       "label": "Fallback description",
       "info": "Used when a product has no description"
-    },
-    {
-      "type": "select",
-      "id": "quick_add",
-      "label": "Quick add",
-      "options": [
-        { "value": "none", "label": "None" },
-        { "value": "standard", "label": "Standard" },
-        { "value": "bulk", "label": "Bulk" }
-      ],
-      "default": "none"
     },
     {
       "type": "header",

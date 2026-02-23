@@ -1,7 +1,6 @@
 /* Bento Grid Container */
 .bento-grid-container {
   width: 100%;
-  min-height: 100vh;
   padding: var(--spacing-5);
   margin: var(--spacing-0);
 }
@@ -400,92 +399,6 @@
   mix-blend-mode: multiply;
 }
 
-/* Scrolling Text Card */
-.scrolling-text-card {
-  overflow: hidden;
-}
-
-.scrolling-text-card.bento-card {
-  border: var(--border-width-thin) solid var(--color-borders, var(--color-gray-300)) !important;
-}
-
-.scrolling-text-card:hover .marquee-track {
-  /* Slight zoom with bouncy easing defined on .marquee-track */
-  scale: 2;
-}
-
-/* The moving strip that contains multiple copies of the text */
-.marquee-track {
-  align-items: center;
-  display: flex;
-  gap: var(--item-gap, 24px);
-  width: max-content; /* shrink-wrap to content width */
-  animation: marquee var(--animation-duration, 40s) linear infinite;
-  animation-direction: var(--marquee-direction, normal);
-  scale: 1;
-  will-change: transform;
-  /* Bouncy/elastic style easing for hover in/out */
-  transition: scale 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-/* Each repeated text block */
-.marquee-item {
-  white-space: nowrap;
-  font-family: var(--font-heading-family);
-  font-size: var(--desktop-font-size, 24px);
-  font-weight: var(--desktop-font-weight, 700);
-  text-transform: uppercase;
-  color: var(--marquee-text-color, inherit);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5em;
-}
-
-.marquee-item p {
-  margin: 0;
-  display: inline;
-}
-
-/* Link wrapper inside marquee (when "Link" is set) */
-.marquee-link {
-  color: inherit;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5em;
-}
-
-.marquee-link:hover {
-  color: inherit;
-  text-decoration: none;
-}
-
-/* Icon after text (like scrolling strip) */
-.marquee-icon {
-  display: inline-flex;
-  vertical-align: middle;
-  flex-shrink: 0;
-}
-
-.marquee-icon-img {
-  width: var(--marquee-icon-width, 30px);
-  height: auto;
-  display: block;
-}
-
-/* Separator image in scrolling text */
-.marquee-separator {
-  display: inline-block;
-  height: 35px;
-  width: auto;
-  object-fit: contain;
-  vertical-align: middle;
-  margin: 0;
-  flex-shrink: 0;
-  background: transparent;
-  mix-blend-mode: multiply;
-}
-
 @keyframes marquee {
   0% {
     transform: translateX(0);
@@ -513,11 +426,10 @@
   height: 100%;
 }
 
-/* Disable scale on hover for cart, content, video, scrolling text, logo, and button cards */
+/* Disable scale on hover for cart, content, video, logo, and button cards */
 .bento-card.cart-card:hover,
 .bento-card.content-card:hover,
 .bento-card.video-card:hover,
-.bento-card.scrolling-text-card:hover,
 .bento-card.logo-card:hover,
 .bento-card.button-card:hover {
   transform: scale(1);
@@ -1482,13 +1394,12 @@ a.tag-card.tag-card--link:hover {
   border-radius: var(--radius-2xl) !important;
 }
 
-/* Content Card Word Animation - Same as Tag Card */
+/* Content Card words: static (no text-reveal animation) */
 .content-card-word {
   display: inline-block;
-  opacity: 0;
-  transform: translateY(20px);
+  opacity: 1;
+  transform: none;
   color: var(--color-accent-off-white, #fff) !important;
-  animation: tagCardWordLoadUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
 /* Add space after each word except the last */
@@ -1497,77 +1408,12 @@ a.tag-card.tag-card--link:hover {
   white-space: pre;
 }
 
-/* Staggered animation delays for each word - starts 0.4s after page load */
-.content-card-word:nth-child(1) {
-  animation-delay: 0.4s;
-}
-
-.content-card-word:nth-child(2) {
-  animation-delay: 0.45s;
-}
-
-.content-card-word:nth-child(3) {
-  animation-delay: 0.5s;
-}
-
-.content-card-word:nth-child(4) {
-  animation-delay: 0.55s;
-}
-
-.content-card-word:nth-child(5) {
-  animation-delay: 0.6s;
-}
-
-.content-card-word:nth-child(6) {
-  animation-delay: 0.65s;
-}
-
 @media (max-width: 768px) {
   .content-card-sub-text {
     font-size: var(--mobile-sub-text-font-size, 12px);
     font-weight: var(--mobile-sub-text-font-weight, 400);
     line-height: var(--mobile-sub-text-line-height, 1.4);
   }
-}
-
-.content-card-word:nth-child(7) {
-  animation-delay: 0.7s;
-}
-
-.content-card-word:nth-child(8) {
-  animation-delay: 0.75s;
-}
-
-.content-card-word:nth-child(9) {
-  animation-delay: 0.8s;
-}
-
-.content-card-word:nth-child(10) {
-  animation-delay: 0.85s;
-}
-
-.content-card-word:nth-child(11) {
-  animation-delay: 0.9s;
-}
-
-.content-card-word:nth-child(12) {
-  animation-delay: 0.95s;
-}
-
-.content-card-word:nth-child(13) {
-  animation-delay: 1s;
-}
-
-.content-card-word:nth-child(14) {
-  animation-delay: 1.05s;
-}
-
-.content-card-word:nth-child(15) {
-  animation-delay: 1.1s;
-}
-
-.content-card-word:nth-child(n + 16) {
-  animation-delay: 1.15s;
 }
 
 .content-card-sprite-side {
@@ -2040,17 +1886,6 @@ a.tag-card.tag-card--link:hover {
   .video-marquee-separator {
     height: var(--spacing-8);
     margin: var(--spacing-0) var(--spacing-8);
-  }
-
-  /* Scrolling Text Card Mobile */
-  .marquee-item {
-    font-size: var(--mobile-font-size, 16px) !important;
-    font-weight: var(--mobile-font-weight, 700) !important;
-  }
-
-  .marquee-separator {
-    height: 24px;
-    margin: 0 1rem;
   }
 
   /* Image Strip adjustments */

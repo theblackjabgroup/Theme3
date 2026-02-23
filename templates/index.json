@@ -119,17 +119,6 @@
             "mobile_column_span": 2.0,
             "mobile_row_span": 0.1
           } 
-        },
-        "card_9": { 
-          "type": "scrolling_text_card", 
-          "settings": { 
-            "column_span": 9, 
-            "row_span": 1.1,
-            "mobile_column_span": 2.0,
-            "mobile_row_span": 0.1,
-            "card_background_color": "#D2CDC4",
-            "card_border_color": "#D2CDC4"
-          } 
         }
    
 
@@ -142,8 +131,7 @@
         "card_5",
         "card_6",
         "card_7",
-        "card_8",
-        "card_9"
+        "card_8"
       ],
       "settings": {
         "color_scheme": "",

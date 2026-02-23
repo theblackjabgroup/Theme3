@@ -233,7 +233,12 @@
                       {%- endfor -%}
                     </div>
                     <div class="facets-drawer__footer">
-                      <button type="submit" class="facets-drawer__apply-button" form="FacetFiltersForm">APPLY</button>
+                      {%- render 'submit-button',
+                        text: 'APPLY CHANGES',
+                        type: 'submit',
+                        class: 'facets-drawer__apply-button',
+                        attributes: 'form="FacetFiltersForm"'
+                      -%}
                     </div>
                   </div>
                 </details>
@@ -291,9 +296,11 @@
                       </ul>
                     </div>
                     <div class="facets-drawer__footer">
-                      <button type="button" class="facets-drawer__apply-button facets-drawer__apply-button--sort">
-                        APPLY
-                      </button>
+                      {%- render 'submit-button',
+                        text: 'APPLY CHANGES',
+                        type: 'button',
+                        class: 'facets-drawer__apply-button facets-drawer__apply-button--sort'
+                      -%}
                     </div>
                   </div>
                 </details>

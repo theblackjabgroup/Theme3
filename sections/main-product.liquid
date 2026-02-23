@@ -81,6 +81,11 @@
 <div
   class="product-split-container color-{{ scheme.id }} gradient{% if product.selected_or_first_available_variant.available == false %} product-variant-sold-out{% endif %}"
   id="ProductSection-{{ section.id }}"
+  data-page-load-animate
+  data-page-load-selector=".product-hero-section, .product-split-left, .product-split-right, .product-mobile-card--left, .product-mobile-card--right"
+  data-page-load-duration="700"
+  data-page-load-stagger="120"
+  data-page-load-distance="18"
   style="
     --hero-image-max-width: {{ section.settings.hero_image_max_width }}px;
     --section-margin-top: {{ section.settings.margin_top }}px;

@@ -60,6 +60,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   padding: var(--card-price-padding-vertical, 10px) var(--card-price-padding-horizontal, 18px);
   min-width: 80px;
   border: var(--card-price-border-width, 1px) solid var(--color-primary-button-border, var(--color-borders));
@@ -72,6 +73,27 @@
   color: var(--color-text);
   background-color: var(--color-header-button-background, transparent);
   transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.custom-product-card__price-current {
+  line-height: 1;
+}
+
+.custom-product-card__price-compare {
+  line-height: 1;
+  opacity: 0.65;
+  text-decoration: line-through;
+  font-size: 0.9em;
+  font-weight: 500;
+}
+
+.custom-product-card__price--sale .custom-product-card__price-current {
+  order: 2;
+}
+
+.custom-product-card__price--sale .custom-product-card__price-compare {
+  order: 1;
+  font-size: 0.75em;
 }
 
 .custom-product-card__add-to-cart {
