@@ -320,7 +320,7 @@
   position: absolute;
   top: var(--spacing-0);
   left: var(--spacing-0);
-  border-radius: var(--radius-2xl);
+  border-radius: inherit;
   box-shadow: var(--shadow-md);
   border: none;
   transform: scale(1);
@@ -330,7 +330,7 @@
 
 .video-card:hover video,
 .video-card:hover iframe {
-  transform: scale(0.85);
+  transform: scale(var(--video-hover-scale, 0.85));
 }
 
 .video-card .video-placeholder-text {
@@ -523,9 +523,13 @@
   transform: scale(1);
 }
 
-/* Video card hover border */
+/* Video card border customization */
+.bento-card.video-card {
+  border-color: var(--video-border-color, var(--color-borders, var(--color-gray-300)));
+}
+
 .bento-card.video-card:hover {
-  border-color: var(--color-text, var(--color-primary-button-bg, #e63946)) !important;
+  border-color: var(--video-border-hover-color, var(--video-border-color, var(--color-text, var(--color-primary-button-bg, #e63946)))) !important;
 }
 
 /* Card Color Variants */
@@ -897,7 +901,7 @@
 
 /* Tag Card */
 .tag-card {
-  padding: var(--spacing-8) var(--spacing-10);
+  padding: var(--tag-card-padding-y, var(--spacing-8)) var(--tag-card-padding-x, var(--spacing-10));
   align-items: flex-start;
   justify-content: space-between;
 }
@@ -917,7 +921,7 @@ a.tag-card.tag-card--link:hover {
   display: flex;
   width: 100%;
   height: 100%;
-  gap: 0px;
+  gap: var(--tag-card-inner-gap, 0px);
   align-items: flex-start;
 }
 
@@ -972,6 +976,7 @@ a.tag-card.tag-card--link:hover {
   flex-direction: column;
   flex: 1;
   max-width: 350px;
+  gap: var(--tag-card-text-gap, 0px);
 }
 
 .tag-card--align-left .tag-card-text-group {
@@ -1434,6 +1439,7 @@ a.tag-card.tag-card--link:hover {
   font-weight: var(--desktop-main-text-font-weight, var(--font-weight-semibold));
   line-height: var(--desktop-main-text-line-height, var(--line-height-tight));
   white-space: pre-wrap;
+  margin: 0;
 }
 
 .content-card-sub-text {
@@ -1442,7 +1448,7 @@ a.tag-card.tag-card--link:hover {
   font-weight: var(--desktop-sub-text-font-weight, 400);
   line-height: var(--desktop-sub-text-line-height, 1.4);
   color: var(--color-white);
-  margin-top: calc(var(--spacing-2) * -1);
+  margin: 0;
 }
 
 .content-card-sub-text p {
@@ -1456,7 +1462,7 @@ a.tag-card.tag-card--link:hover {
   align-items: center !important;
   padding: var(--spacing-1) var(--spacing-5) !important;
   text-transform: uppercase !important;
-  margin-bottom: var(--spacing-2) !important;
+  margin: 0 !important;
   z-index: 1;
   position: relative;
 }
@@ -1695,7 +1701,15 @@ a.tag-card.tag-card--link:hover {
 
   /* Tag Card Mobile */
   .tag-card {
-    padding: var(--spacing-6) var(--spacing-8);
+    padding: var(--tag-card-mobile-padding-y, var(--spacing-6)) var(--tag-card-mobile-padding-x, var(--spacing-8));
+  }
+
+  .tag-card-inner {
+    gap: var(--tag-card-mobile-inner-gap, var(--tag-card-inner-gap, 0px));
+  }
+
+  .tag-card-text-group {
+    gap: var(--tag-card-mobile-text-gap, var(--tag-card-text-gap, 0px));
   }
 
   /* Override layout direction for mobile */

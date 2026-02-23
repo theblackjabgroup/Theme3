@@ -37,10 +37,12 @@
     --contact-map-height-min: {{ section.settings.map_height_min | default: 260 }}px;
     --contact-card-radius: {{ section.settings.card_border_radius | default: 12 }}px;
     --contact-card-padding: {{ section.settings.card_padding | default: 20 }}px;
+    --contact-card-padding-mobile: {{ section.settings.card_padding_mobile | default: 16 }}px;
     --contact-form-card-padding: {{ section.settings.form_card_padding | default: 32 }}px;
     --contact-input-padding-y: {{ section.settings.input_padding_vertical | default: 14 }}px;
     --contact-input-padding-x: {{ section.settings.input_padding_horizontal | default: 18 }}px;
     --contact-detail-icon-size: {{ section.settings.detail_icon_size | default: 40 }}px;
+    --contact-detail-icon-radius: {{ section.settings.detail_icon_radius | default: 14 }}px;
     --contact-form-field-gap: {{ section.settings.form_field_gap | default: 16 }}px;
     --contact-grid-gap: {{ section.settings.grid_gap | default: 20 }}px;
     --contact-heading-size: {{ section.settings.heading_font_size | default: 22 }}px;
@@ -539,6 +541,16 @@
     },
     {
       "type": "range",
+      "id": "card_padding_mobile",
+      "min": 8,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "label": "Left card padding (mobile)",
+      "default": 16
+    },
+    {
+      "type": "range",
       "id": "form_card_padding",
       "min": 16,
       "max": 64,
@@ -576,6 +588,16 @@
       "unit": "px",
       "label": "Contact detail icon size",
       "default": 40
+    },
+    {
+      "type": "range",
+      "id": "detail_icon_radius",
+      "min": 0,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Contact detail icon border radius",
+      "default": 14
     },
     {
       "type": "range",

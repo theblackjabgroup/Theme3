@@ -24,6 +24,18 @@
   - header_padding_horizontal: {Number} Horizontal padding for the header container
   - background_color: {String} Background color for the header container
   - border_radius: {Number} Border radius in px for the header container
+  - show_image: {Boolean} Whether to show header image
+  - header_image: {Image} Header image object
+  - image_alignment: {String} Image alignment (left, center, right)
+  - image_width_percent: {Number} Image width percentage on desktop
+  - image_width_percent_mobile: {Number} Image width percentage on mobile
+  - image_max_width: {Number} Image max width in px
+  - image_height: {Number} Image height in px
+  - image_height_mobile: {Number} Image height in px on mobile
+  - image_object_fit: {String} Image object-fit (cover, contain)
+  - image_border_radius: {Number} Border radius in px for image
+  - image_margin_top: {Number} Top margin in px for image
+  - image_margin_bottom: {Number} Bottom margin in px for image
 {% endcomment %}
 
 <div
@@ -40,6 +52,19 @@
 
   {%- if description != blank -%}
     <p class="section-header-snippet__description">{{ description }}</p>
+  {%- endif -%}
+
+  {%- if show_image and header_image != blank -%}
+    <div class="section-header-snippet__media">
+      {{
+        header_image
+        | image_url: width: 2400
+        | image_tag:
+          loading: 'lazy',
+          class: 'section-header-snippet__image',
+          alt: title | default: shop.name
+      }}
+    </div>
   {%- endif -%}
 </div>
 
@@ -116,6 +141,30 @@
     {%- endif -%}
   }
 
+  .section-header-snippet-{{ id }} .section-header-snippet__media {
+    width: 100%;
+    margin-top: {{ image_margin_top | default: 20 }}px;
+    margin-bottom: {{ image_margin_bottom | default: 0 }}px;
+    display: flex;
+    justify-content:
+      {% if image_alignment == 'left' %}
+        flex-start
+      {% elsif image_alignment == 'right' %}
+        flex-end
+      {% else %}
+        center
+      {% endif %};
+  }
+
+  .section-header-snippet-{{ id }} .section-header-snippet__image {
+    width: {{ image_width_percent | default: 100 }}%;
+    max-width: {{ image_max_width | default: 1200 }}px;
+    height: {{ image_height | default: 320 }}px;
+    object-fit: {{ image_object_fit | default: 'cover' }};
+    border-radius: {{ image_border_radius | default: 16 }}px;
+    display: block;
+  }
+
   @media screen and (max-width: 749px) {
     .section-header-snippet-{{ id }} .section-header-snippet__title {
       {%- if title_font_size_mobile != blank -%}
@@ -126,6 +175,11 @@
       {%- if description_font_size_mobile != blank -%}
         font-size: {{ description_font_size_mobile }}px;
       {%- endif -%}
+    }
+
+    .section-header-snippet-{{ id }} .section-header-snippet__image {
+      width: {{ image_width_percent_mobile | default: image_width_percent | default: 100 }}%;
+      height: {{ image_height_mobile | default: image_height | default: 220 }}px;
     }
   }
 </style>
