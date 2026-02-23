@@ -22,6 +22,13 @@
     if quick_add == 'standard' and quick_add_overlay
       assign use_quick_add_overlay = true
     endif
+    assign card_price_current = card_product.price
+    assign card_price_compare = blank
+    if card_product.compare_at_price > card_product.price
+      assign card_price_compare = card_product.compare_at_price
+    elsif card_product.compare_at_price_max > card_product.price
+      assign card_price_compare = card_product.compare_at_price_max
+    endif
   -%}
   {%- assign overlay_btn_text = overlay_button_text | default: 'Love that! (Check it out)' -%}
   {%- if use_quick_add_overlay -%}
@@ -70,8 +77,11 @@
         {%- endif -%}
 
         <div class="custom-product-card__footer">
-          <div class="custom-product-card__price">
-            {{ card_product.price | money }}
+          <div class="custom-product-card__price{% if card_price_compare != blank %} custom-product-card__price--sale{% endif %}">
+            <span class="custom-product-card__price-current">{{ card_price_current | money }}</span>
+            {%- if card_price_compare != blank -%}
+              <span class="custom-product-card__price-compare">{{ card_price_compare | money }}</span>
+            {%- endif -%}
           </div>
           {%- if use_quick_add_overlay -%}
             <button

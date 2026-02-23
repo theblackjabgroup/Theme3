@@ -13,6 +13,19 @@
     padding-bottom: {{ section.settings.section_padding_bottom }}px;
     padding-left: {{ section.settings.section_padding_horizontal_mobile }}px;
     padding-right: {{ section.settings.section_padding_horizontal_mobile }}px;
+    --collection-filter-tag-bg: {{ section.settings.filter_tag_bg_color | default: '#f9c7d8' }};
+    --collection-filter-tag-text-color: {{ section.settings.filter_tag_text_color | default: '#000000' }};
+    --collection-filter-tag-border-color: {{ section.settings.filter_tag_border_color | default: '#000000' }};
+    --collection-filter-tag-border-width: {{ section.settings.filter_tag_border_width | default: 0 }}px;
+    --collection-filter-tag-border-radius: {{ section.settings.filter_tag_border_radius | default: 0 }}px;
+    --collection-filter-tag-font-size: {{ section.settings.filter_tag_font_size | default: 15 }}px;
+    --collection-filter-tag-font-weight: {{ section.settings.filter_tag_font_weight | default: 700 }};
+    --collection-filter-tag-text-transform: {{ section.settings.filter_tag_text_transform | default: 'uppercase' }};
+    --collection-filter-tag-letter-spacing: {{ section.settings.filter_tag_letter_spacing | default: 0.03 }}em;
+    --collection-filter-tag-padding-vertical: {{ section.settings.filter_tag_padding_vertical | default: 6 }}px;
+    --collection-filter-tag-padding-horizontal: {{ section.settings.filter_tag_padding_horizontal | default: 12 }}px;
+    --collection-filter-tag-gap: {{ section.settings.filter_tag_gap | default: 8 }}px;
+    --collection-filter-tag-close-icon-size: {{ section.settings.filter_tag_close_icon_size | default: 5 }}px;
     {% if section.settings.background_color != blank %}
       background-color: {{ section.settings.background_color }};
     {% endif %}
@@ -204,6 +217,36 @@
   {%- endfor -%}
 
   {%- paginate collection.products by section.settings.products_per_page -%}
+    {%- liquid
+      assign price_filter_gte_cents = blank
+      assign price_filter_lte_cents = blank
+      for filter in collection.filters
+        if filter.type == 'price_range'
+          if filter.min_value.value != null
+            assign price_filter_gte_cents = filter.min_value.value
+          endif
+          if filter.max_value.value != null
+            assign price_filter_lte_cents = filter.max_value.value
+          endif
+          break
+        endif
+      endfor
+
+      assign visible_products_count = 0
+      for product in collection.products
+        assign product_visible = true
+        if price_filter_gte_cents != blank and product.price_min < price_filter_gte_cents
+          assign product_visible = false
+        endif
+        if price_filter_lte_cents != blank and product.price_min > price_filter_lte_cents
+          assign product_visible = false
+        endif
+        if product_visible
+          assign visible_products_count = visible_products_count | plus: 1
+        endif
+      endfor
+    -%}
+
     {% comment %} Sort is the first tabbable element when filter type is vertical {% endcomment %}
     {% comment %} Redundant sorting removed per user request {% endcomment %}
 
@@ -234,7 +277,7 @@
           data-cascade
         {% endif %}
       >
-        {%- if collection.products.size == 0 -%}
+        {%- if collection.products.size == 0 or visible_products_count == 0 -%}
           <div
             class="collection collection--empty page-width"
             id="product-grid-{{ section.id }}"
@@ -263,25 +306,36 @@
               class="grid product-grid"
             >
               {%- for product in collection.products -%}
-                <li
-                  class="grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-                  {% if settings.animations_reveal_on_scroll %}
-                    data-cascade
-                    style="--animation-order: {{ forloop.index }};"
-                  {% endif %}
-                >
-                  {%
-                    render 'card-product',
-                    card_product: product,
-                    section_id: section.id,
-                    quick_add: 'none',
-                    lazy_load: forloop.index > 2,
-                    show_badge: section.settings.show_card_badge,
-                    badge_text: section.settings.card_badge_text,
-                    overlay_button_text: section.settings.overlay_button_text,
-                    fallback_description: section.settings.fallback_description
-                  %}
-                </li>
+                {%- liquid
+                  assign product_visible = true
+                  if price_filter_gte_cents != blank and product.price_min < price_filter_gte_cents
+                    assign product_visible = false
+                  endif
+                  if price_filter_lte_cents != blank and product.price_min > price_filter_lte_cents
+                    assign product_visible = false
+                  endif
+                -%}
+                {%- if product_visible -%}
+                  <li
+                    class="grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+                    {% if settings.animations_reveal_on_scroll %}
+                      data-cascade
+                      style="--animation-order: {{ forloop.index }};"
+                    {% endif %}
+                  >
+                    {%
+                      render 'card-product',
+                      card_product: product,
+                      section_id: section.id,
+                      quick_add: 'none',
+                      lazy_load: forloop.index > 2,
+                      show_badge: section.settings.show_card_badge,
+                      badge_text: section.settings.card_badge_text,
+                      overlay_button_text: section.settings.overlay_button_text,
+                      fallback_description: section.settings.fallback_description
+                    %}
+                  </li>
+                {%- endif -%}
               {%- endfor -%}
             </ul>
 
@@ -880,6 +934,121 @@
       "label": "Fallback Description",
       "default": "Discover our amazing product.",
       "info": "This text will be displayed when a product has no description. Used in both card description and hover overlay."
+    },
+    {
+      "type": "header",
+      "content": "Filter Tag Styling"
+    },
+    {
+      "type": "color",
+      "id": "filter_tag_bg_color",
+      "label": "Tag Background Color",
+      "default": "#f9c7d8"
+    },
+    {
+      "type": "color",
+      "id": "filter_tag_text_color",
+      "label": "Tag Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "filter_tag_border_color",
+      "label": "Tag Border Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "filter_tag_border_width",
+      "label": "Tag Border Width (px)",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "filter_tag_border_radius",
+      "label": "Tag Border Radius (px)",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "filter_tag_font_size",
+      "label": "Tag Font Size (px)",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "filter_tag_font_weight",
+      "label": "Tag Font Weight",
+      "min": 400,
+      "max": 900,
+      "step": 100,
+      "default": 700
+    },
+    {
+      "type": "select",
+      "id": "filter_tag_text_transform",
+      "label": "Tag Text Transform",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "uppercase", "label": "Uppercase" },
+        { "value": "lowercase", "label": "Lowercase" },
+        { "value": "capitalize", "label": "Capitalize" }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "range",
+      "id": "filter_tag_letter_spacing",
+      "label": "Tag Letter Spacing (em)",
+      "min": -0.2,
+      "max": 0.4,
+      "step": 0.1,
+      "default": 0.0
+    },
+    {
+      "type": "range",
+      "id": "filter_tag_padding_vertical",
+      "label": "Tag Padding Vertical (px)",
+      "min": 2,
+      "max": 20,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "filter_tag_padding_horizontal",
+      "label": "Tag Padding Horizontal (px)",
+      "min": 6,
+      "max": 36,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "filter_tag_gap",
+      "label": "Tag Gap (px)",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "filter_tag_close_icon_size",
+      "label": "Tag Close Icon Size (px)",
+      "min": 4,
+      "max": 16,
+      "step": 1,
+      "default": 5
     },
     {
       "type": "header",

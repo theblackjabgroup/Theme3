@@ -838,23 +838,36 @@
   }
 
   .cart-drawer__edit-variant-btn {
-    padding: 10px 20px;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .cart-drawer__edit-variant-btn .submit-button__shadow {
+    background-color: var(--cart-drawer-text);
+    border-radius: 10px;
+  }
+
+  .cart-drawer__edit-variant-btn .submit-button__content {
     background-color: var(--color-header-button-background);
     color: var(--cart-drawer-text);
     border: 1.5px solid var(--cart-drawer-text);
     border-radius: 10px;
     font-size: 14px;
     font-weight: 700;
-    cursor: pointer;
     font-family: var(--font-heading-family);
-    transition: background 0.2s ease, color 0.2s ease;
+    padding: 10px 20px;
+    text-transform: none;
+    white-space: nowrap;
   }
 
-  .cart-drawer__edit-variant-btn:hover {
+  .cart-drawer__edit-variant-btn:hover .submit-button__content {
     background: var(--cart-drawer-border);
   }
 
-  .cart-drawer__edit-variant-btn.is-selected {
+  .cart-drawer__edit-variant-btn.is-selected .submit-button__content {
     background: var(--cart-drawer-pink);
     color: var(--cart-drawer-text);
   }

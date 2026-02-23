@@ -293,7 +293,7 @@ body.facets-drawer-open .facets-drawer * {
   margin-bottom: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--collection-filter-tag-gap, 8px);
   align-items: center;
 }
 
@@ -301,7 +301,7 @@ body.facets-drawer-open .facets-drawer * {
 .facets-drawer__active-filters {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--collection-filter-tag-gap, 8px);
   margin-bottom: 20px;
   align-items: center;
 }
@@ -309,16 +309,18 @@ body.facets-drawer-open .facets-drawer * {
 .facets-drawer .active-facets__button {
   display: inline-flex;
   align-items: center;
-  background: var(--color-accent-pink);
-  color: var(--color-headings);
-  padding: 6px 12px;
+  background: var(--collection-filter-tag-bg, var(--color-accent-pink));
+  color: var(--collection-filter-tag-text-color, var(--color-headings));
+  padding: var(--collection-filter-tag-padding-vertical, 6px) var(--collection-filter-tag-padding-horizontal, 12px);
   text-decoration: none;
-  font-weight: 700;
-  font-size: 0.95rem;
+  font-weight: var(--collection-filter-tag-font-weight, 700);
+  font-size: var(--collection-filter-tag-font-size, 0.95rem);
   gap: 6px;
-  border: none;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
+  border: var(--collection-filter-tag-border-width, 0px) solid
+    var(--collection-filter-tag-border-color, transparent);
+  border-radius: var(--collection-filter-tag-border-radius, 0px);
+  text-transform: var(--collection-filter-tag-text-transform, uppercase);
+  letter-spacing: var(--collection-filter-tag-letter-spacing, 0.03em);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -328,8 +330,8 @@ body.facets-drawer-open .facets-drawer * {
 }
 
 .active-facets__button-close svg {
-  width: 5px;
-  height: 5px;
+  width: var(--collection-filter-tag-close-icon-size, 5px);
+  height: var(--collection-filter-tag-close-icon-size, 5px);
 }
 
 .active-facets__clear-all a {
@@ -630,7 +632,7 @@ body.facets-drawer-open .facets-drawer * {
   transform: translate(-50%, -70%) rotate(-45deg);
 }
 
-/* Apply Button - 3D style */
+/* Apply button: keep default button styling, only pink background */
 .facets-drawer__footer {
   margin-top: 28px;
   padding: 20px 0 24px;
@@ -640,32 +642,12 @@ body.facets-drawer-open .facets-drawer * {
 }
 
 .facets-drawer__apply-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: calc(100% - 40px);
-  max-width: 320px;
-  background: var(--color-accent-pink);
-  color: var(--color-headings);
-  border: 2px solid var(--color-headings);
-  padding: 12px 20px;
-  border-radius: 12px;
-  font-weight: 800;
-  font-size: 1.15rem;
-  font-family: monospace;
-  cursor: pointer;
-  box-shadow: 0px 3px 0px 0px var(--color-shadow);
-  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  text-align: center;
-  margin: 0 auto;
+  --color-primary-button-bg: var(--color-accent-pink);
 }
 
-.facets-drawer__apply-button:hover,
-.facets-drawer__apply-button:active {
-  transform: translate(2px, 2px);
-  box-shadow: 0px 0px 0px 0px var(--color-shadow);
+.facets-drawer__apply-button:hover .submit-button__content,
+.facets-drawer__apply-button:active .submit-button__content {
+  background-color: var(--color-accent-pink);
 }
 
 .facets__form {
@@ -802,6 +784,12 @@ details[open] .facets__summary {
 
 .facets__reset:hover {
   color: black;
+}
+
+.facets__reset.is-clearing {
+  pointer-events: none;
+  opacity: 0.6;
+  text-decoration: none;
 }
 
 .facets-wrap {

@@ -258,6 +258,7 @@ class CartDrawer extends HTMLElement {
             const isUnavailable = !variant;
             const baseClass = 'cart-drawer__edit-variant-btn';
             const classes = [
+              'share-story-submit',
               baseClass,
               isSelected ? 'is-selected' : '',
               isUnavailable ? 'cart-drawer__edit-variant-btn--unavailable' : '',
@@ -266,7 +267,12 @@ class CartDrawer extends HTMLElement {
               .join(' ');
             return `<button type="button" class="${classes}" data-edit-variant-btn data-variant-id="${
               variant ? variant.id : ''
-            }"${isUnavailable ? ' disabled aria-disabled="true"' : ''}>${escapeHtml(value)}</button>`;
+            }"${isUnavailable ? ' disabled aria-disabled="true"' : ''}>
+              <span class="submit-button__shadow"></span>
+              <span class="submit-button__content">
+                <span class="submit-button__text">${escapeHtml(value)}</span>
+              </span>
+            </button>`;
           })
           .join('');
         return `<div class="cart-drawer__edit-option-row">${buttons}</div>`;
