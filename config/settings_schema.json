@@ -571,30 +571,6 @@
         "unit": "%",
         "default": 5,
         "info": "How early scroll animations start on mobile. Lower values trigger sooner."
-      },
-      {
-        "type": "header",
-        "content": "Legacy tokens"
-      },
-      {
-        "type": "range",
-        "id": "animation_duration_in_ms",
-        "label": "Base animation duration",
-        "min": 80,
-        "max": 600,
-        "step": 20,
-        "unit": "ms",
-        "default": 200
-      },
-      {
-        "type": "range",
-        "id": "animation_easing_opacity",
-        "label": "Opacity emphasis (0–1, uses opacity tokens in CSS)",
-        "min": 0,
-        "max": 100,
-        "step": 5,
-        "unit": "%",
-        "default": 75
       }
     ]
   },
