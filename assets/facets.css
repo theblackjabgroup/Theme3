@@ -681,7 +681,7 @@ facet-filters-form.facets .facets__form {
   padding: 7px 20px !important;
   border-radius: 50px !important;
   border: 2px solid black !important;
-  background-color: var(--color-header-button-background) !important;
+  background-color: var(--color-card-bg) !important;
   color: black !important;
   font-family: var(--font-body-family);
   font-weight: 700;
@@ -917,7 +917,7 @@ details[open] .facets__summary {
   padding: 10px 40px 10px 20px !important;
   border-radius: 50px !important;
   border: 2px solid black !important;
-  background-color: var(--color-header-button-background) !important;
+  background-color: var(--color-card-bg) !important;
   font-family: var(--font-body-family);
   font-weight: 700;
   font-size: 1.2rem;

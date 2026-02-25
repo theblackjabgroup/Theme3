@@ -1,0 +1,151 @@
+{% comment %}
+  Renders a scrolling text strip.
+  Accepts:
+  - id: {String} Unique ID for the strip
+  - speed: {Number} Speed in seconds
+  - direction: {String} 'normal' or 'reverse'
+  - pause_on_hover: {Boolean}
+  - bg_color: {String}
+  - border_radius: {Number}
+  - padding: {Number}
+  - text_size: {Number}
+  - text_weight: {String}
+  - pill_bg: {String}
+  - pill_color: {String}
+  - pill_height: {Number}
+  - pill_width: {Number}
+  - pill_radius: {Number}
+  - item_gap: {Number}
+  - orbit_speed: {Number}
+  - orbit_direction: {String} 'normal' or 'reverse'
+  - orbit_font_size: {Number}
+  - orbit_text_gap: {Number}
+  - orbit_color: {String}
+  - orbit_text_transform: {String}
+  - circle_width: {Number}
+  - circle_height: {Number}
+  - circle_bg: {String}
+  - icon_width: {Number}
+  - icon_height: {Number}
+  - circle_icon: {Object} Image object
+  - orbit_text: {String}
+  - text: {String}
+{% endcomment %}
+
+{%- liquid
+  assign scroll_dir = direction | default: 'normal'
+  assign orbit_dir = orbit_direction | default: 'normal'
+  assign speed = speed | default: 30
+  assign bg_color = bg_color | default: 'transparent'
+  assign border_radius = border_radius | default: 0
+  assign padding = padding | default: 8
+  assign text_size = text_size | default: 24
+  assign text_weight = text_weight | default: '700'
+  assign pill_bg = pill_bg | default: '#2E473E'
+  assign pill_color = pill_color | default: '#E8E4DC'
+  assign pill_height = pill_height | default: 44
+  assign pill_width = pill_width | default: 0
+  assign pill_radius = pill_radius | default: 14
+  assign item_gap = item_gap | default: 32
+  assign orbit_speed = orbit_speed | default: 20
+  assign orbit_font_size = orbit_font_size | default: 10
+  assign orbit_text_gap = orbit_text_gap | default: 8
+  assign orbit_color = orbit_color | default: '#2E473E'
+  assign orbit_text_transform = orbit_text_transform | default: 'uppercase'
+  assign circle_width = circle_width | default: 56
+  assign circle_height = circle_height | default: 56
+  assign circle_bg = circle_bg | default: '#E0A8B8'
+  assign icon_width = icon_width | default: 100
+  assign icon_height = icon_height | default: 100
+  assign p_px = pill_padding_x | default: 20
+  assign p_py = pill_padding_y | default: 8
+  assign t_tf = text_transform | default: 'uppercase'
+-%}
+
+<div
+  class="marquee-scroll__strip{% if pause_on_hover %} marquee-scroll__strip--pause-on-hover{% endif %}"
+  {{ shopify_attributes }}
+  data-block-id="{{ id }}"
+  style="
+    --marquee-speed: {{ speed }}s;
+    --marquee-direction: {{ scroll_dir }};
+    --marquee-bg: {{ bg_color }};
+    --strip-border-radius: {{ border_radius }}px;
+    --marquee-padding: {{ padding }}px;
+    --text-font-size: {{ text_size }}px;
+    --text-font-weight: {{ text_weight }};
+    --pill-bg: {{ pill_bg }};
+    --pill-color: {{ pill_color }};
+    --pill-height: {{ pill_height }}px;
+    --pill-width: {{ pill_width }}px;
+    --pill-border-radius: {{ pill_radius }}px;
+    --pill-padding-x: {{ p_px }}px;
+    --pill-padding-y: {{ p_py }}px;
+    --pill-text-transform: {{ t_tf }};
+    --item-gap: {{ item_gap }}px;
+    --orbit-speed: {{ orbit_speed }}s;
+    --orbit-direction: {{ orbit_dir }};
+    --orbit-font-size: {{ orbit_font_size }}px;
+    --orbit-text-gap: {{ orbit_text_gap }}px;
+    --orbit-color: {{ orbit_color }};
+    --orbit-text-transform: {{ orbit_text_transform | default: t_tf }};
+    --circle-width: {{ circle_width }}px;
+    --circle-height: {{ circle_height }}px;
+    --circle-bg: {{ circle_bg }};
+    --icon-width: {{ icon_width }}%;
+    --icon-height: {{ icon_height }}%;
+  "
+>
+  <div class="marquee-scroll__track">
+    {%- for content_copy in (1..2) -%}
+      {%- liquid
+        if content_copy == 1
+          assign orbit_path_prefix = 'orbit-path-' | append: id | append: '-'
+          assign content_aria_hidden = false
+        else
+          assign orbit_path_prefix = 'orbit-path-dup-' | append: id | append: '-'
+          assign content_aria_hidden = true
+        endif
+      -%}
+      <div
+        class="marquee-scroll__content"
+        {% if content_aria_hidden %}
+          aria-hidden="true"
+        {% endif %}
+      >
+        {%- for i in (1..12) -%}
+          <div class="marquee-scroll__group">
+            <span class="marquee-scroll__orbit">
+              <span class="marquee-scroll__orbit-ring">
+                <svg class="marquee-scroll__orbit-svg" viewBox="0 0 120 120" aria-hidden="true">
+                  <defs>
+                    <path id="{{ orbit_path_prefix }}{{ i }}" d="M 18,60 A 42,42 0 0 1 102,60 A 42,42 0 0 1 18,60" fill="none" />
+                  </defs>
+                  <g class="marquee-scroll__orbit-track">
+                    <text>
+                      <textPath href="#{{ orbit_path_prefix }}{{ i }}">
+                        {{ orbit_text }} {{ orbit_text }} {{ orbit_text }} {{ orbit_text }} {{ orbit_text }} {{ orbit_text }}
+                      </textPath>
+                    </text>
+                  </g>
+                </svg>
+              </span>
+              <span class="marquee-scroll__orbit-center">
+                {%- if circle_icon != blank -%}
+                  {{
+                    circle_icon
+                    | image_url: width: 96
+                    | image_tag: class: 'marquee-scroll__icon', loading: 'lazy', alt: ''
+                  }}
+                {%- else -%}
+                  <span class="marquee-scroll__icon-placeholder"></span>
+                {%- endif -%}
+              </span>
+            </span>
+            <span class="marquee-scroll__pill">{{ text }}</span>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</div>

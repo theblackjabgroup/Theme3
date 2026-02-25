@@ -12,8 +12,8 @@
     margin-bottom: {{ section.settings.margin_bottom | times: 0.75 | round: 0 }}px;
     margin-left: {{ section.settings.margin_horizontal | times: 0.75 | round: 0 }}px;
     margin-right: {{ section.settings.margin_horizontal | times: 0.75 | round: 0 }}px;
-    background-color: {{ section.settings.bg_color }};
-    --heading-color: {{ section.settings.heading_color }};
+    background-color: var(--color-bg);
+    --heading-color: var(--color-heading);
   }
 
   @media screen and (min-width: 750px) {
@@ -108,7 +108,7 @@
   }
 {%- endstyle -%}
 
-<div class="section-{{ section.id }}-padding" style="max-width: 100%;">
+<div class="color-{{ section.settings.color_scheme }} section-{{ section.id }}-padding" style="max-width: 100%;">
   {%- if section.settings.heading != blank -%}
     <h2 class="sc-heading h1">{{ section.settings.heading }}</h2>
   {%- endif -%}
@@ -199,7 +199,12 @@
   "name": "Tech Specs",
   "tag": "section",
   "class": "section",
-  "disabled_on": { "groups": ["header", "footer"] },
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  },
   "settings": [
     {
       "type": "text",
@@ -211,16 +216,10 @@
       "content": "Colors"
     },
     {
-      "type": "color",
-      "id": "bg_color",
-      "label": "Section Background",
-      "default": "#D2CDC4"
-    },
-    {
-      "type": "color",
-      "id": "heading_color",
-      "label": "Heading Color",
-      "default": "#000000"
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
     },
     {
       "type": "header",
@@ -241,11 +240,26 @@
       "id": "heading_font_weight",
       "label": "Heading font weight",
       "options": [
-        { "value": "400", "label": "Normal" },
-        { "value": "500", "label": "Medium" },
-        { "value": "600", "label": "Semi-bold" },
-        { "value": "700", "label": "Bold" },
-        { "value": "800", "label": "Extra bold" }
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        },
+        {
+          "value": "800",
+          "label": "Extra bold"
+        }
       ],
       "default": "700"
     },
@@ -264,11 +278,26 @@
       "id": "eyebrow_font_weight",
       "label": "Eyebrow/Tag font weight",
       "options": [
-        { "value": "400", "label": "Normal" },
-        { "value": "500", "label": "Medium" },
-        { "value": "600", "label": "Semi-bold" },
-        { "value": "700", "label": "Bold" },
-        { "value": "800", "label": "Extra bold" }
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        },
+        {
+          "value": "800",
+          "label": "Extra bold"
+        }
       ],
       "default": "700"
     },
@@ -287,11 +316,26 @@
       "id": "title_font_weight",
       "label": "Card title font weight",
       "options": [
-        { "value": "400", "label": "Normal" },
-        { "value": "500", "label": "Medium" },
-        { "value": "600", "label": "Semi-bold" },
-        { "value": "700", "label": "Bold" },
-        { "value": "800", "label": "Extra bold" }
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        },
+        {
+          "value": "800",
+          "label": "Extra bold"
+        }
       ],
       "default": "700"
     },
@@ -310,10 +354,22 @@
       "id": "body_font_weight",
       "label": "Body text font weight",
       "options": [
-        { "value": "400", "label": "Normal" },
-        { "value": "500", "label": "Medium" },
-        { "value": "600", "label": "Semi-bold" },
-        { "value": "700", "label": "Bold" }
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
       ],
       "default": "400"
     },
@@ -332,10 +388,22 @@
       "id": "list_font_weight",
       "label": "List items font weight",
       "options": [
-        { "value": "400", "label": "Normal" },
-        { "value": "500", "label": "Medium" },
-        { "value": "600", "label": "Semi-bold" },
-        { "value": "700", "label": "Bold" }
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
       ],
       "default": "400"
     },
@@ -354,11 +422,26 @@
       "id": "tooltip_font_weight",
       "label": "Tooltip font weight",
       "options": [
-        { "value": "400", "label": "Normal" },
-        { "value": "500", "label": "Medium" },
-        { "value": "600", "label": "Semi-bold" },
-        { "value": "700", "label": "Bold" },
-        { "value": "800", "label": "Extra bold" }
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        },
+        {
+          "value": "800",
+          "label": "Extra bold"
+        }
       ],
       "default": "700"
     },
@@ -377,11 +460,26 @@
       "id": "goal_label_font_weight",
       "label": "Goal label font weight",
       "options": [
-        { "value": "400", "label": "Normal" },
-        { "value": "500", "label": "Medium" },
-        { "value": "600", "label": "Semi-bold" },
-        { "value": "700", "label": "Bold" },
-        { "value": "800", "label": "Extra bold" }
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        },
+        {
+          "value": "800",
+          "label": "Extra bold"
+        }
       ],
       "default": "800"
     },

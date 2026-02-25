@@ -164,7 +164,7 @@
 .contact-page__left-card {
   display: flex;
   flex-direction: column;
-  background: var(--color-header-button-background);
+  background: var(--color-card-bg);
   border: none;
   border-radius: var(--contact-card-radius, 12px);
   overflow: hidden;
@@ -281,7 +281,7 @@
 
 /* Right column and other cards (form) keep generic card style */
 .contact-page__card {
-  background: var(--color-header-button-background);
+  background: var(--color-card-bg);
   border-radius: var(--contact-card-radius, 20px);
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);

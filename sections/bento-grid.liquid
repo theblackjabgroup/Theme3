@@ -13,7 +13,7 @@
   {%- if section.settings.section_background_color != blank and section.settings.section_background_color != 'rgba(0,0,0,0)' -%}
   #bento-grid-{{ section.id }}.bento-grid-container,
   #bento-grid-{{ section.id }}.bento-grid-container.color-{{ scheme.id }} {
-    background-color: {{ section.settings.section_background_color }} !important;
+    background-color: {{ section.settings.section_background_color }};
   }
   {%- endif -%}
 
@@ -116,7 +116,7 @@
   data-page-load-stagger="0"
   data-page-load-scale="0.82"
   data-page-load-origin="center bottom"
-  style="{%- unless section.settings.section_background_color != blank and section.settings.section_background_color != 'rgba(0,0,0,0)' -%}background-color: {{ scheme.settings.background }} !important; {%- endunless -%}color: {{ scheme.settings.text }} !important;"
+  style=""
 >
   <div class="bento-grid">
     {%- for block in section.blocks -%}
@@ -133,8 +133,8 @@
         {%- case block.type -%}
           {%- when 'search_card' -%}
             <div
-              class="bento-card search-card"
-              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %}"
+              class="bento-card search-card color-{{ block.settings.color_scheme.id }} gradient"
+              style=""
               onclick="window.location.href='{{ routes.search_url }}'"
             >
               <svg class="search-icon" viewBox="0 0 24 24">
@@ -145,8 +145,8 @@
 
           {%- when 'login_card' -%}
             <div
-              class="bento-card login-card"
-              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %}"
+              class="bento-card login-card color-{{ block.settings.color_scheme.id }} gradient"
+              style=""
               onclick="window.location.href='{{ routes.account_url }}'"
             >
               <div class="login-content">
@@ -185,8 +185,8 @@
               | default: heading_font_weight
             -%}
             <div
-              class="bento-card generic-card{% if has_image %} has-image{% endif %}"
-              style="{% if block.settings.image != blank %} background-image: url('{{ block.settings.image | image_url: width: 1000 }}');{% elsif block.settings.external_image_url != blank %} background-image: url('{{ block.settings.external_image_url }}');{% endif %}{% if block.settings.card_background_color != blank %} background-color: {{ block.settings.card_background_color }};{% endif %} --desktop-heading-font-size: {{ heading_font_size }}px; --desktop-heading-font-weight: {{ heading_font_weight }}; --mobile-heading-font-size: {{ mobile_heading_font_size }}px; --mobile-heading-font-weight: {{ mobile_heading_font_weight }};"
+              class="bento-card generic-card{% if has_image %} has-image{% endif %} color-{{ block.settings.color_scheme.id }} gradient"
+              style="{% if block.settings.image != blank %} background-image: url(\'{{ block.settings.image | image_url: width: 1000 }}\');{% elsif block.settings.external_image_url != blank %} background-image: url(\'{{ block.settings.external_image_url }}\');{% endif %} --desktop-heading-font-size: {{ heading_font_size }}px; --desktop-heading-font-weight: {{ heading_font_weight }}; --mobile-heading-font-size: {{ mobile_heading_font_size }}px; --mobile-heading-font-weight: {{ mobile_heading_font_weight }};"
               {% if block.settings.link != blank %}
                 onclick="window.location.href='{{ block.settings.link }}'"
               {% endif %}
@@ -215,8 +215,8 @@
             {%- assign mobile_tag_text_gap = block.settings.mobile_text_group_gap | default: 0 -%}
             {%- comment -%} Determine border color - use card_border_color if set, otherwise match background color {%- endcomment -%}
             {%- assign border_color = block.settings.card_border_color -%}
-            {%- if border_color == blank and block.settings.card_background_color != blank -%}
-              {%- assign border_color = block.settings.card_background_color -%}
+            {%- if border_color == blank -%}
+              {%- assign border_color = 'currentColor' -%}
             {%- endif -%}
             {%- assign tag_card_is_link = false -%}
             {%- if block.settings.use_as_link and block.settings.link_url != blank -%}
@@ -225,25 +225,19 @@
             {%- if tag_card_is_link -%}
               <a
                 href="{{ block.settings.link_url }}"
-                class="bento-card tag-card tag-card--link tag-card--{{ direction }} tag-card--align-{{ align }} tag-card--valign-{{ vertical_align }}{% if block.settings.card_background_color != blank %} has-custom-background{% endif %}"
-                style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %}{% if border_color != blank %} border-color: {{ border_color }};{% endif %}{% if block.settings.card_text_color != blank %} color: {{ block.settings.card_text_color }};{% endif %} --tag-card-padding-y: {{ tag_padding_y }}px; --tag-card-padding-x: {{ tag_padding_x }}px; --tag-card-inner-gap: {{ tag_inner_gap }}px; --tag-card-text-gap: {{ tag_text_gap }}px; --tag-card-mobile-padding-y: {{ mobile_tag_padding_y }}px; --tag-card-mobile-padding-x: {{ mobile_tag_padding_x }}px; --tag-card-mobile-inner-gap: {{ mobile_tag_inner_gap }}px; --tag-card-mobile-text-gap: {{ mobile_tag_text_gap }}px;"
+                class="bento-card tag-card tag-card--link tag-card--{{ direction }} tag-card--align-{{ align }} tag-card--valign-{{ vertical_align }} color-{{ block.settings.color_scheme.id }} gradient{% if block.settings.reverse_colors %} is-reversed{% endif %}"
+                style="{% if border_color != blank %} border-color: {{ border_color }};{% endif %} --tag-card-padding-y: {{ tag_padding_y }}px; --tag-card-padding-x: {{ tag_padding_x }}px; --tag-card-inner-gap: {{ tag_inner_gap }}px; --tag-card-text-gap: {{ tag_text_gap }}px; --tag-card-mobile-padding-y: {{ mobile_tag_padding_y }}px; --tag-card-mobile-padding-x: {{ mobile_tag_padding_x }}px; --tag-card-mobile-inner-gap: {{ mobile_tag_inner_gap }}px; --tag-card-mobile-text-gap: {{ mobile_tag_text_gap }}px;"
                 data-mobile-direction="{{ mobile_direction }}"
                 data-mobile-align="{{ mobile_align }}"
                 data-mobile-vertical-align="{{ mobile_vertical_align }}"
-                {% if block.settings.card_background_color != blank %}
-                  data-background-color="{{ block.settings.card_background_color }}"
-                {% endif %}
               >
             {%- else -%}
               <div
-                class="bento-card tag-card tag-card--{{ direction }} tag-card--align-{{ align }} tag-card--valign-{{ vertical_align }}{% if block.settings.card_background_color != blank %} has-custom-background{% endif %}"
-                style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %}{% if border_color != blank %} border-color: {{ border_color }};{% endif %}{% if block.settings.card_text_color != blank %} color: {{ block.settings.card_text_color }};{% endif %} --tag-card-padding-y: {{ tag_padding_y }}px; --tag-card-padding-x: {{ tag_padding_x }}px; --tag-card-inner-gap: {{ tag_inner_gap }}px; --tag-card-text-gap: {{ tag_text_gap }}px; --tag-card-mobile-padding-y: {{ mobile_tag_padding_y }}px; --tag-card-mobile-padding-x: {{ mobile_tag_padding_x }}px; --tag-card-mobile-inner-gap: {{ mobile_tag_inner_gap }}px; --tag-card-mobile-text-gap: {{ mobile_tag_text_gap }}px;"
+                class="bento-card tag-card tag-card--{{ direction }} tag-card--align-{{ align }} tag-card--valign-{{ vertical_align }} color-{{ block.settings.color_scheme.id }} gradient{% if block.settings.reverse_colors %} is-reversed{% endif %}"
+                style="{% if border_color != blank %} border-color: {{ border_color }};{% endif %} --tag-card-padding-y: {{ tag_padding_y }}px; --tag-card-padding-x: {{ tag_padding_x }}px; --tag-card-inner-gap: {{ tag_inner_gap }}px; --tag-card-text-gap: {{ tag_text_gap }}px; --tag-card-mobile-padding-y: {{ mobile_tag_padding_y }}px; --tag-card-mobile-padding-x: {{ mobile_tag_padding_x }}px; --tag-card-mobile-inner-gap: {{ mobile_tag_inner_gap }}px; --tag-card-mobile-text-gap: {{ mobile_tag_text_gap }}px;"
                 data-mobile-direction="{{ mobile_direction }}"
                 data-mobile-align="{{ mobile_align }}"
                 data-mobile-vertical-align="{{ mobile_vertical_align }}"
-                {% if block.settings.card_background_color != blank %}
-                  data-background-color="{{ block.settings.card_background_color }}"
-                {% endif %}
               >
             {%- endif -%}
             <div class="tag-card-inner">
@@ -264,15 +258,15 @@
                       --mobile-tag-font-size: {{ mobile_tag_font_size }}px;
                       --mobile-tag-font-weight: {{ mobile_tag_font_weight }};
                       {%- if tag_style == 'filled' and block.settings.tag_bg_color != blank -%}
-                        background: {{ block.settings.tag_bg_color }} !important;
+                        background: {{ block.settings.tag_bg_color }};
                       {%- endif -%}
                       {%- if tag_style == 'border' and block.settings.tag_border_color != blank -%}
-                        border-color: {{ block.settings.tag_border_color }} !important;
+                        border-color: {{ block.settings.tag_border_color }};
                       {%- endif -%}
                       {%- if block.settings.tag_text_color != blank -%}
-                        color: {{ block.settings.tag_text_color }} !important;
+                        color: {{ block.settings.tag_text_color }};
                       {%- elsif tag_style == 'border' and block.settings.tag_border_color != blank -%}
-                        color: {{ block.settings.tag_border_color }} !important;
+                        color: {{ block.settings.tag_border_color }};
                       {%- endif -%}
                     "
                   >
@@ -299,7 +293,7 @@
                     {%- assign words = plain_text | split: ' ' -%}
                     <h3
                       class="tag-card-main tag-card-main--heading"
-                      style="--desktop-main-font-size: {{ main_font_size }}px; --desktop-main-font-weight: {{ main_font_weight }}; --desktop-main-line-height: {{ main_line_height }}; --mobile-main-font-size: {{ mobile_main_font_size }}px; --mobile-main-font-weight: {{ mobile_main_font_weight }}; --mobile-main-line-height: {{ mobile_main_line_height }};{%- if block.settings.main_text_color != blank %} color: {{ block.settings.main_text_color }} !important;{% endif %}"
+                      style="--desktop-main-font-size: {{ main_font_size }}px; --desktop-main-font-weight: {{ main_font_weight }}; --desktop-main-line-height: {{ main_line_height }}; --mobile-main-font-size: {{ mobile_main_font_size }}px; --mobile-main-font-weight: {{ mobile_main_font_weight }}; --mobile-main-line-height: {{ mobile_main_line_height }};{%- if block.settings.main_text_color != blank %} color: {{ block.settings.main_text_color }};{% endif %}"
                     >
                       {%- for word in words -%}
                         <span class="tag-card-word">{{ word }}</span>
@@ -309,7 +303,7 @@
                   {%- else -%}
                     <div
                       class="tag-card-main tag-card-main--paragraph"
-                      style="--desktop-main-font-size: {{ main_font_size }}px; --desktop-main-font-weight: {{ main_font_weight }}; --desktop-main-line-height: {{ main_line_height }}; --mobile-main-font-size: {{ mobile_main_font_size }}px; --mobile-main-font-weight: {{ mobile_main_font_weight }}; --mobile-main-line-height: {{ mobile_main_line_height }};{%- if block.settings.main_text_color != blank %} color: {{ block.settings.main_text_color }} !important;{% endif %}"
+                      style="--desktop-main-font-size: {{ main_font_size }}px; --desktop-main-font-weight: {{ main_font_weight }}; --desktop-main-line-height: {{ main_line_height }}; --mobile-main-font-size: {{ mobile_main_font_size }}px; --mobile-main-font-weight: {{ mobile_main_font_weight }}; --mobile-main-line-height: {{ mobile_main_line_height }};{%- if block.settings.main_text_color != blank %} color: {{ block.settings.main_text_color }};{% endif %}"
                     >
                       {{ block.settings.main_text }}
                     </div>
@@ -464,12 +458,11 @@
               | default: sprite_vertical_alignment
             -%}
             <div
-              class="bento-card content-card content-card--{{ direction }} content-card--align-{{ align }} content-card--valign-{{ vertical_align }}{% if enable_spritesheet %} has-spritesheet{% if sprite_direction == 'vertical' %}-vertical{% endif %}{% endif %}{% if block.settings.enable_3d_effect %} enable-3d{% endif %}"
+              class="bento-card content-card color-{{ block.settings.color_scheme.id }} gradient content-card--{{ direction }} content-card--align-{{ align }} content-card--valign-{{ vertical_align }}{% if enable_spritesheet %} has-spritesheet{% if sprite_direction == 'vertical' %}-vertical{% endif %}{% endif %}{% if block.settings.enable_3d_effect %} enable-3d{% endif %}"
               data-mobile-direction="{{ mobile_direction }}"
               data-mobile-align="{{ mobile_align }}"
               data-mobile-vertical-align="{{ mobile_vertical_align }}"
               style="
-                {% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %}
                 --desktop-tag-font-size: {{ tag_font_size }}px;
                 --desktop-tag-font-weight: {{ tag_font_weight }};
                 --mobile-tag-font-size: {{ mobile_tag_font_size }}px;
@@ -564,10 +557,15 @@
           {%- when 'button_card' -%}
             {%- assign label = block.settings.label | default: 'Button' -%}
             <div
-              class="bento-card button-card"
-              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %}"
+              class="bento-card button-card color-{{ block.settings.color_scheme.id }} gradient"
+              style=""
             >
-              {%- render 'submit-button', text: label, url: block.settings.link, class: 'button-card-button' -%}
+              {%- render 'global-btn',
+                text: label,
+                url: block.settings.link,
+                variant: block.settings.button_variant,
+                class: 'button-card-button'
+              -%}
             </div>
 
           {%- when 'text_card' -%}
@@ -592,8 +590,8 @@
             {%- assign mobile_button_weight = block.settings.mobile_button_font_weight | default: button_weight -%}
             {%- assign heading_color = block.settings.heading_text_color | default: '#306030' -%}
             <div
-              class="bento-card text-card text-card--align-{{ align }} text-card--valign-{{ vertical_align }}"
-              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %} --text-card-heading-color: {{ heading_color }}; --desktop-heading-font-size: {{ heading_size }}px; --desktop-heading-font-weight: {{ heading_weight }}; --mobile-heading-font-size: {{ mobile_heading_size }}px; --mobile-heading-font-weight: {{ mobile_heading_weight }}; --desktop-paragraph-font-size: {{ para_size }}px; --desktop-paragraph-font-weight: {{ para_weight }}; --desktop-paragraph-line-height: {{ para_line_height }}; --mobile-paragraph-font-size: {{ mobile_para_size }}px; --mobile-paragraph-font-weight: {{ mobile_para_weight }}; --mobile-paragraph-line-height: {{ mobile_para_line_height }}; --desktop-button-font-size: {{ button_size }}px; --desktop-button-font-weight: {{ button_weight }}; --mobile-button-font-size: {{ mobile_button_size }}px; --mobile-button-font-weight: {{ mobile_button_weight }};"
+              class="bento-card text-card color-{{ block.settings.color_scheme.id }} gradient text-card--align-{{ align }} text-card--valign-{{ vertical_align }}"
+              style="  --desktop-heading-font-size: {{ heading_size }}px; --desktop-heading-font-weight: {{ heading_weight }}; --mobile-heading-font-size: {{ mobile_heading_size }}px; --mobile-heading-font-weight: {{ mobile_heading_weight }}; --desktop-paragraph-font-size: {{ para_size }}px; --desktop-paragraph-font-weight: {{ para_weight }}; --desktop-paragraph-line-height: {{ para_line_height }}; --mobile-paragraph-font-size: {{ mobile_para_size }}px; --mobile-paragraph-font-weight: {{ mobile_para_weight }}; --mobile-paragraph-line-height: {{ mobile_para_line_height }}; --desktop-button-font-size: {{ button_size }}px; --desktop-button-font-weight: {{ button_weight }}; --mobile-button-font-size: {{ mobile_button_size }}px; --mobile-button-font-weight: {{ mobile_button_weight }};"
             >
               <div class="text-card-inner">
                 {%- if block.settings.enable_svg and block.settings.svg_icon != blank -%}
@@ -610,7 +608,7 @@
                 {%- endif -%}
 
                 {%- if block.settings.enable_heading and block.settings.heading != blank -%}
-                  <h3 class="text-card-heading" style="color: var(--text-card-heading-color, {{ heading_color }});">
+                  <h3 class="text-card-heading" style="color: var(--color-heading, {{ heading_color }});">
                     {{ block.settings.heading }}
                   </h3>
                 {%- endif -%}
@@ -623,7 +621,7 @@
 
                 {%- if block.settings.button_text != blank -%}
                   <div class="text-card-button-wrapper text-card-button--align-{{ button_align }}">
-                    {%- render 'submit-button',
+                    {%- render 'global-btn',
                       text: block.settings.button_text,
                       url: block.settings.button_link,
                       class: 'text-card-button'
@@ -645,8 +643,8 @@
             -%}
             {%- assign title_text_color = block.settings.title_text_color | default: 'inherit' -%}
             <div
-              class="bento-card product-card product-card--align-{{ align }} product-card--valign-{{ vertical_align }}"
-              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %} --desktop-title-font-size: {{ title_font_size }}px; --desktop-title-font-weight: {{ title_font_weight }}; --mobile-title-font-size: {{ mobile_title_font_size }}px; --mobile-title-font-weight: {{ mobile_title_font_weight }}; --title-text-color: {{ title_text_color }};"
+              class="bento-card product-card color-{{ block.settings.color_scheme.id }} gradient product-card--align-{{ align }} product-card--valign-{{ vertical_align }}"
+              style=" --desktop-title-font-size: {{ title_font_size }}px; --desktop-title-font-weight: {{ title_font_weight }}; --mobile-title-font-size: {{ mobile_title_font_size }}px; --mobile-title-font-weight: {{ mobile_title_font_weight }}; --color-headings: {{ title_text_color }};"
               {% if product != blank and product.url != blank %}
                 onclick="window.location.href='{{ product.url }}'"
               {% endif %}
@@ -666,9 +664,11 @@
                   {%- endif -%}
 
                   {%- if product != blank and product.title != blank -%}
-                    <div class="product-card-title" style="color: var(--title-text-color);">{{ product.title }}</div>
+                    <div class="product-card-title">
+                      {{ product.title }}
+                    </div>
                   {%- elsif product == blank -%}
-                    <div class="product-card-title" style="color: var(--title-text-color);">Product Name</div>
+                    <div class="product-card-title">Product Name</div>
                   {%- endif -%}
 
                   {%- if product != blank and product.featured_image != blank -%}
@@ -711,8 +711,8 @@
           {%- when 'video_card' -%}
             {%- assign video_hover_scale_pct = block.settings.video_hover_scale | default: 85 -%}
             <div
-              class="bento-card video-card"
-              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %}{% if block.settings.card_border_color != blank %}--video-border-color: {{ block.settings.card_border_color }};{% endif %}{% if block.settings.card_border_hover_color != blank %}--video-border-hover-color: {{ block.settings.card_border_hover_color }};{% endif %}--video-hover-scale: {{ video_hover_scale_pct | divided_by: 100.0 }};"
+              class="bento-card video-card color-{{ block.settings.color_scheme.id }} gradient"
+              style="{% if block.settings.card_border_color != blank %}--video-border-color: {{ block.settings.card_border_color }};{% endif %}{% if block.settings.card_border_hover_color != blank %}--video-border-hover-color: {{ block.settings.card_border_hover_color }};{% endif %}--video-hover-scale: {{ video_hover_scale_pct | divided_by: 100.0 }};"
             >
               {%- assign has_video = false -%}
               {%- case block.settings.video_source -%}
@@ -759,7 +759,7 @@
               {%- if block.settings.marquee_text != blank -%}
                 <div
                   class="video-marquee"
-                  style="{% if block.settings.scrolling_text_background_color != blank %}background-color: {{ block.settings.scrolling_text_background_color }} !important;{% endif %}{% if block.settings.scrolling_text_text_color != blank %} --marquee-text-color: {{ block.settings.scrolling_text_text_color }};{% endif %}"
+                  style="{% if block.settings.scrolling_text_background_color != blank %}background-color: {{ block.settings.scrolling_text_background_color }};{% endif %}{% if block.settings.scrolling_text_text_color != blank %} --marquee-text-color: {{ block.settings.scrolling_text_text_color }};{% endif %}"
                 >
                   <div class="video-marquee-track">
                     <span class="video-marquee-item">{{ block.settings.marquee_text }}</span>
@@ -804,65 +804,70 @@
             </div>
 
           {%- when 'toggle_card' -%}
-            {%- assign toggle_size = block.settings.toggle_size | default: 60 -%}
-            {%- assign mobile_toggle_size = block.settings.mobile_toggle_size | default: toggle_size -%}
-            {%- assign icon_size = block.settings.icon_size | default: 24 -%}
-            {%- assign mobile_icon_size = block.settings.mobile_icon_size | default: icon_size -%}
-            {%- assign toggle_bg_color = block.settings.toggle_bg_color | default: '#f0f0f0' -%}
-            {%- assign toggle_active_bg_color = block.settings.toggle_active_bg_color | default: '#1a1a1a' -%}
-            {%- assign toggle_knob_color = block.settings.toggle_knob_color | default: '#ffffff' -%}
-            {%- assign sun_color = block.settings.sun_color | default: '#ffa500' -%}
-            {%- assign moon_color = block.settings.moon_color | default: '#ffffff' -%}
+            {%- assign orientation = block.settings.toggle_orientation | default: 'vertical' -%}
+            {%- assign label_off = block.settings.label_off | default: 'SWITCH TO LIGHT' -%}
+            {%- assign label_on = block.settings.label_on | default: 'SWITCH TO DARK' -%}
+            {%- assign svg_off = block.settings.svg_off -%}
+            {%- assign svg_on = block.settings.svg_on -%}
+
             <div
-              class="bento-card toggle-card"
-              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %} --toggle-size: {{ toggle_size }}px; --mobile-toggle-size: {{ mobile_toggle_size }}px; --icon-size: {{ icon_size }}px; --mobile-icon-size: {{ mobile_icon_size }}px; --toggle-bg: {{ toggle_bg_color }}; --toggle-active-bg: {{ toggle_active_bg_color }}; --toggle-knob: {{ toggle_knob_color }}; --sun-color: {{ sun_color }}; --moon-color: {{ moon_color }};"
+              class="bento-card toggle-card toggle-card--{{ orientation }} color-{{ block.settings.color_scheme.id }} gradient"
               data-toggle-card
             >
-              <div class="toggle-switch-wrapper">
-                <label class="toggle-switch" for="toggle-{{ block.id }}">
-                  <input
-                    type="checkbox"
-                    id="toggle-{{ block.id }}"
-                    class="toggle-input"
-                    data-toggle-input
-                    aria-label="Toggle switch"
-                  >
-                  <span class="toggle-slider">
-                    <span class="toggle-icon toggle-icon-sun">
-                      <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      >
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                      </svg>
-                    </span>
-                    <span class="toggle-icon toggle-icon-moon">
-                      <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      >
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                      </svg>
-                    </span>
-                  </span>
-                </label>
-              </div>
+              <label class="toggle-switch-custom" for="toggle-{{ block.id }}">
+                <input
+                  type="checkbox"
+                  id="toggle-{{ block.id }}"
+                  class="toggle-input-hidden"
+                  data-toggle-input
+                  data-scheme-on="color-{{ block.settings.scheme_on.id | default: 'scheme-2' }}"
+                  data-scheme-off="color-{{ block.settings.scheme_off.id | default: 'scheme-1' }}"
+                  {% if block.settings.checked_by_default %}
+                    checked
+                  {% endif %}
+                  aria-label="Toggle switch"
+                >
+                <div class="toggle-ui">
+                  <div class="toggle-labels toggle-labels--top" aria-hidden="true">
+                    <div class="toggle-label-inner toggle-label--on">
+                      {%- assign on_words = label_on | split: ' ' -%}
+                      {%- for word in on_words -%}
+                        <span class="toggle-word">{{ word }}</span>
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                  <div class="toggle-knob">
+                    <div class="toggle-icon-wrapper">
+                      <div class="toggle-icon toggle-icon--off">
+                        {%- if svg_off != blank -%}
+                          {{ svg_off }}
+                        {%- else -%}
+                          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 3V4M12 20V21M4 12H3M21 12H20M18.3636 5.6364L17.6565 6.3435M6.3435 17.6565L5.6364 18.3636M18.3636 18.3636L17.6565 17.6565M6.3435 5.6364L5.6364 6.3435M16 12C16 14.2091 14.2091 16 12 16C9.79086 16 8 14.2091 8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        {%- endif -%}
+                      </div>
+                      <div class="toggle-icon toggle-icon--on">
+                        {%- if svg_on != blank -%}
+                          {{ svg_on }}
+                        {%- else -%}
+                          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="currentColor"/>
+                          </svg>
+                        {%- endif -%}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="toggle-labels toggle-labels--bottom" aria-hidden="true">
+                    <div class="toggle-label-inner toggle-label--off">
+                      {%- assign off_words = label_off | split: ' ' -%}
+                      {%- for word in off_words -%}
+                        <span class="toggle-word">{{ word }}</span>
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                </div>
+              </label>
             </div>
         {%- endcase -%}
       </div>
@@ -873,7 +878,9 @@
 {% schema %}
 {
   "name": "Bento Grid",
-  "disabled_on": { "groups": ["header", "footer"] },
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
   "tag": "section",
   "class": "section",
   "settings": [
@@ -882,12 +889,6 @@
       "id": "color_scheme",
       "label": "Color scheme",
       "default": "scheme-1"
-    },
-    {
-      "type": "color",
-      "id": "section_background_color",
-      "label": "Section Background Color",
-      "info": "Custom background color for the section. If not set, the color scheme background will be used."
     },
     {
       "type": "header",
@@ -984,6 +985,12 @@
       "name": "Generic Card",
       "settings": [
         {
+          "type": "color_scheme",
+          "id": "color_scheme",
+          "label": "Color scheme",
+          "default": "scheme-1"
+        },
+        {
           "type": "image_picker",
           "id": "image",
           "label": "Upload Image"
@@ -1004,13 +1011,6 @@
           "type": "url",
           "id": "link",
           "label": "Link"
-        },
-        {
-          "type": "color",
-          "id": "card_background_color",
-          "label": "Card Background Color",
-          "default": "#ffffff",
-          "info": "Background color for this card"
         },
         {
           "type": "select",
@@ -1047,10 +1047,22 @@
           "id": "heading_font_weight",
           "label": "Heading font weight",
           "options": [
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" }
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi-bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
           ],
           "default": "600"
         },
@@ -1074,10 +1086,22 @@
           "id": "mobile_heading_font_weight",
           "label": "Mobile Heading font weight",
           "options": [
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" }
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi-bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
           ],
           "default": "600"
         },
@@ -1133,11 +1157,10 @@
       "name": "Search",
       "settings": [
         {
-          "type": "color",
-          "id": "card_background_color",
-          "label": "Card Background Color",
-          "default": "#ffffff",
-          "info": "Background color for this card"
+          "type": "color_scheme",
+          "id": "color_scheme",
+          "label": "Color scheme",
+          "default": "scheme-1"
         },
         {
           "type": "header",
@@ -1191,11 +1214,10 @@
       "name": "Login/Welcome",
       "settings": [
         {
-          "type": "color",
-          "id": "card_background_color",
-          "label": "Card Background Color",
-          "default": "#ffffff",
-          "info": "Background color for this card"
+          "type": "color_scheme",
+          "id": "color_scheme",
+          "label": "Color scheme",
+          "default": "scheme-1"
         },
         {
           "type": "header",
@@ -1274,16 +1296,15 @@
       "name": "Content Card",
       "settings": [
         {
+          "type": "color_scheme",
+          "id": "color_scheme",
+          "label": "Color scheme",
+          "default": "scheme-1"
+        },
+        {
           "type": "image_picker",
           "id": "image",
           "label": "Background Image"
-        },
-        {
-          "type": "color",
-          "id": "card_background_color",
-          "label": "Card Background Color",
-          "default": "#1a1a1a",
-          "info": "Background color for this card (shown when no background image is set). Text is white, so use a dark color for visibility."
         },
         {
           "type": "checkbox",
@@ -1328,10 +1349,22 @@
           "id": "tag_font_weight",
           "label": "Tag font weight",
           "options": [
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" }
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi-bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
           ],
           "default": "600"
         },
@@ -1340,8 +1373,14 @@
           "id": "tag_style",
           "label": "Tag style",
           "options": [
-            { "value": "filled", "label": "Filled (with background)" },
-            { "value": "border", "label": "Border (transparent background)" }
+            {
+              "value": "filled",
+              "label": "Filled (with background)"
+            },
+            {
+              "value": "border",
+              "label": "Border (transparent background)"
+            }
           ],
           "default": "border"
         },
@@ -1364,10 +1403,22 @@
           "id": "main_text_font_weight",
           "label": "Main text font weight",
           "options": [
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" }
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi-bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
           ],
           "default": "600"
         },
@@ -1385,12 +1436,6 @@
           "content": "Sub Text Typography"
         },
         {
-          "type": "color",
-          "id": "sub_text_color",
-          "label": "Sub text color",
-          "default": "#ffffff"
-        },
-        {
           "type": "range",
           "id": "sub_text_font_size",
           "min": 8,
@@ -1405,11 +1450,26 @@
           "id": "sub_text_font_weight",
           "label": "Sub text font weight",
           "options": [
-            { "value": "300", "label": "Light" },
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" }
+            {
+              "value": "300",
+              "label": "Light"
+            },
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi-bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
           ],
           "default": "400"
         },
@@ -1442,10 +1502,22 @@
           "id": "mobile_tag_font_weight",
           "label": "Mobile Tag font weight",
           "options": [
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" }
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi-bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
           ],
           "default": "600"
         },
@@ -1465,10 +1537,22 @@
           "id": "mobile_main_text_font_weight",
           "label": "Mobile Main text font weight",
           "options": [
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" }
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi-bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
           ],
           "default": "600"
         },
@@ -1496,11 +1580,26 @@
           "id": "mobile_sub_text_font_weight",
           "label": "Mobile Sub text font weight",
           "options": [
-            { "value": "300", "label": "Light" },
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" }
+            {
+              "value": "300",
+              "label": "Light"
+            },
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi-bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
           ],
           "default": "400"
         },
@@ -1522,8 +1621,14 @@
           "id": "layout_direction",
           "label": "Layout direction",
           "options": [
-            { "value": "column", "label": "Vertical (column)" },
-            { "value": "row", "label": "Horizontal (row)" }
+            {
+              "value": "column",
+              "label": "Vertical (column)"
+            },
+            {
+              "value": "row",
+              "label": "Horizontal (row)"
+            }
           ],
           "default": "column",
           "info": "Choose how text and sprite are arranged: column (stacked) or row (side-by-side)"
@@ -1537,9 +1642,18 @@
           "id": "content_alignment",
           "label": "Horizontal alignment",
           "options": [
-            { "value": "left", "label": "Left" },
-            { "value": "center", "label": "Center" },
-            { "value": "right", "label": "Right" }
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
           ],
           "default": "left"
         },
@@ -1548,9 +1662,18 @@
           "id": "vertical_alignment",
           "label": "Vertical alignment",
           "options": [
-            { "value": "top", "label": "Top" },
-            { "value": "center", "label": "Center" },
-            { "value": "bottom", "label": "Bottom" }
+            {
+              "value": "top",
+              "label": "Top"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "bottom",
+              "label": "Bottom"
+            }
           ],
           "default": "top"
         },
@@ -1563,8 +1686,14 @@
           "id": "mobile_layout_direction",
           "label": "Mobile Layout direction",
           "options": [
-            { "value": "column", "label": "Vertical (column)" },
-            { "value": "row", "label": "Horizontal (row)" }
+            {
+              "value": "column",
+              "label": "Vertical (column)"
+            },
+            {
+              "value": "row",
+              "label": "Horizontal (row)"
+            }
           ],
           "default": "column",
           "info": "Layout direction on mobile devices"
@@ -1578,9 +1707,18 @@
           "id": "mobile_content_alignment",
           "label": "Mobile Horizontal alignment",
           "options": [
-            { "value": "left", "label": "Left" },
-            { "value": "center", "label": "Center" },
-            { "value": "right", "label": "Right" }
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
           ],
           "default": "left",
           "info": "Horizontal alignment on mobile devices"
@@ -1590,9 +1728,18 @@
           "id": "mobile_vertical_alignment",
           "label": "Mobile Vertical alignment",
           "options": [
-            { "value": "top", "label": "Top" },
-            { "value": "center", "label": "Center" },
-            { "value": "bottom", "label": "Bottom" }
+            {
+              "value": "top",
+              "label": "Top"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "bottom",
+              "label": "Bottom"
+            }
           ],
           "default": "top",
           "info": "Vertical alignment on mobile devices"
@@ -1648,9 +1795,18 @@
           "id": "background_position_horizontal",
           "label": "Horizontal Position",
           "options": [
-            { "value": "left", "label": "Left" },
-            { "value": "center", "label": "Center" },
-            { "value": "right", "label": "Right" }
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
           ],
           "default": "center"
         },
@@ -1659,9 +1815,18 @@
           "id": "background_position_vertical",
           "label": "Vertical Position",
           "options": [
-            { "value": "top", "label": "Top" },
-            { "value": "center", "label": "Center" },
-            { "value": "bottom", "label": "Bottom" }
+            {
+              "value": "top",
+              "label": "Top"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "bottom",
+              "label": "Bottom"
+            }
           ],
           "default": "center"
         },
@@ -1670,9 +1835,18 @@
           "id": "background_size",
           "label": "Background Size",
           "options": [
-            { "value": "cover", "label": "Cover" },
-            { "value": "contain", "label": "Contain" },
-            { "value": "auto", "label": "Auto" }
+            {
+              "value": "cover",
+              "label": "Cover"
+            },
+            {
+              "value": "contain",
+              "label": "Contain"
+            },
+            {
+              "value": "auto",
+              "label": "Auto"
+            }
           ],
           "default": "cover"
         },
@@ -1712,8 +1886,14 @@
           "id": "sprite_direction",
           "label": "Spritesheet Direction",
           "options": [
-            { "value": "horizontal", "label": "Horizontal (frames side by side)" },
-            { "value": "vertical", "label": "Vertical (frames stacked)" }
+            {
+              "value": "horizontal",
+              "label": "Horizontal (frames side by side)"
+            },
+            {
+              "value": "vertical",
+              "label": "Vertical (frames stacked)"
+            }
           ],
           "default": "horizontal",
           "info": "How frames are arranged in your spritesheet"
@@ -1745,9 +1925,18 @@
           "id": "sprite_vertical_alignment",
           "label": "Sprite Vertical Alignment",
           "options": [
-            { "value": "0%", "label": "Top" },
-            { "value": "50%", "label": "Center" },
-            { "value": "100%", "label": "Bottom" }
+            {
+              "value": "0%",
+              "label": "Top"
+            },
+            {
+              "value": "50%",
+              "label": "Center"
+            },
+            {
+              "value": "100%",
+              "label": "Bottom"
+            }
           ],
           "default": "50%"
         },
@@ -1815,9 +2004,18 @@
           "id": "mobile_sprite_vertical_alignment",
           "label": "Mobile Sprite Vertical Alignment",
           "options": [
-            { "value": "0%", "label": "Top" },
-            { "value": "50%", "label": "Center" },
-            { "value": "100%", "label": "Bottom" }
+            {
+              "value": "0%",
+              "label": "Top"
+            },
+            {
+              "value": "50%",
+              "label": "Center"
+            },
+            {
+              "value": "100%",
+              "label": "Bottom"
+            }
           ],
           "default": "50%",
           "info": "Sprite vertical alignment on mobile devices"
@@ -1887,6 +2085,19 @@
       "name": "Tag Card",
       "settings": [
         {
+          "type": "color_scheme",
+          "id": "color_scheme",
+          "label": "Color scheme",
+          "default": "scheme-1"
+        },
+        {
+          "type": "checkbox",
+          "id": "reverse_colors",
+          "label": "Reverse colors",
+          "default": false,
+          "info": "Swaps background and text colors based on the color scheme."
+        },
+        {
           "type": "header",
           "content": "Link"
         },
@@ -1903,38 +2114,37 @@
           "label": "Link URL",
           "info": "Used when \"Use card as link\" is enabled."
         },
-        { "type": "checkbox", "id": "show_tag", "label": "Show tag", "default": true },
-        { "type": "text", "id": "tag_text", "label": "Tag text", "default": "Tag Name" },
+        {
+          "type": "checkbox",
+          "id": "show_tag",
+          "label": "Show tag",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "tag_text",
+          "label": "Tag text",
+          "default": "Tag Name"
+        },
         {
           "type": "select",
           "id": "tag_style",
           "label": "Tag style",
           "options": [
-            { "value": "filled", "label": "Filled (with background)" },
-            { "value": "border", "label": "Border (transparent background)" }
+            {
+              "value": "filled",
+              "label": "Filled (with background)"
+            },
+            {
+              "value": "border",
+              "label": "Border (transparent background)"
+            }
           ],
           "default": "border"
         },
         {
           "type": "header",
           "content": "Tag Colors"
-        },
-        {
-          "type": "color",
-          "id": "tag_text_color",
-          "label": "Tag text color"
-        },
-        {
-          "type": "color",
-          "id": "tag_bg_color",
-          "label": "Tag background color",
-          "info": "Applies when tag style is 'Filled'"
-        },
-        {
-          "type": "color",
-          "id": "tag_border_color",
-          "label": "Tag border color",
-          "info": "Applies when tag style is 'Border'"
         },
         {
           "type": "header",
@@ -1955,22 +2165,50 @@
           "id": "tag_font_weight",
           "label": "Tag font weight",
           "options": [
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" }
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi-bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
           ],
           "default": "600"
         },
-        { "type": "checkbox", "id": "show_text", "label": "Show main text", "default": true },
-        { "type": "richtext", "id": "main_text", "label": "Main text", "default": "<p>Title of the card</p>" },
+        {
+          "type": "checkbox",
+          "id": "show_text",
+          "label": "Show main text",
+          "default": true
+        },
+        {
+          "type": "richtext",
+          "id": "main_text",
+          "label": "Main text",
+          "default": "<p>Title of the card</p>"
+        },
         {
           "type": "select",
           "id": "main_text_display_type",
           "label": "Display main text as",
           "options": [
-            { "value": "paragraph", "label": "Paragraph" },
-            { "value": "heading", "label": "Heading" }
+            {
+              "value": "paragraph",
+              "label": "Paragraph"
+            },
+            {
+              "value": "heading",
+              "label": "Heading"
+            }
           ],
           "default": "paragraph",
           "info": "Choose whether to display the main text as a heading or paragraph"
@@ -1978,11 +2216,6 @@
         {
           "type": "header",
           "content": "Main Text Colors"
-        },
-        {
-          "type": "color",
-          "id": "main_text_color",
-          "label": "Main text color"
         },
         {
           "type": "range",
@@ -1999,10 +2232,22 @@
           "id": "main_text_font_weight",
           "label": "Main text font weight",
           "options": [
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" }
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi-bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
           ],
           "default": "600"
         },
@@ -2035,10 +2280,22 @@
           "id": "mobile_tag_font_weight",
           "label": "Mobile Tag font weight",
           "options": [
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" }
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi-bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
           ],
           "default": "600"
         },
@@ -2058,10 +2315,22 @@
           "id": "mobile_main_text_font_weight",
           "label": "Mobile Main text font weight",
           "options": [
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" }
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi-bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
           ],
           "default": "600"
         },
@@ -2074,8 +2343,17 @@
           "label": "Mobile Main text line height",
           "default": 1.4
         },
-        { "type": "checkbox", "id": "show_icon", "label": "Show icon", "default": false },
-        { "type": "image_picker", "id": "icon_image", "label": "Icon image" },
+        {
+          "type": "checkbox",
+          "id": "show_icon",
+          "label": "Show icon",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Icon image"
+        },
         {
           "type": "range",
           "id": "icon_size",
@@ -2267,8 +2545,14 @@
           "id": "layout_direction",
           "label": "Layout direction",
           "options": [
-            { "value": "column", "label": "Vertical (column)" },
-            { "value": "row", "label": "Horizontal (row)" }
+            {
+              "value": "column",
+              "label": "Vertical (column)"
+            },
+            {
+              "value": "row",
+              "label": "Horizontal (row)"
+            }
           ],
           "default": "row"
         },
@@ -2277,9 +2561,18 @@
           "id": "content_alignment",
           "label": "Horizontal alignment",
           "options": [
-            { "value": "left", "label": "Left" },
-            { "value": "center", "label": "Center" },
-            { "value": "right", "label": "Right" }
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
           ],
           "default": "left"
         },
@@ -2288,9 +2581,18 @@
           "id": "vertical_alignment",
           "label": "Vertical alignment",
           "options": [
-            { "value": "top", "label": "Top" },
-            { "value": "center", "label": "Center" },
-            { "value": "bottom", "label": "Bottom" }
+            {
+              "value": "top",
+              "label": "Top"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "bottom",
+              "label": "Bottom"
+            }
           ],
           "default": "top"
         },
@@ -2303,8 +2605,14 @@
           "id": "mobile_layout_direction",
           "label": "Mobile Layout direction",
           "options": [
-            { "value": "column", "label": "Vertical (column)" },
-            { "value": "row", "label": "Horizontal (row)" }
+            {
+              "value": "column",
+              "label": "Vertical (column)"
+            },
+            {
+              "value": "row",
+              "label": "Horizontal (row)"
+            }
           ],
           "default": "row",
           "info": "Layout direction on mobile devices"
@@ -2314,9 +2622,18 @@
           "id": "mobile_content_alignment",
           "label": "Mobile Horizontal alignment",
           "options": [
-            { "value": "left", "label": "Left" },
-            { "value": "center", "label": "Center" },
-            { "value": "right", "label": "Right" }
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
           ],
           "default": "left",
           "info": "Horizontal alignment on mobile devices"
@@ -2326,19 +2643,21 @@
           "id": "mobile_vertical_alignment",
           "label": "Mobile Vertical alignment",
           "options": [
-            { "value": "top", "label": "Top" },
-            { "value": "center", "label": "Center" },
-            { "value": "bottom", "label": "Bottom" }
+            {
+              "value": "top",
+              "label": "Top"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "bottom",
+              "label": "Bottom"
+            }
           ],
           "default": "top",
           "info": "Vertical alignment on mobile devices"
-        },
-        {
-          "type": "color",
-          "id": "card_background_color",
-          "label": "Card Background Color",
-          "default": "#1a1a1a",
-          "info": "Background color for this card"
         },
         {
           "type": "color",
@@ -2346,13 +2665,6 @@
           "label": "Card Border Color",
           "default": "#ffffff",
           "info": "Border color for this card. If not set, will match the background color."
-        },
-        {
-          "type": "color",
-          "id": "card_text_color",
-          "label": "Card Text Color",
-          "default": "#ffffff",
-          "info": "Text color for this card. Choose white for dark backgrounds, dark for light backgrounds."
         },
         {
           "type": "header",
@@ -2412,14 +2724,22 @@
       "type": "button_card",
       "name": "Button Card",
       "settings": [
-        { "type": "text", "id": "label", "label": "Button text", "default": "Button Text" },
-        { "type": "url", "id": "link", "label": "Button link" },
         {
-          "type": "color",
-          "id": "card_background_color",
-          "label": "Card Background Color",
-          "default": "#D2CDC4",
-          "info": "Background color for this card"
+          "type": "color_scheme",
+          "id": "color_scheme",
+          "label": "Color scheme",
+          "default": "scheme-1"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Button text",
+          "default": "Button Text"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Button link"
         },
         {
           "type": "header",
@@ -2472,6 +2792,26 @@
           "label": "Hide on Mobile",
           "default": false,
           "info": "Hide this card on mobile devices"
+        },
+        {
+          "type": "select",
+          "id": "button_variant",
+          "label": "Button variant",
+          "options": [
+            {
+              "value": "primary",
+              "label": "Primary"
+            },
+            {
+              "value": "secondary",
+              "label": "Secondary"
+            },
+            {
+              "value": "tertiary",
+              "label": "Tertiary"
+            }
+          ],
+          "default": "primary"
         }
       ]
     },
@@ -2479,32 +2819,39 @@
       "type": "text_card",
       "name": "Text Card",
       "settings": [
-        { "type": "text", "id": "heading", "label": "Heading", "default": "Card Heading" },
-        { "type": "checkbox", "id": "enable_heading", "label": "Enable heading", "default": true },
+        {
+          "type": "color_scheme",
+          "id": "color_scheme",
+          "label": "Color scheme",
+          "default": "scheme-1"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Card Heading"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_heading",
+          "label": "Enable heading",
+          "default": true
+        },
         {
           "type": "image_picker",
           "id": "svg_icon",
           "label": "SVG Icon",
           "info": "SVG icon displayed above the heading"
         },
-        { "type": "checkbox", "id": "enable_svg", "label": "Enable SVG icon", "default": false },
         {
-          "type": "color",
-          "id": "card_background_color",
-          "label": "Card Background Color",
-          "default": "#ffffff",
-          "info": "Background color for this card"
+          "type": "checkbox",
+          "id": "enable_svg",
+          "label": "Enable SVG icon",
+          "default": false
         },
         {
           "type": "header",
           "content": "Heading Typography"
-        },
-        {
-          "type": "color",
-          "id": "heading_text_color",
-          "label": "Heading Text Color",
-          "default": "#306030",
-          "info": "Text color for the heading. If not set, will use the default text color."
         },
         {
           "type": "range",
@@ -2521,10 +2868,22 @@
           "id": "heading_font_weight",
           "label": "Heading font weight",
           "options": [
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" }
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi-bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
           ],
           "default": "600"
         },
@@ -2553,10 +2912,22 @@
           "id": "paragraph_font_weight",
           "label": "Paragraph font weight",
           "options": [
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" }
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi-bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
           ],
           "default": "400"
         },
@@ -2569,8 +2940,17 @@
           "label": "Paragraph line height",
           "default": 1.5
         },
-        { "type": "text", "id": "button_text", "label": "Button text", "default": "Button" },
-        { "type": "url", "id": "button_link", "label": "Button link" },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text",
+          "default": "Button"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
         {
           "type": "header",
           "content": "Button Typography"
@@ -2590,10 +2970,22 @@
           "id": "button_font_weight",
           "label": "Button font weight",
           "options": [
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" }
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi-bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
           ],
           "default": "600"
         },
@@ -2617,10 +3009,22 @@
           "id": "mobile_heading_font_weight",
           "label": "Mobile Heading font weight",
           "options": [
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" }
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi-bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
           ],
           "default": "600"
         },
@@ -2640,10 +3044,22 @@
           "id": "mobile_paragraph_font_weight",
           "label": "Mobile Paragraph font weight",
           "options": [
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" }
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi-bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
           ],
           "default": "400"
         },
@@ -2672,10 +3088,22 @@
           "id": "mobile_button_font_weight",
           "label": "Mobile Button font weight",
           "options": [
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" }
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi-bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
           ],
           "default": "600"
         },
@@ -2684,9 +3112,18 @@
           "id": "content_alignment",
           "label": "Horizontal alignment",
           "options": [
-            { "value": "left", "label": "Left" },
-            { "value": "center", "label": "Center" },
-            { "value": "right", "label": "Right" }
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
           ],
           "default": "left"
         },
@@ -2695,9 +3132,18 @@
           "id": "vertical_alignment",
           "label": "Vertical alignment",
           "options": [
-            { "value": "top", "label": "Top" },
-            { "value": "center", "label": "Center" },
-            { "value": "bottom", "label": "Bottom" }
+            {
+              "value": "top",
+              "label": "Top"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "bottom",
+              "label": "Bottom"
+            }
           ],
           "default": "top"
         },
@@ -2710,9 +3156,18 @@
           "id": "button_alignment",
           "label": "Button horizontal alignment",
           "options": [
-            { "value": "left", "label": "Left" },
-            { "value": "center", "label": "Center" },
-            { "value": "right", "label": "Right" }
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
           ],
           "default": "left",
           "info": "Button alignment independent from content alignment"
@@ -2730,7 +3185,15 @@
           "label": "Column Span",
           "default": 2
         },
-        { "type": "range", "id": "row_span", "min": 0.1, "max": 6, "step": 0.1, "label": "Row Span", "default": 2 },
+        {
+          "type": "range",
+          "id": "row_span",
+          "min": 0.1,
+          "max": 6,
+          "step": 0.1,
+          "label": "Row Span",
+          "default": 2
+        },
         {
           "type": "header",
           "content": "Mobile Layout"
@@ -2760,6 +3223,26 @@
           "label": "Hide on Mobile",
           "default": false,
           "info": "Hide this card on mobile devices"
+        },
+        {
+          "type": "select",
+          "id": "button_variant",
+          "label": "Button variant",
+          "options": [
+            {
+              "value": "primary",
+              "label": "Primary"
+            },
+            {
+              "value": "secondary",
+              "label": "Secondary"
+            },
+            {
+              "value": "tertiary",
+              "label": "Tertiary"
+            }
+          ],
+          "default": "primary"
         }
       ]
     },
@@ -2767,7 +3250,17 @@
       "type": "product_card",
       "name": "Product Card",
       "settings": [
-        { "type": "product", "id": "product", "label": "Product" },
+        {
+          "type": "color_scheme",
+          "id": "color_scheme",
+          "label": "Color scheme",
+          "default": "scheme-1"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
         {
           "type": "image_picker",
           "id": "default_product_image",
@@ -2775,21 +3268,30 @@
           "info": "Image to display when no product is selected or product has no image"
         },
         {
-          "type": "color",
-          "id": "card_background_color",
-          "label": "Card Background Color",
-          "default": "#ffffff",
-          "info": "Background color for this card"
+          "type": "checkbox",
+          "id": "show_tag",
+          "label": "Show tag",
+          "default": false
         },
-        { "type": "checkbox", "id": "show_tag", "label": "Show tag", "default": false },
-        { "type": "text", "id": "tag_text", "label": "Tag text", "default": "Product Tag" },
+        {
+          "type": "text",
+          "id": "tag_text",
+          "label": "Tag text",
+          "default": "Product Tag"
+        },
         {
           "type": "select",
           "id": "tag_style",
           "label": "Tag style",
           "options": [
-            { "value": "filled", "label": "Filled (with background)" },
-            { "value": "border", "label": "Border (transparent background)" }
+            {
+              "value": "filled",
+              "label": "Filled (with background)"
+            },
+            {
+              "value": "border",
+              "label": "Border (transparent background)"
+            }
           ],
           "default": "border"
         },
@@ -2842,13 +3344,34 @@
           "id": "title_font_weight",
           "label": "Title font weight",
           "options": [
-            { "value": "300", "label": "Light" },
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" },
-            { "value": "800", "label": "Extra-bold" },
-            { "value": "900", "label": "Black" }
+            {
+              "value": "300",
+              "label": "Light"
+            },
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi-bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            },
+            {
+              "value": "800",
+              "label": "Extra-bold"
+            },
+            {
+              "value": "900",
+              "label": "Black"
+            }
           ],
           "default": "600"
         },
@@ -2872,13 +3395,34 @@
           "id": "mobile_title_font_weight",
           "label": "Mobile Title font weight",
           "options": [
-            { "value": "300", "label": "Light" },
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" },
-            { "value": "800", "label": "Extra-bold" },
-            { "value": "900", "label": "Black" }
+            {
+              "value": "300",
+              "label": "Light"
+            },
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi-bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            },
+            {
+              "value": "800",
+              "label": "Extra-bold"
+            },
+            {
+              "value": "900",
+              "label": "Black"
+            }
           ],
           "default": "600"
         },
@@ -2887,9 +3431,18 @@
           "id": "content_alignment",
           "label": "Horizontal alignment",
           "options": [
-            { "value": "left", "label": "Left" },
-            { "value": "center", "label": "Center" },
-            { "value": "right", "label": "Right" }
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
           ],
           "default": "center"
         },
@@ -2898,9 +3451,18 @@
           "id": "vertical_alignment",
           "label": "Vertical alignment",
           "options": [
-            { "value": "top", "label": "Top" },
-            { "value": "center", "label": "Center" },
-            { "value": "bottom", "label": "Bottom" }
+            {
+              "value": "top",
+              "label": "Top"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "bottom",
+              "label": "Bottom"
+            }
           ],
           "default": "center"
         },
@@ -2917,7 +3479,15 @@
           "label": "Column Span",
           "default": 2
         },
-        { "type": "range", "id": "row_span", "min": 0.1, "max": 6, "step": 0.1, "label": "Row Span", "default": 2 },
+        {
+          "type": "range",
+          "id": "row_span",
+          "min": 0.1,
+          "max": 6,
+          "step": 0.1,
+          "label": "Row Span",
+          "default": 2
+        },
         {
           "type": "header",
           "content": "Mobile Layout"
@@ -2955,12 +3525,24 @@
       "name": "Video Card",
       "settings": [
         {
+          "type": "color_scheme",
+          "id": "color_scheme",
+          "label": "Color scheme",
+          "default": "scheme-1"
+        },
+        {
           "type": "select",
           "id": "video_source",
           "label": "Video source",
           "options": [
-            { "value": "shopify", "label": "Shopify video" },
-            { "value": "youtube", "label": "YouTube link" }
+            {
+              "value": "shopify",
+              "label": "Shopify video"
+            },
+            {
+              "value": "youtube",
+              "label": "YouTube link"
+            }
           ],
           "default": "shopify"
         },
@@ -3009,13 +3591,6 @@
           "info": "Text color for the scrolling marquee. Choose white for dark backgrounds, dark for light backgrounds."
         },
         {
-          "type": "color",
-          "id": "card_background_color",
-          "label": "Card Background Color",
-          "default": "#ffffff",
-          "info": "Background color for this card"
-        },
-        {
           "type": "range",
           "id": "video_hover_scale",
           "min": 50,
@@ -3051,7 +3626,15 @@
           "label": "Column Span",
           "default": 2
         },
-        { "type": "range", "id": "row_span", "min": 0.1, "max": 6, "step": 0.1, "label": "Row Span", "default": 2 },
+        {
+          "type": "range",
+          "id": "row_span",
+          "min": 0.1,
+          "max": 6,
+          "step": 0.1,
+          "label": "Row Span",
+          "default": 2
+        },
         {
           "type": "header",
           "content": "Mobile Layout"
@@ -3089,102 +3672,80 @@
       "name": "Toggle Switch Card",
       "settings": [
         {
-          "type": "color",
-          "id": "card_background_color",
-          "label": "Card Background Color",
-          "default": "#ffffff",
-          "info": "Background color for this card"
+          "type": "color_scheme",
+          "id": "color_scheme",
+          "label": "Color scheme",
+          "default": "scheme-1"
+        },
+        {
+          "type": "select",
+          "id": "toggle_orientation",
+          "label": "Orientation",
+          "options": [
+            {
+              "value": "vertical",
+              "label": "Vertical"
+            },
+            {
+              "value": "horizontal",
+              "label": "Horizontal"
+            }
+          ],
+          "default": "vertical"
         },
         {
           "type": "header",
-          "content": "Toggle Switch Settings"
+          "content": "Labels"
         },
         {
-          "type": "range",
-          "id": "toggle_size",
-          "min": 40,
-          "max": 220,
-          "step": 10,
-          "unit": "px",
-          "label": "Toggle Size",
-          "default": 60,
-          "info": "Overall size of the toggle switch"
+          "type": "text",
+          "id": "label_off",
+          "label": "Label (Off)",
+          "default": "SWITCH TO LIGHT"
         },
         {
-          "type": "range",
-          "id": "icon_size",
-          "min": 16,
-          "max": 48,
-          "step": 1,
-          "unit": "px",
-          "label": "Icon Size",
-          "default": 24,
-          "info": "Size of sun/moon icons"
+          "type": "text",
+          "id": "label_on",
+          "label": "Label (On)",
+          "default": "SWITCH TO DARK"
+        },
+        {
+          "type": "checkbox",
+          "id": "checked_by_default",
+          "label": "Checked by default",
+          "default": false
         },
         {
           "type": "header",
-          "content": "Colors"
+          "content": "Theme Toggle Schemes"
         },
         {
-          "type": "color",
-          "id": "toggle_bg_color",
-          "label": "Toggle Background (Off)",
-          "default": "#f0f0f0",
-          "info": "Background color when toggle is off"
+          "type": "color_scheme",
+          "id": "scheme_off",
+          "label": "Scheme (Off / Default)",
+          "default": "scheme-1"
         },
         {
-          "type": "color",
-          "id": "toggle_active_bg_color",
-          "label": "Toggle Background (On)",
-          "default": "#1a1a1a",
-          "info": "Background color when toggle is on"
-        },
-        {
-          "type": "color",
-          "id": "toggle_knob_color",
-          "label": "Toggle Knob Color",
-          "default": "#ffffff",
-          "info": "Color of the sliding knob"
-        },
-        {
-          "type": "color",
-          "id": "sun_color",
-          "label": "Sun Icon Color",
-          "default": "#ffa500",
-          "info": "Color of the sun icon"
-        },
-        {
-          "type": "color",
-          "id": "moon_color",
-          "label": "Moon Icon Color",
-          "default": "#ffffff",
-          "info": "Color of the moon icon"
+          "type": "color_scheme",
+          "id": "scheme_on",
+          "label": "Scheme (On / Toggled)",
+          "default": "scheme-3"
         },
         {
           "type": "header",
-          "content": "Mobile Settings"
+          "content": "Custom SVG Icons"
         },
         {
-          "type": "range",
-          "id": "mobile_toggle_size",
-          "min": 40,
-          "max": 120,
-          "step": 2,
-          "unit": "px",
-          "label": "Mobile Toggle Size",
-          "default": 50,
-          "info": "Toggle size on mobile devices"
+          "type": "html",
+          "id": "svg_off",
+          "label": "SVG Icon (Off)",
+          "info": "Paste SVG code here. Default is a sun icon."
         },
         {
-          "type": "range",
-          "id": "mobile_icon_size",
-          "min": 16,
-          "max": 48,
-          "step": 1,
-          "unit": "px",
-          "label": "Mobile Icon Size",
-          "default": 20,
-          "info": "Icon size on mobile devices"
+          "type": "html",
+          "id": "svg_on",
+          "label": "SVG Icon (On)",
+          "info": "Paste SVG code here. Default is a moon icon."
         },
         {
           "type": "header",
@@ -3241,12 +3802,8 @@
           "settings": {
             "column_span": 1.6,
             "row_span": 1.4,
-            "card_background_color": "#d2cdc4",
             "content_alignment": "center",
-            "vertical_alignment": "center",
-            "main_text_color": "#ffffff",
-            "tag_text_color": "#ffffff",
-            "tag_border_color": "#ffffff"
+            "vertical_alignment": "center"
           }
         },
         {
@@ -3259,15 +3816,58 @@
             "row_span": 4.0
           }
         },
-        { "type": "video_card", "settings": { "column_span": 3.2, "row_span": 2.3 } },
-        { "type": "content_card", "settings": { "column_span": 2.6, "row_span": 4.0 } },
-        { "type": "tag_card", "settings": { "column_span": 1.6, "row_span": 2.5 } },
-        { "type": "tag_card", "settings": { "column_span": 1.6, "row_span": 2.5 } },
+        {
+          "type": "video_card",
+          "settings": {
+            "column_span": 3.2,
+            "row_span": 2.3
+          }
+        },
         {
           "type": "content_card",
-          "settings": { "column_span": 2.6, "row_span": 4.0, "card_background_color": "#306030" }
+          "settings": {
+            "column_span": 2.6,
+            "row_span": 4.0
+          }
         },
-        { "type": "button_card", "settings": { "column_span": 2.0, "row_span": 1.1 } }
+        {
+          "type": "tag_card",
+          "settings": {
+            "column_span": 1.6,
+            "row_span": 2.5
+          }
+        },
+        {
+          "type": "tag_card",
+          "settings": {
+            "column_span": 1.6,
+            "row_span": 2.5
+          }
+        },
+        {
+          "type": "content_card",
+          "settings": {
+            "column_span": 2.6,
+            "row_span": 4.0
+          }
+        },
+        {
+          "type": "button_card",
+          "settings": {
+            "column_span": 2.0,
+            "row_span": 1.1
+          }
+        },
+        {
+          "type": "toggle_card",
+          "settings": {
+            "column_span": 1.5,
+            "row_span": 3.0,
+            "toggle_orientation": "vertical",
+            "label_on": "SWITCH TO DARK",
+            "label_off": "SWITCH TO LIGHT"
+          }
+        }
       ]
     }
   ]

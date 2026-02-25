@@ -30,16 +30,10 @@
     align-items: center !important;
     justify-content: center !important;
     min-width: unset !important;
-    {% if section.settings.background_color != blank %}
-      background-color: {{ section.settings.background_color }} !important;
-    {% endif %}
-    {% if section.settings.icon_color != blank %}
-      color: {{ section.settings.icon_color }} !important;
-    {% endif %}
-    {% if section.settings.border_color != blank %}
-      border: 2px solid {{ section.settings.border_color }} !important;
-    {% endif %}
-  }
+    background-color: var(--btn-primary-bg) !important;
+    color: var(--btn-primary-text) !important;
+    border: 2px solid var(--btn-primary-border) !important;
+    }
 
   .back-to-top-button .submit-button__icon {
     width: {{ section.settings.icon_size | default: 60 }}%;
@@ -73,7 +67,7 @@
     {%- assign icon_content = icon_svg -%}
   {%- endif -%}
 
-  {%- render 'submit-button',
+  {%- render 'global-btn',
     text: '',
     url: '#',
     icon: icon_content,
@@ -115,7 +109,12 @@
 {% schema %}
 {
   "name": "Back to Top",
-  "disabled_on": { "groups": ["header", "footer"] },
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  },
   "settings": [
     {
       "type": "paragraph",
@@ -124,6 +123,12 @@
     {
       "type": "header",
       "content": "Icon Settings"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
     },
     {
       "type": "image_picker",
@@ -195,21 +200,6 @@
     {
       "type": "header",
       "content": "Color Settings"
-    },
-    {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background Color"
-    },
-    {
-      "type": "color",
-      "id": "icon_color",
-      "label": "Icon/Arrow Color"
-    },
-    {
-      "type": "color",
-      "id": "border_color",
-      "label": "Border Color"
     },
     {
       "type": "range",

@@ -3,7 +3,7 @@
 {%- liquid
   assign bg_text = section.settings.background_text | default: "OOPS! YOU'RE"
   assign bg_text_color = section.settings.background_text_color | default: '#2D573B'
-  assign bg_color = section.settings.background_color | default: '#F0EDE6'
+  assign bg_color = 'var(--color-bg)'
   assign message_text = section.settings.message_text | default: "This is a 404 error, which means you've clicked on a bad link or entered an invalid URL. Maybe what you are looking for can be found on the homepage."
   assign button_text = section.settings.button_text | default: 'Take me to Home'
 
@@ -208,18 +208,14 @@
 
   .template-404__button .share-story-submit .submit-button__content {
     border-style: solid;
-    {% if section.settings.button_background_color != blank %}
-    background-color: {{ section.settings.button_background_color }};
-    {% endif %}
+    background-color: var(--btn-primary-bg);
     {% if section.settings.button_text_color != blank %}
     color: {{ section.settings.button_text_color }};
     {% endif %}
   }
 
   .template-404__button .share-story-submit .submit-button__shadow {
-    {% if section.settings.button_background_color != blank %}
-    background-color: {{ section.settings.button_background_color | color_darken: 15 }};
-    {% endif %}
+    background-color: var(--btn-primary-shadow);
   }
 
   @media (max-width: 768px) {
@@ -303,7 +299,7 @@
   }
 </style>
 
-<div class="template-404">
+<div class="template-404 color-{{ section.settings.color_scheme }}">
   <div class="template-404__scrolling-bg" aria-hidden="true">
     <div
       class="scrolling-text-strip"
@@ -374,7 +370,7 @@
 
     <div class="template-404__button">
       {%-
-        render 'submit-button',
+        render 'global-btn',
         text: button_text,
         url: section.settings.button_link | default: routes.root_url
       -%}
@@ -393,10 +389,10 @@
       "content": "Background"
     },
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background color",
-      "default": "#F0EDE6"
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
     },
     {
       "type": "header",
@@ -407,12 +403,6 @@
       "id": "background_text",
       "label": "Background text",
       "default": "OOPS! YOU'RE"
-    },
-    {
-      "type": "color",
-      "id": "background_text_color",
-      "label": "Background text color",
-      "default": "#2D573B"
     },
     {
       "type": "range",
@@ -481,9 +471,18 @@
       "id": "content_vertical_position_mobile",
       "label": "Content vertical position (mobile)",
       "options": [
-        { "value": "flex-start", "label": "Top" },
-        { "value": "center", "label": "Center" },
-        { "value": "flex-end", "label": "Bottom" }
+        {
+          "value": "flex-start",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Bottom"
+        }
       ],
       "default": "center",
       "info": "Where the message and button sit vertically on mobile."
@@ -548,10 +547,22 @@
       "id": "scrolling_text_text_transform",
       "label": "Text transform",
       "options": [
-        { "value": "none", "label": "None" },
-        { "value": "uppercase", "label": "Uppercase" },
-        { "value": "lowercase", "label": "Lowercase" },
-        { "value": "capitalize", "label": "Capitalize" }
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "uppercase",
+          "label": "Uppercase"
+        },
+        {
+          "value": "lowercase",
+          "label": "Lowercase"
+        },
+        {
+          "value": "capitalize",
+          "label": "Capitalize"
+        }
       ],
       "default": "uppercase"
     },
@@ -594,9 +605,18 @@
       "id": "hero_media_type",
       "label": "Hero media type",
       "options": [
-        { "value": "image", "label": "Image" },
-        { "value": "shopify_video", "label": "Shopify video" },
-        { "value": "youtube", "label": "YouTube video" }
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "shopify_video",
+          "label": "Shopify video"
+        },
+        {
+          "value": "youtube",
+          "label": "YouTube video"
+        }
       ],
       "default": "image"
     },
@@ -648,9 +668,18 @@
       "id": "image_object_fit",
       "label": "Image fit",
       "options": [
-        { "value": "contain", "label": "Contain" },
-        { "value": "cover", "label": "Cover" },
-        { "value": "fill", "label": "Fill" }
+        {
+          "value": "contain",
+          "label": "Contain"
+        },
+        {
+          "value": "cover",
+          "label": "Cover"
+        },
+        {
+          "value": "fill",
+          "label": "Fill"
+        }
       ],
       "default": "contain"
     },
@@ -719,12 +748,6 @@
       "default": 1.6
     },
     {
-      "type": "color",
-      "id": "message_color",
-      "label": "Message color",
-      "default": "#2d2d2d"
-    },
-    {
       "type": "header",
       "content": "Button"
     },
@@ -743,18 +766,6 @@
     {
       "type": "header",
       "content": "Button styling"
-    },
-    {
-      "type": "color",
-      "id": "button_background_color",
-      "label": "Button background color",
-      "default": "#2D573B"
-    },
-    {
-      "type": "color",
-      "id": "button_text_color",
-      "label": "Button text color",
-      "default": "#FFFFFF"
     },
     {
       "type": "range",
@@ -826,8 +837,14 @@
       "id": "button_width",
       "label": "Button width",
       "options": [
-        { "value": "auto", "label": "Auto (fit content)" },
-        { "value": "full", "label": "Full width" }
+        {
+          "value": "auto",
+          "label": "Auto (fit content)"
+        },
+        {
+          "value": "full",
+          "label": "Full width"
+        }
       ],
       "default": "auto"
     },

@@ -44,8 +44,8 @@
   overflow-x: hidden;
   padding-right: var(--spacing-2);
   padding-left: var(--spacing-0);
-  scrollbar-color: var(--text-card-heading-color, #306030)
-    color-mix(in srgb, var(--text-card-heading-color, #306030) 10%, transparent);
+  scrollbar-color: var(--color-heading)
+    color-mix(in srgb, var(--color-heading) 10%, transparent);
   scrollbar-width: thin;
 }
 
@@ -54,15 +54,15 @@
 }
 
 .text-card-inner::-webkit-scrollbar-track {
-  background: color-mix(in srgb, var(--text-card-heading-color, #306030) 10%, transparent);
+  background: color-mix(in srgb, var(--color-heading) 10%, transparent);
   margin: var(--spacing-10) var(--spacing-0);
-  border-radius: var(--radius-sm);
+  border-radius: 12px;
 }
 
 .text-card-inner::-webkit-scrollbar-thumb {
-  background-color: var(--text-card-heading-color, #306030);
+  background-color: var(--color-heading);
   margin: 100px var(--spacing-0);
-  border-radius: var(--radius-sm);
+  border-radius: 12px;
 }
 
 .text-card-svg {
@@ -91,7 +91,7 @@
 
 .text-card-heading {
   margin: var(--spacing-0);
-  color: var(--color-text);
+  color: var(--color-card-text);
   line-height: var(--line-height-tight);
   font-family: var(--font-heading-family);
   font-size: var(--desktop-heading-font-size, var(--font-size-4xl));
@@ -116,8 +116,8 @@
   align-items: center;
   justify-content: center;
   padding: var(--spacing-5) var(--spacing-10);
-  background: var(--color-primary-button-bg, var(--color-red));
-  color: var(--color-primary-button-text, var(--color-white));
+  background: var(--color-heading);
+  color: var(--color-card-bg);
   border: none;
   border-radius: var(--radius-round);
   text-decoration: none;
@@ -153,7 +153,7 @@
 }
 
 .bento-card.text-card:hover {
-  border-color: var(--color-text, var(--color-primary-button-bg, #e63946)) !important;
+  border-color: var(--color-heading, var(--color-primary-button-bg, #e63946)) !important;
 }
 
 /* Text Card Horizontal Alignment */
@@ -205,7 +205,7 @@
 }
 
 .bento-card.product-card:hover {
-  border: 1px solid var(--color-text, var(--color-primary-button-bg, #e63946)) !important;
+  border: 1px solid var(--color-heading, var(--color-primary-button-bg, #e63946)) !important;
 }
 .product-card-inner {
   display: flex;
@@ -230,7 +230,7 @@
   font-family: var(--font-heading-family);
   font-size: var(--desktop-title-font-size, 38px);
   font-weight: var(--desktop-title-font-weight, 600);
-  color: var(--color-text, #121212);
+  color: var(--color-heading);
   line-height: 1.2;
 }
 
@@ -342,11 +342,12 @@
   top: var(--spacing-0);
   left: var(--spacing-0);
   border-radius: var(--radius-2xl);
-  color: var(--color-text, var(--color-black));
+  color: var(--color-card-bg);
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-medium);
   text-align: center;
   padding: var(--spacing-10);
+  background-color: var(--color-heading);
 }
 
 /* Hover marquee overlay for video card */
@@ -359,7 +360,7 @@
   padding: var(--spacing-4) var(--spacing-0);
   pointer-events: none;
   opacity: 0;
-  background-color: var(--color-accent-pink, #e63946);
+  background-color: var(--color-card-text) !important;
   transition: opacity var(--transition-medium);
   z-index: 2;
 }
@@ -383,7 +384,7 @@
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
   text-transform: uppercase;
-  color: var(--marquee-text-color, var(--color-primary-button-text, var(--color-white)));
+  color: var(--color-text, var(--color-card-bg));
 }
 
 /* Separator image in video marquee */
@@ -415,13 +416,14 @@
 }
 
 .bento-card {
-  background: var(--color-background, var(--color-white));
+  background: var(--color-card-bg);
+  color: var(--color-card-text);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   overflow: hidden;
-  border: var(--border-width-thin) solid var(--color-borders, var(--color-gray-300));
+  border: none;
   width: 100%;
   height: 100%;
 }
@@ -441,37 +443,37 @@
 }
 
 .bento-card.video-card:hover {
-  border-color: var(--video-border-hover-color, var(--video-border-color, var(--color-text, var(--color-primary-button-bg, #e63946)))) !important;
+  border-color: var(--video-border-hover-color, var(--video-border-color, var(--color-heading, var(--color-primary-button-bg, #e63946)))) !important;
 }
 
 /* Card Color Variants */
 .card-color-red {
-  background: var(--color-accent-red, var(--color-primary-button-bg, var(--color-red))) !important;
-  color: var(--color-primary-button-text, var(--color-white)) !important;
-  border-color: var(--color-accent-red, var(--color-primary-button-bg, var(--color-red))) !important;
+  background: var(--color-heading) !important;
+  color: var(--color-card-bg) !important;
+  border-color: var(--color-heading) !important;
 }
 
 .card-color-red .tag-card-tag,
 .card-color-red .card-heading,
 .card-color-red .tag-card-main {
-  color: var(--color-primary-button-text, var(--color-white)) !important;
+  color: var(--color-card-bg) !important;
 }
 
 .card-color-pink {
   background: var(--color-accent-pink, var(--color-pink)) !important;
-  color: var(--color-text) !important;
+  color: var(--color-heading) !important;
   border-color: var(--color-borders, var(--color-gray-300)) !important;
 }
 
 .card-color-off-white {
   background: var(--color-accent-off-white, var(--color-off-white)) !important;
-  color: var(--color-text) !important;
+  color: var(--color-heading) !important;
   border-color: var(--color-borders, var(--color-gray-300)) !important;
 }
 
 .card-color-default {
   background: var(--color-background, var(--color-white)) !important;
-  color: var(--color-text) !important;
+  color: var(--color-heading) !important;
   border-color: var(--color-borders, var(--color-gray-300)) !important;
 }
 
@@ -508,7 +510,7 @@
   transition: all var(--transition-medium);
 }
 .bento-card.cart-card:hover {
-  border: var(--border-width-thin) solid var(--color-text, var(--color-primary-button-bg, var(--color-red))) !important;
+  border: var(--border-width-thin) solid var(--color-heading, var(--color-heading)) !important;
 }
 
 .cart-icon-wrapper {
@@ -526,14 +528,14 @@
 }
 
 .cart-icon-svg {
-  stroke: var(--desktop-icon-color, var(--color-text));
+  stroke: var(--desktop-icon-color, var(--color-heading));
   stroke-width: var(--desktop-icon-stroke-width, var(--border-width-medium));
   fill: none;
 }
 
 .cart-icon-svg path,
 .cart-icon-svg circle {
-  stroke: var(--desktop-icon-color, var(--color-text));
+  stroke: var(--desktop-icon-color, var(--color-heading));
   fill: none;
 }
 
@@ -550,8 +552,8 @@
   position: absolute;
   top: calc(var(--spacing-4) * -1);
   right: calc(var(--spacing-4) * -1);
-  background: var(--color-accent-red, var(--color-primary-button-bg, var(--color-red))) !important;
-  color: var(--color-primary-button-text, var(--color-white));
+  background: var(--color-heading) !important;
+  color: var(--color-card-bg);
   border-radius: var(--radius-pill);
   width: var(--spacing-10);
   height: var(--spacing-10);
@@ -564,14 +566,14 @@
 
 /* Search Card */
 .search-card {
-  background: var(--color-primary-button-bg, var(--color-red));
+  background: var(--color-heading);
   cursor: pointer;
 }
 
 .search-icon {
   width: var(--icon-size-xl);
   height: var(--icon-size-xl);
-  stroke: var(--color-primary-button-text, var(--color-white));
+  stroke: var(--color-card-bg);
   stroke-width: var(--border-width-medium);
   fill: none;
 }
@@ -610,153 +612,266 @@
   max-height: calc(var(--toggle-size, 60px) * 0.5);
 }
 
-.toggle-input {
+/* Toggle Switch Card - Premium Design (smooth theme transition) */
+.bento-card.toggle-card {
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer;
+  background-color: var(--color-heading) !important;
+  color: var(--color-card-bg) !important;
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 20px !important; /* Force a pill shape */
+}
+
+.toggle-switch-custom {
+  display: flex !important;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  position: relative;
+  margin: 0;
+}
+
+.toggle-input-hidden {
+  position: absolute;
   opacity: 0;
   width: 0;
   height: 0;
-  position: absolute;
 }
 
-.toggle-slider {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: var(--toggle-bg, #f0f0f0);
-  border-radius: 20px;
-  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+.toggle-ui {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  padding: 4px;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  padding: 12px 16px 16px;
+  gap: 0;
+  position: relative;
+  box-sizing: border-box;
 }
 
-.toggle-slider::before {
-  content: '';
-  position: absolute;
-  height: calc(100% - 8px);
-  width: calc(50% - 4px);
-  left: 4px;
-  background-color: var(--toggle-knob, #ffffff);
-  border-radius: 17px;
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  z-index: 2;
+.toggle-card--horizontal .toggle-ui {
+  flex-direction: row;
+  padding: 16px 24px;
 }
 
-.toggle-input:checked + .toggle-slider {
-  background-color: var(--toggle-active-bg, #1a1a1a);
-}
-
-.toggle-input:checked + .toggle-slider::before {
-  transform: translateX(100%);
-}
-
-/* Icon animations */
-.toggle-icon {
-  position: absolute;
-  width: var(--icon-size, 24px);
-  height: var(--icon-size, 24px);
-  min-width: 16px;
-  min-height: 16px;
-  max-width: 40px;
-  max-height: 40px;
+/* Knob: smooth slide with slight ease-out overshoot */
+.toggle-knob {
+  width: 100%;
+  aspect-ratio: 1;
+  max-width: 80px;
+  background: var(--color-card-bg);
+  border-radius: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 3;
+  position: relative;
+  flex-shrink: 0;
+  transition: transform 0.5s cubic-bezier(0.34, 1.2, 0.64, 1), background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: none !important; /* Remove shadow to match design */
+  z-index: 2;
+}
+
+.toggle-card--horizontal .toggle-knob {
+  height: 100%;
+  width: auto;
+  max-width: none;
+  max-height: 60px;
+}
+
+.toggle-icon-wrapper {
+  position: relative;
+  width: 50%;
+  height: 50%;
+  color: var(--color-heading);
+}
+
+.toggle-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .toggle-icon svg {
   width: 100%;
   height: 100%;
-  stroke: currentColor;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.bento-card.toggle-card {
-  border: none;
+  fill: currentColor;
+  transition: fill 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.toggle-icon-sun {
-  left: calc((25% - var(--icon-size, 24px) / 2));
-  color: var(--sun-color, #ffa500);
-  opacity: 1;
-  transform: scale(1) rotate(0deg);
-}
-
-.toggle-icon-moon {
-  right: calc((25% - var(--icon-size, 24px) / 2));
-  color: var(--moon-color, #ffffff);
+/* Icon crossfade: one fades out, the other fades in */
+.toggle-icon--on {
   opacity: 0;
-  transform: scale(0.5) rotate(-90deg);
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.toggle-input:checked + .toggle-slider .toggle-icon-sun {
+.toggle-input-hidden:checked + .toggle-ui .toggle-icon--off {
   opacity: 0;
-  transform: scale(0.5) rotate(90deg);
 }
 
-.toggle-input:checked + .toggle-slider .toggle-icon-moon {
+.toggle-input-hidden:checked + .toggle-ui .toggle-icon--on {
   opacity: 1;
-  transform: scale(1) rotate(0deg);
 }
 
-/* Smooth icon transition on toggle */
-.toggle-slider .toggle-icon {
+/* Two fixed slots: equal height so icon track is clear; top = "on", bottom = "off" */
+.toggle-labels {
+  width: 100%;
+  min-height: 2.75em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 0;
+  text-align: center;
+  font-family: var(--font-heading-family), sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 800 !important;
+  line-height: 1.15 !important;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: inherit;
+  flex-shrink: 0;
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-sizing: border-box;
+}
+
+.toggle-card--horizontal .toggle-labels {
+  min-height: 0;
+  padding: 0 12px;
+  text-align: left;
+  justify-content: flex-start;
+}
+
+.toggle-card--horizontal .toggle-labels--bottom {
+  min-width: 4.5em;
+}
+
+.toggle-card--horizontal .toggle-labels--top {
+  min-width: 0;
+}
+
+.toggle-card--horizontal .toggle-input-hidden:checked + .toggle-ui .toggle-labels--top {
+  min-width: 4.5em;
+}
+
+/* Top slot: when unchecked remove from flow so only knob + bottom labels exist → icon at top, text at bottom */
+.toggle-labels--top {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 0;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), height 0.5s cubic-bezier(0.4, 0, 0.2, 1), min-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), padding 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.toggle-input-hidden:checked + .toggle-ui .toggle-labels--top {
+  position: relative;
+  opacity: 1;
+  pointer-events: auto;
+  height: auto;
+  min-height: 2.75em;
+  padding: 8px 0;
+}
+
+/* Bottom slot: "off" label – always takes space so layout is stable; disappears when checked */
+.toggle-labels--bottom {
+  opacity: 1;
+}
+
+.toggle-input-hidden:checked + .toggle-ui .toggle-labels--bottom {
+  opacity: 0;
   pointer-events: none;
 }
 
-/* Mobile styles */
+.toggle-label-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.toggle-word {
+  display: block;
+}
+
+/* Icon slides full down (vertical) or full right (horizontal); text slots stay fixed and fade */
+.toggle-input-hidden:checked + .toggle-ui .toggle-knob {
+  transform: translateY(var(--toggle-knob-slide, 56px));
+}
+
+.toggle-card--horizontal .toggle-input-hidden:checked + .toggle-ui .toggle-knob {
+  transform: translateX(var(--toggle-knob-slide-x, 48px));
+}
+
 @media (max-width: 768px) {
-  .toggle-switch {
-    max-width: var(--mobile-toggle-size, 50px);
-    max-height: calc(var(--mobile-toggle-size, 50px) * 0.5);
+  .toggle-ui {
+    padding: 12px;
   }
-
-  .toggle-slider::before {
-    width: calc(50% - 4px);
+  .toggle-knob {
+    border-radius: 18px;
   }
-
-  .toggle-input:checked + .toggle-slider::before {
-    transform: translateX(100%);
+  .toggle-labels {
+    font-size: 13px !important;
   }
+}
 
-  .toggle-icon {
-    width: var(--mobile-icon-size, 20px);
-    height: var(--mobile-icon-size, 20px);
+@media (max-width: 768px) {
+  .toggle-ui {
+    padding: 16px 12px;
   }
-
-  .toggle-icon-sun {
-    left: calc((25% - var(--mobile-icon-size, 20px) / 2));
+  .toggle-knob {
+    border-radius: 20px;
   }
+  .toggle-labels {
+    font-size: 14px;
+  }
+}
 
-  .toggle-icon-moon {
-    right: calc((25% - var(--mobile-icon-size, 20px) / 2));
+/* Match the image text "SWITCH TO DARK" which is likely the ON state label */
+/* So if it's NOT checked (Light state), it shows "SWITCH TO DARK" */
+/* If it's checked (Dark state), it shows "SWITCH TO LIGHT" */
+
+@media (max-width: 768px) {
+  .toggle-knob {
+    border-radius: 12px;
+  }
+  .toggle-labels {
+    font-size: 12px;
   }
 }
 
 /* Login/Welcome Card */
 .login-card {
-  background: var(--color-background, var(--color-white));
+  background: var(--color-card-bg);
   cursor: pointer;
-  border: var(--border-width-thin) solid var(--color-borders, var(--color-gray-300));
+  border: none;
 }
 
 .login-content {
   display: flex;
   align-items: center;
   gap: var(--spacing-6);
-  color: var(--color-text);
+  color: var(--color-heading);
 }
 
 .avatar {
   width: var(--icon-size-2xl);
   height: var(--icon-size-2xl);
   border-radius: var(--radius-pill);
-  background: var(--color-primary-button-bg, var(--color-red));
-  color: var(--color-primary-button-text, var(--color-white));
+  background: var(--color-heading);
+  color: var(--color-card-bg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -933,7 +1048,7 @@ a.tag-card.tag-card--link:hover {
 
 /* Text color for tag cards with custom backgrounds - fallback to dark text if not set via inline style */
 .tag-card.has-custom-background {
-  color: var(--color-text, #1a1a1a);
+  color: var(--color-heading, #1a1a1a);
 }
 
 /* Dark backgrounds should have white text - handle common dark color values (fallback only, inline style takes precedence) */
@@ -954,7 +1069,7 @@ a.tag-card.tag-card--link:hover {
 }
 
 .bento-card.tag-card:hover {
-  border-color: var(--color-text, var(--color-red)) !important;
+  border-color: var(--color-heading, var(--color-red)) !important;
 }
 .tag-card:hover .tag-card-icon img {
   transform: rotate(180deg);
@@ -963,27 +1078,29 @@ a.tag-card.tag-card--link:hover {
 .tag-card-tag {
   display: inline-flex;
   align-items: center;
-  padding: var(--spacing-1) var(--spacing-5);
-  font-size: var(--font-size-sm); /* Default, can be overridden by inline style */
-  font-weight: var(--font-weight-semibold); /* Default, can be overridden by inline style */
+  padding: 4px 12px;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
   text-transform: uppercase;
-  margin-bottom: var(--spacing-2);
+  margin-bottom: 8px;
+  line-height: 1;
+  border-radius: 20px;
+  letter-spacing: 0.05em;
 }
 
 /* Filled tag style (default) */
 .tag-card-tag--filled {
-  border-radius: var(--radius-round);
-  background: var(--color-accent-red, var(--color-red)) !important;
-  color: var(--color-primary-button-text, var(--color-white)) !important;
+  background: var(--color-heading);
+  color: var(--color-bg);
   border: none;
 }
 
 /* Border tag style */
 .tag-card-tag--border {
-  border-radius: var(--radius-2xl);
-  background: var(--color-transparent);
-  color: var(--color-accent-red, var(--color-red)) !important;
-  border: var(--border-width-thin) solid var(--color-accent-red, var(--color-red)) !important;
+  background: transparent;
+  color: inherit;
+  border: 1px solid currentColor;
+  opacity: 0.8;
 }
 
 .tag-card-main {
@@ -1264,7 +1381,7 @@ a.tag-card.tag-card--link:hover {
 }
 
 .content-card-text-side {
-  color: var(--color-accent-off-white, var(--color-primary-button-text, var(--color-white)));
+  color: var(--color-accent-off-white, var(--color-card-bg));
   flex: 1;
   display: flex;
   align-items: center;
@@ -1318,7 +1435,7 @@ a.tag-card.tag-card--link:hover {
 }
 
 .content-card-text-content {
-  color: var(--color-accent-off-white, var(--color-primary-button-text, var(--color-white)));
+  color: var(--color-accent-off-white, var(--color-card-bg));
 
   display: flex;
   flex-direction: column;
@@ -1344,13 +1461,11 @@ a.tag-card.tag-card--link:hover {
 }
 
 .content-card-main-text {
-  color: var(--color-accent-off-white, var(--color-white)) !important;
-  letter-spacing: var(--letter-spacing-tight);
   font-family: var(--font-heading-family);
-  font-size: var(--desktop-main-text-font-size, var(--font-size-5xl));
-  font-weight: var(--desktop-main-text-font-weight, var(--font-weight-semibold));
-  line-height: var(--desktop-main-text-line-height, var(--line-height-tight));
-  white-space: pre-wrap;
+  font-size: var(--desktop-main-text-font-size, 28px);
+  font-weight: var(--desktop-main-text-font-weight, 600);
+  line-height: var(--desktop-main-text-line-height, 1.1);
+  color: inherit;
   margin: 0;
 }
 
@@ -1359,7 +1474,7 @@ a.tag-card.tag-card--link:hover {
   font-size: var(--desktop-sub-text-font-size, 14px);
   font-weight: var(--desktop-sub-text-font-weight, 400);
   line-height: var(--desktop-sub-text-line-height, 1.4);
-  color: var(--color-white);
+  color: var(--color-text);
   margin: 0;
 }
 
@@ -1381,17 +1496,17 @@ a.tag-card.tag-card--link:hover {
 
 /* Ensure filled tag is visible on red background */
 .content-card-tag.tag-card-tag--filled {
-  color: var(--color-primary-button-text, var(--color-white)) !important;
-  border: none !important;
-  border-radius: var(--radius-round) !important;
+  background: var(--color-heading);
+  color: var(--color-bg);
+  border: none;
 }
 
 /* Ensure border tag is visible on red background */
 .content-card-tag.tag-card-tag--border {
-  background: transparent !important;
-  color: var(--color-accent-off-white, var(--color-white)) !important;
-  border: var(--border-width-thin) solid var(--color-accent-off-white, var(--color-white)) !important;
-  border-radius: var(--radius-2xl) !important;
+  background: transparent;
+  color: var(--color-card-text);
+  border: 1px solid currentColor;
+  opacity: 0.8;
 }
 
 /* Content Card words: static (no text-reveal animation) */
@@ -1399,7 +1514,7 @@ a.tag-card.tag-card--link:hover {
   display: inline-block;
   opacity: 1;
   transform: none;
-  color: var(--color-accent-off-white, #fff) !important;
+  color: var(--color-card-text);
 }
 
 /* Add space after each word except the last */
@@ -1633,10 +1748,17 @@ a.tag-card.tag-card--link:hover {
   }
 
   .tag-card-tag {
-    font-size: var(--mobile-tag-font-size, var(--font-size-xs)) !important;
-    font-weight: var(--mobile-tag-font-weight, var(--font-weight-semibold)) !important;
-    padding: var(--spacing-1) var(--spacing-4);
-  }
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  line-height: 1;
+  border-radius: 20px;
+  letter-spacing: 0.05em;
+}
 
   /* Content Card Mobile Layout */
   /* Override layout direction for mobile */
@@ -1784,10 +1906,13 @@ a.tag-card.tag-card--link:hover {
   }
 
   .content-card-main-text {
-    font-size: var(--mobile-main-text-font-size, 20px) !important;
-    font-weight: var(--mobile-main-text-font-weight, 600) !important;
-    line-height: var(--mobile-main-text-line-height, 1.1) !important;
-  }
+  font-family: var(--font-heading-family);
+  font-size: var(--desktop-main-text-font-size, 28px);
+  font-weight: var(--desktop-main-text-font-weight, 600);
+  line-height: var(--desktop-main-text-line-height, 1.1);
+  color: inherit;
+  margin: 0;
+}
 
   .content-card-tag {
     font-size: var(--mobile-tag-font-size, 10px) !important;
@@ -1834,13 +1959,13 @@ a.tag-card.tag-card--link:hover {
   }
 
   .cart-icon-svg {
-    stroke: var(--mobile-icon-color, var(--color-text, #121212)) !important;
+    stroke: var(--mobile-icon-color, var(--color-heading, #121212)) !important;
     stroke-width: var(--mobile-icon-stroke-width, 2) !important;
   }
 
   .cart-icon-svg path,
   .cart-icon-svg circle {
-    stroke: var(--mobile-icon-color, var(--color-text, #121212)) !important;
+    stroke: var(--mobile-icon-color, var(--color-heading, #121212)) !important;
   }
 
   .cart-count {
@@ -1956,10 +2081,13 @@ a.tag-card.tag-card--link:hover {
   }
 
   .content-card-main-text {
-    font-size: var(--mobile-main-text-font-size, 18px) !important;
-    font-weight: var(--mobile-main-text-font-weight, 600) !important;
-    line-height: var(--mobile-main-text-line-height, 1.1) !important;
-  }
+  font-family: var(--font-heading-family);
+  font-size: var(--desktop-main-text-font-size, 28px);
+  font-weight: var(--desktop-main-text-font-weight, 600);
+  line-height: var(--desktop-main-text-line-height, 1.1);
+  color: inherit;
+  margin: 0;
+}
 
   .content-card-tag {
     font-size: var(--mobile-tag-font-size, 10px) !important;
@@ -1975,4 +2103,33 @@ a.tag-card.tag-card--link:hover {
     font-weight: var(--mobile-main-font-weight, 600) !important;
     line-height: var(--mobile-main-line-height, 1.4) !important;
   }
+}
+
+.bento-card {
+  transition: transform 0.4s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+.bento-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+  z-index: 10;
+}
+
+/* Reversed Color Customization */
+.bento-card.is-reversed {
+  background-color: var(--color-card-text) !important;
+  color: var(--color-card-bg) !important;
+}
+
+.bento-card.is-reversed .tag-card-tag--filled {
+  background: var(--color-card-bg) !important;
+  color: var(--color-card-text) !important;
+}
+
+.bento-card.is-reversed .tag-card-tag--border {
+  border-color: var(--color-card-bg) !important;
+  color: var(--color-card-bg) !important;
+}
+
+.bento-card.is-reversed .tag-card-main {
+  color: var(--color-card-bg) !important;
 }

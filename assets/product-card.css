@@ -71,7 +71,7 @@
   line-height: 1;
   letter-spacing: 0.02em;
   color: var(--color-text);
-  background-color: var(--color-header-button-background, transparent);
+  background-color: var(--color-card-bg, transparent);
   transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 

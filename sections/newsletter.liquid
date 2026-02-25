@@ -2,8 +2,8 @@
 
 {%- style -%}
   .newsletter-section-{{ section.id }} {
-    --newsletter-bg: {{ section.settings.background | default: '#475742' }};
-    --newsletter-input-bg: {{ section.settings.input_background | default: '#e7e3da' }};
+    --newsletter-bg: var(--color-bg);
+    --newsletter-input-bg: var(--color-input-bg);
     --newsletter-heading-size: {{ section.settings.heading_size | default: 24 }}px;
     --newsletter-desc-size: {{ section.settings.desc_size | default: 15 }}px;
   }
@@ -53,7 +53,7 @@
           </div>
         </div>
         <div class="newsletter-section__submit-wrap">
-          {%- render 'submit-button', text: section.settings.button_text | default: 'Subscribe', type: 'submit', class: 'newsletter-section__submit-btn' -%}
+          {%- render 'global-btn', text: section.settings.button_text | default: 'Subscribe', type: 'submit', class: 'newsletter-section__submit-btn' -%}
         </div>
       </div>
       {%- if form.posted_successfully? -%}
@@ -68,7 +68,12 @@
 {% schema %}
 {
   "name": "Newsletter",
-  "disabled_on": { "groups": ["header", "footer"] },
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  },
   "tag": "section",
   "class": "section-newsletter",
   "settings": [
@@ -95,18 +100,6 @@
       "id": "button_text",
       "label": "Button text",
       "default": "Subscribe"
-    },
-    {
-      "type": "color",
-      "id": "background",
-      "label": "Background",
-      "default": "#475742"
-    },
-    {
-      "type": "color",
-      "id": "input_background",
-      "label": "Input background",
-      "default": "#e7e3da"
     },
     {
       "type": "range",

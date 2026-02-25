@@ -12,7 +12,7 @@
 
 .custom-product-card,
 .custom-collection-card {
-  background: var(--color-header-button-background);
+  background: var(--color-card-bg);
   border: 1px solid var(--color-borders);
   border-radius: 24px;
   display: flex;
@@ -140,7 +140,7 @@
   bottom: 20px;
   background: var(--color-header-logo-background);
   border-radius: 20px;
-  color: var(--color-header-button-background);
+  color: var(--color-card-bg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -252,7 +252,7 @@
   border-style: solid;
   font-family: var(--font-body-family);
   position: relative;
-  background-color: var(--color-header-button-background) !important;
+  background-color: var(--color-card-bg) !important;
   z-index: 2;
   transition: transform 0.8s ease-out;
 }

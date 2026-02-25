@@ -51,10 +51,9 @@
 
     <style>
       :root {
-        /* Essential Static Tokens (Inlined from design-tokens.css) */
+        /* ─── Essential Static Tokens ─── */
         --color-white: #FFFFFF;
         --color-black: #000000;
-        --color-red: #FF0000;
         --gap-section: 24px;
         --gap-component: 8px;
         --padding-medium: 16px;
@@ -73,74 +72,49 @@
         --shadow-elevation-2: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
         --shadow-elevation-3: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 
-        /* Default Color Scheme (from first scheme) */
-        {%- liquid
-          assign default_scheme = settings.color_schemes | first
-        -%}
+        /* ─── Root Palette (default = scheme 1) ─── */
+        {%- assign default_scheme = settings.color_schemes | first -%}
 
-        --color-background: {{ default_scheme.settings.background }};
-        --color-headings: {{ default_scheme.settings.headings }};
-        --color-text: {{ default_scheme.settings.text }};
-        --color-links: {{ default_scheme.settings.links }};
-        --color-links-hover: {{ default_scheme.settings.links_hover }};
-        --color-borders: {{ default_scheme.settings.borders }};
-        --color-shadow: {{ default_scheme.settings.shadow }};
+        --color-bg: {{ default_scheme.settings.color_bg }};
+        --color-card-bg: {{ default_scheme.settings.color_card_bg }};
+        --color-card-text: {{ default_scheme.settings.color_card_text }};
+        --color-heading: {{ default_scheme.settings.color_heading }};
+        --color-text: {{ default_scheme.settings.color_text }};
+        --color-link: {{ default_scheme.settings.color_link }};
+        --color-link-hover: {{ default_scheme.settings.color_link_hover }};
+        --color-btn-border: {{ default_scheme.settings.color_btn_border }};
+        --color-btn-shadow: {{ default_scheme.settings.color_btn_shadow }};
 
-        /* Primary Button */
-        --color-primary-button-bg: {{ default_scheme.settings.primary_button_bg }};
-        --color-primary-button-text: {{ default_scheme.settings.primary_button_text }};
-        --color-primary-button-border: {{ default_scheme.settings.primary_button_border }};
-        --color-primary-button-hover-bg: {{ default_scheme.settings.primary_button_hover_bg }};
-        --color-primary-button-hover-text: {{ default_scheme.settings.primary_button_hover_text }};
-        --color-primary-button-hover-border: {{ default_scheme.settings.primary_button_hover_border }};
+        /* ─── Input Fields ─── */
+        --color-input-bg: {{ default_scheme.settings.color_input_bg }};
+        --color-input-text: {{ default_scheme.settings.color_input_text }};
+        --color-input-border: {{ default_scheme.settings.color_input_border }};
 
-        /* Secondary Button */
-        --color-secondary-button-bg: {{ default_scheme.settings.secondary_button_bg }};
-        --color-secondary-button-text: {{ default_scheme.settings.secondary_button_text }};
-        --color-secondary-button-border: {{ default_scheme.settings.secondary_button_border }};
-        --color-secondary-button-hover-bg: {{ default_scheme.settings.secondary_button_hover_bg }};
-        --color-secondary-button-hover-text: {{ default_scheme.settings.secondary_button_hover_text }};
-        --color-secondary-button-hover-border: {{ default_scheme.settings.secondary_button_hover_border }};
+        /* ─── Primary Button ─── */
+        --btn-primary-bg: {{ default_scheme.settings.btn_primary_bg }};
+        --btn-primary-text: {{ default_scheme.settings.btn_primary_text }};
+        --btn-primary-border: {{ default_scheme.settings.btn_primary_border }};
+        --btn-primary-shadow: {{ default_scheme.settings.btn_primary_shadow }};
 
-        /* Inputs */
-        --color-input-bg: {{ default_scheme.settings.input_bg }};
-        --color-input-text: {{ default_scheme.settings.input_text }};
-        --color-input-border: {{ default_scheme.settings.input_border }};
-        --color-input-hover-bg: {{ default_scheme.settings.input_hover_bg }};
+        /* ─── Secondary Button ─── */
+        --btn-secondary-bg: {{ default_scheme.settings.btn_secondary_bg }};
+        --btn-secondary-text: {{ default_scheme.settings.btn_secondary_text }};
+        --btn-secondary-border: {{ default_scheme.settings.btn_secondary_border }};
+        --btn-secondary-shadow: {{ default_scheme.settings.btn_secondary_shadow }};
 
-        /* Variants */
-        --color-variant-bg: {{ default_scheme.settings.variant_bg }};
-        --color-variant-text: {{ default_scheme.settings.variant_text }};
-        --color-variant-border: {{ default_scheme.settings.variant_border }};
-        --color-variant-hover-bg: {{ default_scheme.settings.variant_hover_bg }};
-        --color-variant-hover-text: {{ default_scheme.settings.variant_hover_text }};
-        --color-variant-hover-border: {{ default_scheme.settings.variant_hover_border }};
+        /* ─── Tertiary Button ─── */
+        --btn-tertiary-bg: {{ default_scheme.settings.btn_tertiary_bg }};
+        --btn-tertiary-text: {{ default_scheme.settings.btn_tertiary_text }};
+        --btn-tertiary-border: {{ default_scheme.settings.btn_tertiary_border }};
+        --btn-tertiary-shadow: {{ default_scheme.settings.btn_tertiary_shadow }};
 
-        /* Selected Variants */
-        --color-variant-selected-bg: {{ default_scheme.settings.selected_variant_bg }};
-        --color-variant-selected-text: {{ default_scheme.settings.selected_variant_text }};
-        --color-variant-selected-border: {{ default_scheme.settings.selected_variant_border }};
-        --color-variant-selected-hover-bg: {{ default_scheme.settings.selected_variant_hover_bg }};
-        --color-variant-selected-hover-text: {{ default_scheme.settings.selected_variant_hover_text }};
-        --color-variant-selected-hover-border: {{ default_scheme.settings.selected_variant_hover_border }};
+        /* ─── Disabled Button ─── */
+        --btn-disabled-bg: {{ default_scheme.settings.btn_disabled_bg }};
+        --btn-disabled-text: {{ default_scheme.settings.btn_disabled_text }};
+        --btn-disabled-border: {{ default_scheme.settings.btn_disabled_border }};
+        --btn-disabled-shadow: {{ default_scheme.settings.btn_disabled_shadow }};
 
-        /* Accent Colors */
-        --color-accent-red: {{ default_scheme.settings.accent_red }};
-        --color-accent-pink: {{ default_scheme.settings.accent_pink }};
-        --color-accent-off-white: {{ default_scheme.settings.accent_off_white }};
-        --color-accent-light-grey: {{ default_scheme.settings.accent_light_grey }};
-
-        /* Header Colors */
-        --color-header-background: {{ default_scheme.settings.header_background }};
-        --color-header-text: {{ default_scheme.settings.header_text }};
-        --color-header-border: {{ default_scheme.settings.header_border }};
-        --color-header-button-background: {{ default_scheme.settings.header_button_background }};
-        --color-header-button-hover-background: {{ default_scheme.settings.header_button_hover_background }};
-        --color-header-logo-background: {{ default_scheme.settings.header_logo_background }};
-        --color-header-logo-text: {{ default_scheme.settings.header_logo_text }};
-        --color-header-active-border: {{ default_scheme.settings.header_active_border }};
-
-        /* Font Variables */
+        /* ─── Font Variables ─── */
         --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
         --font-body-style: {{ settings.type_body_font.style }};
         --font-body-weight: {{ settings.type_body_font.weight }};
@@ -163,11 +137,10 @@
         --font-body-scale: {{ settings.body_scale | divided_by: 100.0 }};
         --font-heading-scale: {{ settings.heading_scale | times: 1.0 | divided_by: settings.body_scale }};
 
-        /* Legacy font variables for backward compatibility */
         --font-family-primary: var(--font-body-family);
         --font-body-size: 16px;
 
-        /* Spacing Variables */
+        /* ─── Spacing ─── */
         --spacing-xs: 4px;
         --spacing-s: 8px;
         --spacing-m: 16px;
@@ -175,7 +148,7 @@
         --spacing-xl: 32px;
         --spacing-xxl: 48px;
 
-        /* Border Radius */
+        /* ─── Border Radius ─── */
         --border-radius-s: 4px;
         --border-radius-m: 8px;
         --border-radius-l: 16px;
@@ -183,85 +156,152 @@
         --icon-size-medium: 20px;
         --border-width-thin: 1px;
 
-        /* Transitions */
+        /* ─── Transitions ─── */
         --transition-short: 0.2s ease;
         --transition-medium: 0.3s ease;
         --transition-long: 0.5s ease;
+        --color-btn-disabled-shadow: {{ default_scheme.settings.btn_disabled_shadow }};
+
+        /* ─── Aliases for base.css ─── */
+        --color-background: var(--color-bg);
+        --color-headings: var(--color-heading);
+        --body-color: var(--color-text);
+      }
+
+      html, body {
+        background-color: var(--color-bg);
+        color: var(--color-text);
+        margin: 0;
+        overflow-x: hidden;
+        width: 100%;
       }
 
       {%- for scheme in settings.color_schemes -%}
-        .color-{{ scheme.id }},
-        .color-{{ scheme.id }} p,
-        .color-{{ scheme.id }} span,
-        .color-{{ scheme.id }} div,
-        .color-{{ scheme.id }} a {
-          --color-background: {{ scheme.settings.background }};
-          --color-headings: {{ scheme.settings.headings }};
-          --color-text: {{ scheme.settings.text }};
-          --color-links: {{ scheme.settings.links }};
-          --color-links-hover: {{ scheme.settings.links_hover }};
-          --color-borders: {{ scheme.settings.borders }};
-          --color-shadow: {{ scheme.settings.shadow }};
+        .color-{{ scheme.id }} {
+          --color-bg: {{ scheme.settings.color_bg }};
+          --color-background: var(--color-bg);
+          --color-card-bg: {{ scheme.settings.color_card_bg }};
+          --color-card-text: {{ scheme.settings.color_card_text }};
+          --color-heading: {{ scheme.settings.color_heading }};
+          --color-headings: var(--color-heading);
+          --color-text: {{ scheme.settings.color_text }};
+          --body-color: var(--color-text);
+          --color-link: {{ scheme.settings.color_link }};
+          --color-link-hover: {{ scheme.settings.color_link_hover }};
+          --color-btn-border: {{ scheme.settings.color_btn_border }};
+          --color-btn-shadow: {{ scheme.settings.color_btn_shadow }};
+          --color-input-bg: {{ scheme.settings.color_input_bg }};
+          --color-input-text: {{ scheme.settings.color_input_text }};
+          --color-input-border: {{ scheme.settings.color_input_border }};
+          --btn-primary-bg: {{ scheme.settings.btn_primary_bg }};
+          --btn-primary-text: {{ scheme.settings.btn_primary_text }};
+          --btn-primary-border: {{ scheme.settings.btn_primary_border }};
+          --btn-primary-shadow: {{ scheme.settings.btn_primary_shadow }};
+          --btn-secondary-bg: {{ scheme.settings.btn_secondary_bg }};
+          --btn-secondary-text: {{ scheme.settings.btn_secondary_text }};
+          --btn-secondary-border: {{ scheme.settings.btn_secondary_border }};
+          --btn-secondary-shadow: {{ scheme.settings.btn_secondary_shadow }};
+          --btn-tertiary-bg: {{ scheme.settings.btn_tertiary_bg }};
+          --btn-tertiary-text: {{ scheme.settings.btn_tertiary_text }};
+          --btn-tertiary-border: {{ scheme.settings.btn_tertiary_border }};
+          --btn-tertiary-shadow: {{ scheme.settings.btn_tertiary_shadow }};
+          --btn-disabled-bg: {{ scheme.settings.btn_disabled_bg }};
+          --btn-disabled-text: {{ scheme.settings.btn_disabled_text }};
+          --btn-disabled-border: {{ scheme.settings.btn_disabled_border }};
+          --btn-disabled-shadow: {{ scheme.settings.btn_disabled_shadow }};
+        }
 
-          --color-primary-button-bg: {{ scheme.settings.primary_button_bg }};
-          --color-primary-button-text: {{ scheme.settings.primary_button_text }};
-          --color-primary-button-border: {{ scheme.settings.primary_button_border }};
-          --color-primary-button-hover-bg: {{ scheme.settings.primary_button_hover_bg }};
-          --color-primary-button-hover-text: {{ scheme.settings.primary_button_hover_text }};
-          --color-primary-button-hover-border: {{ scheme.settings.primary_button_hover_border }};
-
-          --color-secondary-button-bg: {{ scheme.settings.secondary_button_bg }};
-          --color-secondary-button-text: {{ scheme.settings.secondary_button_text }};
-          --color-secondary-button-border: {{ scheme.settings.secondary_button_border }};
-          --color-secondary-button-hover-bg: {{ scheme.settings.secondary_button_hover_bg }};
-          --color-secondary-button-hover-text: {{ scheme.settings.secondary_button_hover_text }};
-          --color-secondary-button-hover-border: {{ scheme.settings.secondary_button_hover_border }};
-
-          --color-input-bg: {{ scheme.settings.input_bg }};
-          --color-input-text: {{ scheme.settings.input_text }};
-          --color-input-border: {{ scheme.settings.input_border }};
-          --color-input-hover-bg: {{ scheme.settings.input_hover_bg }};
-
-          --color-variant-bg: {{ scheme.settings.variant_bg }};
-          --color-variant-text: {{ scheme.settings.variant_text }};
-          --color-variant-border: {{ scheme.settings.variant_border }};
-          --color-variant-hover-bg: {{ scheme.settings.variant_hover_bg }};
-          --color-variant-hover-text: {{ scheme.settings.variant_hover_text }};
-          --color-variant-hover-border: {{ scheme.settings.variant_hover_border }};
-
-          --color-variant-selected-bg: {{ scheme.settings.selected_variant_bg }};
-          --color-variant-selected-text: {{ scheme.settings.selected_variant_text }};
-          --color-variant-selected-border: {{ scheme.settings.selected_variant_border }};
-          --color-variant-selected-hover-bg: {{ scheme.settings.selected_variant_hover_bg }};
-          --color-variant-selected-hover-text: {{ scheme.settings.selected_variant_hover_text }};
-          --color-variant-selected-hover-border: {{ scheme.settings.selected_variant_hover_border }};
-
-          /* Accent Colors */
-          --color-accent-red: {{ scheme.settings.accent_red }};
-          --color-accent-pink: {{ scheme.settings.accent_pink }};
-          --color-accent-off-white: {{ scheme.settings.accent_off_white }};
-          --color-accent-light-grey: {{ scheme.settings.accent_light_grey }};
-
-          /* Header Colors */
-          --color-header-background: {{ scheme.settings.header_background }};
-          --color-header-text: {{ scheme.settings.header_text }};
-          --color-header-border: {{ scheme.settings.header_border }};
-          --color-header-button-background: {{ scheme.settings.header_button_background }};
-          --color-header-button-hover-background: {{ scheme.settings.header_button_hover_background }};
-          --color-header-logo-background: {{ scheme.settings.header_logo_background }};
-          --color-header-logo-text: {{ scheme.settings.header_logo_text }};
-          --color-header-active-border: {{ scheme.settings.header_active_border }};
-
+        /* Global Theme Override: When active, force everything to this scheme's variables */
+        html[data-global-theme-active="true"][data-active-scheme="color-{{ scheme.id }}"] {
+          --global-bg: {{ scheme.settings.color_bg }};
+          --global-card-bg: {{ scheme.settings.color_card_bg }};
+          --global-card-text: {{ scheme.settings.color_card_text }};
+          --global-heading: {{ scheme.settings.color_heading }};
+          --global-text: {{ scheme.settings.color_text }};
+          --global-link: {{ scheme.settings.color_link }};
+          --global-link-hover: {{ scheme.settings.color_link_hover }};
+          --global-btn-border: {{ scheme.settings.color_btn_border }};
+          --global-btn-shadow: {{ scheme.settings.color_btn_shadow }};
+          --global-input-bg: {{ scheme.settings.color_input_bg }};
+          --global-input-text: {{ scheme.settings.color_input_text }};
+          --global-input-border: {{ scheme.settings.color_input_border }};
+          --global-btn-primary-bg: {{ scheme.settings.btn_primary_bg }};
+          --global-btn-primary-text: {{ scheme.settings.btn_primary_text }};
+          --global-btn-primary-border: {{ scheme.settings.btn_primary_border }};
+          --global-btn-primary-shadow: {{ scheme.settings.btn_primary_shadow }};
+          --global-btn-secondary-bg: {{ scheme.settings.btn_secondary_bg }};
+          --global-btn-secondary-text: {{ scheme.settings.btn_secondary_text }};
+          --global-btn-secondary-border: {{ scheme.settings.btn_secondary_border }};
+          --global-btn-secondary-shadow: {{ scheme.settings.btn_secondary_shadow }};
+          --global-btn-tertiary-bg: {{ scheme.settings.btn_tertiary_bg }};
+          --global-btn-tertiary-text: {{ scheme.settings.btn_tertiary_text }};
+          --global-btn-tertiary-border: {{ scheme.settings.btn_tertiary_border }};
+          --global-btn-tertiary-shadow: {{ scheme.settings.btn_tertiary_shadow }};
+          --global-btn-disabled-bg: {{ scheme.settings.btn_disabled_bg }};
+          --global-btn-disabled-text: {{ scheme.settings.btn_disabled_text }};
+          --global-btn-disabled-border: {{ scheme.settings.btn_disabled_border }};
+          --global-btn-disabled-shadow: {{ scheme.settings.btn_disabled_shadow }};
         }
       {%- endfor -%}
+
+      html[data-global-theme-active="true"] [class*="color-"],
+      html[data-global-theme-active="true"] body,
+      html[data-global-theme-active="true"] .bento-grid-container,
+      html[data-global-theme-active="true"] .vertical-sidebar-logo-link {
+        --color-bg: var(--global-bg) !important;
+        --color-background: var(--global-bg) !important;
+        --color-card-bg: var(--global-card-bg) !important;
+        --color-card-text: var(--global-card-text) !important;
+        --color-heading: var(--global-heading) !important;
+        --color-headings: var(--global-heading) !important;
+        --color-text: var(--global-text) !important;
+        --body-color: var(--global-text) !important;
+        --color-link: var(--global-link) !important;
+        --color-link-hover: var(--global-link-hover) !important;
+        --color-btn-border: var(--global-btn-border) !important;
+        --color-btn-shadow: var(--global-btn-shadow) !important;
+        --color-input-bg: var(--global-input-bg) !important;
+        --color-input-text: var(--global-input-text) !important;
+        --color-input-border: var(--global-input-border) !important;
+        --btn-primary-bg: var(--global-btn-primary-bg) !important;
+        --btn-primary-text: var(--global-btn-primary-text) !important;
+        --btn-primary-border: var(--global-btn-primary-border) !important;
+        --btn-primary-shadow: var(--global-btn-primary-shadow) !important;
+        --btn-secondary-bg: var(--global-btn-secondary-bg) !important;
+        --btn-secondary-text: var(--global-btn-secondary-text) !important;
+        --btn-secondary-border: var(--global-btn-secondary-border) !important;
+        --btn-secondary-shadow: var(--global-btn-secondary-shadow) !important;
+        --btn-tertiary-bg: var(--global-btn-tertiary-bg) !important;
+        --btn-tertiary-text: var(--global-btn-tertiary-text) !important;
+        --btn-tertiary-border: var(--global-btn-tertiary-border) !important;
+        --btn-tertiary-shadow: var(--global-btn-tertiary-shadow) !important;
+        --btn-disabled-bg: var(--global-btn-disabled-bg) !important;
+        --btn-disabled-text: var(--global-btn-disabled-text) !important;
+        --btn-disabled-border: var(--global-btn-disabled-border) !important;
+        --btn-disabled-shadow: var(--global-btn-disabled-shadow) !important;
+
+        /* Forced Logo Overrides */
+        --color-header-logo-background: var(--global-heading) !important;
+        --color-header-logo-text: var(--global-card-bg) !important;
+      }
+
+      /* Smooth theme transition when toggle changes scheme */
+      html[data-global-theme-active="true"],
+      html[data-global-theme-active="true"] body,
+      html[data-global-theme-active="true"] .bento-grid-container,
+      html[data-global-theme-active="true"] [class*="color-"],
+      html[data-global-theme-active="true"] .vertical-sidebar-logo-link {
+        transition: background-color 0.6s ease, color 0.6s ease, border-color 0.6s ease, box-shadow 0.6s ease, fill 0.6s ease, stroke 0.6s ease;
+      }
 
       /* ============================================
          GLOBAL SCROLLBAR STYLES
          ============================================ */
+
       html {
         scrollbar-width: thin;
         /* Match header scrollbar: [Thumb Color] [Track Color] */
-        scrollbar-color: var(--color-header-border, #365330) var(--color-header-background, #eae7e1);
+        scrollbar-color: var(--color-heading) var(--color-bg);
       }
 
       /* For Chrome, Safari, and Edge */
@@ -275,24 +315,25 @@
       ::-webkit-scrollbar-track,
       html::-webkit-scrollbar-track,
       body::-webkit-scrollbar-track {
-        background: var(--color-header-background, #eae7e1) !important;
+        background: var(--color-bg) !important;
       }
 
       ::-webkit-scrollbar-thumb,
       html::-webkit-scrollbar-thumb,
       body::-webkit-scrollbar-thumb {
-        background: var(--color-header-border, #365330) !important;
+        background: var(--color-heading) !important;
         border-radius: 10px !important;
       }
 
       ::-webkit-scrollbar-thumb:hover,
       html::-webkit-scrollbar-thumb:hover,
       body::-webkit-scrollbar-thumb:hover {
-        background: color-mix(in srgb, var(--color-header-border, #365330) 85%, black) !important;
+        background: var(--color-heading) !important;
       }
     </style>
 
     {{ 'base.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'component-global-btn.css' | asset_url | stylesheet_tag: preload: true }}
 
     {%- if localization.available_countries.size > 1 or localization.available_languages.size > 1 -%}
       {{ 'component-localization-form.css' | asset_url | stylesheet_tag: preload: true }}
@@ -318,7 +359,17 @@
     </script>
   </head>
 
-  <body>
+  {%- assign default_scheme = settings.color_schemes | first -%}
+  <body class="color-{{ default_scheme.id }}">
+    <script>
+      (function () {
+        const savedScheme = localStorage.getItem('global-theme-scheme');
+        if (savedScheme) {
+          document.documentElement.setAttribute('data-global-theme-active', 'true');
+          document.documentElement.setAttribute('data-active-scheme', savedScheme);
+        }
+      })();
+    </script>
     {%- if settings.cart_type == 'drawer' -%}
       {%- render 'cart-drawer' -%}
     {%- endif -%}

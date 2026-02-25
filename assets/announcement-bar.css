@@ -1,32 +1,25 @@
 /* ============================================================
    Announcement Bar — Pill + Separator Marquee
    All sizing/colour values come from CSS custom properties
-   set inline by the Liquid section.
+   set inline by the Liqu
+   id section.
    ============================================================ */
 
 /* ---------- Bar shell ---------- */
 .announcement-bar {
-  position: relative;
-  overflow: hidden;
-  padding: var(--ab-bar-py, 6px) var(--ab-bar-px, 0px);
   min-height: var(--ab-bar-min-height, 0px);
   background: var(--color-background);
   color: var(--color-text);
   font-family: var(--font-family-primary);
-  display: flex;
-  align-items: center;
-  z-index: 900;
-
-
-  /* ── Desktop: indent to clear the fixed vertical sidebar ── */
-  margin-left: var(--header-width, 230px);
-  width: calc(100% - var(--header-width, 230px));
+  z-index: 1001; /* Stay above everything else */
+  /* Left/right padding to match other sections (e.g. header logo 24px); bottom padding = gap above header */
+  padding: 20px 20px 0px 20px !important;
+  margin-bottom: 16px;
 }
 
 .announcement-bar.is-sticky {
   position: sticky;
   top: 0;
-  left: 0;
 }
 
 .announcement-bar[hidden] {

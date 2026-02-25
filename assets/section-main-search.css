@@ -1,7 +1,7 @@
 /* Search page header – typography & spacing (uses section CSS variables) */
 .main-search-page-header {
   margin-bottom: var(--search-header-margin-bottom, 0.75rem);
-  background-color: var(--color-header-button-background);
+  background-color: var(--color-card-bg);
   padding: var(--search-header-padding, 20px);
   border-radius: 20px;
   box-sizing: border-box;

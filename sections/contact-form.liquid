@@ -28,11 +28,11 @@
     }
   }
   .contact-page-{{ section.id }} {
-    --contact-accent: {{ section.settings.accent_color | default: '#4C6F4B' }};
-    --contact-bg: {{ section.settings.background_color | default: '#E8E6E0' }};
-    --contact-left-card-bg: {{ section.settings.left_card_background | default: '#F5F4EE' }};
-    --contact-card-bg: {{ section.settings.card_background | default: '#ffffff' }};
-    --contact-text: {{ section.settings.text_color | default: '#2d2d2d' }};
+    --contact-accent: var(--color-link);
+    --contact-bg: var(--color-bg);
+    --contact-left-card-bg: var(--color-bg);
+    --contact-card-bg: var(--color-card-bg);
+    --contact-text: var(--color-text);
     --contact-placeholder: {{ section.settings.placeholder_color | default: '#888' }};
     --contact-map-height-min: {{ section.settings.map_height_min | default: 260 }}px;
     --contact-card-radius: {{ section.settings.card_border_radius | default: 12 }}px;
@@ -293,7 +293,7 @@
               </div>
             </div>
             <div class="contact-page__submit">
-              {%- render 'submit-button', text: section.settings.button_text | default: 'Send', type: 'submit', class: 'contact-page__submit-btn' -%}
+              {%- render 'global-btn', text: section.settings.button_text | default: 'Send', type: 'submit', class: 'contact-page__submit-btn' -%}
             </div>
           {%- endform -%}
         </div>
@@ -377,7 +377,12 @@
   "name": "t:sections.contact-form.name",
   "tag": "section",
   "class": "section",
-  "disabled_on": { "groups": ["header", "footer"] },
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  },
   "settings": [
     {
       "type": "header",
@@ -402,8 +407,14 @@
       "id": "map_provider",
       "label": "Map provider",
       "options": [
-        { "value": "openstreetmap", "label": "OpenStreetMap (Leaflet)" },
-        { "value": "google", "label": "Google Maps" }
+        {
+          "value": "openstreetmap",
+          "label": "OpenStreetMap (Leaflet)"
+        },
+        {
+          "value": "google",
+          "label": "Google Maps"
+        }
       ],
       "default": "openstreetmap",
       "info": "Google Maps requires an API key with Maps Embed API enabled."
@@ -678,42 +689,6 @@
       "content": "Colors"
     },
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "Page background",
-      "default": "#E8E6E0"
-    },
-    {
-      "type": "color",
-      "id": "card_background",
-      "label": "Card background (right form card)",
-      "default": "#ffffff"
-    },
-    {
-      "type": "color",
-      "id": "left_card_background",
-      "label": "Left card background (map + contact)",
-      "default": "#F5F4EE"
-    },
-    {
-      "type": "color",
-      "id": "accent_color",
-      "label": "Accent (icons, button)",
-      "default": "#3B5237"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text color",
-      "default": "#2d2d2d"
-    },
-    {
-      "type": "color",
-      "id": "placeholder_color",
-      "label": "Placeholder color",
-      "default": "#888888"
-    },
-    {
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "t:sections.all.colors.label",
@@ -744,6 +719,10 @@
       "default": 0
     }
   ],
-  "presets": [{ "name": "t:sections.contact-form.presets.name" }]
+  "presets": [
+    {
+      "name": "t:sections.contact-form.presets.name"
+    }
+  ]
 }
 {% endschema %}

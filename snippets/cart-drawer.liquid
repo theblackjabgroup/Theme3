@@ -57,7 +57,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    background-color: var(--color-header-button-background);
+    background-color: var(--color-card-bg);
   }
 
   body.cart-drawer-open main,
@@ -104,7 +104,7 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    background-color: var(--color-header-button-background);
+    background-color: var(--color-card-bg);
     position: relative;
     z-index: 2;
     box-shadow: -4px 0 24px rgba(0, 0, 0, 0.05);
@@ -125,7 +125,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 20px 24px;
-    background-color: var(--color-header-button-background);
+    background-color: var(--color-card-bg);
     border-bottom: 1px solid var(--cart-drawer-border);
     flex-shrink: 0;
   }
@@ -417,7 +417,7 @@
   .cart-drawer__edit-quantity-row .quantity__button {
     width: 38px;
     height: 38px;
-    background-color: var(--color-header-button-background);
+    background-color: var(--color-card-bg);
     border: 1px solid var(--color-headings, #000);
     border-radius: 10px;
     cursor: pointer;
@@ -487,7 +487,7 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    background-color: var(--color-header-button-background);
+    background-color: var(--color-card-bg);
     color: var(--cart-drawer-text);
     border: 1.5px solid var(--cart-drawer-text);
     border-radius: 10px;
@@ -503,7 +503,7 @@
     flex-shrink: 0;
     padding: 20px 24px 24px;
     border-top: 1px solid var(--cart-drawer-border);
-    background-color: var(--color-header-button-background);
+    background-color: var(--color-card-bg);
   }
 
   .cart-drawer__total-row {
@@ -678,7 +678,7 @@
     flex: 1;
     min-height: 0;
     overflow: hidden;
-    background-color: var(--color-header-button-background);
+    background-color: var(--color-card-bg);
   }
 
   cart-drawer.editing .cart-drawer__edit-panel {
@@ -851,7 +851,7 @@
   }
 
   .cart-drawer__edit-variant-btn .submit-button__content {
-    background-color: var(--color-header-button-background);
+    background-color: var(--color-card-bg);
     color: var(--cart-drawer-text);
     border: 1.5px solid var(--cart-drawer-text);
     border-radius: 10px;
@@ -997,7 +997,7 @@
         <div class="drawer__inner-empty">
           <h2 class="cart__empty-text">{{ 'sections.cart.empty' | t }}</h2>
           {% capture continue_shopping_text %}{{ 'general.continue_shopping' | t }}{% endcapture %}
-          {% render 'submit-button',
+          {% render 'global-btn',
             text: continue_shopping_text,
             url: routes.all_products_collection_url,
             class: 'cart-drawer__checkout-btn'
@@ -1044,7 +1044,7 @@
               <div class="cart-drawer__edit-variants" data-edit-variants></div>
             </div>
             <div class="cart-drawer__edit-update-wrap">
-              {% render 'submit-button',
+              {% render 'global-btn',
                 text: 'Update Cart',
                 type: 'button',
                 class: 'cart-drawer__edit-update-btn',
@@ -1236,7 +1236,7 @@
                             {% render 'quantity-selector', item: item, id_prefix: 'Drawer-quantity-' %}
                           </div>
                           {% capture edit_btn_attrs %}data-edit-trigger data-line-index="{{ item.index | plus: 1 }}" aria-label="Edit {{ item.product.title | escape }}"{% endcapture %}
-                          {% render 'submit-button',
+                          {% render 'global-btn',
                             text: 'Edit',
                             type: 'button',
                             class: 'cart-drawer__edit-btn',
@@ -1265,7 +1265,7 @@
               {{- cart.total_price | money_without_trailing_zeros -}}
             </span>
           </div>
-          {% render 'submit-button',
+          {% render 'global-btn',
             text: 'Proceed To Checkout',
             type: 'submit',
             class: 'cart-drawer__checkout-btn',

@@ -58,92 +58,54 @@
       if block.settings.orbit_direction == 'counterclockwise'
         assign orbit_dir = 'reverse'
       endif
+
+      assign orbit_gap = block.settings.orbit_text_gap
+      if orbit_gap == null
+        assign orbit_gap = 8
+      endif
     -%}
 
-    <div
-      class="marquee-scroll__strip{% if block.settings.pause_on_hover %} marquee-scroll__strip--pause-on-hover{% endif %}"
-      {{ block.shopify_attributes }}
-      data-block-id="{{ block.id }}"
-      style="
-        --marquee-speed: {{ block.settings.speed }}s;
-        --marquee-direction: {{ scroll_dir }};
-        --marquee-bg: {{ block.settings.strip_bg }};
-        --strip-border-radius: {{ block.settings.strip_border_radius }}px;
-        --marquee-padding: {{ block.settings.strip_padding }}px;
-        --text-font-size: {{ block.settings.text_size }}px;
-        --text-font-weight: {{ block.settings.text_weight }};
-        --pill-bg: {{ block.settings.pill_bg }};
-        --pill-color: {{ block.settings.pill_color }};
-        --pill-height: {{ block.settings.pill_height }}px;
-        --pill-width: {{ block.settings.pill_width }}px;
-        --pill-border-radius: {{ block.settings.pill_border_radius }}px;
-        --item-gap: {{ block.settings.item_gap }}px;
-        --orbit-speed: {{ block.settings.orbit_speed }}s;
-        --orbit-direction: {{ orbit_dir }};
-        --orbit-font-size: {{ block.settings.orbit_font_size }}px;
-        --orbit-text-gap: {% assign og = block.settings.orbit_text_gap %}{% if og == nil %}{% assign og = 8 %}{% endif %}{{ og }}px;
-        --orbit-color: {{ block.settings.orbit_text_color }};
-        --orbit-text-transform: {{ block.settings.orbit_text_transform }};
-        --circle-width: {{ block.settings.circle_width }}px;
-        --circle-height: {{ block.settings.circle_height }}px;
-        --circle-bg: {{ block.settings.circle_bg }};
-        --icon-width: {{ block.settings.icon_width | default: 58 }}%;
-        --icon-height: {{ block.settings.icon_height | default: 58 }}%;
-      "
-    >
-      <div class="marquee-scroll__track">
-        {%- for content_copy in (1..2) -%}
-          {%- if content_copy == 1 -%}
-            {%- assign orbit_path_prefix = 'orbit-path-' -%}
-            {%- assign content_aria_hidden = false -%}
-          {%- else -%}
-            {%- assign orbit_path_prefix = 'orbit-path-dup-' -%}
-            {%- assign content_aria_hidden = true -%}
-          {%- endif -%}
-          <div class="marquee-scroll__content"{% if content_aria_hidden %} aria-hidden="true"{% endif %}>
-            {%- for i in (1..12) -%}
-              <div class="marquee-scroll__group">
-                <span class="marquee-scroll__orbit">
-                  <span class="marquee-scroll__orbit-ring">
-                    <svg class="marquee-scroll__orbit-svg" viewBox="0 0 120 120" aria-hidden="true">
-                      <defs>
-                        <path id="{{ orbit_path_prefix }}{{ block.id }}-{{ i }}" d="M 18,60 A 42,42 0 0 1 102,60 A 42,42 0 0 1 18,60" fill="none" />
-                      </defs>
-                      <g class="marquee-scroll__orbit-track">
-                        <text>
-                          <textPath href="#{{ orbit_path_prefix }}{{ block.id }}-{{ i }}">
-                            {{ block.settings.orbit_text }} {{ block.settings.orbit_text }} {{ block.settings.orbit_text }} {{ block.settings.orbit_text }} {{ block.settings.orbit_text }} {{ block.settings.orbit_text }}
-                          </textPath>
-                        </text>
-                      </g>
-                    </svg>
-                  </span>
-                  <span class="marquee-scroll__orbit-center">
-                    {%- if block.settings.circle_icon != blank -%}
-                      {{
-                        block.settings.circle_icon
-                        | image_url: width: 96
-                        | image_tag: class: 'marquee-scroll__icon', loading: 'lazy', alt: ''
-                      }}
-                    {%- else -%}
-                      <span class="marquee-scroll__icon-placeholder"></span>
-                    {%- endif -%}
-                  </span>
-                </span>
-                <span class="marquee-scroll__pill">{{ block.settings.text }}</span>
-              </div>
-            {%- endfor -%}
-          </div>
-        {%- endfor -%}
-      </div>
-    </div>
+    {% render 'scrolling-text-item',
+      id: block.id,
+      shopify_attributes: block.shopify_attributes,
+      speed: block.settings.speed,
+      direction: scroll_dir,
+      pause_on_hover: block.settings.pause_on_hover,
+      bg_color: block.settings.strip_bg,
+      border_radius: block.settings.strip_border_radius,
+      padding: block.settings.strip_padding,
+      text_size: block.settings.text_size,
+      text_weight: block.settings.text_weight,
+      pill_bg: 'var(--btn-secondary-bg)',
+      pill_color: 'var(--btn-secondary-text)',
+      pill_height: block.settings.pill_height,
+      pill_width: block.settings.pill_width,
+      pill_radius: block.settings.pill_border_radius,
+      item_gap: block.settings.item_gap,
+      orbit_speed: block.settings.orbit_speed,
+      orbit_direction: orbit_dir,
+      orbit_font_size: block.settings.orbit_font_size,
+      orbit_text_gap: orbit_gap,
+      orbit_color: 'var(--btn-secondary-text)',
+      orbit_text_transform: block.settings.orbit_text_transform,
+      circle_width: block.settings.circle_width,
+      circle_height: block.settings.circle_height,
+      circle_bg: 'var(--btn-tertiary-bg)',
+      icon_width: block.settings.icon_width,
+      icon_height: block.settings.icon_height,
+      circle_icon: block.settings.circle_icon,
+      orbit_text: block.settings.orbit_text,
+      text: block.settings.text
+    %}
   {%- endfor -%}
 </div>
 
 {% schema %}
 {
   "name": "Scrolling Text",
-  "disabled_on": { "groups": ["header", "footer"] },
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
   "settings": [
     {
       "type": "color_scheme",
@@ -253,9 +215,18 @@
           "id": "text_weight",
           "label": "Text weight",
           "options": [
-            { "value": "400", "label": "Normal" },
-            { "value": "600", "label": "Semi bold" },
-            { "value": "700", "label": "Bold" }
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "600",
+              "label": "Semi bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
           ],
           "default": "700"
         },
@@ -321,9 +292,18 @@
           "id": "text_weight_mobile",
           "label": "Text weight (mobile)",
           "options": [
-            { "value": "400", "label": "Normal" },
-            { "value": "600", "label": "Semi bold" },
-            { "value": "700", "label": "Bold" }
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "600",
+              "label": "Semi bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
           ],
           "default": "700"
         },
@@ -378,9 +358,18 @@
           "id": "orbit_text_transform",
           "label": "Orbit text style",
           "options": [
-            { "value": "uppercase", "label": "Uppercase (capitalize)" },
-            { "value": "lowercase", "label": "Lowercase (small)" },
-            { "value": "none", "label": "As typed" }
+            {
+              "value": "uppercase",
+              "label": "Uppercase (capitalize)"
+            },
+            {
+              "value": "lowercase",
+              "label": "Lowercase (small)"
+            },
+            {
+              "value": "none",
+              "label": "As typed"
+            }
           ],
           "default": "uppercase"
         },
@@ -461,8 +450,14 @@
           "id": "orbit_direction",
           "label": "Orbit direction",
           "options": [
-            { "value": "clockwise", "label": "Clockwise" },
-            { "value": "counterclockwise", "label": "Counter-clockwise" }
+            {
+              "value": "clockwise",
+              "label": "Clockwise"
+            },
+            {
+              "value": "counterclockwise",
+              "label": "Counter-clockwise"
+            }
           ],
           "default": "clockwise"
         },
@@ -525,9 +520,18 @@
           "id": "orbit_text_transform_mobile",
           "label": "Orbit text style (mobile)",
           "options": [
-            { "value": "uppercase", "label": "Uppercase (capitalize)" },
-            { "value": "lowercase", "label": "Lowercase (small)" },
-            { "value": "none", "label": "As typed" }
+            {
+              "value": "uppercase",
+              "label": "Uppercase (capitalize)"
+            },
+            {
+              "value": "lowercase",
+              "label": "Lowercase (small)"
+            },
+            {
+              "value": "none",
+              "label": "As typed"
+            }
           ],
           "default": "uppercase"
         },
@@ -616,8 +620,14 @@
           "id": "direction",
           "label": "Scroll direction",
           "options": [
-            { "value": "left", "label": "Left" },
-            { "value": "right", "label": "Right" }
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
           ],
           "default": "left"
         },

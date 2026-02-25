@@ -1,6 +1,6 @@
 .subfooter-section {
-  background-color: var(--color-primary-button-hover-bg);
-  color: var(--color-primary-button-hover-text);
+  background-color: var(--color-heading);
+  color: var(--color-bg);
   padding: var(--padding-top, 16px) var(--padding-horizontal, 24px) var(--padding-bottom, 16px) var(--padding-horizontal, 24px);
   margin-top: var(--margin-top, 0);
   margin-bottom: var(--margin-bottom, 0);

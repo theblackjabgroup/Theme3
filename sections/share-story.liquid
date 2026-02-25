@@ -210,7 +210,7 @@
                 %}
 
                 <div class="share-story-footer-flex">
-                  {% render 'submit-button', text: block.settings.button_text, type: 'submit' %}
+                  {% render 'global-btn', text: block.settings.button_text, type: 'submit' %}
                   <p class="share-story-disclaimer">
                     {{ block.settings.disclaimer }}
                   </p>
@@ -228,7 +228,12 @@
   "name": "Share Story",
   "tag": "section",
   "class": "section",
-  "disabled_on": { "groups": ["header", "footer"] },
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  },
   "settings": [
     {
       "type": "color_scheme",
@@ -385,11 +390,26 @@
       "id": "label_font_weight_desktop",
       "label": "Font Weight",
       "options": [
-        { "value": "300", "label": "Light" },
-        { "value": "400", "label": "Normal" },
-        { "value": "500", "label": "Medium" },
-        { "value": "600", "label": "Semi-bold" },
-        { "value": "700", "label": "Bold" }
+        {
+          "value": "300",
+          "label": "Light"
+        },
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
       ],
       "default": "700"
     },
@@ -422,11 +442,26 @@
       "id": "label_font_weight_mobile",
       "label": "Font Weight",
       "options": [
-        { "value": "300", "label": "Light" },
-        { "value": "400", "label": "Normal" },
-        { "value": "500", "label": "Medium" },
-        { "value": "600", "label": "Semi-bold" },
-        { "value": "700", "label": "Bold" }
+        {
+          "value": "300",
+          "label": "Light"
+        },
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
       ],
       "default": "700"
     },
@@ -459,11 +494,26 @@
       "id": "placeholder_font_weight_desktop",
       "label": "Font Weight",
       "options": [
-        { "value": "300", "label": "Light" },
-        { "value": "400", "label": "Normal" },
-        { "value": "500", "label": "Medium" },
-        { "value": "600", "label": "Semi-bold" },
-        { "value": "700", "label": "Bold" }
+        {
+          "value": "300",
+          "label": "Light"
+        },
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
       ],
       "default": "400"
     },
@@ -496,11 +546,26 @@
       "id": "placeholder_font_weight_mobile",
       "label": "Font Weight",
       "options": [
-        { "value": "300", "label": "Light" },
-        { "value": "400", "label": "Normal" },
-        { "value": "500", "label": "Medium" },
-        { "value": "600", "label": "Semi-bold" },
-        { "value": "700", "label": "Bold" }
+        {
+          "value": "300",
+          "label": "Light"
+        },
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
       ],
       "default": "400"
     },
@@ -513,7 +578,7 @@
       "unit": "%",
       "label": "Line Height",
       "default": 150
-    },
+    }
   ],
   "blocks": [
     {
@@ -592,11 +657,26 @@
           "id": "tag_font_weight_desktop",
           "label": "Tag Font Weight",
           "options": [
-            { "value": "300", "label": "Light" },
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" }
+            {
+              "value": "300",
+              "label": "Light"
+            },
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi-bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
           ],
           "default": "700"
         },
@@ -655,11 +735,26 @@
           "id": "title_font_weight_desktop",
           "label": "Title Font Weight",
           "options": [
-            { "value": "300", "label": "Light" },
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" }
+            {
+              "value": "300",
+              "label": "Light"
+            },
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi-bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
           ],
           "default": "400"
         },
@@ -722,11 +817,26 @@
           "id": "tag_font_weight_mobile",
           "label": "Tag Font Weight",
           "options": [
-            { "value": "300", "label": "Light" },
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" }
+            {
+              "value": "300",
+              "label": "Light"
+            },
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi-bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
           ],
           "default": "700"
         },
@@ -785,11 +895,26 @@
           "id": "title_font_weight_mobile",
           "label": "Title Font Weight",
           "options": [
-            { "value": "300", "label": "Light" },
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" }
+            {
+              "value": "300",
+              "label": "Light"
+            },
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi-bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
           ],
           "default": "400"
         },
@@ -822,11 +947,26 @@
           "id": "description_font_weight_desktop",
           "label": "Font Weight",
           "options": [
-            { "value": "300", "label": "Light" },
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" }
+            {
+              "value": "300",
+              "label": "Light"
+            },
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi-bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
           ],
           "default": "400"
         },
@@ -859,11 +999,26 @@
           "id": "description_font_weight_mobile",
           "label": "Font Weight",
           "options": [
-            { "value": "300", "label": "Light" },
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" }
+            {
+              "value": "300",
+              "label": "Light"
+            },
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi-bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
           ],
           "default": "400"
         },
@@ -991,11 +1146,26 @@
           "id": "title_font_weight_desktop",
           "label": "Title Font Weight",
           "options": [
-            { "value": "300", "label": "Light" },
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" }
+            {
+              "value": "300",
+              "label": "Light"
+            },
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi-bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
           ],
           "default": "400"
         },
@@ -1058,11 +1228,26 @@
           "id": "title_font_weight_mobile",
           "label": "Title Font Weight",
           "options": [
-            { "value": "300", "label": "Light" },
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" }
+            {
+              "value": "300",
+              "label": "Light"
+            },
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi-bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
           ],
           "default": "400"
         },
@@ -1095,11 +1280,26 @@
           "id": "disclaimer_font_weight_desktop",
           "label": "Font Weight",
           "options": [
-            { "value": "300", "label": "Light" },
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" }
+            {
+              "value": "300",
+              "label": "Light"
+            },
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi-bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
           ],
           "default": "400"
         },
@@ -1132,11 +1332,26 @@
           "id": "disclaimer_font_weight_mobile",
           "label": "Font Weight",
           "options": [
-            { "value": "300", "label": "Light" },
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi-bold" },
-            { "value": "700", "label": "Bold" }
+            {
+              "value": "300",
+              "label": "Light"
+            },
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi-bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
           ],
           "default": "400"
         },

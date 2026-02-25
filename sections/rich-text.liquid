@@ -29,13 +29,13 @@
   }
 
   {{ section_selector }} .rte-rich-text__outer {
-    background-color: {{ section.settings.outer_background }};
+    background-color: var(--color-bg);
   }
 
   {{ section_selector }} .rte-rich-text__header-card,
   {{ section_selector }} .rte-rich-text__context-card {
-    background-color: {{ section.settings.content_background }};
-    border: 1px solid {{ section.settings.content_border }};
+    background-color: var(--color-card-bg);
+    border: 1px solid var(--color-input-border);
     border-radius: {{ section.settings.content_border_radius }}px;
     padding: {{ section.settings.content_padding }}px;
     {%- if section.settings.card_shadow != blank -%}
@@ -100,7 +100,7 @@
   {%- endfor -%}
 {%- endstyle -%}
 
-<div class="rte-rich-text section-{{ section.id }}-padding" data-section-id="{{ section.id }}">
+<div class="rte-rich-text color-{{ section.settings.color_scheme }} section-{{ section.id }}-padding" data-section-id="{{ section.id }}">
   <div class="rte-rich-text__outer">
     {%- for block in section.blocks -%}
       {%- if block.type == 'header' -%}
@@ -177,7 +177,10 @@
   "tag": "section",
   "class": "section",
   "disabled_on": {
-    "groups": ["header", "footer"]
+    "groups": [
+      "header",
+      "footer"
+    ]
   },
   "settings": [
     {
@@ -185,22 +188,10 @@
       "content": "Layout"
     },
     {
-      "type": "color",
-      "id": "outer_background",
-      "label": "Outer background",
-      "default": "#D2CDC4"
-    },
-    {
-      "type": "color",
-      "id": "content_background",
-      "label": "Content background",
-      "default": "#EBE8DF"
-    },
-    {
-      "type": "color",
-      "id": "content_border",
-      "label": "Content border color",
-      "default": "#2a2a2a"
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
     },
     {
       "type": "range",
@@ -400,9 +391,18 @@
           "id": "header_alignment",
           "label": "Header alignment",
           "options": [
-            { "value": "left", "label": "Left" },
-            { "value": "center", "label": "Center" },
-            { "value": "right", "label": "Right" }
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
           ],
           "default": "center"
         }
@@ -422,10 +422,22 @@
           "id": "text_alignment",
           "label": "Text alignment",
           "options": [
-            { "value": "left", "label": "Left" },
-            { "value": "center", "label": "Center" },
-            { "value": "right", "label": "Right" },
-            { "value": "justify", "label": "Justify" }
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            },
+            {
+              "value": "justify",
+              "label": "Justify"
+            }
           ],
           "default": "left"
         },
@@ -498,8 +510,14 @@
           "id": "image_fit",
           "label": "Image fit",
           "options": [
-            { "value": "cover", "label": "Cover" },
-            { "value": "contain", "label": "Contain" }
+            {
+              "value": "cover",
+              "label": "Cover"
+            },
+            {
+              "value": "contain",
+              "label": "Contain"
+            }
           ],
           "default": "cover"
         },

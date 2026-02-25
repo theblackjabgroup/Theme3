@@ -130,14 +130,14 @@
               {%- liquid
                 assign quick_add_attrs = 'data-quick-add-trigger="' | append: product_form_id | append: '-submit" aria-label="' | append: overlay_btn_text | escape | append: '"'
               -%}
-              {%- render 'submit-button',
+              {%- render 'global-btn',
                 text: overlay_btn_text,
                 type: 'button',
                 class: 'custom-product-card__hover-button',
                 attributes: quick_add_attrs
               -%}
             {%- else -%}
-              {%- render 'submit-button',
+              {%- render 'global-btn',
                 url: card_product.url,
                 text: overlay_btn_text,
                 class: 'custom-product-card__hover-button'

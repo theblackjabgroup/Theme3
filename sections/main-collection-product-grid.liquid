@@ -13,9 +13,9 @@
     padding-bottom: {{ section.settings.section_padding_bottom }}px;
     padding-left: {{ section.settings.section_padding_horizontal_mobile }}px;
     padding-right: {{ section.settings.section_padding_horizontal_mobile }}px;
-    --collection-filter-tag-bg: {{ section.settings.filter_tag_bg_color | default: '#f9c7d8' }};
-    --collection-filter-tag-text-color: {{ section.settings.filter_tag_text_color | default: '#000000' }};
-    --collection-filter-tag-border-color: {{ section.settings.filter_tag_border_color | default: '#000000' }};
+    --collection-filter-tag-bg: var(--btn-primary-bg);
+    --collection-filter-tag-text-color: var(--btn-primary-text);
+    --collection-filter-tag-border: var(--btn-primary-border);
     --collection-filter-tag-border-width: {{ section.settings.filter_tag_border_width | default: 0 }}px;
     --collection-filter-tag-border-radius: {{ section.settings.filter_tag_border_radius | default: 0 }}px;
     --collection-filter-tag-font-size: {{ section.settings.filter_tag_font_size | default: 15 }}px;
@@ -26,9 +26,7 @@
     --collection-filter-tag-padding-horizontal: {{ section.settings.filter_tag_padding_horizontal | default: 12 }}px;
     --collection-filter-tag-gap: {{ section.settings.filter_tag_gap | default: 8 }}px;
     --collection-filter-tag-close-icon-size: {{ section.settings.filter_tag_close_icon_size | default: 5 }}px;
-    {% if section.settings.background_color != blank %}
-      background-color: {{ section.settings.background_color }};
-    {% endif %}
+    background-color: var(--color-bg);
     {% if section.settings.min_height != blank and section.settings.min_height > 0 %}
       min-height: {{ section.settings.min_height }}vh;
     {% endif %}
@@ -352,7 +350,12 @@
 {% schema %}
 {
   "name": "t:sections.main-collection-product-grid.name",
-  "disabled_on": { "groups": ["header", "footer"] },
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  },
   "class": "section",
   "settings": [
     {
@@ -433,10 +436,22 @@
       "id": "title_text_transform",
       "label": "Title Text Transform",
       "options": [
-        { "value": "none", "label": "None" },
-        { "value": "uppercase", "label": "Uppercase" },
-        { "value": "lowercase", "label": "Lowercase" },
-        { "value": "capitalize", "label": "Capitalize" }
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "uppercase",
+          "label": "Uppercase"
+        },
+        {
+          "value": "lowercase",
+          "label": "Lowercase"
+        },
+        {
+          "value": "capitalize",
+          "label": "Capitalize"
+        }
       ],
       "default": "none"
     },
@@ -522,12 +537,6 @@
       "default": 1.5
     },
     {
-      "type": "color",
-      "id": "header_description_color",
-      "label": "Description Text Color",
-      "info": "Leave blank to use theme default"
-    },
-    {
       "type": "range",
       "id": "header_description_margin_top",
       "label": "Description Margin Top (px)",
@@ -550,9 +559,18 @@
       "id": "header_description_text_alignment",
       "label": "Description Alignment",
       "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
       ],
       "default": "center"
     },
@@ -615,24 +633,6 @@
       "default": 10
     },
     {
-      "type": "color",
-      "id": "header_badge_background_color",
-      "label": "Badge Background Color",
-      "info": "Leave blank to use theme default"
-    },
-    {
-      "type": "color",
-      "id": "header_badge_text_color",
-      "label": "Badge Text Color",
-      "info": "Leave blank to use theme default"
-    },
-    {
-      "type": "color",
-      "id": "header_badge_border_color",
-      "label": "Badge Border Color",
-      "info": "Leave blank to use theme default"
-    },
-    {
       "type": "range",
       "id": "header_badge_border_width",
       "label": "Badge Border Width (px)",
@@ -655,10 +655,22 @@
       "id": "header_badge_text_transform",
       "label": "Badge Text Transform",
       "options": [
-        { "value": "none", "label": "None" },
-        { "value": "uppercase", "label": "Uppercase" },
-        { "value": "lowercase", "label": "Lowercase" },
-        { "value": "capitalize", "label": "Capitalize" }
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "uppercase",
+          "label": "Uppercase"
+        },
+        {
+          "value": "lowercase",
+          "label": "Lowercase"
+        },
+        {
+          "value": "capitalize",
+          "label": "Capitalize"
+        }
       ],
       "default": "none"
     },
@@ -738,11 +750,6 @@
       "step": 10,
       "default": 0,
       "info": "Set to 0 to disable"
-    },
-    {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background Color"
     },
     {
       "type": "header",
@@ -940,24 +947,6 @@
       "content": "Filter Tag Styling"
     },
     {
-      "type": "color",
-      "id": "filter_tag_bg_color",
-      "label": "Tag Background Color",
-      "default": "#f9c7d8"
-    },
-    {
-      "type": "color",
-      "id": "filter_tag_text_color",
-      "label": "Tag Text Color",
-      "default": "#000000"
-    },
-    {
-      "type": "color",
-      "id": "filter_tag_border_color",
-      "label": "Tag Border Color",
-      "default": "#000000"
-    },
-    {
       "type": "range",
       "id": "filter_tag_border_width",
       "label": "Tag Border Width (px)",
@@ -998,10 +987,22 @@
       "id": "filter_tag_text_transform",
       "label": "Tag Text Transform",
       "options": [
-        { "value": "none", "label": "None" },
-        { "value": "uppercase", "label": "Uppercase" },
-        { "value": "lowercase", "label": "Lowercase" },
-        { "value": "capitalize", "label": "Capitalize" }
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "uppercase",
+          "label": "Uppercase"
+        },
+        {
+          "value": "lowercase",
+          "label": "Lowercase"
+        },
+        {
+          "value": "capitalize",
+          "label": "Capitalize"
+        }
       ],
       "default": "uppercase"
     },
@@ -1260,9 +1261,18 @@
           "id": "title_alignment",
           "label": "Title Alignment",
           "options": [
-            { "value": "left", "label": "Left" },
-            { "value": "center", "label": "Center" },
-            { "value": "right", "label": "Right" }
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
           ],
           "default": "center"
         },
@@ -1307,10 +1317,22 @@
           "id": "title_text_transform",
           "label": "Title Text Transform",
           "options": [
-            { "value": "none", "label": "None" },
-            { "value": "uppercase", "label": "Uppercase" },
-            { "value": "lowercase", "label": "Lowercase" },
-            { "value": "capitalize", "label": "Capitalize" }
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "uppercase",
+              "label": "Uppercase"
+            },
+            {
+              "value": "lowercase",
+              "label": "Lowercase"
+            },
+            {
+              "value": "capitalize",
+              "label": "Capitalize"
+            }
           ],
           "default": "none"
         },
@@ -1426,10 +1448,22 @@
           "id": "header_badge_text_transform",
           "label": "Badge Text Transform",
           "options": [
-            { "value": "none", "label": "None" },
-            { "value": "uppercase", "label": "Uppercase" },
-            { "value": "lowercase", "label": "Lowercase" },
-            { "value": "capitalize", "label": "Capitalize" }
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "uppercase",
+              "label": "Uppercase"
+            },
+            {
+              "value": "lowercase",
+              "label": "Lowercase"
+            },
+            {
+              "value": "capitalize",
+              "label": "Capitalize"
+            }
           ],
           "default": "uppercase"
         },
@@ -1551,9 +1585,18 @@
           "id": "header_image_alignment",
           "label": "Image alignment",
           "options": [
-            { "value": "left", "label": "Left" },
-            { "value": "center", "label": "Center" },
-            { "value": "right", "label": "Right" }
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
           ],
           "default": "center"
         },
@@ -1612,8 +1655,14 @@
           "id": "header_image_object_fit",
           "label": "Image fit",
           "options": [
-            { "value": "cover", "label": "Cover" },
-            { "value": "contain", "label": "Contain" }
+            {
+              "value": "cover",
+              "label": "Cover"
+            },
+            {
+              "value": "contain",
+              "label": "Contain"
+            }
           ],
           "default": "cover"
         },

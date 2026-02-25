@@ -60,7 +60,7 @@
       {%- endif -%}
 
       {%- if section.settings.show_shop_all and featured_collection != blank and featured_collection.url != blank -%}
-        {%- render 'submit-button',
+        {%- render 'global-btn',
           text: section.settings.shop_all_label | default: 'Shop all',
           url: section.settings.shop_all_link | default: featured_collection.url,
           class: 'fc3d__shop-all'
@@ -136,13 +136,13 @@
     </div>
 
     <div class="fc3d__controls" style="gap: {{ section.settings.nav_button_spacing | default: 16 }}px;">
-      {% render 'submit-button',
+      {% render 'global-btn',
         text: '←',
         type: 'button',
         class: 'fc3d__nav fc3d__nav--prev',
         attributes: 'data-fc3d-prev aria-label="Previous"'
       %}
-      {% render 'submit-button',
+      {% render 'global-btn',
         text: '→',
         type: 'button',
         class: 'fc3d__nav fc3d__nav--next',
@@ -155,7 +155,12 @@
 {% schema %}
 {
   "name": "Featured collection",
-  "disabled_on": { "groups": ["header", "footer"] },
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  },
   "tag": "section",
   "class": "section",
   "settings": [

@@ -39,11 +39,7 @@
     --collection-card-hover-button-padding-vertical: {{ settings.collection_card_hover_button_padding_vertical | default: 10 }}px;
     --collection-card-hover-button-padding-horizontal: {{ settings.collection_card_hover_button_padding_horizontal | default: 20 }}px;
     padding: {{ section.settings.section_padding_top }}px {{ section.settings.section_padding_horizontal }}px {{ section.settings.section_padding_bottom }}px;
-    {% if section.settings.background_color != blank %}
-      background-color: {{ section.settings.background_color }};
-    {% else %}
-      background-color: var(--color-background);
-    {% endif %}
+    background-color: var(--color-bg);
     {% if section.settings.min_height != blank %}
       min-height: {{ section.settings.min_height }}vh;
     {% endif %}
@@ -277,7 +273,12 @@
 {% schema %}
 {
   "name": "Collection list",
-  "disabled_on": { "groups": ["header", "footer"] },
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  },
   "settings": [
     {
       "type": "header",
@@ -329,12 +330,6 @@
       "step": 10,
       "default": 100,
       "info": "Set to 0 to disable"
-    },
-    {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background Color (override)",
-      "info": "Leave blank to use the color scheme background"
     },
     {
       "type": "header",
@@ -631,9 +626,18 @@
           "id": "title_alignment",
           "label": "Title Alignment",
           "options": [
-            { "value": "left", "label": "Left" },
-            { "value": "center", "label": "Center" },
-            { "value": "right", "label": "Right" }
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
           ],
           "default": "center"
         },
@@ -678,10 +682,22 @@
           "id": "title_text_transform",
           "label": "Title Text Transform",
           "options": [
-            { "value": "none", "label": "None" },
-            { "value": "uppercase", "label": "Uppercase" },
-            { "value": "lowercase", "label": "Lowercase" },
-            { "value": "capitalize", "label": "Capitalize" }
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "uppercase",
+              "label": "Uppercase"
+            },
+            {
+              "value": "lowercase",
+              "label": "Lowercase"
+            },
+            {
+              "value": "capitalize",
+              "label": "Capitalize"
+            }
           ],
           "default": "none"
         },
@@ -781,10 +797,22 @@
           "id": "header_badge_text_transform",
           "label": "Badge Text Transform",
           "options": [
-            { "value": "none", "label": "None" },
-            { "value": "uppercase", "label": "Uppercase" },
-            { "value": "lowercase", "label": "Lowercase" },
-            { "value": "capitalize", "label": "Capitalize" }
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "uppercase",
+              "label": "Uppercase"
+            },
+            {
+              "value": "lowercase",
+              "label": "Lowercase"
+            },
+            {
+              "value": "capitalize",
+              "label": "Capitalize"
+            }
           ],
           "default": "uppercase"
         },
