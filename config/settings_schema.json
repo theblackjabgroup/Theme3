@@ -510,6 +510,73 @@
     "name": "Animations",
     "settings": [
       {
+        "type": "header",
+        "content": "Scroll animations"
+      },
+      {
+        "type": "checkbox",
+        "id": "animations_reveal_on_scroll",
+        "label": "Enable scroll animations",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "scroll_animation_trigger_point",
+        "label": "Trigger point",
+        "min": 0,
+        "max": 60,
+        "step": 1,
+        "unit": "%",
+        "default": 12,
+        "info": "How early animation starts before the section fully enters the viewport."
+      },
+      {
+        "type": "range",
+        "id": "scroll_animation_speed",
+        "label": "Animation speed",
+        "min": 200,
+        "max": 3000,
+        "step": 100,
+        "unit": "ms",
+        "default": 2000
+      },
+      {
+        "type": "range",
+        "id": "scroll_animation_start_scale",
+        "label": "Starting scale",
+        "min": 70,
+        "max": 100,
+        "step": 1,
+        "unit": "%",
+        "default": 82
+      },
+      {
+        "type": "header",
+        "content": "Mobile scroll animations"
+      },
+      {
+        "type": "checkbox",
+        "id": "animations_disable_on_mobile",
+        "label": "Disable scroll animations on mobile",
+        "default": false,
+        "info": "When enabled, all scroll animations are skipped on mobile screens (≤768px)."
+      },
+      {
+        "type": "range",
+        "id": "scroll_animation_mobile_trigger_point",
+        "label": "Mobile trigger point",
+        "min": 0,
+        "max": 60,
+        "step": 1,
+        "unit": "%",
+        "default": 5,
+        "info": "How early scroll animations start on mobile. Lower values trigger sooner."
+      },
+      {
+        "type": "header",
+        "content": "Legacy tokens"
+      },
+      {
         "type": "range",
         "id": "animation_duration_in_ms",
         "label": "Base animation duration",

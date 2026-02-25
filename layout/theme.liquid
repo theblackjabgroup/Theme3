@@ -412,6 +412,14 @@
     <script src="{{ 'search-form.js' | asset_url }}" defer="defer"></script>
     <script>
       window.themeAnimationsRevealOnScroll = {{ settings.animations_reveal_on_scroll | json }};
+      window.themeScrollAnimationSettings = {
+        enabled: {{ settings.animations_reveal_on_scroll | json }},
+        triggerPoint: {{ settings.scroll_animation_trigger_point | default: 12 | json }},
+        speed: {{ settings.scroll_animation_speed | default: 2000 | json }},
+        startScalePercent: {{ settings.scroll_animation_start_scale | default: 82 | json }},
+        disableOnMobile: {{ settings.animations_disable_on_mobile | json }},
+        mobileTriggerPoint: {{ settings.scroll_animation_mobile_trigger_point | default: 5 | json }},
+      };
     </script>
     <script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>
   </body>

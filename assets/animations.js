@@ -4,6 +4,38 @@ const SCROLL_ZOOM_IN_TRIGGER_CLASSNAME = 'animate--zoom-in';
 const SCROLL_ANIMATION_CANCEL_CLASSNAME = 'scroll-trigger--cancel';
 const PAGE_LOAD_ANIMATION_SELECTOR = '[data-page-load-animate]';
 
+function isMobileViewport() {
+  return window.innerWidth <= 768;
+}
+
+function getThemeScrollAnimationSettings() {
+  const settings = window.themeScrollAnimationSettings || {};
+  const rawEnabled =
+    typeof settings.enabled === 'boolean'
+      ? settings.enabled
+      : typeof window.themeAnimationsRevealOnScroll === 'boolean'
+        ? window.themeAnimationsRevealOnScroll
+        : true;
+  const rawTriggerPoint = Number(settings.triggerPoint);
+  const rawMobileTriggerPoint = Number(settings.mobileTriggerPoint);
+  const rawSpeed = Number(settings.speed);
+  const rawStartScalePercent = Number(settings.startScalePercent);
+
+  const triggerPoint = Number.isFinite(rawTriggerPoint) ? Math.min(60, Math.max(0, rawTriggerPoint)) : 12;
+  const mobileTriggerPoint = Number.isFinite(rawMobileTriggerPoint)
+    ? Math.min(60, Math.max(0, rawMobileTriggerPoint))
+    : 5;
+
+  return {
+    enabled: rawEnabled,
+    disableOnMobile: settings.disableOnMobile === true,
+    triggerPoint: isMobileViewport() ? mobileTriggerPoint : triggerPoint,
+    mobileTriggerPoint,
+    speed: Number.isFinite(rawSpeed) ? Math.min(3000, Math.max(200, rawSpeed)) : 2000,
+    startScalePercent: Number.isFinite(rawStartScalePercent) ? Math.min(100, Math.max(70, rawStartScalePercent)) : 82,
+  };
+}
+
 // Scroll in animation logic
 function onIntersection(elements, observer) {
   elements.forEach((element, index) => {
@@ -23,7 +55,9 @@ function onIntersection(elements, observer) {
 }
 
 function initializeScrollAnimationTrigger(rootEl = document, isDesignModeEvent = false) {
-  if (!window.themeAnimationsRevealOnScroll) return;
+  const scrollSettings = getThemeScrollAnimationSettings();
+  if (!scrollSettings.enabled) return;
+  if (scrollSettings.disableOnMobile && isMobileViewport()) return;
 
   const animationTriggerElements = Array.from(rootEl.getElementsByClassName(SCROLL_ANIMATION_TRIGGER_CLASSNAME));
   if (animationTriggerElements.length === 0) return;
@@ -36,14 +70,16 @@ function initializeScrollAnimationTrigger(rootEl = document, isDesignModeEvent =
   }
 
   const observer = new IntersectionObserver(onIntersection, {
-    rootMargin: '0px 0px -50px 0px',
+    rootMargin: `0px 0px -${scrollSettings.triggerPoint}% 0px`,
   });
   animationTriggerElements.forEach((element) => observer.observe(element));
 }
 
 // Zoom in animation logic
 function initializeScrollZoomAnimationTrigger() {
-  if (!window.themeAnimationsRevealOnScroll) return;
+  const scrollSettings = getThemeScrollAnimationSettings();
+  if (!scrollSettings.enabled) return;
+  if (scrollSettings.disableOnMobile && isMobileViewport()) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   const animationTriggerElements = Array.from(document.getElementsByClassName(SCROLL_ZOOM_IN_TRIGGER_CLASSNAME));
@@ -147,6 +183,7 @@ function animatePageLoadTargets(targets, options = {}) {
         target.style.opacity = '';
         target.style.transform = '';
         target.style.transformOrigin = '';
+        target.style.willChange = '';
         target.dataset.pageLoadItemAnimated = 'true';
       };
     } else {
@@ -164,6 +201,16 @@ function animatePageLoadTargets(targets, options = {}) {
           target.style.transform = 'scale(1)';
           target.style.transformOrigin = '';
           target.dataset.pageLoadItemAnimated = 'true';
+
+          const cleanup = () => {
+            target.style.willChange = '';
+            target.style.transitionProperty = '';
+            target.style.transitionDuration = '';
+            target.style.transitionTimingFunction = '';
+            target.style.transitionDelay = '';
+            target.removeEventListener('transitionend', cleanup);
+          };
+          target.addEventListener('transitionend', cleanup, { once: true });
         });
       });
     }
@@ -171,11 +218,7 @@ function animatePageLoadTargets(targets, options = {}) {
 }
 
 function preparePageLoadTargets(targets, options = {}) {
-  const {
-    startOpacity = 0.7,
-    startScale = 0.88,
-    transformOrigin = 'center center',
-  } = options;
+  const { startOpacity = 0.7, startScale = 0.88, transformOrigin = 'center center' } = options;
 
   targets.forEach((target) => {
     if (target.dataset.pageLoadItemAnimated === 'true') return;
@@ -214,6 +257,10 @@ function compareDomPosition(a, b) {
 }
 
 function buildPageLoadAnimationJobs(rootEl = document) {
+  const scrollSettings = getThemeScrollAnimationSettings();
+  if (!scrollSettings.enabled) return [];
+  if (scrollSettings.disableOnMobile && isMobileViewport()) return [];
+
   const jobs = [];
   const containers = getPageLoadContainers(rootEl);
   containers.forEach((container) => {
@@ -221,12 +268,12 @@ function buildPageLoadAnimationJobs(rootEl = document) {
     if (!isElementVisibleForAnimation(container)) return;
 
     const selector = container.dataset.pageLoadSelector;
-    const duration = Number(container.dataset.pageLoadDuration || 1000);
+    const duration = Number(container.dataset.pageLoadDuration || scrollSettings.speed);
     const stagger = Number(container.dataset.pageLoadStagger || 90);
     const delay = Number(container.dataset.pageLoadDelay || 0);
     const easing = container.dataset.pageLoadEasing || 'cubic-bezier(0.34, 1.56, 0.64, 1)';
     const startOpacity = Number(container.dataset.pageLoadOpacity || 0.7);
-    const startScale = Number(container.dataset.pageLoadScale || 0.88);
+    const startScale = Number(container.dataset.pageLoadScale || scrollSettings.startScalePercent / 100);
     const transformOrigin = container.dataset.pageLoadOrigin || 'center center';
 
     let targets = [];
@@ -269,17 +316,17 @@ function buildPageLoadAnimationJobs(rootEl = document) {
 
   sections.forEach((section) => {
     if (isPageLoadSectionExcluded(section)) return;
-    if (section.dataset.pageLoadItemAnimated === 'true') return;
+    if (section.dataset.pageLoadAnimated === 'true') return;
     if (!isElementVisibleForAnimation(section)) return;
     if (section.querySelector('[data-page-load-animate]')) return;
 
     const sectionOptions = {
-      duration: 2000,
+      duration: scrollSettings.speed,
       stagger: 0,
       delay: 0,
       easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
       startOpacity: 0.7,
-      startScale: 0.82,
+      startScale: scrollSettings.startScalePercent / 100,
       transformOrigin: 'center bottom',
     };
 
@@ -288,7 +335,8 @@ function buildPageLoadAnimationJobs(rootEl = document) {
       targets: [section],
       options: sectionOptions,
       run() {
-        if (section.dataset.pageLoadItemAnimated === 'true') return;
+        if (section.dataset.pageLoadAnimated === 'true') return;
+        section.dataset.pageLoadAnimated = 'true';
         animatePageLoadTargets([section], sectionOptions);
       },
     });
@@ -299,6 +347,9 @@ function buildPageLoadAnimationJobs(rootEl = document) {
 }
 
 function initializePageLoadAnimations(rootEl = document) {
+  const scrollSettings = getThemeScrollAnimationSettings();
+  if (!scrollSettings.enabled) return;
+  if (scrollSettings.disableOnMobile && isMobileViewport()) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   const jobs = buildPageLoadAnimationJobs(rootEl);
@@ -325,7 +376,7 @@ function initializePageLoadAnimations(rootEl = document) {
       });
     },
     {
-      rootMargin: '0px 0px -12% 0px',
+      rootMargin: `0px 0px -${scrollSettings.triggerPoint}% 0px`,
       threshold: 0.1,
     },
   );
