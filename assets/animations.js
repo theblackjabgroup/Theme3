@@ -70,7 +70,7 @@ function initializeScrollZoomAnimationTrigger() {
 
         element.style.setProperty('--zoom-in-ratio', 1 + scaleAmount * percentageSeen(element));
       }),
-      { passive: true }
+      { passive: true },
     );
   });
 }
@@ -109,14 +109,116 @@ function getPageLoadContainers(rootEl = document) {
   return containers;
 }
 
-function initializePageLoadAnimations(rootEl = document) {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+function isElementVisibleForAnimation(element) {
+  return !!element && !element.hasAttribute('hidden') && element.getClientRects().length > 0;
+}
 
+function animatePageLoadTargets(targets, options = {}) {
+  const {
+    duration = 1000,
+    stagger = 90,
+    delay = 0,
+    easing = 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+    startOpacity = 0.7,
+    startScale = 0.88,
+    transformOrigin = 'center center',
+  } = options;
+
+  targets.forEach((target, index) => {
+    const transitionDelay = delay + index * stagger;
+    if (target.dataset.pageLoadItemAnimated === 'true') return;
+    target.style.transformOrigin = transformOrigin;
+
+    if (typeof target.animate === 'function') {
+      const animation = target.animate(
+        [
+          { opacity: startOpacity, transform: `scale(${startScale})` },
+          { opacity: 1, transform: 'scale(1)' },
+        ],
+        {
+          duration,
+          delay: transitionDelay,
+          easing,
+          fill: 'both',
+        },
+      );
+
+      animation.onfinish = () => {
+        target.style.opacity = '';
+        target.style.transform = '';
+        target.style.transformOrigin = '';
+        target.dataset.pageLoadItemAnimated = 'true';
+      };
+    } else {
+      target.style.opacity = String(startOpacity);
+      target.style.transform = `scale(${startScale})`;
+      target.style.transitionProperty = 'opacity, transform';
+      target.style.transitionDuration = `${duration}ms`;
+      target.style.transitionTimingFunction = easing;
+      target.style.transitionDelay = `${transitionDelay}ms`;
+      target.style.willChange = 'opacity, transform';
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          target.style.opacity = '1';
+          target.style.transform = 'scale(1)';
+          target.style.transformOrigin = '';
+          target.dataset.pageLoadItemAnimated = 'true';
+        });
+      });
+    }
+  });
+}
+
+function preparePageLoadTargets(targets, options = {}) {
+  const {
+    startOpacity = 0.7,
+    startScale = 0.88,
+    transformOrigin = 'center center',
+  } = options;
+
+  targets.forEach((target) => {
+    if (target.dataset.pageLoadItemAnimated === 'true') return;
+    if (target.dataset.pageLoadPrepared === 'true') return;
+
+    target.style.opacity = String(startOpacity);
+    target.style.transform = `scale(${startScale})`;
+    target.style.transformOrigin = transformOrigin;
+    target.style.willChange = 'opacity, transform';
+    target.dataset.pageLoadPrepared = 'true';
+  });
+}
+
+function isPageLoadSectionExcluded(section) {
+  const sectionId = section?.id || '';
+  const className = typeof section?.className === 'string' ? section.className : '';
+  const sectionIdentity = `${sectionId} ${className}`.toLowerCase();
+
+  return (
+    sectionIdentity.includes('announcement') ||
+    sectionIdentity.includes('footer') ||
+    sectionIdentity.includes('header') ||
+    sectionIdentity.includes('email-popup') ||
+    sectionIdentity.includes('email_popup') ||
+    sectionIdentity.includes('back-to-top') ||
+    sectionIdentity.includes('back_to_top')
+  );
+}
+
+function compareDomPosition(a, b) {
+  if (a === b) return 0;
+  const position = a.compareDocumentPosition(b);
+  if (position & Node.DOCUMENT_POSITION_FOLLOWING) return -1;
+  if (position & Node.DOCUMENT_POSITION_PRECEDING) return 1;
+  return 0;
+}
+
+function buildPageLoadAnimationJobs(rootEl = document) {
+  const jobs = [];
   const containers = getPageLoadContainers(rootEl);
-  if (!containers.length) return;
-
   containers.forEach((container) => {
     if (container.dataset.pageLoadAnimated === 'true') return;
+    if (!isElementVisibleForAnimation(container)) return;
 
     const selector = container.dataset.pageLoadSelector;
     const duration = Number(container.dataset.pageLoadDuration || 1000);
@@ -134,56 +236,101 @@ function initializePageLoadAnimations(rootEl = document) {
       targets = Array.from(container.querySelectorAll('[data-page-load-item]'));
     }
 
-    targets = targets.filter((target) => !target.hasAttribute('hidden') && target.getClientRects().length > 0);
+    targets = targets.filter(isElementVisibleForAnimation);
     if (!targets.length) return;
 
-    targets.forEach((target, index) => {
-      const transitionDelay = delay + index * stagger;
-      if (target.dataset.pageLoadItemAnimated === 'true') return;
-      target.style.transformOrigin = transformOrigin;
-
-      if (typeof target.animate === 'function') {
-        const animation = target.animate(
-          [
-            { opacity: startOpacity, transform: `scale(${startScale})` },
-            { opacity: 1, transform: 'scale(1)' },
-          ],
-          {
-            duration,
-            delay: transitionDelay,
-            easing,
-            fill: 'both',
-          }
-        );
-
-        animation.onfinish = () => {
-          target.style.opacity = '';
-          target.style.transform = '';
-          target.style.transformOrigin = '';
-          target.dataset.pageLoadItemAnimated = 'true';
-        };
-      } else {
-        target.style.opacity = String(startOpacity);
-        target.style.transform = `scale(${startScale})`;
-        target.style.transitionProperty = 'opacity, transform';
-        target.style.transitionDuration = `${duration}ms`;
-        target.style.transitionTimingFunction = easing;
-        target.style.transitionDelay = `${transitionDelay}ms`;
-        target.style.willChange = 'opacity, transform';
-
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            target.style.opacity = '1';
-            target.style.transform = 'scale(1)';
-            target.style.transformOrigin = '';
-            target.dataset.pageLoadItemAnimated = 'true';
-          });
-        });
-      }
+    jobs.push({
+      triggerEl: container,
+      targets,
+      options: {
+        duration,
+        stagger,
+        delay,
+        easing,
+        startOpacity,
+        startScale,
+        transformOrigin,
+      },
+      run() {
+        if (container.dataset.pageLoadAnimated === 'true') return;
+        animatePageLoadTargets(targets, this.options);
+        container.dataset.pageLoadAnimated = 'true';
+      },
     });
-
-    container.dataset.pageLoadAnimated = 'true';
   });
+
+  const sections = [];
+  if (rootEl?.matches?.('.shopify-section')) {
+    sections.push(rootEl);
+  }
+  if (rootEl?.querySelectorAll) {
+    sections.push(...Array.from(rootEl.querySelectorAll('.shopify-section')));
+  }
+
+  sections.forEach((section) => {
+    if (isPageLoadSectionExcluded(section)) return;
+    if (section.dataset.pageLoadItemAnimated === 'true') return;
+    if (!isElementVisibleForAnimation(section)) return;
+    if (section.querySelector('[data-page-load-animate]')) return;
+
+    const sectionOptions = {
+      duration: 2000,
+      stagger: 0,
+      delay: 0,
+      easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+      startOpacity: 0.7,
+      startScale: 0.82,
+      transformOrigin: 'center bottom',
+    };
+
+    jobs.push({
+      triggerEl: section,
+      targets: [section],
+      options: sectionOptions,
+      run() {
+        if (section.dataset.pageLoadItemAnimated === 'true') return;
+        animatePageLoadTargets([section], sectionOptions);
+      },
+    });
+  });
+
+  jobs.sort((a, b) => compareDomPosition(a.triggerEl, b.triggerEl));
+  return jobs;
+}
+
+function initializePageLoadAnimations(rootEl = document) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const jobs = buildPageLoadAnimationJobs(rootEl);
+  if (!jobs.length) return;
+
+  jobs.forEach((job) => {
+    preparePageLoadTargets(job.targets, job.options);
+  });
+
+  const [firstJob, ...restJobs] = jobs;
+  firstJob.run();
+
+  if (!restJobs.length) return;
+
+  const observer = new IntersectionObserver(
+    (entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const triggerEl = entry.target;
+        const job = restJobs.find((candidate) => candidate.triggerEl === triggerEl);
+        if (!job) return;
+        job.run();
+        obs.unobserve(triggerEl);
+      });
+    },
+    {
+      rootMargin: '0px 0px -12% 0px',
+      threshold: 0.1,
+    },
+  );
+
+  restJobs.forEach((job) => observer.observe(job.triggerEl));
 }
 
 window.addEventListener('DOMContentLoaded', () => {
