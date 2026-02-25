@@ -336,8 +336,8 @@ function buildPageLoadAnimationJobs(rootEl = document) {
       options: sectionOptions,
       run() {
         if (section.dataset.pageLoadAnimated === 'true') return;
+        animatePageLoadTargets([section], this.options);
         section.dataset.pageLoadAnimated = 'true';
-        animatePageLoadTargets([section], sectionOptions);
       },
     });
   });
