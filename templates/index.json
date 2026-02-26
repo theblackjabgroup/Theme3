@@ -39,6 +39,8 @@
             "toggle_orientation": "vertical",
             "label_on": "SWITCH TO LIGHT",
             "label_off": "SWITCH TO DARK",
+            "mobile_column_span": 0.6,
+            "mobile_row_span": 0.3,
           }
         },
         "card_1": { 
@@ -46,8 +48,8 @@
           "settings": { 
             "column_span": 2.4, 
             "row_span": 2.4,
-            "mobile_column_span": 1,
-            "mobile_row_span": 0.2,
+            "mobile_column_span": 1.4,
+            "mobile_row_span": 0.3,
             "show_image_strip": true,
             "card_background_color": "#E5E1DA",
             "card_border_color": "#E5E1DA",
@@ -66,8 +68,8 @@
             "button_text": "Button Text",
             "column_span": 2, 
             "row_span": 4.4,
-            "mobile_column_span": 1.0,
-            "mobile_row_span": 0.4,
+            "mobile_column_span": 2.0,
+            "mobile_row_span": 0.5,
             "card_background_color": "#E5E1DA",
             "heading_text_color": "#306030"
           } 
@@ -88,8 +90,8 @@
           "settings": { 
             "column_span": 1.7, 
             "row_span": 4.5,
-            "mobile_column_span": 2.0,
-            "mobile_row_span": 0.5,
+            "mobile_column_span": 1.0,
+            "mobile_row_span": 0.4,
             "layout_direction": "column",
             "card_background_color": "#E5E1DA",
             "title_text_color": "#306030"
@@ -117,7 +119,7 @@
           "settings": { 
             "column_span": 3, 
             "row_span": 2.5,
-            "mobile_column_span": 1,
+            "mobile_column_span": 2,
             "mobile_row_span": 0.2,
             "card_background_color": "#E5E1DA",
             "card_border_color": "#E5E1DA",
@@ -185,25 +187,12 @@
         "text": "Be the first to know about new collections and exclusive offers",
         "placeholder": "Email Address"
       }
-    },
-    "featured_collection": {
-      "type": "featured-collection",
-      "disabled": true,
-      "settings": {
-        "title": "Featured collection",
-        "color_scheme": "",
-        "collection": "",
-        "products_to_show": 9,
-        "show_shop_all": true,
-        "shop_all_label": "Shop all"
-      }
     }
   },
   "order": [
     "announcement_bar",
     "bento_grid",
     "scrolling_text",
-    "featured_collection",
     "email_popup"
   ]
 }

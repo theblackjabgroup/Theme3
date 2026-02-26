@@ -111,33 +111,10 @@
   line-height: var(--desktop-paragraph-line-height, var(--line-height-relaxed));
 }
 
-.text-card-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--spacing-5) var(--spacing-10);
-  background: var(--color-heading);
-  color: var(--color-card-bg);
-  border: none;
-  border-radius: var(--radius-round);
-  text-decoration: none;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all var(--transition-medium);
-  font-family: var(--font-body-family);
-  font-size: var(--desktop-button-font-size, var(--font-size-lg));
-  font-weight: var(--desktop-button-font-weight, var(--font-weight-semibold));
-}
-
-.text-card-button:hover {
-  background: var(--color-primary-button-hover-bg, #d62839);
-  color: var(--color-primary-button-hover-text, #fff);
-}
-
 .text-card-button-wrapper {
   width: 100%;
   display: flex;
-  margin-top: auto;
+  padding-bottom: 2px; /* prevent global-btn 3D shadow from being clipped */
 }
 
 .text-card-button--align-left {
@@ -1636,12 +1613,6 @@ a.tag-card.tag-card--link:hover {
     font-size: var(--mobile-paragraph-font-size, 14px) !important;
     font-weight: var(--mobile-paragraph-font-weight, 400) !important;
     line-height: var(--mobile-paragraph-line-height, 1.5) !important;
-  }
-
-  .text-card-button {
-    padding: var(--spacing-4) var(--spacing-8);
-    font-size: var(--mobile-button-font-size, var(--font-size-base)) !important;
-    font-weight: var(--mobile-button-font-weight, var(--font-weight-semibold)) !important;
   }
 
   /* Product Card Mobile */

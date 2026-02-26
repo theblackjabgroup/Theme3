@@ -1944,6 +1944,13 @@ body.header-disabled .vertical-sidebar-header {
 }
 
 @media (max-width: 768px) {
+  #MainContent,
+  main {
+    padding-top: calc(var(--header-height-mobile, 50px) + 20px);
+    margin-left: 0 !important;
+    width: 100% !important;
+    transition: padding-left var(--transition-medium);
+  }
   .mega-menu {
     position: fixed;
     top: 0;
