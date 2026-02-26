@@ -178,15 +178,6 @@
       ],
       "settings": {
       }
-    },
-    "email_popup": {
-      "type": "email-popup",
-      "settings": {
-        "delay_seconds": 5,
-        "heading": "Subscribe To Our Email",
-        "text": "Be the first to know about new collections and exclusive offers",
-        "placeholder": "Email Address"
-      }
     }
   },
   "order": [
