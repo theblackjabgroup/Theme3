@@ -362,7 +362,7 @@
         "type": "checkbox",
         "id": "animations_reveal_on_scroll",
         "label": "Enable scroll animations",
-        "default": true
+        "default": false
       },
       {
         "type": "range",
