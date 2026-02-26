@@ -37,12 +37,7 @@
   >
     {%- for block in section.blocks -%}
       {%- case block.type -%}
-        {%- when 'announcement', 'countdown' -%}
-          {%- assign display_text = block.settings.text -%}
-          {%- if block.type == 'countdown' -%}
-            {%- assign display_text = block.settings.label -%}
-          {%- endif -%}
-
+        {%- when 'announcement' -%}
           {%
             render 'scrolling-text-item',
             id: block.id,
@@ -63,8 +58,8 @@
             pill_padding_y: section.settings.pill_padding_y,
             text_transform: section.settings.text_transform,
             item_gap: section.settings.separator_gap,
-            orbit_text: display_text,
-            text: display_text,
+            orbit_text: block.settings.text,
+            text: block.settings.text,
             circle_icon: section.settings.separator_image,
             circle_width: section.settings.separator_size,
             circle_height: section.settings.separator_size,
@@ -309,25 +304,6 @@
           "id": "pill_bg_color",
           "label": "Pill color override",
           "info": "Leave blank to use the section default"
-        }
-      ]
-    },
-    {
-      "type": "countdown",
-      "name": "Countdown Timer",
-      "settings": [
-        {
-          "type": "text",
-          "id": "label",
-          "default": "Ends in:",
-          "label": "Label"
-        },
-        {
-          "type": "text",
-          "id": "end_date",
-          "placeholder": "2025-12-31T23:59:59",
-          "label": "End Date (ISO Format)",
-          "info": "Format: YYYY-MM-DDTHH:MM:SS"
         }
       ]
     }

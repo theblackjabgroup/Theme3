@@ -35,14 +35,13 @@
     border: 2px solid var(--btn-primary-border) !important;
     }
 
-  .back-to-top-button .submit-button__icon {
+  .back-to-top-button .global-btn__icon {
     width: {{ section.settings.icon_size | default: 60 }}%;
     height: {{ section.settings.icon_size | default: 60 }}%;
     margin: 0 !important;
   }
 
-  /* Reset any possible default button styles that might interfere */
-  .back-to-top-button .submit-button__text {
+  .back-to-top-button .global-btn__text {
     display: none !important;
   }
 </style>
@@ -68,9 +67,10 @@
   {%- endif -%}
 
   {%- render 'global-btn',
-    text: '',
+    text: 'Back to top',
     url: '#',
     icon: icon_content,
+    icon_only: true,
     class: 'back-to-top-button',
     attributes: 'data-back-to-top-trigger aria-label="Back to top"',
     type: 'button'

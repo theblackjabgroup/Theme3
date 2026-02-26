@@ -15,9 +15,12 @@
   Wrapper handles the positioning and the "gap" via padding.
   This allows a card to span fractional amounts (e.g. 1.2 columns)
   without breaking the visual gap rhythm.
+  content-visibility: auto skips layout/paint for off-screen cards to reduce main-thread work.
 */
 .bento-block-wrapper {
   display: flex;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 120px;
 }
 
 @media (max-width: 768px) {
@@ -130,7 +133,7 @@
 }
 
 .bento-card.text-card:hover {
-  border-color: var(--color-heading, var(--color-primary-button-bg, #e63946)) !important;
+  border: var(--border-width-thin, 1px) solid var(--color-heading, var(--color-primary-button-bg, #e63946)) !important;
 }
 
 /* Text Card Horizontal Alignment */
@@ -416,11 +419,11 @@
 
 /* Video card border customization */
 .bento-card.video-card {
-  border-color: var(--video-border-color, var(--color-borders, var(--color-gray-300)));
+  border: var(--border-width-thin, 1px) solid var(--video-border-color, var(--color-borders, var(--color-gray-300)));
 }
 
 .bento-card.video-card:hover {
-  border-color: var(--video-border-hover-color, var(--video-border-color, var(--color-heading, var(--color-primary-button-bg, #e63946)))) !important;
+  border: var(--border-width-thin, 1px) solid var(--video-border-hover-color, var(--video-border-color, var(--color-heading, var(--color-primary-button-bg, #e63946)))) !important;
 }
 
 /* Card Color Variants */
@@ -792,35 +795,11 @@
   transform: translateX(var(--toggle-knob-slide-x, 48px));
 }
 
-@media (max-width: 768px) {
-  .toggle-ui {
-    padding: 12px;
-  }
-  .toggle-knob {
-    border-radius: 18px;
-  }
-  .toggle-labels {
-    font-size: 13px !important;
-  }
-}
-
+/* Toggle card mobile: single source of truth for 768px and below */
 @media (max-width: 768px) {
   .toggle-ui {
     padding: 16px 12px;
   }
-  .toggle-knob {
-    border-radius: 20px;
-  }
-  .toggle-labels {
-    font-size: 14px;
-  }
-}
-
-/* Match the image text "SWITCH TO DARK" which is likely the ON state label */
-/* So if it's NOT checked (Light state), it shows "SWITCH TO DARK" */
-/* If it's checked (Dark state), it shows "SWITCH TO LIGHT" */
-
-@media (max-width: 768px) {
   .toggle-knob {
     border-radius: 12px;
   }
@@ -1046,7 +1025,7 @@ a.tag-card.tag-card--link:hover {
 }
 
 .bento-card.tag-card:hover {
-  border-color: var(--color-heading, var(--color-red)) !important;
+  border: var(--border-width-thin, 1px) solid var(--color-heading, var(--color-red)) !important;
 }
 .tag-card:hover .tag-card-icon img {
   transform: rotate(180deg);
@@ -1877,13 +1856,13 @@ a.tag-card.tag-card--link:hover {
   }
 
   .content-card-main-text {
-  font-family: var(--font-heading-family);
-  font-size: var(--desktop-main-text-font-size, 28px);
-  font-weight: var(--desktop-main-text-font-weight, 600);
-  line-height: var(--desktop-main-text-line-height, 1.1);
-  color: inherit;
-  margin: 0;
-}
+    font-family: var(--font-heading-family);
+    font-size: var(--mobile-main-text-font-size, 20px) !important;
+    font-weight: var(--mobile-main-text-font-weight, 600) !important;
+    line-height: var(--mobile-main-text-line-height, 1.1) !important;
+    color: inherit;
+    margin: 0;
+  }
 
   .content-card-tag {
     font-size: var(--mobile-tag-font-size, 10px) !important;
@@ -2052,13 +2031,13 @@ a.tag-card.tag-card--link:hover {
   }
 
   .content-card-main-text {
-  font-family: var(--font-heading-family);
-  font-size: var(--desktop-main-text-font-size, 28px);
-  font-weight: var(--desktop-main-text-font-weight, 600);
-  line-height: var(--desktop-main-text-line-height, 1.1);
-  color: inherit;
-  margin: 0;
-}
+    font-family: var(--font-heading-family);
+    font-size: var(--mobile-main-text-font-size, 18px) !important;
+    font-weight: var(--mobile-main-text-font-weight, 600) !important;
+    line-height: var(--mobile-main-text-line-height, 1.1) !important;
+    color: inherit;
+    margin: 0;
+  }
 
   .content-card-tag {
     font-size: var(--mobile-tag-font-size, 10px) !important;

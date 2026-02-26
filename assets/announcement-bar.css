@@ -26,6 +26,8 @@
   display: none;
 }
 
+
+
 .announcement-bar__inner {
   display: flex;
   align-items: center;
@@ -116,19 +118,6 @@
   border-radius: 50%;
   background: currentColor;
   opacity: 0.4;
-}
-
-/* ---------- Countdown inside pill ---------- */
-.ab-countdown {
-  display: inline-flex;
-  align-items: center;
-  gap: 2px;
-  font-variant-numeric: tabular-nums;
-}
-
-.ab-countdown__box {
-  min-width: 1.6em;
-  text-align: center;
 }
 
 /* ---------- Reduced-motion ---------- */

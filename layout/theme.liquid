@@ -472,6 +472,8 @@
         mobileTriggerPoint: {{ settings.scroll_animation_mobile_trigger_point | default: 5 | json }},
       };
     </script>
-    <script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>
+    {%- if settings.animations_reveal_on_scroll -%}
+      <script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
   </body>
 </html>
