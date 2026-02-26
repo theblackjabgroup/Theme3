@@ -1,6 +1,5 @@
 {{ 'section-bento-grid.css' | asset_url | stylesheet_tag: preload: true }}
 {{ 'component-primary-button.css' | asset_url | stylesheet_tag }}
-{{ 'component-quantity.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'section-bento-grid.js' | asset_url }}" defer></script>
 
 {%- liquid
@@ -29,7 +28,7 @@
     padding: {{ section.settings.grid_gap | divided_by: 2 }}px;
   }
 
-  .bento-card:not(.quantity-selector-card),
+  .bento-card,
   .content-card,
   .content-card-inner,
   .tag-card,
@@ -864,59 +863,6 @@
                     </span>
                   </span>
                 </label>
-              </div>
-            </div>
-
-          {%- when 'quantity_selector_card' -%}
-            {%- assign qty_min = block.settings.quantity_min | default: 0 -%}
-            {%- assign qty_max = block.settings.quantity_max | default: 99 -%}
-            {%- assign qty_default = block.settings.quantity_default | default: 1 -%}
-            {%- if qty_default < qty_min -%}{%- assign qty_default = qty_min -%}{%- endif -%}
-            {%- if qty_default > qty_max -%}{%- assign qty_default = qty_max -%}{%- endif -%}
-            {%- assign qty_step = block.settings.quantity_step | default: 1 -%}
-            {%- assign selector_size = block.settings.selector_size | default: 48 -%}
-            {%- assign mobile_selector_size = block.settings.mobile_selector_size | default: selector_size -%}
-            <div
-              class="bento-card quantity-selector-card"
-              data-quantity-selector-card
-              data-block-id="{{ block.id }}"
-              style="{% if block.settings.card_background_color != blank %}background-color: {{ block.settings.card_background_color }};{% endif %} --quantity-selector-height: {{ selector_size }}px; --quantity-selector-height-mobile: {{ mobile_selector_size }}px;"
-            >
-              <div class="quantity-selector-card__inner">
-                <div class="quantity quantity-selector-standalone" style="height: {{ selector_size }}px;">
-                  <button
-                    type="button"
-                    class="quantity__button"
-                    name="minus"
-                    aria-label="Decrease quantity"
-                    data-quantity-minus
-                  >
-                    <span class="svg-wrapper">{{ 'icon-minus.svg' | inline_asset_content }}</span>
-                  </button>
-                  <input
-                    type="number"
-                    class="quantity__input"
-                    data-quantity-input
-                    value="{{ qty_default }}"
-                    min="{{ qty_min }}"
-                    max="{{ qty_max }}"
-                    step="{{ qty_step }}"
-                    aria-label="Quantity"
-                    readonly
-                  >
-                  <button
-                    type="button"
-                    class="quantity__button"
-                    name="plus"
-                    aria-label="Increase quantity"
-                    data-quantity-plus
-                  >
-                    <span class="svg-wrapper">{{ 'icon-plus.svg' | inline_asset_content }}</span>
-                  </button>
-                </div>
-                {%- if block.settings.label != blank -%}
-                  <span class="quantity-selector-card__label">{{ block.settings.label }}</span>
-                {%- endif -%}
               </div>
             </div>
         {%- endcase -%}
@@ -3285,135 +3231,6 @@
           "default": 1
         }
       ]
-    },
-    {
-      "type": "quantity_selector_card",
-      "name": "Quantity Selector",
-      "settings": [
-        {
-          "type": "text",
-          "id": "label",
-          "label": "Label",
-          "info": "Optional label below the selector"
-        },
-        {
-          "type": "color",
-          "id": "card_background_color",
-          "label": "Card Background Color",
-          "default": "#ffffff",
-          "info": "Background color for this card"
-        },
-        {
-          "type": "header",
-          "content": "Quantity Settings"
-        },
-        {
-          "type": "range",
-          "id": "quantity_min",
-          "min": 0,
-          "max": 50,
-          "step": 1,
-          "label": "Minimum",
-          "default": 0
-        },
-        {
-          "type": "range",
-          "id": "quantity_max",
-          "min": 1,
-          "max": 100,
-          "step": 1,
-          "label": "Maximum",
-          "default": 99
-        },
-        {
-          "type": "range",
-          "id": "quantity_default",
-          "min": 0,
-          "max": 99,
-          "step": 1,
-          "label": "Default value",
-          "default": 1
-        },
-        {
-          "type": "range",
-          "id": "quantity_step",
-          "min": 1,
-          "max": 10,
-          "step": 1,
-          "label": "Step",
-          "default": 1,
-          "info": "Amount to add/subtract per click"
-        },
-        {
-          "type": "header",
-          "content": "Size"
-        },
-        {
-          "type": "range",
-          "id": "selector_size",
-          "min": 36,
-          "max": 80,
-          "step": 2,
-          "unit": "px",
-          "label": "Selector height",
-          "default": 38,
-          "info": "Figma Component 10: 38px"
-        },
-        {
-          "type": "range",
-          "id": "mobile_selector_size",
-          "min": 36,
-          "max": 64,
-          "step": 2,
-          "unit": "px",
-          "label": "Mobile selector height",
-          "default": 44
-        },
-        {
-          "type": "header",
-          "content": "Desktop Layout"
-        },
-        {
-          "type": "range",
-          "id": "column_span",
-          "min": 0.5,
-          "max": 8.0,
-          "step": 0.1,
-          "label": "Column Span",
-          "default": 1.0
-        },
-        {
-          "type": "range",
-          "id": "row_span",
-          "min": 0.5,
-          "max": 4.3,
-          "step": 0.1,
-          "label": "Row Span",
-          "default": 1.0
-        },
-        {
-          "type": "header",
-          "content": "Mobile Layout"
-        },
-        {
-          "type": "range",
-          "id": "mobile_column_span",
-          "min": 0.1,
-          "max": 2,
-          "step": 0.1,
-          "label": "Mobile Column Span",
-          "default": 1
-        },
-        {
-          "type": "range",
-          "id": "mobile_row_span",
-          "min": 0.1,
-          "max": 2.0,
-          "step": 0.1,
-          "label": "Mobile Row Span",
-          "default": 1
-        }
-      ]
     }
   ],
   "presets": [
@@ -3451,19 +3268,7 @@
           "type": "content_card",
           "settings": { "column_span": 2.6, "row_span": 4.0, "card_background_color": "#306030" }
         },
-        { "type": "scrolling_text_card", "settings": { "column_span": 2.5, "row_span": 0.8 } },
-        { "type": "button_card", "settings": { "column_span": 2.0, "row_span": 1.1 } },
-        {
-          "type": "quantity_selector_card",
-          "settings": {
-            "label": "Q2",
-            "column_span": 1.0,
-            "row_span": 1.0,
-            "quantity_default": 1,
-            "quantity_min": 0,
-            "quantity_max": 99
-          }
-        }
+        { "type": "button_card", "settings": { "column_span": 2.0, "row_span": 1.1 } }
       ]
     }
   ]
