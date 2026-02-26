@@ -116,15 +116,7 @@
     padding: 0;
 }
 
-.cart-breadcrumbs-wrapper {
-    padding: 20px 60px;
-    border-bottom: 1px solid #f0f0f0;
-    font-family: 'Inter', sans-serif;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #333;
-}
+
 
 .cart-content-inner {
     padding: 60px;
@@ -295,3 +287,103 @@
         border-bottom: 1px solid #eee !important;
     }
 }
+
+/* Mobile: tablet and below */
+@media screen and (max-width: 768px) {
+    .template-cart .cart__footer-wrapper {
+        padding: 30px 20px !important;
+    }
+    .cart-sidebar__header {
+        margin-bottom: 30px;
+    }
+    .cart-sidebar__title {
+        font-size: 22px;
+    }
+    .cart-content-inner {
+        padding: 30px 20px;
+    }
+    .cart-title {
+        font-size: 36px;
+        margin-bottom: 30px;
+    }
+    .cart-items thead {
+        display: none !important;
+    }
+    .cart-item {
+        display: block !important;
+        margin-bottom: 30px !important;
+        padding-bottom: 30px !important;
+        border-bottom: 1px solid #eee !important;
+    }
+    .cart-item__media {
+        width: 100% !important;
+        padding-right: 0 !important;
+        padding-bottom: 15px !important;
+    }
+    .cart-item__image-container {
+        width: 100% !important;
+        max-width: 180px;
+    }
+    .cart-item__name {
+        font-size: 20px !important;
+    }
+    .cart-item__quantity {
+        width: 100% !important;
+        margin-top: 15px !important;
+        margin-bottom: 15px !important;
+    }
+    .quantity {
+        max-width: 140px;
+    }
+    .update-button {
+        position: static !important;
+        width: 100%;
+        margin-top: 20px !important;
+        right: auto !important;
+        bottom: auto !important;
+    }
+    .cart__checkout-button {
+        height: 56px !important;
+        font-size: 15px !important;
+    }
+    .coupon-section {
+        margin-top: 30px;
+        padding-top: 30px;
+        flex-wrap: wrap;
+    }
+}
+
+/* Mobile: small phones */
+@media screen and (max-width: 480px) {
+    .template-cart .cart__footer-wrapper {
+        padding: 24px 16px !important;
+    }
+    .cart-sidebar__title {
+        font-size: 20px;
+    }
+    .cart-content-inner {
+        padding: 24px 16px;
+    }
+    .cart-title {
+        font-size: 28px;
+        margin-bottom: 24px;
+    }
+    .cart-item__name {
+        font-size: 18px !important;
+    }
+    .cart__checkout-button {
+        height: 52px !important;
+        font-size: 14px !important;
+    }
+    .cart-sidebar__row {
+        margin-bottom: 18px;
+        font-size: 13px;
+    }
+    .cart-sidebar__row.total {
+        font-size: 15px;
+        margin-top: 24px;
+    }
+}
+
+
+

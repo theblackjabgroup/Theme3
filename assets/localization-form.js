@@ -16,10 +16,17 @@ if (!customElements.get('localization-form')) {
           searchIcon: this.querySelector('.country-filter__search-icon'),
           liveRegion: this.querySelector('.sr-search-results'),
         };
+        if (!this.elements.button || !this.elements.panel || !this.elements.input) return;
+
         this.addEventListener('keyup', this.onContainerKeyUp.bind(this));
         this.addEventListener('keydown', this.onContainerKeyDown.bind(this));
         this.addEventListener('focusout', this.closeSelector.bind(this));
         this.elements.button.addEventListener('click', this.openSelector.bind(this));
+        this.onDocumentClick = this.handleDocumentClick.bind(this);
+        document.addEventListener('click', this.onDocumentClick);
+
+        const overlay = this.querySelector('.country-selector__overlay');
+        if (overlay) overlay.addEventListener('click', this.hidePanel.bind(this));
 
         if (this.elements.search) {
           this.elements.search.addEventListener('keyup', this.filterCountries.bind(this));
@@ -36,6 +43,18 @@ if (!customElements.get('localization-form')) {
         }
 
         this.querySelectorAll('a').forEach((item) => item.addEventListener('click', this.onItemClick.bind(this)));
+      }
+
+      disconnectedCallback() {
+        if (this.onDocumentClick) {
+          document.removeEventListener('click', this.onDocumentClick);
+        }
+      }
+
+      handleDocumentClick(event) {
+        if (!this.contains(event.target)) {
+          this.hidePanel();
+        }
       }
 
       hidePanel() {
@@ -110,13 +129,17 @@ if (!customElements.get('localization-form')) {
         if (form) form.submit();
       }
 
-      openSelector() {
+      openSelector(event) {
+        if (event) event.preventDefault();
+        const isExpanded = this.elements.button.getAttribute('aria-expanded') === 'true';
+        if (isExpanded) {
+          this.hidePanel();
+          return;
+        }
+
         this.elements.button.focus();
-        this.elements.panel.toggleAttribute('hidden');
-        this.elements.button.setAttribute(
-          'aria-expanded',
-          (this.elements.button.getAttribute('aria-expanded') === 'false').toString(),
-        );
+        this.elements.panel.removeAttribute('hidden');
+        this.elements.button.setAttribute('aria-expanded', 'true');
         if (!document.body.classList.contains('overflow-hidden-tablet')) {
           document.body.classList.add('overflow-hidden-mobile');
         }
@@ -131,12 +154,15 @@ if (!customElements.get('localization-form')) {
       }
 
       closeSelector(event) {
-        if (
-          event.target.classList.contains('country-selector__overlay') ||
-          !this.contains(event.target) ||
-          !this.contains(event.relatedTarget)
-        ) {
-          this.hidePanel();
+        if (!event) return;
+        if (event.type === 'focusout') {
+          // On mobile Safari/Chrome, tap focus transitions often emit focusout
+          // with a null relatedTarget; treating that as outside causes instant close.
+          if (!event.relatedTarget) return;
+          if (!this.contains(event.relatedTarget)) {
+            this.hidePanel();
+          }
+          return;
         }
       }
 

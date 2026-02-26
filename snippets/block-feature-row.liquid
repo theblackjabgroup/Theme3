@@ -9,7 +9,16 @@
   Variables:
   - block: The block object containing settings (icon, heading, text, button_label, button_link).
 {%- endcomment -%}
-<div class="feature-row">
+<div class="feature-row" style="
+  --feature-heading-font-size: {{ block.settings.heading_font_size | default: 24 }}px;
+  --feature-heading-font-size-mobile: {{ block.settings.heading_font_size_mobile | default: 20 }}px;
+  --feature-heading-font-weight: {{ block.settings.heading_font_weight | default: 700 }};
+  --feature-heading-font-weight-mobile: {{ block.settings.heading_font_weight_mobile | default: 700 }};
+  --feature-text-font-size: {{ block.settings.text_font_size | default: 18 }}px;
+  --feature-text-font-size-mobile: {{ block.settings.text_font_size_mobile | default: 16 }}px;
+  --feature-text-font-weight: {{ block.settings.text_font_weight | default: 400 }};
+  --feature-text-font-weight-mobile: {{ block.settings.text_font_weight_mobile | default: 400 }};
+">
   {% if block.settings.icon != blank %}
     {{
       block.settings.icon

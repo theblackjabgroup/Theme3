@@ -2,44 +2,74 @@
 
 {%- style -%}
   .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
     background-color: {{ section.settings.color_scheme.settings.primary_button_bg }};
     border-radius: {{ section.settings.border_radius }}px;
     margin: {{ section.settings.margin_vertical }}px {{ section.settings.margin_horizontal }}px;
+    {% if section.settings.bg_image != blank %}background-image: url('{{ section.settings.bg_image | image_url: width: 1920 }}'); background-size: cover; background-position: center;{% endif %}
 
     --eyebrow-color: {{ section.settings.color_scheme.settings.accent_red }};
     --heading-color: {{ section.settings.color_scheme.settings.headings }};
     --text-color: {{ section.settings.color_scheme.settings.text }};
-    --content-max-width: {{ section.settings.content_max_width }}px;
+    --content-max-width: {{ section.settings.content_max_width }}%;
+    --content-padding-horizontal: {{ section.settings.padding_horizontal }}px;
+    --content-padding-horizontal-mobile: {{ section.settings.padding_horizontal_mobile }}px;
     --eyebrow-font-size: {{ section.settings.eyebrow_font_size }}px;
+    --eyebrow-font-size-mobile: {{ section.settings.eyebrow_font_size_mobile }}px;
+    --eyebrow-line-height: {{ section.settings.eyebrow_line_height | divided_by: 100.0 }};
+    --eyebrow-line-height-mobile: {{ section.settings.eyebrow_line_height_mobile | divided_by: 100.0 }};
+    --eyebrow-font-weight: {{ section.settings.eyebrow_font_weight }};
+    --eyebrow-font-weight-mobile: {{ section.settings.eyebrow_font_weight_mobile }};
+    --eyebrow-padding-vertical: {{ section.settings.eyebrow_padding_vertical }}px;
+    --eyebrow-padding-horizontal: {{ section.settings.eyebrow_padding_horizontal }}px;
+    --eyebrow-padding-vertical-mobile: {{ section.settings.eyebrow_padding_vertical_mobile }}px;
+    --eyebrow-padding-horizontal-mobile: {{ section.settings.eyebrow_padding_horizontal_mobile }}px;
+    --eyebrow-border-radius: {{ section.settings.eyebrow_border_radius }}px;
+    --eyebrow-border-radius-mobile: {{ section.settings.eyebrow_border_radius_mobile }}px;
     --heading-font-size: {{ section.settings.heading_font_size }}px;
     --heading-font-size-mobile: {{ section.settings.heading_font_size_mobile }}px;
+    --heading-line-height: {{ section.settings.heading_line_height | divided_by: 100.0 }};
+    --heading-line-height-mobile: {{ section.settings.heading_line_height_mobile | divided_by: 100.0 }};
+    --heading-font-weight: {{ section.settings.heading_font_weight }};
+    --heading-font-weight-mobile: {{ section.settings.heading_font_weight_mobile }};
+    --heading-margin-top: {{ section.settings.heading_margin_top }}px;
+    --heading-margin-bottom: {{ section.settings.heading_margin_bottom }}px;
+    --heading-margin-top-mobile: {{ section.settings.heading_margin_top_mobile }}px;
+    --heading-margin-bottom-mobile: {{ section.settings.heading_margin_bottom_mobile }}px;
     --text-font-size: {{ section.settings.text_font_size }}px;
+    --text-font-size-mobile: {{ section.settings.text_font_size_mobile }}px;
+    --text-line-height: {{ section.settings.text_line_height | divided_by: 100.0 }};
+    --text-line-height-mobile: {{ section.settings.text_line_height_mobile | divided_by: 100.0 }};
+    --text-font-weight: {{ section.settings.text_font_weight }};
+    --text-font-weight-mobile: {{ section.settings.text_font_weight_mobile }};
   }
 
   @media screen and (max-width: 750px) {
     .section-{{ section.id }}-padding {
-       margin: {{ section.settings.margin_vertical_mobile }}px {{ section.settings.margin_horizontal_mobile }}px;
-    }
-  }
-
-  @media screen and (min-width: 750px) {
-    .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
+      padding-top: {{ section.settings.padding_top_mobile }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+      margin: {{ section.settings.margin_vertical_mobile }}px {{ section.settings.margin_horizontal_mobile }}px;
+      {% if section.settings.bg_image_mobile != blank %}
+        background-image: url('{{ section.settings.bg_image_mobile | image_url: width: 1200 }}'); background-size: cover; background-position: center;
+      {% elsif section.settings.use_desktop_image_on_mobile and section.settings.bg_image != blank %}
+        background-image: url('{{ section.settings.bg_image | image_url: width: 1920 }}'); background-size: cover; background-position: center;
+      {% else %}
+        background-image: none;
+      {% endif %}
     }
   }
 {%- endstyle -%}
 
-<div
-  class="section-content-hero section-{{ section.id }}-padding content-hero--{{ section.settings.content_position }}"
-  style="{% if section.settings.bg_image != blank %}background-image: url('{{ section.settings.bg_image | image_url: width: 1920 }}'); background-size: cover; background-position: center;{% endif %}"
->
-  {%- if section.settings.bg_image != blank -%}
+<div class="section-content-hero section-{{ section.id }}-padding">
+  {%- if section.settings.bg_image != blank or section.settings.bg_image_mobile != blank -%}
     <div
-      class="content-hero__overlay"
+      class="content-hero__overlay content-hero__overlay--desktop"
       style="background-color: {{ section.settings.color_scheme.settings.background }}; opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};"
+    ></div>
+    <div
+      class="content-hero__overlay content-hero__overlay--mobile"
+      style="background-color: {{ section.settings.color_scheme.settings.background }}; opacity: {{ section.settings.overlay_opacity_mobile | divided_by: 100.0 }};"
     ></div>
   {%- endif -%}
   <div class="content-hero__container content-hero__container--{{ section.settings.text_alignment }}">
@@ -107,6 +137,120 @@
     },
     {
       "type": "range",
+      "id": "eyebrow_font_size_mobile",
+      "min": 4,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Eyebrow Font Size (Mobile)",
+      "default": 11
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_line_height",
+      "min": 100,
+      "max": 250,
+      "step": 5,
+      "unit": "%",
+      "label": "Eyebrow Line Height",
+      "default": 120
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_line_height_mobile",
+      "min": 100,
+      "max": 250,
+      "step": 5,
+      "unit": "%",
+      "label": "Eyebrow Line Height (Mobile)",
+      "default": 120
+    },
+    {
+      "type": "select",
+      "id": "eyebrow_font_weight",
+      "label": "Eyebrow Font Weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "select",
+      "id": "eyebrow_font_weight_mobile",
+      "label": "Eyebrow Font Weight (Mobile)",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_padding_vertical",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Eyebrow Padding Vertical (Desktop)",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_padding_horizontal",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Eyebrow Padding Horizontal (Desktop)",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_padding_vertical_mobile",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Eyebrow Padding Vertical (Mobile)",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_padding_horizontal_mobile",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Eyebrow Padding Horizontal (Mobile)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_border_radius",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Eyebrow Border Radius (Desktop)",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_border_radius_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Eyebrow Border Radius (Mobile)",
+      "default": 50
+    },
+    {
+      "type": "range",
       "id": "heading_font_size",
       "min": 20,
       "max": 120,
@@ -118,12 +262,96 @@
     {
       "type": "range",
       "id": "heading_font_size_mobile",
-      "min": 20,
+      "min": 10,
       "max": 80,
       "step": 2,
       "unit": "px",
       "label": "Heading Font Size (Mobile)",
       "default": 40
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height",
+      "min": 100,
+      "max": 250,
+      "step": 5,
+      "unit": "%",
+      "label": "Heading Line Height",
+      "default": 110
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height_mobile",
+      "min": 100,
+      "max": 250,
+      "step": 5,
+      "unit": "%",
+      "label": "Heading Line Height (Mobile)",
+      "default": 110
+    },
+    {
+      "type": "select",
+      "id": "heading_font_weight",
+      "label": "Heading Font Weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "select",
+      "id": "heading_font_weight_mobile",
+      "label": "Heading Font Weight (Mobile)",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "range",
+      "id": "heading_margin_top",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Heading Padding Above (Desktop)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "heading_margin_bottom",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Heading Padding Below (Desktop)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "heading_margin_top_mobile",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Padding Above (Mobile)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "heading_margin_bottom_mobile",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Padding Below (Mobile)",
+      "default": 16
     },
     {
       "type": "range",
@@ -136,13 +364,79 @@
       "default": 16
     },
     {
+      "type": "range",
+      "id": "text_font_size_mobile",
+      "min": 4,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Description Font Size (Mobile)",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "text_line_height",
+      "min": 100,
+      "max": 250,
+      "step": 5,
+      "unit": "%",
+      "label": "Description Line Height",
+      "default": 160
+    },
+    {
+      "type": "range",
+      "id": "text_line_height_mobile",
+      "min": 100,
+      "max": 250,
+      "step": 5,
+      "unit": "%",
+      "label": "Description Line Height (Mobile)",
+      "default": 160
+    },
+    {
+      "type": "select",
+      "id": "text_font_weight",
+      "label": "Description Font Weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "select",
+      "id": "text_font_weight_mobile",
+      "label": "Description Font Weight (Mobile)",
+      "options": [ 
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "400"
+    },
+    {
       "type": "header",
       "content": "Settings"
     },
     {
       "type": "image_picker",
       "id": "bg_image",
-      "label": "Background Image"
+      "label": "Background Image (Desktop)"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image_mobile",
+      "label": "Background Image (Mobile)"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_desktop_image_on_mobile",
+      "label": "Use desktop image on mobile",
+      "info": "When disabled, the desktop image will not show on mobile. Use a mobile image instead.",
+      "default": true
     },
     {
       "type": "color_scheme",
@@ -157,7 +451,17 @@
       "max": 100,
       "step": 10,
       "unit": "%",
-      "label": "Overlay Opacity",
+      "label": "Overlay Opacity (Desktop)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "%",
+      "label": "Overlay Opacity (Mobile)",
       "default": 0
     },
     {
@@ -172,25 +476,14 @@
       "default": "center"
     },
     {
-      "type": "select",
-      "id": "content_position",
-      "label": "Content Position (Desktop)",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
-      ],
-      "default": "center"
-    },
-    {
       "type": "range",
       "id": "content_max_width",
-      "min": 400,
-      "max": 1600,
-      "step": 50,
-      "unit": "px",
+      "min": 30,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
       "label": "Content Max Width",
-      "default": 800
+      "default": 80
     },
     {
       "type": "range",
@@ -213,6 +506,46 @@
       "default": 60
     },
     {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Top Padding (Mobile)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Bottom Padding (Mobile)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Horizontal Padding (Desktop)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Horizontal Padding (Mobile)",
+      "default": 20
+    },
+    {
       "type": "header",
       "content": "Layout Customization"
     },
@@ -224,7 +557,7 @@
       "step": 2,
       "unit": "px",
       "label": "Border Radius",
-      "default": 0
+      "default": 10
     },
     {
       "type": "range",

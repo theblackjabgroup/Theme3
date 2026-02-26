@@ -11,62 +11,137 @@
 {%- if show_bar -%}
   {%- liquid
     assign speed = section.settings.marquee_speed | default: 5
-    assign duration = 11 | minus: speed | times: 10
+    assign duration = 11 | minus: speed | times: 4
     assign scheme = section.settings.color_scheme
     if scheme == blank
       assign scheme = settings.color_schemes | first
     endif
+
+    assign sep_size = section.settings.separator_size | default: 36
+    assign sep_size_2x = sep_size | times: 2
+    assign sep_gap = section.settings.separator_gap | default: 16
+    assign sep_bg = section.settings.separator_bg_color
+    assign pill_bg = section.settings.pill_bg_color | default: '#2d5a27'
+    assign pill_color = section.settings.pill_text_color | default: '#ffffff'
+    assign pill_px = section.settings.pill_padding_x | default: 20
+    assign pill_py = section.settings.pill_padding_y | default: 8
+    assign pill_radius = section.settings.pill_border_radius | default: 50
+    assign bar_py = section.settings.bar_padding_y | default: 6
+    assign bar_px = section.settings.bar_padding_x | default: 0
+    assign bar_min_height = section.settings.bar_min_height | default: 0
+    assign font_size = section.settings.font_size | default: 14
+    assign font_weight = section.settings.font_weight | default: '700'
+    assign text_tf = section.settings.text_transform | default: 'uppercase'
+    assign pause_hover = section.settings.pause_on_hover | default: true, allow_false: true
+    assign sep_img = section.settings.separator_image
   -%}
+
   <announcement-bar
-    class="announcement-bar announcement-bar--{{ section.settings.layout_mode }} color-{{ scheme.id }}{% if section.settings.sticky %} is-sticky{% endif %}"
+    class="announcement-bar announcement-bar--marquee color-{{ scheme.id }}{% if section.settings.sticky %} is-sticky{% endif %}"
     id="section-{{ section.id }}"
-    style="--marquee-speed: {{ duration }}s; background-color: {{ scheme.settings.background }}; color: {{ scheme.settings.text }};"
+    data-pause-on-hover="{{ pause_hover }}"
+    style="
+      --marquee-speed: {{ duration }}s;
+      --ab-sep-size: {{ sep_size }}px;
+      --ab-sep-gap: {{ sep_gap }}px;
+      --ab-sep-bg: {% if sep_bg != blank %}{{ sep_bg }}{% else %}transparent{% endif %};
+      --ab-pill-bg: {{ pill_bg }};
+      --ab-pill-color: {{ pill_color }};
+      --ab-pill-px: {{ pill_px }}px;
+      --ab-pill-py: {{ pill_py }}px;
+      --ab-pill-radius: {{ pill_radius }}px;
+      --ab-bar-py: {{ bar_py }}px;
+      --ab-bar-px: {{ bar_px }}px;
+      --ab-bar-min-height: {% if bar_min_height > 0 %}{{ bar_min_height }}px{% else %}0px{% endif %};
+      --ab-font-size: {{ font_size }}px;
+      --ab-font-weight: {{ font_weight }};
+      --ab-text-transform: {{ text_tf }};
+      background-color: {{ scheme.settings.background }};
+      color: {{ scheme.settings.text }};
+    "
   >
     <div class="announcement-bar__inner">
-      {%- if section.settings.layout_mode == 'marquee' -%}
-        <div class="marquee-content">
-          {%- for i in (1..4) -%}
+      <div class="ab-marquee" role="marquee">
+        {%- comment -%}
+          Render blocks twice — the CSS @keyframes moves -50% so the second
+          copy fills the gap, creating a seamless infinite loop.
+          Only the duplicate (pass 2) is aria-hidden to avoid duplicate content for screen readers.
+        {%- endcomment -%}
+        {%- for pass in (1..2) -%}
+          <div
+            class="ab-marquee__set"
+            {% if pass == 2 %}
+              aria-hidden="true"
+            {% endif %}
+          >
             {%- for block in section.blocks -%}
-              <div class="marquee-item" {{ block.shopify_attributes }}>
-                {%- case block.type -%}
-                  {%- when 'announcement' -%}
-                    {%- if block.settings.link != blank -%}
-                      <a href="{{ block.settings.link }}" class="announcement-bar__link h5">
-                    {%- endif -%}
-                    <span>{{ block.settings.text | escape }}</span>
-                    {%- if block.settings.link != blank -%}
-                      </a>
-                    {%- endif -%}
+              {%- case block.type -%}
+                {%- when 'announcement' -%}
+                  {%- assign block_pill_bg = block.settings.pill_bg_color -%}
+                  <span
+                    class="ab-pill"
+                    {% if pass == 1 %}
+                      {{- block.shopify_attributes -}}
+                    {% endif %}
+                    {% if block.settings.link != blank %}
+                      role="link"
+                      data-href="{{ block.settings.link }}"
+                    {% endif %}
+                    style="{% if block_pill_bg != blank and block_pill_bg != '' %}--ab-pill-bg: {{ block_pill_bg }};{% endif %}"
+                  >
+                    {{- block.settings.text | escape -}}
+                  </span>
 
-                  {%- when 'countdown' -%}
-                    <div class="announcement-countdown" data-countdown="{{ block.settings.end_date }}">
-                      {%- if block.settings.label != blank -%}
-                        <span class="countdown-label">{{ block.settings.label | escape }}</span>
-                      {%- endif -%}
-                      <span class="countdown-box d">00</span>: <span class="countdown-box h">00</span>:
-                      <span class="countdown-box m">00</span>:
-                      <span class="countdown-box s">00</span>
-                    </div>
-                {%- endcase -%}
-              </div>
+                  {%- comment -%} Separator after each pill {%- endcomment -%}
+                  <span class="ab-sep" aria-hidden="true">
+                    {%- if sep_img != blank -%}
+                      <img
+                        src="{{ sep_img | image_url: width: sep_size_2x }}"
+                        width="{{ sep_size }}"
+                        height="{{ sep_size }}"
+                        alt=""
+                        loading="lazy"
+                        class="ab-sep__img"
+                      >
+                    {%- else -%}
+                      <span class="ab-sep__dot"></span>
+                    {%- endif -%}
+                  </span>
+
+                {%- when 'countdown' -%}
+                  <span
+                    class="ab-pill"
+                    {% if pass == 1 %}
+                      {{- block.shopify_attributes -}}
+                    {% endif %}
+                  >
+                    {%- if block.settings.label != blank -%}
+                      {{ block.settings.label | escape }}&nbsp;
+                    {%- endif -%}
+                    <span class="ab-countdown" data-countdown="{{ block.settings.end_date }}">
+                      <span class="ab-countdown__box d">00</span>:<span class="ab-countdown__box h">00</span
+                      >:<span class="ab-countdown__box m">00</span>:<span class="ab-countdown__box s">00</span>
+                    </span>
+                  </span>
+                  <span class="ab-sep" aria-hidden="true">
+                    {%- if sep_img != blank -%}
+                      <img
+                        src="{{ sep_img | image_url: width: sep_size_2x }}"
+                        width="{{ sep_size }}"
+                        height="{{ sep_size }}"
+                        alt=""
+                        loading="lazy"
+                        class="ab-sep__img"
+                      >
+                    {%- else -%}
+                      <span class="ab-sep__dot"></span>
+                    {%- endif -%}
+                  </span>
+              {%- endcase -%}
             {%- endfor -%}
-          {%- endfor -%}
-        </div>
-      {%- else -%}
-        <div class="announcement-bar__static">
-          {%- for block in section.blocks limit: 1 -%}
-            <p class="announcement-bar__message h5">{{ block.settings.text | escape }}</p>
-          {%- endfor -%}
-        </div>
-      {%- endif -%}
-
-      {%- if section.settings.show_close_button -%}
-        <button type="button" class="announcement-bar__close" aria-label="Close">
-          <svg viewBox="0 0 24 24" width="16" height="16">
-            <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-        </button>
-      {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
     </div>
   </announcement-bar>
 {%- endif -%}
@@ -74,17 +149,12 @@
 {% schema %}
 {
   "name": " Announcement",
+  "disabled_on": { "groups": ["footer"] },
   "max_blocks": 12,
   "settings": [
     {
-      "type": "select",
-      "id": "layout_mode",
-      "options": [
-        { "value": "static", "label": "Static" },
-        { "value": "marquee", "label": "Marquee (Scrolling)" }
-      ],
-      "default": "marquee",
-      "label": "Layout Mode"
+      "type": "header",
+      "content": "Layout"
     },
     {
       "type": "range",
@@ -92,9 +162,47 @@
       "min": 1,
       "max": 10,
       "step": 1,
-      "label": "Animation Speed",
+      "label": "Scroll Speed",
       "default": 5,
-      "info": "1 is slowest, 10 is fastest"
+      "info": "1 = slowest, 10 = fastest"
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause on hover",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "bar_padding_y",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Bar vertical padding",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "bar_padding_x",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Bar horizontal padding",
+      "info": "Adds space on the left and right inside the bar",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "bar_min_height",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Bar min-height",
+      "info": "Set to 0 to let content determine height",
+      "default": 0
     },
     {
       "type": "color_scheme",
@@ -106,13 +214,127 @@
       "type": "checkbox",
       "id": "sticky",
       "default": true,
-      "label": "Is Sticky?"
+      "label": "Sticky bar"
+    },
+
+    {
+      "type": "header",
+      "content": "Pill Style"
     },
     {
-      "type": "checkbox",
-      "id": "show_close_button",
-      "default": true,
-      "label": "Show Close Button"
+      "type": "color",
+      "id": "pill_bg_color",
+      "label": "Pill background",
+      "default": "#2d5a27"
+    },
+    {
+      "type": "color",
+      "id": "pill_text_color",
+      "label": "Pill text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "pill_padding_x",
+      "min": 8,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Pill horizontal padding",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "pill_padding_y",
+      "min": 2,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Pill vertical padding",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "pill_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Pill corner radius",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "min": 10,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "900", "label": "Black" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "select",
+      "id": "text_transform",
+      "label": "Text case",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "uppercase", "label": "Uppercase" },
+        { "value": "capitalize", "label": "Capitalize" }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "header",
+      "content": "Separator"
+    },
+    {
+      "type": "image_picker",
+      "id": "separator_image",
+      "label": "Separator image",
+      "info": "Displayed as a circle between each announcement pill. Leave blank to use a dot."
+    },
+    {
+      "type": "range",
+      "id": "separator_size",
+      "min": 16,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Separator size",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "separator_gap",
+      "min": 4,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "label": "Gap around separator",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "separator_bg_color",
+      "label": "Separator background color",
+      "info": "Background circle behind the separator image"
     }
   ],
   "blocks": [
@@ -123,13 +345,19 @@
         {
           "type": "text",
           "id": "text",
-          "default": "Welcome to our store",
+          "default": "Free shipping worldwide",
           "label": "Text"
         },
         {
           "type": "url",
           "id": "link",
-          "label": "Link"
+          "label": "Link (optional)"
+        },
+        {
+          "type": "color",
+          "id": "pill_bg_color",
+          "label": "Pill color override",
+          "info": "Leave blank to use the section default"
         }
       ]
     },

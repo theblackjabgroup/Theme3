@@ -1,0 +1,90 @@
+{% comment %}
+  Quantity selector (cart page design)
+
+  Accepts:
+  - item: {Object} Cart item with quantity, variant_id, index (optional when edit_panel is true)
+  - edit_panel: {Boolean} If true, output for cart drawer edit panel (name="edit_quantity", data-edit-qty-input)
+
+  Usage:
+  {% render 'quantity-selector', item: item %}
+  {% render 'quantity-selector', item: item, edit_panel: true %}
+{% endcomment %}
+{%- liquid
+  assign max_quantity = null
+  unless edit_panel
+    if item.variant.inventory_management == 'shopify' and item.variant.inventory_policy == 'deny'
+      assign max_quantity = item.variant.inventory_quantity
+    endif
+    if item.variant.quantity_rule.max != null
+      if max_quantity == null or item.variant.quantity_rule.max < max_quantity
+        assign max_quantity = item.variant.quantity_rule.max
+      endif
+    endif
+  endunless
+  if edit_panel
+    assign qty_value = quantity | default: 1
+    assign line_index = 1
+    assign variant_id = 0
+    assign product_title = ''
+  else
+    assign qty_value = item.quantity | default: 1
+    assign line_index = item.index | default: 0 | plus: 1
+    assign variant_id = item.variant_id | default: 0
+    assign product_title = item.product.title | default: ''
+  endif
+-%}
+<div
+  class="quantity quantity--drawer-style cart-item__quantity-selector"
+  data-item-index="{{ line_index }}"
+  data-variant-id="{{ variant_id }}"
+  {% if edit_panel %}
+    data-edit-quantity-wrapper
+  {% endif %}
+>
+  <button
+    type="button"
+    class="quantity__button cart-item__quantity-btn cart-item__quantity-minus"
+    name="minus"
+    aria-label="{{ 'products.product.quantity.decrease' | t | default: 'Decrease quantity' }}"
+    {% if qty_value <= 1 %}
+      disabled
+    {% endif %}
+  >
+    &minus;
+  </button>
+  <input
+    type="number"
+    {% if edit_panel %}
+      name="edit_quantity"
+      data-edit-qty-input
+      id="EditPanel-quantity"
+    {% else %}
+      name="updates[]"
+      {%- assign prefix = id_prefix | default: 'Quantity-' -%}
+      id="{{ prefix }}{{ line_index }}"
+      data-index="{{ line_index }}"
+      data-variant-id="{{ variant_id }}"
+    {% endif %}
+    value="{{ qty_value }}"
+    min="1"
+    data-min="1"
+    class="quantity__input"
+    aria-label="{{ 'products.product.quantity.input_label' | t: product: product_title | default: 'Quantity' }}"
+    readonly
+    {% if max_quantity != null %}
+      max="{{ max_quantity }}"
+      data-max="{{ max_quantity }}"
+    {% endif %}
+  >
+  <button
+    type="button"
+    class="quantity__button cart-item__quantity-btn cart-item__quantity-plus"
+    name="plus"
+    aria-label="{{ 'products.product.quantity.increase' | t | default: 'Increase quantity' }}"
+    {% if max_quantity != null and qty_value >= max_quantity %}
+      disabled
+    {% endif %}
+  >
+    &plus;
+  </button>
+</div>

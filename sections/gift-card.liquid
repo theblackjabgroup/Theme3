@@ -1,0 +1,570 @@
+<style>
+  :root {
+    --gc-bg: {{ section.settings.bg }};
+    --gc-panel-bg: {{ section.settings.panel_bg }};
+    --gc-text-color: {{ section.settings.text }};
+    --gc-title-color: {{ section.settings.title_color }};
+    --gc-green: {{ section.settings.accent }};
+
+    --gc-title-size: {{ section.settings.title_size }}px;
+    --gc-value-size: {{ section.settings.value_size }}px;
+    --gc-footer-size: {{ section.settings.footer_size }}px;
+    --gc-title-size-mobile: {{ section.settings.title_size_mobile }}px;
+    --gc-value-size-mobile: {{ section.settings.value_size_mobile }}px;
+    --gc-footer-size-mobile: {{ section.settings.footer_size_mobile }}px;
+    --gc-code-size: {{ section.settings.code_size }}px;
+    --gc-code-size-mobile: {{ section.settings.code_size_mobile }}px;
+    --gc-logo-text-size: {{ section.settings.logo_text_size }}px;
+    --gc-logo-text-size-mobile: {{ section.settings.logo_text_size_mobile }}px;
+    --gc-logo-text-padding: {{ section.settings.logo_text_padding }}px;
+    --gc-logo-text-padding-mobile: {{ section.settings.logo_text_padding_mobile }}px;
+    --gc-btn-face: {{ section.settings.button_face }};
+    --gc-btn-bg: {{ section.settings.button_bg }};
+    --gc-btn-text: {{ section.settings.button_text }};
+    --gc-btn-border: {{ section.settings.button_bg }};
+    --gc-btn-hover-bg: {{ section.settings.button_text }};
+    --gc-btn-hover-text: {{ section.settings.button_bg }};
+
+    --gc-radius: {{ section.settings.button_radius }}px;
+    --gc-btn-height: {{ section.settings.button_height }}px;
+    --gc-btn-max-width: {{ section.settings.button_width }}px;
+    --gc-qr-bg: {{ section.settings.qr_bg }};
+
+    {% if section.settings.animation_enabled %}
+      --gc-animation-duration: {{ section.settings.animation_duration }}s;
+      --gc-animation-name: bounce;
+    {% else %}
+      --gc-animation-duration: 0s;
+      --gc-animation-name: none;
+    {% endif %}
+  }
+
+  .gc-title { font-size: var(--gc-title-size); }
+  .gc-card-value { font-size: var(--gc-value-size); }
+  .gc-footer-text { font-size: var(--gc-footer-size); }
+  .gc-code-input { font-size: var(--gc-code-size); }
+  .gc-logo-text { font-size: var(--gc-logo-text-size); padding: var(--gc-logo-text-padding); }
+  @media (max-width: 600px) {
+    .gc-title { font-size: var(--gc-title-size-mobile); }
+    .gc-card-value { font-size: var(--gc-value-size-mobile); }
+    .gc-footer-text { font-size: var(--gc-footer-size-mobile); }
+    .gc-code-input { font-size: var(--gc-code-size-mobile); }
+    .gc-logo-text { font-size: var(--gc-logo-text-size-mobile); padding: var(--gc-logo-text-padding-mobile); }
+  }
+
+  .gc-print-btn__shadow { background-color: var(--gc-btn-bg); opacity: 0.5; }
+  .gc-print-btn__content { background-color: var(--gc-btn-face) !important; }
+</style>
+
+{%- assign is_expired = false -%}
+{%- if gift_card.expired or gift_card.enabled != true -%}
+  {%- assign is_expired = true -%}
+{%- endif -%}
+
+<div class="gc-container{% if is_expired %} gc-container--expired{% endif %}">
+  <div class="gc-panel gc-left">
+    <h1 class="gc-title">
+      {% if is_expired %}
+        OOPS!<br>
+        SEEMS LIKE YOUR GIFT<br>
+        CARD HAS EXPIRED
+      {% else %}
+        {{ section.settings.title }}
+      {% endif %}
+    </h1>
+
+    <div class="gc-envelope-container">
+      <svg
+        class="gc-envelope-svg gc-envelope-layer-back"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 578 319"
+        fill="none"
+      >
+        <path d="M283.98 3.21932C287.886 1.20004 292.529 1.20003 296.435 3.21932L431.516 73.0492C444.14 79.5753 439.499 98.657 425.288 98.657H155.127C140.916 98.657 136.275 79.5753 148.9 73.0492L283.98 3.21932Z" fill="{{ section.settings.envelope_back }}"/>
+        <path d="M246.474 31.1906L83.0625 112.896L282.072 190.872H298.006L495.998 112.557L343.436 31.1906H246.474Z" fill="{{ section.settings.envelope_back }}"/>
+      </svg>
+      <div
+        class="gc-card"
+        style="background-color: {{ section.settings.accent }}; color: {{ section.settings.bg }};"
+      >
+        {% if is_expired %}
+          <div class="gc-expired-stamp">
+            <span>{{ 'gift_cards.issued.expired_stamp' | t }}</span>
+          </div>
+        {% endif %}
+        <div class="gc-card-top">
+          <span class="gc-card-label">{{ section.settings.card_label }}</span>
+        </div>
+        <div class="gc-card-value">
+          {% if settings.currency_code_enabled %}
+            {{ gift_card.balance | money_with_currency }}
+          {% else %}
+            {{ gift_card.balance | money }}
+          {% endif %}
+        </div>
+        <div class="gc-card-visual gc-card-visual--align-{{ section.settings.card_logo_align }} gc-card-visual--pos-{{ section.settings.card_logo_position }}" style="--gc-card-logo-width: {{ section.settings.card_logo_width }}px; --gc-card-logo-height: {{ section.settings.card_logo_height }}px; --gc-card-logo-rotation: {{ section.settings.card_logo_rotation }}deg;">
+          {% if section.settings.card_logo != blank %}
+            {%- assign logo_width_2x = section.settings.card_logo_width | times: 2 -%}
+            <img
+              src="{{ section.settings.card_logo | image_url: width: logo_width_2x }}"
+              alt="{{ shop.name }}"
+              class="gc-card-logo-img"
+              width="{{ section.settings.card_logo_width }}"
+              height="{{ section.settings.card_logo_height }}"
+              loading="lazy"
+            >
+          {% else %}
+            <span class="gc-logo-text">{{ shop.name }}</span>
+          {% endif %}
+        </div>
+      </div>
+
+      <svg
+        class="gc-envelope-svg gc-envelope-layer-front"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 578 319"
+        fill="none"
+      >
+        <path d="M287.278 188.214C288.936 187.528 290.799 187.528 292.457 188.214L497.002 272.753C503.862 275.588 501.835 285.8 494.412 285.8H85.3228C77.9004 285.8 75.8733 275.588 82.7329 272.753L287.278 188.214Z" fill="{{ section.settings.envelope_front }}"/>
+        <path opacity="0.7" d="M289.47 205.327C283.711 203.083 283.711 194.935 289.47 192.691L492.347 113.647C496.792 111.915 501.589 115.194 501.589 119.965L501.589 278.053C501.589 282.824 496.792 286.103 492.347 284.371L289.47 205.327Z" fill="{{ section.settings.envelope_front }}"/>
+        <path opacity="0.7" d="M288.229 205.327C293.988 203.083 293.988 194.935 288.229 192.691L85.3525 113.647C80.907 111.915 76.1104 115.194 76.1104 119.965L76.1104 278.053C76.1104 282.824 80.907 286.103 85.3525 284.371L288.229 205.327Z" fill="{{ section.settings.envelope_front }}"/>
+      </svg>
+    </div>
+
+    <p class="gc-footer-text">
+      {% if is_expired %}
+        {{ 'gift_cards.issued.expired_subtext' | t }}
+      {% else %}
+        {{ section.settings.subtext }}
+      {% endif %}
+    </p>
+  </div>
+
+  <div class="gc-panel gc-right">
+    <div class="gc-qr-container">
+      <div class="gc-qr-code" data-identifier="{{ gift_card.qr_identifier }}"></div>
+    </div>
+
+    <div class="gc-code-action-area">
+      <div class="gc-code-box">
+        <input
+          type="text"
+          class="gc-code-input"
+          value="{{ gift_card.code | format_code }}"
+          readonly
+          id="gift-card-code"
+        >
+      </div>
+      <button class="gc-copy-btn">{{ 'gift_cards.issued.copy_button' | t }}</button>
+    </div>
+
+    <button class="gc-print-btn" onclick="window.print();">
+      <span class="gc-print-btn__shadow"></span>
+      <span class="gc-print-btn__content">{{ 'gift_cards.issued.print_button' | t }}</span>
+    </button>
+  </div>
+</div>
+
+<div hidden>
+  <span id="a11y-new-window-message">{{ 'accessibility.link_messages.new_window' | t }}</span>
+</div>
+
+<script>
+  function copyToClipboard(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).catch(function () {
+        return execCommandCopy(text);
+      });
+    }
+    return execCommandCopy(text);
+  }
+
+  function execCommandCopy(text) {
+    var textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    textarea.style.top = '0';
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+    try {
+      var success = document.execCommand('copy');
+      document.body.removeChild(textarea);
+      return success ? Promise.resolve() : Promise.reject();
+    } catch (err) {
+      document.body.removeChild(textarea);
+      return Promise.reject(err);
+    }
+  }
+
+  function initGiftCard() {
+    var qrCodeContainer = document.querySelector('.gc-qr-code');
+    if (qrCodeContainer && !qrCodeContainer.querySelector('img, canvas')) {
+      new QRCode(qrCodeContainer, {
+        text: qrCodeContainer.dataset.identifier,
+        width: 150,
+        height: 150,
+      });
+    }
+
+    const copyBtn = document.querySelector('.gc-copy-btn');
+    const codeInput = document.getElementById('gift-card-code');
+    if (copyBtn && codeInput) {
+      let isMessageDisplayed = false;
+      copyBtn.addEventListener('click', function () {
+        if (isMessageDisplayed) return;
+        copyToClipboard(codeInput.value).then(function () {
+          const originalText = copyBtn.innerText;
+          copyBtn.innerText = 'COPIED';
+          isMessageDisplayed = true;
+          setTimeout(function () {
+            copyBtn.innerText = originalText;
+            isMessageDisplayed = false;
+          }, 2000);
+        }).catch(function () {});
+      });
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', initGiftCard);
+  document.addEventListener('shopify:section:load', initGiftCard);
+</script>
+
+{% schema %}
+{
+  "name": "Gift Card",
+  "tag": "div",
+  "class": "gift-card-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Text Customization"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "YOUR GIFT CARD"
+    },
+    {
+      "type": "text",
+      "id": "subtext",
+      "label": "Footer Subtext",
+      "default": "USE CODE AT CHECKOUT TO REDEEM YOUR GIFT CARD :)"
+    },
+    {
+      "type": "text",
+      "id": "card_label",
+      "label": "Card Label",
+      "default": "GIFT CARD"
+    },
+    {
+      "type": "header",
+      "content": "Card Logo / Branding"
+    },
+    {
+      "type": "image_picker",
+      "id": "card_logo",
+      "label": "Logo (SVG or image)",
+      "info": "Replaces store name on card. Leave empty to show store name."
+    },
+    {
+      "type": "range",
+      "id": "card_logo_width",
+      "min": 20,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "label": "Logo Width",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "card_logo_height",
+      "min": 20,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "label": "Logo Height",
+      "default": 48
+    },
+    {
+      "type": "select",
+      "id": "card_logo_align",
+      "label": "Horizontal Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "select",
+      "id": "card_logo_position",
+      "label": "Vertical Position",
+      "options": [
+        { "value": "top", "label": "Top" },
+        { "value": "center", "label": "Center" },
+        { "value": "bottom", "label": "Bottom" }
+      ],
+      "default": "bottom"
+    },
+    {
+      "type": "range",
+      "id": "card_logo_rotation",
+      "min": 0,
+      "max": 360,
+      "step": 15,
+      "unit": "deg",
+      "label": "Logo Rotation",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "logo_text_size",
+      "min": 8,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Store Name Font Size (when no logo)",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "logo_text_size_mobile",
+      "min": 8,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Store Name Font Size (Mobile, when no logo)",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "logo_text_padding",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Store Name Padding (when no logo)",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "logo_text_padding_mobile",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Store Name Padding (Mobile, when no logo)",
+      "default": 6
+    },
+    {
+      "type": "header",
+      "content": "Font Sizes"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 20,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Title Font Size",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "min": 16,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Title Font Size (Mobile)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "value_size",
+      "min": 20,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Value Font Size",
+      "default": 38
+    },
+    {
+      "type": "range",
+      "id": "value_size_mobile",
+      "min": 16,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Value Font Size (Mobile)",
+      "default": 26
+    },
+    {
+      "type": "range",
+      "id": "footer_size",
+      "min": 10,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Footer Font Size",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "footer_size_mobile",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Footer Font Size (Mobile)",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "code_size",
+      "min": 12,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "label": "Code Font Size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "code_size_mobile",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Code Font Size (Mobile)",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Heading Color",
+      "default": "#2f4f2f"
+    },
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Page Background",
+      "default": "#e5e2da"
+    },
+    {
+      "type": "color",
+      "id": "panel_bg",
+      "label": "Panel Background",
+      "default": "#ebe9e3"
+    },
+    {
+      "type": "color",
+      "id": "text",
+      "label": "Text Color",
+      "default": "#2f4f2f"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Card Color",
+      "default": "#2f4f2f"
+    },
+    {
+      "type": "color",
+      "id": "envelope_back",
+      "label": "Envelope Back Color",
+      "default": "#273827"
+    },
+    {
+      "type": "color",
+      "id": "envelope_front",
+      "label": "Envelope Front Color",
+      "default": "#D2CDC4"
+    },
+    {
+      "type": "color",
+      "id": "qr_bg",
+      "label": "QR Code Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_face",
+      "label": "Button Face Color",
+      "default": "#2f4f2f"
+    },
+    {
+      "type": "color",
+      "id": "button_bg",
+      "label": "Button Shadow Color",
+      "default": "#273827"
+    },
+    {
+      "type": "color",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "#e5e1da"
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Button Radius",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "button_height",
+      "min": 30,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "label": "Button Height",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "button_width",
+      "min": 100,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "label": "Button Max Width",
+      "default": 320
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "checkbox",
+      "id": "animation_enabled",
+      "label": "Enable Card Bounce",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "animation_duration",
+      "min": 1,
+      "max": 10,
+      "step": 0.5,
+      "unit": "s",
+      "label": "Bounce Interval",
+      "default": 3
+    }
+  ]
+}
+{% endschema %}

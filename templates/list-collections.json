@@ -1,13 +1,21 @@
 {
   "sections": {
     "main": {
-      "type": "custom-collection-list",
+      "type": "collection-list",
       "settings": {
         "title": "Collections"
-      }
+      },
+      "blocks": {
+        "section_header": {
+          "type": "header",
+          "settings": {
+            "title": "Collections",
+            "badge_text": "Fighting"
+          }
+        }
+      },
+      "block_order": ["section_header"]
     }
   },
-  "order": [
-    "main"
-  ]
+  "order": ["main"]
 }

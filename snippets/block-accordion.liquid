@@ -9,12 +9,37 @@
   Variables:
   - block: The block object containing settings (heading, content).
 {%- endcomment -%}
-<div class="accordion">
-  <details>
-    <summary>{{ block.settings.heading }}</summary>
+{% unless script_loader_accordion %}
+  <script src="{{ 'component-accordion.js' | asset_url }}" defer="defer"></script>
+  {% assign script_loader_accordion = true %}
+{% endunless %}
+
+<accordion-item class="accordion" style="
+  --accordion-heading-font-size: {{ block.settings.heading_font_size | default: 18 }}px;
+  --accordion-heading-font-size-mobile: {{ block.settings.heading_font_size_mobile | default: 16 }}px;
+  --accordion-heading-font-weight: {{ block.settings.heading_font_weight | default: 400 }};
+  --accordion-heading-font-weight-mobile: {{ block.settings.heading_font_weight_mobile | default: 400 }};
+  --accordion-content-font-size: {{ block.settings.content_font_size | default: 16 }}px;
+  --accordion-content-font-size-mobile: {{ block.settings.content_font_size_mobile | default: 15 }}px;
+  --accordion-content-font-weight: {{ block.settings.content_font_weight | default: 400 }};
+  --accordion-content-font-weight-mobile: {{ block.settings.content_font_weight_mobile | default: 400 }};
+">
+  <div
+    class="accordion__summary"
+    role="button"
+    tabindex="0"
+    aria-expanded="false"
+    aria-controls="accordion-content-{{ block.id }}"
+  >
+    {{ block.settings.heading }}
+    <span class="accordion__icon"></span>
+  </div>
+  <div class="accordion__wrapper" id="accordion-content-{{ block.id }}">
     <div class="accordion__content">
-      {{ block.settings.content }}
-      {{ block.settings.custom_liquid }}
+      <div class="accordion__inner">
+        {{ block.settings.content }}
+        {{ block.settings.custom_liquid }}
+      </div>
     </div>
-  </details>
-</div>
+  </div>
+</accordion-item>

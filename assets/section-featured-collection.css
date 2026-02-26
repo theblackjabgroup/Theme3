@@ -2,10 +2,11 @@
 
 .fc3d {
   width: 100%;
-  padding: var(--spacing-xxl) 0;
+  padding: 20px;
   color: var(--color-text);
   overflow-y: hidden;
   position: relative;
+  padding-top: 0px;
 }
 
 .fc3d--has-background {
@@ -26,12 +27,14 @@
   justify-content: space-between;
   gap: var(--gap-section);
   margin-bottom: var(--spacing-xl);
-  padding: 0 var(--padding-large);
+  background-color: var(--color-primary-button-bg);
+  border-radius: 20px;
+  padding:  20px;
 }
 
 .fc3d__title {
   margin: 0;
-  color: var(--color-headings);
+  color: #306030;
   font-weight: 900;
   letter-spacing: -0.5px;
   text-transform: uppercase;
@@ -42,6 +45,10 @@
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
+}
+
+.fc3d__shop-all .submit-button__content {
+  background-color: pink;
 }
 
 .fc3d__header .primary-button {
@@ -55,13 +62,13 @@
 
 .fc3d__rail {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   gap: var(--spacing-l);
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
   scroll-padding: 25vw;
-  padding: var(--spacing-xxl) var(--padding-large);
+  padding-bottom: 15px;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -79,12 +86,23 @@
   transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
+/* Custom product card in scroll slot */
+.fc3d-card--custom {
+  aspect-ratio: auto;
+  align-self: stretch;
+}
+
+.fc3d-card--custom .fc3d-card__custom {
+  width: 100%;
+  height: 100%;
+}
+
 .fc3d-card.is-center {
   z-index: 2;
 }
 
 .fc3d-card.is-center .fc3d-card__inner {
-  transform: rotateZ(-5deg) scale(1.1) ;
+  transform: none;
 }
 
 .fc3d-card__inner {
@@ -101,13 +119,13 @@
 }
 
 .fc3d-card.is-center:hover .fc3d-card__inner {
-  animation: wind-flip-hover 1.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: none;
   will-change: transform;
 }
 
 /* Smooth flip back when hover ends */
 .fc3d-card.is-center:not(:hover) .fc3d-card__inner {
-  animation: wind-flip-back 0.8s ease-in-out forwards;
+  animation: none;
 }
 .fc3d-card__face {
   position: absolute;
@@ -126,39 +144,7 @@
   transform: rotateY(180deg) translateZ(0); /* Add translateZ */
 }
 
-@keyframes wind-flip-hover {
-  0% {
-    transform: rotateZ(-5deg) scale(1.1) rotateY(0deg);
-  }
-  20% {
-    transform: rotateZ(-5deg) scale(1.1) rotateY(10deg);
-  }
-  40% {
-    transform: rotateZ(-5deg) scale(1.1) rotateY(0deg);
-  }
-  45% {
-    transform: rotateZ(-5deg) scale(1.1) rotateY(20deg);
-  }
-  /* Flip to the target position */
 
-  /* Slight overshoot */
-  65% {
-    transform: rotateZ(-5deg) scale(1.1) rotateY(195deg);
-  }
-  /* Settle at exactly 180deg */
-  100% {
-    transform: rotateZ(-5deg) scale(1.1) rotateY(180deg);
-  }
-}
-
-@keyframes wind-flip-back {
-  0% {
-    transform: rotateZ(-5deg) scale(1.1) rotateY(180deg);
-  }
-  100% {
-    transform: rotateZ(-5deg) scale(1.1) rotateY(0deg);
-  }
-}
 
 .fc3d-card__link {
   display: block;
@@ -199,6 +185,22 @@
 
 .fc3d-card.is-center .fc3d-card__face--back .fc3d-card__link {
   background-color: #ffb3d9;
+}
+
+/* Featured collection slider: keep cards stable without tilt/rotation on interaction */
+.fc3d .custom-product-card:hover .custom-product-card__image,
+.fc3d .custom-product-card:active .custom-product-card__image,
+.fc3d .custom-product-card:hover .custom-product-card__badge,
+.fc3d .custom-product-card:active .custom-product-card__badge,
+.fc3d .custom-product-card:hover .custom-product-card__title,
+.fc3d .custom-product-card:active .custom-product-card__title,
+.fc3d .custom-product-card:hover .custom-product-card__description,
+.fc3d .custom-product-card:active .custom-product-card__description,
+.fc3d .custom-product-card:hover .custom-product-card__footer,
+.fc3d .custom-product-card:active .custom-product-card__footer,
+.fc3d .custom-product-card:hover .custom-product-card__image-container::before,
+.fc3d .custom-product-card:active .custom-product-card__image-container::before {
+  transform: none !important;
 }
 
 /* Main content */
@@ -298,132 +300,19 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
-/* Controls */
+/* Controls – clear space above so they don’t overlap card content */
 .fc3d__controls {
   display: flex;
   justify-content: center;
   gap: var(--gap-component);
-  margin-top: var(--spacing-m);
+  margin-top: 5px;
   padding: 0 var(--padding-large);
+  position: relative;
+  z-index: 5;
 }
 
 .fc3d__nav {
-  width: 64px;
-  height: 56px;
-  border-radius: var(--radius-2xl);
-  background: #ffffff;
-  border: 2px solid #000000;
-  color: #000000;
-  font-weight: 900;
-  font-size: 24px;
-  line-height: 1;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.9);
-  transition: transform 0.1s ease, box-shadow 0.1s ease;
-}
-
-/* Support for image-based buttons */
-.fc3d__nav[style*="background-image"] {
-  background-color: transparent;
-  border: none;
-  box-shadow: none;
-}
-
-.fc3d__nav[style*="background-image"] span {
-  display: none !important;
-}
-
-.fc3d__nav[style*="background-image"]::after {
-  display: none !important;
-}
-
-.fc3d__nav[style*="background-image"]::before {
-  display: none !important;
-}
-
-/* Ensure image buttons still have hover effect */
-.fc3d__nav[style*="background-image"]:hover {
-  transform: translate(1px, 1px);
-  opacity: 0.9;
-  box-shadow: none;
-}
-
-.fc3d__nav[style*="background-image"]:active {
-  transform: translate(3px, 3px);
-  opacity: 0.8;
-  box-shadow: none;
-}
-
-.fc3d__nav span {
-  display: block;
-  position: relative;
-  color: #000000;
-  font-weight: 900;
-  font-size: 24px;
-  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-              opacity 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  z-index: 2;
-}
-
-.fc3d__nav::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: #000000;
-  border-radius: var(--radius-xl) var(--radius-xl) 0  0;
-  transform: translateY(100%);
-  transition: transform 0.3s ease-in-out;
-  z-index: 0;
-}
-
-.fc3d__nav::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, 150%);
-  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  font-weight: 900;
-  font-size: 24px;
-  line-height: 1;
-  color: #ffffff;
-  z-index: 1;
-}
-
-.fc3d__nav--prev::after {
-  content: '←';
-}
-
-.fc3d__nav--next::after {
-  content: '→';
-}
-
-.fc3d__nav:hover {
-  transform: translate(1px, 1px);
-  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.9);
-}
-
-.fc3d__nav:active {
-  transform: translate(3px, 3px);
-  box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.9);
-}
-
-.fc3d__nav:hover span {
-  transform: translateY(-150%);
-  opacity: 0;
-}
-
-.fc3d__nav:hover::before {
-  transform: translateY(0%);
-}
-
-.fc3d__nav:hover::after {
-  transform: translate(-50%, -50%);
+  flex-shrink: 0;
 }
 
 .fc3d__nav:disabled {
@@ -444,18 +333,47 @@
     scroll-behavior: auto;
   }
   .fc3d-card.is-center:hover .fc3d-card__inner {
-    transform: scale(1.1) rotateY(180deg) rotateZ(-5deg);
+    transform: none;
     animation: none !important;
   }
 }
 
 @media screen and (max-width: 768px) {
+  .fc3d {
+    padding: 12px 0 18px;
+  }
   .fc3d__container {
-    padding: 0 var(--padding-medium);
+    padding: 0 14px;
   }
   .fc3d__header {
+    margin-bottom: 18px;
     flex-direction: column;
     align-items: flex-start;
+    gap: 14px;
+    padding: 18px 16px;
+    border-radius: 16px;
+  }
+
+  .fc3d__title {
+    font-size: clamp(2rem, 10.5vw, 2.85rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+  }
+
+  .fc3d__shop-all {
+    width: 100%;
+  }
+
+  .fc3d__shop-all .submit-button {
+    width: 100%;
+  }
+
+  .fc3d__shop-all .submit-button__content {
+    width: 100%;
+    justify-content: center;
+    font-size: clamp(1.2rem, 6vw, 1.65rem);
+    line-height: 1.05;
+    padding: 12px 18px !important;
   }
   
   .fc3d__header .primary-button {
@@ -463,13 +381,16 @@
     min-width: unset;
   }
   .fc3d__rail {
-    scroll-padding: 20vw;
-    gap: var(--spacing-m);
+    gap: 0;
+    scroll-padding: 0;
+    padding-inline: 0;
+    padding-bottom: 10px;
   }
   .fc3d-card {
-    width: clamp(160px, 35vw, 220px);
+    width: 100%;
   }
-  .fc3d-card.is-center {
-    transform: rotate(3deg);
+
+  .fc3d__controls {
+    margin-top: 10px;
   }
 }

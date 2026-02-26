@@ -8,7 +8,7 @@
 <div class="disclosure">
   {%- capture flag -%}
     {%- if localization.language.iso_code == 'en' -%}
-      <img src="https://cdn.shopify.com/static/images/flags/gb.svg?width=32" alt="English" class="localization-flag" width="32" height="24" loading="lazy">
+      <img src="https://cdn.shopify.com/static/images/flags/gb.svg?width=32" alt="" class="localization-flag" width="32" height="24" loading="lazy">
     {%- else -%}
       {{ localization.country | image_url: width: 32 | image_tag: loading: 'lazy', class: 'localization-flag' }}
     {%- endif -%}
@@ -94,7 +94,7 @@
                 {%- if language.iso_code == 'en' -%}
                   <img
                     src="https://cdn.shopify.com/static/images/flags/gb.svg?width=32"
-                    alt="English"
+                    alt=""
                     class="localization-flag"
                     width="32"
                     height="24"

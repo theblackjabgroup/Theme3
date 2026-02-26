@@ -1,264 +1,682 @@
-{{ 'component-article-card.css' | asset_url | stylesheet_tag }}
 {{ 'section-main-blog.css' | asset_url | stylesheet_tag }}
-
-{%- liquid
-  assign scheme = section.settings.color_scheme
--%}
-
 {%- style -%}
-  .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  .section-{{ section.id }}-margin {
+    margin-top: {{ section.settings.margin_top_mobile }}px;
+    margin-bottom: {{ section.settings.margin_bottom_mobile }}px;
+    margin-left: {{ section.settings.margin_horizontal_mobile }}px;
+    margin-right: {{ section.settings.margin_horizontal_mobile }}px;
   }
 
   @media screen and (min-width: 750px) {
-    .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
+    .section-{{ section.id }}-margin {
+      margin-top: {{ section.settings.margin_top_desktop }}px;
+      margin-bottom: {{ section.settings.margin_bottom_desktop }}px;
+      margin-left: {{ section.settings.margin_horizontal_desktop }}px;
+      margin-right: {{ section.settings.margin_horizontal_desktop }}px;
     }
   }
 
-  #BlogSlider-{{ section.id }} {
-    --color-card-bg: {{ scheme.settings.accent_off_white}};
-    --color-card-bg-hover: {{ scheme.settings.selected_variant_bg }};
-    --color-card-text: {{ scheme.settings.text }};
-    --color-card-text-hover: {{ scheme.settings.selected_variant_text }};
+  /* Mobile Font Sizes */
+  #MainBlogContainer-{{ section.id }} .main-blog-card__title {
+    font-size: {{ section.settings.title_size_mobile }}px;
+  }
+  #MainBlogContainer-{{ section.id }} .main-blog-card__excerpt {
+    font-size: {{ section.settings.description_size_mobile }}px;
+  }
+  #MainBlogContainer-{{ section.id }} .main-blog-card__tag {
+    font-size: {{ section.settings.tag_size_mobile }}px;
+    border-radius: {{ section.settings.tag_border_radius_mobile }}px;
+    padding: {{ section.settings.tag_padding_vertical_mobile }}px {{ section.settings.tag_padding_horizontal_mobile }}px;
+  }
+
+  /* Desktop Font Sizes */
+  @media screen and (min-width: 750px) {
+    #MainBlogContainer-{{ section.id }} .main-blog-card__title {
+      font-size: {{ section.settings.title_size_desktop }}px;
+    }
+    #MainBlogContainer-{{ section.id }} .main-blog-card__excerpt {
+      font-size: {{ section.settings.description_size_desktop }}px;
+    }
+    #MainBlogContainer-{{ section.id }} .main-blog-card__tag {
+      font-size: {{ section.settings.tag_size_desktop }}px;
+      border-radius: {{ section.settings.tag_border_radius_desktop }}px;
+      padding: {{ section.settings.tag_padding_vertical_desktop }}px {{ section.settings.tag_padding_horizontal_desktop }}px;
+    }
+
+    #MainBlogContainer-{{ section.id }} .main-blog-slider__slide.is-active .main-blog-card__title {
+       font-size: calc({{ section.settings.title_size_desktop }}px + 4px);
+    }
+  }
+
+  #MainBlogContainer-{{ section.id }} .main-blog-card {
+    border-radius: {{ section.settings.card_border_radius }}px;
+  }
+  #MainBlogContainer-{{ section.id }} .main-blog-card__image-wrapper {
+    border-radius: {{ section.settings.image_border_radius }}px;
+  }
+  #MainBlogContainer-{{ section.id }} {
+    --blog-card-transition-duration: {{ section.settings.animation_duration }}s;
+  }
+
+  .section-{{ section.id }}-margin .main-blog-slider__controls {
+    padding-top: {{ section.settings.arrows_padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.arrows_padding_bottom_mobile }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-margin .main-blog-slider__controls {
+      padding-top: {{ section.settings.arrows_padding_top_desktop }}px;
+      padding-bottom: {{ section.settings.arrows_padding_bottom_desktop }}px;
+    }
   }
 {%- endstyle -%}
 
-{%- paginate blog.articles by 6 -%}
-  <div class="main-blog section-{{ section.id }}-padding color-{{ scheme.id }}">
-    <div class="blog-slider-wrapper" id="BlogSlider-{{ section.id }}">
-      <div class="blog-slider-controls">
-        <button class="blog-slider-nav-btn prev-arrow" aria-label="Previous">
-          <svg viewBox="0 0 24 24">
-            <path d="M19 12H5M12 19l-7-7 7-7"/>
-          </svg>
-        </button>
+<div class="main-blog-slider color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-margin">
+  <div class="main-blog-slider__container" id="MainBlogContainer-{{ section.id }}">
+    <div class="main-blog-slider__track" id="MainBlogSliderTrack-{{ section.id }}">
+      {%- if section.settings.blog != blank -%}
+        {%- assign blog_obj = section.settings.blog -%}
+      {%- elsif blog != blank -%}
+        {%- assign blog_obj = blog -%}
+      {%- endif -%}
 
-        <button class="blog-slider-nav-btn next-arrow" aria-label="Next">
-          <svg viewBox="0 0 24 24">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
-          </svg>
-        </button>
-      </div>
+      {%- if blog_obj != blank and blog_obj.articles_count > 0 -%}
+        {%- assign articles = blog_obj.articles -%}
+      {%- else -%}
+        {%- assign articles = (1..5) -%}
+      {%- endif -%}
 
-      <div class="blog-slider-container">
-        <div class="blog-slider-track">
-          {%- for article in blog.articles -%}
-            <div class="blog-slider-item">
-              {%- render 'article-card',
-                article: article,
-                show_image: false,
-                show_badge: false,
-                show_date: section.settings.show_date,
-                show_author: section.settings.show_author,
-                show_cta_button: true,
-                cta_text: section.settings.cta_text,
-                custom_badge_text: article.tags.first,
-                custom_class: 'article-card-slider'
-              -%}
-            </div>
-          {%- endfor -%}
+      {%- for article in articles -%}
+        <div class="main-blog-slider__slide" data-index="{{ forloop.index0 }}">
+          {% render 'article-card',
+            blog: blog_obj,
+            article: article,
+            media_height: 'fixed',
+            media_aspect_ratio: 'fixed',
+            show_image: true,
+            show_date: false,
+            show_author: false,
+            show_badge: false,
+            show_tags: true,
+            placeholder_tag_text: section.settings.placeholder_tag_text,
+            show_excerpt: true,
+            show_read_more_button: true,
+            cta_text: 'Read more',
+            custom_class: 'main-blog-card',
+            lazy_load: false
+          %}
         </div>
-      </div>
+      {%- endfor -%}
     </div>
   </div>
-{%- endpaginate -%}
+
+  <div class="main-blog-slider__controls">
+    <button class="main-blog-slider__arrow main-blog-slider__arrow--prev" id="MainBlogPrev-{{ section.id }}">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <button class="main-blog-slider__arrow main-blog-slider__arrow--next" id="MainBlogNext-{{ section.id }}">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+</div>
 
 <script>
   (function () {
-    function initBlogSlider() {
-      const wrapper = document.querySelector('#BlogSlider-{{ section.id }}');
-      if (!wrapper) return;
+    const sectionId = '{{ section.id }}';
+    window.mainBlogRegistry = window.mainBlogRegistry || {};
 
-      const container = wrapper.querySelector('.blog-slider-container');
-      const track = container.querySelector('.blog-slider-track');
-      
-      if (wrapper.dataset.intervalId) {
-        clearInterval(parseInt(wrapper.dataset.intervalId));
-      }
-
-      let items = Array.from(track.children).filter(item => !item.classList.contains('blog-slider-clone'));
-      
-      const prevBtn = wrapper.querySelector('.prev-arrow');
-      const nextBtn = wrapper.querySelector('.next-arrow');
-      const intervalDuration = {{ section.settings.slider_interval | times: 1000 }};
-
-      if (items.length === 0) return;
-
-      const originalCount = items.length;
-
-      if (track.getAttribute('data-cloned') !== 'true') {
-        const setsToClone = originalCount < 4 ? 2 : 1;
-        for (let k = 0; k < setsToClone; k++) {
-          items.forEach((item) => {
-            const clone = item.cloneNode(true);
-            clone.setAttribute('aria-hidden', 'true');
-            clone.classList.add('blog-slider-clone'); 
-            track.appendChild(clone);
-          });
-        }
-        track.setAttribute('data-cloned', 'true');
-      }
-
-      let currentIndex = 0;
-      let isTransitioning = false;
-      let intervalId;
-
-      function getItemWidth() {
-        const firstItem = track.querySelector('.blog-slider-item'); 
-        if (!firstItem) return 380;
-        const itemWidth = firstItem.offsetWidth;
-        const gap = 30; 
-        return itemWidth + gap;
-      }
-
-      function updatePosition(useTransition = true) {
-        const itemFullWidth = getItemWidth();
-        track.style.transition = useTransition ? 'transform 0.5s ease-in-out' : 'none';
-        track.style.transform = `translate3d(-${currentIndex * itemFullWidth}px, 0, 0)`;
-      }
-
-      function nextSlide() {
-        if (isTransitioning) return;
-        isTransitioning = true;
-        currentIndex++;
-        updatePosition(true);
-      }
-
-      function startAutoPlay() {
-        if (wrapper.dataset.intervalId) {
-            clearInterval(parseInt(wrapper.dataset.intervalId));
-        }
-        intervalId = setInterval(nextSlide, intervalDuration);
-        wrapper.dataset.intervalId = intervalId;
-      }
-
-      track.addEventListener('transitionend', (event) => {
-        if (event.target !== track) return; 
-        isTransitioning = false;
-        if (currentIndex >= originalCount) {
-          currentIndex = currentIndex % originalCount;
-          requestAnimationFrame(() => {
-            updatePosition(false);
-          });
-        }
-      });
-
-      if (prevBtn) {
-        const newPrev = prevBtn.cloneNode(true);
-        prevBtn.parentNode.replaceChild(newPrev, prevBtn);
-        newPrev.addEventListener('click', () => {
-          if (isTransitioning) return;
-          isTransitioning = true;
-          currentIndex--;
-          if (currentIndex < 0) {
-            track.style.transition = 'none';
-            currentIndex = originalCount;
-            const width = getItemWidth();
-            track.style.transform = `translate3d(-${currentIndex * width}px, 0, 0)`;
-            track.getBoundingClientRect();
-            currentIndex = originalCount - 1;
-            requestAnimationFrame(() => {
-              updatePosition(true);
-            });
-          } else {
-            updatePosition(true);
-          }
-          startAutoPlay();
-        });
-      }
-
-      if (nextBtn) {
-        const newNext = nextBtn.cloneNode(true);
-        nextBtn.parentNode.replaceChild(newNext, nextBtn);
-        newNext.addEventListener('click', () => {
-          if (isTransitioning) return;
-          nextSlide();
-          startAutoPlay();
-        });
-      }
-
-      startAutoPlay();
+    if (window.mainBlogRegistry[sectionId]) {
+      window.mainBlogRegistry[sectionId].cleanup();
     }
 
+    let cleanupSlider;
+
+    function initMainBlogSlider() {
+      const track = document.getElementById('MainBlogSliderTrack-{{ section.id }}');
+      if (!track) return;
+
+      const container = document.getElementById('MainBlogContainer-{{ section.id }}');
+      const prevBtn = document.getElementById('MainBlogPrev-{{ section.id }}');
+      const nextBtn = document.getElementById('MainBlogNext-{{ section.id }}');
+
+      const existingClones = track.querySelectorAll('.is-clone');
+      existingClones.forEach((clone) => clone.remove());
+
+      let cards = Array.from(track.querySelectorAll('.main-blog-slider__slide'));
+
+      const cloneCount = 10;
+      const cardCount = cards.length;
+
+      if (cardCount > 0) {
+        for (let i = 0; i < cloneCount; i++) {
+          const sourceIndex = cardCount - 1 - (i % cardCount);
+          const clone = cards[sourceIndex].cloneNode(true);
+          clone.classList.add('is-clone');
+          clone.dataset.index = -1 - i;
+          track.insertBefore(clone, track.firstChild);
+        }
+
+        for (let i = 0; i < cloneCount; i++) {
+          const sourceIndex = i % cardCount;
+          const clone = cards[sourceIndex].cloneNode(true);
+          clone.classList.add('is-clone');
+          clone.dataset.index = cardCount + i;
+          track.appendChild(clone);
+        }
+      }
+
+       const allCards = Array.from(track.querySelectorAll('.main-blog-slider__slide'));
+       let currentIndex = cloneCount;
+       let isAnimating = false;
+      let scrollTimeout;
+
+      // Calculate dimensions once
+      const getCardMetrics = () => {
+        const firstCard = allCards[0];
+        if (!firstCard) return { cardWidth: 0, gap: 0, totalRealWidth: 0, cloneWidth: 0 };
+
+        const style = window.getComputedStyle(track);
+        const gap = parseFloat(style.gap) || 30;
+        const cardWidth = firstCard.offsetWidth + gap;
+        const totalRealWidth = cardCount * cardWidth;
+        const cloneWidth = cloneCount * cardWidth;
+
+        return { cardWidth, gap, totalRealWidth, cloneWidth };
+      };
+
+      const animationDuration = {{ section.settings.animation_duration | times: 1000 }};
+
+      requestAnimationFrame(() => {
+        handleVisualUpdate(currentIndex, false);
+      });
+
+      function updateSlider(index) {
+        if (isAnimating) return;
+        isAnimating = true;
+
+        handleVisualUpdate(index, true);
+        currentIndex = index;
+
+        setTimeout(() => {
+          checkIndexBounds();
+          isAnimating = false;
+        }, animationDuration); // Matches CSS transition duration
+      }
+
+      function checkIndexBounds() {
+        let newIndex = currentIndex;
+        let jumped = false;
+
+        // Button-based jump logic
+        if (currentIndex < cloneCount || currentIndex >= cloneCount + cardCount) {
+          const relativeIndex = (currentIndex - cloneCount) % cardCount;
+          const adjustedRelativeIndex = relativeIndex < 0 ? relativeIndex + cardCount : relativeIndex;
+          newIndex = cloneCount + adjustedRelativeIndex;
+          jumped = true;
+        }
+
+        if (jumped) {
+          performJump(newIndex);
+        }
+      }
+
+      function performJump(newIndex) {
+        container.classList.add('no-transition');
+        void container.offsetHeight; // Force reflow
+
+        handleVisualUpdate(newIndex, false);
+        currentIndex = newIndex;
+
+        void container.offsetHeight;
+
+        requestAnimationFrame(() => {
+          container.classList.remove('no-transition');
+        });
+      }
+
+      function handleVisualUpdate(index, animate, skipScroll = false) {
+        allCards.forEach((card, i) => {
+          if (i === index) {
+            card.classList.add('is-active');
+          } else {
+            card.classList.remove('is-active');
+          }
+        });
+
+        if (skipScroll) return;
+
+        const activeCard = allCards[index];
+        if (!activeCard) return;
+
+        const containerWidth = container.offsetWidth;
+        const cardWidth = activeCard.offsetWidth;
+        const cardLeft = activeCard.offsetLeft;
+        const scrollLeft = cardLeft - containerWidth / 2 + cardWidth / 2;
+
+        container.scrollTo({
+          left: scrollLeft,
+          behavior: animate ? 'smooth' : 'auto',
+        });
+      }
+
+      function checkInfiniteScroll() {
+        const { totalRealWidth, cloneWidth, cardWidth } = getCardMetrics();
+        if (totalRealWidth === 0) return;
+
+        const scrollLeft = container.scrollLeft;
+        const threshold = cardWidth; // Buffer of one card width
+
+        // If scrolled into Left Clone Zone
+        if (scrollLeft < cloneWidth - threshold) {
+          container.classList.add('no-transition');
+          void container.offsetHeight; // Force reflow
+          container.scrollLeft += totalRealWidth;
+          void container.offsetHeight;
+          container.classList.remove('no-transition');
+        }
+        // If scrolled into Right Clone Zone
+        else if (scrollLeft > cloneWidth + totalRealWidth + threshold) {
+          container.classList.add('no-transition');
+          void container.offsetHeight; // Force reflow
+          container.scrollLeft -= totalRealWidth;
+          void container.offsetHeight;
+          container.classList.remove('no-transition');
+        }
+      }
+
+      const onScroll = () => {
+        if (isAnimating) return;
+
+        checkInfiniteScroll();
+
+        requestAnimationFrame(() => {
+          if (isAnimating) return;
+
+          const containerCenter = container.scrollLeft + container.offsetWidth / 2;
+          let closestIndex = currentIndex;
+          let minDiff = Infinity;
+
+          allCards.forEach((card, index) => {
+            const cardLeft = card.offsetLeft;
+            const cardWidth = card.offsetWidth;
+            const cardCenter = cardLeft + cardWidth / 2;
+            const diff = Math.abs(containerCenter - cardCenter);
+
+            if (diff < minDiff) {
+              minDiff = diff;
+              closestIndex = index;
+            }
+          });
+
+          if (closestIndex !== currentIndex) {
+            currentIndex = closestIndex;
+            handleVisualUpdate(currentIndex, false, true);
+          }
+        });
+      };
+
+      container.addEventListener('scroll', onScroll, { passive: true });
+
+      const newPrevBtn = prevBtn.cloneNode(true);
+      const newNextBtn = nextBtn.cloneNode(true);
+      prevBtn.parentNode.replaceChild(newPrevBtn, prevBtn);
+      nextBtn.parentNode.replaceChild(newNextBtn, nextBtn);
+
+      newPrevBtn.addEventListener('click', () => {
+        updateSlider(currentIndex - 1);
+      });
+
+      newNextBtn.addEventListener('click', () => {
+        updateSlider(currentIndex + 1);
+      });
+
+      const resizeHandler = () => {
+        handleVisualUpdate(currentIndex, false);
+      };
+
+      window.addEventListener('resize', resizeHandler);
+
+      return () => {
+        window.removeEventListener('resize', resizeHandler);
+        container.removeEventListener('scroll', onScroll);
+      };
+    }
+
+    const onLoad = (event) => {
+      if (event.detail.sectionId === sectionId) {
+        if (typeof cleanupSlider === 'function') cleanupSlider();
+        cleanupSlider = initMainBlogSlider();
+      }
+    };
+
+    const onUnload = (event) => {
+      if (event.detail.sectionId === sectionId) {
+        if (window.mainBlogRegistry[sectionId]) {
+          window.mainBlogRegistry[sectionId].cleanup();
+        }
+      }
+    };
+
+    document.addEventListener('shopify:section:load', onLoad);
+    document.addEventListener('shopify:section:unload', onUnload);
+
+    window.mainBlogRegistry[sectionId] = {
+      cleanup: () => {
+        if (typeof cleanupSlider === 'function') cleanupSlider();
+        document.removeEventListener('shopify:section:load', onLoad);
+        document.removeEventListener('shopify:section:unload', onUnload);
+        delete window.mainBlogRegistry[sectionId];
+      },
+    };
+
     if (document.readyState === 'loading') {
-      window.addEventListener('DOMContentLoaded', initBlogSlider);
+      document.addEventListener('DOMContentLoaded', () => {
+        cleanupSlider = initMainBlogSlider();
+      });
     } else {
-      initBlogSlider();
+      cleanupSlider = initMainBlogSlider();
     }
   })();
 </script>
 
 {% schema %}
 {
-  "name": "t:sections.main-blog.name",
-  "tag": "section",
-  "class": "section",
+  "name": "Main Blog Slider",
   "settings": [
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog"
+    },
     {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color Scheme",
+      "label": "t:sections.all.colors.label",
       "default": "scheme-1"
     },
     {
+      "type": "range",
+      "id": "animation_duration",
+      "min": 0.5,
+      "max": 4.0,
+      "step": 0.1,
+      "unit": "s",
+      "label": "Animation Duration",
+      "default": 0.8
+    },
+    {
       "type": "header",
-      "content": "Settings"
-    },
-
-    {
-      "type": "checkbox",
-      "id": "show_date",
-      "default": false,
-      "label": "t:sections.main-blog.settings.show_date.label"
+      "content": "Desktop Margin"
     },
     {
-      "type": "checkbox",
-      "id": "show_author",
-      "default": false,
-      "label": "t:sections.main-blog.settings.show_author.label"
+      "type": "range",
+      "id": "margin_top_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top Margin",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom Margin",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_horizontal_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Horizontal Margin",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Mobile Margin"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top Margin",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom Margin",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "margin_horizontal_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Horizontal Margin",
+      "default": 0
     },
     {
       "type": "text",
-      "id": "cta_text",
-      "label": "Button Text",
-      "default": "Read the story"
-    },
-    {
-      "type": "range",
-      "id": "slider_interval",
-      "min": 2,
-      "max": 10,
-      "step": 1,
-      "unit": "s",
-      "label": "Slider Interval",
-      "default": 5
+      "id": "placeholder_tag_text",
+      "label": "Placeholder Tag Text",
+      "default": "Category"
     },
     {
       "type": "header",
-      "content": "t:sections.all.padding.section_padding_heading"
+      "content": "Desktop Typography"
     },
     {
       "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 100,
-      "step": 4,
+      "id": "title_size_desktop",
+      "min": 10,
+      "max": 50,
+      "step": 1,
       "unit": "px",
-      "label": "t:sections.all.padding.padding_top",
-      "default": 36
+      "label": "Title Size",
+      "default": 20
     },
     {
       "type": "range",
-      "id": "padding_bottom",
+      "id": "description_size_desktop",
+      "min": 10,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Description Size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "tag_size_desktop",
+      "min": 8,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Tag Size",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Mobile Typography"
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "min": 10,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Title Size",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "description_size_mobile",
+      "min": 10,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Description Size",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "tag_size_mobile",
+      "min": 8,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Tag Size",
+      "default": 9
+    },
+    {
+      "type": "header",
+      "content": "Arrows Padding"
+    },
+    {
+      "type": "range",
+      "id": "arrows_padding_top_desktop",
       "min": 0,
-      "max": 100,
+      "max": 80,
       "step": 4,
       "unit": "px",
-      "label": "t:sections.all.padding.padding_bottom",
-      "default": 36
+      "label": "Padding Above Arrows (Desktop)",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "arrows_padding_bottom_desktop",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Below Arrows (Desktop)",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "arrows_padding_top_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Above Arrows (Mobile)",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "arrows_padding_bottom_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Below Arrows (Mobile)",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Borders"
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Card Border Radius",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Image Border Radius",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "tag_border_radius_desktop",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Tag Border Radius (Desktop)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "tag_border_radius_mobile",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Tag Border Radius (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "tag_padding_vertical_desktop",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Tag Padding Vertical (Desktop)",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "tag_padding_horizontal_desktop",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Tag Padding Horizontal (Desktop)",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "tag_padding_vertical_mobile",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Tag Padding Vertical (Mobile)",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "tag_padding_horizontal_mobile",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Tag Padding Horizontal (Mobile)",
+      "default": 12
     }
   ]
 }

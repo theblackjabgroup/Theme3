@@ -1,13 +1,5 @@
 {
   "sections": {
-    "banner": {
-      "type": "main-collection-banner",
-      "settings": {
-        "show_collection_description": true,
-        "show_collection_image": false,
-        "color_scheme": "scheme-1"
-      }
-    },
     "product-grid": {
       "type": "main-collection-product-grid",
       "settings": {
@@ -19,14 +11,21 @@
         "show_rating": false,
         "enable_filtering": true,
         "enable_sorting": true,
-        "columns_mobile": 2,
+        "columns_mobile": 1,
         "padding_top": 36,
         "padding_bottom": 36
-      }
+      },
+      "blocks": {
+        "section_header": {
+          "type": "header",
+          "settings": {
+            "show_badge": true,
+            "badge_text": "Badge"
+          }
+        }
+      },
+      "block_order": ["section_header"]
     }
   },
-  "order": [
-    "banner",
-    "product-grid"
-  ]
+  "order": ["product-grid"]
 }

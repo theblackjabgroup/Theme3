@@ -2,52 +2,59 @@
 
 <style>
   :root {
-    --header-width: {{ section.settings.header_width | default: 230 }}px;
-    --header-padding: {{ section.settings.header_padding | default: 24 }}px;
-    --header-gap: {{ section.settings.header_gap | default: 24 }}px;
+    --header-width: {{ section.settings.header_width | default: 200 }}px;
+    --header-padding: {{ section.settings.header_padding | default: 16 }}px;
+    --header-gap: {{ section.settings.header_gap | default: 8 }}px;
 
     /* Logo */
-    --logo-padding-top: {{ section.settings.logo_padding_top | default: 26 }}px;
-    --logo-padding-bottom: {{ section.settings.logo_padding_bottom | default: 26 }}px;
-    --logo-padding-left: {{ section.settings.logo_padding_left | default: 20 }}px;
-    --logo-padding-right: {{ section.settings.logo_padding_right | default: 20 }}px;
+    --logo-padding-top: {{ section.settings.logo_padding_top | default: 24 }}px;
+    --logo-padding-bottom: {{ section.settings.logo_padding_bottom | default: 24 }}px;
+    --logo-padding-left: {{ section.settings.logo_padding_left | default: 24 }}px;
+    --logo-padding-right: {{ section.settings.logo_padding_right | default: 24 }}px;
     --logo-padding: var(--logo-padding-top) var(--logo-padding-right) var(--logo-padding-bottom) var(--logo-padding-left);
     --logo-border-radius: {{ section.settings.logo_border_radius | default: 16 }}px;
-    --logo-font-size: {{ section.settings.logo_font_size | default: 28 }}px;
+    --logo-font-size: {{ section.settings.logo_font_size | default: 16 }}px;
     --logo-font-weight: {{ section.settings.logo_font_weight | default: 700 }};
     --logo-letter-spacing: {{ section.settings.logo_letter_spacing | default: -0.5 }}px;
     --color-header-logo-background: {{ section.settings.logo_background_color | default: '#306030' }};
-    --logo-image-max-width: {{ section.settings.logo_image_max_width | default: 140 }}px;
-    --logo-image-max-height: {{ section.settings.logo_image_max_height | default: 100 }}px;
+    --logo-image-max-width: {{ section.settings.logo_image_max_width | default: 80 }}px;
+    --logo-image-max-height: {{ section.settings.logo_image_max_height | default: 80 }}px;
     --logo-image-width: {% if section.settings.logo_image_width > 0 %}{{ section.settings.logo_image_width }}px{% else %}auto{% endif %};
     --logo-image-height: {% if section.settings.logo_image_height > 0 %}{{ section.settings.logo_image_height }}px{% else %}auto{% endif %};
     --logo-image-object-fit: {{ section.settings.logo_image_object_fit | default: 'contain' }};
 
+    /* Logo orbit (when enabled) */
+    --logo-orbit-duration: {{ section.settings.logo_orbit_speed | default: 20 }}s;
+    --logo-orbit-radius: {{ section.settings.logo_orbit_radius | default: 44 }};
+    --logo-orbit-font-size: {{ section.settings.logo_orbit_font_size | default: 8 }}px;
+    --logo-orbit-font-weight: {{ section.settings.logo_orbit_font_weight | default: 600 }};
+    --logo-orbit-letter-spacing: {{ section.settings.logo_orbit_letter_spacing | default: 0.1 }}em;
+
     /* Action Buttons */
-    --button-gap: {{ section.settings.button_gap | default: 12 }}px;
-    --button-padding-top: {{ section.settings.button_padding_top | default: 14 }}px;
-    --button-padding-bottom: {{ section.settings.button_padding_bottom | default: 14 }}px;
-    --button-padding-left: {{ section.settings.button_padding_left | default: 18 }}px;
-    --button-padding-right: {{ section.settings.button_padding_right | default: 18 }}px;
+    --button-gap: {{ section.settings.button_gap | default: 8 }}px;
+    --button-padding-top: {{ section.settings.button_padding_top | default: 12 }}px;
+    --button-padding-bottom: {{ section.settings.button_padding_bottom | default: 12 }}px;
+    --button-padding-left: {{ section.settings.button_padding_left | default: 16 }}px;
+    --button-padding-right: {{ section.settings.button_padding_right | default: 16 }}px;
     --button-padding: var(--button-padding-top) var(--button-padding-right) var(--button-padding-bottom) var(--button-padding-left);
     --button-font-size: {{ section.settings.button_font_size | default: 16 }}px;
-    --button-icon-size: {{ section.settings.button_icon_size | default: 20 }}px;
+    --button-icon-size: {{ section.settings.button_icon_size | default: 16 }}px;
 
     /* Navigation */
-    --nav-gap: {{ section.settings.nav_gap | default: 10 }}px;
+    --nav-gap: {{ section.settings.nav_gap | default: 8 }}px;
     --nav-animation-speed: {{ section.settings.nav_animation_speed | default: 0.8 }}s;
-    --nav-padding-top: {{ section.settings.nav_padding_top | default: 24 }}px;
-    --nav-padding-bottom: {{ section.settings.nav_padding_bottom | default: 24 }}px;
-    --nav-item-padding-top: {{ section.settings.nav_item_padding_top | default: 16 }}px;
-    --nav-item-padding-bottom: {{ section.settings.nav_item_padding_bottom | default: 16 }}px;
+    --nav-padding-top: {{ section.settings.nav_padding_top | default: 14 }}px;
+    --nav-padding-bottom: {{ section.settings.nav_padding_bottom | default: 14 }}px;
+    --nav-item-padding-top: {{ section.settings.nav_item_padding_top | default: 28 }}px;
+    --nav-item-padding-bottom: {{ section.settings.nav_item_padding_bottom | default: 28 }}px;
     --nav-item-padding-left: {{ section.settings.nav_item_padding_left | default: 16 }}px;
     --nav-item-padding-right: {{ section.settings.nav_item_padding_right | default: 16 }}px;
     --nav-item-padding: var(--nav-item-padding-top) var(--nav-item-padding-right) var(--nav-item-padding-bottom) var(--nav-item-padding-left);
-    --nav-font-size: {{ section.settings.nav_font_size | default: 16 }}px;
-    --nav-font-weight: {{ section.settings.nav_font_weight | default: 700 }};
-    --nav-letter-spacing: {{ section.settings.nav_letter_spacing | default: 0.5 }}px;
-    --nav-icon-size: {{ section.settings.nav_icon_size | default: 20 }}px;
-    --nav-caret-size: {{ section.settings.nav_caret_size | default: 10 }}px;
+    --nav-font-size: {{ section.settings.nav_font_size | default: 14 }}px;
+    --nav-font-weight: {{ section.settings.nav_font_weight | default: 500 }};
+    --nav-letter-spacing: {{ section.settings.nav_letter_spacing | default: 0 }}px;
+    --nav-icon-size: {{ section.settings.nav_icon_size | default: 24 }}px;
+    --nav-caret-size: {{ section.settings.nav_caret_size | default: 12 }}px;
     --nav-hover-background: {{ section.settings.nav_hover_background_color | default: '#306030' }};
     --nav-default-background: var(--color-header-button-background, var(--color-header-background, var(--color-background, #eae7e1)));
     {%- if section.settings.nav_show_borders -%}
@@ -56,8 +63,36 @@
       --nav-border: none;
     {%- endif -%}
 
+    /* Mobile Header Logo */
+    --mobile-logo-image-max-width: {{ section.settings.mobile_logo_image_max_width | default: 120 }}px;
+    --mobile-logo-image-max-height: {{ section.settings.mobile_logo_image_max_height | default: 40 }}px;
+    --mobile-logo-image-width: {% if section.settings.mobile_logo_image_width > 0 %}{{ section.settings.mobile_logo_image_width }}px{% else %}auto{% endif %};
+    --mobile-logo-image-height: {% if section.settings.mobile_logo_image_height > 0 %}{{ section.settings.mobile_logo_image_height }}px{% else %}auto{% endif %};
+    --mobile-logo-image-object-fit: {{ section.settings.mobile_logo_image_object_fit | default: 'contain' }};
+    --mobile-logo-font-size: {{ section.settings.mobile_logo_font_size | default: 20 }}px;
+    --mobile-logo-font-weight: {{ section.settings.mobile_logo_font_weight | default: 700 }};
+
+    /* Mobile Logo Orbit */
+    --mobile-logo-orbit-duration: {{ section.settings.mobile_logo_orbit_speed | default: 20 }}s;
+    --mobile-logo-orbit-radius: {{ section.settings.mobile_logo_orbit_radius | default: 36 }};
+    --mobile-logo-orbit-font-size: {{ section.settings.mobile_logo_orbit_font_size | default: 6 }}px;
+    --mobile-logo-orbit-font-weight: {{ section.settings.mobile_logo_orbit_font_weight | default: 600 }};
+    --mobile-logo-orbit-letter-spacing: {{ section.settings.mobile_logo_orbit_letter_spacing | default: 0.1 }}em;
+
+    /* Mobile Action Buttons */
+    --mobile-button-gap: {{ section.settings.mobile_button_gap | default: 16 }}px;
+    --mobile-button-icon-size: {{ section.settings.mobile_button_icon_size | default: 40 }}px;
   }
 </style>
+
+{%- assign search_popup_id_param = 'HeaderSearchPopup' -%}
+{%- assign search_popup_block = null -%}
+{%- for block in section.blocks -%}
+  {%- if block.type == 'search_popup' -%}
+    {%- assign search_popup_block = block -%}
+    {%- break -%}
+  {%- endif -%}
+{%- endfor -%}
 
 <!-- Mega Menu Overlay -->
 <div class="mega-menu-overlay"></div>
@@ -66,22 +101,66 @@
 <header class="vertical-sidebar-header desktop-header" id="shopify-section-header">
   <div class="vertical-sidebar-inner">
     <!-- Logo Section -->
-    <div class="vertical-sidebar-logo">
-      <a
-        href="{{ routes.root_url }}"
-        class="vertical-sidebar-logo-link vertical-sidebar-logo-link--{{ section.settings.logo_alignment | default: 'center' }}"
-      >
-        {%- if section.settings.logo != blank -%}
-          {%- assign logo_width = section.settings.logo_image_max_width | default: 140 -%}
-          {{
-            section.settings.logo
-            | image_url: width: logo_width
-            | image_tag: loading: 'eager', alt: shop.name, class: 'vertical-sidebar-logo-image'
-          }}
-        {%- else -%}
-          <span class="vertical-sidebar-logo-text">{{ section.settings.logo_text | default: shop.name }}</span>
-        {%- endif -%}
-      </a>
+    <div class="vertical-sidebar-logo {% if section.settings.logo_orbit_enabled %}vertical-sidebar-logo--orbit-on{% endif %}">
+      {%- if section.settings.logo_orbit_enabled -%}
+        {%- assign t1 = section.settings.logo_orbit_text_1 | default: 'Quality' -%}
+        {%- assign t2 = section.settings.logo_orbit_text_2 | default: 'Style' -%}
+        {%- assign t3 = section.settings.logo_orbit_text_3 | default: 'Trust' -%}
+        {%- assign t4 = section.settings.logo_orbit_text_4 | default: 'Design' -%}
+        {%- assign t5 = section.settings.logo_orbit_text_5 | default: 'Craft' -%}
+        {%- assign t6 = section.settings.logo_orbit_text_6 | default: 'You' -%}
+        {%- assign t7 = section.settings.logo_orbit_text_7 | default: 'Love' -%}
+        {%- assign orbit_r = section.settings.logo_orbit_radius | default: 44 -%}
+        {%- assign orbit_y = 60 | minus: orbit_r -%}
+        {%- assign orbit_fw = section.settings.logo_orbit_font_weight | default: 600 -%}
+        <div class="logo-orbit-wrapper" aria-hidden="true">
+          <svg class="logo-orbit-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <path id="logo-orbit-path-{{ section.id }}" d="M 60,{{ orbit_y }} A {{ orbit_r }},{{ orbit_r }} 0 1 1 59.99,{{ orbit_y }}" fill="none" />
+            </defs>
+            <g class="logo-orbit-track">
+              <text class="logo-orbit-svg-text" font-weight="{{ orbit_fw }}"><textPath href="#logo-orbit-path-{{ section.id }}" startOffset="0%">{{ t1 }}</textPath></text>
+              <text class="logo-orbit-svg-text" font-weight="{{ orbit_fw }}"><textPath href="#logo-orbit-path-{{ section.id }}" startOffset="14.29%">{{ t2 }}</textPath></text>
+              <text class="logo-orbit-svg-text" font-weight="{{ orbit_fw }}"><textPath href="#logo-orbit-path-{{ section.id }}" startOffset="28.57%">{{ t3 }}</textPath></text>
+              <text class="logo-orbit-svg-text" font-weight="{{ orbit_fw }}"><textPath href="#logo-orbit-path-{{ section.id }}" startOffset="42.86%">{{ t4 }}</textPath></text>
+              <text class="logo-orbit-svg-text" font-weight="{{ orbit_fw }}"><textPath href="#logo-orbit-path-{{ section.id }}" startOffset="57.14%">{{ t5 }}</textPath></text>
+              <text class="logo-orbit-svg-text" font-weight="{{ orbit_fw }}"><textPath href="#logo-orbit-path-{{ section.id }}" startOffset="71.43%">{{ t6 }}</textPath></text>
+              <text class="logo-orbit-svg-text" font-weight="{{ orbit_fw }}"><textPath href="#logo-orbit-path-{{ section.id }}" startOffset="85.71%">{{ t7 }}</textPath></text>
+            </g>
+          </svg>
+        </div>
+        <a
+          href="{{ routes.root_url }}"
+          class="vertical-sidebar-logo-link vertical-sidebar-logo-link--{{ section.settings.logo_alignment | default: 'center' }} logo-orbit-center"
+        >
+          {%- if section.settings.logo != blank -%}
+            {%- assign logo_width = section.settings.logo_image_max_width | default: 80 -%}
+            {{
+              section.settings.logo
+              | image_url: width: logo_width
+              | image_tag: loading: 'eager', alt: shop.name, class: 'vertical-sidebar-logo-image'
+            }}
+          {%- else -%}
+            <span class="vertical-sidebar-logo-text">{{ section.settings.logo_text | default: shop.name }}</span>
+          {%- endif -%}
+        </a>
+      {%- else -%}
+        <a
+          href="{{ routes.root_url }}"
+          class="vertical-sidebar-logo-link vertical-sidebar-logo-link--{{ section.settings.logo_alignment | default: 'center' }}"
+        >
+          {%- if section.settings.logo != blank -%}
+            {%- assign logo_width = section.settings.logo_image_max_width | default: 80 -%}
+            {{
+              section.settings.logo
+              | image_url: width: logo_width
+              | image_tag: loading: 'eager', alt: shop.name, class: 'vertical-sidebar-logo-image'
+            }}
+          {%- else -%}
+            <span class="vertical-sidebar-logo-text">{{ section.settings.logo_text | default: shop.name }}</span>
+          {%- endif -%}
+        </a>
+      {%- endif -%}
     </div>
 
     <!-- Profile and Cart Row -->
@@ -90,7 +169,7 @@
         {%- if block.type == 'welcome' -%}
           {%- comment -%} Determine icon for welcome button {%- endcomment -%}
           {%- assign welcome_icon = '' -%}
-          {%- assign icon_size = section.settings.button_icon_size | default: 20 -%}
+          {%- assign icon_size = section.settings.button_icon_size | default: 16 -%}
           {%- if block.settings.button_icon_image != blank -%}
             {%- assign welcome_icon = block.settings.button_icon_image
               | image_url: width: icon_size
@@ -106,12 +185,26 @@
           {%- else -%}
             {%- assign welcome_icon = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' -%}
           {%- endif -%}
+          {%- assign welcome_hover_icon = '' -%}
+          {%- if block.settings.button_icon_image_hover != blank -%}
+            {%- assign welcome_hover_icon = block.settings.button_icon_image_hover
+              | image_url: width: icon_size
+              | image_tag:
+                loading: 'lazy',
+                alt: 'Account',
+                class: 'button-icon-image',
+                width: icon_size,
+                height: icon_size
+            -%}
+          {%- endif -%}
           {%-
             render 'header-button',
             button_text: block.settings.button_text | default: 'Account',
             button_url: block.settings.login_url | default: routes.account_login_url,
             button_icon: welcome_icon,
             button_icon_is_image: block.settings.button_icon_image != blank,
+            button_hover_icon: welcome_hover_icon,
+            button_hover_icon_is_image: block.settings.button_icon_image_hover != blank,
             button_type: 'link',
             button_class: 'header-action-button header-action-button--user',
             aria_label: 'Account',
@@ -123,7 +216,7 @@
         {%- if block.type == 'cart' -%}
           {%- comment -%} Determine icon for cart button {%- endcomment -%}
           {%- assign cart_icon = '' -%}
-          {%- assign icon_size = section.settings.button_icon_size | default: 20 -%}
+          {%- assign icon_size = section.settings.button_icon_size | default: 16 -%}
           {%- if block.settings.button_icon_image != blank -%}
             {%- assign cart_icon = block.settings.button_icon_image
               | image_url: width: icon_size
@@ -134,16 +227,33 @@
           {%- else -%}
             {%- assign cart_icon = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 22C9.55228 22 10 21.5523 10 21C10 20.4477 9.55228 20 9 20C8.44772 20 8 20.4477 8 21C8 21.5523 8.44772 22 9 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 22C20.5523 22 21 21.5523 21 21C21 20.4477 20.5523 20 20 20C19.4477 20 19 20.4477 19 21C19 21.5523 19.4477 22 20 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M1 1H5L7.68 13.39C7.77144 13.8504 8.02191 14.264 8.38755 14.5583C8.75318 14.8526 9.2107 15.009 9.68 15H19.4C19.8693 15.009 20.3268 14.8526 20.6925 14.5583C21.0581 14.264 21.3086 13.8504 21.4 13.39L23 6H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' -%}
           {%- endif -%}
+          {%- assign cart_hover_icon = '' -%}
+          {%- if block.settings.button_icon_image_hover != blank -%}
+            {%- assign cart_hover_icon = block.settings.button_icon_image_hover
+              | image_url: width: icon_size
+              | image_tag: loading: 'lazy', alt: 'Cart', class: 'button-icon-image', width: icon_size, height: icon_size
+            -%}
+          {%- endif -%}
+          {%- if settings.cart_type == 'drawer' -%}
+            {%- assign cart_button_id = 'cart-icon-bubble' -%}
+            {%- assign cart_button_class = 'header-action-button header-action-button--cart cart-drawer-trigger' -%}
+          {%- else -%}
+            {%- assign cart_button_id = '' -%}
+            {%- assign cart_button_class = 'header-action-button header-action-button--cart' -%}
+          {%- endif -%}
           {%-
             render 'header-button',
             button_text: block.settings.button_text | default: 'Cart',
             button_url: routes.cart_url,
             button_icon: cart_icon,
             button_icon_is_image: block.settings.button_icon_image != blank,
+            button_hover_icon: cart_hover_icon,
+            button_hover_icon_is_image: block.settings.button_icon_image_hover != blank,
             button_type: 'link',
-            button_class: 'header-action-button header-action-button--cart',
+            button_class: cart_button_class,
             aria_label: 'Cart',
-            skip_nav_class: true
+            skip_nav_class: true,
+            button_id: cart_button_id
           -%}
         {%- endif -%}
       {%- endfor -%}
@@ -155,7 +265,7 @@
         {%- if block.type == 'search' -%}
           {%- comment -%} Determine icon for search button {%- endcomment -%}
           {%- assign search_icon = '' -%}
-          {%- assign icon_size = section.settings.button_icon_size | default: 20 -%}
+          {%- assign icon_size = section.settings.button_icon_size | default: 16 -%}
           {%- if block.settings.button_icon_image != blank -%}
             {%- assign search_icon = block.settings.button_icon_image
               | image_url: width: icon_size
@@ -171,6 +281,18 @@
           {%- else -%}
             {%- assign search_icon = '<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 19L14.65 14.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' -%}
           {%- endif -%}
+          {%- assign search_hover_icon = '' -%}
+          {%- if block.settings.button_icon_image_hover != blank -%}
+            {%- assign search_hover_icon = block.settings.button_icon_image_hover
+              | image_url: width: icon_size
+              | image_tag:
+                loading: 'lazy',
+                alt: 'Search',
+                class: 'button-icon-image',
+                width: icon_size,
+                height: icon_size
+            -%}
+          {%- endif -%}
           {%- if block.settings.button_url != blank -%}
             {%-
               render 'header-button',
@@ -178,10 +300,13 @@
               button_url: block.settings.button_url,
               button_icon: search_icon,
               button_icon_is_image: block.settings.button_icon_image != blank,
+              button_hover_icon: search_hover_icon,
+              button_hover_icon_is_image: block.settings.button_icon_image_hover != blank,
               button_type: 'link',
               button_class: 'header-action-button header-action-button--search',
               aria_label: 'Search',
-              skip_nav_class: true
+              skip_nav_class: true,
+              search_popup_id: search_popup_id_param
             -%}
           {%- else -%}
             {%-
@@ -190,10 +315,13 @@
               button_url: '',
               button_icon: search_icon,
               button_icon_is_image: block.settings.button_icon_image != blank,
+              button_hover_icon: search_hover_icon,
+              button_hover_icon_is_image: block.settings.button_icon_image_hover != blank,
               button_type: 'button',
               button_class: 'header-action-button header-action-button--search',
               aria_label: 'Search',
-              skip_nav_class: true
+              skip_nav_class: true,
+              search_popup_id: search_popup_id_param
             -%}
           {%- endif -%}
         {%- endif -%}
@@ -220,7 +348,7 @@
           {%- assign nav_icon_is_image = false -%}
           {%- assign nav_hover_icon = '' -%}
           {%- assign nav_hover_icon_is_image = false -%}
-          {%- assign icon_size = section.settings.nav_icon_size | default: 20 -%}
+          {%- assign icon_size = section.settings.nav_icon_size | default: 24 -%}
 
           {%- if custom_icon_block != null -%}
             {%- comment -%} Use custom icon from block {%- endcomment -%}
@@ -312,7 +440,7 @@
               {%- comment -%} Determine caret icon {%- endcomment -%}
               {%- assign caret_icon = '' -%}
               {%- assign caret_icon_is_image = false -%}
-              {%- assign caret_size = section.settings.nav_caret_size | default: 10 -%}
+              {%- assign caret_size = section.settings.nav_caret_size | default: 12 -%}
               {%- if section.settings.nav_caret_icon_image != blank -%}
                 {%- assign caret_icon = section.settings.nav_caret_icon_image
                   | image_url: width: caret_size
@@ -352,84 +480,11 @@
                   {{- caret_icon -}}
                 </span>
               </button>
-
-              <div id="MegaMenu-{{ forloop.index }}" class="mega-menu" data-mega-menu>
-                <div class="mega-menu-inner">
-                  {%- comment -%} Main Title Section {%- endcomment -%}
-                  <div class="mega-menu-header">
-                    <h2 class="mega-menu-title">
-                      {{ matching_block.settings.main_title | default: link.title | default: 'Collection' }}
-                    </h2>
-                  </div>
-
-                  {%- comment -%} Featured Columns Section {%- endcomment -%}
-                  {%- if link.links != blank -%}
-                    <div class="mega-menu-featured-columns">
-                      {%- assign total_links = link.links.size -%}
-                      {%- assign links_per_column = total_links | divided_by: 3.0 | ceil -%}
-
-                      {%- for i in (1..3) -%}
-                        {%- assign featured_title_key = 'featured_title_' | append: i -%}
-                        {%- assign featured_title = matching_block.settings[featured_title_key]
-                          | default: 'FEATURED'
-                        -%}
-                        {%- assign start_index = i | minus: 1 | times: links_per_column -%}
-                        {%- assign end_index = start_index | plus: links_per_column | minus: 1 -%}
-                        {%- if i == 3 -%}
-                          {%- assign end_index = total_links | minus: 1 -%}
-                        {%- endif -%}
-                        <div class="mega-menu-column">
-                          <h3 class="mega-menu-featured-header">
-                            <span class="mega-menu-featured-bullet"></span>
-                            {{ featured_title }}
-                          </h3>
-                          <ul class="mega-menu-column-list">
-                            {%- for j in (start_index..end_index) -%}
-                              {%- if j >= 0 and j < total_links and link.links[j] -%}
-                                <li class="mega-menu-column-item">
-                                  <a href="{{ link.links[j].url }}" class="mega-menu-column-link">
-                                    {{ link.links[j].title }}
-                                  </a>
-                                </li>
-                              {%- endif -%}
-                            {%- endfor -%}
-                          </ul>
-                        </div>
-                      {%- endfor -%}
-                    </div>
-                  {%- endif -%}
-
-                  {%- comment -%} Image Cards Section {%- endcomment -%}
-                  {%- if matching_block != null -%}
-                    <div class="mega-menu-images">
-                      <div class="mega-menu-image-grid">
-                        {%- for i in (1..2) -%}
-                          {%- assign img_key = 'image_' | append: i -%}
-                          {%- assign link_key = 'link_' | append: i -%}
-                          {%- assign label_key = 'label_' | append: i -%}
-                          {%- assign img = matching_block.settings[img_key] -%}
-                          {%- assign url = matching_block.settings[link_key] -%}
-                          {%- assign label = matching_block.settings[label_key] -%}
-
-                          {%- if img != blank -%}
-                            <a href="{{ url | default: '#' }}" class="mega-menu-image-card">
-                              <div class="mega-menu-image-wrapper">
-                                {{ img | image_url: width: 400 | image_tag: loading: 'lazy', class: 'mega-menu-image' }}
-                              </div>
-                              {%- if label != blank -%}
-                                <div class="mega-menu-image-label">
-                                  {{ label }}
-                                </div>
-                              {%- endif -%}
-                            </a>
-                          {%- endif -%}
-                        {%- endfor -%}
-                      </div>
-                    </div>
-                  {%- endif -%}
-                </div>
-              </div>
             {%- else -%}
+              {%- assign nav_link_class = 'navigation-link' -%}
+              {%- if link.active -%}
+                {%- assign nav_link_class = nav_link_class | append: ' active' -%}
+              {%- endif -%}
               {%-
                 render 'header-button',
                 button_text: link.title | upcase,
@@ -439,7 +494,7 @@
                 button_hover_icon: nav_hover_icon,
                 button_hover_icon_is_image: nav_hover_icon_is_image,
                 button_type: 'link',
-                button_class: link.active | default: false | ternary: 'active', '',
+                button_class: nav_link_class,
                 aria_label: link.title
               -%}
             {%- endif -%}
@@ -450,21 +505,438 @@
   </div>
 </header>
 
+{%- comment -%} Desktop Mega Menus (Outside header to avoid overflow/positioning issues) {%- endcomment -%}
+{%- for link in section.settings.menu.links -%}
+  {%- if link.links != blank -%}
+    {%- assign matching_block = null -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'mega_menu' and block.settings.link_name == link.title -%}
+        {%- assign matching_block = block -%}
+        {%- break -%}
+      {%- endif -%}
+    {%- endfor -%}
+
+    <div id="MegaMenu-{{ forloop.index }}" class="mega-menu" data-mega-menu>
+      <div class="mega-menu-inner">
+        {%- comment -%} Main Title Section {%- endcomment -%}
+        <div class="mega-menu-header">
+          <h2 class="mega-menu-title">
+            {{ matching_block.settings.main_title | default: link.title | default: 'Collection' }}
+          </h2>
+        </div>
+
+        {%- comment -%} Featured Columns Section {%- endcomment -%}
+        {%- liquid
+          assign mega_menu_nav = null
+          assign mega_menu_link_gap = 12
+          assign mega_menu_mobile_link_gap = 10
+          if matching_block != null
+            assign mega_menu_link_gap = matching_block.settings.link_spacing | default: 12
+            assign mega_menu_mobile_link_gap = matching_block.settings.mobile_link_spacing | default: 10
+          endif
+          if matching_block.settings.menu != blank
+            assign mega_menu_nav = linklists[matching_block.settings.menu]
+          endif
+        -%}
+        {%- if mega_menu_nav != blank and mega_menu_nav.links != blank -%}
+          <div
+            class="mega-menu-featured-columns{% if mega_menu_nav.links.size > 3 %} mega-menu-featured-columns--multirow{% endif %}"
+            style="--mega-menu-link-gap: {{ mega_menu_link_gap }}px; --mobile-mega-menu-link-gap: {{ mega_menu_mobile_link_gap }}px;"
+          >
+            {%- for nav_link in mega_menu_nav.links -%}
+              <div class="mega-menu-column">
+                <h3 class="mega-menu-featured-header">
+                  <span class="mega-menu-featured-bullet"></span>
+                  {{ nav_link.title }}
+                </h3>
+                {%- if nav_link.links != blank -%}
+                  <ul class="mega-menu-column-list">
+                    {%- for nav_childlink in nav_link.links limit: 6 -%}
+                      <li class="mega-menu-column-item">
+                        <a href="{{ nav_childlink.url }}" class="mega-menu-column-link">
+                          {{ nav_childlink.title }}
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- elsif link.links != blank -%}
+          {%- comment -%} Fallback to standard child links if no custom menu is selected {%- endcomment -%}
+          <div
+            class="mega-menu-featured-columns{% if link.links.size > 3 %} mega-menu-featured-columns--multirow{% endif %}"
+            style="--mega-menu-link-gap: {{ mega_menu_link_gap }}px; --mobile-mega-menu-link-gap: {{ mega_menu_mobile_link_gap }}px;"
+          >
+            {%- for childlink in link.links -%}
+              <div class="mega-menu-column">
+                <h3 class="mega-menu-featured-header">
+                  <span class="mega-menu-featured-bullet"></span>
+                  {{ childlink.title }}
+                </h3>
+                {%- if childlink.links != blank -%}
+                  <ul class="mega-menu-column-list">
+                    {%- for grandlink in childlink.links limit: 6 -%}
+                      <li class="mega-menu-column-item">
+                        <a href="{{ grandlink.url }}" class="mega-menu-column-link">
+                          {{ grandlink.title }}
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Image Cards Section {%- endcomment -%}
+        {%- if matching_block != null -%}
+          <div
+            class="mega-menu-images"
+            style="--mega-menu-image-gap: {{ matching_block.settings.image_spacing | default: 10 }}px; --mobile-mega-menu-image-gap: {{ matching_block.settings.mobile_image_spacing | default: 15 }}px;"
+          >
+            <div class="mega-menu-image-grid">
+              {%- for i in (1..2) -%}
+                {%- assign img_key = 'image_' | append: i -%}
+                {%- assign link_key = 'link_' | append: i -%}
+                {%- assign label_key = 'label_' | append: i -%}
+                {%- assign img = matching_block.settings[img_key] -%}
+                {%- assign url = matching_block.settings[link_key] -%}
+                {%- assign label = matching_block.settings[label_key] -%}
+
+                {%- if img != blank -%}
+                  <a href="{{ url | default: '#' }}" class="mega-menu-image-card">
+                    <div class="mega-menu-image-wrapper">
+                      {{ img | image_url: width: 400 | image_tag: loading: 'lazy', class: 'mega-menu-image' }}
+                    </div>
+                    {%- if label != blank -%}
+                      <div class="mega-menu-image-label">
+                        {{ label }}
+                      </div>
+                    {%- endif -%}
+                  </a>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+{%- endfor -%}
+
+{%- comment -%} Search popup (mega-menu style) – enabled by default {%- endcomment -%}
+{%- if search_popup_block != blank -%}
+  {%- assign search_popup_title = search_popup_block.settings.main_title | default: 'Search' -%}
+  {%- assign search_popup_placeholder = search_popup_block.settings.search_placeholder | default: '' -%}
+  {%- assign search_popup_link_gap = search_popup_block.settings.link_spacing | default: 12 -%}
+  {%- assign search_popup_mobile_link_gap = search_popup_block.settings.mobile_link_spacing | default: 10 -%}
+  {%- assign search_popup_image_gap = search_popup_block.settings.image_spacing | default: 10 -%}
+  {%- assign search_popup_mobile_image_gap = search_popup_block.settings.mobile_image_spacing | default: 15 -%}
+  {%- if search_popup_placeholder == '' -%}
+    {%- assign search_popup_placeholder = 'general.search.search' | t -%}
+  {%- endif -%}
+{%- else -%}
+  {%- assign search_popup_title = 'Search' -%}
+  {%- assign search_popup_placeholder = 'general.search.search' | t -%}
+  {%- assign search_popup_link_gap = 12 -%}
+  {%- assign search_popup_mobile_link_gap = 10 -%}
+  {%- assign search_popup_image_gap = 10 -%}
+  {%- assign search_popup_mobile_image_gap = 15 -%}
+{%- endif -%}
+<div
+  id="HeaderSearchPopup"
+  class="mega-menu"
+  data-mega-menu
+  aria-hidden="true"
+  {% if search_popup_block != blank %}
+    {{- search_popup_block.shopify_attributes -}}
+  {% endif %}
+>
+  <div class="mega-menu-inner">
+    <div class="mega-menu-header">
+      <h2 class="mega-menu-title">{{ search_popup_title }}</h2>
+      <button
+        type="button"
+        class="mega-menu-close-button mobile-only"
+        aria-label="Close search"
+        data-mega-menu-trigger
+        aria-controls="HeaderSearchPopup"
+      >
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    {%- comment -%} Search field – icon customization {%- endcomment -%}
+    {%- assign search_input_icon = '' -%}
+    {%- if search_popup_block != blank -%}
+      {%- if search_popup_block.settings.search_input_icon_image != blank -%}
+        {%- assign search_input_icon = search_popup_block.settings.search_input_icon_image
+          | image_url: width: 40
+          | image_tag: loading: 'lazy', alt: '', width: 20, height: 20, class: 'mega-menu-search-submit-icon-img'
+        -%}
+      {%- elsif search_popup_block.settings.search_input_icon_svg != blank -%}
+        {%- assign search_input_icon = search_popup_block.settings.search_input_icon_svg -%}
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- if search_input_icon == '' -%}
+      {%- if settings.search_icon_image != blank -%}
+        {%- assign search_input_icon = settings.search_icon_image
+          | image_url: width: 40
+          | image_tag: loading: 'lazy', alt: '', width: 20, height: 20, class: 'mega-menu-search-submit-icon-img'
+        -%}
+      {%- elsif settings.search_icon_svg != blank -%}
+        {%- assign search_input_icon = settings.search_icon_svg -%}
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- if search_input_icon == '' -%}
+      {%- assign search_input_icon = '<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20"><path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 19L14.65 14.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' -%}
+    {%- endif -%}
+
+    <div class="mega-menu-search-content">
+      {%- if settings.predictive_search_enabled -%}
+        <predictive-search class="mega-menu-search-form" data-loading-text="{{ 'accessibility.loading' | t }}">
+      {%- else -%}
+        <search-form class="mega-menu-search-form">
+      {%- endif -%}
+      <form action="{{ routes.search_url }}" method="get" role="search" class="mega-menu-search-form-inner">
+        <div class="mega-menu-search-field">
+          <label class="visually-hidden" for="HeaderSearchPopupInput">{{ search_popup_title }}</label>
+          <button type="submit" class="mega-menu-search-submit" aria-label="{{ search_popup_title }}">
+            {{- search_input_icon -}}
+          </button>
+          <input
+            class="mega-menu-search-input"
+            id="HeaderSearchPopupInput"
+            type="search"
+            name="q"
+            value="{{ search.terms | escape }}"
+            placeholder="{{ search_popup_placeholder }}"
+            {%- if settings.predictive_search_enabled -%}
+              role="combobox"
+              aria-expanded="false"
+              aria-owns="mega-menu-predictive-search-results"
+              aria-controls="mega-menu-predictive-search-results"
+              aria-haspopup="listbox"
+              aria-autocomplete="list"
+              autocorrect="off"
+              autocomplete="off"
+              autocapitalize="off"
+              spellcheck="false"
+            {%- endif -%}
+          >
+          <input type="hidden" name="options[prefix]" value="last">
+        </div>
+        {%- if settings.predictive_search_enabled -%}
+          <div
+            class="mega-menu-predictive-search"
+            id="mega-menu-predictive-search-results"
+            tabindex="-1"
+            data-predictive-search
+          >
+            {%- render 'loading-spinner', class: 'predictive-search__loading-state' -%}
+          </div>
+          <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
+        {%- endif -%}
+      </form>
+      {%- if settings.predictive_search_enabled -%}
+        </predictive-search>
+      {%- else -%}
+        </search-form>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Desktop Rich Content for Search Popup {%- endcomment -%}
+    <div class="v-desktop">
+      {%- if search_popup_block != blank -%}
+        {%- if search_popup_block.settings.menu != blank -%}
+          {%- assign search_popup_menu = linklists[search_popup_block.settings.menu] -%}
+          {%- if search_popup_menu != blank and search_popup_menu.links != blank -%}
+            <div
+              class="mega-menu-featured-columns{% if search_popup_menu.links.size > 3 %} mega-menu-featured-columns--multirow{% endif %}"
+              style="--mega-menu-link-gap: {{ search_popup_link_gap }}px; --mobile-mega-menu-link-gap: {{ search_popup_mobile_link_gap }}px;"
+            >
+              {%- for link in search_popup_menu.links -%}
+                <div class="mega-menu-column">
+                  <h3 class="mega-menu-featured-header">
+                    <span class="mega-menu-featured-bullet"></span>
+                    {{ link.title }}
+                  </h3>
+                  {%- if link.links != blank -%}
+                    <ul class="mega-menu-column-list">
+                      {%- for childlink in link.links limit: 6 -%}
+                        <li class="mega-menu-column-item">
+                          <a href="{{ childlink.url }}" class="mega-menu-column-link">
+                            {{ childlink.title }}
+                          </a>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
+                </div>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        {%- endif -%}
+
+        {%- liquid
+          assign img_1 = search_popup_block.settings.image_1
+          assign img_2 = search_popup_block.settings.image_2
+        -%}
+        {%- if img_1 != blank or img_2 != blank -%}
+          <div
+            class="mega-menu-images"
+            style="--mega-menu-image-gap: {{ search_popup_image_gap }}px; --mobile-mega-menu-image-gap: {{ search_popup_mobile_image_gap }}px;"
+          >
+            <div class="mega-menu-image-grid">
+              {%- for i in (1..2) -%}
+                {%- liquid
+                  assign img_key = 'image_' | append: i
+                  assign link_key = 'link_' | append: i
+                  assign label_key = 'label_' | append: i
+                  assign img = search_popup_block.settings[img_key]
+                  assign url = search_popup_block.settings[link_key]
+                  assign label = search_popup_block.settings[label_key]
+                -%}
+                {%- if img != blank -%}
+                  <a href="{{ url | default: '#' }}" class="mega-menu-image-card">
+                    <div class="mega-menu-image-wrapper">
+                      {{ img | image_url: width: 400 | image_tag: loading: 'lazy', class: 'mega-menu-image' }}
+                    </div>
+                    {%- if label != blank -%}
+                      <div class="mega-menu-image-label">{{ label }}</div>
+                    {%- endif -%}
+                  </a>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Mobile Rich Mega Menu Content for Search Popup {%- endcomment -%}
+    <div class="mobile-mega-menu-content v-mobile">
+      {%- if search_popup_block != blank -%}
+        {%- if search_popup_block.settings.menu != blank -%}
+          {%- assign search_popup_menu = linklists[search_popup_block.settings.menu] -%}
+          {%- if search_popup_menu != blank and search_popup_menu.links != blank -%}
+            <div
+              class="mobile-mega-menu-columns"
+              style="--mobile-mega-menu-link-gap: {{ search_popup_mobile_link_gap }}px;"
+            >
+              {%- for m_link in search_popup_menu.links -%}
+                <div class="mobile-mega-menu-column">
+                  <h4 class="mobile-mega-menu-column-title">
+                    <span class="mobile-mega-menu-bullet"></span>
+                    {{ m_link.title }}
+                  </h4>
+                  {%- if m_link.links != blank -%}
+                    <ul class="mobile-mega-menu-column-list">
+                      {%- for m_childlink in m_link.links limit: 6 -%}
+                        <li class="mobile-mega-menu-column-item">
+                          <a href="{{ m_childlink.url }}" class="mobile-mega-menu-column-link">
+                            {{ m_childlink.title }}
+                          </a>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
+                </div>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        {%- endif -%}
+
+        {%- comment -%} Mobile Image Cards for Search Popup {%- endcomment -%}
+        {%- if search_popup_block.settings.image_1 != blank or search_popup_block.settings.image_2 != blank -%}
+          <div
+            class="mobile-mega-menu-images"
+            style="--mobile-mega-menu-image-gap: {{ search_popup_mobile_image_gap }}px;"
+          >
+            {%- for i in (1..2) -%}
+              {%- liquid
+                assign img_key = 'image_' | append: i
+                assign link_key = 'link_' | append: i
+                assign label_key = 'label_' | append: i
+                assign img = search_popup_block.settings[img_key]
+                assign url = search_popup_block.settings[link_key]
+                assign label = search_popup_block.settings[label_key]
+              -%}
+              {%- if img != blank -%}
+                <a href="{{ url | default: '#' }}" class="mobile-mega-menu-image-card">
+                  <div class="mobile-mega-menu-image-wrapper">
+                    {{ img | image_url: width: 600 | image_tag: loading: 'lazy', class: 'mobile-mega-menu-image' }}
+                  </div>
+                  {%- if label != blank -%}
+                    <div class="mobile-mega-menu-image-label">{{ label }}</div>
+                  {%- endif -%}
+                </a>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
 <!-- Mobile/Tablet Header -->
 <header class="mobile-header">
   <div class="mobile-header-container">
     <!-- Logo -->
-    <div class="mobile-header-logo">
+    <div class="mobile-header-logo {% if section.settings.mobile_logo_orbit_enabled %}mobile-header-logo--orbit-on{% endif %}">
+      {%- if section.settings.mobile_logo_orbit_enabled -%}
+        {%- assign mo_t1 = section.settings.logo_orbit_text_1 | default: 'Quality' -%}
+        {%- assign mo_t2 = section.settings.logo_orbit_text_2 | default: 'Style' -%}
+        {%- assign mo_t3 = section.settings.logo_orbit_text_3 | default: 'Trust' -%}
+        {%- assign mo_t4 = section.settings.logo_orbit_text_4 | default: 'Design' -%}
+        {%- assign mo_t5 = section.settings.logo_orbit_text_5 | default: 'Craft' -%}
+        {%- assign mo_t6 = section.settings.logo_orbit_text_6 | default: 'You' -%}
+        {%- assign mo_t7 = section.settings.logo_orbit_text_7 | default: 'Love' -%}
+        {%- assign mo_r = section.settings.mobile_logo_orbit_radius | default: 36 -%}
+        {%- assign mo_y = 60 | minus: mo_r -%}
+        {%- assign mo_fw = section.settings.mobile_logo_orbit_font_weight | default: 600 -%}
+        <div class="mobile-logo-orbit-wrapper" aria-hidden="true">
+          <svg class="mobile-logo-orbit-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <path id="mobile-logo-orbit-path-{{ section.id }}" d="M 60,{{ mo_y }} A {{ mo_r }},{{ mo_r }} 0 1 1 59.99,{{ mo_y }}" fill="none" />
+            </defs>
+            <g class="mobile-logo-orbit-track">
+              <text class="mobile-logo-orbit-svg-text" font-weight="{{ mo_fw }}"><textPath href="#mobile-logo-orbit-path-{{ section.id }}" startOffset="0%">{{ mo_t1 }}</textPath></text>
+              <text class="mobile-logo-orbit-svg-text" font-weight="{{ mo_fw }}"><textPath href="#mobile-logo-orbit-path-{{ section.id }}" startOffset="14.29%">{{ mo_t2 }}</textPath></text>
+              <text class="mobile-logo-orbit-svg-text" font-weight="{{ mo_fw }}"><textPath href="#mobile-logo-orbit-path-{{ section.id }}" startOffset="28.57%">{{ mo_t3 }}</textPath></text>
+              <text class="mobile-logo-orbit-svg-text" font-weight="{{ mo_fw }}"><textPath href="#mobile-logo-orbit-path-{{ section.id }}" startOffset="42.86%">{{ mo_t4 }}</textPath></text>
+              <text class="mobile-logo-orbit-svg-text" font-weight="{{ mo_fw }}"><textPath href="#mobile-logo-orbit-path-{{ section.id }}" startOffset="57.14%">{{ mo_t5 }}</textPath></text>
+              <text class="mobile-logo-orbit-svg-text" font-weight="{{ mo_fw }}"><textPath href="#mobile-logo-orbit-path-{{ section.id }}" startOffset="71.43%">{{ mo_t6 }}</textPath></text>
+              <text class="mobile-logo-orbit-svg-text" font-weight="{{ mo_fw }}"><textPath href="#mobile-logo-orbit-path-{{ section.id }}" startOffset="85.71%">{{ mo_t7 }}</textPath></text>
+            </g>
+          </svg>
+        </div>
+      {%- endif -%}
       {%- if section.settings.mobile_logo != blank -%}
-        <a href="{{ routes.root_url }}" class="mobile-logo-link">
+        {%- assign mobile_logo_width = section.settings.mobile_logo_image_max_width | default: 120 | at_least: 100 -%}
+        <a
+          href="{{ routes.root_url }}"
+          class="mobile-logo-link {% if section.settings.mobile_logo_orbit_enabled %}mobile-logo-link--orbit-center{% endif %}"
+        >
           {{
             section.settings.mobile_logo
-            | image_url: width: 200
+            | image_url: width: mobile_logo_width
             | image_tag: loading: 'eager', alt: shop.name, class: 'mobile-logo-image'
           }}
         </a>
       {%- else -%}
-        <a href="{{ routes.root_url }}" class="mobile-logo-link">
+        <a
+          href="{{ routes.root_url }}"
+          class="mobile-logo-link {% if section.settings.mobile_logo_orbit_enabled %}mobile-logo-link--orbit-center{% endif %}"
+        >
           <span class="mobile-logo-text">{{ section.settings.mobile_logo_text | default: shop.name }}</span>
         </a>
       {%- endif -%}
@@ -532,18 +1004,126 @@
                     </svg>
                   </button>
                 </div>
+                {%- assign matching_block = null -%}
+                {%- for block in section.blocks -%}
+                  {%- if block.type == 'mega_menu' and block.settings.link_name == link.title -%}
+                    {%- assign matching_block = block -%}
+                    {%- break -%}
+                  {%- endif -%}
+                {%- endfor -%}
+
                 <ul class="mobile-submenu" data-parent="{{ link_handle }}">
-                  {%- for childlink in link.links -%}
-                    <li class="mobile-submenu-item">
-                      <a
-                        href="{{ childlink.url }}"
-                        class="mobile-submenu-link {% if childlink.active %}active{% endif %}"
-                      >
-                        {{ childlink.title | upcase }}
-                      </a>
+                  {%- if matching_block != null -%}
+                    <li class="mobile-mega-menu-wrapper">
+                      {%- comment -%} Mobile Rich Mega Menu Content {%- endcomment -%}
+                      <div class="mobile-mega-menu-content">
+                        {%- liquid
+                          assign mega_menu_nav = null
+                          if matching_block.settings.menu != blank
+                            assign mega_menu_nav = linklists[matching_block.settings.menu]
+                          endif
+                        -%}
+                        {%- if mega_menu_nav != blank and mega_menu_nav.links != blank -%}
+                          <div
+                            class="mobile-mega-menu-columns"
+                            style="--mobile-mega-menu-link-gap: {{ matching_block.settings.mobile_link_spacing | default: 10 }}px;"
+                          >
+                            {%- for m_link in mega_menu_nav.links -%}
+                              <div class="mobile-mega-menu-column">
+                                <h4 class="mobile-mega-menu-column-title">
+                                  <span class="mobile-mega-menu-bullet"></span>
+                                  {{ m_link.title }}
+                                </h4>
+                                {%- if m_link.links != blank -%}
+                                  <ul class="mobile-mega-menu-column-list">
+                                    {%- for m_childlink in m_link.links limit: 6 -%}
+                                      <li class="mobile-mega-menu-column-item">
+                                        <a href="{{ m_childlink.url }}" class="mobile-mega-menu-column-link">
+                                          {{ m_childlink.title }}
+                                        </a>
+                                      </li>
+                                    {%- endfor -%}
+                                  </ul>
+                                {%- endif -%}
+                              </div>
+                            {%- endfor -%}
+                          </div>
+                        {%- elsif link.links != blank -%}
+                          {%- comment -%} Fallback to standard child links for mobile {%- endcomment -%}
+                          <div
+                            class="mobile-mega-menu-columns"
+                            style="--mobile-mega-menu-link-gap: {{ matching_block.settings.mobile_link_spacing | default: 10 }}px;"
+                          >
+                            {%- for m_child in link.links -%}
+                              <div class="mobile-mega-menu-column">
+                                <h4 class="mobile-mega-menu-column-title">
+                                  <span class="mobile-mega-menu-bullet"></span>
+                                  {{ m_child.title }}
+                                </h4>
+                                {%- if m_child.links != blank -%}
+                                  <ul class="mobile-mega-menu-column-list">
+                                    {%- for m_grand in m_child.links limit: 6 -%}
+                                      <li class="mobile-mega-menu-column-item">
+                                        <a href="{{ m_grand.url }}" class="mobile-mega-menu-column-link">
+                                          {{ m_grand.title }}
+                                        </a>
+                                      </li>
+                                    {%- endfor -%}
+                                  </ul>
+                                {%- endif -%}
+                              </div>
+                            {%- endfor -%}
+                          </div>
+                        {%- endif -%}
+
+                        {%- comment -%} Mobile Image Cards {%- endcomment -%}
+                        {%- if matching_block.settings.image_1 != blank or matching_block.settings.image_2 != blank -%}
+                          <div
+                            class="mobile-mega-menu-images"
+                            style="--mobile-mega-menu-image-gap: {{ matching_block.settings.mobile_image_spacing | default: 15 }}px;"
+                          >
+                            {%- for i in (1..2) -%}
+                              {%- assign img_key = 'image_' | append: i -%}
+                              {%- assign link_key = 'link_' | append: i -%}
+                              {%- assign label_key = 'label_' | append: i -%}
+                              {%- assign img = matching_block.settings[img_key] -%}
+                              {%- assign url = matching_block.settings[link_key] -%}
+                              {%- assign label = matching_block.settings[label_key] -%}
+
+                              {%- if img != blank -%}
+                                <a href="{{ url | default: '#' }}" class="mobile-mega-menu-image-card">
+                                  <div class="mobile-mega-menu-image-wrapper">
+                                    {{
+                                      img
+                                      | image_url: width: 600
+                                      | image_tag: loading: 'lazy', class: 'mobile-mega-menu-image'
+                                    }}
+                                  </div>
+                                  {%- if label != blank -%}
+                                    <div class="mobile-mega-menu-image-label">{{ label }}</div>
+                                  {%- endif -%}
+                                </a>
+                              {%- endif -%}
+                            {%- endfor -%}
+                          </div>
+                        {%- endif -%}
+                      </div>
                     </li>
-                  {%- endfor -%}
+                  {%- else -%}
+                    {%- comment -%} Standard Submenu Fallback {%- endcomment -%}
+                    {%- for childlink in link.links limit: 6 -%}
+                      <li class="mobile-submenu-item">
+                        <a
+                          href="{{ childlink.url }}"
+                          class="mobile-submenu-link {% if childlink.active %}active{% endif %}"
+                        >
+                          {{ childlink.title | upcase }}
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  {%- endif -%}
                 </ul>
+
               {%- else -%}
                 <a href="{{ link.url }}" class="mobile-menu-link {% if link.active %}active{% endif %}">
                   <span class="mobile-menu-link-text">{{ link.title | upcase }}</span>
@@ -553,26 +1133,126 @@
           {%- endfor -%}
         </ul>
 
-        <!-- Search Bar -->
-        <div class="mobile-menu-search">
-          <button
-            type="button"
-            class="mobile-menu-search-button"
-            aria-label="Search"
-            data-spotlight-search-toggle
-          >
-            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M19 19L14.65 14.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
+        <!-- Footer: Account, Cart, Search (same icons as desktop) -->
+        <div class="mobile-menu-footer">
+          <div class="mobile-menu-footer-row mobile-menu-footer-row--top">
+            {%- assign icon_size = section.settings.button_icon_size | default: 16 -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'welcome' -%}
+                {%- assign welcome_icon = '' -%}
+                {%- if block.settings.button_icon_image != blank -%}
+                  {%- assign welcome_icon = block.settings.button_icon_image
+                    | image_url: width: icon_size
+                    | image_tag:
+                      loading: 'lazy',
+                      alt: 'Account',
+                      class: 'mobile-menu-footer-icon-img',
+                      width: icon_size,
+                      height: icon_size
+                  -%}
+                {%- elsif block.settings.button_icon_svg != blank -%}
+                  {%- assign welcome_icon = block.settings.button_icon_svg -%}
+                {%- else -%}
+                  {%- assign welcome_icon = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' -%}
+                {%- endif -%}
+                <a
+                  href="{{ block.settings.login_url | default: routes.account_login_url }}"
+                  class="mobile-menu-footer-btn mobile-menu-footer-btn--account"
+                  aria-label="Account"
+                >
+                  <span class="mobile-menu-footer-icon {% if block.settings.button_icon_image != blank %}mobile-menu-footer-icon--image{% endif %}">
+                    {{- welcome_icon -}}
+                  </span>
+                </a>
+              {%- endif -%}
+            {%- endfor -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'cart' -%}
+                {%- assign cart_icon = '' -%}
+                {%- if block.settings.button_icon_image != blank -%}
+                  {%- assign cart_icon = block.settings.button_icon_image
+                    | image_url: width: icon_size
+                    | image_tag:
+                      loading: 'lazy',
+                      alt: 'Cart',
+                      class: 'mobile-menu-footer-icon-img',
+                      width: icon_size,
+                      height: icon_size
+                  -%}
+                {%- elsif block.settings.button_icon_svg != blank -%}
+                  {%- assign cart_icon = block.settings.button_icon_svg -%}
+                {%- else -%}
+                  {%- assign cart_icon = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 22C9.55228 22 10 21.5523 10 21C10 20.4477 9.55228 20 9 20C8.44772 20 8 20.4477 8 21C8 21.5523 8.44772 22 9 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 22C20.5523 22 21 21.5523 21 21C21 20.4477 20.5523 20 20 20C19.4477 20 19 20.4477 19 21C19 21.5523 19.4477 22 20 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M1 1H5L7.68 13.39C7.77144 13.8504 8.02191 14.264 8.38755 14.5583C8.75318 14.8526 9.2107 15.009 9.68 15H19.4C19.8693 15.009 20.3268 14.8526 20.6925 14.5583C21.0581 14.264 21.3086 13.8504 21.4 13.39L23 6H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' -%}
+                {%- endif -%}
+                <a
+                  href="{{ routes.cart_url }}"
+                  class="mobile-menu-footer-btn mobile-menu-footer-btn--cart{% if settings.cart_type == 'drawer' %} cart-drawer-trigger{% endif %}"
+                  aria-label="Cart"
+                >
+                  <span class="mobile-menu-footer-icon {% if block.settings.button_icon_image != blank %}mobile-menu-footer-icon--image{% endif %}">
+                    {{- cart_icon -}}
+                  </span>
+                  {%- if cart.item_count > 0 -%}
+                    <span class="mobile-menu-footer-badge">{{ cart.item_count }}</span>
+                  {%- endif -%}
+                </a>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+          <div class="mobile-menu-footer-row mobile-menu-footer-row--bottom">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'search' -%}
+                {%- assign search_icon = '' -%}
+                {%- if block.settings.button_icon_image != blank -%}
+                  {%- assign search_icon = block.settings.button_icon_image
+                    | image_url: width: icon_size
+                    | image_tag:
+                      loading: 'lazy',
+                      alt: 'Search',
+                      class: 'mobile-menu-footer-icon-img',
+                      width: icon_size,
+                      height: icon_size
+                  -%}
+                {%- elsif block.settings.button_icon_svg != blank -%}
+                  {%- assign search_icon = block.settings.button_icon_svg -%}
+                {%- else -%}
+                  {%- assign search_icon = '<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 19L14.65 14.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' -%}
+                {%- endif -%}
+                {%- if block.settings.button_url != blank -%}
+                  <a
+                    href="{{ block.settings.button_url }}"
+                    class="mobile-menu-footer-btn mobile-menu-footer-btn--search"
+                    aria-label="Search"
+                    data-mega-menu-trigger
+                    aria-controls="HeaderSearchPopup"
+                    aria-expanded="false"
+                  >
+                    <span class="mobile-menu-footer-icon {% if block.settings.button_icon_image != blank %}mobile-menu-footer-icon--image{% endif %}">
+                      {{- search_icon -}}
+                    </span>
+                  </a>
+                {%- else -%}
+                  <button
+                    type="button"
+                    class="mobile-menu-footer-btn mobile-menu-footer-btn--search"
+                    aria-label="Search"
+                    data-mega-menu-trigger
+                    aria-controls="HeaderSearchPopup"
+                    aria-expanded="false"
+                  >
+                    <span class="mobile-menu-footer-icon {% if block.settings.button_icon_image != blank %}mobile-menu-footer-icon--image{% endif %}">
+                      {{- search_icon -}}
+                    </span>
+                  </button>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
         </div>
       </nav>
     </div>
   </div>
 </header>
-
-{%- render 'spotlight-search', input_id: 'SpotlightSearchInput' -%}
 
 <script>
   window.headerAnimationSpeed = {{ section.settings.scroll_animation_speed | default: 1 }};
@@ -580,7 +1260,6 @@
 <script src="{{ 'vertical-header.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'mega-menu.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'mobile-header.js' | asset_url }}" defer="defer"></script>
-<script src="{{ 'spotlight-search.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {
@@ -621,7 +1300,7 @@
       "step": 10,
       "unit": "px",
       "label": "Header Width",
-      "default": 230,
+      "default": 200,
       "info": "Width of the vertical sidebar header"
     },
     {
@@ -632,7 +1311,7 @@
       "step": 4,
       "unit": "px",
       "label": "Header Inner Padding",
-      "default": 24,
+      "default": 16,
       "info": "Padding around the header content"
     },
     {
@@ -643,7 +1322,7 @@
       "step": 4,
       "unit": "px",
       "label": "Header Section Gap",
-      "default": 24,
+      "default": 8,
       "info": "Gap between header sections (logo, buttons, nav)"
     },
     {
@@ -670,7 +1349,7 @@
       "step": 2,
       "unit": "px",
       "label": "Logo Padding Top",
-      "default": 26
+      "default": 24
     },
     {
       "type": "range",
@@ -680,7 +1359,7 @@
       "step": 2,
       "unit": "px",
       "label": "Logo Padding Bottom",
-      "default": 26
+      "default": 24
     },
     {
       "type": "range",
@@ -690,7 +1369,7 @@
       "step": 2,
       "unit": "px",
       "label": "Logo Padding Left",
-      "default": 20
+      "default": 24
     },
     {
       "type": "range",
@@ -700,7 +1379,7 @@
       "step": 2,
       "unit": "px",
       "label": "Logo Padding Right",
-      "default": 20
+      "default": 24
     },
     {
       "type": "range",
@@ -720,7 +1399,7 @@
       "step": 2,
       "unit": "px",
       "label": "Logo Font Size",
-      "default": 28
+      "default": 16
     },
     {
       "type": "select",
@@ -764,7 +1443,7 @@
       "step": 10,
       "unit": "px",
       "label": "Logo Image Max Width",
-      "default": 140,
+      "default": 80,
       "info": "Maximum width of the logo image"
     },
     {
@@ -775,7 +1454,7 @@
       "step": 10,
       "unit": "px",
       "label": "Logo Image Max Height",
-      "default": 100,
+      "default": 80,
       "info": "Maximum height of the logo image"
     },
     {
@@ -816,6 +1495,116 @@
     },
     {
       "type": "header",
+      "content": "Logo orbit"
+    },
+    {
+      "type": "checkbox",
+      "id": "logo_orbit_enabled",
+      "label": "Show orbiting text around logo",
+      "default": false,
+      "info": "Seven customizable texts revolve in a circle around the logo. Off by default."
+    },
+    {
+      "type": "text",
+      "id": "logo_orbit_text_1",
+      "label": "Orbit text 1",
+      "default": "Quality"
+    },
+    {
+      "type": "text",
+      "id": "logo_orbit_text_2",
+      "label": "Orbit text 2",
+      "default": "Style"
+    },
+    {
+      "type": "text",
+      "id": "logo_orbit_text_3",
+      "label": "Orbit text 3",
+      "default": "Trust"
+    },
+    {
+      "type": "text",
+      "id": "logo_orbit_text_4",
+      "label": "Orbit text 4",
+      "default": "Design"
+    },
+    {
+      "type": "text",
+      "id": "logo_orbit_text_5",
+      "label": "Orbit text 5",
+      "default": "Craft"
+    },
+    {
+      "type": "text",
+      "id": "logo_orbit_text_6",
+      "label": "Orbit text 6",
+      "default": "You"
+    },
+    {
+      "type": "text",
+      "id": "logo_orbit_text_7",
+      "label": "Orbit text 7",
+      "default": "Love"
+    },
+    {
+      "type": "header",
+      "content": "Logo orbit style"
+    },
+    {
+      "type": "range",
+      "id": "logo_orbit_speed",
+      "min": 8,
+      "max": 60,
+      "step": 2,
+      "unit": "s",
+      "label": "Orbit speed",
+      "default": 20,
+      "info": "Seconds for one full rotation"
+    },
+    {
+      "type": "range",
+      "id": "logo_orbit_radius",
+      "min": 32,
+      "max": 52,
+      "step": 2,
+      "label": "Orbit spacing",
+      "default": 44,
+      "info": "Distance of text from logo center"
+    },
+    {
+      "type": "range",
+      "id": "logo_orbit_font_size",
+      "min": 5,
+      "max": 12,
+      "step": 1,
+      "unit": "px",
+      "label": "Orbit font size",
+      "default": 8
+    },
+    {
+      "type": "select",
+      "id": "logo_orbit_font_weight",
+      "label": "Orbit font weight",
+      "options": [
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "range",
+      "id": "logo_orbit_letter_spacing",
+      "min": -0.1,
+      "max": 0.3,
+      "step": 0.1,
+      "unit": "em",
+      "label": "Orbit letter spacing",
+      "default": 0.1
+    },
+    {
+      "type": "header",
       "content": "Action Buttons Settings"
     },
     {
@@ -826,7 +1615,7 @@
       "step": 2,
       "unit": "px",
       "label": "Button Gap",
-      "default": 12,
+      "default": 8,
       "info": "Gap between action buttons"
     },
     {
@@ -837,7 +1626,7 @@
       "step": 2,
       "unit": "px",
       "label": "Button Padding Top",
-      "default": 14
+      "default": 12
     },
     {
       "type": "range",
@@ -847,7 +1636,7 @@
       "step": 2,
       "unit": "px",
       "label": "Button Padding Bottom",
-      "default": 14
+      "default": 12
     },
     {
       "type": "range",
@@ -857,7 +1646,7 @@
       "step": 2,
       "unit": "px",
       "label": "Button Padding Left",
-      "default": 18
+      "default": 16
     },
     {
       "type": "range",
@@ -867,7 +1656,7 @@
       "step": 2,
       "unit": "px",
       "label": "Button Padding Right",
-      "default": 18
+      "default": 16
     },
     {
       "type": "range",
@@ -887,7 +1676,7 @@
       "step": 2,
       "unit": "px",
       "label": "Button Icon Size",
-      "default": 20
+      "default": 16
     },
     {
       "type": "header",
@@ -901,7 +1690,7 @@
       "step": 2,
       "unit": "px",
       "label": "Navigation Item Gap",
-      "default": 10,
+      "default": 8,
       "info": "Gap between navigation items"
     },
     {
@@ -923,7 +1712,7 @@
       "step": 2,
       "unit": "px",
       "label": "Navigation Padding Top",
-      "default": 24
+      "default": 14
     },
     {
       "type": "range",
@@ -933,7 +1722,7 @@
       "step": 2,
       "unit": "px",
       "label": "Navigation Padding Bottom",
-      "default": 24
+      "default": 14
     },
     {
       "type": "range",
@@ -943,7 +1732,7 @@
       "step": 2,
       "unit": "px",
       "label": "Nav Item Padding Top",
-      "default": 16
+      "default": 28
     },
     {
       "type": "range",
@@ -953,7 +1742,7 @@
       "step": 2,
       "unit": "px",
       "label": "Nav Item Padding Bottom",
-      "default": 16
+      "default": 28
     },
     {
       "type": "range",
@@ -983,7 +1772,7 @@
       "step": 1,
       "unit": "px",
       "label": "Navigation Font Size",
-      "default": 16
+      "default": 14
     },
     {
       "type": "select",
@@ -996,7 +1785,7 @@
         { "value": "700", "label": "Bold" },
         { "value": "800", "label": "Extra Bold" }
       ],
-      "default": "700"
+      "default": "500"
     },
     {
       "type": "range",
@@ -1006,7 +1795,7 @@
       "step": 0.1,
       "unit": "px",
       "label": "Navigation Letter Spacing",
-      "default": 0.5
+      "default": 0
     },
     {
       "type": "range",
@@ -1016,7 +1805,7 @@
       "step": 2,
       "unit": "px",
       "label": "Navigation Icon Size",
-      "default": 20
+      "default": 24
     },
     {
       "type": "color",
@@ -1069,7 +1858,7 @@
       "step": 1,
       "unit": "px",
       "label": "Caret Icon Size",
-      "default": 10,
+      "default": 12,
       "info": "Size of the dropdown caret icon"
     },
     {
@@ -1122,6 +1911,174 @@
       "label": "Mobile Logo Text",
       "default": "Logo",
       "info": "Text displayed if no logo image is uploaded"
+    },
+    {
+      "type": "header",
+      "content": "Mobile Logo Image Size"
+    },
+    {
+      "type": "range",
+      "id": "mobile_logo_image_max_width",
+      "min": 60,
+      "max": 280,
+      "step": 4,
+      "unit": "px",
+      "label": "Logo max width",
+      "default": 120
+    },
+    {
+      "type": "range",
+      "id": "mobile_logo_image_max_height",
+      "min": 24,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Logo max height",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mobile_logo_image_width",
+      "min": 0,
+      "max": 280,
+      "step": 4,
+      "unit": "px",
+      "label": "Logo width",
+      "default": 0,
+      "info": "0 = auto (use max width)"
+    },
+    {
+      "type": "range",
+      "id": "mobile_logo_image_height",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Logo height",
+      "default": 0,
+      "info": "0 = auto (use max height)"
+    },
+    {
+      "type": "select",
+      "id": "mobile_logo_image_object_fit",
+      "label": "Logo object fit",
+      "options": [
+        { "value": "contain", "label": "Contain" },
+        { "value": "cover", "label": "Cover" },
+        { "value": "fill", "label": "Fill" }
+      ],
+      "default": "contain"
+    },
+    {
+      "type": "header",
+      "content": "Mobile Logo Text (when no image)"
+    },
+    {
+      "type": "range",
+      "id": "mobile_logo_font_size",
+      "min": 14,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Logo text font size",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "mobile_logo_font_weight",
+      "min": 400,
+      "max": 900,
+      "step": 100,
+      "label": "Logo text font weight",
+      "default": 700
+    },
+    {
+      "type": "header",
+      "content": "Mobile Logo Orbit"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_logo_orbit_enabled",
+      "label": "Show orbit on mobile",
+      "default": false,
+      "info": "Orbiting text around the mobile logo (uses same orbit texts as desktop)"
+    },
+    {
+      "type": "range",
+      "id": "mobile_logo_orbit_speed",
+      "min": 8,
+      "max": 60,
+      "step": 2,
+      "unit": "s",
+      "label": "Orbit speed",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "mobile_logo_orbit_radius",
+      "min": 24,
+      "max": 48,
+      "step": 2,
+      "label": "Orbit spacing",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "mobile_logo_orbit_font_size",
+      "min": 5,
+      "max": 12,
+      "step": 1,
+      "unit": "px",
+      "label": "Orbit font size",
+      "default": 6
+    },
+    {
+      "type": "select",
+      "id": "mobile_logo_orbit_font_weight",
+      "label": "Orbit font weight",
+      "options": [
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "range",
+      "id": "mobile_logo_orbit_letter_spacing",
+      "min": -0.1,
+      "max": 0.3,
+      "step": 0.1,
+      "unit": "em",
+      "label": "Orbit letter spacing",
+      "default": 0.1
+    },
+    {
+      "type": "header",
+      "content": "Mobile Action Buttons"
+    },
+    {
+      "type": "range",
+      "id": "mobile_button_gap",
+      "min": 4,
+      "max": 28,
+      "step": 2,
+      "unit": "px",
+      "label": "Button gap",
+      "default": 16,
+      "info": "Gap between menu and other icons in the mobile header bar"
+    },
+    {
+      "type": "range",
+      "id": "mobile_button_icon_size",
+      "min": 28,
+      "max": 52,
+      "step": 2,
+      "unit": "px",
+      "label": "Icon size",
+      "default": 40,
+      "info": "Size of menu and action icons in the mobile header"
     }
   ],
   "blocks": [
@@ -1153,10 +2110,150 @@
           "info": "Paste SVG code for a custom icon. Use 'currentColor' for stroke/fill to match theme colors. If both image and SVG are provided, image will be used."
         },
         {
+          "type": "image_picker",
+          "id": "button_icon_image_hover",
+          "label": "Button Icon Image (Hover)",
+          "info": "Optional. Icon image to show when the button is hovered. Leave empty to keep the default icon on hover."
+        },
+        {
           "type": "url",
           "id": "button_url",
           "label": "Button URL",
           "info": "Optional URL for the search button. Leave empty to use default search functionality."
+        }
+      ]
+    },
+    {
+      "type": "search_popup",
+      "name": "Search popup",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Main Title"
+        },
+        {
+          "type": "text",
+          "id": "main_title",
+          "label": "Main Title",
+          "default": "Search",
+          "info": "Main title displayed at the top of the search popup (same style as mega menu)"
+        },
+        {
+          "type": "text",
+          "id": "search_placeholder",
+          "label": "Search input placeholder",
+          "default": "Search",
+          "info": "Placeholder text for the search field. Clear to use theme default translation."
+        },
+        {
+          "type": "image_picker",
+          "id": "search_input_icon_image",
+          "label": "Search Input Icon Image",
+          "info": "Upload a custom icon image for the search field. If not provided, theme default will be used."
+        },
+        {
+          "type": "html",
+          "id": "search_input_icon_svg",
+          "label": "Search Input Icon SVG Code",
+          "info": "Paste SVG code for the search field icon. If both image and SVG are provided, image will be used."
+        },
+        {
+          "type": "header",
+          "content": "Menu Sections"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "info": "Top-level links from this menu are shown as column headers, and their children are shown as list items below."
+        },
+        {
+          "type": "header",
+          "content": "Link Spacing"
+        },
+        {
+          "type": "range",
+          "id": "link_spacing",
+          "min": 0,
+          "max": 32,
+          "step": 1,
+          "unit": "px",
+          "label": "Desktop link spacing",
+          "default": 4
+        },
+        {
+          "type": "range",
+          "id": "mobile_link_spacing",
+          "min": 0,
+          "max": 28,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile link spacing",
+          "default": 10
+        },
+
+        {
+          "type": "header",
+          "content": "Image Cards"
+        },
+        {
+          "type": "range",
+          "id": "image_spacing",
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "unit": "px",
+          "label": "Desktop image spacing",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "mobile_image_spacing",
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile image spacing",
+          "default": 15
+        },
+        {
+          "type": "header",
+          "content": "Image 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_1",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "label_1",
+          "label": "Label"
+        },
+        {
+          "type": "url",
+          "id": "link_1",
+          "label": "Link"
+        },
+        {
+          "type": "header",
+          "content": "Image 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_2",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "label_2",
+          "label": "Label"
+        },
+        {
+          "type": "url",
+          "id": "link_2",
+          "label": "Link"
         }
       ]
     },
@@ -1186,6 +2283,12 @@
           "id": "button_icon_svg",
           "label": "Button Icon SVG Code",
           "info": "Paste SVG code for a custom icon. Use 'currentColor' for stroke/fill to match theme colors. If both image and SVG are provided, image will be used."
+        },
+        {
+          "type": "image_picker",
+          "id": "button_icon_image_hover",
+          "label": "Button Icon Image (Hover)",
+          "info": "Optional. Icon image to show when the button is hovered. Leave empty to keep the default icon on hover."
         },
         {
           "type": "url",
@@ -1264,6 +2367,12 @@
           "id": "button_icon_svg",
           "label": "Button Icon SVG Code",
           "info": "Paste SVG code for a custom icon. Use 'currentColor' for stroke/fill to match theme colors. If both image and SVG are provided, image will be used."
+        },
+        {
+          "type": "image_picker",
+          "id": "button_icon_image_hover",
+          "label": "Button Icon Image (Hover)",
+          "info": "Optional. Icon image to show when the button is hovered. Leave empty to keep the default icon on hover."
         }
       ]
     },
@@ -1295,29 +2404,61 @@
         },
         {
           "type": "header",
-          "content": "Featured Sections"
+          "content": "Menu Sections"
         },
         {
-          "type": "text",
-          "id": "featured_title_1",
-          "label": "Featured Column 1 Title",
-          "default": "FEATURED"
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "info": "Top-level links from this menu are shown as column headers, and their children are shown as list items below."
         },
         {
-          "type": "text",
-          "id": "featured_title_2",
-          "label": "Featured Column 2 Title",
-          "default": "FEATURED"
+          "type": "header",
+          "content": "Link Spacing"
         },
         {
-          "type": "text",
-          "id": "featured_title_3",
-          "label": "Featured Column 3 Title",
-          "default": "FEATURED"
+          "type": "range",
+          "id": "link_spacing",
+          "min": 0,
+          "max": 32,
+          "step": 1,
+          "unit": "px",
+          "label": "Desktop link spacing",
+          "default": 12
+        },
+        {
+          "type": "range",
+          "id": "mobile_link_spacing",
+          "min": 0,
+          "max": 28,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile link spacing",
+          "default": 10
         },
         {
           "type": "header",
           "content": "Image Cards"
+        },
+        {
+          "type": "range",
+          "id": "image_spacing",
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "unit": "px",
+          "label": "Desktop image spacing",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "mobile_image_spacing",
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile image spacing",
+          "default": 15
         },
         {
           "type": "header",

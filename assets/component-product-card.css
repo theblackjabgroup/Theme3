@@ -1,7 +1,7 @@
 .dc-card {
   background-color: var(--dc-bg-color);
   color: var(--dc-text-color);
-  border-radius: var(--radius-4xl);
+  border-radius: var(--dc-card-border-radius, var(--radius-4xl));
   padding: var(--spacing-15) var(--spacing-12);
   display: flex;
   flex-direction: column;
@@ -16,6 +16,7 @@
 
 .dc-eyebrow {
   text-transform: uppercase;
+  width: 80%;
   font-size: 0.7rem;
   letter-spacing: var(--letter-spacing-widest);
   color: var(--dc-eyebrow-color, var(--dc-text-color));
@@ -29,17 +30,19 @@
 
 .dc-image-wrapper {
   width: 100%;
-  max-width: 200px; 
-  aspect-ratio: 1 / 0.8; 
-  background-color: transparent; 
+  max-width: var(--dc-image-width, 200px);
+  height: var(--dc-image-height, 160px);
+  background-color: transparent;
   border-radius: 0;
   overflow: visible;
+  margin-top: var(--dc-image-margin-top, 0);
+  margin-bottom: var(--dc-image-margin-bottom, 0);
 }
 
 .dc-image {
   width: 100%;
   height: 100%;
-  object-fit: contain; 
+  object-fit: contain;
 }
 
 .dc-title {
@@ -70,6 +73,23 @@
   padding-bottom: 20px;
 }
 
+.dc-progress-bar-container {
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+
+.dc-tooltip-svg-wrapper {
+  width: 48px;
+  height: 30px;
+}
+
+.dc-tooltip-svg-wrapper svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
 .dc-tooltip {
   position: absolute;
   bottom: 100%;
@@ -80,25 +100,18 @@
   font-size: 0.9rem;
   transform: translateX(-50%) rotate(5deg);
   border-radius: var(--radius-xs);
-  margin-bottom: var(--spacing-3);
   white-space: nowrap;
   box-shadow: var(--spacing-1) var(--spacing-1) var(--spacing-0) rgba(0,0,0,1);
   border: 1px solid var(--dc-tooltip-bg, );
 }
 .dc-tooltip::after {
   content: '';
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: var(--dc-tooltip-bg) transparent transparent transparent;
+  display: none;
 }
 
 .dc-bar-track {
   width: 100%;
-  height: var(--spacing-4);
+  height: 7px;
   background-color: var(--dc-bar-track, #fce8e8);
   border-radius: var(--radius-s);
   position: relative;
@@ -114,18 +127,18 @@
 
 .dc-dot {
   width: 12px;
-  height: 12px;
+  height: 7px;
   background-color: var(--dc-bar-fill, #ff0000);
-  border-radius: 50%;
+  border-radius: 50px;
   position: absolute;
   right: -6px;
   top: 50%;
-  transform: translateY(-50%);
-}
+  transform: translateY(-50%);}
 
 .dc-ticks {
   display: flex;
   justify-content: space-between;
+  padding: 0 10px;
 }
 
 .dc-tick {
@@ -213,13 +226,8 @@
   border-color: var(--dc-text-color);
   border-radius: .5em;
   position: relative;
-  transition: transform 0.2s ease;
 }
 
-.dc-textbox-list li:hover .dc-list-icon {
-  transform: scale(0.9);
-  cursor: pointer;
-}
 
 .dc-list-icon::after {
   content: "";

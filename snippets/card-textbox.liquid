@@ -26,12 +26,20 @@
         {%- assign trimmed_item = item | strip -%}
         {%- if trimmed_item != blank -%}
           <li>
-            <span
-              class="dc-list-icon {% if custom_icon != blank %}dc-list-icon--custom{% endif %}"
-              {% if custom_icon != blank %}
+            <div
+              class="dc-list-icon-svg"
+              style="width: 28px; height: 22px; flex-shrink: 0; border: 0.8px solid var(--dc-bg-color); border-radius: 8px; background: var(--dc-text-color); box-shadow: 0 1.6px 0 0 var(--color-primary-button-text); display: flex; align-items: center; justify-content: center; {% if custom_icon != blank %} display: none; {% endif %}"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M3 7.5L5.5 10L11 4.5" stroke="var(--dc-bg-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            {%- if custom_icon != blank -%}
+              <span
+                class="dc-list-icon dc-list-icon--custom"
                 style="--icon-url: url('{{ custom_icon | image_url: width: 32 }}');"
-              {% endif %}
-            ></span>
+              ></span>
+            {%- endif -%}
             <span class="dc-list-text">{{ trimmed_item }}</span>
           </li>
         {%- endif -%}

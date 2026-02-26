@@ -1,8 +1,8 @@
 function getFocusableElements(container) {
   return Array.from(
     container.querySelectorAll(
-      "summary, a[href], button:enabled, [tabindex]:not([tabindex^='-']), [draggable], area, input:not([type=hidden]):enabled, select:enabled, textarea:enabled, object, iframe"
-    )
+      "summary, a[href], button:enabled, [tabindex]:not([tabindex^='-']), [draggable], area, input:not([type=hidden]):enabled, select:enabled, textarea:enabled, object, iframe",
+    ),
   );
 }
 
@@ -177,7 +177,7 @@ function focusVisiblePolyfill() {
       currentFocusedElement = document.activeElement;
       currentFocusedElement.classList.add('focused');
     },
-    true
+    true,
   );
 }
 
@@ -221,7 +221,7 @@ class QuantityInput extends HTMLElement {
     this.changeEvent = new Event('change', { bubbles: true });
     this.input.addEventListener('change', this.onInputChange.bind(this));
     this.querySelectorAll('button').forEach((button) =>
-      button.addEventListener('click', this.onButtonClick.bind(this))
+      button.addEventListener('click', this.onButtonClick.bind(this)),
     );
   }
 
@@ -245,34 +245,42 @@ class QuantityInput extends HTMLElement {
   onButtonClick(event) {
     event.preventDefault();
     const previousValue = this.input.value;
+    const max = this.input.max ? parseInt(this.input.max, 10) : null;
 
     if (event.target.name === 'plus') {
+      if (max != null && parseInt(this.input.value, 10) >= max) return;
       if (parseInt(this.input.dataset.min) > parseInt(this.input.step) && this.input.value == 0) {
         this.input.value = this.input.dataset.min;
       } else {
         this.input.stepUp();
       }
     } else {
-      this.input.stepDown();
+      const min = this.input.min ? parseInt(this.input.min, 10) : 0;
+      const current = parseInt(this.input.value, 10) || min;
+      if (current > min) this.input.stepDown();
     }
 
     if (previousValue !== this.input.value) this.input.dispatchEvent(this.changeEvent);
-
-    if (this.input.dataset.min === previousValue && event.target.name === 'minus') {
-      this.input.value = parseInt(this.input.min);
-    }
   }
 
   validateQtyRules() {
     const value = parseInt(this.input.value);
     if (this.input.min) {
       const buttonMinus = this.querySelector(".quantity__button[name='minus']");
-      buttonMinus.classList.toggle('disabled', parseInt(value) <= parseInt(this.input.min));
+      if (buttonMinus) {
+        const atMin = parseInt(value) <= parseInt(this.input.min);
+        buttonMinus.classList.toggle('disabled', atMin);
+        buttonMinus.disabled = atMin;
+      }
     }
     if (this.input.max) {
-      const max = parseInt(this.input.max);
+      const max = parseInt(this.input.max, 10);
       const buttonPlus = this.querySelector(".quantity__button[name='plus']");
-      buttonPlus.classList.toggle('disabled', value >= max);
+      if (buttonPlus) {
+        const atMax = value >= max;
+        buttonPlus.classList.toggle('disabled', atMax);
+        buttonPlus.disabled = atMax;
+      }
     }
   }
 }
@@ -286,7 +294,6 @@ function debounce(fn, wait) {
     t = setTimeout(() => fn.apply(this, args), wait);
   };
 }
-
 
 function throttle(fn, delay) {
   let lastCall = 0;
@@ -432,10 +439,10 @@ class MenuDrawer extends HTMLElement {
 
   bindEvents() {
     this.querySelectorAll('summary').forEach((summary) =>
-      summary.addEventListener('click', this.onSummaryClick.bind(this))
+      summary.addEventListener('click', this.onSummaryClick.bind(this)),
     );
     this.querySelectorAll(
-      'button:not(.localization-selector):not(.country-selector__close-button):not(.country-filter__reset-button)'
+      'button:not(.localization-selector):not(.country-selector__close-button):not(.country-filter__reset-button)',
     ).forEach((button) => button.addEventListener('click', this.onCloseButtonClick.bind(this)));
   }
 
@@ -566,7 +573,7 @@ class HeaderDrawer extends MenuDrawer {
       this.borderOffset || this.closest('.header-wrapper').classList.contains('header-wrapper--border-bottom') ? 1 : 0;
     document.documentElement.style.setProperty(
       '--header-bottom-position',
-      `${parseInt(this.header.getBoundingClientRect().bottom - this.borderOffset)}px`
+      `${parseInt(this.header.getBoundingClientRect().bottom - this.borderOffset)}px`,
     );
     this.header.classList.add('menu-open');
 
@@ -591,7 +598,7 @@ class HeaderDrawer extends MenuDrawer {
     this.header &&
       document.documentElement.style.setProperty(
         '--header-bottom-position',
-        `${parseInt(this.header.getBoundingClientRect().bottom - this.borderOffset)}px`
+        `${parseInt(this.header.getBoundingClientRect().bottom - this.borderOffset)}px`,
       );
     document.documentElement.style.setProperty('--viewport-height', `${window.innerHeight}px`);
   };
@@ -669,7 +676,7 @@ class BulkModal extends HTMLElement {
     };
 
     new IntersectionObserver(handleIntersection.bind(this)).observe(
-      document.querySelector(`#QuickBulk-${this.dataset.productId}-${this.dataset.sectionId}`)
+      document.querySelector(`#QuickBulk-${this.dataset.productId}-${this.dataset.sectionId}`),
     );
   }
 }
@@ -752,7 +759,7 @@ class SliderComponent extends HTMLElement {
     if (this.sliderItemsToShow.length < 2) return;
     this.sliderItemOffset = this.sliderItemsToShow[1].offsetLeft - this.sliderItemsToShow[0].offsetLeft;
     this.slidesPerPage = Math.floor(
-      (this.slider.clientWidth - this.sliderItemsToShow[0].offsetLeft) / this.sliderItemOffset
+      (this.slider.clientWidth - this.sliderItemsToShow[0].offsetLeft) / this.sliderItemOffset,
     );
     this.totalPages = this.sliderItemsToShow.length - this.slidesPerPage + 1;
     this.update();
@@ -783,7 +790,7 @@ class SliderComponent extends HTMLElement {
             currentPage: this.currentPage,
             currentElement: this.sliderItemsToShow[this.currentPage - 1],
           },
-        })
+        }),
       );
     }
 
@@ -860,7 +867,7 @@ class SlideshowComponent extends SliderComponent {
           () => {
             this.announcementBarArrowButtonWasClicked = true;
           },
-          { once: true }
+          { once: true },
         );
       });
     }
@@ -1104,7 +1111,7 @@ class VariantSelects extends HTMLElement {
 
       selectedDropdownSwatchValue.style.setProperty(
         '--swatch-focal-point',
-        target.selectedOptions[0].dataset.optionSwatchFocalPoint || 'unset'
+        target.selectedOptions[0].dataset.optionSwatchFocalPoint || 'unset',
       );
     } else if (tagName === 'INPUT' && target.type === 'radio') {
       const selectedSwatchValue = target.closest(`.product-form__input`).querySelector('[data-selected-value]');
@@ -1118,7 +1125,7 @@ class VariantSelects extends HTMLElement {
 
   get selectedOptionValues() {
     return Array.from(this.querySelectorAll('select option[selected], fieldset input:checked')).map(
-      ({ dataset }) => dataset.optionValueId
+      ({ dataset }) => dataset.optionValueId,
     );
   }
 }
@@ -1133,24 +1140,38 @@ class ProductRecommendations extends HTMLElement {
   }
 
   connectedCallback() {
-    this.initializeRecommendations(this.dataset.productId);
+    let fetchUrl;
+    if (this.dataset.url) {
+      if (this.dataset.productId && this.dataset.sectionId) {
+        fetchUrl = `${this.dataset.url}&product_id=${this.dataset.productId}&section_id=${this.dataset.sectionId}`;
+      } else {
+        fetchUrl = this.dataset.url;
+      }
+    }
+    if (fetchUrl) {
+      this.initializeRecommendations(fetchUrl);
+    }
+    if (this.querySelector('.scroll-nav')) {
+      this.initScrollNavigation();
+    }
   }
 
-  initializeRecommendations(productId) {
+  initializeRecommendations(fetchUrl) {
+    if (!fetchUrl) return;
     this.observer?.unobserve(this);
     this.observer = new IntersectionObserver(
       (entries, observer) => {
         if (!entries[0].isIntersecting) return;
         observer.unobserve(this);
-        this.loadRecommendations(productId);
+        this.loadRecommendations(fetchUrl);
       },
-      { rootMargin: '0px 0px 400px 0px' }
+      { rootMargin: '0px 0px 400px 0px' },
     );
     this.observer.observe(this);
   }
 
-  loadRecommendations(productId) {
-    fetch(`${this.dataset.url}&product_id=${productId}&section_id=${this.dataset.sectionId}`)
+  loadRecommendations(fetchUrl) {
+    fetch(fetchUrl)
       .then((response) => response.text())
       .then((text) => {
         const html = document.createElement('div');
@@ -1159,6 +1180,7 @@ class ProductRecommendations extends HTMLElement {
 
         if (recommendations?.innerHTML.trim().length) {
           this.innerHTML = recommendations.innerHTML;
+          this.initScrollNavigation();
         }
 
         if (!this.querySelector('slideshow-component') && this.classList.contains('complementary-products')) {
@@ -1173,9 +1195,49 @@ class ProductRecommendations extends HTMLElement {
         console.error(e);
       });
   }
+
+  initScrollNavigation() {
+    const container = this.querySelector('[id^="related-products-"]');
+    const prevButton = this.querySelector('.scroll-prev');
+    const nextButton = this.querySelector('.scroll-next');
+
+    if (!container || !prevButton || !nextButton) return;
+
+    const getScrollAmount = () => {
+      const item = container.querySelector('.grid__item');
+      const gap = parseFloat(getComputedStyle(container).gap) || 24;
+      return (item?.offsetWidth || 300) + gap;
+    };
+
+    prevButton.addEventListener('click', () => {
+      container.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+    });
+
+    nextButton.addEventListener('click', () => {
+      const maxScroll = container.scrollWidth - container.clientWidth;
+      const nextScroll = Math.min(container.scrollLeft + getScrollAmount(), maxScroll);
+      container.scrollTo({ left: nextScroll, behavior: 'smooth' });
+    });
+
+    const updateButtons = () => {
+      prevButton.disabled = container.scrollLeft <= 0;
+      nextButton.disabled = container.scrollLeft >= container.scrollWidth - container.clientWidth - 1;
+    };
+
+    container.addEventListener('scroll', () => {
+      const maxScroll = container.scrollWidth - container.clientWidth;
+      if (container.scrollLeft > maxScroll) {
+        container.scrollLeft = maxScroll;
+      }
+      updateButtons();
+    });
+    updateButtons();
+  }
 }
 
-customElements.define('product-recommendations', ProductRecommendations);
+if (!customElements.get('product-recommendations')) {
+  customElements.define('product-recommendations', ProductRecommendations);
+}
 
 class AccountIcon extends HTMLElement {
   constructor() {
@@ -1282,51 +1344,39 @@ if (!customElements.get('bulk-add')) {
 }
 
 class CartPerformance {
-  static #metric_prefix = "cart-performance"
+  static #metric_prefix = 'cart-performance';
 
   static createStartingMarker(benchmarkName) {
-    const metricName = `${CartPerformance.#metric_prefix}:${benchmarkName}`
+    const metricName = `${CartPerformance.#metric_prefix}:${benchmarkName}`;
     return performance.mark(`${metricName}:start`);
   }
 
   static measureFromEvent(benchmarkName, event) {
-    const metricName = `${CartPerformance.#metric_prefix}:${benchmarkName}`
+    const metricName = `${CartPerformance.#metric_prefix}:${benchmarkName}`;
     const startMarker = performance.mark(`${metricName}:start`, {
-      startTime: event.timeStamp
+      startTime: event.timeStamp,
     });
 
     const endMarker = performance.mark(`${metricName}:end`);
 
-    performance.measure(
-      metricName,
-      `${metricName}:start`,
-      `${metricName}:end`
-    );
+    performance.measure(metricName, `${metricName}:start`, `${metricName}:end`);
   }
 
   static measureFromMarker(benchmarkName, startMarker) {
-    const metricName = `${CartPerformance.#metric_prefix}:${benchmarkName}`
+    const metricName = `${CartPerformance.#metric_prefix}:${benchmarkName}`;
     const endMarker = performance.mark(`${metricName}:end`);
 
-    performance.measure(
-      metricName,
-      startMarker.name,
-      `${metricName}:end`
-    );
+    performance.measure(metricName, startMarker.name, `${metricName}:end`);
   }
 
   static measure(benchmarkName, callback) {
-    const metricName = `${CartPerformance.#metric_prefix}:${benchmarkName}`
+    const metricName = `${CartPerformance.#metric_prefix}:${benchmarkName}`;
     const startMarker = performance.mark(`${metricName}:start`);
 
     callback();
 
     const endMarker = performance.mark(`${metricName}:end`);
 
-    performance.measure(
-      metricName,
-      `${metricName}:start`,
-      `${metricName}:end`
-    );
+    performance.measure(metricName, `${metricName}:start`, `${metricName}:end`);
   }
 }

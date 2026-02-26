@@ -1,12 +1,5 @@
 {
   "sections": {
-    "main": {
-      "type": "main-page",
-      "settings": {
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
     "form": {
       "type": "contact-form",
       "settings": {
@@ -16,10 +9,16 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "heading": "Subscribe To Our Newsletter",
+        "subheading": "Be the first to know about new collections and exclusive offers",
+        "placeholder": "Email Address",
+        "button_text": "Subscribe"
+      }
     }
   },
-  "order": [
-    "main",
-    "form"
-  ]
+  "order": ["form", "newsletter"]
 }

@@ -12,7 +12,7 @@
 
 {{ 'component-quantity.css' | asset_url | stylesheet_tag }}
 
-<quantity-input class="quantity cart-quantity">
+<quantity-input class="quantity cart-quantity{% if is_product_form %} quantity--drawer-style{% endif %}">
   <button class="quantity__button" name="minus" type="button" data-target="decrement-{{ variant.id }}">
     <span class="visually-hidden">
       {{- 'products.product.quantity.decrease' | t: product: variant.title | escape -}}
@@ -29,6 +29,7 @@
     class="quantity__input"
     data-quantity-variant-id="{{ variant.id }}"
     type="number"
+    readonly
     {% if is_product_form %}
       name="quantity"
       value="1"

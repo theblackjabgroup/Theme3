@@ -35,9 +35,14 @@
       "next": "Next page",
       "previous": "Previous page"
     },
+    "breadcrumbs": {
+      "breadcrumb": "Breadcrumb",
+      "home": "Home"
+    },
     "search": {
       "search": "Search",
-      "reset": "Clear search term"
+      "reset": "Clear search term",
+      "placeholder": "Search for more products"
     },
     "cart": {
       "view": "View cart ({{ count }})",
@@ -152,9 +157,11 @@
         "price_range": "{{ minimum }} - {{ maximum }}"
       },
       "pickup_availability": {
+        "title": "Pickup Availability",
         "view_store_info": "View store information",
         "check_other_stores": "Check availability at other stores",
         "pick_up_available": "Pickup available",
+        "pick_up_unavailable": "Pickup unavailable",
         "pick_up_available_at_html": "Pickup available at <span class=\"color-foreground\">{{ location_name }}</span>",
         "pick_up_unavailable_at_html": "Pickup currently unavailable at <span class=\"color-foreground\">{{ location_name }}</span>",
         "unavailable": "Couldn't load pickup availability",
@@ -244,7 +251,8 @@
       "title": "Search results",
       "search_for": "Search for “{{ terms }}”",
       "suggestions": "Suggestions",
-      "pages": "Pages"
+      "pages": "Pages",
+      "related_words": "Related words"
     },
     "cart": {
       "cart": "Cart"
@@ -329,6 +337,10 @@
     },
     "collection_list": {
       "view_all": "View all"
+    },
+    "contact-form": {
+      "map_title": "Location map",
+      "map_no_address": "Add your address in Contact details to show the map."
     },
     "collection_template": {
       "empty": "No products found",
@@ -507,9 +519,14 @@
       "add_to_apple_wallet": "Add to Apple Wallet",
       "qr_image_alt": "QR code — scan to redeem gift card",
       "copy_code": "Copy gift card code",
+      "copy_button": "Copy Code",
+      "print_button": "Print",
       "expiration_date": "Expires {{ expires_on }}",
       "copy_code_success": "Code copied successfully",
-      "expired": "Expired"
+      "expired": "Expired",
+      "expired_stamp": "Expired",
+      "expired_subtext": "Contact the owner if it seems like a mistake",
+      "expired_title_html": "OOPS!<br>SEEMS LIKE YOUR GIFT<br>CARD HAS EXPIRED"
     }
   },
   "recipient": {

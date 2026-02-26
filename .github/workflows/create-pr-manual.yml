@@ -1,0 +1,89 @@
+name: Create PR (Manual, as PAT user)
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_branch:
+        description: "Source branch (head), e.g. feature/login-fix"
+        required: true
+        type: string
+      target_branch:
+        description: "Target branch (base), e.g. main"
+        required: true
+        type: string
+      title:
+        description: "PR title"
+        required: true
+        type: string
+      body:
+        description: "PR description/body"
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  create_pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create PR via GitHub API (auth as PAT user, always ready for review)
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PR_COMMENT_PAT }}
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            const source = String(context.payload.inputs.source_branch || "").trim();
+            const target = String(context.payload.inputs.target_branch || "").trim();
+            const title  = String(context.payload.inputs.title || "").trim();
+            const body   = String(context.payload.inputs.body || "").trim();
+
+            if (!source) throw new Error("source_branch is required");
+            if (!target) throw new Error("target_branch is required");
+            if (!title)  throw new Error("title is required");
+            if (source === target) throw new Error("source_branch and target_branch must be different");
+
+            // 1) Validate branches exist
+            async function assertBranch(branch) {
+              try {
+                await github.rest.repos.getBranch({ owner, repo, branch });
+              } catch {
+                throw new Error(`Branch not found: ${branch}`);
+              }
+            }
+            await assertBranch(source);
+            await assertBranch(target);
+
+            // 2) Check if PR already exists for head->base
+            // head format is "OWNER:branch" for same-repo branches
+            const head = `${owner}:${source}`;
+            const existing = await github.rest.pulls.list({
+              owner,
+              repo,
+              state: "open",
+              head,
+              base: target,
+              per_page: 10
+            });
+
+            if (existing.data.length > 0) {
+              const pr = existing.data[0];
+              core.notice(`PR already exists: ${pr.html_url}`);
+              return;
+            }
+
+            // 3) Create PR (explicitly NOT draft)
+            const created = await github.rest.pulls.create({
+              owner,
+              repo,
+              head: source,
+              base: target,
+              title,
+              body: body || undefined,
+              draft: false
+            });
+
+            core.notice(`Created PR (ready for review): ${created.data.html_url}`);

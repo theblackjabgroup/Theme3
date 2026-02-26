@@ -9,7 +9,12 @@
   Variables:
   - block: The block object containing settings (icon_1, text_1, etc.).
 {%- endcomment -%}
-<div class="icon-strip">
+<div class="icon-strip" style="
+  --icon-strip-font-size: {{ block.settings.font_size | default: 12 }}px;
+  --icon-strip-font-size-mobile: {{ block.settings.font_size_mobile | default: 11 }}px;
+  --icon-strip-font-weight: {{ block.settings.font_weight | default: 700 }};
+  --icon-strip-font-weight-mobile: {{ block.settings.font_weight_mobile | default: 600 }};
+">
   {% for i in (1..4) %}
     {% assign icon_key = 'icon_' | append: i %}
     {% assign text_key = 'text_' | append: i %}

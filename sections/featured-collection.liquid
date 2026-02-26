@@ -1,9 +1,43 @@
 {{ 'section-featured-collection.css' | asset_url | stylesheet_tag }}
-{{ 'component-primary-button.css' | asset_url | stylesheet_tag }}
+{{ 'card-base.css' | asset_url | stylesheet_tag }}
+{{ 'product-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'section-featured-collection.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .fc3d-card .custom-product-card .share-story-submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-primary-button-bg, #365330);
+    color: white;
+    border: 2px solid var(--color-primary-button-border, #365330);
+    padding: 16px 20px;
+    border-radius: var(--card-hover-button-border-radius, 12px);
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    width: fit-content;
+    box-shadow: 0 4px 0 0 var(--color-shadow, rgba(0,0,0,0.15));
+    transition: all 0.2s ease;
+    margin-top: 8px;
+    text-transform: none;
+    font-family: var(--font-heading-family);
+    letter-spacing: 0.02em;
+    line-height: 1;
+    text-decoration: none;
+  }
+  #shopify-section-{{ section.id }} .fc3d-card .custom-product-card .share-story-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 0 var(--color-shadow, rgba(0,0,0,0.15));
+  }
+{%- endstyle -%}
 
 {%- liquid
   assign featured_collection = section.settings.collection
+  if featured_collection == blank
+    assign featured_collection = collections | first
+  endif
   assign products_to_show = section.settings.products_to_show | default: 9
   assign scheme = section.settings.color_scheme
   if scheme == blank
@@ -26,9 +60,9 @@
       {%- endif -%}
 
       {%- if section.settings.show_shop_all and featured_collection != blank and featured_collection.url != blank -%}
-        {%- render 'primary-button',
+        {%- render 'submit-button',
           text: section.settings.shop_all_label | default: 'Shop all',
-          link: featured_collection.url,
+          url: section.settings.shop_all_link | default: featured_collection.url,
           class: 'fc3d__shop-all'
         -%}
       {%- endif -%}
@@ -37,145 +71,62 @@
     <div class="fc3d__viewport" data-fc3d-viewport>
       <div class="fc3d__rail" data-fc3d-rail role="list">
         {%- if featured_collection != blank and featured_collection.products_count > 0 -%}
-          {%- comment -%} First set of cards {%- endcomment -%}
+          {%- comment -%} First set: custom product cards {%- endcomment -%}
           {%- for product in featured_collection.products limit: products_to_show -%}
-            {%- assign product_image = product.featured_image | default: product.images.first -%}
-            {%- assign image_url = product_image | image_url: width: 800 -%}
-            <div class="fc3d-card" data-fc3d-card role="listitem">
-              <div class="fc3d-card__inner">
-                <div class="fc3d-card__face fc3d-card__face--front">
-                  <a
-                    class="fc3d-card__link"
-                    href="{{ product.url }}"
-                    aria-label="{{ product.title | escape }}"
-                    {%- if image_url != blank -%}
-                      style="background-image: url('{{ image_url }}');"
-                    {%- endif -%}
-                  >
-                    <!-- Main content -->
-                    <div class="fc3d-card__content">
-                      <div class="fc3d-card__title">{{ product.title }}</div>
-                    </div>
-                  </a>
-                </div>
-
-                <div class="fc3d-card__face fc3d-card__face--back">
-                  <a
-                    class="fc3d-card__link"
-                    href="{{ product.url }}"
-                    aria-label="{{ product.title | escape }}"
-                    {%- if image_url != blank -%}
-                      style="background-image: url('{{ image_url }}');"
-                    {%- endif -%}
-                  >
-                    <div class="fc3d-card__back-content">
-                      <div class="fc3d-card__back-title">{{ product.title }}</div>
-                      <div class="fc3d-card__back-price">{{ product.price | money }}</div>
-                      {%- if product.description != blank -%}
-                        <div class="fc3d-card__back-text">{{ product.description | strip_html | truncate: 120 }}</div>
-                      {%- endif -%}
-                      <div class="fc3d-card__back-cta">View product</div>
-                    </div>
-                  </a>
-                </div>
+            <div class="fc3d-card fc3d-card--custom" data-fc3d-card role="listitem">
+              <div class="fc3d-card__custom">
+                {%-
+                  render 'card-product',
+                  card_product: product,
+                  section_id: section.id,
+                  quick_add: 'none',
+                  lazy_load: forloop.index > 3,
+                  show_badge: section.settings.show_card_badge,
+                  badge_text: section.settings.card_badge_text,
+                  overlay_button_text: section.settings.overlay_button_text,
+                  fallback_description: section.settings.fallback_description
+                -%}
               </div>
             </div>
           {%- endfor -%}
           {%- comment -%} Duplicate set for infinite loop {%- endcomment -%}
           {%- for product in featured_collection.products limit: products_to_show -%}
-            {%- assign product_image = product.featured_image | default: product.images.first -%}
-            {%- assign image_url = product_image | image_url: width: 800 -%}
-            <div class="fc3d-card" data-fc3d-card data-fc3d-card-clone role="listitem">
-              <div class="fc3d-card__inner">
-                <div class="fc3d-card__face fc3d-card__face--front">
-                  <a
-                    class="fc3d-card__link"
-                    href="{{ product.url }}"
-                    aria-label="{{ product.title | escape }}"
-                    {%- if image_url != blank -%}
-                      style="background-image: url('{{ image_url }}');"
-                    {%- endif -%}
-                  >
-                    <!-- Main content -->
-                    <div class="fc3d-card__content">
-                      <div class="fc3d-card__title">{{ product.title }}</div>
-                    </div>
-                  </a>
-                </div>
-
-                <div class="fc3d-card__face fc3d-card__face--back">
-                  <a
-                    class="fc3d-card__link"
-                    href="{{ product.url }}"
-                    aria-label="{{ product.title | escape }}"
-                    {%- if image_url != blank -%}
-                      style="background-image: url('{{ image_url }}');"
-                    {%- endif -%}
-                  >
-                    <div class="fc3d-card__back-content">
-                      <div class="fc3d-card__back-title">{{ product.title }}</div>
-                      <div class="fc3d-card__back-price">{{ product.price | money }}</div>
-                      {%- if product.description != blank -%}
-                        <div class="fc3d-card__back-text">{{ product.description | strip_html | truncate: 120 }}</div>
-                      {%- endif -%}
-                      <div class="fc3d-card__back-cta">View product</div>
-                    </div>
-                  </a>
-                </div>
+            <div class="fc3d-card fc3d-card--custom" data-fc3d-card data-fc3d-card-clone role="listitem">
+              <div class="fc3d-card__custom">
+                {%-
+                  render 'card-product',
+                  card_product: product,
+                  section_id: section.id,
+                  quick_add: 'none',
+                  lazy_load: true,
+                  show_badge: section.settings.show_card_badge,
+                  badge_text: section.settings.card_badge_text,
+                  overlay_button_text: section.settings.overlay_button_text,
+                  fallback_description: section.settings.fallback_description
+                -%}
               </div>
             </div>
           {%- endfor -%}
         {%- else -%}
-          {%- comment -%} First set of placeholder cards {%- endcomment -%}
+          {%- comment -%} Placeholder when no collection or no products {%- endcomment -%}
           {%- for i in (1..products_to_show) -%}
-            {%- assign placeholder_title = 'Name of the product' -%}
-            <div class="fc3d-card" data-fc3d-card role="listitem">
-              <div class="fc3d-card__inner">
-                <div class="fc3d-card__face fc3d-card__face--front">
-                  <div class="fc3d-card__link" role="link" aria-label="Placeholder product">
-                    <!-- Main content -->
-                    <div class="fc3d-card__content">
-                      <div class="fc3d-card__title">{{ placeholder_title }}</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="fc3d-card__face fc3d-card__face--back">
-                  <div class="fc3d-card__link" role="link" aria-label="Placeholder product">
-                    <div class="fc3d-card__back-content">
-                      <div class="fc3d-card__back-title">Back side content</div>
-                      <div class="fc3d-card__back-text">
-                        Add a collection in the section settings to show real products.
-                      </div>
-                    </div>
-                  </div>
+            <div class="fc3d-card fc3d-card--custom fc3d-card--placeholder" data-fc3d-card role="listitem">
+              <div class="fc3d-card__custom">
+                <div class="fc3d-card__placeholder">
+                  {{ 'product-apparel-2' | placeholder_svg_tag: 'fc3d-card__placeholder-svg' }}
+                  <div class="fc3d-card__placeholder-title">Product {{ i }}</div>
+                  <p class="fc3d-card__placeholder-text">Add a collection in the section settings. By default the first collection is used.</p>
                 </div>
               </div>
             </div>
           {%- endfor -%}
-          {%- comment -%} Duplicate set for infinite loop {%- endcomment -%}
           {%- for i in (1..products_to_show) -%}
-            {%- assign placeholder_title = 'Name of the product' -%}
-            <div class="fc3d-card" data-fc3d-card data-fc3d-card-clone role="listitem">
-              <div class="fc3d-card__inner">
-                <div class="fc3d-card__face fc3d-card__face--front">
-                  <div class="fc3d-card__link" role="link" aria-label="Placeholder product">
-                    <!-- Main content -->
-                    <div class="fc3d-card__content">
-                      <div class="fc3d-card__title">{{ placeholder_title }}</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="fc3d-card__face fc3d-card__face--back">
-                  <div class="fc3d-card__link" role="link" aria-label="Placeholder product">
-                    <div class="fc3d-card__back-content">
-                      <div class="fc3d-card__back-title">Back side content</div>
-                      <div class="fc3d-card__back-text">
-                        Add a collection in the section settings to show real products.
-                      </div>
-                    </div>
-                  </div>
+            <div class="fc3d-card fc3d-card--custom fc3d-card--placeholder" data-fc3d-card data-fc3d-card-clone role="listitem">
+              <div class="fc3d-card__custom">
+                <div class="fc3d-card__placeholder">
+                  {{ 'product-apparel-2' | placeholder_svg_tag: 'fc3d-card__placeholder-svg' }}
+                  <div class="fc3d-card__placeholder-title">Product {{ i }}</div>
+                  <p class="fc3d-card__placeholder-text">Add a collection in the section settings. By default the first collection is used.</p>
                 </div>
               </div>
             </div>
@@ -185,50 +136,18 @@
     </div>
 
     <div class="fc3d__controls" style="gap: {{ section.settings.nav_button_spacing | default: 16 }}px;">
-      <button 
-        class="fc3d__nav fc3d__nav--prev" 
-        type="button" 
-        data-fc3d-prev 
-        aria-label="Previous"
-        style="
-          width: {{ section.settings.nav_button_width | default: 64 }}px;
-          height: {{ section.settings.nav_button_height | default: 56 }}px;
-          padding: {{ section.settings.nav_button_padding | default: 0 }}px;
-          font-size: {{ section.settings.nav_button_font_size | default: 24 }}px;
-          {% if section.settings.nav_button_prev_image != blank %}
-            background-image: url('{{ section.settings.nav_button_prev_image | image_url: width: 200 }}');
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
-          {% endif %}
-        "
-      >
-        {% if section.settings.nav_button_prev_image == blank %}
-          <span aria-hidden="true" style="font-size: {{ section.settings.nav_button_font_size | default: 24 }}px;">←</span>
-        {% endif %}
-      </button>
-      <button 
-        class="fc3d__nav fc3d__nav--next" 
-        type="button" 
-        data-fc3d-next 
-        aria-label="Next"
-        style="
-          width: {{ section.settings.nav_button_width | default: 64 }}px;
-          height: {{ section.settings.nav_button_height | default: 56 }}px;
-          padding: {{ section.settings.nav_button_padding | default: 0 }}px;
-          font-size: {{ section.settings.nav_button_font_size | default: 24 }}px;
-          {% if section.settings.nav_button_next_image != blank %}
-            background-image: url('{{ section.settings.nav_button_next_image | image_url: width: 200 }}');
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
-          {% endif %}
-        "
-      >
-        {% if section.settings.nav_button_next_image == blank %}
-          <span aria-hidden="true" style="font-size: {{ section.settings.nav_button_font_size | default: 24 }}px;">→</span>
-        {% endif %}
-      </button>
+      {% render 'submit-button',
+        text: '←',
+        type: 'button',
+        class: 'fc3d__nav fc3d__nav--prev',
+        attributes: 'data-fc3d-prev aria-label="Previous"'
+      %}
+      {% render 'submit-button',
+        text: '→',
+        type: 'button',
+        class: 'fc3d__nav fc3d__nav--next',
+        attributes: 'data-fc3d-next aria-label="Next"'
+      %}
     </div>
   </div>
 </section>
@@ -236,6 +155,7 @@
 {% schema %}
 {
   "name": "Featured collection",
+  "disabled_on": { "groups": ["header", "footer"] },
   "tag": "section",
   "class": "section",
   "settings": [
@@ -254,7 +174,8 @@
     {
       "type": "collection",
       "id": "collection",
-      "label": "Collection"
+      "label": "Collection",
+      "info": "Leave blank to use the first collection in your store."
     },
     {
       "type": "range",
@@ -272,10 +193,44 @@
       "default": true
     },
     {
+      "type": "url",
+      "id": "shop_all_link",
+      "label": "Shop all link",
+      "info": "Optional. When set, used for the Shop all button. Otherwise uses the collection URL."
+    },
+    {
       "type": "text",
       "id": "shop_all_label",
       "label": "Shop all label",
       "default": "Shop all"
+    },
+    {
+      "type": "header",
+      "content": "Product card"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_card_badge",
+      "label": "Show badge on cards",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "card_badge_text",
+      "label": "Badge text",
+      "info": "Shown on all cards when badge is enabled"
+    },
+    {
+      "type": "text",
+      "id": "overlay_button_text",
+      "label": "Overlay button text",
+      "default": "Love that! (Check it out)"
+    },
+    {
+      "type": "textarea",
+      "id": "fallback_description",
+      "label": "Fallback description",
+      "info": "Used when a product has no description"
     },
     {
       "type": "header",
