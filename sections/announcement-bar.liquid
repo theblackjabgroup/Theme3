@@ -66,6 +66,36 @@
             circle_bg: 'var(--btn-tertiary-bg)',
             orbit_color: 'var(--btn-secondary-text)'
           %}
+        {%- when 'countdown' -%}
+          {%- comment -%} Legacy: countdown block type removed from schema; render label as static marquee for existing sections. {%- endcomment -%}
+          {%
+            render 'scrolling-text-item',
+            id: block.id,
+            shopify_attributes: block.shopify_attributes,
+            speed: duration,
+            direction: 'normal',
+            pause_on_hover: section.settings.pause_on_hover,
+            bg_color: 'transparent',
+            border_radius: 0,
+            padding: 0,
+            text_size: section.settings.font_size,
+            text_weight: section.settings.font_weight,
+            pill_bg: 'var(--btn-secondary-bg)',
+            pill_color: 'var(--btn-secondary-text)',
+            pill_height: section.settings.bar_min_height | default: 44,
+            pill_radius: section.settings.pill_border_radius,
+            pill_padding_x: section.settings.pill_padding_x,
+            pill_padding_y: section.settings.pill_padding_y,
+            text_transform: section.settings.text_transform,
+            item_gap: section.settings.separator_gap,
+            orbit_text: block.settings.label | default: 'Ends in:',
+            text: block.settings.label | default: 'Ends in:',
+            circle_icon: section.settings.separator_image,
+            circle_width: section.settings.separator_size,
+            circle_height: section.settings.separator_size,
+            circle_bg: 'var(--btn-tertiary-bg)',
+            orbit_color: 'var(--btn-secondary-text)'
+          %}
       {%- endcase -%}
     {%- endfor -%}
   </div>
