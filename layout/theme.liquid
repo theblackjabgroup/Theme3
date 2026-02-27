@@ -59,10 +59,6 @@
         --gap-component: 8px;
         --padding-medium: 16px;
         --padding-large: 24px;
-        --h3-size: 18px;
-        --body-text-regular: 14px;
-        --body-text-small: 12px;
-        --body-text-large: 16px;
         --radius-small: 4px;
         --radius-medium: 8px;
         --radius-large: 25px;
@@ -159,9 +155,6 @@
         --font-subheading-style: {{ settings.type_header_font.style }};
         --font-subheading-weight: {{ settings.type_header_font.weight }};
         {% endif %}
-
-        --font-body-scale: {{ settings.body_scale | divided_by: 100.0 }};
-        --font-heading-scale: {{ settings.heading_scale | times: 1.0 | divided_by: settings.body_scale }};
 
         /* Legacy font variables for backward compatibility */
         --font-family-primary: var(--font-body-family);
