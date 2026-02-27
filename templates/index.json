@@ -64,7 +64,7 @@
           "type": "text_card", 
           "settings": { 
             "heading": "Card Heading",
-            "paragraph": "<p>Lorem ipsum dolor sit amet, this card is scrollable</p>",
+            "paragraph": "<p></p>",
             "button_text": "Button Text",
             "column_span": 2, 
             "row_span": 4.4,
