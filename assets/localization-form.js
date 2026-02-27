@@ -42,7 +42,13 @@ if (!customElements.get('localization-form')) {
           this.elements.resetButton.addEventListener('mousedown', (event) => event.preventDefault());
         }
 
-        this.querySelectorAll('a').forEach((item) => item.addEventListener('click', this.onItemClick.bind(this)));
+        this.addEventListener('click', (e) => {
+          const link = e.target.closest('a[data-value]');
+          if (link && this.contains(link)) {
+            e.preventDefault();
+            this.onItemClick({ currentTarget: link, preventDefault: () => e.preventDefault() });
+          }
+        });
       }
 
       disconnectedCallback() {
@@ -137,6 +143,8 @@ if (!customElements.get('localization-form')) {
           return;
         }
 
+        this.lazyLoadCountryList();
+
         this.elements.button.focus();
         this.elements.panel.removeAttribute('hidden');
         this.elements.button.setAttribute('aria-expanded', 'true');
@@ -151,6 +159,42 @@ if (!customElements.get('localization-form')) {
         }
         const menuDrawer = document.querySelector('.menu-drawer');
         if (menuDrawer) menuDrawer.classList.add('country-selector-open');
+      }
+
+      lazyLoadCountryList() {
+        const list = this.querySelector('ul.countries');
+        if (!list || list.hasAttribute('data-loaded')) return;
+        const script = this.querySelector('script[id$="-country-data"]');
+        if (!script) return;
+        try {
+          const data = JSON.parse(script.textContent);
+          const current = script.getAttribute('data-current') || '';
+          const showCurrencies = script.getAttribute('data-show-currencies') === 'true';
+          const tpl = this.querySelector('.country-checkmark-tpl');
+          const checkmarkHtml = tpl ? tpl.innerHTML : '';
+          const currencyClass = showCurrencies ? '' : ' hidden';
+          data.forEach((country) => {
+            const isCurrent = country.iso_code === current;
+            const li = document.createElement('li');
+            li.className = 'disclosure__item';
+            li.tabIndex = -1;
+            const link = document.createElement('a');
+            link.className = 'link link--text disclosure__link caption-large focus-inset';
+            link.href = '#';
+            if (isCurrent) link.setAttribute('aria-current', 'true');
+            link.dataset.value = country.iso_code;
+            link.id = country.name;
+            link.innerHTML =
+              `<span ${isCurrent ? '' : 'class="visibility-hidden"'}>${checkmarkHtml}</span>` +
+              `<span class="country"><img src="${country.flag_url || ''}" loading="lazy" class="localization-flag" alt=""> ${country.name}</span>` +
+              `<span class="localization-form__currency motion-reduce${currencyClass}">${country.currency.iso_code} ${country.currency.symbol}</span>`;
+            li.appendChild(link);
+            list.appendChild(li);
+          });
+          list.setAttribute('data-loaded', 'true');
+        } catch (e) {
+          console.warn('Localization: could not load country list', e);
+        }
       }
 
       closeSelector(event) {
