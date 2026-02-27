@@ -163,9 +163,6 @@
         --font-subheading-weight: {{ settings.type_header_font.weight }};
         {% endif %}
 
-        --font-body-scale: {{ settings.body_scale | divided_by: 100.0 }};
-        --font-heading-scale: {{ settings.heading_scale | times: 1.0 | divided_by: settings.body_scale }};
-
         /* Legacy font variables for backward compatibility */
         --font-family-primary: var(--font-body-family);
         --font-body-size: 16px;
