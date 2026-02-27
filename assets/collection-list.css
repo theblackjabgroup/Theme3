@@ -6,7 +6,7 @@
 /* Full-width header box (main heading + tag) - same look as cards */
 .custom-collection-list__header-box {
   width: 100%;
-  background: var(--color-header-button-background);
+  background: var(--color-card-bg);
   border: 1px solid var(--color-borders);
   border-radius: 24px;
   padding: 24px;

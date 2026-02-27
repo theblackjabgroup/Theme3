@@ -52,7 +52,7 @@
   position: relative;
 }
 
-/* Trigger uses submit-button snippet structure (shadow + content); summary is transparent */
+/* Summary as trigger: only reset list marker and cursor; global-btn tertiary handles look */
 .facets-drawer-trigger {
   list-style: none;
   cursor: pointer;
@@ -61,31 +61,6 @@
 
 .facets-drawer-trigger::-webkit-details-marker {
   display: none;
-}
-
-/* When using submit-button structure, let snippet styles handle look; only reset summary */
-.facets-drawer-trigger.share-story-submit {
-  background: transparent !important;
-  border: none !important;
-  padding: 0 !important;
-  box-shadow: none !important;
-  display: inline-block;
-}
-
-.facets-drawer-trigger.share-story-submit:hover {
-  transform: none;
-}
-
-details.facets-drawer[open] .facets-drawer-trigger.share-story-submit {
-  transform: none;
-}
-
-details.facets-drawer[open] .facets-drawer-trigger.share-story-submit .submit-button__content {
-  transform: translate(0, 1px);
-}
-
-.facets-drawer-trigger.share-story-submit .submit-button__content {
-  padding: 10px 28px !important;
 }
 
 .facets-container fieldset {
@@ -138,7 +113,7 @@ body.facets-drawer-open .facets-drawer * {
   max-width: 440px;
   height: 95vh;
   margin: 0;
-  background: var(--color-background);
+  background: var(--color-card-bg);
   z-index: 9999;
   overflow-y: auto;
   overflow-x: hidden;
@@ -247,7 +222,7 @@ body.facets-drawer-open .facets-drawer * {
   align-items: center;
   margin-bottom: 20px;
   padding-bottom: 16px;
-  border-bottom: 2px solid var(--color-headings);
+  border-bottom: 1px solid var(--color-headings);
 }
 
 .facets-drawer__title {
@@ -309,8 +284,8 @@ body.facets-drawer-open .facets-drawer * {
 .facets-drawer .active-facets__button {
   display: inline-flex;
   align-items: center;
-  background: var(--collection-filter-tag-bg, var(--color-accent-pink));
-  color: var(--collection-filter-tag-text-color, var(--color-headings));
+  background: var(--color-heading);
+  color: var(--color-card-bg);
   padding: var(--collection-filter-tag-padding-vertical, 6px) var(--collection-filter-tag-padding-horizontal, 12px);
   text-decoration: none;
   font-weight: var(--collection-filter-tag-font-weight, 700);
@@ -318,20 +293,32 @@ body.facets-drawer-open .facets-drawer * {
   gap: 6px;
   border: var(--collection-filter-tag-border-width, 0px) solid
     var(--collection-filter-tag-border-color, transparent);
-  border-radius: var(--collection-filter-tag-border-radius, 0px);
+  border-radius: var(--collection-filter-tag-border-radius, 10px);
   text-transform: var(--collection-filter-tag-text-transform, uppercase);
   letter-spacing: var(--collection-filter-tag-letter-spacing, 0.03em);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-
+.facets-drawer__apply-button .global-btn__shadow{
+  top:9px !important;
+}
 .facets-drawer .active-facets__button:hover {
   transform: translateY(-1px);
   box-shadow: 0 2px 8px color-mix(in srgb, var(--color-headings) 20%, transparent);
 }
 
-.active-facets__button-close svg {
-  width: var(--collection-filter-tag-close-icon-size, 5px);
-  height: var(--collection-filter-tag-close-icon-size, 5px);
+.facets-drawer .active-facets__button-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  line-height: 0;
+}
+
+.facets-drawer .active-facets__button-close svg {
+  width: var(--collection-filter-tag-close-icon-size, 10px);
+  height: var(--collection-filter-tag-close-icon-size, 10px);
+  display: block;
+  vertical-align: middle;
 }
 
 .active-facets__clear-all a {
@@ -355,7 +342,7 @@ body.facets-drawer-open .facets-drawer * {
   font-family: monospace;
   font-size: 1.2rem;
   font-weight: 700;
-  color: var(--color-headings);
+  color: var(--color-text);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   text-align: left;
@@ -378,25 +365,27 @@ body.facets-drawer-open .facets-drawer * {
   display: none;
 }
 
+/* Filter checkboxes: 3D like global-btn (shadow below face), no hover/click effects */
 .facets-drawer .facet-checkbox__custom {
   width: 28px;
   height: 20px;
-  border: 2px solid var(--color-headings);
+  border: 1.5px solid var(--btn-primary-border, var(--color-btn-shadow, #000000));
   border-radius: 6px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  background: transparent;
+  background: var(--btn-primary-bg, #F8F3F8);
   margin-right: 10px;
   position: relative;
   box-sizing: border-box;
-  box-shadow: 0px 3px 0px 0px var(--color-shadow);
+  /* Shadow below the face (3D lift), not above */
+  box-shadow: 0 3px 0 0 var(--btn-primary-shadow, var(--color-btn-shadow, #000000));
 }
 
 .facets-drawer .facet-checkbox input[type="checkbox"]:checked + .facet-checkbox__custom {
-  background: var(--color-headings);
-  box-shadow: 0px 3px 0px 0px var(--color-shadow);
+  background: var(--btn-primary-bg, #F8F3F8);
+  border-color: var(--btn-primary-border, #000000);
 }
 
 .facets-drawer .facet-checkbox input[type="checkbox"]:checked + .facet-checkbox__custom::after {
@@ -406,15 +395,15 @@ body.facets-drawer-open .facets-drawer * {
   top: 50%;
   width: 8px;
   height: 5px;
-  border-left: 2px solid var(--color-background);
-  border-bottom: 2px solid var(--color-background);
-  transform: translate(-50%, -50%) rotate(-45deg);
+  border-left: 2px solid var(--color-text);
+  border-bottom: 2px solid var(--color-text);
+  transform: translate(-50%, -80%) rotate(-45deg);
 }
 
 .facets-drawer .facet-checkbox__text {
   font-family: monospace;
   font-size: 1.05rem;
-  color: var(--color-headings);
+  color: var(--color-text);
   font-weight: 600;
 }
 
@@ -537,7 +526,7 @@ body.facets-drawer-open .facets-drawer * {
 
 .price-facet-inputs-container .field {
   flex: 1;
-  border: 2px solid rgba(0,0,0,0.2);
+  border: 1px solid var(--color-text);
   border-radius: 8px;
   padding: 8px 12px;
   display: flex;
@@ -594,7 +583,7 @@ body.facets-drawer-open .facets-drawer * {
   font-family: monospace;
   font-size: 1.05rem;
   font-weight: 500;
-  color: var(--color-headings);
+  color: var(--color-text);
   text-align: left;
   cursor: pointer;
 }
@@ -603,21 +592,23 @@ body.facets-drawer-open .facets-drawer * {
   background: transparent;
 }
 
+/* Sort options: 3D like global-btn (shadow below face), no hover/click effects */
 .facets-drawer--sort .facet-radio__custom {
   width: 28px;
   height: 20px;
-  border: 2px solid var(--color-headings);
+  border: 1.5px solid var(--btn-primary-border, var(--color-btn-shadow, #000000));
   border-radius: 6px;
-  background: transparent;
+  background: var(--btn-primary-bg, #F8F3F8);
   flex-shrink: 0;
   position: relative;
   box-sizing: border-box;
-  box-shadow: 0px 3px 0px 0px var(--color-shadow);
+  /* Shadow below the face (3D lift), not above */
+  box-shadow: 0 2px 0 0 var(--btn-primary-shadow, var(--color-btn-shadow, #000000));
 }
 
 .facets-drawer--sort .facets-drawer__sort-option--active .facet-radio__custom {
-  background: var(--color-headings);
-  box-shadow: 0px 3px 0px 0px var(--color-shadow);
+  background: var(--btn-primary-bg, #F8F3F8);
+  border-color: var(--btn-primary-border, #000000);
 }
 
 .facets-drawer--sort .facets-drawer__sort-option--active .facet-radio__custom::after {
@@ -627,27 +618,19 @@ body.facets-drawer-open .facets-drawer * {
   top: 50%;
   width: 8px;
   height: 5px;
-  border-left: 2px solid var(--color-background);
-  border-bottom: 2px solid var(--color-background);
+  border-left: 2px solid var(--btn-primary-text, var(--color-text));
+  border-bottom: 2px solid var(--btn-primary-text, var(--color-text));
   transform: translate(-50%, -70%) rotate(-45deg);
 }
 
-/* Apply button: keep default button styling, only pink background */
+/* Footer: layout only; apply button uses global-btn (no section overrides) */
 .facets-drawer__footer {
   margin-top: 28px;
   padding: 20px 0 24px;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.facets-drawer__apply-button {
-  --color-primary-button-bg: var(--color-accent-pink);
-}
-
-.facets-drawer__apply-button:hover .submit-button__content,
-.facets-drawer__apply-button:active .submit-button__content {
-  background-color: var(--color-accent-pink);
+  overflow: visible;
 }
 
 .facets__form {
@@ -681,7 +664,7 @@ facet-filters-form.facets .facets__form {
   padding: 7px 20px !important;
   border-radius: 50px !important;
   border: 2px solid black !important;
-  background-color: var(--color-header-button-background) !important;
+  background-color: var(--color-card-bg) !important;
   color: black !important;
   font-family: var(--font-body-family);
   font-weight: 700;
@@ -917,7 +900,7 @@ details[open] .facets__summary {
   padding: 10px 40px 10px 20px !important;
   border-radius: 50px !important;
   border: 2px solid black !important;
-  background-color: var(--color-header-button-background) !important;
+  background-color: var(--color-card-bg) !important;
   font-family: var(--font-body-family);
   font-weight: 700;
   font-size: 1.2rem;

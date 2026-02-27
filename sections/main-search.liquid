@@ -123,7 +123,7 @@
 {%- endstyle -%}
 
 {% paginate search.results by 24 %}
-  <div class="template-search{% unless search.performed and search.results_count > 0 %} template-search--empty{% endunless %} section-{{ section.id }}-padding">
+  <div class="color-{{ section.settings.color_scheme }} template-search{% unless search.performed and search.results_count > 0 %} template-search--empty{% endunless %} section-{{ section.id }}-padding">
     {%- comment -%} Search page header: breadcrumb, title, search bar {%- endcomment -%}
     <header class="main-search-page-header {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
       <div class="main-search-page-header__top">
@@ -440,6 +440,12 @@
     {
       "type": "header",
       "content": "Search header – typography & spacing"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
     },
     {
       "type": "range",

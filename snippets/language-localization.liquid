@@ -83,13 +83,6 @@
             data-value="{{ language.iso_code }}"
           >
             <div class="language-info">
-              <span
-                {% if language.iso_code != localization.language.iso_code %}
-                  class="visibility-hidden"
-                {% endif %}
-              >
-                {{- 'icon-checkmark.svg' | inline_asset_content -}}
-              </span>
               <span class="language-name">
                 {%- if language.iso_code == 'en' -%}
                   <img
@@ -103,10 +96,8 @@
                 {%- endif -%}
                 {{ language.endonym_name | capitalize }}
               </span>
+              <span class="localization-form__currency motion-reduce">{{ language.iso_code | upcase }}</span>
             </div>
-            <span class="localization-form__currency motion-reduce">
-              {{ language.iso_code | upcase }}
-            </span>
           </a>
         </li>
       {%- endfor -%}

@@ -97,6 +97,14 @@
       class="visually-hidden sr-search-results"
       aria-live="polite"
     ></div>
+    <script type="application/json" id="{{ localPosition }}-country-data" data-current="{{ localization.country.iso_code }}" data-show-currencies="{{ show_currencies }}">
+      [
+        {%- for country in localization.available_countries -%}
+        {"iso_code":{{ country.iso_code | json }},"name":{{ country.name | json }},"flag_url":{{ country | image_url: width: 32 | json }},"currency":{"iso_code":{{ country.currency.iso_code | json }},"symbol":{{ country.currency.symbol | json }}}}{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]
+    </script>
+    <template class="country-checkmark-tpl">{{ 'icon-checkmark.svg' | inline_asset_content }}</template>
     <div
       class="disclosure__list country-selector__list{% if show_currencies %} country-selector__list--with-multiple-currencies{% endif %}"
       id="{{ localPosition }}-country-results"
@@ -138,37 +146,7 @@
           {%- endfor -%}
         </ul>
       {% endif %}
-      <ul role="list" class="list-unstyled countries">
-        {%- for country in localization.available_countries -%}
-          <li class="disclosure__item" tabindex="-1">
-            <a
-              class="link link--text disclosure__link caption-large focus-inset"
-              href="#"
-              {% if country.iso_code == localization.country.iso_code %}
-                aria-current="true"
-              {% endif %}
-              data-value="{{ country.iso_code }}"
-              id="{{ country.name }}"
-            >
-              <span
-                {% if country.iso_code != localization.country.iso_code %}
-                  class="visibility-hidden"
-                {% endif %}
-              >
-                {{- 'icon-checkmark.svg' | inline_asset_content -}}
-              </span>
-              <span class="country">
-                {{ country | image_url: width: 32 | image_tag: loading: 'lazy', class: 'localization-flag' }}
-                {{- country.name }}
-              </span>
-              <span class="localization-form__currency motion-reduce{% unless show_currencies %} hidden{% endunless %}">
-                {{ country.currency.iso_code }}
-                {{ country.currency.symbol -}}
-              </span>
-            </a>
-          </li>
-        {%- endfor -%}
-      </ul>
+      <ul role="list" class="list-unstyled countries" id="{{ localPosition }}-country-results-list" aria-label="{{ 'localization.country_label' | t }}"></ul>
     </div>
   </div>
   <div class="country-selector__overlay"></div>

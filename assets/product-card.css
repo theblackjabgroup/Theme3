@@ -63,7 +63,7 @@
   gap: 8px;
   padding: var(--card-price-padding-vertical, 10px) var(--card-price-padding-horizontal, 18px);
   min-width: 80px;
-  border: var(--card-price-border-width, 1px) solid var(--color-primary-button-border, var(--color-borders));
+  border: var(--card-price-border-width, 1px) solid var(--color-text);
   border-radius: var(--card-price-border-radius, var(--card-price-button-border-radius, 20px));
   font-family: var(--font-heading-family);
   font-weight: var(--card-price-font-weight, 700);
@@ -71,7 +71,7 @@
   line-height: 1;
   letter-spacing: 0.02em;
   color: var(--color-text);
-  background-color: var(--color-header-button-background, transparent);
+  background-color: var(--color-card-bg, transparent);
   transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
@@ -125,8 +125,8 @@
 /* Overlay button: submit-button snippet; styles and settings in card-base.css (uses --card-hover-button-*) */
 
 .custom-product-card__badge {
-  border: 1px solid #FF4D4D;
-  color: #FF4D4D;
+  border: 1px solid var(--color-heading);
+  color: var(--color-heading);
   border-radius: 20px;
   padding: 4px 16px;
   font-weight: 700;

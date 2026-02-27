@@ -164,7 +164,7 @@
 .contact-page__left-card {
   display: flex;
   flex-direction: column;
-  background: var(--color-header-button-background);
+  background: var(--color-card-bg);
   border: none;
   border-radius: var(--contact-card-radius, 12px);
   overflow: hidden;
@@ -281,7 +281,7 @@
 
 /* Right column and other cards (form) keep generic card style */
 .contact-page__card {
-  background: var(--color-header-button-background);
+  background: var(--color-card-bg);
   border-radius: var(--contact-card-radius, 20px);
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
@@ -344,14 +344,7 @@
   text-decoration: underline;
 }
 
-/* Send button: full width of form */
-.contact-page__submit-btn {
-  width: 230px  !important;
-}
 
-.contact-page__submit .share-story-submit {
-  width: 230px  !important;
-}
 
 /* Inputs: 3D style like submit button (shadow layer extends below, content on top) */
 .contact-page__field {
@@ -391,7 +384,7 @@
   font-size: var(--contact-body-size, 1rem);
   font-family: var(--font-body-family), sans-serif;
   color: var(--contact-text, #2d2d2d);
-  background-color: var(--color-primary-button-bg, #fff);
+  background-color: var(--color-card-bg);
   border: 1px solid var(--color-primary-button-border, #3B5237);
   border-radius: var(--radius-l, 14px);
   outline: none;

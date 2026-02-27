@@ -2,17 +2,17 @@
 
 {%- style -%}
   #shopify-section-{{ section.id }} .email-popup {
-    --popup-bg: {{ section.settings.background_color }};
-    --popup-overlay: {{ section.settings.overlay_color }};
-    --popup-heading-color: {{ section.settings.heading_color }};
-    --popup-text-color: {{ section.settings.text_color }};
-    --popup-envelope-color: {{ section.settings.envelope_color }};
-    --popup-input-bg: {{ section.settings.input_background }};
-    --popup-input-border: {{ section.settings.input_border_color }};
-    --popup-button-bg: {{ section.settings.button_background }};
-    --popup-button-icon: {{ section.settings.button_icon_color }};
-    --popup-button-shadow: {{ section.settings.input_border_color | default: '#3f473e' | color_darken: 20 }};
-    --popup-close-color: {{ section.settings.close_button_color }};
+    --popup-bg: var(--color-card-bg);
+    --popup-overlay: rgba(0,0,0,0.5);
+    --popup-heading-color: var(--color-heading);
+    --popup-text-color: var(--color-text);
+    --popup-envelope-color: var(--btn-primary-text);
+    --popup-input-bg: var(--color-input-bg);
+    --popup-input-border: var(--color-input-border);
+    --popup-button-bg: var(--btn-primary-bg);
+    --popup-button-icon: var(--btn-primary-text);
+    --popup-button-shadow: var(--btn-primary-shadow);
+    --popup-close-color: var(--color-text);
     --popup-close-width: {{ section.settings.close_button_width | default: 44 }}px;
     --popup-close-height: {{ section.settings.close_button_height | default: 44 }}px;
     --popup-close-icon-size: {{ section.settings.close_icon_size | default: 24 }}px;
@@ -116,7 +116,7 @@
 >
   <div class="email-popup__overlay" data-close></div>
   <div
-    class="email-popup__panel email-popup__panel--v-{{ section.settings.position_vertical }} email-popup__panel--h-{{ section.settings.position_horizontal }} email-popup__panel--v-mobile-{{ section.settings.position_vertical_mobile }} email-popup__panel--h-mobile-{{ section.settings.position_horizontal_mobile }} email-popup__panel--animate-{{ section.settings.animation_direction }} email-popup__panel--animate-mobile-{{ section.settings.animation_direction_mobile }}"
+    class="email-popup__panel color-{{ section.settings.color_scheme }} email-popup__panel--v-{{ section.settings.position_vertical }} email-popup__panel--h-{{ section.settings.position_horizontal }} email-popup__panel--v-mobile-{{ section.settings.position_vertical_mobile }} email-popup__panel--h-mobile-{{ section.settings.position_horizontal_mobile }} email-popup__panel--animate-{{ section.settings.animation_direction }} email-popup__panel--animate-mobile-{{ section.settings.animation_direction_mobile }}"
     role="dialog"
     aria-modal="true"
     aria-labelledby="EmailPopupHeading-{{ section.id }}"
@@ -158,7 +158,7 @@
           </svg>
           <div
             class="email-popup__card"
-            style="background-color: {{ section.settings.card_background }}; color: {{ section.settings.card_text_color }}; --card-text-size: {{ section.settings.card_text_size }}px;"
+            style="background-color: var(--color-card-bg); color: var(--color-text); --card-text-size: {{ section.settings.card_text_size }}px;"
           >
             <span class="email-popup__card-text">{{ shop.name }}</span>
           </div>
@@ -207,7 +207,7 @@
           {%- endcapture -%}
           {%- assign submit_aria = section.settings.submit_label | default: 'Subscribe' -%}
           <div class="email-popup__submit-wrap">
-            {%- render 'submit-button', type: 'submit', class: 'email-popup__submit', icon: popup_submit_icon, icon_only: true, attributes: 'aria-label="' | append: submit_aria | append: '"' -%}
+            {%- render 'global-btn', type: 'submit', class: 'email-popup__submit', icon: popup_submit_icon, icon_only: true, attributes: 'aria-label="' | append: submit_aria | append: '"' -%}
           </div>
         </div>
         {%- if form.errors -%}
@@ -305,7 +305,9 @@
   "tag": "section",
   "class": "section-email-popup",
   "enabled_on": {
-    "templates": ["index"]
+    "templates": [
+      "index"
+    ]
   },
   "settings": [
     {
@@ -323,14 +325,32 @@
       "content": "Animation"
     },
     {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
       "type": "select",
       "id": "animation_direction",
       "label": "Animation direction (Desktop)",
       "options": [
-        { "value": "top", "label": "From top" },
-        { "value": "bottom", "label": "From bottom" },
-        { "value": "left", "label": "From left" },
-        { "value": "right", "label": "From right" }
+        {
+          "value": "top",
+          "label": "From top"
+        },
+        {
+          "value": "bottom",
+          "label": "From bottom"
+        },
+        {
+          "value": "left",
+          "label": "From left"
+        },
+        {
+          "value": "right",
+          "label": "From right"
+        }
       ],
       "default": "top"
     },
@@ -349,10 +369,22 @@
       "id": "animation_direction_mobile",
       "label": "Animation direction (Mobile)",
       "options": [
-        { "value": "top", "label": "From top" },
-        { "value": "bottom", "label": "From bottom" },
-        { "value": "left", "label": "From left" },
-        { "value": "right", "label": "From right" }
+        {
+          "value": "top",
+          "label": "From top"
+        },
+        {
+          "value": "bottom",
+          "label": "From bottom"
+        },
+        {
+          "value": "left",
+          "label": "From left"
+        },
+        {
+          "value": "right",
+          "label": "From right"
+        }
       ],
       "default": "top"
     },
@@ -455,9 +487,18 @@
       "id": "position_vertical",
       "label": "Vertical position (Desktop)",
       "options": [
-        { "value": "top", "label": "Top" },
-        { "value": "center", "label": "Center" },
-        { "value": "bottom", "label": "Bottom" }
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
       ],
       "default": "center"
     },
@@ -466,9 +507,18 @@
       "id": "position_horizontal",
       "label": "Horizontal position (Desktop)",
       "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
       ],
       "default": "center"
     },
@@ -517,9 +567,18 @@
       "id": "position_vertical_mobile",
       "label": "Vertical position (Mobile)",
       "options": [
-        { "value": "top", "label": "Top" },
-        { "value": "center", "label": "Center" },
-        { "value": "bottom", "label": "Bottom" }
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
       ],
       "default": "center"
     },
@@ -528,9 +587,18 @@
       "id": "position_horizontal_mobile",
       "label": "Horizontal position (Mobile)",
       "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
       ],
       "default": "center"
     },
@@ -599,11 +667,26 @@
       "id": "heading_font_weight",
       "label": "Heading font weight",
       "options": [
-        { "value": "400", "label": "Normal" },
-        { "value": "500", "label": "Medium" },
-        { "value": "600", "label": "Semi bold" },
-        { "value": "700", "label": "Bold" },
-        { "value": "800", "label": "Extra bold" }
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        },
+        {
+          "value": "800",
+          "label": "Extra bold"
+        }
       ],
       "default": "700"
     },
@@ -628,10 +711,22 @@
       "id": "description_font_weight",
       "label": "Description font weight",
       "options": [
-        { "value": "400", "label": "Normal" },
-        { "value": "500", "label": "Medium" },
-        { "value": "600", "label": "Semi bold" },
-        { "value": "700", "label": "Bold" }
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
       ],
       "default": "400"
     },
@@ -656,10 +751,22 @@
       "id": "input_font_weight",
       "label": "Email input font weight",
       "options": [
-        { "value": "400", "label": "Normal" },
-        { "value": "500", "label": "Medium" },
-        { "value": "600", "label": "Semi bold" },
-        { "value": "700", "label": "Bold" }
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
       ],
       "default": "400"
     },
@@ -714,10 +821,22 @@
       "label": "Submit button icon (built-in)",
       "info": "Used when no custom icon is uploaded.",
       "options": [
-        { "value": "plane", "label": "Plane (send)" },
-        { "value": "arrow", "label": "Arrow" },
-        { "value": "checkmark", "label": "Checkmark" },
-        { "value": "tick", "label": "Tick" }
+        {
+          "value": "plane",
+          "label": "Plane (send)"
+        },
+        {
+          "value": "arrow",
+          "label": "Arrow"
+        },
+        {
+          "value": "checkmark",
+          "label": "Checkmark"
+        },
+        {
+          "value": "tick",
+          "label": "Tick"
+        }
       ],
       "default": "plane"
     },
@@ -742,8 +861,14 @@
       "label": "Mobile layout",
       "info": "Row = input and button on same line",
       "options": [
-        { "value": "row", "label": "Row (same line)" },
-        { "value": "column", "label": "Column (stacked)" }
+        {
+          "value": "row",
+          "label": "Row (same line)"
+        },
+        {
+          "value": "column",
+          "label": "Column (stacked)"
+        }
       ],
       "default": "row"
     },
@@ -846,78 +971,6 @@
       "content": "Colors"
     },
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "Popup background",
-      "default": "#EBEBE1"
-    },
-    {
-      "type": "color",
-      "id": "overlay_color",
-      "label": "Overlay background",
-      "default": "#282828"
-    },
-    {
-      "type": "color",
-      "id": "heading_color",
-      "label": "Heading color",
-      "default": "#4F6B4F"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Description color",
-      "default": "#6D826D"
-    },
-    {
-      "type": "color",
-      "id": "envelope_color",
-      "label": "Envelope color",
-      "default": "#B8B6AF"
-    },
-    {
-      "type": "color",
-      "id": "card_background",
-      "label": "Card background (inside envelope)",
-      "default": "#4F6B4F"
-    },
-    {
-      "type": "color",
-      "id": "card_text_color",
-      "label": "Card text color",
-      "default": "#FFFFFF"
-    },
-    {
-      "type": "color",
-      "id": "input_background",
-      "label": "Input background",
-      "default": "#f2f0eb"
-    },
-    {
-      "type": "color",
-      "id": "input_border_color",
-      "label": "Input border",
-      "default": "#3f473e"
-    },
-    {
-      "type": "color",
-      "id": "button_background",
-      "label": "Submit button background",
-      "default": "#d6a9b4"
-    },
-    {
-      "type": "color",
-      "id": "button_icon_color",
-      "label": "Submit button icon",
-      "default": "#3f473e"
-    },
-    {
-      "type": "color",
-      "id": "close_button_color",
-      "label": "Close button color",
-      "default": "#4F6B4F"
-    },
-    {
       "type": "header",
       "content": "Close button"
     },
@@ -983,9 +1036,18 @@
       "label": "Close icon (built-in)",
       "info": "Used when no custom icon is uploaded.",
       "options": [
-        { "value": "close", "label": "Close (X)" },
-        { "value": "close-small", "label": "Close small" },
-        { "value": "remove", "label": "Remove" }
+        {
+          "value": "close",
+          "label": "Close (X)"
+        },
+        {
+          "value": "close-small",
+          "label": "Close small"
+        },
+        {
+          "value": "remove",
+          "label": "Remove"
+        }
       ],
       "default": "close"
     }

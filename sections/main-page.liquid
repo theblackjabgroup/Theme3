@@ -28,13 +28,13 @@
   }
 
   {{ section_selector }} .rte-rich-text__outer {
-    background-color: {{ section.settings.outer_background }};
+    background-color: var(--color-bg);
   }
 
   {{ section_selector }} .rte-rich-text__header-card,
   {{ section_selector }} .rte-rich-text__context-card {
-    background-color: {{ section.settings.content_background }};
-    border: 1px solid {{ section.settings.content_border }};
+    background-color: var(--color-card-bg);
+    border: 1px solid var(--color-input-border);
     border-radius: {{ section.settings.content_border_radius }}px;
     max-width: {{ section.settings.content_max_width }}px;
     padding: {{ section.settings.content_padding }}px;
@@ -48,21 +48,21 @@
   }
 
   {{ section_selector }} .rte-rich-text__tag {
-    background-color: {{ section.settings.tag_background }};
-    color: {{ section.settings.tag_text_color }};
-    border-color: {{ section.settings.tag_border }};
+    background-color: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+    border-color: var(--btn-primary-border);
     border-radius: {{ section.settings.tag_border_radius }}px;
     padding: {{ section.settings.tag_padding_vertical }}px {{ section.settings.tag_padding_horizontal }}px;
     font-size: {{ section.settings.tag_font_size }}px;
   }
 
   {{ section_selector }} .rte-rich-text__title {
-    color: {{ section.settings.title_color }};
+    color: var(--color-heading);
     font-size: {{ section.settings.title_font_size }}px;
   }
 
   {{ section_selector }} .rte-rich-text__body {
-    color: {{ section.settings.body_text_color }};
+    color: var(--color-text);
     font-size: {{ section.settings.body_font_size }}px;
     line-height: {{ section.settings.body_line_height }};
   }
@@ -70,12 +70,12 @@
   {{ section_selector }} .rte-rich-text__body h1,
   {{ section_selector }} .rte-rich-text__body h2,
   {{ section_selector }} .rte-rich-text__body h3 {
-    color: {{ section.settings.heading_color }};
+    color: var(--color-heading);
     font-size: {{ section.settings.heading_font_size }}px;
   }
 {%- endstyle -%}
 
-<div class="rte-rich-text section-{{ section.id }}-padding" data-section-id="{{ section.id }}">
+<div class="rte-rich-text color-{{ section.settings.color_scheme }} section-{{ section.id }}-padding" data-section-id="{{ section.id }}">
   <div class="rte-rich-text__outer">
     <div class="rte-rich-text__header-card">
       <header class="rte-rich-text__header rte-rich-text__header--{{ section.settings.header_alignment }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
@@ -107,22 +107,10 @@
       "content": "Layout"
     },
     {
-      "type": "color",
-      "id": "outer_background",
-      "label": "Outer background",
-      "default": "#D2CDC4"
-    },
-    {
-      "type": "color",
-      "id": "content_background",
-      "label": "Content background",
-      "default": "#EBE8DF"
-    },
-    {
-      "type": "color",
-      "id": "content_border",
-      "label": "Content border color",
-      "default": "#2a2a2a"
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
     },
     {
       "type": "range",
@@ -227,24 +215,6 @@
       "default": false
     },
     {
-      "type": "color",
-      "id": "tag_background",
-      "label": "Tag background",
-      "default": "#F5F4F0"
-    },
-    {
-      "type": "color",
-      "id": "tag_text_color",
-      "label": "Tag text color",
-      "default": "#2a2a2a"
-    },
-    {
-      "type": "color",
-      "id": "tag_border",
-      "label": "Tag border color",
-      "default": "#d4d4d4"
-    },
-    {
       "type": "range",
       "id": "tag_border_radius",
       "min": 0,
@@ -285,12 +255,6 @@
       "default": 12
     },
     {
-      "type": "color",
-      "id": "title_color",
-      "label": "Title color",
-      "default": "#4A6E58"
-    },
-    {
       "type": "range",
       "id": "title_font_size",
       "min": 24,
@@ -305,9 +269,18 @@
       "id": "header_alignment",
       "label": "Header alignment",
       "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
       ],
       "default": "center"
     },
@@ -320,24 +293,24 @@
       "id": "text_alignment",
       "label": "Text alignment",
       "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" },
-        { "value": "justify", "label": "Justify" }
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        },
+        {
+          "value": "justify",
+          "label": "Justify"
+        }
       ],
       "default": "left"
-    },
-    {
-      "type": "color",
-      "id": "body_text_color",
-      "label": "Body text color",
-      "default": "#333333"
-    },
-    {
-      "type": "color",
-      "id": "heading_color",
-      "label": "Heading color (h1, h2, h3)",
-      "default": "#4A6E58"
     },
     {
       "type": "range",

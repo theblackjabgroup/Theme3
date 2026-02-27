@@ -30,25 +30,18 @@
     align-items: center !important;
     justify-content: center !important;
     min-width: unset !important;
-    {% if section.settings.background_color != blank %}
-      background-color: {{ section.settings.background_color }} !important;
-    {% endif %}
-    {% if section.settings.icon_color != blank %}
-      color: {{ section.settings.icon_color }} !important;
-    {% endif %}
-    {% if section.settings.border_color != blank %}
-      border: 2px solid {{ section.settings.border_color }} !important;
-    {% endif %}
-  }
+    background-color: var(--btn-primary-bg) !important;
+    color: var(--btn-primary-text) !important;
+    border: 2px solid var(--btn-primary-border) !important;
+    }
 
-  .back-to-top-button .submit-button__icon {
+  .back-to-top-button .global-btn__icon {
     width: {{ section.settings.icon_size | default: 60 }}%;
     height: {{ section.settings.icon_size | default: 60 }}%;
     margin: 0 !important;
   }
 
-  /* Reset any possible default button styles that might interfere */
-  .back-to-top-button .submit-button__text {
+  .back-to-top-button .global-btn__text {
     display: none !important;
   }
 </style>
@@ -73,10 +66,11 @@
     {%- assign icon_content = icon_svg -%}
   {%- endif -%}
 
-  {%- render 'submit-button',
-    text: '',
+  {%- render 'global-btn',
+    text: 'Back to top',
     url: '#',
     icon: icon_content,
+    icon_only: true,
     class: 'back-to-top-button',
     attributes: 'data-back-to-top-trigger aria-label="Back to top"',
     type: 'button'
@@ -115,7 +109,12 @@
 {% schema %}
 {
   "name": "Back to Top",
-  "disabled_on": { "groups": ["header", "footer"] },
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  },
   "settings": [
     {
       "type": "paragraph",
@@ -124,6 +123,12 @@
     {
       "type": "header",
       "content": "Icon Settings"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
     },
     {
       "type": "image_picker",
@@ -195,21 +200,6 @@
     {
       "type": "header",
       "content": "Color Settings"
-    },
-    {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background Color"
-    },
-    {
-      "type": "color",
-      "id": "icon_color",
-      "label": "Icon/Arrow Color"
-    },
-    {
-      "type": "color",
-      "id": "border_color",
-      "label": "Border Color"
     },
     {
       "type": "range",

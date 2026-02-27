@@ -1,0 +1,204 @@
+/* =============================================================
+   Global Button — component-global-btn.css
+   3D lift effect button with four variants:
+     primary   — light bg, blue text (default)
+     secondary — blue bg, light text
+     tertiary  — gold bg, black text
+     disabled  — muted bg, muted text, unclickable
+   ============================================================= */
+
+/* ── Base ── */
+.global-btn {
+  position: relative;
+  display: inline-block;
+  background: transparent;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  width: fit-content;
+  margin-top: 0;
+  font-family: var(--font-heading-family, var(--font-body-family, sans-serif));
+  text-transform: none;
+  z-index: 1;
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+}
+
+.global-btn * {
+  box-sizing: border-box;
+}
+
+/* ── Shadow layer — creates the 3D "lift" underlay ── */
+.global-btn__shadow {
+  position: absolute;
+  top: 3px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--border-radius-l, 16px);
+  z-index: -1;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  pointer-events: none;
+}
+
+/* ── Content face ── */
+.global-btn__content {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 24px;
+  border-radius: var(--border-radius-l, 16px);
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  transition: transform 0.4s ease, background-color 0.25s ease, color 0.25s ease;
+  will-change: transform;
+  white-space: nowrap;
+  border-style: solid;
+  border-width: 1.5px;
+}
+
+/* ── Hover lift ── */
+.global-btn:not([disabled]):not(.global-btn--disabled):hover .global-btn__content {
+  transform: translate(0, -3px);
+}
+
+.global-btn:not([disabled]):not(.global-btn--disabled):active .global-btn__content {
+  transform: translate(0, 1px);
+}
+
+
+
+/* ── Icon ── */
+.global-btn__icon {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+}
+
+.global-btn__icon svg {
+  width: 100%;
+  height: 100%;
+  stroke: currentColor;
+  fill: none;
+}
+
+.global-btn--icon-only .global-btn__content {
+  padding: 14px;
+}
+
+/* ── Badge ── */
+.global-btn__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 6px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  font-weight: 800;
+  line-height: 1;
+  min-width: 18px;
+}
+
+/* ── Button card width override ── */
+.button-card .global-btn {
+  width: 97%;
+}
+
+.button-card .global-btn .global-btn__content {
+  width: 100%;
+}
+
+
+/* =============================================================
+   VARIANT: primary  (light card bg / blue text)
+   ============================================================= */
+.global-btn--primary .global-btn__shadow {
+  background-color: var(--btn-primary-shadow, var(--color-btn-shadow, #000000));
+}
+
+.global-btn--primary .global-btn__content {
+  background-color: var(--btn-primary-bg, #F8F3F8);
+  color:            var(--btn-primary-text, #1E4ABD);
+  border-color:     var(--btn-primary-border, #000000);
+}
+
+.global-btn--primary .global-btn__badge {
+  background: var(--btn-primary-border, #000000);
+  color:       var(--btn-primary-bg, #F8F3F8);
+}
+
+
+/* =============================================================
+   VARIANT: secondary  (blue bg / light text)
+   ============================================================= */
+.global-btn--secondary .global-btn__shadow {
+  background-color: var(--btn-secondary-shadow, var(--color-btn-shadow, #000000));
+}
+
+.global-btn--secondary .global-btn__content {
+  background-color: var(--btn-secondary-bg, #1E4ABD);
+  color:            var(--btn-secondary-text, #F8F3F8);
+  border-color:     var(--btn-secondary-border, #000000);
+}
+
+.global-btn--secondary .global-btn__badge {
+  background: var(--btn-secondary-border, #000000);
+  color:       var(--btn-secondary-text, #F8F3F8);
+}
+
+
+/* =============================================================
+   VARIANT: tertiary  (gold bg / black text)
+   ============================================================= */
+.global-btn--tertiary .global-btn__shadow {
+  background-color: var(--btn-tertiary-shadow, var(--color-btn-shadow, #000000));
+}
+
+.global-btn--tertiary .global-btn__content {
+  background-color: var(--btn-tertiary-bg, #F5A30A);
+  color:            var(--btn-tertiary-text, #000000);
+  border-color:     var(--btn-tertiary-border, #000000);
+}
+
+.global-btn--tertiary .global-btn__badge {
+  background: var(--btn-tertiary-text, #000000);
+  color:       var(--btn-tertiary-bg, #F5A30A);
+}
+
+
+/* =============================================================
+   VARIANT: disabled  (muted bg / muted text, no interactions)
+   ============================================================= */
+.global-btn--disabled,
+.global-btn[disabled] {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.global-btn--disabled .global-btn__shadow,
+.global-btn[disabled] .global-btn__shadow {
+  background-color: var(--btn-disabled-shadow, var(--color-btn-shadow, #000000));
+  opacity: 0.3;
+}
+
+.global-btn--disabled .global-btn__content,
+.global-btn[disabled] .global-btn__content {
+  background-color: var(--btn-disabled-bg, #E6E3E6);
+  color:            var(--btn-disabled-text, #697FB8);
+  border-color:     var(--btn-disabled-border, #000000);
+  opacity: 0.7;
+}
+
+.global-btn--disabled .global-btn__badge,
+.global-btn[disabled] .global-btn__badge {
+  background: var(--btn-disabled-border, #000000);
+  color:       var(--btn-disabled-bg, #E6E3E6);
+}

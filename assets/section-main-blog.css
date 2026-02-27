@@ -40,7 +40,7 @@
   padding: 20px;
   display: flex !important; /* Force flex as we are inside a slide wrapper now */
   flex-direction: column;
-  transition: all var(--blog-card-transition-duration, 0.8s) cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform var(--blog-card-transition-duration, 0.8s) cubic-bezier(0.4, 0, 0.2, 1), background-color var(--blog-card-transition-duration, 0.8s) cubic-bezier(0.4, 0, 0.2, 1), color var(--blog-card-transition-duration, 0.8s) cubic-bezier(0.4, 0, 0.2, 1), box-shadow var(--blog-card-transition-duration, 0.8s) cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
   color: var(--color-text);
   opacity: 0.8;
@@ -57,7 +57,7 @@
 
   overflow: hidden;
   margin-bottom: 20px;
-  transition: all var(--blog-card-transition-duration, 0.8s) cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform var(--blog-card-transition-duration, 0.8s) cubic-bezier(0.4, 0, 0.2, 1), box-shadow var(--blog-card-transition-duration, 0.8s) cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
   border-radius: 8px;
 }
@@ -87,7 +87,7 @@
   margin-bottom: 15px;
   align-self: flex-start;
   color: var(--color-primary-button-border);
-  transition: all 0.3s;
+  transition: border-color 0.3s, background-color 0.3s, color 0.3s, transform 0.3s;
 }
 
 .main-blog-card__title {

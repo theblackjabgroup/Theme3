@@ -2,7 +2,7 @@
 
 .marquee-scroll {
   overflow: hidden;
-  padding: var(--section-padding-top, 24px) var(--section-margin-right, 0) var(--section-padding-bottom, 24px) var(--section-margin-left, 0);
+  padding: var(--section-padding-top, 12px) var(--section-margin-right, 0) var(--section-padding-bottom, 12px) var(--section-margin-left, 0);
   background: var(--color-background);
   box-sizing: border-box;
 }
@@ -53,13 +53,14 @@
   justify-content: center;
   min-height: var(--pill-height, 44px);
   min-width: var(--pill-width, 0);
-  padding: 0.4em 0.9em;
+  padding: var(--pill-padding-y, 0.4em) var(--pill-padding-x, 0.9em);
   box-sizing: border-box;
   background: var(--pill-bg, #2E473E);
   color: var(--pill-color, #E8E4DC);
   font-size: var(--text-font-size, 24px);
   font-weight: var(--text-font-weight, 700);
   border-radius: var(--pill-border-radius, 999px);
+  text-transform: var(--pill-text-transform, uppercase);
   white-space: nowrap;
 }
 

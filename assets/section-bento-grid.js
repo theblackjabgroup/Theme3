@@ -1,7 +1,7 @@
 (() => {
   function initSpritesheetAnimations() {
     const contentCards = document.querySelectorAll(
-      '.content-card.has-spritesheet, .content-card.has-spritesheet-vertical'
+      '.content-card.has-spritesheet, .content-card.has-spritesheet-vertical',
     );
 
     contentCards.forEach((card) => {
@@ -43,7 +43,7 @@
         const elapsed = (now - animationStartTime) / 1000;
         const progress = Math.min(
           1,
-          elapsed / ((Math.abs(targetFrame - startFrame) / (totalFrames - 1)) * totalDuration || 0.001)
+          elapsed / ((Math.abs(targetFrame - startFrame) / (totalFrames - 1)) * totalDuration || 0.001),
         );
 
         const frameProgress = startFrame + (targetFrame - startFrame) * progress;
@@ -87,45 +87,82 @@
     });
   }
 
+  function setToggleSlideDistance(card) {
+    const ui = card.querySelector('.toggle-ui');
+    const knob = card.querySelector('.toggle-knob');
+    const labelsBottom = card.querySelector('.toggle-labels--bottom');
+    if (!ui || !knob || !labelsBottom) return;
+
+    const isHorizontal = card.classList.contains('toggle-card--horizontal');
+    /* Measure knob at rest: getBoundingClientRect() includes CSS transform, so when
+       the toggle is checked the knob is already translated and the computed distance
+       would be wrong. Temporarily clear transform so we measure untransformed position. */
+    const prevTransform = knob.style.transform;
+    knob.style.transform = 'none';
+    const knobRect = knob.getBoundingClientRect();
+    knob.style.transform = prevTransform;
+
+    const bottomRect = labelsBottom.getBoundingClientRect();
+    const gap = 12; /* Spacing between icon and edge when at bottom/right */
+    if (isHorizontal) {
+      const slideX = bottomRect.left - knobRect.left - gap;
+      ui.style.setProperty('--toggle-knob-slide-x', Math.max(0, slideX) + 'px');
+    } else {
+      /* Distance for knob to move down, stopping short so there's spacing after the icon */
+      const slideY = bottomRect.top - knobRect.top - gap;
+      ui.style.setProperty('--toggle-knob-slide', Math.max(0, slideY) + 'px');
+    }
+  }
+
   function initToggleCards() {
     const toggleCards = document.querySelectorAll('[data-toggle-card]');
-    
+
     toggleCards.forEach((card) => {
       const toggleInput = card.querySelector('[data-toggle-input]');
       if (!toggleInput) return;
 
-      // Optional: Load saved state from localStorage
-      const cardId = toggleInput.id;
-      const savedState = localStorage.getItem(`toggle-${cardId}`);
-      if (savedState === 'true') {
-        toggleInput.checked = true;
+      setToggleSlideDistance(card);
+      const ro = new ResizeObserver(() => setToggleSlideDistance(card));
+      ro.observe(card);
+
+      const schemeOn = toggleInput.dataset.schemeOn;
+      const schemeOff = toggleInput.dataset.schemeOff;
+
+      function updateTheme(checked) {
+        if (!schemeOn || !schemeOff) return;
+
+        const activeScheme = checked ? schemeOn : schemeOff;
+
+        // Apply global attributes
+        document.documentElement.setAttribute('data-global-theme-active', 'true');
+        document.documentElement.setAttribute('data-active-scheme', activeScheme);
+
+        // Persist
+        localStorage.setItem('global-theme-scheme', activeScheme);
+        localStorage.setItem('global-theme-checked', checked ? 'true' : 'false');
+
+        // Sync all other toggles on the page
+        document.querySelectorAll('[data-toggle-input]').forEach((input) => {
+          if (input.checked !== checked) {
+            input.checked = checked;
+          }
+        });
+      }
+
+      // Initial state from localStorage
+      const savedChecked = localStorage.getItem('global-theme-checked');
+      if (savedChecked !== null) {
+        const isChecked = savedChecked === 'true';
+        toggleInput.checked = isChecked;
+        updateTheme(isChecked);
+      } else if (toggleInput.checked) {
+        // Handle "checked by default" in section settings
+        updateTheme(true);
       }
 
       // Handle toggle change
       toggleInput.addEventListener('change', (e) => {
-        const isChecked = e.target.checked;
-        
-        // Optional: Save state to localStorage
-        localStorage.setItem(`toggle-${cardId}`, isChecked.toString());
-        
-        // Optional: Trigger custom event for other scripts to listen to
-        const toggleEvent = new CustomEvent('toggleChange', {
-          detail: {
-            cardId: cardId,
-            checked: isChecked,
-            card: card
-          }
-        });
-        card.dispatchEvent(toggleEvent);
-        
-        // Optional: Add ripple effect or other visual feedback
-        const slider = card.querySelector('.toggle-slider');
-        if (slider) {
-          slider.style.transform = 'scale(0.98)';
-          setTimeout(() => {
-            slider.style.transform = '';
-          }, 150);
-        }
+        updateTheme(e.target.checked);
       });
 
       // Add keyboard support
@@ -136,6 +173,10 @@
           toggleInput.dispatchEvent(new Event('change'));
         }
       });
+    });
+
+    window.addEventListener('resize', () => {
+      document.querySelectorAll('[data-toggle-card]').forEach(setToggleSlideDistance);
     });
   }
 

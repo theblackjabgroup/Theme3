@@ -1,8 +1,9 @@
-{% schema %}
-{
+{% schema %}{
   "name": "Footer",
   "enabled_on": {
-    "groups": ["footer"]
+    "groups": [
+      "footer"
+    ]
   },
   "settings": [
     {
@@ -13,12 +14,6 @@
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "Section Color Scheme",
-      "default": "scheme-1"
-    },
-    {
-      "type": "color_scheme",
-      "id": "box_color_scheme",
-      "label": "Main Box Color Scheme",
       "default": "scheme-1"
     },
     {
@@ -129,11 +124,26 @@
       "id": "footer_link_font_weight",
       "label": "Link font weight",
       "options": [
-        { "value": "400", "label": "Regular" },
-        { "value": "500", "label": "Medium" },
-        { "value": "600", "label": "Semi Bold" },
-        { "value": "700", "label": "Bold" },
-        { "value": "800", "label": "Extra Bold" }
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi Bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        },
+        {
+          "value": "800",
+          "label": "Extra Bold"
+        }
       ],
       "default": "700"
     },
@@ -487,7 +497,7 @@
       "label": "Icon animation speed",
       "default": 1,
       "info": "Duration of expand/shrink and hover transitions"
-    },
+    }
   ],
   "blocks": [
     {
@@ -495,8 +505,18 @@
       "name": "Newsletter",
       "limit": 1,
       "settings": [
-        { "type": "text", "id": "newsletter_heading", "label": "Heading", "default": "SIGN UP FOR UPDATES" },
-        { "type": "text", "id": "email_placeholder", "label": "Email placeholder", "default": "Email" },
+        {
+          "type": "text",
+          "id": "newsletter_heading",
+          "label": "Heading",
+          "default": "SIGN UP FOR UPDATES"
+        },
+        {
+          "type": "text",
+          "id": "email_placeholder",
+          "label": "Email placeholder",
+          "default": "Email"
+        },
         {
           "type": "header",
           "content": "Typography"
@@ -532,11 +552,26 @@
           "id": "newsletter_font_weight",
           "label": "Font weight",
           "options": [
-            { "value": "400", "label": "Normal" },
-            { "value": "500", "label": "Medium" },
-            { "value": "600", "label": "Semi Bold" },
-            { "value": "700", "label": "Bold" },
-            { "value": "800", "label": "Extra Bold" }
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi Bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            },
+            {
+              "value": "800",
+              "label": "Extra Bold"
+            }
           ],
           "default": "800"
         },
@@ -577,11 +612,32 @@
       "name": "Social icon",
       "limit": 8,
       "settings": [
-        { "type": "image_picker", "id": "image", "label": "Image" },
-        { "type": "image_picker", "id": "image_hover", "label": "Image (hover)" },
-        { "type": "text", "id": "svg", "label": "SVG fallback" },
-        { "type": "url", "id": "link", "label": "Link" },
-        { "type": "text", "id": "alt", "label": "Alt text", "info": "Describe the icon for accessibility" }
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_hover",
+          "label": "Image (hover)"
+        },
+        {
+          "type": "text",
+          "id": "svg",
+          "label": "SVG fallback"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "alt",
+          "label": "Alt text",
+          "info": "Describe the icon for accessibility"
+        }
       ]
     }
   ],
@@ -589,16 +645,25 @@
     {
       "name": "Footer",
       "blocks": [
-        { "type": "newsletter" },
-        { "type": "social_icon" },
-        { "type": "social_icon" },
-        { "type": "social_icon" },
-        { "type": "social_icon" }
+        {
+          "type": "newsletter"
+        },
+        {
+          "type": "social_icon"
+        },
+        {
+          "type": "social_icon"
+        },
+        {
+          "type": "social_icon"
+        },
+        {
+          "type": "social_icon"
+        }
       ]
     }
   ]
-}
-{% endschema %}
+}{% endschema %}
 
 {{ 'section-footer.css' | asset_url | stylesheet_tag }}
 
@@ -644,10 +709,10 @@
     --footer-selector-caret-gap: {{ settings.selector_caret_gap | default: 4 }}px;
     --footer-selector-caret-width: {{ settings.selector_caret_width | default: 8 }}px;
     --footer-selector-caret-height: {{ settings.selector_caret_height | default: 5 }}px;
-    --footer-selector-bg: {{ settings.selector_bg_color | default: '#f0ede8' }};
-    --footer-selector-text: {{ settings.selector_text_color | default: '#2d3f29' }};
-    --footer-selector-border: {{ settings.selector_border_color | default: '#121212' }};
-    --footer-selector-shadow: {{ settings.selector_shadow_color | default: '#121212' }};
+    --footer-selector-bg: var(--color-card-bg);
+    --footer-selector-text: var(--color-heading);
+    --footer-selector-border: var(--color-input-border);
+    --footer-selector-shadow: var(--color-btn-shadow);
     --footer-selector-shadow-offset: {{ settings.selector_shadow_offset | default: 6 }}px;
     --footer-selector-hover-lift: {{ settings.selector_hover_lift | default: 2 }}px;
     --footer-selector-transition: {{ settings.selector_transition_speed | default: 0.2 }}s;
@@ -779,7 +844,7 @@
 
       <!-- RIGHT COLUMN (Green Box) -->
       <div class="footer-right">
-        <div class="footer-box color-{{ section.settings.box_color_scheme }} gradient">
+        <div class="footer-box color-{{ section.settings.color_scheme }} gradient">
           <div class="footer-box__inner">
             <div class="footer-box__left">
               <h2 class="box-heading">{{ section.settings.main_heading }}</h2>

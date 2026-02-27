@@ -57,7 +57,7 @@
                 {{ collection.description | strip_html | truncatewords: 12, '....' | upcase }}
               </p>
             {%- endif -%}
-            {%- render 'submit-button',
+            {%- render 'global-btn',
               url: collection.url,
               text: overlay_btn_text,
               class: 'custom-collection-card__hover-button'

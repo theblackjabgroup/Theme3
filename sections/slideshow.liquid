@@ -132,7 +132,7 @@
               </div>
               <div class="bb-slideshow__left-cta">
                 {%-
-                  render 'submit-button',
+                  render 'global-btn',
                   text: section.settings.shop_now_label | default: 'Shop now',
                   url: product.url,
                   class: 'bb-slideshow__shop-now'
@@ -157,13 +157,13 @@
       <div class="bb-slideshow__stage-nav" aria-label="Slideshow controls">
         {%- assign left_prev_attrs = 'data-nav="prev" aria-label="Previous slide"' -%}
         {%- assign left_next_attrs = 'data-nav="next" aria-label="Next slide"' -%}
-        {%- render 'submit-button',
+        {%- render 'global-btn',
           text: '←',
           type: 'button',
           class: 'bb-slideshow__stage-nav-button bb-slideshow__stage-nav-button--prev',
           attributes: left_prev_attrs
         -%}
-        {%- render 'submit-button',
+        {%- render 'global-btn',
           text: '→',
           type: 'button',
           class: 'bb-slideshow__stage-nav-button bb-slideshow__stage-nav-button--next',
@@ -175,7 +175,7 @@
     <div class="bb-slideshow__right">
       <div class="bb-slideshow__view-more">
         {%-
-          render 'submit-button',
+          render 'global-btn',
           text: 'view more',
           url: section.settings.view_more_link | default: routes.collections_url,
           class: 'bb-slideshow__view-more-btn'
@@ -220,13 +220,13 @@
       <div class="bb-slideshow__right-nav">
         {%- assign right_prev_attrs = 'data-nav="prev" aria-label="Previous product"' -%}
         {%- assign right_next_attrs = 'data-nav="next" aria-label="Next product"' -%}
-        {%- render 'submit-button',
+        {%- render 'global-btn',
           text: '←',
           type: 'button',
           class: 'bb-slideshow__right-nav-button',
           attributes: right_prev_attrs
         -%}
-        {%- render 'submit-button',
+        {%- render 'global-btn',
           text: '→',
           type: 'button',
           class: 'bb-slideshow__right-nav-button',
@@ -257,7 +257,7 @@
 
   #shopify-section-{{ section.id }} .bb-slideshow__left {
     border: 1px solid var(--color-borders);
-    background: var(--color-header-button-background);
+    background: var(--color-card-bg);
     padding: 18px;
     position: relative;
   }
@@ -510,7 +510,7 @@
   }
 
   #shopify-section-{{ section.id }} .bb-slideshow__card-stage {
-    background: var(--color-header-button-background);
+    background: var(--color-card-bg);
     border: 1px solid var(--color-borders);
     padding: 12px;
     position: relative;

@@ -1,88 +1,157 @@
-{{ 'section-header.css' | asset_url | stylesheet_tag: preload: true }}
+{{ 'section-header.css' | asset_url | stylesheet_tag }}
 
 <style>
-  :root {
-    --header-width: {{ section.settings.header_width | default: 200 }}px;
-    --header-padding: {{ section.settings.header_padding | default: 16 }}px;
-    --header-gap: {{ section.settings.header_gap | default: 8 }}px;
+    :root {
+      --header-width: {{ section.settings.header_width | default: 200 }}px;
+      --header-padding: {{ section.settings.header_padding | default: 16 }}px;
+      --header-gap: {{ section.settings.header_gap | default: 8 }}px;
 
-    /* Logo */
-    --logo-padding-top: {{ section.settings.logo_padding_top | default: 24 }}px;
-    --logo-padding-bottom: {{ section.settings.logo_padding_bottom | default: 24 }}px;
-    --logo-padding-left: {{ section.settings.logo_padding_left | default: 24 }}px;
-    --logo-padding-right: {{ section.settings.logo_padding_right | default: 24 }}px;
-    --logo-padding: var(--logo-padding-top) var(--logo-padding-right) var(--logo-padding-bottom) var(--logo-padding-left);
-    --logo-border-radius: {{ section.settings.logo_border_radius | default: 16 }}px;
-    --logo-font-size: {{ section.settings.logo_font_size | default: 16 }}px;
-    --logo-font-weight: {{ section.settings.logo_font_weight | default: 700 }};
-    --logo-letter-spacing: {{ section.settings.logo_letter_spacing | default: -0.5 }}px;
-    --color-header-logo-background: {{ section.settings.logo_background_color | default: '#306030' }};
-    --logo-image-max-width: {{ section.settings.logo_image_max_width | default: 80 }}px;
-    --logo-image-max-height: {{ section.settings.logo_image_max_height | default: 80 }}px;
-    --logo-image-width: {% if section.settings.logo_image_width > 0 %}{{ section.settings.logo_image_width }}px{% else %}auto{% endif %};
-    --logo-image-height: {% if section.settings.logo_image_height > 0 %}{{ section.settings.logo_image_height }}px{% else %}auto{% endif %};
-    --logo-image-object-fit: {{ section.settings.logo_image_object_fit | default: 'contain' }};
+      /* Logo */
+      --logo-padding-top: {{ section.settings.logo_padding_top | default: 24 }}px;
+      --logo-padding-bottom: {{ section.settings.logo_padding_bottom | default: 24 }}px;
+      --logo-padding-left: {{ section.settings.logo_padding_left | default: 24 }}px;
+      --logo-padding-right: {{ section.settings.logo_padding_right | default: 24 }}px;
+      --logo-padding: var(--logo-padding-top) var(--logo-padding-right) var(--logo-padding-bottom) var(--logo-padding-left);
+      --logo-border-radius: {{ section.settings.logo_border_radius | default: 16 }}px;
+      --logo-font-size: {{ section.settings.logo_font_size | default: 16 }}px;
+      --logo-font-weight: {{ section.settings.logo_font_weight | default: 700 }};
+      --logo-letter-spacing: {{ section.settings.logo_letter_spacing | default: -0.5 }}px;
 
-    /* Logo orbit (when enabled) */
-    --logo-orbit-duration: {{ section.settings.logo_orbit_speed | default: 20 }}s;
-    --logo-orbit-radius: {{ section.settings.logo_orbit_radius | default: 44 }};
-    --logo-orbit-font-size: {{ section.settings.logo_orbit_font_size | default: 8 }}px;
-    --logo-orbit-font-weight: {{ section.settings.logo_orbit_font_weight | default: 600 }};
-    --logo-orbit-letter-spacing: {{ section.settings.logo_orbit_letter_spacing | default: 0.1 }}em;
+      --color-header-logo-background: var(--color-heading);
+      --color-header-logo-text: var(--color-card-bg);
 
-    /* Action Buttons */
-    --button-gap: {{ section.settings.button_gap | default: 8 }}px;
-    --button-padding-top: {{ section.settings.button_padding_top | default: 12 }}px;
-    --button-padding-bottom: {{ section.settings.button_padding_bottom | default: 12 }}px;
-    --button-padding-left: {{ section.settings.button_padding_left | default: 16 }}px;
-    --button-padding-right: {{ section.settings.button_padding_right | default: 16 }}px;
-    --button-padding: var(--button-padding-top) var(--button-padding-right) var(--button-padding-bottom) var(--button-padding-left);
-    --button-font-size: {{ section.settings.button_font_size | default: 16 }}px;
-    --button-icon-size: {{ section.settings.button_icon_size | default: 16 }}px;
+      --logo-image-max-width: {{ section.settings.logo_image_max_width | default: 80 }}px;
+      --logo-image-max-height: {{ section.settings.logo_image_max_height | default: 80 }}px;
+      --logo-image-width: {% if section.settings.logo_image_width > 0 %}{{ section.settings.logo_image_width }}px{% else %}auto{% endif %};
+      --logo-image-height: {% if section.settings.logo_image_height > 0 %}{{ section.settings.logo_image_height }}px{% else %}auto{% endif %};
+      --logo-image-object-fit: {{ section.settings.logo_image_object_fit | default: 'contain' }};
 
-    /* Navigation */
-    --nav-gap: {{ section.settings.nav_gap | default: 8 }}px;
-    --nav-animation-speed: {{ section.settings.nav_animation_speed | default: 0.8 }}s;
-    --nav-padding-top: {{ section.settings.nav_padding_top | default: 14 }}px;
-    --nav-padding-bottom: {{ section.settings.nav_padding_bottom | default: 14 }}px;
-    --nav-item-padding-top: {{ section.settings.nav_item_padding_top | default: 28 }}px;
-    --nav-item-padding-bottom: {{ section.settings.nav_item_padding_bottom | default: 28 }}px;
-    --nav-item-padding-left: {{ section.settings.nav_item_padding_left | default: 16 }}px;
-    --nav-item-padding-right: {{ section.settings.nav_item_padding_right | default: 16 }}px;
-    --nav-item-padding: var(--nav-item-padding-top) var(--nav-item-padding-right) var(--nav-item-padding-bottom) var(--nav-item-padding-left);
-    --nav-font-size: {{ section.settings.nav_font_size | default: 14 }}px;
-    --nav-font-weight: {{ section.settings.nav_font_weight | default: 500 }};
-    --nav-letter-spacing: {{ section.settings.nav_letter_spacing | default: 0 }}px;
-    --nav-icon-size: {{ section.settings.nav_icon_size | default: 24 }}px;
-    --nav-caret-size: {{ section.settings.nav_caret_size | default: 12 }}px;
-    --nav-hover-background: {{ section.settings.nav_hover_background_color | default: '#306030' }};
-    --nav-default-background: var(--color-header-button-background, var(--color-header-background, var(--color-background, #eae7e1)));
-    {%- if section.settings.nav_show_borders -%}
-      --nav-border: 1px solid var(--color-header-border, var(--color-headings, #365330));
-    {%- else -%}
-      --nav-border: none;
-    {%- endif -%}
+      /* Logo orbit (when enabled) */
+      --logo-orbit-duration: {{ section.settings.logo_orbit_speed | default: 20 }}s;
+      --logo-orbit-radius: {{ section.settings.logo_orbit_radius | default: 44 }};
+      --logo-orbit-font-size: {{ section.settings.logo_orbit_font_size | default: 8 }}px;
+      --logo-orbit-font-weight: {{ section.settings.logo_orbit_font_weight | default: 600 }};
+      --logo-orbit-letter-spacing: {{ section.settings.logo_orbit_letter_spacing | default: 0.1 }}em;
 
-    /* Mobile Header Logo */
-    --mobile-logo-image-max-width: {{ section.settings.mobile_logo_image_max_width | default: 120 }}px;
-    --mobile-logo-image-max-height: {{ section.settings.mobile_logo_image_max_height | default: 40 }}px;
-    --mobile-logo-image-width: {% if section.settings.mobile_logo_image_width > 0 %}{{ section.settings.mobile_logo_image_width }}px{% else %}auto{% endif %};
-    --mobile-logo-image-height: {% if section.settings.mobile_logo_image_height > 0 %}{{ section.settings.mobile_logo_image_height }}px{% else %}auto{% endif %};
-    --mobile-logo-image-object-fit: {{ section.settings.mobile_logo_image_object_fit | default: 'contain' }};
-    --mobile-logo-font-size: {{ section.settings.mobile_logo_font_size | default: 20 }}px;
-    --mobile-logo-font-weight: {{ section.settings.mobile_logo_font_weight | default: 700 }};
+      /* Action Buttons */
+      --button-gap: {{ section.settings.button_gap | default: 8 }}px;
+      --button-padding-top: {{ section.settings.button_padding_top | default: 12 }}px;
+      --button-padding-bottom: {{ section.settings.button_padding_bottom | default: 12 }}px;
+      --button-padding-left: {{ section.settings.button_padding_left | default: 16 }}px;
+      --button-padding-right: {{ section.settings.button_padding_right | default: 16 }}px;
+      --button-padding: var(--button-padding-top) var(--button-padding-right) var(--button-padding-bottom) var(--button-padding-left);
+      --button-font-size: {{ section.settings.button_font_size | default: 16 }}px;
+      --button-icon-size: {{ section.settings.button_icon_size | default: 16 }}px;
 
-    /* Mobile Logo Orbit */
-    --mobile-logo-orbit-duration: {{ section.settings.mobile_logo_orbit_speed | default: 20 }}s;
-    --mobile-logo-orbit-radius: {{ section.settings.mobile_logo_orbit_radius | default: 36 }};
-    --mobile-logo-orbit-font-size: {{ section.settings.mobile_logo_orbit_font_size | default: 6 }}px;
-    --mobile-logo-orbit-font-weight: {{ section.settings.mobile_logo_orbit_font_weight | default: 600 }};
-    --mobile-logo-orbit-letter-spacing: {{ section.settings.mobile_logo_orbit_letter_spacing | default: 0.1 }}em;
+      --color-card-bg: var(--color-card-bg);
 
-    /* Mobile Action Buttons */
-    --mobile-button-gap: {{ section.settings.mobile_button_gap | default: 16 }}px;
-    --mobile-button-icon-size: {{ section.settings.mobile_button_icon_size | default: 40 }}px;
-  }
+      /* Navigation */
+      --nav-gap: {{ section.settings.nav_gap | default: 8 }}px;
+      --nav-animation-speed: {{ section.settings.nav_animation_speed | default: 0.8 }}s;
+      --nav-padding-top: {{ section.settings.nav_padding_top | default: 14 }}px;
+      --nav-padding-bottom: {{ section.settings.nav_padding_bottom | default: 14 }}px;
+      --nav-item-padding-top: {{ section.settings.nav_item_padding_top | default: 28 }}px;
+      --nav-item-padding-bottom: {{ section.settings.nav_item_padding_bottom | default: 28 }}px;
+      --nav-item-padding-left: {{ section.settings.nav_item_padding_left | default: 16 }}px;
+      --nav-item-padding-right: {{ section.settings.nav_item_padding_right | default: 16 }}px;
+      --nav-item-padding: var(--nav-item-padding-top) var(--nav-item-padding-right) var(--nav-item-padding-bottom) var(--nav-item-padding-left);
+      --nav-font-size: {{ section.settings.nav_font_size | default: 14 }}px;
+      --nav-font-weight: {{ section.settings.nav_font_weight | default: 500 }};
+      --nav-letter-spacing: {{ section.settings.nav_letter_spacing | default: 0 }}px;
+      --nav-icon-size: {{ section.settings.nav_icon_size | default: 24 }}px;
+      --nav-caret-size: {{ section.settings.nav_caret_size | default: 12 }}px;
+
+      --nav-hover-background: var(--color-heading);
+      --nav-default-background: var(--color-card-bg);
+      --nav-active-background: var(--color-card-bg); /* Keeping as card bg by default if not hovered */
+
+      {%- if section.settings.nav_show_borders -%}
+        --nav-border: 1px solid var(--color-input-border);
+      {%- else -%}
+        --nav-border: none;
+      {%- endif -%}
+    }
+  }px;
+      --header-padding: {{ section.settings.header_padding | default: 16 }}px;
+      --header-gap: {{ section.settings.header_gap | default: 8 }}px;
+
+      /* Logo */
+      --logo-padding-top: {{ section.settings.logo_padding_top | default: 24 }}px;
+      --logo-padding-bottom: {{ section.settings.logo_padding_bottom | default: 24 }}px;
+      --logo-padding-left: {{ section.settings.logo_padding_left | default: 24 }}px;
+      --logo-padding-right: {{ section.settings.logo_padding_right | default: 24 }}px;
+      --logo-padding: var(--logo-padding-top) var(--logo-padding-right) var(--logo-padding-bottom) var(--logo-padding-left);
+      --logo-border-radius: {{ section.settings.logo_border_radius | default: 16 }}px;
+      --logo-font-size: {{ section.settings.logo_font_size | default: 16 }}px;
+      --logo-font-weight: {{ section.settings.logo_font_weight | default: 700 }};
+      --logo-letter-spacing: {{ section.settings.logo_letter_spacing | default: -0.5 }}px;
+      --color-header-logo-background: {{ section.settings.logo_background_color | default: '#306030' }};
+      --logo-image-max-width: {{ section.settings.logo_image_max_width | default: 80 }}px;
+      --logo-image-max-height: {{ section.settings.logo_image_max_height | default: 80 }}px;
+      --logo-image-width: {% if section.settings.logo_image_width > 0 %}{{ section.settings.logo_image_width }}px{% else %}auto{% endif %};
+      --logo-image-height: {% if section.settings.logo_image_height > 0 %}{{ section.settings.logo_image_height }}px{% else %}auto{% endif %};
+      --logo-image-object-fit: {{ section.settings.logo_image_object_fit | default: 'contain' }};
+
+      /* Logo orbit (when enabled) */
+      --logo-orbit-duration: {{ section.settings.logo_orbit_speed | default: 20 }}s;
+      --logo-orbit-radius: {{ section.settings.logo_orbit_radius | default: 44 }};
+      --logo-orbit-font-size: {{ section.settings.logo_orbit_font_size | default: 8 }}px;
+      --logo-orbit-font-weight: {{ section.settings.logo_orbit_font_weight | default: 600 }};
+      --logo-orbit-letter-spacing: {{ section.settings.logo_orbit_letter_spacing | default: 0.1 }}em;
+
+      /* Action Buttons */
+      --button-gap: {{ section.settings.button_gap | default: 8 }}px;
+      --button-padding-top: {{ section.settings.button_padding_top | default: 12 }}px;
+      --button-padding-bottom: {{ section.settings.button_padding_bottom | default: 12 }}px;
+      --button-padding-left: {{ section.settings.button_padding_left | default: 16 }}px;
+      --button-padding-right: {{ section.settings.button_padding_right | default: 16 }}px;
+      --button-padding: var(--button-padding-top) var(--button-padding-right) var(--button-padding-bottom) var(--button-padding-left);
+      --button-font-size: {{ section.settings.button_font_size | default: 16 }}px;
+      --button-icon-size: {{ section.settings.button_icon_size | default: 16 }}px;
+
+      /* Navigation */
+      --nav-gap: {{ section.settings.nav_gap | default: 8 }}px;
+      --nav-animation-speed: {{ section.settings.nav_animation_speed | default: 0.8 }}s;
+      --nav-padding-top: {{ section.settings.nav_padding_top | default: 14 }}px;
+      --nav-padding-bottom: {{ section.settings.nav_padding_bottom | default: 14 }}px;
+      --nav-item-padding-top: {{ section.settings.nav_item_padding_top | default: 28 }}px;
+      --nav-item-padding-bottom: {{ section.settings.nav_item_padding_bottom | default: 28 }}px;
+      --nav-item-padding-left: {{ section.settings.nav_item_padding_left | default: 16 }}px;
+      --nav-item-padding-right: {{ section.settings.nav_item_padding_right | default: 16 }}px;
+      --nav-item-padding: var(--nav-item-padding-top) var(--nav-item-padding-right) var(--nav-item-padding-bottom) var(--nav-item-padding-left);
+      --nav-font-size: {{ section.settings.nav_font_size | default: 14 }}px;
+      --nav-font-weight: {{ section.settings.nav_font_weight | default: 500 }};
+      --nav-letter-spacing: {{ section.settings.nav_letter_spacing | default: 0 }}px;
+      --nav-icon-size: {{ section.settings.nav_icon_size | default: 24 }}px;
+      --nav-caret-size: {{ section.settings.nav_caret_size | default: 12 }}px;
+      --nav-hover-background: var(--color-link);
+      --nav-default-background: var(--color-bg);
+      {%- if section.settings.nav_show_borders -%}
+        --nav-border: 1px solid var(--color-input-border);
+      {%- else -%}
+        --nav-border: none;
+      {%- endif -%}
+
+      /* Mobile Header Logo */
+      --mobile-logo-image-max-width: {{ section.settings.mobile_logo_image_max_width | default: 120 }}px;
+      --mobile-logo-image-max-height: {{ section.settings.mobile_logo_image_max_height | default: 40 }}px;
+      --mobile-logo-image-width: {% if section.settings.mobile_logo_image_width > 0 %}{{ section.settings.mobile_logo_image_width }}px{% else %}auto{% endif %};
+      --mobile-logo-image-height: {% if section.settings.mobile_logo_image_height > 0 %}{{ section.settings.mobile_logo_image_height }}px{% else %}auto{% endif %};
+      --mobile-logo-image-object-fit: {{ section.settings.mobile_logo_image_object_fit | default: 'contain' }};
+      --mobile-logo-font-size: {{ section.settings.mobile_logo_font_size | default: 20 }}px;
+      --mobile-logo-font-weight: {{ section.settings.mobile_logo_font_weight | default: 700 }};
+
+      /* Mobile Logo Orbit */
+      --mobile-logo-orbit-duration: {{ section.settings.mobile_logo_orbit_speed | default: 20 }}s;
+      --mobile-logo-orbit-radius: {{ section.settings.mobile_logo_orbit_radius | default: 36 }};
+      --mobile-logo-orbit-font-size: {{ section.settings.mobile_logo_orbit_font_size | default: 6 }}px;
+      --mobile-logo-orbit-font-weight: {{ section.settings.mobile_logo_orbit_font_weight | default: 600 }};
+      --mobile-logo-orbit-letter-spacing: {{ section.settings.mobile_logo_orbit_letter_spacing | default: 0.1 }}em;
+
+      /* Mobile Action Buttons */
+      --mobile-button-gap: {{ section.settings.mobile_button_gap | default: 16 }}px;
+      --mobile-button-icon-size: {{ section.settings.mobile_button_icon_size | default: 40 }}px;
+    }
 </style>
 
 {%- assign search_popup_id_param = 'HeaderSearchPopup' -%}
@@ -98,7 +167,10 @@
 <div class="mega-menu-overlay"></div>
 
 <!-- Desktop Header (Vertical Left Sidebar) -->
-<header class="vertical-sidebar-header desktop-header" id="shopify-section-header">
+<header
+  class="vertical-sidebar-header desktop-header color-{{ section.settings.color_scheme }} gradient"
+  id="shopify-section-header"
+>
   <div class="vertical-sidebar-inner">
     <!-- Logo Section -->
     <div class="vertical-sidebar-logo {% if section.settings.logo_orbit_enabled %}vertical-sidebar-logo--orbit-on{% endif %}">
@@ -1266,6 +1338,12 @@
   "name": "Header",
   "settings": [
     {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Header Color Scheme",
+      "default": "scheme-1"
+    },
+    {
       "type": "link_list",
       "id": "menu",
       "default": "main-menu",
@@ -1285,7 +1363,7 @@
       "type": "text",
       "id": "logo_text",
       "label": "Logo Text",
-      "default": "kokō",
+      "default": "kok\u014d",
       "info": "Text displayed if no logo image is uploaded"
     },
     {
@@ -1334,9 +1412,18 @@
       "id": "logo_alignment",
       "label": "Logo Alignment",
       "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
       ],
       "default": "center",
       "info": "Horizontal alignment of the logo within the header"
@@ -1406,11 +1493,26 @@
       "id": "logo_font_weight",
       "label": "Logo Font Weight",
       "options": [
-        { "value": "400", "label": "Regular" },
-        { "value": "500", "label": "Medium" },
-        { "value": "600", "label": "Semi Bold" },
-        { "value": "700", "label": "Bold" },
-        { "value": "800", "label": "Extra Bold" }
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi Bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        },
+        {
+          "value": "800",
+          "label": "Extra Bold"
+        }
       ],
       "default": "700"
     },
@@ -1423,13 +1525,6 @@
       "unit": "px",
       "label": "Logo Letter Spacing",
       "default": -0.5
-    },
-    {
-      "type": "color",
-      "id": "logo_background_color",
-      "label": "Logo Background Color",
-      "default": "#306030",
-      "info": "Background color for the logo container"
     },
     {
       "type": "header",
@@ -1484,11 +1579,26 @@
       "id": "logo_image_object_fit",
       "label": "Logo Image Object Fit",
       "options": [
-        { "value": "contain", "label": "Contain" },
-        { "value": "cover", "label": "Cover" },
-        { "value": "fill", "label": "Fill" },
-        { "value": "none", "label": "None" },
-        { "value": "scale-down", "label": "Scale Down" }
+        {
+          "value": "contain",
+          "label": "Contain"
+        },
+        {
+          "value": "cover",
+          "label": "Cover"
+        },
+        {
+          "value": "fill",
+          "label": "Fill"
+        },
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "scale-down",
+          "label": "Scale Down"
+        }
       ],
       "default": "contain",
       "info": "How the logo image should be resized to fit its container"
@@ -1586,10 +1696,22 @@
       "id": "logo_orbit_font_weight",
       "label": "Orbit font weight",
       "options": [
-        { "value": "500", "label": "Medium" },
-        { "value": "600", "label": "Semi Bold" },
-        { "value": "700", "label": "Bold" },
-        { "value": "800", "label": "Extra Bold" }
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi Bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        },
+        {
+          "value": "800",
+          "label": "Extra Bold"
+        }
       ],
       "default": "600"
     },
@@ -1779,11 +1901,26 @@
       "id": "nav_font_weight",
       "label": "Navigation Font Weight",
       "options": [
-        { "value": "400", "label": "Regular" },
-        { "value": "500", "label": "Medium" },
-        { "value": "600", "label": "Semi Bold" },
-        { "value": "700", "label": "Bold" },
-        { "value": "800", "label": "Extra Bold" }
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi Bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        },
+        {
+          "value": "800",
+          "label": "Extra Bold"
+        }
       ],
       "default": "500"
     },
@@ -1806,13 +1943,6 @@
       "unit": "px",
       "label": "Navigation Icon Size",
       "default": 24
-    },
-    {
-      "type": "color",
-      "id": "nav_hover_background_color",
-      "label": "Navigation Hover Background Color",
-      "default": "#306030",
-      "info": "Background color for navigation items on hover"
     },
     {
       "type": "header",
@@ -1963,9 +2093,18 @@
       "id": "mobile_logo_image_object_fit",
       "label": "Logo object fit",
       "options": [
-        { "value": "contain", "label": "Contain" },
-        { "value": "cover", "label": "Cover" },
-        { "value": "fill", "label": "Fill" }
+        {
+          "value": "contain",
+          "label": "Contain"
+        },
+        {
+          "value": "cover",
+          "label": "Cover"
+        },
+        {
+          "value": "fill",
+          "label": "Fill"
+        }
       ],
       "default": "contain"
     },
@@ -2037,10 +2176,22 @@
       "id": "mobile_logo_orbit_font_weight",
       "label": "Orbit font weight",
       "options": [
-        { "value": "500", "label": "Medium" },
-        { "value": "600", "label": "Semi Bold" },
-        { "value": "700", "label": "Bold" },
-        { "value": "800", "label": "Extra Bold" }
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi Bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        },
+        {
+          "value": "800",
+          "label": "Extra Bold"
+        }
       ],
       "default": "600"
     },
@@ -2192,7 +2343,6 @@
           "label": "Mobile link spacing",
           "default": 10
         },
-
         {
           "type": "header",
           "content": "Image Cards"
@@ -2333,9 +2483,18 @@
           "id": "avatar_shape",
           "label": "Avatar Shape",
           "options": [
-            { "value": "circle", "label": "Circle" },
-            { "value": "square", "label": "Square" },
-            { "value": "rounded", "label": "Rounded" }
+            {
+              "value": "circle",
+              "label": "Circle"
+            },
+            {
+              "value": "square",
+              "label": "Square"
+            },
+            {
+              "value": "rounded",
+              "label": "Rounded"
+            }
           ],
           "default": "circle"
         }

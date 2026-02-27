@@ -48,9 +48,11 @@
             <div class="facets-buttons-drawers" id="FacetsWrapperDesktop">
               {% if enable_filtering %}
                 <details class="facets-drawer facets-drawer--filters" id="FacetsDrawerFilters">
-                  <summary class="facets-drawer-trigger share-story-submit">
-                    <span class="submit-button__shadow"></span>
-                    <span class="submit-button__content">{{ 'products.facets.filter_button' | t }}</span>
+                  <summary class="facets-drawer-trigger global-btn global-btn--tertiary">
+                    <span class="global-btn__shadow" aria-hidden="true"></span>
+                    <span class="global-btn__content">
+                      <span class="global-btn__text">{{ 'products.facets.filter_button' | t }}</span>
+                    </span>
                   </summary>
                   <div class="facets-drawer__panel">
                     <div class="facets-drawer__header">
@@ -233,9 +235,10 @@
                       {%- endfor -%}
                     </div>
                     <div class="facets-drawer__footer">
-                      {%- render 'submit-button',
+                      {%- render 'global-btn',
                         text: 'APPLY CHANGES',
                         type: 'submit',
+                        variant: 'tertiary',
                         class: 'facets-drawer__apply-button',
                         attributes: 'form="FacetFiltersForm"'
                       -%}
@@ -245,9 +248,11 @@
               {% endif %}
               {% if enable_sorting %}
                 <details class="facets-drawer facets-drawer--sort" id="FacetsDrawerSort">
-                  <summary class="facets-drawer-trigger share-story-submit">
-                    <span class="submit-button__shadow"></span>
-                    <span class="submit-button__content">{{ 'products.facets.sort_button' | t }}</span>
+                  <summary class="facets-drawer-trigger global-btn global-btn--tertiary">
+                    <span class="global-btn__shadow" aria-hidden="true"></span>
+                    <span class="global-btn__content">
+                      <span class="global-btn__text">{{ 'products.facets.sort_button' | t }}</span>
+                    </span>
                   </summary>
                   <div class="facets-drawer__panel">
                     <div class="facets-drawer__header">
@@ -296,9 +301,10 @@
                       </ul>
                     </div>
                     <div class="facets-drawer__footer">
-                      {%- render 'submit-button',
+                      {%- render 'global-btn',
                         text: 'APPLY CHANGES',
                         type: 'button',
+                        variant: 'tertiary',
                         class: 'facets-drawer__apply-button facets-drawer__apply-button--sort'
                       -%}
                     </div>

@@ -37,53 +37,88 @@
         "id": "color_schemes",
         "definition": [
           {
+            "type": "header",
+            "content": "Root Palette"
+          },
+          {
             "type": "color",
-            "id": "background",
+            "id": "color_bg",
             "label": "Background",
-            "default": "#D2CDC4",
-            "alpha": true
+            "default": "#E6E3E6"
+          },
+          {
+            "type": "header",
+            "content": "Card"
           },
           {
             "type": "color",
-            "id": "headings",
+            "id": "color_card_bg",
+            "label": "Card Background",
+            "default": "#F8F3F8"
+          },
+          {
+            "type": "color",
+            "id": "color_card_text",
+            "label": "Card Text",
+            "default": "#1E4ABD"
+          },
+          {
+            "type": "color",
+            "id": "color_heading",
             "label": "Headings",
-            "default": "#000000",
-            "alpha": true
+            "default": "#1E4ABD"
           },
           {
             "type": "color",
-            "id": "text",
-            "label": "Text",
-            "default": "#121212",
-            "alpha": true
+            "id": "color_text",
+            "label": "Body Text",
+            "default": "#000000"
           },
           {
             "type": "color",
-            "id": "links",
+            "id": "color_link",
             "label": "Links",
-            "default": "#121212",
-            "alpha": true
+            "default": "#1E4ABD"
           },
           {
             "type": "color",
-            "id": "links_hover",
-            "label": "Hover links",
-            "default": "#000000",
-            "alpha": true
+            "id": "color_link_hover",
+            "label": "Hover Links",
+            "default": "#F5A30A"
           },
           {
             "type": "color",
-            "id": "borders",
-            "label": "Borders",
-            "default": "#e5e5e5",
-            "alpha": true
+            "id": "color_btn_border",
+            "label": "Button Borders",
+            "default": "#000000"
           },
           {
             "type": "color",
-            "id": "shadow",
-            "label": "Shadow",
-            "default": "#121212",
-            "alpha": true
+            "id": "color_btn_shadow",
+            "label": "Button Shadows",
+            "default": "#000000"
+          },
+          {
+            "type": "header",
+            "content": "Input Fields"
+          },
+          {
+            "type": "color",
+            "id": "color_input_bg",
+            "label": "Background",
+            "default": "#FFFFFF"
+          },
+          {
+            "type": "color",
+            "id": "color_input_text",
+            "label": "Text",
+            "default": "#000000"
+          },
+          {
+            "type": "color",
+            "id": "color_input_border",
+            "label": "Border",
+            "default": "#000000"
           },
           {
             "type": "header",
@@ -91,77 +126,27 @@
           },
           {
             "type": "color",
-            "id": "primary_button_bg",
+            "id": "btn_primary_bg",
             "label": "Background",
-            "default": "#E5E1DA",
-            "alpha": true
+            "default": "#F8F3F8"
           },
           {
             "type": "color",
-            "id": "primary_button_text",
+            "id": "btn_primary_text",
             "label": "Text",
-            "default": "#306030",
-            "alpha": true
+            "default": "#1E4ABD"
           },
           {
             "type": "color",
-            "id": "primary_button_border",
-            "label": "Borders",
-            "default": "#273827",
-            "alpha": true
+            "id": "btn_primary_border",
+            "label": "Border",
+            "default": "#000000"
           },
           {
             "type": "color",
-            "id": "primary_button_hover_bg",
-            "label": "Hover background",
-            "default": "#273827",
-            "alpha": true
-          },
-          {
-            "type": "color",
-            "id": "primary_button_hover_text",
-            "label": "Hover text",
-            "default": "#FFFFFF",
-            "alpha": true
-          },
-          {
-            "type": "color",
-            "id": "primary_button_hover_border",
-            "label": "Hover borders",
-            "default": "#D62839",
-            "alpha": true
-          },
-          {
-            "type": "header",
-            "content": "Accent Colors"
-          },
-          {
-            "type": "color",
-            "id": "accent_red",
-            "label": "Accent Red (Primary Red)",
-            "default": "#E63946",
-            "alpha": true
-          },
-          {
-            "type": "color",
-            "id": "accent_pink",
-            "label": "Accent Pink (Light Pink)",
-            "default": "#E598A9",
-            "alpha": true
-          },
-          {
-            "type": "color",
-            "id": "accent_off_white",
-            "label": "Off White / Cream",
-            "default": "#FAFAFA",
-            "alpha": true
-          },
-          {
-            "type": "color",
-            "id": "accent_light_grey",
-            "label": "Light Grey",
-            "default": "#e5e5e5",
-            "alpha": true
+            "id": "btn_primary_shadow",
+            "label": "Shadow",
+            "default": "#000000"
           },
           {
             "type": "header",
@@ -169,246 +154,106 @@
           },
           {
             "type": "color",
-            "id": "secondary_button_bg",
+            "id": "btn_secondary_bg",
             "label": "Background",
-            "default": "rgba(0,0,0,0)",
-            "alpha": true
+            "default": "#1E4ABD"
           },
           {
             "type": "color",
-            "id": "secondary_button_text",
+            "id": "btn_secondary_text",
             "label": "Text",
-            "default": "#000000",
-            "alpha": true
+            "default": "#F8F3F8"
           },
           {
             "type": "color",
-            "id": "secondary_button_border",
-            "label": "Borders",
-            "default": "#000000",
-            "alpha": true
+            "id": "btn_secondary_border",
+            "label": "Border",
+            "default": "#000000"
           },
           {
             "type": "color",
-            "id": "secondary_button_hover_bg",
-            "label": "Hover background",
-            "default": "#FAFAFA",
-            "alpha": true
-          },
-          {
-            "type": "color",
-            "id": "secondary_button_hover_text",
-            "label": "Hover text",
-            "default": "#333333",
-            "alpha": true
-          },
-          {
-            "type": "color",
-            "id": "secondary_button_hover_border",
-            "label": "Hover borders",
-            "default": "#333333",
-            "alpha": true
+            "id": "btn_secondary_shadow",
+            "label": "Shadow",
+            "default": "#000000"
           },
           {
             "type": "header",
-            "content": "Inputs"
+            "content": "Tertiary Button"
           },
           {
             "type": "color",
-            "id": "input_bg",
+            "id": "btn_tertiary_bg",
             "label": "Background",
-            "default": "#FFFFFF",
-            "alpha": true
+            "default": "#F5A30A"
           },
           {
             "type": "color",
-            "id": "input_text",
+            "id": "btn_tertiary_text",
             "label": "Text",
-            "default": "#333333",
-            "alpha": true
+            "default": "#000000"
           },
           {
             "type": "color",
-            "id": "input_border",
-            "label": "Borders",
-            "default": "#DFDFDF",
-            "alpha": true
+            "id": "btn_tertiary_border",
+            "label": "Border",
+            "default": "#000000"
           },
           {
             "type": "color",
-            "id": "input_hover_bg",
-            "label": "Hover background",
-            "default": "rgba(0,0,0,0.01)",
-            "alpha": true
+            "id": "btn_tertiary_shadow",
+            "label": "Shadow",
+            "default": "#000000"
           },
           {
             "type": "header",
-            "content": "Variants"
+            "content": "Disabled Button"
           },
           {
             "type": "color",
-            "id": "variant_bg",
+            "id": "btn_disabled_bg",
             "label": "Background",
-            "default": "#FFFFFF",
-            "alpha": true
+            "default": "#E6E3E6"
           },
           {
             "type": "color",
-            "id": "variant_text",
+            "id": "btn_disabled_text",
             "label": "Text",
-            "default": "#000000",
-            "alpha": true
+            "default": "#697FB8"
           },
           {
             "type": "color",
-            "id": "variant_border",
-            "label": "Borders",
-            "default": "#000000",
-            "alpha": true
+            "id": "btn_disabled_border",
+            "label": "Border",
+            "default": "#000000"
           },
           {
             "type": "color",
-            "id": "variant_hover_bg",
-            "label": "Hover background",
-            "default": "#F5F5F5",
-            "alpha": true
-          },
-          {
-            "type": "color",
-            "id": "variant_hover_text",
-            "label": "Hover text",
-            "default": "#000000",
-            "alpha": true
-          },
-          {
-            "type": "color",
-            "id": "variant_hover_border",
-            "label": "Hover borders",
-            "default": "#E6E6E6",
-            "alpha": true
-          },
-          {
-            "type": "header",
-            "content": "Selected Variants"
-          },
-          {
-            "type": "color",
-            "id": "selected_variant_bg",
-            "label": "Background",
-            "default": "#000000",
-            "alpha": true
-          },
-          {
-            "type": "color",
-            "id": "selected_variant_text",
-            "label": "Text",
-            "default": "#FFFFFF",
-            "alpha": true
-          },
-          {
-            "type": "color",
-            "id": "selected_variant_border",
-            "label": "Borders",
-            "default": "#000000",
-            "alpha": true
-          },
-          {
-            "type": "color",
-            "id": "selected_variant_hover_bg",
-            "label": "Hover background",
-            "default": "#1A1A1A",
-            "alpha": true
-          },
-          {
-            "type": "color",
-            "id": "selected_variant_hover_text",
-            "label": "Hover text",
-            "default": "#FFFFFF",
-            "alpha": true
-          },
-          {
-            "type": "color",
-            "id": "selected_variant_hover_border",
-            "label": "Hover borders",
-            "default": "#1A1A1A",
-            "alpha": true
-          },
-          {
-            "type": "header",
-            "content": "Header Colors"
-          },
-          {
-            "type": "color",
-            "id": "header_background",
-            "label": "Header Background",
-            "default": "#D2CDC4",
-            "alpha": true
-          },
-          {
-            "type": "color",
-            "id": "header_text",
-            "label": "Header Text",
-            "default": "#365330",
-            "alpha": true
-          },
-          {
-            "type": "color",
-            "id": "header_border",
-            "label": "Header Borders",
-            "default": "#365330",
-            "alpha": true
-          },
-          {
-            "type": "color",
-            "id": "header_button_background",
-            "label": "Header Button Background",
-            "default": "#E5E1DA",
-            "alpha": true
-          },
-          {
-            "type": "color",
-            "id": "header_button_hover_background",
-            "label": "Header Button Hover Background",
-            "default": "#f5f3f0",
-            "alpha": true
-          },
-          {
-            "type": "color",
-            "id": "header_logo_background",
-            "label": "Header Logo Background",
-            "default": "#365330",
-            "alpha": true
-          },
-          {
-            "type": "color",
-            "id": "header_logo_text",
-            "label": "Header Logo Text",
-            "default": "#a8d5a3",
-            "alpha": true
-          },
-          {
-            "type": "color",
-            "id": "header_active_border",
-            "label": "Header Active Border (Accent)",
-            "default": "#ec95ae",
-            "alpha": true
+            "id": "btn_disabled_shadow",
+            "label": "Shadow",
+            "default": "#000000"
           }
         ],
         "role": {
-          "text": "text",
-          "background": "background",
-          "links": "links",
-          "icons": "text",
-          "primary_button": "primary_button_bg",
-          "on_primary_button": "primary_button_text",
-          "primary_button_border": "primary_button_border",
-          "secondary_button": "secondary_button_bg",
-          "on_secondary_button": "secondary_button_text",
-          "secondary_button_border": "secondary_button_border"
+          "text": "color_text",
+          "background": "color_bg",
+          "links": "color_link",
+          "icons": "color_text",
+          "primary_button": "btn_primary_bg",
+          "on_primary_button": "btn_primary_text",
+          "primary_button_border": "btn_primary_border",
+          "secondary_button": "btn_secondary_bg",
+          "on_secondary_button": "btn_secondary_text",
+          "secondary_button_border": "btn_secondary_border"
         }
       }
     ]
   },
+
+
+
+
+
+
 
   {
     "name": "Typography",
@@ -490,24 +335,67 @@
     "name": "Animations",
     "settings": [
       {
-        "type": "range",
-        "id": "animation_duration_in_ms",
-        "label": "Base animation duration",
-        "min": 80,
-        "max": 600,
-        "step": 20,
-        "unit": "ms",
-        "default": 200
+        "type": "header",
+        "content": "Scroll animations"
+      },
+      {
+        "type": "checkbox",
+        "id": "animations_reveal_on_scroll",
+        "label": "Enable scroll animations",
+        "default": false
       },
       {
         "type": "range",
-        "id": "animation_easing_opacity",
-        "label": "Opacity emphasis (0–1, uses opacity tokens in CSS)",
+        "id": "scroll_animation_trigger_point",
+        "label": "Trigger point",
         "min": 0,
-        "max": 100,
-        "step": 5,
+        "max": 60,
+        "step": 1,
         "unit": "%",
-        "default": 75
+        "default": 12,
+        "info": "How early animation starts before the section fully enters the viewport."
+      },
+      {
+        "type": "range",
+        "id": "scroll_animation_speed",
+        "label": "Animation speed",
+        "min": 200,
+        "max": 3000,
+        "step": 100,
+        "unit": "ms",
+        "default": 2000
+      },
+      {
+        "type": "range",
+        "id": "scroll_animation_start_scale",
+        "label": "Starting scale",
+        "min": 70,
+        "max": 100,
+        "step": 1,
+        "unit": "%",
+        "default": 82
+      },
+      {
+        "type": "header",
+        "content": "Mobile scroll animations"
+      },
+      {
+        "type": "checkbox",
+        "id": "animations_disable_on_mobile",
+        "label": "Disable scroll animations on mobile",
+        "default": false,
+        "info": "When enabled, all scroll animations are skipped on mobile screens (≤768px)."
+      },
+      {
+        "type": "range",
+        "id": "scroll_animation_mobile_trigger_point",
+        "label": "Mobile trigger point",
+        "min": 0,
+        "max": 60,
+        "step": 1,
+        "unit": "%",
+        "default": 5,
+        "info": "How early scroll animations start on mobile. Lower values trigger sooner."
       }
     ]
   },
@@ -957,18 +845,6 @@
         "id": "collection_card_badge_background_color",
         "label": "Badge Background Color",
         "default": "#FFFFFF"
-      },
-      {
-        "type": "color",
-        "id": "collection_card_badge_text_color",
-        "label": "Badge Text Color",
-        "default": "#FF4D4D"
-      },
-      {
-        "type": "color",
-        "id": "collection_card_badge_border_color",
-        "label": "Badge Border Color",
-        "default": "#FF4D4D"
       },
       {
         "type": "range",
