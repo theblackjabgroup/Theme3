@@ -19,9 +19,16 @@
 .header-action-button--search svg rect,
 .header-nav-button svg,
 .header-nav-button svg path,
-.header-nav-button svg rect {
+.header-nav-button svg rect,
+.header-nav-button-icon svg,
+.header-nav-button-icon svg path,
+.header-nav-button-icon svg rect,
+.nav-icon-default svg,
+.nav-icon-default svg path,
+.nav-icon-default svg rect {
   fill: var(--icon-navigation-color);
   stroke: var(--icon-navigation-color);
+  transition: fill 0.2s ease-in-out, stroke 0.2s ease-in-out;
 }
 
 /* ---- ACTION ICONS ---- */
@@ -37,6 +44,7 @@
 .cart-drawer-action-icon svg rect {
   fill: var(--icon-action-color);
   stroke: var(--icon-action-color);
+  transition: fill 0.2s ease-in-out, stroke 0.2s ease-in-out;
 }
 
 /* ---- UTILITY ICONS ---- */
@@ -61,6 +69,7 @@
 .send-icon svg rect {
   fill: var(--icon-utility-color);
   stroke: var(--icon-utility-color);
+  transition: fill 0.2s ease-in-out, stroke 0.2s ease-in-out;
 }
 
 /* ---- FACETS/FILTERS DROPDOWN ICONS ---- */
@@ -71,6 +80,7 @@
 .disclosure-toggle svg path {
   fill: var(--icon-action-color);
   stroke: var(--icon-action-color);
+  transition: fill 0.2s ease-in-out, stroke 0.2s ease-in-out;
 }
 
 /* ---- CART ICON BUBBLE ---- */
@@ -79,6 +89,7 @@
 .svg-wrapper svg rect {
   fill: var(--icon-navigation-color);
   stroke: var(--icon-navigation-color);
+  transition: fill 0.2s ease-in-out, stroke 0.2s ease-in-out;
 }
 
 /* ---- FEATURED PRODUCT QUANTITY ---- */
@@ -87,12 +98,14 @@
 .featured-product__quantity-button svg rect {
   fill: var(--icon-action-color);
   stroke: var(--icon-action-color);
+  transition: fill 0.2s ease-in-out, stroke 0.2s ease-in-out;
 }
 
 /* ---- SOCIAL ICONS (Static, inherit text color) ---- */
 .social-icons svg,
 .social-icons svg path {
   fill: var(--icon-utility-color);
+  transition: fill 0.2s ease-in-out;
 }
 
 /* ---- MODAL/OVERLAY CLOSE ICONS ---- */
@@ -104,18 +117,134 @@
 .drawer-close-icon svg rect {
   fill: var(--icon-action-color);
   stroke: var(--icon-action-color);
+  transition: fill 0.2s ease-in-out, stroke 0.2s ease-in-out;
 }
 
 /* ---- PAYMENT ICONS ---- */
 .payment-icon svg,
 .payment-icon svg path {
   fill: var(--icon-utility-color);
+  transition: fill 0.2s ease-in-out;
 }
 
 /* ---- FOOTER ICONS ---- */
 .footer-nav-icon svg,
 .footer-nav-icon svg path {
   fill: var(--icon-utility-color);
+  transition: fill 0.2s ease-in-out;
+}
+
+/* ======================================================
+   ICON HOVER STATES - TRANSITIONS & COLOR CHANGES
+   ====================================================== */
+
+/* ---- NAVIGATION ICONS - HOVER ---- */
+/* Account, Cart, Search, Navigation Links, Hamburger */
+.header-action-button--user:hover svg,
+.header-action-button--user:hover svg path,
+.header-action-button--user:hover svg rect,
+.header-action-button--cart:hover svg,
+.header-action-button--cart:hover svg path,
+.header-action-button--cart:hover svg rect,
+.header-action-button--search:hover svg,
+.header-action-button--search:hover svg path,
+.header-action-button--search:hover svg rect,
+.header-nav-button:hover svg,
+.header-nav-button:hover svg path,
+.header-nav-button:hover svg rect,
+.header-nav-button-icon:hover svg,
+.header-nav-button-icon:hover svg path,
+.header-nav-button-icon:hover svg rect,
+.nav-icon-default:hover svg,
+.nav-icon-default:hover svg path,
+.nav-icon-default:hover svg rect,
+.icon-navigation:hover svg,
+.icon-navigation:hover svg path,
+.icon-navigation:hover svg rect {
+  fill: var(--icon-navigation-color-hover);
+  stroke: var(--icon-navigation-color-hover);
+  transition: fill 0.2s ease-in-out, stroke 0.2s ease-in-out;
+}
+
+/* ---- ACTION ICONS - HOVER ---- */
+/* Plus, Minus, Remove, Close buttons */
+.quantity__button:hover svg,
+.quantity__button:hover svg path,
+.quantity__button:hover svg rect,
+.cart-drawer-action-icon:hover svg,
+.cart-drawer-action-icon:hover svg path,
+.cart-drawer-action-icon:hover svg rect,
+.icon-action:hover svg,
+.icon-action:hover svg path,
+.icon-action:hover svg rect,
+.facets-container:hover svg,
+.facets-container:hover svg path,
+.disclosure-toggle:hover svg,
+.disclosure-toggle:hover svg path {
+  fill: var(--icon-action-color-hover);
+  stroke: var(--icon-action-color-hover);
+  transition: fill 0.2s ease-in-out, stroke 0.2s ease-in-out;
+}
+
+/* ---- UTILITY ICONS - HOVER ---- */
+/* Arrow, Send, Info, Error, Success icons */
+.form-error:hover svg,
+.form-error:hover svg path,
+.form-error:hover svg rect,
+.form-success:hover svg,
+.form-success:hover svg path,
+.form-success:hover svg rect,
+.form-info:hover svg,
+.form-info:hover svg path,
+.form-info:hover svg rect,
+.icon-arrow:hover svg,
+.icon-arrow:hover svg path,
+.icon-arrow:hover svg rect,
+.send-icon:hover svg,
+.send-icon:hover svg path,
+.send-icon:hover svg rect,
+.icon-utility:hover svg,
+.icon-utility:hover svg path,
+.icon-utility:hover svg rect,
+.social-icons:hover svg,
+.social-icons:hover svg path,
+.payment-icon:hover svg,
+.payment-icon:hover svg path,
+.footer-nav-icon:hover svg,
+.footer-nav-icon:hover svg path {
+  fill: var(--icon-utility-color-hover);
+  stroke: var(--icon-utility-color-hover);
+  transition: fill 0.2s ease-in-out, stroke 0.2s ease-in-out;
+}
+
+/* ---- CART ICON BUBBLE - HOVER ---- */
+.svg-wrapper:hover svg,
+.svg-wrapper:hover svg path,
+.svg-wrapper:hover svg rect {
+  fill: var(--icon-navigation-color-hover);
+  stroke: var(--icon-navigation-color-hover);
+  transition: fill 0.2s ease-in-out, stroke 0.2s ease-in-out;
+}
+
+/* ---- FEATURED PRODUCT QUANTITY - HOVER ---- */
+.featured-product__quantity-button:hover svg,
+.featured-product__quantity-button:hover svg path,
+.featured-product__quantity-button:hover svg rect {
+  fill: var(--icon-action-color-hover);
+  stroke: var(--icon-action-color-hover);
+  transition: fill 0.2s ease-in-out, stroke 0.2s ease-in-out;
+}
+
+/* ---- MODAL/OVERLAY CLOSE ICONS - HOVER ---- */
+.modal-close-icon:hover svg,
+.modal-close-icon:hover svg path,
+.modal-close-icon:hover svg rect,
+.drawer-close-icon:hover svg,
+.drawer-close-icon:hover svg path,
+.drawer-close-icon:hover svg rect {
+  fill: var(--icon-action-color-hover);
+  stroke: var(--icon-action-color-hover);
+  transition: fill 0.2s ease-in-out, stroke 0.2s ease-in-out;
 }
 
 /* ---- CART DRAWER CLOSE BUTTON ---- */
@@ -125,4 +254,39 @@
 .drawer__close svg rect {
   fill: var(--cart-drawer-text);
   stroke: var(--cart-drawer-text);
+  transition: fill 0.2s ease-in-out, stroke 0.2s ease-in-out, opacity 0.2s ease-in-out;
+}
+
+/* ---- CART DRAWER CLOSE BUTTON - HOVER ---- */
+/* Slightly darker version for hover state */
+.drawer__close:hover svg,
+.drawer__close:hover svg path,
+.drawer__close:hover svg rect {
+  fill: var(--color-headings); /* Default to headings color on hover for contrast */
+  stroke: var(--color-headings);
+  transition: fill 0.2s ease-in-out, stroke 0.2s ease-in-out;
+  opacity: 0.8;
+}
+/* ==============================================
+   ICON SIZES - CUSTOMIZABLE DIMENSIONS
+   ============================================== */
+
+/* ---- NAVIGATION ICON SIZES ---- */
+/* Account, Cart, Search, Navigation Links icons */
+.icon-navigation svg,
+.header-action-button--user svg,
+.header-action-button--cart svg,
+.header-action-button--search svg,
+.header-nav-button svg {
+  width: var(--icon-navigation-size);
+  height: var(--icon-navigation-size);
+}
+
+/* ---- ACTION ICON SIZES ---- */
+/* Plus, Minus, Remove, Close button icons */
+.icon-action svg,
+.quantity__button svg,
+.cart-drawer-action-icon svg {
+  width: var(--icon-action-size);
+  height: var(--icon-action-size);
 }
