@@ -118,13 +118,13 @@
       <div
         class="sc-grid-item"
         style="
-          --dc-bg-color: {{ block.settings.bg_color }};
-          --dc-text-color: {{ block.settings.text_color }};
-          --dc-tooltip-bg: {{ block.settings.tooltip_bg | default: '#ff0000' }};
-          --dc-tooltip-text: {{ block.settings.tooltip_text | default: '#ffffff' }};
-          --dc-bar-fill: {{ block.settings.progress_fill | default: '#ff0000' }};
-          --dc-bar-track: {{ block.settings.progress_track | default: '#fce8e8' }};
-          --dc-eyebrow-color: {{ block.settings.eyebrow_color }};
+          --dc-bg-color: var(--color-card-bg);
+          --dc-text-color: var(--color-text);
+          --dc-tooltip-bg: var(--btn-primary-bg);
+          --dc-tooltip-text: var(--btn-primary-text);
+          --dc-bar-fill: var(--btn-primary-bg);
+          --dc-bar-track: var(--color-input-bg);
+          --dc-eyebrow-color: var(--color-link);
           --dc-bar-track-width: {{ section.settings.bar_track_width }}%;
           {%- if block.type == 'textbox' -%}
             --dc-card-border-radius: {{ block.settings.card_border_radius }}px;
@@ -652,12 +652,6 @@
           "info": "Upload a custom icon for the checklist items. Recommended size: 32x32px."
         },
         {
-          "type": "color",
-          "id": "bg_color",
-          "label": "Card Background",
-          "default": "#306030"
-        },
-        {
           "type": "range",
           "id": "card_border_radius",
           "min": 0,
@@ -666,18 +660,6 @@
           "unit": "px",
           "label": "Card border radius",
           "default": 32
-        },
-        {
-          "type": "color",
-          "id": "text_color",
-          "label": "Card Text",
-          "default": "#ffffff"
-        },
-        {
-          "type": "color",
-          "id": "eyebrow_color",
-          "label": "Tag Color",
-          "default": "#ffffff"
         }
       ]
     },
@@ -814,12 +796,6 @@
           "default": 100
         },
         {
-          "type": "color",
-          "id": "bg_color",
-          "label": "Card Background",
-          "default": "#E5E1DA"
-        },
-        {
           "type": "range",
           "id": "card_border_radius",
           "min": 0,
@@ -828,46 +804,6 @@
           "unit": "px",
           "label": "Card border radius",
           "default": 32
-        },
-        {
-          "type": "color",
-          "id": "text_color",
-          "label": "Card Text",
-          "default": "#000000"
-        },
-        {
-          "type": "color",
-          "id": "eyebrow_color",
-          "label": "Tag Color",
-          "default": "#000000"
-        },
-        {
-          "type": "header",
-          "content": "Progress & Tooltip Colors"
-        },
-        {
-          "type": "color",
-          "id": "tooltip_bg",
-          "label": "Tooltip Background",
-          "default": "#306030"
-        },
-        {
-          "type": "color",
-          "id": "tooltip_text",
-          "label": "Tooltip Text",
-          "default": "#ffffff"
-        },
-        {
-          "type": "color",
-          "id": "progress_fill",
-          "label": "Progress Bar Fill",
-          "default": "#306030"
-        },
-        {
-          "type": "color",
-          "id": "progress_track",
-          "label": "Progress Bar Track",
-          "default": "#98B098"
         }
       ]
     }

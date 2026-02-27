@@ -2,7 +2,6 @@
 
 {%- liquid
   assign bg_text = section.settings.background_text | default: "OOPS! YOU'RE"
-  assign bg_text_color = section.settings.background_text_color | default: '#2D573B'
   assign bg_color = 'var(--color-bg)'
   assign message_text = section.settings.message_text | default: "This is a 404 error, which means you've clicked on a bad link or entered an invalid URL. Maybe what you are looking for can be found on the homepage."
   assign button_text = section.settings.button_text | default: 'Take me to Home'
@@ -71,7 +70,7 @@
     left: {{ section.settings.scrolling_text_horizontal_position | default: 50 }}%;
     transform: translateX(-50%);
     --bg-color: transparent;
-    --text-color: {{ bg_text_color }};
+    --text-color: var(--color-heading);
     --speed: {{ section.settings.background_text_speed | default: 30 }}s;
     --angle: 0deg;
     --item-font-size: clamp({{ section.settings.scrolling_text_font_size_min | default: 4 }}rem, {{ section.settings.scrolling_text_font_size_vw | default: 18 }}vw, {{ section.settings.scrolling_text_font_size_max | default: 12 }}rem);
@@ -170,9 +169,9 @@
     justify-content: center;
     padding: 1.5rem;
     text-align: center;
-    color: #666;
+    color: var(--color-text);
     font-size: 0.9rem;
-    background: rgba(0,0,0,0.04);
+    background: var(--color-card-bg);
     border-radius: 12px;
   }
 
@@ -182,7 +181,7 @@
     font-size: {{ section.settings.message_font_size | default: 16 }}px;
     font-weight: {{ section.settings.message_font_weight | default: 400 }};
     line-height: {{ section.settings.message_line_height | default: 1.6 }};
-    color: {{ section.settings.message_color | default: '#2d2d2d' }};
+    color: var(--color-text);
     margin: 0;
   }
 
@@ -209,9 +208,8 @@
   .template-404__button .share-story-submit .submit-button__content {
     border-style: solid;
     background-color: var(--btn-primary-bg);
-    {% if section.settings.button_text_color != blank %}
-    color: {{ section.settings.button_text_color }};
-    {% endif %}
+    color: var(--btn-primary-text);
+    border-color: var(--btn-primary-border);
   }
 
   .template-404__button .share-story-submit .submit-button__shadow {
@@ -305,7 +303,7 @@
       class="scrolling-text-strip"
       style="
         --bg-color: transparent;
-        --text-color: {{ bg_text_color }};
+        --text-color: var(--color-heading);
         --speed: {{ section.settings.background_text_speed | default: 30 }}s;
         --item-font-size: clamp({{ section.settings.scrolling_text_font_size_min | default: 4 }}rem, {{ section.settings.scrolling_text_font_size_vw | default: 18 }}vw, {{ section.settings.scrolling_text_font_size_max | default: 12 }}rem);
         --item-gap: 0.15em;

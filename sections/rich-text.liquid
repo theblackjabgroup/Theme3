@@ -58,27 +58,27 @@
     {%- case block.type -%}
       {%- when 'header' -%}
         {{ section_selector }} [data-block-id="{{ block.id }}"] .rte-rich-text__tag {
-          background-color: {{ block.settings.tag_background | default: '#F5F4F0' }};
-          color: {{ block.settings.tag_text_color | default: '#2a2a2a' }};
-          border-color: {{ block.settings.tag_border | default: '#d4d4d4' }};
+          background-color: var(--color-card-bg);
+          color: var(--color-text);
+          border-color: var(--color-input-border);
           border-radius: {{ block.settings.tag_border_radius | default: 6 }}px;
           padding: {{ block.settings.tag_padding_vertical | default: 8 }}px {{ block.settings.tag_padding_horizontal | default: 16 }}px;
           font-size: {{ block.settings.tag_font_size | default: 12 }}px;
         }
         {{ section_selector }} [data-block-id="{{ block.id }}"] .rte-rich-text__title {
-          color: {{ block.settings.title_color | default: '#4A6E58' }};
+          color: var(--color-heading);
           font-size: {{ block.settings.title_font_size | default: 42 }}px;
         }
       {%- when 'context_text' -%}
         {{ section_selector }} [data-block-id="{{ block.id }}"] {
-          color: {{ block.settings.body_text_color | default: '#333333' }};
+          color: var(--color-text);
           font-size: {{ block.settings.body_font_size | default: 16 }}px;
           line-height: {{ block.settings.body_line_height | default: 1.7 }};
         }
         {{ section_selector }} [data-block-id="{{ block.id }}"] h1,
         {{ section_selector }} [data-block-id="{{ block.id }}"] h2,
         {{ section_selector }} [data-block-id="{{ block.id }}"] h3 {
-          color: {{ block.settings.heading_color | default: '#4A6E58' }};
+          color: var(--color-heading);
           font-size: {{ block.settings.heading_font_size | default: 18 }}px;
         }
       {%- when 'context_image' -%}
@@ -88,7 +88,7 @@
           border-radius: {{ block.settings.image_border_radius | default: 8 }}px;
         }
         {{ section_selector }} [data-block-id="{{ block.id }}"] .rte-rich-text__image-placeholder {
-          background-color: {{ block.settings.image_placeholder_color | default: '#f5f5f5' }};
+          background-color: var(--color-card-bg);
           border-radius: {{ block.settings.image_border_radius | default: 8 }}px;
           height: {{ block.settings.image_max_height | default: 330 }}px;
           min-height: {{ block.settings.image_min_height | default: 200 }}px;
@@ -303,24 +303,6 @@
           "default": true
         },
         {
-          "type": "color",
-          "id": "tag_background",
-          "label": "Tag background",
-          "default": "#F5F4F0"
-        },
-        {
-          "type": "color",
-          "id": "tag_text_color",
-          "label": "Tag text color",
-          "default": "#2a2a2a"
-        },
-        {
-          "type": "color",
-          "id": "tag_border",
-          "label": "Tag border color",
-          "default": "#d4d4d4"
-        },
-        {
           "type": "range",
           "id": "tag_border_radius",
           "min": 0,
@@ -369,12 +351,6 @@
           "id": "title",
           "label": "Title",
           "default": "TERMS AND SERVICE"
-        },
-        {
-          "type": "color",
-          "id": "title_color",
-          "label": "Title color",
-          "default": "#4A6E58"
         },
         {
           "type": "range",
@@ -444,18 +420,6 @@
         {
           "type": "header",
           "content": "Typography"
-        },
-        {
-          "type": "color",
-          "id": "body_text_color",
-          "label": "Body text color",
-          "default": "#333333"
-        },
-        {
-          "type": "color",
-          "id": "heading_color",
-          "label": "Heading color (h1, h2, h3)",
-          "default": "#4A6E58"
         },
         {
           "type": "range",
@@ -549,12 +513,6 @@
         {
           "type": "header",
           "content": "Placeholder"
-        },
-        {
-          "type": "color",
-          "id": "image_placeholder_color",
-          "label": "Placeholder background (when no image)",
-          "default": "#f5f5f5"
         },
         {
           "type": "range",

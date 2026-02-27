@@ -14,7 +14,7 @@
   data-direction="{{ block.settings.direction }}"
   style="
     {% unless block.settings.show_border %}border: none;{% endunless %}
-    {% if block.settings.enable_custom_bg %}background: {{ block.settings.bg_color }};{% endif %}
+    background: var(--color-card-bg);
     --marquee-font-size: {{ block.settings.font_size | default: 18 }}px;
     --marquee-font-size-mobile: {{ block.settings.font_size_mobile | default: 16 }}px;
     --marquee-font-weight: {{ block.settings.font_weight | default: 700 }};

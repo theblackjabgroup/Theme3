@@ -71,7 +71,7 @@
       speed: block.settings.speed,
       direction: scroll_dir,
       pause_on_hover: block.settings.pause_on_hover,
-      bg_color: block.settings.strip_bg,
+      bg_color: 'var(--color-card-bg)',
       border_radius: block.settings.strip_border_radius,
       padding: block.settings.strip_padding,
       text_size: block.settings.text_size,
@@ -231,18 +231,6 @@
           "default": "700"
         },
         {
-          "type": "color",
-          "id": "pill_bg",
-          "label": "Pill background",
-          "default": "#2E473E"
-        },
-        {
-          "type": "color",
-          "id": "pill_color",
-          "label": "Pill text color",
-          "default": "#E8E4DC"
-        },
-        {
           "type": "range",
           "id": "pill_height",
           "min": 24,
@@ -394,12 +382,6 @@
           "default": 56
         },
         {
-          "type": "color",
-          "id": "circle_bg",
-          "label": "Circle background",
-          "default": "#E0A8B8"
-        },
-        {
           "type": "range",
           "id": "icon_width",
           "min": 20,
@@ -418,12 +400,6 @@
           "unit": "%",
           "label": "Icon height",
           "default": 100
-        },
-        {
-          "type": "color",
-          "id": "orbit_text_color",
-          "label": "Orbit text color",
-          "default": "#2E473E"
         },
         {
           "type": "range",
@@ -570,12 +546,6 @@
           "content": "Strip"
         },
         {
-          "type": "color",
-          "id": "strip_bg",
-          "label": "Strip background",
-          "default": "transparent"
-        },
-        {
           "type": "range",
           "id": "strip_border_radius",
           "min": 0,
@@ -658,12 +628,7 @@
           "type": "scrolling_strip",
           "settings": {
             "text": "<p>kokō</p>",
-            "pill_bg": "#2E473E",
-            "pill_color": "#E8E4DC",
             "orbit_text": "KOKO",
-            "circle_bg": "#E0A8B8",
-            "orbit_text_color": "#2E473E",
-            "strip_bg": "#4a4a4a",
             "direction": "left"
           }
         }
