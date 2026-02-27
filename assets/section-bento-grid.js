@@ -90,15 +90,19 @@
   function setToggleSlideDistance(card) {
     const ui = card.querySelector('.toggle-ui');
     const knob = card.querySelector('.toggle-knob');
-    const labelsTop = card.querySelector('.toggle-labels--top');
     const labelsBottom = card.querySelector('.toggle-labels--bottom');
     if (!ui || !knob || !labelsBottom) return;
 
     const isHorizontal = card.classList.contains('toggle-card--horizontal');
-    const uiRect = ui.getBoundingClientRect();
+    /* Measure knob at rest: getBoundingClientRect() includes CSS transform, so when
+       the toggle is checked the knob is already translated and the computed distance
+       would be wrong. Temporarily clear transform so we measure untransformed position. */
+    const prevTransform = knob.style.transform;
+    knob.style.transform = 'none';
     const knobRect = knob.getBoundingClientRect();
-    const bottomRect = labelsBottom.getBoundingClientRect();
+    knob.style.transform = prevTransform;
 
+    const bottomRect = labelsBottom.getBoundingClientRect();
     const gap = 12; /* Spacing between icon and edge when at bottom/right */
     if (isHorizontal) {
       const slideX = bottomRect.left - knobRect.left - gap;
