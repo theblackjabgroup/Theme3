@@ -8,16 +8,16 @@
   padding: var(--card-padding-top, 0) var(--card-padding-horizontal, 24px) var(--card-padding-bottom, 24px) !important;
   align-items: var(--card-align-items, center);
   text-align: var(--card-text-align, center);
-  height: 250px !important;
+  height: auto !important;
   display: flex !important;
   flex-direction: column !important;
 }
 
 
 .custom-product-card__image-container {
-  flex: 1 !important;
-  height: auto !important;
-  max-height: 250px !important;
+  flex: 0 0 auto !important;
+  height: var(--card-image-height, 250px) !important;
+  max-height: var(--card-image-height, 250px) !important;
   min-height: 0 !important;
   margin-bottom: var(--card-image-margin-bottom, 20px);
   display: flex !important;

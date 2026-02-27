@@ -44,9 +44,6 @@
       {{ body_font_italic | font_face: font_display: 'swap' }}
       {{ body_font_bold_italic | font_face: font_display: 'swap' }}
       {{ settings.type_header_font | font_face: font_display: 'swap' }}
-      {% if settings.type_subheader_font %}
-        {{ settings.type_subheader_font | font_face: font_display: 'swap' }}
-      {% endif %}
     {% endstyle %}
 
     <style>
@@ -119,16 +116,6 @@
         --font-heading-family: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
         --font-heading-style: {{ settings.type_header_font.style }};
         --font-heading-weight: {{ settings.type_header_font.weight }};
-
-        {% if settings.type_subheader_font %}
-        --font-subheading-family: {{ settings.type_subheader_font.family }}, {{ settings.type_subheader_font.fallback_families }};
-        --font-subheading-style: {{ settings.type_subheader_font.style }};
-        --font-subheading-weight: {{ settings.type_subheader_font.weight }};
-        {% else %}
-        --font-subheading-family: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
-        --font-subheading-style: {{ settings.type_header_font.style }};
-        --font-subheading-weight: {{ settings.type_header_font.weight }};
-        {% endif %}
 
         /* Legacy font variables for backward compatibility */
         --font-family-primary: var(--font-body-family);
@@ -436,12 +423,6 @@
       <link rel="preload" as="font" href="{{ settings.type_header_font | font_url }}" type="font/woff2" crossorigin>
       {% comment %}theme-check-enable AssetPreload{% endcomment %}
     {%- endunless -%}
-    {%- if settings.type_subheader_font and settings.type_subheader_font.system? == false -%}
-      {% comment %}theme-check-disable AssetPreload{% endcomment %}
-      <link rel="preload" as="font" href="{{ settings.type_subheader_font | font_url }}" type="font/woff2" crossorigin>
-      {% comment %}theme-check-enable AssetPreload{% endcomment %}
-    {%- endif -%}
-
     {%- if settings.predictive_search_enabled -%}
       <script>
         (function(){

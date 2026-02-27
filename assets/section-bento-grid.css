@@ -1068,7 +1068,7 @@ a.tag-card.tag-card--link:hover {
 }
 
 .tag-card-main {
-  font-family: var(--font-subheading-family, var(--font-heading-family));
+  font-family: var(--font-body-family);
   font-size: var(--desktop-main-font-size, 16px);
   font-weight: var(--desktop-main-font-weight, 600);
   line-height: var(--desktop-main-line-height, 1) !important;
