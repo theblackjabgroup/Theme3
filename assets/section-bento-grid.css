@@ -118,9 +118,13 @@
 }
 
 .text-card-button-wrapper {
-  width: 100%;
+  max-width: 80%;
   display: flex;
   padding-bottom: 2px; /* prevent global-btn 3D shadow from being clipped */
+}
+.text-card-button-wrapper .global-btn__shadow {
+
+  top: 8px !important;
 }
 
 .text-card-button--align-left {
