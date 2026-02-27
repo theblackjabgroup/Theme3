@@ -140,6 +140,11 @@
         --color-header-logo-text: {{ default_scheme.settings.header_logo_text }};
         --color-header-active-border: {{ default_scheme.settings.header_active_border }};
 
+        /* Icon Colors - Grouped */
+        --icon-navigation-color: {{ default_scheme.settings.icon_navigation_color }};
+        --icon-action-color: {{ default_scheme.settings.icon_action_color }};
+        --icon-utility-color: {{ default_scheme.settings.icon_utility_color }};
+
         /* Font Variables */
         --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
         --font-body-style: {{ settings.type_body_font.style }};
@@ -252,6 +257,11 @@
           --color-header-logo-text: {{ scheme.settings.header_logo_text }};
           --color-header-active-border: {{ scheme.settings.header_active_border }};
 
+          /* Icon Colors - Grouped */
+          --icon-navigation-color: {{ scheme.settings.icon_navigation_color }};
+          --icon-action-color: {{ scheme.settings.icon_action_color }};
+          --icon-utility-color: {{ scheme.settings.icon_utility_color }};
+
         }
       {%- endfor -%}
 
@@ -293,6 +303,7 @@
     </style>
 
     {{ 'base.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'icon-colors.css' | asset_url | stylesheet_tag: preload: true }}
 
     {%- if localization.available_countries.size > 1 or localization.available_languages.size > 1 -%}
       {{ 'component-localization-form.css' | asset_url | stylesheet_tag: preload: true }}

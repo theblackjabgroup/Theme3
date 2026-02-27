@@ -1,0 +1,128 @@
+/* ==============================================
+   ICON COLORS - EXPLICIT STYLING
+   Grouped colors managed through color schema
+   ============================================== */
+
+/* ---- NAVIGATION ICONS ---- */
+/* Account, Cart, Search, Navigation Links, Hamburger */
+.icon-navigation svg,
+.icon-navigation svg path,
+.icon-navigation svg rect,
+.header-action-button--user svg,
+.header-action-button--user svg path,
+.header-action-button--user svg rect,
+.header-action-button--cart svg,
+.header-action-button--cart svg path,
+.header-action-button--cart svg rect,
+.header-action-button--search svg,
+.header-action-button--search svg path,
+.header-action-button--search svg rect,
+.header-nav-button svg,
+.header-nav-button svg path,
+.header-nav-button svg rect {
+  fill: var(--icon-navigation-color);
+  stroke: var(--icon-navigation-color);
+}
+
+/* ---- ACTION ICONS ---- */
+/* Plus, Minus, Remove, Close buttons */
+.icon-action svg,
+.icon-action svg path,
+.icon-action svg rect,
+.quantity__button svg,
+.quantity__button svg path,
+.quantity__button svg rect,
+.cart-drawer-action-icon svg,
+.cart-drawer-action-icon svg path,
+.cart-drawer-action-icon svg rect {
+  fill: var(--icon-action-color);
+  stroke: var(--icon-action-color);
+}
+
+/* ---- UTILITY ICONS ---- */
+/* Arrow, Send, Info, Error, Success icons */
+.icon-utility svg,
+.icon-utility svg path,
+.icon-utility svg rect,
+.form-error svg,
+.form-error svg path,
+.form-error svg rect,
+.form-success svg,
+.form-success svg path,
+.form-success svg rect,
+.form-info svg,
+.form-info svg path,
+.form-info svg rect,
+.icon-arrow svg,
+.icon-arrow svg path,
+.icon-arrow svg rect,
+.send-icon svg,
+.send-icon svg path,
+.send-icon svg rect {
+  fill: var(--icon-utility-color);
+  stroke: var(--icon-utility-color);
+}
+
+/* ---- FACETS/FILTERS DROPDOWN ICONS ---- */
+/* Plus icon used for filter toggle */
+.facets-container svg,
+.facets-container svg path,
+.disclosure-toggle svg,
+.disclosure-toggle svg path {
+  fill: var(--icon-action-color);
+  stroke: var(--icon-action-color);
+}
+
+/* ---- CART ICON BUBBLE ---- */
+.svg-wrapper svg,
+.svg-wrapper svg path,
+.svg-wrapper svg rect {
+  fill: var(--icon-navigation-color);
+  stroke: var(--icon-navigation-color);
+}
+
+/* ---- FEATURED PRODUCT QUANTITY ---- */
+.featured-product__quantity-button svg,
+.featured-product__quantity-button svg path,
+.featured-product__quantity-button svg rect {
+  fill: var(--icon-action-color);
+  stroke: var(--icon-action-color);
+}
+
+/* ---- SOCIAL ICONS (Static, inherit text color) ---- */
+.social-icons svg,
+.social-icons svg path {
+  fill: var(--icon-utility-color);
+}
+
+/* ---- MODAL/OVERLAY CLOSE ICONS ---- */
+.modal-close-icon svg,
+.modal-close-icon svg path,
+.modal-close-icon svg rect,
+.drawer-close-icon svg,
+.drawer-close-icon svg path,
+.drawer-close-icon svg rect {
+  fill: var(--icon-action-color);
+  stroke: var(--icon-action-color);
+}
+
+/* ---- PAYMENT ICONS ---- */
+.payment-icon svg,
+.payment-icon svg path {
+  fill: var(--icon-utility-color);
+}
+
+/* ---- FOOTER ICONS ---- */
+.footer-nav-icon svg,
+.footer-nav-icon svg path {
+  fill: var(--icon-utility-color);
+}
+
+/* ---- CART DRAWER CLOSE BUTTON ---- */
+/* Uses cart drawer text color for proper contrast with cart drawer background */
+.drawer__close svg,
+.drawer__close svg path,
+.drawer__close svg rect {
+  fill: var(--cart-drawer-text);
+  stroke: var(--cart-drawer-text);
+}

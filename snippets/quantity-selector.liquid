@@ -50,7 +50,9 @@
       disabled
     {% endif %}
   >
-    &minus;
+    <span class="svg-wrapper">
+      {{- 'minus-icon.svg' | inline_asset_content -}}
+    </span>
   </button>
   <input
     type="number"
@@ -85,6 +87,8 @@
       disabled
     {% endif %}
   >
-    &plus;
+    <span class="svg-wrapper">
+      {{- 'plus-icon.svg' | inline_asset_content -}}
+    </span>
   </button>
 </div>

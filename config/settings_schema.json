@@ -392,6 +392,39 @@
             "label": "Header Active Border (Accent)",
             "default": "#ec95ae",
             "alpha": true
+          },
+          {
+            "type": "header",
+            "content": "Icon Colors - Navigation"
+          },
+          {
+            "type": "color",
+            "id": "icon_navigation_color",
+            "label": "Navigation Icons (Account, Cart, Search, Shop, About, Collections, Contact, Blog, Hamburger)",
+            "default": "#365330",
+            "alpha": true
+          },
+          {
+            "type": "header",
+            "content": "Icon Colors - Action"
+          },
+          {
+            "type": "color",
+            "id": "icon_action_color",
+            "label": "Action Icons (Plus, Minus, Remove, Close)",
+            "default": "#306030",
+            "alpha": true
+          },
+          {
+            "type": "header",
+            "content": "Icon Colors - Utility"
+          },
+          {
+            "type": "color",
+            "id": "icon_utility_color",
+            "label": "Utility Icons (Arrow, Send, Info, Error, Success)",
+            "default": "#121212",
+            "alpha": true
           }
         ],
         "role": {

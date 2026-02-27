@@ -45,7 +45,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-text);
+  color: var(--color-primary-button-text);
   font-size: 12px;
   padding: 0;
   line-height: 1;
@@ -58,6 +58,15 @@
 .quantity__button svg {
   width: 12px;
   height: 12px;
+  transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.quantity__button:hover:not(:disabled) {
+  opacity: 0.8;
+}
+
+.quantity__button:active:not(:disabled) {
+  transform: scale(0.95);
 }
 
 .quantity__button:disabled,
@@ -92,6 +101,17 @@
   font-size: 24px;
   font-weight: 400;
   padding: 0;
+  box-shadow: 0 2px 0 #000;
+  transition: all 0.15s ease;
+}
+
+.quantity.quantity--drawer-style .quantity__button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 0 #000;
+}
+
+.quantity.quantity--drawer-style .quantity__button:active:not(:disabled) {
+  transform: translateY(0);
   box-shadow: 0 2px 0 #000;
 }
 
@@ -174,6 +194,16 @@
   font-weight: var(--font-body-weight-bold);
   width: 24px;
   height: 24px;
+  transition: all 0.15s ease;
+}
+
+.cart-item__quantity-btn:hover:not(:disabled) {
+  transform: scale(1.1);
+  opacity: 0.8;
+}
+
+.cart-item__quantity-btn:active:not(:disabled) {
+  transform: scale(0.95);
 }
 
 .cart-item__quantity-btn:disabled {

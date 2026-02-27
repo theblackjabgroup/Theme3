@@ -312,9 +312,16 @@
 .header-action-button-icon svg {
   width: 100%;
   height: 100%;
-  stroke: currentColor;
-  stroke-width: 2;
-  fill: none;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* On hover, change SVG icon colors to match the button's hover text color */
+.header-action-button:hover .header-action-button-icon svg,
+.header-action-button:hover .header-action-button-icon svg path,
+.header-action-button:hover .header-action-button-icon svg circle,
+.header-action-button:hover .header-action-button-icon svg rect {
+  fill: var(--nav-default-background, var(--color-header-button-background, var(--color-header-background, #eae7e1)));
+  stroke: var(--nav-default-background, var(--color-header-button-background, var(--color-header-background, #eae7e1)));
 }
 
 .header-action-button-icon--image {

@@ -38,7 +38,7 @@
     --button-padding-right: {{ section.settings.button_padding_right | default: 16 }}px;
     --button-padding: var(--button-padding-top) var(--button-padding-right) var(--button-padding-bottom) var(--button-padding-left);
     --button-font-size: {{ section.settings.button_font_size | default: 16 }}px;
-    --button-icon-size: {{ section.settings.button_icon_size | default: 16 }}px;
+    --button-icon-size: {{ section.settings.button_icon_size | default: 24 }}px;
 
     /* Navigation */
     --nav-gap: {{ section.settings.nav_gap | default: 8 }}px;
@@ -183,7 +183,7 @@
           {%- elsif block.settings.button_icon_svg != blank -%}
             {%- assign welcome_icon = block.settings.button_icon_svg -%}
           {%- else -%}
-            {%- assign welcome_icon = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' -%}
+            {%- capture welcome_icon -%}{{ 'icon-account.svg' | inline_asset_content }}{%- endcapture -%}
           {%- endif -%}
           {%- assign welcome_hover_icon = '' -%}
           {%- if block.settings.button_icon_image_hover != blank -%}
@@ -225,7 +225,7 @@
           {%- elsif block.settings.button_icon_svg != blank -%}
             {%- assign cart_icon = block.settings.button_icon_svg -%}
           {%- else -%}
-            {%- assign cart_icon = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 22C9.55228 22 10 21.5523 10 21C10 20.4477 9.55228 20 9 20C8.44772 20 8 20.4477 8 21C8 21.5523 8.44772 22 9 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 22C20.5523 22 21 21.5523 21 21C21 20.4477 20.5523 20 20 20C19.4477 20 19 20.4477 19 21C19 21.5523 19.4477 22 20 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M1 1H5L7.68 13.39C7.77144 13.8504 8.02191 14.264 8.38755 14.5583C8.75318 14.8526 9.2107 15.009 9.68 15H19.4C19.8693 15.009 20.3268 14.8526 20.6925 14.5583C21.0581 14.264 21.3086 13.8504 21.4 13.39L23 6H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' -%}
+            {%- capture cart_icon -%}{{ 'icon-cart.svg' | inline_asset_content }}{%- endcapture -%}
           {%- endif -%}
           {%- assign cart_hover_icon = '' -%}
           {%- if block.settings.button_icon_image_hover != blank -%}
@@ -279,7 +279,7 @@
           {%- elsif block.settings.button_icon_svg != blank -%}
             {%- assign search_icon = block.settings.button_icon_svg -%}
           {%- else -%}
-            {%- assign search_icon = '<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 19L14.65 14.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' -%}
+            {%- capture search_icon -%}{{ 'icon-search.svg' | inline_asset_content }}{%- endcapture -%}
           {%- endif -%}
           {%- assign search_hover_icon = '' -%}
           {%- if block.settings.button_icon_image_hover != blank -%}
@@ -332,7 +332,7 @@
     <nav class="vertical-sidebar-nav">
       <ul class="vertical-sidebar-nav-list">
         {%- comment -%} Set default navigation icon {%- endcomment -%}
-        {%- assign default_icon_svg = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 12H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M3 6H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>' -%}
+        {%- capture default_icon_svg -%}{{ 'icon-hamburger.svg' | inline_asset_content }}{%- endcapture -%}
         {%- for link in section.settings.menu.links -%}
           {%- comment -%} Check for custom icon for this specific link {%- endcomment -%}
           {%- assign custom_icon_block = null -%}
@@ -343,8 +343,21 @@
             {%- endif -%}
           {%- endfor -%}
 
-          {%- comment -%} Determine which default icon to use for this link {%- endcomment -%}
-          {%- assign nav_icon = default_icon_svg -%}
+          {%- comment -%} Determine which default icon to use for this link based on handle {%- endcomment -%}
+          {%- case link.handle -%}
+            {%- when 'home' -%}
+              {%- capture nav_icon -%}{{ 'icon-shop.svg' | inline_asset_content }}{%- endcapture -%}
+            {%- when 'about' or 'about-us' -%}
+              {%- capture nav_icon -%}{{ 'icon-about.svg' | inline_asset_content }}{%- endcapture -%}
+            {%- when 'all' or 'collections' or 'catalog' or 'shop' or 'products' -%}
+              {%- capture nav_icon -%}{{ 'icon-collections.svg' | inline_asset_content }}{%- endcapture -%}
+            {%- when 'contact' or 'contact-us' -%}
+              {%- capture nav_icon -%}{{ 'icon-contact.svg' | inline_asset_content }}{%- endcapture -%}
+            {%- when 'blog' or 'blogs' or 'news' -%}
+              {%- capture nav_icon -%}{{ 'icon-blog.svg' | inline_asset_content }}{%- endcapture -%}
+            {%- else -%}
+              {%- assign nav_icon = default_icon_svg -%}
+          {%- endcase -%}
           {%- assign nav_icon_is_image = false -%}
           {%- assign nav_hover_icon = '' -%}
           {%- assign nav_hover_icon_is_image = false -%}
@@ -696,7 +709,7 @@
     {%- endif -%}
 
     {%- if search_input_icon == '' -%}
-      {%- assign search_input_icon = '<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20"><path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 19L14.65 14.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' -%}
+      {%- capture search_input_icon -%}{{ 'icon-search.svg' | inline_asset_content }}{%- endcapture -%}
     {%- endif -%}
 
     <div class="mega-menu-search-content">
@@ -1153,7 +1166,7 @@
                 {%- elsif block.settings.button_icon_svg != blank -%}
                   {%- assign welcome_icon = block.settings.button_icon_svg -%}
                 {%- else -%}
-                  {%- assign welcome_icon = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' -%}
+                  {%- capture welcome_icon -%}{{ 'icon-account.svg' | inline_asset_content }}{%- endcapture -%}
                 {%- endif -%}
                 <a
                   href="{{ block.settings.login_url | default: routes.account_login_url }}"
@@ -1182,7 +1195,7 @@
                 {%- elsif block.settings.button_icon_svg != blank -%}
                   {%- assign cart_icon = block.settings.button_icon_svg -%}
                 {%- else -%}
-                  {%- assign cart_icon = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 22C9.55228 22 10 21.5523 10 21C10 20.4477 9.55228 20 9 20C8.44772 20 8 20.4477 8 21C8 21.5523 8.44772 22 9 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 22C20.5523 22 21 21.5523 21 21C21 20.4477 20.5523 20 20 20C19.4477 20 19 20.4477 19 21C19 21.5523 19.4477 22 20 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M1 1H5L7.68 13.39C7.77144 13.8504 8.02191 14.264 8.38755 14.5583C8.75318 14.8526 9.2107 15.009 9.68 15H19.4C19.8693 15.009 20.3268 14.8526 20.6925 14.5583C21.0581 14.264 21.3086 13.8504 21.4 13.39L23 6H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' -%}
+                  {%- capture cart_icon -%}{{ 'icon-cart.svg' | inline_asset_content }}{%- endcapture -%}
                 {%- endif -%}
                 <a
                   href="{{ routes.cart_url }}"
@@ -1216,7 +1229,7 @@
                 {%- elsif block.settings.button_icon_svg != blank -%}
                   {%- assign search_icon = block.settings.button_icon_svg -%}
                 {%- else -%}
-                  {%- assign search_icon = '<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 19L14.65 14.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' -%}
+                  {%- capture search_icon -%}{{ 'icon-search.svg' | inline_asset_content }}{%- endcapture -%}
                 {%- endif -%}
                 {%- if block.settings.button_url != blank -%}
                   <a
@@ -1672,11 +1685,11 @@
       "type": "range",
       "id": "button_icon_size",
       "min": 16,
-      "max": 32,
+      "max": 48,
       "step": 2,
       "unit": "px",
       "label": "Button Icon Size",
-      "default": 16
+      "default": 24
     },
     {
       "type": "header",

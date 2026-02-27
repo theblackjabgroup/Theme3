@@ -200,9 +200,7 @@
             {%- if section.settings.submit_icon != blank -%}
               <img src="{{ section.settings.submit_icon | image_url: width: 80 }}" alt="" width="20" height="20" loading="eager">
             {%- else -%}
-              {%- assign icon_name = section.settings.submit_icon_name | default: 'plane' -%}
-              {%- assign icon_asset = 'icon-' | append: icon_name | append: '.svg' -%}
-              {{ icon_asset | inline_asset_content }}
+              {{ 'send.svg' | inline_asset_content }}
             {%- endif -%}
           {%- endcapture -%}
           {%- assign submit_aria = section.settings.submit_label | default: 'Subscribe' -%}
