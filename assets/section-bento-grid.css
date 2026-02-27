@@ -491,7 +491,7 @@
   background: var(--color-accent-pink, var(--color-pink)) !important;
   border: var(--border-width-thin, 1px) solid transparent !important;
   border-bottom: none !important;
-  transition: all var(--transition-medium);
+  transition: transform var(--transition-medium), box-shadow var(--transition-medium), border-color var(--transition-medium), background-color var(--transition-medium), color var(--transition-medium);
 }
 .bento-card.cart-card:hover {
   border: var(--border-width-thin) solid var(--color-heading, var(--color-heading)) !important;

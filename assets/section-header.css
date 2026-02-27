@@ -78,7 +78,7 @@
   background: var(--color-header-logo-background);
   border-radius: var(--logo-border-radius, 16px);
   padding: var(--logo-padding, var(--logo-padding-top, 16px) var(--logo-padding-right, 20px) var(--logo-padding-bottom, 16px) var(--logo-padding-left, 20px));
-  transition: all var(--transition-medium);
+  transition: background-color var(--transition-medium), color var(--transition-medium), box-shadow var(--transition-medium), transform var(--transition-medium);
 }
 
 /* Logo Alignment */

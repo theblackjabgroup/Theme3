@@ -83,9 +83,6 @@
             data-value="{{ language.iso_code }}"
           >
             <div class="language-info">
-              {%- if language.iso_code == localization.language.iso_code -%}
-                {{- 'icon-checkmark.svg' | inline_asset_content -}}
-              {%- endif -%}
               <span class="language-name">
                 {%- if language.iso_code == 'en' -%}
                   <img

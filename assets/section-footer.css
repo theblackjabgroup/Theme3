@@ -109,7 +109,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all var(--footer-social-animation-duration, 0.2s) ease;
+  transition: transform var(--footer-social-animation-duration, 0.2s) ease, box-shadow var(--footer-social-animation-duration, 0.2s) ease, background-color var(--footer-social-animation-duration, 0.2s) ease, border-color var(--footer-social-animation-duration, 0.2s) ease, color var(--footer-social-animation-duration, 0.2s) ease;
   color: var(--color-heading);
   text-decoration: none;
   border: none;
