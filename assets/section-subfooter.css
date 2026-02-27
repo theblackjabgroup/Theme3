@@ -1,4 +1,7 @@
+/* content-visibility: skip layout/paint until near viewport */
 .subfooter-section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 80px;
   background-color: var(--color-heading);
   color: var(--color-bg);
   padding: var(--padding-top, 16px) var(--padding-horizontal, 24px) var(--padding-bottom, 16px) var(--padding-horizontal, 24px);

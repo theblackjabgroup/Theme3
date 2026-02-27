@@ -8,7 +8,7 @@
 {{ 'component-global-btn.css' | asset_url | stylesheet_tag }}
 
 <script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
-<script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
+{% comment %} cart-drawer.js is loaded by theme.liquid (idle/on cart click) {% endcomment %}
 
 <style>
   /* Cart drawer uses theme color scheme variables */
@@ -88,6 +88,8 @@
     pointer-events: auto;
   }
 
+  cart-drawer:not(.active) .drawer__inner { content-visibility: hidden; }
+  cart-drawer.active .drawer__inner { content-visibility: visible; }
   /* overflow: visible so global-btn 3D shadow is not clipped; outer cart-drawer still clips with overflow: hidden */
   .drawer__inner {
     width: 100%;

@@ -1249,7 +1249,7 @@ predictive-search[results="true"] .mega-menu-predictive-search {
   transform-origin: 12px 18px;
 }
 
-/* Mobile Menu Drawer */
+/* Mobile Menu Drawer – skip rendering when closed to reduce main-thread work */
 .mobile-menu-drawer {
   position: fixed;
   left: 0;
@@ -1263,6 +1263,14 @@ predictive-search[results="true"] .mega-menu-predictive-search {
   transition: visibility 0s 1.2s;
   pointer-events: none;
   overflow: hidden;
+}
+
+.mobile-menu-drawer:not([aria-hidden="false"]) .mobile-menu-content {
+  content-visibility: hidden;
+}
+
+.mobile-menu-drawer[aria-hidden="false"] .mobile-menu-content {
+  content-visibility: visible;
 }
 
 .mobile-menu-drawer[aria-hidden="false"] {

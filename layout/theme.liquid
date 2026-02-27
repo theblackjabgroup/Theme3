@@ -443,11 +443,33 @@
     {%- endif -%}
 
     {%- if settings.predictive_search_enabled -%}
-      <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
+      <script>
+        (function(){
+          if (!document.querySelector('predictive-search')) return;
+          var url = {{ 'predictive-search.js' | asset_url | json }};
+          function load(){ var s=document.createElement('script'); s.src=url; s.defer=true; document.body.appendChild(s); }
+          document.addEventListener('focusin', function fn(e){
+            if (e.target && e.target.closest && e.target.closest('predictive-search') && e.target.matches('input')) {
+              document.removeEventListener('focusin', fn);
+              load();
+            }
+          }, true);
+        })();
+      </script>
     {%- endif -%}
 
     {%- if settings.cart_type == 'drawer' -%}
-      <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
+      <script>
+        (function(){
+          var url = {{ 'cart-drawer.js' | asset_url | json }};
+          var done = false;
+          function load(){ if(done)return; done=true; var s=document.createElement('script'); s.src=url; s.defer=true; document.body.appendChild(s); }
+          document.addEventListener('click', function fn(e){
+            if (e.target && e.target.closest && (e.target.closest('a[href*="/cart"]') || e.target.closest('[data-open-cart-drawer]'))) { document.removeEventListener('click', fn); load(); }
+          }, true);
+          (window.requestIdleCallback||setTimeout)(function(){ load(); }, 2500);
+        })();
+      </script>
     {%- endif -%}
 
     <script src="{{ 'constants.js' | asset_url }}" defer="defer"></script>
@@ -468,7 +490,12 @@
       };
     </script>
     {%- if settings.animations_reveal_on_scroll -%}
-      <script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>
+      <script>
+        (function(){
+          var url = {{ 'animations.js' | asset_url | json }};
+          (window.requestIdleCallback||function(fn){ setTimeout(fn, 1500); })(function(){ var s=document.createElement('script'); s.src=url; s.defer=true; document.body.appendChild(s); });
+        })();
+      </script>
     {%- endif -%}
   </body>
 </html>

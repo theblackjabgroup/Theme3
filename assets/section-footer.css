@@ -1,4 +1,7 @@
+/* content-visibility: skip layout/paint until near viewport to reduce main-thread work */
 .custom-footer {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 400px;
   background-color: var(--color-bg);
   color: var(--color-text);
   padding: var(--padding-top) 24px var(--padding-bottom) 24px;
