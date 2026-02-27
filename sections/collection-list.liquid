@@ -88,12 +88,8 @@
     {% if settings.collection_card_badge_background_color != blank %}
       background-color: {{ settings.collection_card_badge_background_color }};
     {% endif %}
-    {% if settings.collection_card_badge_text_color != blank %}
-      color: {{ settings.collection_card_badge_text_color }};
-    {% endif %}
-    {% if settings.collection_card_badge_border_color != blank %}
-      border-color: {{ settings.collection_card_badge_border_color }};
-    {% endif %}
+    color: var(--color-heading);
+    border-color: var(--color-heading);
     {% if settings.collection_card_badge_border_width != blank %}
       border-width: {{ settings.collection_card_badge_border_width }}px;
     {% endif %}
@@ -274,10 +270,7 @@
 {
   "name": "Collection list",
   "disabled_on": {
-    "groups": [
-      "header",
-      "footer"
-    ]
+    "groups": ["header", "footer"]
   },
   "settings": [
     {
@@ -888,7 +881,7 @@
           "min": 0,
           "max": 100,
           "step": 5,
-          "default": 0
+          "default": 20
         },
         {
           "type": "range",
@@ -897,7 +890,7 @@
           "min": 0,
           "max": 100,
           "step": 5,
-          "default": 40
+          "default": 20
         },
         {
           "type": "range",

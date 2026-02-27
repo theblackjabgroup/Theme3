@@ -412,12 +412,8 @@
         sectionContainer.classList.add('product-variant-sold-out');
         // Variant doesn't exist
         if (submitBtn) {
-          const btnText = submitBtn.querySelector('.submit-button__text');
-          if (btnText) {
-            btnText.textContent = 'Unavailable';
-          } else {
-            submitBtn.textContent = 'Unavailable';
-          }
+          const btnText = submitBtn.querySelector('.global-btn__text') || submitBtn.querySelector('.submit-button__text');
+          if (btnText) btnText.textContent = 'Unavailable';
           submitBtn.disabled = true;
           submitBtn.style.opacity = '0.8';
           submitBtn.style.cursor = 'not-allowed';
@@ -451,27 +447,17 @@
           sectionContainer.classList.add('product-variant-sold-out');
         }
 
-        // 4. Update Button State (Status Only)
+        // 4. Update Button State (text only – do not replace innerHTML so global-btn styling stays)
         if (submitBtn) {
-           const btnText = submitBtn.querySelector('.submit-button__text');
-           
+           const btnText = submitBtn.querySelector('.global-btn__text') || submitBtn.querySelector('.submit-button__text');
+
            if (currentVariant.available) {
-             if (btnText) {
-                btnText.textContent = 'ADD TO CART';
-             } else {
-                submitBtn.textContent = 'ADD TO CART';
-             }
-             
-             // Ensure it's active
+             if (btnText) btnText.textContent = 'ADD TO CART';
              submitBtn.disabled = false;
              submitBtn.style.opacity = '1';
              submitBtn.style.cursor = 'pointer';
            } else {
-             if (btnText) {
-                btnText.textContent = 'Sold Out';
-             } else {
-                submitBtn.textContent = 'Sold Out';
-             }
+             if (btnText) btnText.textContent = 'Sold Out';
              submitBtn.disabled = true;
              submitBtn.style.opacity = '0.8';
              submitBtn.style.cursor = 'not-allowed';

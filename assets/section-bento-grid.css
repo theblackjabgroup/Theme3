@@ -133,7 +133,7 @@
 }
 
 .bento-card.text-card:hover {
-  border: var(--border-width-thin, 1px) solid var(--color-heading, var(--color-primary-button-bg, #e63946)) !important;
+  border: var(--border-width-thin, 1px) solid var(--color-heading) !important;
 }
 
 /* Text Card Horizontal Alignment */
@@ -185,7 +185,7 @@
 }
 
 .bento-card.product-card:hover {
-  border: 1px solid var(--color-heading, var(--color-primary-button-bg, #e63946)) !important;
+  border: var(--border-width-thin, 1px) solid var(--color-heading) !important;
 }
 .product-card-inner {
   display: flex;
@@ -403,7 +403,8 @@
   justify-content: center;
   position: relative;
   overflow: hidden;
-  border: none;
+  /* Transparent border so hover border doesn't change card size */
+  border: var(--border-width-thin, 1px) solid transparent;
   width: 100%;
   height: 100%;
 }
@@ -423,7 +424,7 @@
 }
 
 .bento-card.video-card:hover {
-  border: var(--border-width-thin, 1px) solid var(--video-border-hover-color, var(--video-border-color, var(--color-heading, var(--color-primary-button-bg, #e63946)))) !important;
+  border: var(--border-width-thin, 1px) solid var(--video-border-hover-color, var(--video-border-color, var(--color-heading))) !important;
 }
 
 /* Card Color Variants */
@@ -485,7 +486,7 @@
 .cart-card {
   cursor: pointer;
   background: var(--color-accent-pink, var(--color-pink)) !important;
-  border: none !important;
+  border: var(--border-width-thin, 1px) solid transparent !important;
   border-bottom: none !important;
   transition: all var(--transition-medium);
 }
@@ -1025,7 +1026,7 @@ a.tag-card.tag-card--link:hover {
 }
 
 .bento-card.tag-card:hover {
-  border: var(--border-width-thin, 1px) solid var(--color-heading, var(--color-red)) !important;
+  border: var(--border-width-thin, 1px) solid var(--tag-card-border-hover-color, var(--tag-card-border-color, transparent)) !important;
 }
 .tag-card:hover .tag-card-icon img {
   transform: rotate(180deg);
@@ -2059,8 +2060,7 @@ a.tag-card.tag-card--link:hover {
   transition: transform 0.4s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.4s ease;
 }
 .bento-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+  transform: none;
   z-index: 10;
 }
 

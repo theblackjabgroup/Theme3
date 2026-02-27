@@ -59,10 +59,8 @@
       {{
         header_image
         | image_url: width: 2400
-        | image_tag:
-          loading: 'lazy',
-          class: 'section-header-snippet__image',
-          alt: title | default: shop.name
+        | image_tag: loading: 'lazy', class: 'section-header-snippet__image', alt: title
+        | default: shop.name
       }}
     </div>
   {%- endif -%}
@@ -70,13 +68,11 @@
 
 <style>
   .section-header-snippet-{{ id }} {
-    padding-top: {{ header_padding_top | default: 0 }}px;
-    padding-bottom: {{ header_padding_bottom | default: 40 }}px;
-    padding-left: {{ header_padding_horizontal | default: 20 }}px;
-    padding-right: {{ header_padding_horizontal | default: 20 }}px;
-    {%- if background_color != blank -%}
-      background-color: {{ background_color }};
-    {%- endif -%}
+    padding-top: {% if header_padding_top == blank or header_padding_top == 0 %}20{% else %}{{ header_padding_top }}{% endif %}px;
+    padding-bottom: {% if header_padding_bottom == blank or header_padding_bottom == 0 %}20{% else %}{{ header_padding_bottom }}{% endif %}px;
+    padding-left: {% if header_padding_horizontal == blank or header_padding_horizontal == 0 %}20{% else %}{{ header_padding_horizontal }}{% endif %}px;
+    padding-right: {% if header_padding_horizontal == blank or header_padding_horizontal == 0 %}20{% else %}{{ header_padding_horizontal }}{% endif %}px;
+    background-color: var(--color-card-bg);
     border-radius: {{ border_radius | default: 20 }}px;
     {%- if title_margin_bottom != blank -%}
       margin-bottom: {{ title_margin_bottom }}px;
@@ -101,6 +97,8 @@
 
   .section-header-snippet-{{ id }} .section-header-snippet__badge {
     display: inline-block;
+    color: {% if badge_text_color != blank %}{{ badge_text_color }}{% else %}var(--color-heading){% endif %};
+    border: {{ badge_border_width | default: 1 }}px solid {% if badge_border_color != blank %}{{ badge_border_color }}{% else %}var(--color-heading){% endif %};
     {%- if badge_font_size != blank -%}
       font-size: {{ badge_font_size }}px;
     {%- endif -%}
@@ -116,10 +114,6 @@
     {%- if badge_background_color != blank -%}
       background-color: {{ badge_background_color }};
     {%- endif -%}
-    {%- if badge_text_color != blank -%}
-      color: {{ badge_text_color }};
-    {%- endif -%}
-    border: {{ badge_border_width | default: 1 }}px solid {{ badge_border_color | default: 'rgba(0,0,0,0.15)' }};
     border-radius: {{ badge_border_radius | default: 20 }}px;
     {%- if badge_text_transform != blank -%}
       text-transform: {{ badge_text_transform }};

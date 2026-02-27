@@ -19,7 +19,7 @@
   grid-template-columns: 1fr 1fr;
   height: 100vh;
   overflow: hidden;
-  background: var(--color-background);
+  background: var(--color-card-bg);
   position: relative;
   margin-top: var(--section-margin-top, var(--spacing-6));
   margin-bottom: var(--section-margin-bottom, 0px);
@@ -276,41 +276,52 @@
 .product-form__input {
   border: none;
 }
+/* Unselected variant = primary button */
 .product-form__input label {
   border-radius: var(--product-variant-border-radius, 14px);
-  border: var(--border-width-thin) solid var(--color-primary-button-border);
+  border: var(--border-width-thin) solid var(--btn-primary-border, var(--color-primary-button-border));
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: var(--product-variant-font-size, var(--font-size-md));
   font-weight: var(--product-variant-font-weight, 600);
-  background: var(--color-primary-button-bg);
+  background: var(--btn-primary-bg, var(--color-primary-button-bg));
   cursor: pointer;
-  box-shadow: 0 3px 0 var(--color-primary-button-border);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  box-shadow: 0 3px 0 var(--btn-primary-shadow, var(--color-primary-button-border));
+  transition: transform 0.4s ease, box-shadow 0.4s ease, background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
   padding: var(--product-variant-padding-vertical, 13px) var(--product-variant-padding-horizontal, 28px);
   min-width: 108px;
   min-height: var(--product-variant-height, 46px);
-  color: var(--color-primary-button-text);
+  color: var(--btn-primary-text, var(--color-primary-button-text));
 }
 
-.product-form__input label:hover,
+/* Unselected hover/active: primary shadow */
+.product-form__input label:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 7px 0 var(--btn-primary-shadow, var(--color-primary-button-border));
+}
+
+.product-form__input label:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 0 var(--btn-primary-shadow, var(--color-primary-button-border));
+}
+
+/* Selected variant = secondary button */
+.product-form__input input:checked + label {
+  background: var(--btn-secondary-bg, #1E4ABD);
+  color: var(--btn-secondary-text, #F8F3F8);
+  border-color: var(--btn-secondary-border, #000000);
+  box-shadow: 0 3px 0 var(--btn-secondary-shadow, var(--color-btn-shadow, #000000));
+}
+
 .product-form__input input:checked + label:hover {
   transform: translateY(-4px);
-  box-shadow: 0 7px 0 var(--color-primary-button-border);
+  box-shadow: 0 7px 0 var(--btn-secondary-shadow, var(--color-btn-shadow, #000000));
 }
 
-
-
-.product-form__input label:active,
 .product-form__input input:checked + label:active {
   transform: translateY(1px);
-  box-shadow: 0 2px 0 var(--color-primary-button-border);
-}
-
-.product-form__input input:checked + label {
-  background: var(--color-accent-pink);
-  color: var(--color-primary-button-border);
+  box-shadow: 0 2px 0 var(--btn-secondary-shadow, var(--color-btn-shadow, #000000));
 }
 
 /* Sold-out variant: gray styling */
@@ -382,9 +393,11 @@
   min-height: var(--product-variant-height, 46px);
   padding: 0;
 }
+/* Color swatch selected = secondary (border/shadow only; swatch keeps its color) */
 .product-form__input--color input:checked + label {
   transform: translate(3px, 3px);
-  box-shadow: 0 3px 0 var(--color-primary-button-border);
+  box-shadow: 0 3px 0 var(--btn-secondary-shadow, var(--color-btn-shadow, #000000));
+  border-color: var(--btn-secondary-border, #000000);
 }
 /* =============================
    NEW ELEMENTS (Price, Actions)
@@ -399,7 +412,7 @@
   font-family: var(--font-heading-family);
   font-size: var(--price-font-size, 3.5rem);
   font-weight: 900;
-  color: var(--color-text);
+  color: var(--color-heading);
   line-height: 1;
 }
 .price-compare {
@@ -407,7 +420,7 @@
   font-size: var(--sale-price-font-size, 1.2rem);
   font-weight: 400;
   text-decoration: line-through;
-  color: var(--color-text);
+  color: color-mix(in srgb, var(--colo) 50%, transparent);
   opacity: 0.7;
 }
 
@@ -467,6 +480,10 @@
 
 .product-form__submit .submit-button__shadow {
   border-radius: var(--product-add-to-cart-border-radius, 14px);
+}
+.product-form__submit .global-btn__shadow {
+
+top:48% !important;
 }
 
 @media (min-width: 990px) {
@@ -1104,8 +1121,8 @@ accordion-item[open] .accordion__wrapper {
   display: inline-block;
   padding: 6px 20px;
   border-radius: var(--product-tag-border-radius, 50px);
-  border: 1px solid var(--tag-border-color);
-  color: var(--tag-text-color);
+  border: 1px solid var(--color-heading);
+  color: var(--color-heading);
   background-color: var(--tag-bg-color);
   font-size: var(--tag-font-size, var(--font-size-sm, 12px));
   font-weight: var(--tag-font-weight, 500);

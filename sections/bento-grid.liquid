@@ -212,11 +212,9 @@
             {%- assign mobile_tag_padding_x = block.settings.mobile_card_padding_x | default: 32 -%}
             {%- assign mobile_tag_inner_gap = block.settings.mobile_inner_gap | default: 0 -%}
             {%- assign mobile_tag_text_gap = block.settings.mobile_text_group_gap | default: 0 -%}
-            {%- comment -%} Determine border color - use card_border_color if set, otherwise match background color {%- endcomment -%}
-            {%- assign border_color = block.settings.card_border_color -%}
-            {%- if border_color == blank -%}
-              {%- assign border_color = 'currentColor' -%}
-            {%- endif -%}
+            {%- comment -%} Tag card border: default transparent; hover can be set via Card Border Color (hover). {%- endcomment -%}
+            {%- assign border_color = 'transparent' -%}
+            {%- assign hover_border_color = block.settings.card_border_hover_color | default: 'transparent' -%}
             {%- assign tag_card_is_link = false -%}
             {%- if block.settings.use_as_link and block.settings.link_url != blank -%}
               {%- assign tag_card_is_link = true -%}
@@ -225,7 +223,7 @@
               <a
                 href="{{ block.settings.link_url }}"
                 class="bento-card tag-card tag-card--link tag-card--{{ direction }} tag-card--align-{{ align }} tag-card--valign-{{ vertical_align }} color-{{ block.settings.color_scheme.id }} gradient{% if block.settings.reverse_colors %} is-reversed{% endif %}"
-                style="{% if border_color != blank %} border-color: {{ border_color }};{% endif %} --tag-card-padding-y: {{ tag_padding_y }}px; --tag-card-padding-x: {{ tag_padding_x }}px; --tag-card-inner-gap: {{ tag_inner_gap }}px; --tag-card-text-gap: {{ tag_text_gap }}px; --tag-card-mobile-padding-y: {{ mobile_tag_padding_y }}px; --tag-card-mobile-padding-x: {{ mobile_tag_padding_x }}px; --tag-card-mobile-inner-gap: {{ mobile_tag_inner_gap }}px; --tag-card-mobile-text-gap: {{ mobile_tag_text_gap }}px;"
+                style="--tag-card-border-color: {{ border_color }}; --tag-card-border-hover-color: {{ hover_border_color }}; --tag-card-padding-y: {{ tag_padding_y }}px; --tag-card-padding-x: {{ tag_padding_x }}px; --tag-card-inner-gap: {{ tag_inner_gap }}px; --tag-card-text-gap: {{ tag_text_gap }}px; --tag-card-mobile-padding-y: {{ mobile_tag_padding_y }}px; --tag-card-mobile-padding-x: {{ mobile_tag_padding_x }}px; --tag-card-mobile-inner-gap: {{ mobile_tag_inner_gap }}px; --tag-card-mobile-text-gap: {{ mobile_tag_text_gap }}px;"
                 data-mobile-direction="{{ mobile_direction }}"
                 data-mobile-align="{{ mobile_align }}"
                 data-mobile-vertical-align="{{ mobile_vertical_align }}"
@@ -233,7 +231,7 @@
             {%- else -%}
               <div
                 class="bento-card tag-card tag-card--{{ direction }} tag-card--align-{{ align }} tag-card--valign-{{ vertical_align }} color-{{ block.settings.color_scheme.id }} gradient{% if block.settings.reverse_colors %} is-reversed{% endif %}"
-                style="{% if border_color != blank %} border-color: {{ border_color }};{% endif %} --tag-card-padding-y: {{ tag_padding_y }}px; --tag-card-padding-x: {{ tag_padding_x }}px; --tag-card-inner-gap: {{ tag_inner_gap }}px; --tag-card-text-gap: {{ tag_text_gap }}px; --tag-card-mobile-padding-y: {{ mobile_tag_padding_y }}px; --tag-card-mobile-padding-x: {{ mobile_tag_padding_x }}px; --tag-card-mobile-inner-gap: {{ mobile_tag_inner_gap }}px; --tag-card-mobile-text-gap: {{ mobile_tag_text_gap }}px;"
+                style="--tag-card-border-color: {{ border_color }}; --tag-card-border-hover-color: {{ hover_border_color }}; --tag-card-padding-y: {{ tag_padding_y }}px; --tag-card-padding-x: {{ tag_padding_x }}px; --tag-card-inner-gap: {{ tag_inner_gap }}px; --tag-card-text-gap: {{ tag_text_gap }}px; --tag-card-mobile-padding-y: {{ mobile_tag_padding_y }}px; --tag-card-mobile-padding-x: {{ mobile_tag_padding_x }}px; --tag-card-mobile-inner-gap: {{ mobile_tag_inner_gap }}px; --tag-card-mobile-text-gap: {{ mobile_tag_text_gap }}px;"
                 data-mobile-direction="{{ mobile_direction }}"
                 data-mobile-align="{{ mobile_align }}"
                 data-mobile-vertical-align="{{ mobile_vertical_align }}"
@@ -2659,13 +2657,6 @@
           "info": "Vertical alignment on mobile devices"
         },
         {
-          "type": "color",
-          "id": "card_border_color",
-          "label": "Card Border Color",
-          "default": "#ffffff",
-          "info": "Border color for this card. If not set, will match the background color."
-        },
-        {
           "type": "header",
           "content": "Desktop Layout"
         },
@@ -3610,7 +3601,7 @@
           "type": "color",
           "id": "card_border_hover_color",
           "label": "Card Border Color (hover)",
-          "default": "#e63946"
+          "default": "rgba(0,0,0,0)"
         },
         {
           "type": "header",

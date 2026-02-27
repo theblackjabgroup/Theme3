@@ -17,7 +17,7 @@
     --collection-filter-tag-text-color: var(--btn-primary-text);
     --collection-filter-tag-border: var(--btn-primary-border);
     --collection-filter-tag-border-width: {{ section.settings.filter_tag_border_width | default: 0 }}px;
-    --collection-filter-tag-border-radius: {{ section.settings.filter_tag_border_radius | default: 0 }}px;
+    --collection-filter-tag-border-radius: {{ section.settings.filter_tag_border_radius | default: 10 }}px;
     --collection-filter-tag-font-size: {{ section.settings.filter_tag_font_size | default: 15 }}px;
     --collection-filter-tag-font-weight: {{ section.settings.filter_tag_font_weight | default: 700 }};
     --collection-filter-tag-text-transform: {{ section.settings.filter_tag_text_transform | default: 'uppercase' }};
@@ -25,7 +25,7 @@
     --collection-filter-tag-padding-vertical: {{ section.settings.filter_tag_padding_vertical | default: 6 }}px;
     --collection-filter-tag-padding-horizontal: {{ section.settings.filter_tag_padding_horizontal | default: 12 }}px;
     --collection-filter-tag-gap: {{ section.settings.filter_tag_gap | default: 8 }}px;
-    --collection-filter-tag-close-icon-size: {{ section.settings.filter_tag_close_icon_size | default: 5 }}px;
+    --collection-filter-tag-close-icon-size: {{ section.settings.filter_tag_close_icon_size | default: 10 }}px;
     background-color: var(--color-bg);
     {% if section.settings.min_height != blank and section.settings.min_height > 0 %}
       min-height: {{ section.settings.min_height }}vh;
@@ -112,6 +112,8 @@
     font-weight: {{ settings.product_card_badge_font_weight | default: 700 }};
     padding: {{ settings.product_card_badge_padding_vertical | default: 4 }}px {{ settings.product_card_badge_padding_horizontal | default: 16 }}px;
     margin-bottom: {{ settings.product_card_badge_margin_bottom | default: 10 }}px;
+    color: var(--color-heading);
+    border-color: var(--color-heading);
   }
 
   /* Hover State Synchronization - Matching perfect design */
@@ -159,60 +161,99 @@
 {%- endstyle -%}
 
 <div class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }}">
-  {%- for block in section.blocks -%}
-    {%- if block.type == 'header' -%}
-      {%
-        render 'section-header',
-        id: block.id,
-        show_badge: block.settings.show_badge,
-        badge_text: block.settings.badge_text,
-        title: block.settings.title | default: collection.title,
-        description: block.settings.header_description | default: collection.description | strip_html,
-        title_alignment: block.settings.title_alignment,
-        title_font_size: block.settings.title_font_size,
-        title_font_weight: block.settings.title_font_weight,
-        title_line_height: block.settings.title_line_height,
-        title_letter_spacing: block.settings.title_letter_spacing,
-        title_text_transform: block.settings.title_text_transform,
-        title_margin_bottom: block.settings.title_margin_bottom,
-        header_padding_top: block.settings.header_padding_top,
-        header_padding_bottom: block.settings.header_padding_bottom,
-        header_padding_horizontal: block.settings.header_padding_horizontal,
-        badge_font_size: block.settings.header_badge_font_size,
-        badge_font_weight: block.settings.header_badge_font_weight,
-        badge_padding_vertical: block.settings.header_badge_padding_vertical,
-        badge_padding_horizontal: block.settings.header_badge_padding_horizontal,
-        badge_margin_bottom: block.settings.header_badge_margin_bottom,
-        badge_background_color: block.settings.header_badge_background_color,
-        badge_text_color: block.settings.header_badge_text_color,
-        badge_border_color: block.settings.header_badge_border_color,
-        badge_border_width: block.settings.header_badge_border_width,
-        badge_border_radius: block.settings.header_badge_border_radius,
-        badge_text_transform: block.settings.header_badge_text_transform,
-        description_font_size: block.settings.header_description_font_size,
-        description_font_weight: block.settings.header_description_font_weight,
-        description_line_height: block.settings.header_description_line_height,
-        description_color: block.settings.header_description_color,
-        description_margin_top: block.settings.header_description_margin_top,
-        title_font_size_mobile: block.settings.title_font_size_mobile,
-        description_font_size_mobile: block.settings.header_description_font_size_mobile,
-        background_color: block.settings.header_background_color,
-        border_radius: block.settings.header_border_radius,
-        show_image: block.settings.show_header_image,
-        header_image: block.settings.header_image,
-        image_alignment: block.settings.header_image_alignment,
-        image_width_percent: block.settings.header_image_width_percent,
-        image_width_percent_mobile: block.settings.header_image_width_percent_mobile,
-        image_max_width: block.settings.header_image_max_width,
-        image_height: block.settings.header_image_height,
-        image_height_mobile: block.settings.header_image_height_mobile,
-        image_object_fit: block.settings.header_image_object_fit,
-        image_border_radius: block.settings.header_image_border_radius,
-        image_margin_top: block.settings.header_image_margin_top,
-        image_margin_bottom: block.settings.header_image_margin_bottom
+  {%- liquid
+    assign has_header_block = false
+    for block in section.blocks
+      if block.type == 'header'
+        assign has_header_block = true
+        break
+      endif
+    endfor
+  -%}
+  {%- if has_header_block -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'header' -%}
+        {%- liquid
+          assign header_title = block.settings.title | default: collection.title | default: 'Products'
+          assign header_description = block.settings.header_description | default: collection.description | strip_html | default: 'Shop our collection.'
+        -%}
+        {% render 'section-header',
+          id: block.id,
+          show_badge: block.settings.show_badge,
+          badge_text: block.settings.badge_text,
+          title: header_title,
+          description: header_description,
+          title_alignment: block.settings.title_alignment,
+          title_font_size: block.settings.title_font_size,
+          title_font_weight: block.settings.title_font_weight,
+          title_line_height: block.settings.title_line_height,
+          title_letter_spacing: block.settings.title_letter_spacing,
+          title_text_transform: block.settings.title_text_transform,
+          title_margin_bottom: block.settings.title_margin_bottom,
+          header_padding_top: block.settings.header_padding_top,
+          header_padding_bottom: block.settings.header_padding_bottom,
+          header_padding_horizontal: block.settings.header_padding_horizontal,
+          badge_font_size: block.settings.header_badge_font_size,
+          badge_font_weight: block.settings.header_badge_font_weight,
+          badge_padding_vertical: block.settings.header_badge_padding_vertical,
+          badge_padding_horizontal: block.settings.header_badge_padding_horizontal,
+          badge_margin_bottom: block.settings.header_badge_margin_bottom,
+          badge_background_color: block.settings.header_badge_background_color,
+          badge_text_color: block.settings.header_badge_text_color,
+          badge_border_color: block.settings.header_badge_border_color,
+          badge_border_width: block.settings.header_badge_border_width,
+          badge_border_radius: block.settings.header_badge_border_radius,
+          badge_text_transform: block.settings.header_badge_text_transform,
+          description_font_size: block.settings.header_description_font_size,
+          description_font_weight: block.settings.header_description_font_weight,
+          description_line_height: block.settings.header_description_line_height,
+          description_color: block.settings.header_description_color,
+          description_margin_top: block.settings.header_description_margin_top,
+          title_font_size_mobile: block.settings.title_font_size_mobile,
+          description_font_size_mobile: block.settings.header_description_font_size_mobile,
+          background_color: block.settings.header_background_color,
+          border_radius: block.settings.header_border_radius,
+          show_image: block.settings.show_header_image,
+          header_image: block.settings.header_image,
+          image_alignment: block.settings.header_image_alignment,
+          image_width_percent: block.settings.header_image_width_percent,
+          image_width_percent_mobile: block.settings.header_image_width_percent_mobile,
+          image_max_width: block.settings.header_image_max_width,
+          image_height: block.settings.header_image_height,
+          image_height_mobile: block.settings.header_image_height_mobile,
+          image_object_fit: block.settings.header_image_object_fit,
+          image_border_radius: block.settings.header_image_border_radius,
+          image_margin_top: block.settings.header_image_margin_top,
+          image_margin_bottom: block.settings.header_image_margin_bottom
+        %}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- else -%}
+    {%- comment -%} No header block: render default section header with section settings / default texts {%- endcomment -%}
+    {%- liquid
+      assign default_header_title = section.settings.title | default: collection.title | default: 'Products'
+      assign default_header_description = collection.description | strip_html | default: 'Shop our collection.'
+    -%}
+    {%- if section.settings.show_title or default_header_title != blank or default_header_description != blank -%}
+      {% render 'section-header',
+        id: section.id,
+        show_badge: false,
+        badge_text: '',
+        title: default_header_title,
+        description: default_header_description,
+        title_alignment: section.settings.title_alignment,
+        title_font_size: section.settings.title_font_size,
+        title_font_weight: section.settings.title_font_weight,
+        title_line_height: section.settings.title_line_height,
+        title_letter_spacing: section.settings.title_letter_spacing,
+        title_text_transform: section.settings.title_text_transform,
+        title_margin_bottom: section.settings.title_margin_bottom,
+        header_padding_top: section.settings.section_padding_top,
+        header_padding_bottom: section.settings.section_padding_bottom,
+        header_padding_horizontal: section.settings.section_padding_horizontal
       %}
     {%- endif -%}
-  {%- endfor -%}
+  {%- endif -%}
 
   {%- paginate collection.products by section.settings.products_per_page -%}
     {%- liquid
@@ -351,10 +392,7 @@
 {
   "name": "t:sections.main-collection-product-grid.name",
   "disabled_on": {
-    "groups": [
-      "header",
-      "footer"
-    ]
+    "groups": ["header", "footer"]
   },
   "class": "section",
   "settings": [
@@ -798,7 +836,7 @@
       "min": 0,
       "max": 60,
       "step": 1,
-      "default": 15
+      "default": 10
     },
     {
       "type": "range",
@@ -927,7 +965,8 @@
       "type": "text",
       "id": "card_badge_text",
       "label": "Card Badge Text",
-      "info": "Leave blank to hide badges on product cards"
+      "info": "Leave blank to hide badges on product cards",
+      "default": "Badge"
     },
     {
       "type": "text",
@@ -962,7 +1001,7 @@
       "min": 0,
       "max": 40,
       "step": 1,
-      "default": 0
+      "default": 10
     },
     {
       "type": "range",
@@ -1049,7 +1088,7 @@
       "min": 4,
       "max": 16,
       "step": 1,
-      "default": 5
+      "default": 10
     },
     {
       "type": "header",

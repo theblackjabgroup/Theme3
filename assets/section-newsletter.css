@@ -1,8 +1,8 @@
-/* Newsletter section – addable to any page. 3D input + submit button. */
+/* Newsletter section – addable to any page. 3D input + submit button. Uses color scheme variables. */
 
 .newsletter-section {
   width: 100%;
-  background: var(--newsletter-bg, #475742);
+  background: var(--color-card-bg);
   border-radius: 16px;
   padding: 80px 24px;
 }
@@ -16,7 +16,7 @@
 .newsletter-section__title {
   font-size: var(--newsletter-heading-size, 1.5rem);
   font-weight: 700;
-  color: #e8e6e0;
+  color: var(--color-heading);
   margin: 0 0 0.5rem 0;
   font-family: var(--font-heading-family), sans-serif;
 }
@@ -24,7 +24,7 @@
 .newsletter-section__desc {
   font-size: var(--newsletter-desc-size, 0.9375rem);
   font-weight: 400;
-  color: #e0e0e0;
+  color: var(--color-text);
   margin: 0 0 1.5rem 0;
   line-height: 1.45;
 }
@@ -60,7 +60,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 1);
+  background-color: var(--color-btn-shadow, var(--btn-primary-shadow, #000000));
   border-radius: 10px;
   z-index: 0;
   pointer-events: none;
@@ -74,9 +74,9 @@
   padding: 14px 18px;
   font-size: 1rem;
   font-family: var(--font-body-family), sans-serif;
-  color: #2d2d2d;
-  background: var(--newsletter-input-bg, #e7e3da);
-  border: 1px solid #000;
+  color: var(--color-input-text, var(--color-text));
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-input-border, var(--color-btn-border, #000000));
   border-radius: 10px;
   outline: none;
   transition: border-color 0.2s ease, transform 0.2s ease;
@@ -84,14 +84,14 @@
 }
 
 .newsletter-section__input::placeholder {
-  color: #666;
+  color: color-mix(in srgb, var(--color-input-text, var(--color-text)) 65%, transparent);
 }
 
 .newsletter-section__input-3d:focus-within .newsletter-section__input-shadow {
   transform: translateY(1px);
 }
 
-/* Submit: submit-button snippet */
+/* Submit: global-btn uses scheme; legacy submit-button overrides use scheme vars */
 .newsletter-section__submit-wrap {
   flex-shrink: 0;
   display: flex;
@@ -100,20 +100,20 @@
 }
 
 .newsletter-section__submit-wrap .submit-button__content {
-  background-color: var(--color-accent-pink, #ec95ae);
-  color: var(--color-header-logo-background, #fff);
- 
-  border-color: rgba(0, 0, 0, 1);
+  background-color: var(--btn-primary-bg, var(--color-card-bg));
+  color: var(--btn-primary-text, var(--color-heading));
+  border-color: var(--btn-primary-border, var(--color-btn-border, #000000));
 }
 
-.newsletter-section__submit-wrap .submit-button__shadow {
-  background-color: rgba(0, 0, 0, 1);
+.newsletter-section__submit-wrap .global-btn__shadow {
+  background-color: var(--btn-primary-shadow, var(--color-btn-shadow, #000000));
+  top: 8px !important;
 }
 
 .newsletter-section__success {
   margin: 1rem 0 0 0;
   font-size: 0.9375rem;
-  color: #b8e0b8;
+  color: var(--color-text);
 }
 
 @media (max-width: 749px) {

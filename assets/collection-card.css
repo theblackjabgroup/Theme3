@@ -77,17 +77,6 @@
   max-width: 90%;
 }
 
-/* Override section .share-story-submit so overlay uses card-base submit-button design and settings (--collection-card-hover-button-*) */
-.custom-collection-list .custom-collection-card__hover-button {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-.custom-collection-list .custom-collection-card__hover-button:hover,
-.custom-collection-list .custom-collection-card__hover-button:active {
-  transform: none !important;
-  box-shadow: none !important;
-}
 
 /* Mobile: disable all hover effects (overrides rules above) */
 @media screen and (max-width: 749px) {

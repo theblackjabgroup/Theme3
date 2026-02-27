@@ -867,18 +867,6 @@
         "default": "#FFFFFF"
       },
       {
-        "type": "color",
-        "id": "collection_card_badge_text_color",
-        "label": "Badge Text Color",
-        "default": "#FF4D4D"
-      },
-      {
-        "type": "color",
-        "id": "collection_card_badge_border_color",
-        "label": "Badge Border Color",
-        "default": "#FF4D4D"
-      },
-      {
         "type": "range",
         "id": "collection_card_badge_border_width",
         "label": "Badge Border Width (px)",

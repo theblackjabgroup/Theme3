@@ -25,7 +25,7 @@
 .main-search-page-header__breadcrumb {
   font-family: var(--font-family-mono, monospace);
   font-size: var(--search-header-breadcrumb-font-size, 13px);
-  color: var(--color-headings, #365330);
+  color: var(--color-heading);
   opacity: 0.8;
   text-transform: lowercase;
   line-height: 1.4;
@@ -51,7 +51,7 @@
   font-weight: var(--search-header-title-font-weight, 800);
   letter-spacing: -0.02em;
   text-transform: uppercase;
-  color: var(--color-headings, #365330);
+  color: var(--color-heading);
   margin: var(--search-header-title-margin-top, 0.5rem) 0 var(--search-header-title-margin-bottom, 1.5rem);
   line-height: var(--search-header-title-line-height, 0.9);
 }
@@ -74,15 +74,15 @@
   width: 100%;
   padding: var(--search-header-field-padding-y, 4px) var(--search-header-field-padding-x, 16px);
   background: transparent;
-  border: 1.5px solid var(--color-headings, #000);
+  border: 1.5px solid var(--color-heading);
   border-radius: 15px;
-  box-shadow: 0 3px 0 0 color-mix(in srgb, var(--color-headings, #000) 100%, transparent);
+  box-shadow: 0 3px 0 0 color-mix(in srgb, var(--color-heading) 100%, transparent);
   box-sizing: border-box;
 }
 
 .main-search-page-header__field:focus-within {
   outline: none;
-  box-shadow: 0 2px 0 0 color-mix(in srgb, var(--color-headings, #000) 60%, transparent);
+  box-shadow: 0 2px 0 0 color-mix(in srgb, var(--color-heading) 60%, transparent);
 }
 
 .main-search-page-header__submit {
@@ -97,7 +97,7 @@
   padding: 0;
   border: none;
   background: transparent;
-  color: var(--color-headings, #365330);
+  color: var(--color-heading);
   cursor: pointer;
 }
 
@@ -121,7 +121,7 @@
   padding: 0;
   border: none;
   background: transparent;
-  color: var(--color-headings, #365330);
+  color: var(--color-heading);
   cursor: pointer;
   opacity: 0.7;
 }
@@ -159,7 +159,7 @@
   font-size: var(--search-header-input-font-size, 14px);
   font-weight: 500;
   font-family: var(--font-family-mono, monospace);
-  color: var(--color-headings, #365330);
+  color: var(--color-heading);
   height: var(--search-header-input-height, 44px);
   line-height: normal;
   text-transform: uppercase;
@@ -311,16 +311,10 @@ predictive-search[results="true"] .predictive-search--search-template {
     padding-right: 0;
   }
 
-  /* Touch-friendly Filter/Sort area on search page */
+  /* Filter/Sort buttons row on search page */
   .template-search .facets-buttons-drawers {
     gap: 0.75rem;
     flex-wrap: wrap;
-  }
-
-  .template-search .facets-drawer-trigger {
-    min-height: 44px;
-    padding: 12px 18px;
-    font-size: 1rem;
   }
 
   /* Mobile filter/sort button (menu-drawer trigger) – no extra top space */
