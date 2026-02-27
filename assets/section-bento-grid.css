@@ -13,14 +13,17 @@
 
 /*
   Wrapper handles the positioning and the "gap" via padding.
-  This allows a card to span fractional amounts (e.g. 1.2 columns)
-  without breaking the visual gap rhythm.
-  content-visibility: auto skips layout/paint for off-screen cards to reduce main-thread work.
+  content-visibility: auto skips layout/paint for off-screen cards.
+  First row (first 3 wrappers) forced visible so LCP element paints immediately and isn't delayed by auto.
 */
 .bento-block-wrapper {
   display: flex;
   content-visibility: auto;
   contain-intrinsic-size: auto 120px;
+}
+
+.bento-grid .bento-block-wrapper:nth-child(-n+3) {
+  content-visibility: visible;
 }
 
 @media (max-width: 768px) {
