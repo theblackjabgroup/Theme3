@@ -432,17 +432,8 @@
         "id": "type_body_font",
         "default": "figtree_n4",
         "label": "t:settings_schema.typography.settings.type_body_font.label"
-      },
-      {
-        "type": "header",
-        "content": "t:settings_schema.typography.settings.header__3.content"
-      },
-      {
-        "type": "font_picker",
-        "id": "type_subheader_font",
-        "default": "lora_n4",
-        "label": "t:settings_schema.typography.settings.type_subheading_font.label"
       }
+
     ]
   },
 
