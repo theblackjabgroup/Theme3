@@ -23,9 +23,9 @@
             <div
               class="product-custom-tag"
               style="
-                --tag-text-color: {{ block.settings.tag_text_color | default: '#000000' }};
-                --tag-border-color: {{ block.settings.tag_border_color | default: '#000000' }};
-                --tag-bg-color: {{ block.settings.tag_bg_color | default: 'transparent' }};
+                --tag-text-color: var(--color-text);
+                --tag-border-color: var(--color-input-border);
+                --tag-bg-color: var(--color-card-bg);
                 --product-tag-border-radius: {{ block.settings.border_radius | default: 50 }}px;
                 --product-tag-border-radius-mobile: {{ block.settings.border_radius_mobile | default: 50 }}px;
                 --tag-font-size: {{ block.settings.font_size | default: 12 }}px;
@@ -62,7 +62,7 @@
               --divider-width-mobile: {{ block.settings.width_mobile | default: 1 }}px;
               --divider-length: {{ block.settings.length | default: 80 }}%;
               --divider-length-mobile: {{ block.settings.length_mobile | default: 80 }}%;
-              --divider-color: {{ block.settings.color | default: '#9a9a9a' }};
+              --divider-color: var(--color-input-border);
               --divider-style: {{ block.settings.style | default: 'solid' }};
               --divider-spacing: {{ block.settings.spacing | default: 8 }}px;
             "
@@ -84,7 +84,7 @@
                 --tagline-font-size-mobile: {{ block.settings.tagline_font_size_mobile | default: 12 }}px;
                 --tagline-font-weight: {{ block.settings.tagline_font_weight | default: 400 }};
                 --tagline-font-weight-mobile: {{ block.settings.tagline_font_weight_mobile | default: 400 }};
-                --tagline-text-color: {{ block.settings.tagline_text_color | default: '#000000' }};
+                --tagline-text-color: var(--color-text);
               "
               {{ block.shopify_attributes }}
             >

@@ -47,8 +47,6 @@
               {%- assign image_media = product.featured_media -%}
             {%- endif -%}
             {%- liquid
-              assign block_shadow_alpha = block.settings.left_image_shadow_opacity | divided_by: 100.0
-              assign block_shadow_color = block.settings.left_image_shadow_color | color_modify: 'alpha', block_shadow_alpha
               assign left_button_text_transform = 'none'
               if block.settings.left_button_uppercase
                 assign left_button_text_transform = 'uppercase'
@@ -72,7 +70,6 @@
                 --left-image-shadow-x: {{ block.settings.left_image_shadow_x }}px;
                 --left-image-shadow-y: {{ block.settings.left_image_shadow_y }}px;
                 --left-image-shadow-blur: {{ block.settings.left_image_shadow_blur }}px;
-                --left-image-shadow-color: {{ block_shadow_color }};
                 --left-button-alignment: {{ block.settings.left_button_alignment }};
                 --left-button-text-transform: {{ left_button_text_transform }};
                 --left-button-bottom-desktop: {{ block.settings.left_button_bottom_desktop }}%;
@@ -86,10 +83,6 @@
                 --left-button-font-weight: {{ block.settings.left_button_font_weight }};
                 --left-button-letter-spacing: {{ block.settings.left_button_letter_spacing }}px;
                 --left-button-radius: {{ block.settings.left_button_radius }}px;
-                --left-button-bg-color: {{ block.settings.left_button_bg_color }};
-                --left-button-border-color: {{ block.settings.left_button_border_color }};
-                --left-button-text-color: {{ block.settings.left_button_text_color }};
-                --left-button-shadow-color: {{ block.settings.left_button_shadow_color }};
                 --left-button-shadow-offset: {{ block.settings.left_button_shadow_offset }}px;
                 --left-button-bottom-mobile: {{ block.settings.left_button_bottom_mobile }}%;
                 --left-button-x-mobile: {{ block.settings.left_button_x_mobile }}%;
@@ -103,10 +96,7 @@
               {% endif %}
               {{ block.shopify_attributes }}
             >
-              <div
-                class="bb-slideshow__left-chip"
-                style="color: {{ block.settings.badge_text_color }}; border-color: {{ block.settings.badge_border_color }};"
-              >
+              <div class="bb-slideshow__left-chip">
                 {{-
                   block.settings.badge_text
                   | default: product.type
@@ -277,7 +267,7 @@
     right: 5px;
     bottom: 5px;
     height: 50%;
-    background: #d2cdc4;
+    background: var(--color-card-bg);
     border-radius: 16px;
     z-index: 0;
   }
@@ -357,9 +347,9 @@
   }
 
   #shopify-section-{{ section.id }} .bb-slideshow__left-chip {
-    border: 1px solid #cf5c71;
+    border: 1px solid var(--color-link);
     border-radius: 999px;
-    color: #cf5c71;
+    color: var(--color-link);
     font-size: 1.1rem;
     line-height: 1;
     padding: 8px 16px;
@@ -371,7 +361,7 @@
     text-align: center;
     font-size: clamp(3rem, 5vw, 8rem);
     line-height: 0.95;
-    color: #26452d;
+    color: var(--color-heading);
     position: absolute;
     top: 8px;
     left: 50%;
@@ -408,7 +398,7 @@
       var(--left-image-shadow-x, 0px)
       var(--left-image-shadow-y, 20px)
       var(--left-image-shadow-blur, 18px)
-      var(--left-image-shadow-color, rgba(35, 50, 37, 0.28))
+      var(--left-image-shadow-color, var(--color-btn-shadow))
     );
   }
 
@@ -432,14 +422,14 @@
     font-weight: var(--left-button-font-weight, 700);
     letter-spacing: var(--left-button-letter-spacing, 1px);
     border-radius: var(--left-button-radius, 16px);
-    border-color: var(--left-button-border-color, #365330);
-    background-color: var(--left-button-bg-color, #365330);
-    color: var(--left-button-text-color, #ffffff);
+    border-color: var(--left-button-border-color, var(--btn-primary-border));
+    background-color: var(--left-button-bg-color, var(--btn-primary-bg));
+    color: var(--left-button-text-color, var(--btn-primary-text));
     text-transform: var(--left-button-text-transform, uppercase);
   }
 
   #shopify-section-{{ section.id }} .bb-slideshow__left-cta .bb-slideshow__shop-now .submit-button__shadow {
-    background-color: var(--left-button-shadow-color, #1f3a28);
+    background-color: var(--left-button-shadow-color, var(--btn-primary-shadow));
     border-radius: var(--left-button-radius, 16px);
     top: var(--left-button-shadow-offset, 2px);
   }
@@ -953,18 +943,6 @@
           "default": "MATCHA"
         },
         {
-          "type": "color",
-          "id": "badge_text_color",
-          "label": "Badge text color",
-          "default": "#cf5c71"
-        },
-        {
-          "type": "color",
-          "id": "badge_border_color",
-          "label": "Badge border color",
-          "default": "#cf5c71"
-        },
-        {
           "type": "header",
           "content": "Left card image controls"
         },
@@ -1059,21 +1037,6 @@
         {
           "type": "header",
           "content": "Left image shadow controls"
-        },
-        {
-          "type": "color",
-          "id": "left_image_shadow_color",
-          "label": "Shadow color",
-          "default": "#233225"
-        },
-        {
-          "type": "range",
-          "id": "left_image_shadow_opacity",
-          "min": 0,
-          "max": 100,
-          "step": 1,
-          "default": 28,
-          "label": "Shadow opacity (%)"
         },
         {
           "type": "range",
@@ -1230,30 +1193,6 @@
           "step": 1,
           "default": 16,
           "label": "Button border radius (px)"
-        },
-        {
-          "type": "color",
-          "id": "left_button_bg_color",
-          "label": "Button background color",
-          "default": "#365330"
-        },
-        {
-          "type": "color",
-          "id": "left_button_border_color",
-          "label": "Button border color",
-          "default": "#365330"
-        },
-        {
-          "type": "color",
-          "id": "left_button_text_color",
-          "label": "Button text color",
-          "default": "#ffffff"
-        },
-        {
-          "type": "color",
-          "id": "left_button_shadow_color",
-          "label": "Button shadow color",
-          "default": "#1f3a28"
         },
         {
           "type": "range",

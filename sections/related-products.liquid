@@ -85,7 +85,7 @@
           <div
             class="related-products-header-banner"
             {{ block.shopify_attributes }}
-            style="background-color: {{ block.settings.background_color }}; border-radius: {{ block.settings.border_radius }}px;"
+            style="background-color: var(--color-card-bg); border-radius: {{ block.settings.border_radius }}px;"
           >
             <div class="related-products-header-content">
               {%- if block.settings.heading != blank -%}
@@ -206,12 +206,6 @@
           "type": "url",
           "id": "button_link",
           "label": "Button Link"
-        },
-        {
-          "type": "color",
-          "id": "background_color",
-          "label": "Background Color",
-          "default": "#E5E1DA"
         },
         {
           "type": "range",

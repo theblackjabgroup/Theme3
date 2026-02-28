@@ -27,16 +27,8 @@
 
   {%- for block in section.blocks -%}
     .block-{{ block.id }} {
-      {%- if block.settings.card_bg != blank -%}
-        --card-bg: {{ block.settings.card_bg }};
-      {%- else -%}
-        --card-bg: var(--color-background);
-      {%- endif -%}
-      {%- if block.settings.card_text != blank -%}
-        --card-text: {{ block.settings.card_text }};
-      {%- else -%}
-        --card-text: var(--color-text);
-      {%- endif -%}
+      --card-bg: var(--color-card-bg);
+      --card-text: var(--color-text);
       --icon-width: {{ block.settings.icon_width }}px;
       --icon-height: {{ block.settings.icon_height }}px;
       --back-image-width: {{ block.settings.back_image_width }}px;
@@ -374,16 +366,6 @@
           "type": "header",
           "content": "Colors",
           "info": "Leave empty to use section color scheme."
-        },
-        {
-          "type": "color",
-          "id": "card_bg",
-          "label": "Card Background"
-        },
-        {
-          "type": "color",
-          "id": "card_text",
-          "label": "Card Text"
         },
         {
           "type": "header",
