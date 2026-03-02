@@ -118,8 +118,6 @@
         --font-heading-weight: {{ settings.type_header_font.weight }};
 
         /* Legacy font variables for backward compatibility */
-        --font-family-primary: var(--font-body-family);
-        --font-body-size: 16px;
 
         /* ─── Spacing ─── */
         --spacing-xs: 4px;
@@ -147,14 +145,6 @@
         --color-background: var(--color-bg);
         --color-headings: var(--color-heading);
         --body-color: var(--color-text);
-      }
-
-      html, body {
-        background-color: var(--color-bg);
-        color: var(--color-text);
-        margin: 0;
-        overflow-x: hidden;
-        width: 100%;
       }
 
       {%- for scheme in settings.color_schemes -%}
@@ -317,7 +307,12 @@
     {{ 'component-global-btn.css' | asset_url | stylesheet_tag: preload: true }}
 
     {%- if localization.available_countries.size > 1 or localization.available_languages.size > 1 -%}
-      <link rel="stylesheet" href="{{ 'component-localization-form.css' | asset_url }}" media="print" onload="this.media='all'">
+      <link
+        rel="stylesheet"
+        href="{{ 'component-localization-form.css' | asset_url }}"
+        media="print"
+        onload="this.media='all'"
+      >
       <noscript><link rel="stylesheet" href="{{ 'component-localization-form.css' | asset_url }}"></noscript>
       <script src="{{ 'localization-form.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
