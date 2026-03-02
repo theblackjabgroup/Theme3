@@ -23,9 +23,7 @@
     grid-auto-rows: {{ section.settings.row_height | divided_by: 10.0 }}px;
   }
 
-  .bento-block-wrapper {
-    padding: {{ section.settings.grid_gap | divided_by: 2 }}px;
-  }
+
 
   .bento-card,
   .content-card,
@@ -222,7 +220,7 @@
             {%- if tag_card_is_link -%}
               <a
                 href="{{ block.settings.link_url }}"
-                class="bento-card tag-card tag-card--link tag-card--{{ direction }} tag-card--align-{{ align }} tag-card--valign-{{ vertical_align }} color-{{ block.settings.color_scheme.id }} gradient{% if block.settings.reverse_colors %} is-reversed{% endif %}"
+                class="bento-card tag-card tag-card--link tag-card--{{ direction }} tag-card--align-{{ align }} tag-card--valign-{{ vertical_align }} color-{{ block.settings.color_scheme.id }} gradient"
                 style="--tag-card-border-color: {{ border_color }}; --tag-card-border-hover-color: {{ hover_border_color }}; --tag-card-padding-y: {{ tag_padding_y }}px; --tag-card-padding-x: {{ tag_padding_x }}px; --tag-card-inner-gap: {{ tag_inner_gap }}px; --tag-card-text-gap: {{ tag_text_gap }}px; --tag-card-mobile-padding-y: {{ mobile_tag_padding_y }}px; --tag-card-mobile-padding-x: {{ mobile_tag_padding_x }}px; --tag-card-mobile-inner-gap: {{ mobile_tag_inner_gap }}px; --tag-card-mobile-text-gap: {{ mobile_tag_text_gap }}px;"
                 data-mobile-direction="{{ mobile_direction }}"
                 data-mobile-align="{{ mobile_align }}"
@@ -230,7 +228,7 @@
               >
             {%- else -%}
               <div
-                class="bento-card tag-card tag-card--{{ direction }} tag-card--align-{{ align }} tag-card--valign-{{ vertical_align }} color-{{ block.settings.color_scheme.id }} gradient{% if block.settings.reverse_colors %} is-reversed{% endif %}"
+                class="bento-card tag-card tag-card--{{ direction }} tag-card--align-{{ align }} tag-card--valign-{{ vertical_align }} color-{{ block.settings.color_scheme.id }} gradient"
                 style="--tag-card-border-color: {{ border_color }}; --tag-card-border-hover-color: {{ hover_border_color }}; --tag-card-padding-y: {{ tag_padding_y }}px; --tag-card-padding-x: {{ tag_padding_x }}px; --tag-card-inner-gap: {{ tag_inner_gap }}px; --tag-card-text-gap: {{ tag_text_gap }}px; --tag-card-mobile-padding-y: {{ mobile_tag_padding_y }}px; --tag-card-mobile-padding-x: {{ mobile_tag_padding_x }}px; --tag-card-mobile-inner-gap: {{ mobile_tag_inner_gap }}px; --tag-card-mobile-text-gap: {{ mobile_tag_text_gap }}px;"
                 data-mobile-direction="{{ mobile_direction }}"
                 data-mobile-align="{{ mobile_align }}"
@@ -2087,13 +2085,7 @@
           "label": "Color scheme",
           "default": "scheme-1"
         },
-        {
-          "type": "checkbox",
-          "id": "reverse_colors",
-          "label": "Reverse colors",
-          "default": false,
-          "info": "Swaps background and text colors based on the color scheme."
-        },
+
         {
           "type": "header",
           "content": "Link"

@@ -88,6 +88,12 @@
           },
           {
             "type": "color",
+            "id": "color_accent",
+            "label": "Accent Color",
+            "default": "#1e4abd"
+          },
+          {
+            "type": "color",
             "id": "color_btn_border",
             "label": "Button Borders",
             "default": "#000000"
@@ -231,6 +237,22 @@
             "id": "btn_disabled_shadow",
             "label": "Shadow",
             "default": "#000000"
+          },
+          {
+            "type": "header",
+            "content": "Sale Badge"
+          },
+          {
+            "type": "color",
+            "id": "sale_badge_bg",
+            "label": "Background",
+            "default": "#F5A30A"
+          },
+          {
+            "type": "color",
+            "id": "sale_badge_text",
+            "label": "Text",
+            "default": "#000000"
           }
         ],
         "role": {
@@ -318,6 +340,26 @@
           { "value": "gap_page", "label": "Page (gap-page)" }
         ],
         "default": "gap_section"
+      },
+      {
+        "type": "range",
+        "id": "page_layout_gap",
+        "label": "Gap",
+        "min": 0,
+        "max": 64,
+        "step": 2,
+        "unit": "px",
+        "default": 10
+      },
+      {
+        "type": "range",
+        "id": "page_layout_padding",
+        "label": "Padding",
+        "min": 0,
+        "max": 80,
+        "step": 2,
+        "unit": "px",
+        "default": 24
       }
     ]
   },
@@ -419,19 +461,11 @@
       },
       {
         "type": "header",
-        "content": "Sale Badge"
+        "content": "Sale Badge (size & typography)"
       },
       {
-        "type": "color",
-        "id": "sale_badge_bg",
-        "label": "Background color",
-        "default": "#E0A8B8"
-      },
-      {
-        "type": "color",
-        "id": "sale_badge_text",
-        "label": "Text color",
-        "default": "#2E473E"
+        "type": "paragraph",
+        "content": "Sale badge colors are set per color scheme under Theme settings → Colors → each scheme → Sale Badge."
       },
       {
         "type": "range",

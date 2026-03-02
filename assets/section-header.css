@@ -37,7 +37,7 @@
   height: 100%;
   padding: var(--header-padding, 24px);
   padding-right: 0 !important;
-  gap: var(--header-gap, 24px);
+  gap: var(--page-layout-gap,10px);
   min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
@@ -75,7 +75,7 @@
 .vertical-sidebar-logo-link {
   display: block;
   text-decoration: none;
-  background: var(--color-header-logo-background);
+  background: var(--color-accent);
   border-radius: var(--logo-border-radius, 16px);
   padding: var(--logo-padding, var(--logo-padding-top, 16px) var(--logo-padding-right, 20px) var(--logo-padding-bottom, 16px) var(--logo-padding-left, 20px));
   transition: background-color var(--transition-medium), color var(--transition-medium), box-shadow var(--transition-medium), transform var(--transition-medium);
@@ -640,7 +640,7 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--nav-gap, 20px);
+  gap: var(--page-layout-gap,10px);
 }
 
 .vertical-sidebar-nav-item {

@@ -173,6 +173,32 @@
   color:       var(--btn-tertiary-bg, #F5A30A);
 }
 
+/* Tertiary during loading (add to cart): keep tertiary look, avoid flash to disabled style */
+.global-btn--tertiary.loading .global-btn__shadow,
+.global-btn--tertiary.loading[disabled] .global-btn__shadow {
+  background-color: var(--btn-tertiary-shadow, var(--color-btn-shadow, #000000));
+  opacity: 1;
+}
+
+.global-btn--tertiary.loading .global-btn__content,
+.global-btn--tertiary.loading[disabled] .global-btn__content {
+  background-color: var(--btn-tertiary-bg, #F5A30A);
+  color:            var(--btn-tertiary-text, #000000);
+  border-color:     var(--btn-tertiary-border, #000000);
+  opacity: 1;
+}
+
+.global-btn--tertiary.loading .global-btn__badge,
+.global-btn--tertiary.loading[disabled] .global-btn__badge {
+  background: var(--btn-tertiary-text, #000000);
+  color:       var(--btn-tertiary-bg, #F5A30A);
+}
+
+.global-btn--tertiary.loading,
+.global-btn--tertiary.loading[disabled] {
+  cursor: wait;
+}
+
 
 /* =============================================================
    VARIANT: disabled  (muted bg / muted text, no interactions)

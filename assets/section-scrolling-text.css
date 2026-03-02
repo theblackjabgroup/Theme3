@@ -55,7 +55,7 @@
   min-width: var(--pill-width, 0);
   padding: var(--pill-padding-y, 0.4em) var(--pill-padding-x, 0.9em);
   box-sizing: border-box;
-  background: var(--pill-bg, #2E473E);
+  background: var(--pill-bg, #000000);
   color: var(--pill-color, #E8E4DC);
   font-size: var(--text-font-size, 24px);
   font-weight: var(--text-font-weight, 700);
@@ -74,7 +74,7 @@
   width: var(--circle-width, 80px);
   height: var(--circle-height, 80px);
   flex-shrink: 0;
-  background: var(--circle-bg, #E0A8B8);
+  background: var(--circle-bg, #F5A30A);
   border-radius: 50%;
 }
 
@@ -97,7 +97,7 @@
 }
 
 .marquee-scroll__orbit-svg text {
-  fill: var(--orbit-color, #2E473E);
+  fill: var(--orbit-color, #000000);
   font-size: var(--orbit-font-size, 10px);
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -116,7 +116,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: color-mix(in srgb, var(--circle-bg, #E0A8B8) 85%, white);
+  background: color-mix(in srgb, var(--circle-bg, #F5A30A) 85%, white);
   border-radius: 50%;
   z-index: 1;
 }
@@ -130,7 +130,7 @@
 .marquee-scroll__icon-placeholder {
   width: var(--icon-width, 58%);
   height: var(--icon-height, 58%);
-  background: color-mix(in srgb, var(--orbit-color, #2E473E) 25%, transparent);
+  background: color-mix(in srgb, var(--orbit-color, #000000) 25%, transparent);
   border-radius: 50%;
 }
 

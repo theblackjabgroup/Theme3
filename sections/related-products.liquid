@@ -85,19 +85,19 @@
           <div
             class="related-products-header-banner"
             {{ block.shopify_attributes }}
-            style="background-color: {{ block.settings.background_color }}; border-radius: {{ block.settings.border_radius }}px;"
+            style="background-color: var(--color-card-bg); border-radius: {{ block.settings.border_radius | default: 12 }}px;"
           >
             <div class="related-products-header-content">
               {%- if block.settings.heading != blank -%}
                 <h2 class="related-products-header__title">{{ block.settings.heading }}</h2>
               {%- endif -%}
               {%- if block.settings.button_text != blank -%}
-                <a
-                  href="{{ block.settings.button_link }}"
-                  class="related-products-header__button related-products-header__button--desktop button"
-                >
-                  {{ block.settings.button_text }}
-                </a>
+                {%- render 'global-btn',
+                  text: block.settings.button_text,
+                  url: block.settings.button_link,
+                  variant: 'primary',
+                  class: 'related-products-header__button related-products-header__button--desktop'
+                -%}
               {%- endif -%}
             </div>
           </div>
@@ -147,12 +147,12 @@
         </div>
 
         {%- if header_button_text != blank -%}
-          <a
-            href="{{ header_button_link }}"
-            class="related-products-header__button related-products-header__button--mobile button"
-          >
-            {{ header_button_text }}
-          </a>
+          {%- render 'global-btn',
+            text: header_button_text,
+            url: header_button_link,
+            variant: 'primary',
+            class: 'related-products-header__button related-products-header__button--mobile'
+          -%}
         {%- endif -%}
       {%- endif -%}
     </product-recommendations>
@@ -210,8 +210,7 @@
         {
           "type": "color",
           "id": "background_color",
-          "label": "Background Color",
-          "default": "#E5E1DA"
+          "label": "Background Color"
         },
         {
           "type": "range",

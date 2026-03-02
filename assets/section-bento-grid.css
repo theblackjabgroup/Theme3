@@ -7,7 +7,7 @@
 
 .bento-grid {
   display: grid;
-  gap: 0; /* Gaps are handled by padding on the wrapper to support complex spans */
+  gap: var(--page-layout-gap,10px);
   max-width: 100%;
 }
 
@@ -2071,22 +2071,4 @@ a.tag-card.tag-card--link:hover {
   z-index: 10;
 }
 
-/* Reversed Color Customization */
-.bento-card.is-reversed {
-  background-color: var(--color-card-text) !important;
-  color: var(--color-card-bg) !important;
-}
 
-.bento-card.is-reversed .tag-card-tag--filled {
-  background: var(--color-card-bg) !important;
-  color: var(--color-card-text) !important;
-}
-
-.bento-card.is-reversed .tag-card-tag--border {
-  border-color: var(--color-card-bg) !important;
-  color: var(--color-card-bg) !important;
-}
-
-.bento-card.is-reversed .tag-card-main {
-  color: var(--color-card-bg) !important;
-}

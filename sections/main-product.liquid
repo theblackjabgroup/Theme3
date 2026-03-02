@@ -81,10 +81,10 @@
 <div
   class="product-split-container color-{{ scheme.id }} gradient{% if product.selected_or_first_available_variant.available == false %} product-variant-sold-out{% endif %}"
   id="ProductSection-{{ section.id }}"
-  data-page-load-animate
-  data-page-load-selector=".product-hero-section, .product-split-left, .product-split-right, .product-mobile-card--left, .product-mobile-card--right"
-  data-page-load-duration="700"
-  data-page-load-stagger="120"
+  {% if settings.animations_reveal_on_scroll %}
+    data-page-load-animate
+    data-page-load-selector=".product-hero-section, .product-split-left, .product-split-right, .product-mobile-card--left, .product-mobile-card--right"
+  {% endif %}
   style="
     --hero-image-max-width: {{ section.settings.hero_image_max_width }}px;
     --section-margin-top: {{ section.settings.margin_top }}px;
@@ -559,6 +559,9 @@
     variantRadios.forEach(radio => {
       radio.addEventListener('change', updateProductState);
     });
+
+    // Initial call to set correct initial state
+    updateProductState();
   });
 </script>
 
@@ -626,9 +629,7 @@
 {
   "name": "Main Product",
   "enabled_on": {
-    "templates": [
-      "product"
-    ]
+    "templates": ["product"]
   },
   "settings": [
     {

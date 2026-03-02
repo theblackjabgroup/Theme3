@@ -79,6 +79,11 @@
   text-decoration: var(--copyright-text-decoration, none);
 }
 
+.subfooter-copyright:hover {
+  color: var(--color-link-hover);
+  transition: color 0.2s ease;
+}
+
 .subfooter-shop-name {
   text-decoration: var(--shop-name-text-decoration, none);
 }
@@ -90,10 +95,11 @@
   font-size: inherit;
   font-weight: inherit;
   letter-spacing: inherit;
+  transition: color 0.2s ease;
 }
 
 .subfooter-powered a:hover {
-  opacity: 0.8;
+  color: var(--color-link-hover);
 }
 .subfooter-right {
   display: flex;
