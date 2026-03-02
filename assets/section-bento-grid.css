@@ -7,7 +7,7 @@
 
 .bento-grid {
   display: grid;
-  gap: 0; /* Gaps are handled by padding on the wrapper to support complex spans */
+  gap: var(--page-layout-gap,10px);
   max-width: 100%;
 }
 
@@ -605,8 +605,8 @@
   padding: 0;
   overflow: hidden;
   cursor: pointer;
-  background-color: var(--color-heading) !important;
-  color: var(--color-card-bg) !important;
+  background-color: var(--color-card-bg) !important;
+  color: var(--color-card-text) !important;
   transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 20px !important; /* Force a pill shape */
 }
@@ -650,7 +650,7 @@
   width: 100%;
   aspect-ratio: 1;
   max-width: 80px;
-  background: var(--color-card-bg);
+  background: var(--color-card-text);
   border-radius: 24px;
   display: flex;
   align-items: center;
@@ -673,7 +673,7 @@
   position: relative;
   width: 50%;
   height: 50%;
-  color: var(--color-heading);
+  color: var(--color-card-bg);
 }
 
 .toggle-icon {
@@ -1054,8 +1054,8 @@ a.tag-card.tag-card--link:hover {
 
 /* Filled tag style (default) */
 .tag-card-tag--filled {
-  background: var(--color-heading);
-  color: var(--color-bg);
+  background: var(--color-card-text);
+  color: var(--color-card-bg);
   border: none;
 }
 
@@ -2071,22 +2071,4 @@ a.tag-card.tag-card--link:hover {
   z-index: 10;
 }
 
-/* Reversed Color Customization */
-.bento-card.is-reversed {
-  background-color: var(--color-card-text) !important;
-  color: var(--color-card-bg) !important;
-}
 
-.bento-card.is-reversed .tag-card-tag--filled {
-  background: var(--color-card-bg) !important;
-  color: var(--color-card-text) !important;
-}
-
-.bento-card.is-reversed .tag-card-tag--border {
-  border-color: var(--color-card-bg) !important;
-  color: var(--color-card-bg) !important;
-}
-
-.bento-card.is-reversed .tag-card-main {
-  color: var(--color-card-bg) !important;
-}

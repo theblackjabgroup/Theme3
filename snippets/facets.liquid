@@ -7,6 +7,8 @@
   - enable_sorting: {Boolean} Show sorting when true
   - filter_type: {String} Type of filter
   - paginate: {Object}
+  - top_bar_menu: {String} Optional menu handle for facets top bar links when no filters active (up to 6 links)
+  - facets_top_bar_links: {Array} Optional section.blocks for custom facets top bar links (blocks with type 'facets_top_bar_link')
 
   Usage:
   {% render 'facets', results: collection, enable_filtering: true, enable_sorting: true, filter_type: 'vertical', paginate: paginate %}
@@ -44,10 +46,90 @@
 
         {% if enable_filtering or enable_sorting %}
           {% if filter_type == 'horizontal' %}
-            {% comment %} Two 3D buttons (Filters, Sort) – submit-button snippet structure {% endcomment %}
+            {%- liquid
+              assign total_active_values = 0
+              for filter in results.filters
+                assign total_active_values = total_active_values | plus: filter.active_values.size
+                if filter.type == 'price_range'
+                  if filter.min_value.value != null or filter.max_value.value != null
+                    assign total_active_values = total_active_values | plus: 1
+                  endif
+                endif
+              endfor
+            -%}
+            {%- assign top_bar_menu_obj = linklists[top_bar_menu] -%}
+            <div class="facets-links-bar" id="FacetsLinksBar">
+              <div class="facets-links-bar__inner">
+                {%- if total_active_values > 0 -%}
+                  {%- assign links_bar_first = true -%}
+                  {%- for filter in results.filters -%}
+                    {%- for value in filter.active_values -%}
+                      {%- unless links_bar_first -%}<span class="facets-links-bar__dot" aria-hidden="true">•</span>{%- endunless -%}
+                      <facet-remove><a href="{{ value.url_to_remove }}" class="facets-links-bar__link">{{ value.label | escape }}</a></facet-remove>
+                      {%- assign links_bar_first = false -%}
+                    {%- endfor -%}
+                    {% if filter.type == 'price_range' %}
+                      {%- if filter.min_value.value != null or filter.max_value.value != null -%}
+                        {%- unless links_bar_first -%}<span class="facets-links-bar__dot" aria-hidden="true">•</span>{%- endunless -%}
+                        <facet-remove>
+                          <a href="{{ filter.url_to_remove }}" class="facets-links-bar__link">
+                            {%- if filter.min_value.value -%}{{ filter.min_value.value | money }}{%- else -%}0{%- endif -%}
+                            –
+                            {%- if filter.max_value.value -%}{{ filter.max_value.value | money }}{%- else -%}{{ filter.range_max | money }}{%- endif -%}
+                          </a>
+                        </facet-remove>
+                        {%- assign links_bar_first = false -%}
+                      {%- endif -%}
+                    {% endif %}
+                  {%- endfor -%}
+                  <span class="facets-links-bar__dot" aria-hidden="true">•</span>
+                  <facet-remove>
+                    <a href="{{ results_url }}" class="facets-links-bar__link facets-links-bar__link--clear">{{ 'products.facets.clear_all' | t }}</a>
+                  </facet-remove>
+                {%- elsif top_bar_menu_obj != blank and top_bar_menu_obj.links.size > 0 -%}
+                  {%- assign top_bar_limit = 6 -%}
+                  {%- assign links_bar_first = true -%}
+                  {%- for link in top_bar_menu_obj.links limit: top_bar_limit -%}
+                    {%- unless links_bar_first -%}<span class="facets-links-bar__dot" aria-hidden="true">•</span>{%- endunless -%}
+                    <a href="{{ link.url }}" class="facets-links-bar__link">{{ link.title | escape }}</a>
+                    {%- assign links_bar_first = false -%}
+                  {%- endfor -%}
+                {%- elsif facets_top_bar_links != blank -%}
+                  {%- assign links_bar_first = true -%}
+                  {%- for block in facets_top_bar_links -%}
+                    {%- if block.type == 'facets_top_bar_link' -%}
+                      {%- assign link_label = block.settings.link_text | default: 'Link' -%}
+                      {%- unless links_bar_first -%}<span class="facets-links-bar__dot" aria-hidden="true">•</span>{%- endunless -%}
+                      {%- if block.settings.link_url != blank -%}
+                        <a href="{{ block.settings.link_url }}" class="facets-links-bar__link">{{ link_label | escape }}</a>
+                      {%- else -%}
+                        <span class="facets-links-bar__link facets-links-bar__link--placeholder">{{ link_label | escape }}</span>
+                      {%- endif -%}
+                      {%- assign links_bar_first = false -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                  {%- if links_bar_first -%}
+                    {%- comment -%} No facets_top_bar_link blocks, show placeholders {%- endcomment -%}
+                    {%- for i in (1..6) -%}
+                      {%- unless links_bar_first -%}<span class="facets-links-bar__dot" aria-hidden="true">•</span>{%- endunless -%}
+                      <span class="facets-links-bar__link facets-links-bar__link--placeholder">Link{{ i }}</span>
+                      {%- assign links_bar_first = false -%}
+                    {%- endfor -%}
+                  {%- endif -%}
+                {%- else -%}
+                  {%- assign links_bar_first = true -%}
+                  {%- for i in (1..6) -%}
+                    {%- unless links_bar_first -%}<span class="facets-links-bar__dot" aria-hidden="true">•</span>{%- endunless -%}
+                    <span class="facets-links-bar__link facets-links-bar__link--placeholder">Link{{ i }}</span>
+                    {%- assign links_bar_first = false -%}
+                  {%- endfor -%}
+                {%- endif -%}
+              </div>
+            </div>
+            {% comment %} Filter + Showing + Sort row (order: Filter | Showing centered | Sort) {% endcomment %}
             <div class="facets-buttons-drawers" id="FacetsWrapperDesktop">
               {% if enable_filtering %}
-                <details class="facets-drawer facets-drawer--filters" id="FacetsDrawerFilters">
+                <details class="facets-drawer facets-drawer--filters facets-drawer--left" id="FacetsDrawerFilters">
                   <summary class="facets-drawer-trigger global-btn global-btn--tertiary">
                     <span class="global-btn__shadow" aria-hidden="true"></span>
                     <span class="global-btn__content">
@@ -246,8 +328,13 @@
                   </div>
                 </details>
               {% endif %}
+              <div class="facets-showing-wrap">
+                <span class="facets-showing">
+                  {{ 'products.facets.showing' | t }}: {{ results.title | escape }} ({{ results.products_count }} {{ 'products.facets.products' | t }})
+                </span>
+              </div>
               {% if enable_sorting %}
-                <details class="facets-drawer facets-drawer--sort" id="FacetsDrawerSort">
+                <details class="facets-drawer facets-drawer--sort facets-drawer--right" id="FacetsDrawerSort">
                   <summary class="facets-drawer-trigger global-btn global-btn--tertiary">
                     <span class="global-btn__shadow" aria-hidden="true"></span>
                     <span class="global-btn__content">
@@ -313,7 +400,6 @@
               {% endif %}
             </div>
           {% else %}
-            {% comment %} Vertical: original disclosure dropdowns + sort {% endcomment %}
             {% if enable_filtering %}
               <div
                 id="FacetsWrapperDesktop"

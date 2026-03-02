@@ -299,7 +299,9 @@
             enable_filtering: section.settings.enable_filtering,
             enable_sorting: section.settings.enable_sorting,
             filter_type: section.settings.filter_type,
-            paginate: paginate
+            paginate: paginate,
+            top_bar_menu: section.settings.facets_top_bar_menu,
+            facets_top_bar_links: section.blocks
           %}
         </aside>
       {%- endif -%}
@@ -1210,6 +1212,12 @@
       "label": "t:sections.main-collection-product-grid.settings.filter_type.label"
     },
     {
+      "type": "link_list",
+      "id": "facets_top_bar_menu",
+      "label": "Facets top bar menu",
+      "info": "When set, shows up to 6 links with dots in the top bar when no filters are active. Leave blank to show only the collection title."
+    },
+    {
       "type": "checkbox",
       "id": "enable_sorting",
       "default": true,
@@ -1702,6 +1710,24 @@
           "step": 2,
           "unit": "px",
           "default": 0
+        }
+      ]
+    },
+    {
+      "type": "facets_top_bar_link",
+      "name": "Facets top bar link",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link text",
+          "default": "Link"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link URL"
         }
       ]
     }

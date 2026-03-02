@@ -1,157 +1,161 @@
 {{ 'section-header.css' | asset_url | stylesheet_tag }}
 
+{%- liquid
+  assign header_color_scheme = section.settings.color_scheme
+  assign header_scheme_id = header_color_scheme.id | default: header_color_scheme
+  assign header_scheme_obj = null
+  for s in settings.color_schemes
+    if s.id == header_scheme_id
+      assign header_scheme_obj = s
+      break
+    endif
+  endfor
+  assign header_dark_scheme_obj = null
+  assign header_dark_scheme_id = null
+  if section.settings.dark_mode_color_scheme != blank
+    assign header_dark_ref = section.settings.dark_mode_color_scheme
+    assign header_dark_scheme_id = header_dark_ref.id | default: header_dark_ref
+    for s in settings.color_schemes
+      if s.id == header_dark_scheme_id
+        assign header_dark_scheme_obj = s
+        break
+      endif
+    endfor
+  endif
+-%}
+
 <style>
-    :root {
-      --header-width: {{ section.settings.header_width | default: 200 }}px;
-      --header-padding: {{ section.settings.header_padding | default: 16 }}px;
-      --header-gap: {{ section.settings.header_gap | default: 8 }}px;
+  :root {
+    {%- if header_scheme_obj -%}
+      --color-background: {{ header_scheme_obj.settings.color_bg }} !important;
+      --color-bg: {{ header_scheme_obj.settings.color_bg }} !important;
+      --color-text: {{ header_scheme_obj.settings.color_text }} !important;
+      --color-heading: {{ header_scheme_obj.settings.color_heading }} !important;
+      --color-link: {{ header_scheme_obj.settings.color_link }} !important;
+      --color-link-hover: {{ header_scheme_obj.settings.color_link_hover }} !important;
+      --color-card-bg: {{ header_scheme_obj.settings.color_card_bg }} !important;
+      --color-card-text: {{ header_scheme_obj.settings.color_card_text | default: header_scheme_obj.settings.color_text }} !important;
+    {%- endif -%}
 
-      /* Logo */
-      --logo-padding-top: {{ section.settings.logo_padding_top | default: 24 }}px;
-      --logo-padding-bottom: {{ section.settings.logo_padding_bottom | default: 24 }}px;
-      --logo-padding-left: {{ section.settings.logo_padding_left | default: 24 }}px;
-      --logo-padding-right: {{ section.settings.logo_padding_right | default: 24 }}px;
-      --logo-padding: var(--logo-padding-top) var(--logo-padding-right) var(--logo-padding-bottom) var(--logo-padding-left);
-      --logo-border-radius: {{ section.settings.logo_border_radius | default: 16 }}px;
-      --logo-font-size: {{ section.settings.logo_font_size | default: 16 }}px;
-      --logo-font-weight: {{ section.settings.logo_font_weight | default: 700 }};
-      --logo-letter-spacing: {{ section.settings.logo_letter_spacing | default: -0.5 }}px;
+    --header-width: {{ section.settings.header_width | default: 200 }}px;
+    --header-padding: {{ section.settings.header_padding | default: 16 }}px;
+    --header-gap: {{ section.settings.header_gap | default: 8 }}px;
 
-      --color-header-logo-background: var(--color-heading);
-      --color-header-logo-text: var(--color-card-bg);
+    /* Logo */
+    --logo-padding-top: {{ section.settings.logo_padding_top | default: 24 }}px;
+    --logo-padding-bottom: {{ section.settings.logo_padding_bottom | default: 24 }}px;
+    --logo-padding-left: {{ section.settings.logo_padding_left | default: 24 }}px;
+    --logo-padding-right: {{ section.settings.logo_padding_right | default: 24 }}px;
+    --logo-padding: var(--logo-padding-top) var(--logo-padding-right) var(--logo-padding-bottom) var(--logo-padding-left);
+    --logo-border-radius: {{ section.settings.logo_border_radius | default: 16 }}px;
+    --logo-font-size: {{ section.settings.logo_font_size | default: 16 }}px;
+    --logo-font-weight: {{ section.settings.logo_font_weight | default: 700 }};
+    --logo-letter-spacing: {{ section.settings.logo_letter_spacing | default: -0.5 }}px;
 
-      --logo-image-max-width: {{ section.settings.logo_image_max_width | default: 80 }}px;
-      --logo-image-max-height: {{ section.settings.logo_image_max_height | default: 80 }}px;
-      --logo-image-width: {% if section.settings.logo_image_width > 0 %}{{ section.settings.logo_image_width }}px{% else %}auto{% endif %};
-      --logo-image-height: {% if section.settings.logo_image_height > 0 %}{{ section.settings.logo_image_height }}px{% else %}auto{% endif %};
-      --logo-image-object-fit: {{ section.settings.logo_image_object_fit | default: 'contain' }};
+    --color-header-logo-background: {{ section.settings.logo_background_color | default: 'var(--color-heading)' }} !important;
+    --color-header-logo-text: {{ section.settings.logo_text_color | default: 'var(--color-card-bg)' }} !important;
 
-      /* Logo orbit (when enabled) */
-      --logo-orbit-duration: {{ section.settings.logo_orbit_speed | default: 20 }}s;
-      --logo-orbit-radius: {{ section.settings.logo_orbit_radius | default: 44 }};
-      --logo-orbit-font-size: {{ section.settings.logo_orbit_font_size | default: 8 }}px;
-      --logo-orbit-font-weight: {{ section.settings.logo_orbit_font_weight | default: 600 }};
-      --logo-orbit-letter-spacing: {{ section.settings.logo_orbit_letter_spacing | default: 0.1 }}em;
+    --logo-image-max-width: {{ section.settings.logo_image_max_width | default: 80 }}px;
+    --logo-image-max-height: {{ section.settings.logo_image_max_height | default: 80 }}px;
+    --logo-image-width: {% if section.settings.logo_image_width > 0 %}{{ section.settings.logo_image_width }}px{% else %}auto{% endif %};
+    --logo-image-height: {% if section.settings.logo_image_height > 0 %}{{ section.settings.logo_image_height }}px{% else %}auto{% endif %};
+    --logo-image-object-fit: {{ section.settings.logo_image_object_fit | default: 'contain' }};
 
-      /* Action Buttons */
-      --button-gap: {{ section.settings.button_gap | default: 8 }}px;
-      --button-padding-top: {{ section.settings.button_padding_top | default: 12 }}px;
-      --button-padding-bottom: {{ section.settings.button_padding_bottom | default: 12 }}px;
-      --button-padding-left: {{ section.settings.button_padding_left | default: 16 }}px;
-      --button-padding-right: {{ section.settings.button_padding_right | default: 16 }}px;
-      --button-padding: var(--button-padding-top) var(--button-padding-right) var(--button-padding-bottom) var(--button-padding-left);
-      --button-font-size: {{ section.settings.button_font_size | default: 16 }}px;
-      --button-icon-size: {{ section.settings.button_icon_size | default: 16 }}px;
+    /* Logo orbit (when enabled) */
+    --logo-orbit-duration: {{ section.settings.logo_orbit_speed | default: 20 }}s;
+    --logo-orbit-radius: {{ section.settings.logo_orbit_radius | default: 44 }};
+    --logo-orbit-font-size: {{ section.settings.logo_orbit_font_size | default: 8 }}px;
+    --logo-orbit-font-weight: {{ section.settings.logo_orbit_font_weight | default: 600 }};
+    --logo-orbit-letter-spacing: {{ section.settings.logo_orbit_letter_spacing | default: 0.1 }}em;
 
-      --color-card-bg: var(--color-card-bg);
+    /* Action Buttons */
+    --button-gap: {{ section.settings.button_gap | default: 8 }}px;
+    --button-padding-top: {{ section.settings.button_padding_top | default: 12 }}px;
+    --button-padding-bottom: {{ section.settings.button_padding_bottom | default: 12 }}px;
+    --button-padding-left: {{ section.settings.button_padding_left | default: 16 }}px;
+    --button-padding-right: {{ section.settings.button_padding_right | default: 16 }}px;
+    --button-padding: var(--button-padding-top) var(--button-padding-right) var(--button-padding-bottom) var(--button-padding-left);
+    --button-font-size: {{ section.settings.button_font_size | default: 16 }}px;
+    --button-icon-size: {{ section.settings.button_icon_size | default: 16 }}px;
 
-      /* Navigation */
-      --nav-gap: {{ section.settings.nav_gap | default: 8 }}px;
-      --nav-animation-speed: {{ section.settings.nav_animation_speed | default: 0.8 }}s;
-      --nav-padding-top: {{ section.settings.nav_padding_top | default: 14 }}px;
-      --nav-padding-bottom: {{ section.settings.nav_padding_bottom | default: 14 }}px;
-      --nav-item-padding-top: {{ section.settings.nav_item_padding_top | default: 28 }}px;
-      --nav-item-padding-bottom: {{ section.settings.nav_item_padding_bottom | default: 28 }}px;
-      --nav-item-padding-left: {{ section.settings.nav_item_padding_left | default: 16 }}px;
-      --nav-item-padding-right: {{ section.settings.nav_item_padding_right | default: 16 }}px;
-      --nav-item-padding: var(--nav-item-padding-top) var(--nav-item-padding-right) var(--nav-item-padding-bottom) var(--nav-item-padding-left);
-      --nav-font-size: {{ section.settings.nav_font_size | default: 14 }}px;
-      --nav-font-weight: {{ section.settings.nav_font_weight | default: 500 }};
-      --nav-letter-spacing: {{ section.settings.nav_letter_spacing | default: 0 }}px;
-      --nav-icon-size: {{ section.settings.nav_icon_size | default: 24 }}px;
-      --nav-caret-size: {{ section.settings.nav_caret_size | default: 12 }}px;
+    /* Navigation */
+    --nav-gap: {{ section.settings.nav_gap | default: 8 }}px;
+    --nav-animation-speed: {{ section.settings.nav_animation_speed | default: 0.8 }}s;
+    --nav-padding-top: {{ section.settings.nav_padding_top | default: 14 }}px;
+    --nav-padding-bottom: {{ section.settings.nav_padding_bottom | default: 14 }}px;
+    --nav-item-padding-top: {{ section.settings.nav_item_padding_top | default: 28 }}px;
+    --nav-item-padding-bottom: {{ section.settings.nav_item_padding_bottom | default: 28 }}px;
+    --nav-item-padding-left: {{ section.settings.nav_item_padding_left | default: 16 }}px;
+    --nav-item-padding-right: {{ section.settings.nav_item_padding_right | default: 16 }}px;
+    --nav-item-padding: var(--nav-item-padding-top) var(--nav-item-padding-right) var(--nav-item-padding-bottom) var(--nav-item-padding-left);
+    --nav-font-size: {{ section.settings.nav_font_size | default: 14 }}px;
+    --nav-font-weight: {{ section.settings.nav_font_weight | default: 500 }};
+    --nav-letter-spacing: {{ section.settings.nav_letter_spacing | default: 0 }}px;
+    --nav-icon-size: {{ section.settings.nav_icon_size | default: 24 }}px;
+    --nav-caret-size: {{ section.settings.nav_caret_size | default: 12 }}px;
 
-      --nav-hover-background: var(--color-heading);
-      --nav-default-background: var(--color-card-bg);
-      --nav-active-background: var(--color-card-bg); /* Keeping as card bg by default if not hovered */
+    --nav-hover-background: var(--color-heading);
+    --nav-default-background: var(--color-card-bg);
+    --nav-active-background: var(--color-card-bg);
 
-      {%- if section.settings.nav_show_borders -%}
-        --nav-border: 1px solid var(--color-input-border);
-      {%- else -%}
-        --nav-border: none;
-      {%- endif -%}
-    }
-  }px;
-      --header-padding: {{ section.settings.header_padding | default: 16 }}px;
-      --header-gap: {{ section.settings.header_gap | default: 8 }}px;
+    {%- if section.settings.nav_show_borders -%}
+      --nav-border: 1px solid var(--color-input-border);
+    {%- else -%}
+      --nav-border: none;
+    {%- endif -%}
 
-      /* Logo */
-      --logo-padding-top: {{ section.settings.logo_padding_top | default: 24 }}px;
-      --logo-padding-bottom: {{ section.settings.logo_padding_bottom | default: 24 }}px;
-      --logo-padding-left: {{ section.settings.logo_padding_left | default: 24 }}px;
-      --logo-padding-right: {{ section.settings.logo_padding_right | default: 24 }}px;
-      --logo-padding: var(--logo-padding-top) var(--logo-padding-right) var(--logo-padding-bottom) var(--logo-padding-left);
-      --logo-border-radius: {{ section.settings.logo_border_radius | default: 16 }}px;
-      --logo-font-size: {{ section.settings.logo_font_size | default: 16 }}px;
-      --logo-font-weight: {{ section.settings.logo_font_weight | default: 700 }};
-      --logo-letter-spacing: {{ section.settings.logo_letter_spacing | default: -0.5 }}px;
-      --color-header-logo-background: {{ section.settings.logo_background_color | default: '#306030' }};
-      --logo-image-max-width: {{ section.settings.logo_image_max_width | default: 80 }}px;
-      --logo-image-max-height: {{ section.settings.logo_image_max_height | default: 80 }}px;
-      --logo-image-width: {% if section.settings.logo_image_width > 0 %}{{ section.settings.logo_image_width }}px{% else %}auto{% endif %};
-      --logo-image-height: {% if section.settings.logo_image_height > 0 %}{{ section.settings.logo_image_height }}px{% else %}auto{% endif %};
-      --logo-image-object-fit: {{ section.settings.logo_image_object_fit | default: 'contain' }};
+    /* Mobile Header Logo */
+    --mobile-logo-image-max-width: {{ section.settings.mobile_logo_image_max_width | default: 120 }}px;
+    --mobile-logo-image-max-height: {{ section.settings.mobile_logo_image_max_height | default: 40 }}px;
+    --mobile-logo-image-width: {% if section.settings.mobile_logo_image_width > 0 %}{{ section.settings.mobile_logo_image_width }}px{% else %}auto{% endif %};
+    --mobile-logo-image-height: {% if section.settings.mobile_logo_image_height > 0 %}{{ section.settings.mobile_logo_image_height }}px{% else %}auto{% endif %};
+    --mobile-logo-image-object-fit: {{ section.settings.mobile_logo_image_object_fit | default: 'contain' }};
+    --mobile-logo-font-size: {{ section.settings.mobile_logo_font_size | default: 20 }}px;
+    --mobile-logo-font-weight: {{ section.settings.mobile_logo_font_weight | default: 700 }};
 
-      /* Logo orbit (when enabled) */
-      --logo-orbit-duration: {{ section.settings.logo_orbit_speed | default: 20 }}s;
-      --logo-orbit-radius: {{ section.settings.logo_orbit_radius | default: 44 }};
-      --logo-orbit-font-size: {{ section.settings.logo_orbit_font_size | default: 8 }}px;
-      --logo-orbit-font-weight: {{ section.settings.logo_orbit_font_weight | default: 600 }};
-      --logo-orbit-letter-spacing: {{ section.settings.logo_orbit_letter_spacing | default: 0.1 }}em;
+    /* Mobile Logo Orbit */
+    --mobile-logo-orbit-duration: {{ section.settings.mobile_logo_orbit_speed | default: 20 }}s;
+    --mobile-logo-orbit-radius: {{ section.settings.mobile_logo_orbit_radius | default: 36 }};
+    --mobile-logo-orbit-font-size: {{ section.settings.mobile_logo_orbit_font_size | default: 6 }}px;
+    --mobile-logo-orbit-font-weight: {{ section.settings.mobile_logo_orbit_font_weight | default: 600 }};
+    --mobile-logo-orbit-letter-spacing: {{ section.settings.mobile_logo_orbit_letter_spacing | default: 0.1 }}em;
 
-      /* Action Buttons */
-      --button-gap: {{ section.settings.button_gap | default: 8 }}px;
-      --button-padding-top: {{ section.settings.button_padding_top | default: 12 }}px;
-      --button-padding-bottom: {{ section.settings.button_padding_bottom | default: 12 }}px;
-      --button-padding-left: {{ section.settings.button_padding_left | default: 16 }}px;
-      --button-padding-right: {{ section.settings.button_padding_right | default: 16 }}px;
-      --button-padding: var(--button-padding-top) var(--button-padding-right) var(--button-padding-bottom) var(--button-padding-left);
-      --button-font-size: {{ section.settings.button_font_size | default: 16 }}px;
-      --button-icon-size: {{ section.settings.button_icon_size | default: 16 }}px;
+    /* Mobile Action Buttons */
+    --mobile-button-gap: {{ section.settings.mobile_button_gap | default: 16 }}px;
+    --mobile-button-icon-size: {{ section.settings.mobile_button_icon_size | default: 40 }}px;
+  }
 
-      /* Navigation */
-      --nav-gap: {{ section.settings.nav_gap | default: 8 }}px;
-      --nav-animation-speed: {{ section.settings.nav_animation_speed | default: 0.8 }}s;
-      --nav-padding-top: {{ section.settings.nav_padding_top | default: 14 }}px;
-      --nav-padding-bottom: {{ section.settings.nav_padding_bottom | default: 14 }}px;
-      --nav-item-padding-top: {{ section.settings.nav_item_padding_top | default: 28 }}px;
-      --nav-item-padding-bottom: {{ section.settings.nav_item_padding_bottom | default: 28 }}px;
-      --nav-item-padding-left: {{ section.settings.nav_item_padding_left | default: 16 }}px;
-      --nav-item-padding-right: {{ section.settings.nav_item_padding_right | default: 16 }}px;
-      --nav-item-padding: var(--nav-item-padding-top) var(--nav-item-padding-right) var(--nav-item-padding-bottom) var(--nav-item-padding-left);
-      --nav-font-size: {{ section.settings.nav_font_size | default: 14 }}px;
-      --nav-font-weight: {{ section.settings.nav_font_weight | default: 500 }};
-      --nav-letter-spacing: {{ section.settings.nav_letter_spacing | default: 0 }}px;
-      --nav-icon-size: {{ section.settings.nav_icon_size | default: 24 }}px;
-      --nav-caret-size: {{ section.settings.nav_caret_size | default: 12 }}px;
-      --nav-hover-background: var(--color-link);
-      --nav-default-background: var(--color-bg);
-      {%- if section.settings.nav_show_borders -%}
-        --nav-border: 1px solid var(--color-input-border);
-      {%- else -%}
-        --nav-border: none;
-      {%- endif -%}
-
-      /* Mobile Header Logo */
-      --mobile-logo-image-max-width: {{ section.settings.mobile_logo_image_max_width | default: 120 }}px;
-      --mobile-logo-image-max-height: {{ section.settings.mobile_logo_image_max_height | default: 40 }}px;
-      --mobile-logo-image-width: {% if section.settings.mobile_logo_image_width > 0 %}{{ section.settings.mobile_logo_image_width }}px{% else %}auto{% endif %};
-      --mobile-logo-image-height: {% if section.settings.mobile_logo_image_height > 0 %}{{ section.settings.mobile_logo_image_height }}px{% else %}auto{% endif %};
-      --mobile-logo-image-object-fit: {{ section.settings.mobile_logo_image_object_fit | default: 'contain' }};
-      --mobile-logo-font-size: {{ section.settings.mobile_logo_font_size | default: 20 }}px;
-      --mobile-logo-font-weight: {{ section.settings.mobile_logo_font_weight | default: 700 }};
-
-      /* Mobile Logo Orbit */
-      --mobile-logo-orbit-duration: {{ section.settings.mobile_logo_orbit_speed | default: 20 }}s;
-      --mobile-logo-orbit-radius: {{ section.settings.mobile_logo_orbit_radius | default: 36 }};
-      --mobile-logo-orbit-font-size: {{ section.settings.mobile_logo_orbit_font_size | default: 6 }}px;
-      --mobile-logo-orbit-font-weight: {{ section.settings.mobile_logo_orbit_font_weight | default: 600 }};
-      --mobile-logo-orbit-letter-spacing: {{ section.settings.mobile_logo_orbit_letter_spacing | default: 0.1 }}em;
-
-      /* Mobile Action Buttons */
-      --mobile-button-gap: {{ section.settings.mobile_button_gap | default: 16 }}px;
-      --mobile-button-icon-size: {{ section.settings.mobile_button_icon_size | default: 40 }}px;
-    }
+  /* Header: use chosen scheme when theme toggle is active (same pattern as tag cards) */
+  {%- if header_scheme_obj -%}
+  html[data-global-theme-active="true"] #shopify-section-header {
+    --color-bg: {{ header_scheme_obj.settings.color_bg }} !important;
+    --color-background: {{ header_scheme_obj.settings.color_bg }} !important;
+    --color-card-bg: {{ header_scheme_obj.settings.color_card_bg }} !important;
+    --color-card-text: {{ header_scheme_obj.settings.color_card_text | default: header_scheme_obj.settings.color_text }} !important;
+    --color-heading: {{ header_scheme_obj.settings.color_heading }} !important;
+    --color-headings: {{ header_scheme_obj.settings.color_heading }} !important;
+    --color-text: {{ header_scheme_obj.settings.color_text }} !important;
+    --color-link: {{ header_scheme_obj.settings.color_link }} !important;
+    --color-link-hover: {{ header_scheme_obj.settings.color_link_hover }} !important;
+    --color-header-logo-background: {{ header_scheme_obj.settings.color_heading }} !important;
+    --color-header-logo-text: {{ header_scheme_obj.settings.color_card_bg }} !important;
+  }
+  {%- endif -%}
+  {%- if header_dark_scheme_obj -%}
+  html[data-global-theme-active="true"][data-active-scheme="color-{{ header_dark_scheme_id }}"] #shopify-section-header {
+    --color-bg: {{ header_dark_scheme_obj.settings.color_bg }} !important;
+    --color-background: {{ header_dark_scheme_obj.settings.color_bg }} !important;
+    --color-card-bg: {{ header_dark_scheme_obj.settings.color_card_bg }} !important;
+    --color-card-text: {{ header_dark_scheme_obj.settings.color_card_text | default: header_dark_scheme_obj.settings.color_text }} !important;
+    --color-heading: {{ header_dark_scheme_obj.settings.color_heading }} !important;
+    --color-headings: {{ header_dark_scheme_obj.settings.color_heading }} !important;
+    --color-text: {{ header_dark_scheme_obj.settings.color_text }} !important;
+    --color-link: {{ header_dark_scheme_obj.settings.color_link }} !important;
+    --color-link-hover: {{ header_dark_scheme_obj.settings.color_link_hover }} !important;
+    --color-header-logo-background: {{ header_dark_scheme_obj.settings.color_heading }} !important;
+    --color-header-logo-text: {{ header_dark_scheme_obj.settings.color_card_bg }} !important;
+  }
+  {%- endif -%}
 </style>
 
 {%- assign search_popup_id_param = 'HeaderSearchPopup' -%}
@@ -1338,10 +1342,21 @@
   "name": "Header",
   "settings": [
     {
+      "type": "header",
+      "content": "Header color scheme"
+    },
+    {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Header Color Scheme",
-      "default": "scheme-1"
+      "label": "Color scheme (logo, action buttons, menu links)",
+      "default": "scheme-1",
+      "info": "Choose a theme color scheme for the header. Applies to logo, action buttons, and menu links."
+    },
+    {
+      "type": "color_scheme",
+      "id": "dark_mode_color_scheme",
+      "label": "Dark mode color scheme",
+      "info": "When the theme toggle is in dark mode, use this scheme for the header. Leave as default to keep the same as above."
     },
     {
       "type": "link_list",
@@ -1402,6 +1417,20 @@
       "label": "Header Section Gap",
       "default": 8,
       "info": "Gap between header sections (logo, buttons, nav)"
+    },
+    {
+      "type": "header",
+      "content": "Logo Styling"
+    },
+    {
+      "type": "color",
+      "id": "logo_background_color",
+      "label": "Logo Background Color"
+    },
+    {
+      "type": "color",
+      "id": "logo_text_color",
+      "label": "Logo Text Color"
     },
     {
       "type": "header",

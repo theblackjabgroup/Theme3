@@ -7,6 +7,9 @@
   width: calc(100% - var(--margin-horizontal, 0) * 2);
   box-sizing: border-box;
 }
+.related-products .global-btn__shadow{
+  width: 100%;
+}
 
 /* Header Banner */
 .related-products-header-banner {
@@ -53,35 +56,11 @@
 }
 
 .related-products-header__button {
-  font-family: var(--font-heading-family);
-  font-size: 14px;
-  font-weight: 700;
-  text-transform: uppercase;
-  padding: 16px 48px;
-  border-radius: var(--radius-l);
-  border: var(--border-width-thin) solid var(--color-primary-button-border);
-  background: var(--color-primary-button-bg);
-  background-color: var(--color-primary-button-bg);
-  color: var(--color-primary-button-text);
-  box-shadow: 0 3px 0 var(--color-primary-button-border);
-  text-decoration: none;
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
   white-space: nowrap;
   display: inline-block;
-  cursor: pointer;
 }
-
-.related-products-header__button:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 7px 0 var(--color-primary-button-border);
-  background-color: var(--color-primary-button-bg);
-  border-color: var(--color-primary-button-border);
-  color: var(--color-primary-button-text);
-}
-
-.related-products-header__button:active {
-  transform: translateY(1px);
-  box-shadow: 0 2px 0 var(--color-primary-button-border);
+.related-products-header__button .global-btn__shadow {
+  top: 9px;
 }
 
 /* Desktop button - show in banner */
@@ -231,21 +210,6 @@
   }
 }
 
-.scroll-nav-button {
-  width: 84px;
-  height: 38px;
-  border-radius: var(--radius-l);
-  border: var(--border-width-thin) solid var(--color-primary-button-border);
-  background: var(--color-primary-button-bg);
-  box-shadow: 0 3px 0 var(--color-primary-button-border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-  color: var(--color-primary-button-text);
-  background-color: var(--color-primary-button-bg);
-}
 
 @media screen and (max-width: 749px) {
   .scroll-nav-button {
@@ -258,18 +222,9 @@
   cursor: not-allowed;
 }
 
-.scroll-nav-button:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 7px 0 var(--color-primary-button-border);
-  background-color: var(--color-primary-button-bg);
-  border-color: var(--color-primary-button-border);
-  color: var(--color-primary-button-text);
-}
 
-.scroll-nav-button:active {
-  transform: translateY(1px);
-  box-shadow: 0 2px 0 var(--color-primary-button-border);
-}
+
+
 
 .scroll-nav-button svg {
   width: 24px;

@@ -23,9 +23,7 @@
     grid-auto-rows: {{ section.settings.row_height | divided_by: 10.0 }}px;
   }
 
-  .bento-block-wrapper {
-    padding: {{ section.settings.grid_gap | divided_by: 2 }}px;
-  }
+
 
   .bento-card,
   .content-card,
@@ -80,6 +78,7 @@
 
       {%- comment -%} Clamp mobile column span to grid width {%- endcomment -%}
       {%- assign max_mobile_span = mobile_cols | times: 10 | round -%}
+      {%- comment -%} Unused variables removed {%- endcomment -%}
       {%- if mobile_col_span < 1 -%}{%- assign mobile_col_span = 1 -%}{%- endif -%}
       {%- if mobile_col_span > max_mobile_span -%}{%- assign mobile_col_span = max_mobile_span -%}{%- endif -%}
 
@@ -104,6 +103,102 @@
       padding: {{ section.settings.mobile_section_padding | divided_by: 1.5 | floor }}px !important;
     }
   }
+
+  /* Tag card: use card's chosen scheme when global theme is active (light mode); dark override when toggle is in dark mode */
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'tag_card' -%}
+      {%- assign light_scheme_ref = block.settings.color_scheme | default: section.settings.color_scheme -%}
+      {%- assign light_scheme_id = light_scheme_ref.id | default: light_scheme_ref -%}
+      {%- assign light_scheme_obj = nil -%}
+      {%- for s in settings.color_schemes -%}
+        {%- if s.id == light_scheme_id -%}
+          {%- assign light_scheme_obj = s -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if light_scheme_obj -%}
+  html[data-global-theme-active="true"] #bento-grid-{{ section.id }} .bento-block-wrapper[data-block-id="{{ block.id }}"] .tag-card {
+    --color-card-bg: {{ light_scheme_obj.settings.color_card_bg }} !important;
+    --color-card-text: {{ light_scheme_obj.settings.color_card_text | default: light_scheme_obj.settings.color_text }} !important;
+    --color-heading: {{ light_scheme_obj.settings.color_heading }} !important;
+    --color-text: {{ light_scheme_obj.settings.color_text }} !important;
+    --color-link: {{ light_scheme_obj.settings.color_link }} !important;
+    --color-link-hover: {{ light_scheme_obj.settings.color_link_hover }} !important;
+    --color-bg: {{ light_scheme_obj.settings.color_bg }} !important;
+  }
+      {%- endif -%}
+      {%- if block.settings.dark_mode_color_scheme != blank -%}
+        {%- assign dark_scheme_ref = block.settings.dark_mode_color_scheme -%}
+        {%- assign dark_scheme_id = dark_scheme_ref.id | default: dark_scheme_ref -%}
+        {%- assign dark_scheme_obj = nil -%}
+        {%- for s in settings.color_schemes -%}
+          {%- if s.id == dark_scheme_id -%}
+            {%- assign dark_scheme_obj = s -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if dark_scheme_obj -%}
+  html[data-global-theme-active="true"][data-active-scheme="color-{{ dark_scheme_id }}"] #bento-grid-{{ section.id }} .bento-block-wrapper[data-block-id="{{ block.id }}"] .tag-card {
+    --color-card-bg: {{ dark_scheme_obj.settings.color_card_bg }} !important;
+    --color-card-text: {{ dark_scheme_obj.settings.color_card_text | default: dark_scheme_obj.settings.color_text }} !important;
+    --color-heading: {{ dark_scheme_obj.settings.color_heading }} !important;
+    --color-text: {{ dark_scheme_obj.settings.color_text }} !important;
+    --color-link: {{ dark_scheme_obj.settings.color_link }} !important;
+    --color-link-hover: {{ dark_scheme_obj.settings.color_link_hover }} !important;
+    --color-bg: {{ dark_scheme_obj.settings.color_bg }} !important;
+  }
+        {%- endif -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  /* Video card: same as tag card */
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'video_card' -%}
+      {%- assign light_scheme_ref = block.settings.color_scheme | default: section.settings.color_scheme -%}
+      {%- assign light_scheme_id = light_scheme_ref.id | default: light_scheme_ref -%}
+      {%- assign light_scheme_obj = nil -%}
+      {%- for s in settings.color_schemes -%}
+        {%- if s.id == light_scheme_id -%}
+          {%- assign light_scheme_obj = s -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if light_scheme_obj -%}
+  html[data-global-theme-active="true"] #bento-grid-{{ section.id }} .bento-block-wrapper[data-block-id="{{ block.id }}"] .video-card {
+    --color-card-bg: {{ light_scheme_obj.settings.color_card_bg }} !important;
+    --color-card-text: {{ light_scheme_obj.settings.color_card_text | default: light_scheme_obj.settings.color_text }} !important;
+    --color-heading: {{ light_scheme_obj.settings.color_heading }} !important;
+    --color-text: {{ light_scheme_obj.settings.color_text }} !important;
+    --color-link: {{ light_scheme_obj.settings.color_link }} !important;
+    --color-link-hover: {{ light_scheme_obj.settings.color_link_hover }} !important;
+    --color-bg: {{ light_scheme_obj.settings.color_bg }} !important;
+  }
+      {%- endif -%}
+      {%- if block.settings.dark_mode_color_scheme != blank -%}
+        {%- assign dark_scheme_ref = block.settings.dark_mode_color_scheme -%}
+        {%- assign dark_scheme_id = dark_scheme_ref.id | default: dark_scheme_ref -%}
+        {%- assign dark_scheme_obj = nil -%}
+        {%- for s in settings.color_schemes -%}
+          {%- if s.id == dark_scheme_id -%}
+            {%- assign dark_scheme_obj = s -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if dark_scheme_obj -%}
+  html[data-global-theme-active="true"][data-active-scheme="color-{{ dark_scheme_id }}"] #bento-grid-{{ section.id }} .bento-block-wrapper[data-block-id="{{ block.id }}"] .video-card {
+    --color-card-bg: {{ dark_scheme_obj.settings.color_card_bg }} !important;
+    --color-card-text: {{ dark_scheme_obj.settings.color_card_text | default: dark_scheme_obj.settings.color_text }} !important;
+    --color-heading: {{ dark_scheme_obj.settings.color_heading }} !important;
+    --color-text: {{ dark_scheme_obj.settings.color_text }} !important;
+    --color-link: {{ dark_scheme_obj.settings.color_link }} !important;
+    --color-link-hover: {{ dark_scheme_obj.settings.color_link_hover }} !important;
+    --color-bg: {{ dark_scheme_obj.settings.color_bg }} !important;
+  }
+        {%- endif -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
 </style>
 
 <div
@@ -123,6 +218,35 @@
       {%- assign col_span = block.settings.column_span | times: 10 | round -%}
       {%- assign row_span = block.settings.row_span | times: 10 | round -%}
 
+      {%- liquid
+        assign block_color_scheme = block.settings.color_scheme | default: section.settings.color_scheme
+        assign block_scheme_id = block_color_scheme.id | default: block_color_scheme
+        assign block_scheme_obj = null
+        if block.type == 'toggle_card'
+          for s in settings.color_schemes
+            if s.id == block_scheme_id
+              assign block_scheme_obj = s
+              break
+            endif
+          endfor
+        endif
+      -%}
+
+      {%- if block_scheme_obj -%}
+        {%- capture block_scheme_style -%}
+          --color-card-bg: {{ block_scheme_obj.settings.color_card_bg }} !important;
+          --color-card-text: {{ block_scheme_obj.settings.color_card_text | default: block_scheme_obj.settings.color_text }} !important;
+          --color-heading: {{ block_scheme_obj.settings.color_heading }} !important;
+          --color-text: {{ block_scheme_obj.settings.color_text }} !important;
+          --color-link: {{ block_scheme_obj.settings.color_link }} !important;
+          --color-link-hover: {{ block_scheme_obj.settings.color_link_hover }} !important;
+          --color-bg: {{ block_scheme_obj.settings.color_bg }} !important;
+          --color-background: {{ block_scheme_obj.settings.color_bg }} !important;
+        {%- endcapture -%}
+      {%- else -%}
+        {%- assign block_scheme_style = '' -%}
+      {%- endif -%}
+
       <div
         class="bento-block-wrapper bento-block-wrapper--{{ block.type }}{% if block.settings.hide_on_mobile %} hidden-mobile{% endif %}"
         style="grid-column: span {{ col_span }}; grid-row: span {{ row_span }};"
@@ -132,8 +256,8 @@
         {%- case block.type -%}
           {%- when 'search_card' -%}
             <div
-              class="bento-card search-card color-{{ block.settings.color_scheme.id }} gradient"
-              style=""
+              class="bento-card search-card color-{{ block_scheme_id }} gradient"
+              style="{{ block_scheme_style }}"
               onclick="window.location.href='{{ routes.search_url }}'"
             >
               <svg class="search-icon" viewBox="0 0 24 24">
@@ -144,8 +268,8 @@
 
           {%- when 'login_card' -%}
             <div
-              class="bento-card login-card color-{{ block.settings.color_scheme.id }} gradient"
-              style=""
+              class="bento-card login-card color-{{ block_scheme_id }} gradient"
+              style="{{ block_scheme_style }}"
               onclick="window.location.href='{{ routes.account_url }}'"
             >
               <div class="login-content">
@@ -184,8 +308,8 @@
               | default: heading_font_weight
             -%}
             <div
-              class="bento-card generic-card{% if has_image %} has-image{% endif %} color-{{ block.settings.color_scheme.id }} gradient"
-              style="{% if block.settings.image != blank %} background-image: url(\'{{ block.settings.image | image_url: width: 1000 }}\');{% elsif block.settings.external_image_url != blank %} background-image: url(\'{{ block.settings.external_image_url }}\');{% endif %} --desktop-heading-font-size: {{ heading_font_size }}px; --desktop-heading-font-weight: {{ heading_font_weight }}; --mobile-heading-font-size: {{ mobile_heading_font_size }}px; --mobile-heading-font-weight: {{ mobile_heading_font_weight }};"
+              class="bento-card generic-card{% if has_image %} has-image{% endif %} color-{{ block_scheme_id }} gradient"
+              style="{{ block_scheme_style }}{% if block.settings.image != blank %} background-image: url(\'{{ block.settings.image | image_url: width: 1000 }}\');{% elsif block.settings.external_image_url != blank %} background-image: url(\'{{ block.settings.external_image_url }}\');{% endif %} --desktop-heading-font-size: {{ heading_font_size }}px; --desktop-heading-font-weight: {{ heading_font_weight }}; --mobile-heading-font-size: {{ mobile_heading_font_size }}px; --mobile-heading-font-weight: {{ mobile_heading_font_weight }};"
               {% if block.settings.link != blank %}
                 onclick="window.location.href='{{ block.settings.link }}'"
               {% endif %}
@@ -196,24 +320,25 @@
             </div>
 
           {%- when 'tag_card' -%}
-            {%- assign direction = block.settings.layout_direction | default: 'row' -%}
-            {%- assign mobile_direction = block.settings.mobile_layout_direction | default: direction -%}
-            {%- assign icon_size = block.settings.icon_size | default: 32 -%}
-            {%- assign mobile_icon_size = block.settings.mobile_icon_size | default: icon_size -%}
-            {%- assign align = block.settings.content_alignment | default: 'left' -%}
-            {%- assign mobile_align = block.settings.mobile_content_alignment | default: align -%}
-            {%- assign vertical_align = block.settings.vertical_alignment | default: 'top' -%}
-            {%- assign mobile_vertical_align = block.settings.mobile_vertical_alignment | default: vertical_align -%}
-            {%- assign tag_padding_y = block.settings.card_padding_y | default: 32 -%}
-            {%- assign tag_padding_x = block.settings.card_padding_x | default: 40 -%}
-            {%- assign tag_inner_gap = block.settings.inner_gap | default: 0 -%}
-            {%- assign tag_text_gap = block.settings.text_group_gap | default: 0 -%}
-            {%- assign mobile_tag_padding_y = block.settings.mobile_card_padding_y | default: 24 -%}
-            {%- assign mobile_tag_padding_x = block.settings.mobile_card_padding_x | default: 32 -%}
+            {%- liquid
+              assign direction = block.settings.layout_direction | default: 'row'
+              assign mobile_direction = block.settings.mobile_layout_direction | default: direction
+              assign icon_size = block.settings.icon_size | default: 32
+              assign mobile_icon_size = block.settings.mobile_icon_size | default: icon_size
+              assign align = block.settings.content_alignment | default: 'left'
+              assign mobile_align = block.settings.mobile_content_alignment | default: align
+              assign vertical_align = block.settings.vertical_alignment | default: 'top'
+              assign mobile_vertical_align = block.settings.mobile_vertical_alignment | default: vertical_align
+              assign tag_padding_y = block.settings.card_padding_y | default: 32
+              assign tag_padding_x = block.settings.card_padding_x | default: 40
+              assign tag_inner_gap = block.settings.inner_gap | default: 0
+              assign tag_text_gap = block.settings.text_group_gap | default: 0
+              assign mobile_tag_padding_y = block.settings.mobile_card_padding_y | default: 24
+              assign mobile_tag_padding_x = block.settings.mobile_card_padding_x | default: 32
+            -%}
             {%- assign mobile_tag_inner_gap = block.settings.mobile_inner_gap | default: 0 -%}
             {%- assign mobile_tag_text_gap = block.settings.mobile_text_group_gap | default: 0 -%}
-            {%- comment -%} Tag card border: default transparent; hover can be set via Card Border Color (hover). {%- endcomment -%}
-            {%- assign border_color = 'transparent' -%}
+            {%- assign border_color = block.settings.card_border_color | default: 'transparent' -%}
             {%- assign hover_border_color = block.settings.card_border_hover_color | default: 'transparent' -%}
             {%- assign tag_card_is_link = false -%}
             {%- if block.settings.use_as_link and block.settings.link_url != blank -%}
@@ -222,16 +347,16 @@
             {%- if tag_card_is_link -%}
               <a
                 href="{{ block.settings.link_url }}"
-                class="bento-card tag-card tag-card--link tag-card--{{ direction }} tag-card--align-{{ align }} tag-card--valign-{{ vertical_align }} color-{{ block.settings.color_scheme.id }} gradient{% if block.settings.reverse_colors %} is-reversed{% endif %}"
-                style="--tag-card-border-color: {{ border_color }}; --tag-card-border-hover-color: {{ hover_border_color }}; --tag-card-padding-y: {{ tag_padding_y }}px; --tag-card-padding-x: {{ tag_padding_x }}px; --tag-card-inner-gap: {{ tag_inner_gap }}px; --tag-card-text-gap: {{ tag_text_gap }}px; --tag-card-mobile-padding-y: {{ mobile_tag_padding_y }}px; --tag-card-mobile-padding-x: {{ mobile_tag_padding_x }}px; --tag-card-mobile-inner-gap: {{ mobile_tag_inner_gap }}px; --tag-card-mobile-text-gap: {{ mobile_tag_text_gap }}px;"
+                class="bento-card tag-card tag-card--link tag-card--{{ direction }} tag-card--align-{{ align }} tag-card--valign-{{ vertical_align }} color-{{ block_scheme_id }} gradient"
+                style="{{ block_scheme_style }} --tag-card-border-color: {{ border_color }}; --tag-card-border-hover-color: {{ hover_border_color }}; --tag-card-padding-y: {{ tag_padding_y }}px; --tag-card-padding-x: {{ tag_padding_x }}px; --tag-card-inner-gap: {{ tag_inner_gap }}px; --tag-card-text-gap: {{ tag_text_gap }}px; --tag-card-mobile-padding-y: {{ mobile_tag_padding_y }}px; --tag-card-mobile-padding-x: {{ mobile_tag_padding_x }}px; --tag-card-mobile-inner-gap: {{ mobile_tag_inner_gap }}px; --tag-card-mobile-text-gap: {{ mobile_tag_text_gap }}px;"
                 data-mobile-direction="{{ mobile_direction }}"
                 data-mobile-align="{{ mobile_align }}"
                 data-mobile-vertical-align="{{ mobile_vertical_align }}"
               >
             {%- else -%}
               <div
-                class="bento-card tag-card tag-card--{{ direction }} tag-card--align-{{ align }} tag-card--valign-{{ vertical_align }} color-{{ block.settings.color_scheme.id }} gradient{% if block.settings.reverse_colors %} is-reversed{% endif %}"
-                style="--tag-card-border-color: {{ border_color }}; --tag-card-border-hover-color: {{ hover_border_color }}; --tag-card-padding-y: {{ tag_padding_y }}px; --tag-card-padding-x: {{ tag_padding_x }}px; --tag-card-inner-gap: {{ tag_inner_gap }}px; --tag-card-text-gap: {{ tag_text_gap }}px; --tag-card-mobile-padding-y: {{ mobile_tag_padding_y }}px; --tag-card-mobile-padding-x: {{ mobile_tag_padding_x }}px; --tag-card-mobile-inner-gap: {{ mobile_tag_inner_gap }}px; --tag-card-mobile-text-gap: {{ mobile_tag_text_gap }}px;"
+                class="bento-card tag-card tag-card--{{ direction }} tag-card--align-{{ align }} tag-card--valign-{{ vertical_align }} color-{{ block_scheme_id }} gradient"
+                style="{{ block_scheme_style }} --tag-card-border-color: {{ border_color }}; --tag-card-border-hover-color: {{ hover_border_color }}; --tag-card-padding-y: {{ tag_padding_y }}px; --tag-card-padding-x: {{ tag_padding_x }}px; --tag-card-inner-gap: {{ tag_inner_gap }}px; --tag-card-text-gap: {{ tag_text_gap }}px; --tag-card-mobile-padding-y: {{ mobile_tag_padding_y }}px; --tag-card-mobile-padding-x: {{ mobile_tag_padding_x }}px; --tag-card-mobile-inner-gap: {{ mobile_tag_inner_gap }}px; --tag-card-mobile-text-gap: {{ mobile_tag_text_gap }}px;"
                 data-mobile-direction="{{ mobile_direction }}"
                 data-mobile-align="{{ mobile_align }}"
                 data-mobile-vertical-align="{{ mobile_vertical_align }}"
@@ -254,13 +379,20 @@
                       font-weight: {{ tag_font_weight }};
                       --mobile-tag-font-size: {{ mobile_tag_font_size }}px;
                       --mobile-tag-font-weight: {{ mobile_tag_font_weight }};
-                      {%- if tag_style == 'filled' -%}
-                        background: var(--color-card-bg);
+                      {%- if block.settings.tag_bg_color != blank -%}
+                        background: {{ block.settings.tag_bg_color }} !important;
+                      {%- elsif tag_style == 'filled' -%}
+                        background: var(--color-heading) !important;
                       {%- endif -%}
-                      {%- if tag_style == 'border' -%}
-                        border-color: var(--color-link);
+                      {%- if block.settings.tag_text_color != blank -%}
+                        color: {{ block.settings.tag_text_color }} !important;
+                        border-color: {{ block.settings.tag_text_color }} !important;
+                      {%- elsif tag_style == 'border' -%}
+                        border-color: var(--color-card-text) !important;
+                        color: var(--color-card-text) !important;
+                      {%- else -%}
+                        color: var(--color-card-text) !important;
                       {%- endif -%}
-                      color: var(--color-link);
                     "
                   >
                     {{ block.settings.tag_text }}
@@ -286,7 +418,7 @@
                     {%- assign words = plain_text | split: ' ' -%}
                     <h3
                       class="tag-card-main tag-card-main--heading"
-                      style="--desktop-main-font-size: {{ main_font_size }}px; --desktop-main-font-weight: {{ main_font_weight }}; --desktop-main-line-height: {{ main_line_height }}; --mobile-main-font-size: {{ mobile_main_font_size }}px; --mobile-main-font-weight: {{ mobile_main_font_weight }}; --mobile-main-line-height: {{ mobile_main_line_height }};{%- if block.settings.main_text_color != blank %} color: {{ block.settings.main_text_color }};{% endif %}"
+                      style="--desktop-main-font-size: {{ main_font_size }}px; --desktop-main-font-weight: {{ main_font_weight }}; --desktop-main-line-height: {{ main_line_height }}; --mobile-main-font-size: {{ mobile_main_font_size }}px; --mobile-main-font-weight: {{ mobile_main_font_weight }}; --mobile-main-line-height: {{ mobile_main_line_height }};{%- if block.settings.main_text_color != blank %} color: {{ block.settings.main_text_color }} !important;{% endif %}"
                     >
                       {%- for word in words -%}
                         <span class="tag-card-word">{{ word }}</span>
@@ -296,7 +428,7 @@
                   {%- else -%}
                     <div
                       class="tag-card-main tag-card-main--paragraph"
-                      style="--desktop-main-font-size: {{ main_font_size }}px; --desktop-main-font-weight: {{ main_font_weight }}; --desktop-main-line-height: {{ main_line_height }}; --mobile-main-font-size: {{ mobile_main_font_size }}px; --mobile-main-font-weight: {{ mobile_main_font_weight }}; --mobile-main-line-height: {{ mobile_main_line_height }};{%- if block.settings.main_text_color != blank %} color: {{ block.settings.main_text_color }};{% endif %}"
+                      style="--desktop-main-font-size: {{ main_font_size }}px; --desktop-main-font-weight: {{ main_font_weight }}; --desktop-main-line-height: {{ main_line_height }}; --mobile-main-font-size: {{ mobile_main_font_size }}px; --mobile-main-font-weight: {{ mobile_main_font_weight }}; --mobile-main-line-height: {{ mobile_main_line_height }};{%- if block.settings.main_text_color != blank %} color: {{ block.settings.main_text_color }} !important;{% endif %}"
                     >
                       {{ block.settings.main_text }}
                     </div>
@@ -451,11 +583,12 @@
               | default: sprite_vertical_alignment
             -%}
             <div
-              class="bento-card content-card color-{{ block.settings.color_scheme.id }} gradient content-card--{{ direction }} content-card--align-{{ align }} content-card--valign-{{ vertical_align }}{% if enable_spritesheet %} has-spritesheet{% if sprite_direction == 'vertical' %}-vertical{% endif %}{% endif %}{% if block.settings.enable_3d_effect %} enable-3d{% endif %}"
+              class="bento-card content-card color-{{ block_scheme_id }} gradient content-card--{{ direction }} content-card--align-{{ align }} content-card--valign-{{ vertical_align }}{% if enable_spritesheet %} has-spritesheet{% if sprite_direction == 'vertical' %}-vertical{% endif %}{% endif %}{% if block.settings.enable_3d_effect %} enable-3d{% endif %}"
               data-mobile-direction="{{ mobile_direction }}"
               data-mobile-align="{{ mobile_align }}"
               data-mobile-vertical-align="{{ mobile_vertical_align }}"
               style="
+                {{ block_scheme_style }}
                 --desktop-tag-font-size: {{ tag_font_size }}px;
                 --desktop-tag-font-weight: {{ tag_font_weight }};
                 --mobile-tag-font-size: {{ mobile_tag_font_size }}px;
@@ -550,8 +683,8 @@
           {%- when 'button_card' -%}
             {%- assign label = block.settings.label | default: 'Button' -%}
             <div
-              class="bento-card button-card color-{{ block.settings.color_scheme.id }} gradient"
-              style=""
+              class="bento-card button-card color-{{ block_scheme_id }} gradient"
+              style="{{ block_scheme_style }}"
             >
               {%- render 'global-btn',
                 text: label,
@@ -583,8 +716,8 @@
             {%- assign mobile_button_weight = block.settings.mobile_button_font_weight | default: button_weight -%}
             {%- assign heading_color = block.settings.heading_text_color | default: '#306030' -%}
             <div
-              class="bento-card text-card color-{{ block.settings.color_scheme.id }} gradient text-card--align-{{ align }} text-card--valign-{{ vertical_align }}"
-              style="  --desktop-heading-font-size: {{ heading_size }}px; --desktop-heading-font-weight: {{ heading_weight }}; --mobile-heading-font-size: {{ mobile_heading_size }}px; --mobile-heading-font-weight: {{ mobile_heading_weight }}; --desktop-paragraph-font-size: {{ para_size }}px; --desktop-paragraph-font-weight: {{ para_weight }}; --desktop-paragraph-line-height: {{ para_line_height }}; --mobile-paragraph-font-size: {{ mobile_para_size }}px; --mobile-paragraph-font-weight: {{ mobile_para_weight }}; --mobile-paragraph-line-height: {{ mobile_para_line_height }}; --desktop-button-font-size: {{ button_size }}px; --desktop-button-font-weight: {{ button_weight }}; --mobile-button-font-size: {{ mobile_button_size }}px; --mobile-button-font-weight: {{ mobile_button_weight }};"
+              class="bento-card text-card color-{{ block_scheme_id }} gradient text-card--align-{{ align }} text-card--valign-{{ vertical_align }}"
+              style=" {{ block_scheme_style }} --desktop-heading-font-size: {{ heading_size }}px; --desktop-heading-font-weight: {{ heading_weight }}; --mobile-heading-font-size: {{ mobile_heading_size }}px; --mobile-heading-font-weight: {{ mobile_heading_weight }}; --desktop-paragraph-font-size: {{ para_size }}px; --desktop-paragraph-font-weight: {{ para_weight }}; --desktop-paragraph-line-height: {{ para_line_height }}; --mobile-paragraph-font-size: {{ mobile_para_size }}px; --mobile-paragraph-font-weight: {{ mobile_para_weight }}; --mobile-paragraph-line-height: {{ mobile_para_line_height }}; --desktop-button-font-size: {{ button_size }}px; --desktop-button-font-weight: {{ button_weight }}; --mobile-button-font-size: {{ mobile_button_size }}px; --mobile-button-font-weight: {{ mobile_button_weight }};"
             >
               <div class="text-card-inner">
                 {%- if block.settings.enable_svg and block.settings.svg_icon != blank -%}
@@ -636,8 +769,8 @@
             -%}
             {%- assign title_text_color = 'var(--color-heading)' -%}
             <div
-              class="bento-card product-card color-{{ block.settings.color_scheme.id }} gradient product-card--align-{{ align }} product-card--valign-{{ vertical_align }}"
-              style=" --desktop-title-font-size: {{ title_font_size }}px; --desktop-title-font-weight: {{ title_font_weight }}; --mobile-title-font-size: {{ mobile_title_font_size }}px; --mobile-title-font-weight: {{ mobile_title_font_weight }}; --color-headings: {{ title_text_color }};"
+              class="bento-card product-card color-{{ block_scheme_id }} gradient product-card--align-{{ align }} product-card--valign-{{ vertical_align }}"
+              style=" {{ block_scheme_style }} --desktop-title-font-size: {{ title_font_size }}px; --desktop-title-font-weight: {{ title_font_weight }}; --mobile-title-font-size: {{ mobile_title_font_size }}px; --mobile-title-font-weight: {{ mobile_title_font_weight }}; --color-headings: {{ title_text_color }};"
               {% if product != blank and product.url != blank %}
                 onclick="window.location.href='{{ product.url }}'"
               {% endif %}
@@ -704,8 +837,8 @@
           {%- when 'video_card' -%}
             {%- assign video_hover_scale_pct = block.settings.video_hover_scale | default: 85 -%}
             <div
-              class="bento-card video-card color-{{ block.settings.color_scheme.id }} gradient"
-              style="--video-border-color: var(--color-input-border); --video-border-hover-color: var(--color-link); --video-hover-scale: {{ video_hover_scale_pct | divided_by: 100.0 }};"
+              class="bento-card video-card color-{{ block_scheme_id }} gradient"
+              style="{{ block_scheme_style }} --video-border-color: var(--color-input-border); --video-border-hover-color: var(--color-link); --video-hover-scale: {{ video_hover_scale_pct | divided_by: 100.0 }};"
             >
               {%- assign has_video = false -%}
               {%- case block.settings.video_source -%}
@@ -804,7 +937,8 @@
             {%- assign svg_on = block.settings.svg_on -%}
 
             <div
-              class="bento-card toggle-card toggle-card--{{ orientation }} color-{{ block.settings.color_scheme.id }} gradient"
+              class="bento-card toggle-card toggle-card--{{ orientation }} color-{{ block_scheme_id }} gradient"
+              style="{{ block_scheme_style }}"
               data-toggle-card
             >
               <label class="toggle-switch-custom" for="toggle-{{ block.id }}">
@@ -978,12 +1112,6 @@
       "name": "Generic Card",
       "settings": [
         {
-          "type": "color_scheme",
-          "id": "color_scheme",
-          "label": "Color scheme",
-          "default": "scheme-1"
-        },
-        {
           "type": "image_picker",
           "id": "image",
           "label": "Upload Image"
@@ -1150,12 +1278,6 @@
       "name": "Search",
       "settings": [
         {
-          "type": "color_scheme",
-          "id": "color_scheme",
-          "label": "Color scheme",
-          "default": "scheme-1"
-        },
-        {
           "type": "header",
           "content": "Desktop Layout"
         },
@@ -1206,12 +1328,6 @@
       "type": "login_card",
       "name": "Login/Welcome",
       "settings": [
-        {
-          "type": "color_scheme",
-          "id": "color_scheme",
-          "label": "Color scheme",
-          "default": "scheme-1"
-        },
         {
           "type": "header",
           "content": "Desktop Layout"
@@ -1288,12 +1404,6 @@
       "type": "content_card",
       "name": "Content Card",
       "settings": [
-        {
-          "type": "color_scheme",
-          "id": "color_scheme",
-          "label": "Color scheme",
-          "default": "scheme-1"
-        },
         {
           "type": "image_picker",
           "id": "image",
@@ -2078,17 +2188,21 @@
       "name": "Tag Card",
       "settings": [
         {
-          "type": "color_scheme",
-          "id": "color_scheme",
-          "label": "Color scheme",
-          "default": "scheme-1"
+          "type": "header",
+          "content": "Card color scheme"
         },
         {
-          "type": "checkbox",
-          "id": "reverse_colors",
-          "label": "Reverse colors",
-          "default": false,
-          "info": "Swaps background and text colors based on the color scheme."
+          "type": "color_scheme",
+          "id": "color_scheme",
+          "label": "Color scheme for this card",
+          "default": "scheme-1",
+          "info": "Choose a theme color scheme to style this card's background, text, and accents."
+        },
+        {
+          "type": "color_scheme",
+          "id": "dark_mode_color_scheme",
+          "label": "Dark mode color scheme",
+          "info": "When the theme toggle is in dark mode, use this scheme for this card. Leave as default to keep the same as above."
         },
         {
           "type": "header",
@@ -2138,6 +2252,18 @@
         {
           "type": "header",
           "content": "Tag Colors"
+        },
+        {
+          "type": "color",
+          "id": "tag_bg_color",
+          "label": "Tag background color",
+          "info": "Optional override for filled tag style"
+        },
+        {
+          "type": "color",
+          "id": "tag_text_color",
+          "label": "Tag text/border color",
+          "info": "Optional override"
         },
         {
           "type": "header",
@@ -2209,6 +2335,24 @@
         {
           "type": "header",
           "content": "Main Text Colors"
+        },
+        {
+          "type": "color",
+          "id": "main_text_color",
+          "label": "Main text color override",
+          "info": "Optional: override the scheme's text color"
+        },
+        {
+          "type": "color",
+          "id": "card_border_color",
+          "label": "Card Border Color",
+          "default": "transparent"
+        },
+        {
+          "type": "color",
+          "id": "card_border_hover_color",
+          "label": "Card Border Color (hover)",
+          "default": "transparent"
         },
         {
           "type": "range",
@@ -2711,12 +2855,6 @@
       "name": "Button Card",
       "settings": [
         {
-          "type": "color_scheme",
-          "id": "color_scheme",
-          "label": "Color scheme",
-          "default": "scheme-1"
-        },
-        {
           "type": "text",
           "id": "label",
           "label": "Button text",
@@ -2805,12 +2943,6 @@
       "type": "text_card",
       "name": "Text Card",
       "settings": [
-        {
-          "type": "color_scheme",
-          "id": "color_scheme",
-          "label": "Color scheme",
-          "default": "scheme-1"
-        },
         {
           "type": "text",
           "id": "heading",
@@ -3237,12 +3369,6 @@
       "name": "Product Card",
       "settings": [
         {
-          "type": "color_scheme",
-          "id": "color_scheme",
-          "label": "Color scheme",
-          "default": "scheme-1"
-        },
-        {
           "type": "product",
           "id": "product",
           "label": "Product"
@@ -3504,10 +3630,21 @@
       "name": "Video Card",
       "settings": [
         {
+          "type": "header",
+          "content": "Card color scheme"
+        },
+        {
           "type": "color_scheme",
           "id": "color_scheme",
-          "label": "Color scheme",
-          "default": "scheme-1"
+          "label": "Color scheme for this card",
+          "default": "scheme-1",
+          "info": "Choose a theme color scheme to style this card's background, text, and accents."
+        },
+        {
+          "type": "color_scheme",
+          "id": "dark_mode_color_scheme",
+          "label": "Dark mode color scheme",
+          "info": "When the theme toggle is in dark mode, use this scheme for this card. Leave as default to keep the same as above."
         },
         {
           "type": "select",

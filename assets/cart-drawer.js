@@ -596,17 +596,26 @@ class CartDrawer extends HTMLElement {
   }
 
   renderContents(parsedState) {
-    this.querySelector('.drawer__inner').classList.contains('is-empty') &&
-      this.querySelector('.drawer__inner').classList.remove('is-empty');
+    const drawerInner = this.querySelector('.drawer__inner');
+    if (drawerInner && drawerInner.classList.contains('is-empty')) {
+      drawerInner.classList.remove('is-empty');
+    }
     this.productId = parsedState.id;
-    this.getSectionsToRender().forEach((section) => {
-      const sectionElement = section.selector
-        ? document.querySelector(section.selector)
-        : document.getElementById(section.id);
+    try {
+      this.getSectionsToRender().forEach((section) => {
+        const sectionElement = section.selector
+          ? document.querySelector(section.selector)
+          : document.getElementById(section.id);
 
-      if (!sectionElement) return;
-      sectionElement.innerHTML = this.getSectionInnerHTML(parsedState.sections[section.id], section.selector);
-    });
+        if (!sectionElement) return;
+        const sectionHtml = parsedState.sections && parsedState.sections[section.id];
+        if (!sectionHtml) return;
+        const inner = this.getSectionInnerHTML(sectionHtml, section.selector);
+        if (inner != null) sectionElement.innerHTML = inner;
+      });
+    } catch (e) {
+      console.error('Cart drawer renderContents:', e);
+    }
 
     setTimeout(() => {
       this.open();
@@ -614,7 +623,9 @@ class CartDrawer extends HTMLElement {
   }
 
   getSectionInnerHTML(html, selector = '.shopify-section') {
-    return new DOMParser().parseFromString(html, 'text/html').querySelector(selector).innerHTML;
+    if (!html || typeof html !== 'string') return null;
+    const node = new DOMParser().parseFromString(html, 'text/html').querySelector(selector);
+    return node ? node.innerHTML : null;
   }
 
   getSectionsToRender() {

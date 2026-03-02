@@ -27,26 +27,28 @@
           {%- endif -%}
         </div>
 
-        {%- if show_badge != false -%}
-          <span class="custom-collection-card__badge">
-            {{- collection.all_products_count }}
-            {%- if collection.all_products_count == 1 -%}
-              item
-            {%- else -%}
-              items
-            {%- endif -%}
-          </span>
-        {%- endif -%}
+        <div class="custom-collection-card__content">
+          {%- if show_badge != false -%}
+            <span class="custom-collection-card__badge">
+              {{- collection.all_products_count }}
+              {%- if collection.all_products_count == 1 -%}
+                item
+              {%- else -%}
+                items
+              {%- endif -%}
+            </span>
+          {%- endif -%}
 
-        <h3 class="custom-collection-card__title">
-          {{ collection.title }}
-        </h3>
+          <h3 class="custom-collection-card__title">
+            {{ collection.title }}
+          </h3>
 
-        {%- if collection.description != blank -%}
-          <p class="custom-collection-card__description">
-            {{ collection.description | strip_html | truncatewords: 12, '....' }}
-          </p>
-        {%- endif -%}
+          {%- if collection.description != blank -%}
+            <p class="custom-collection-card__description">
+              {{ collection.description | strip_html | truncatewords: 12, '....' }}
+            </p>
+          {%- endif -%}
+        </div>
       </a>
 
       <div class="custom-collection-card__overlay-clip">
@@ -60,6 +62,7 @@
             {%- render 'global-btn',
               url: collection.url,
               text: overlay_btn_text,
+              variant: 'primary',
               class: 'custom-collection-card__hover-button'
             -%}
           </div>

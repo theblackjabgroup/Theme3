@@ -92,12 +92,12 @@
                 <h2 class="related-products-header__title">{{ block.settings.heading }}</h2>
               {%- endif -%}
               {%- if block.settings.button_text != blank -%}
-                <a
-                  href="{{ block.settings.button_link }}"
-                  class="related-products-header__button related-products-header__button--desktop button"
-                >
-                  {{ block.settings.button_text }}
-                </a>
+                {%- render 'global-btn',
+                  text: block.settings.button_text,
+                  url: block.settings.button_link,
+                  variant: 'primary',
+                  class: 'related-products-header__button related-products-header__button--desktop'
+                -%}
               {%- endif -%}
             </div>
           </div>
@@ -133,26 +133,42 @@
           </div>
 
           <div class="scroll-nav">
-            <button class="scroll-nav-button scroll-prev" aria-label="Previous products">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            {%- capture prev_arrow_icon -%}
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
-            </button>
-            <button class="scroll-nav-button scroll-next" aria-label="Next products">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            {%- endcapture -%}
+            {%- render 'global-btn',
+              icon: prev_arrow_icon,
+              icon_only: true,
+              variant: 'primary',
+              type: 'button',
+              class: 'scroll-nav-button scroll-prev',
+              attributes: 'aria-label="Previous products"'
+            -%}
+            {%- capture next_arrow_icon -%}
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
-            </button>
+            {%- endcapture -%}
+            {%- render 'global-btn',
+              icon: next_arrow_icon,
+              icon_only: true,
+              variant: 'primary',
+              type: 'button',
+              class: 'scroll-nav-button scroll-next',
+              attributes: 'aria-label="Next products"'
+            -%}
           </div>
         </div>
 
         {%- if header_button_text != blank -%}
-          <a
-            href="{{ header_button_link }}"
-            class="related-products-header__button related-products-header__button--mobile button"
-          >
-            {{ header_button_text }}
-          </a>
+          {%- render 'global-btn',
+            text: header_button_text,
+            url: header_button_link,
+            variant: 'primary',
+            class: 'related-products-header__button related-products-header__button--mobile'
+          -%}
         {%- endif -%}
       {%- endif -%}
     </product-recommendations>

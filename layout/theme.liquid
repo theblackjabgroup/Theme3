@@ -53,6 +53,8 @@
         --color-black: #000000;
         --gap-section: 24px;
         --gap-component: 8px;
+        --page-layout-gap: {{ settings.page_layout_gap | default: 10 }}px;
+        --page-layout-padding: {{ settings.page_layout_padding | default: 24 }}px;
         --padding-medium: 16px;
         --padding-large: 24px;
         --radius-small: 4px;
@@ -75,6 +77,8 @@
         --color-text: {{ default_scheme.settings.color_text }};
         --color-link: {{ default_scheme.settings.color_link }};
         --color-link-hover: {{ default_scheme.settings.color_link_hover }};
+        --color-accent: {{ default_scheme.settings.color_accent | default: '#F5A30A' }};
+        --color-accent-2: {{ default_scheme.settings.color_accent_2 | default: '#D4872A' }};
         --color-btn-border: {{ default_scheme.settings.color_btn_border }};
         --color-btn-shadow: {{ default_scheme.settings.color_btn_shadow }};
 
@@ -137,6 +141,14 @@
         --icon-size-medium: 20px;
         --border-width-thin: 1px;
 
+        /* ─── Sale Badge (cart + product cards, from color scheme) ─── */
+        --sale-badge-bg: {{ default_scheme.settings.sale_badge_bg | default: '#F5A30A' }};
+        --sale-badge-text: {{ default_scheme.settings.sale_badge_text | default: '#000000' }};
+        --sale-badge-size: {{ settings.sale_badge_size }}px;
+        --sale-badge-rotation: {{ settings.sale_badge_rotation }}deg;
+        --sale-badge-percent-size: {{ settings.sale_badge_percent_size }}px;
+        --sale-badge-label-size: {{ settings.sale_badge_label_size }}px;
+
         /* ─── Transitions ─── */
         --transition-short: 0.2s ease;
         --transition-medium: 0.3s ease;
@@ -157,6 +169,12 @@
         width: 100%;
       }
 
+      /* Page layout padding: horizontal padding for .page-width containers */
+      .page-width {
+        padding-left: var(--page-layout-padding, 24px);
+        padding-right: var(--page-layout-padding, 24px);
+      }
+
       {%- for scheme in settings.color_schemes -%}
         .color-{{ scheme.id }} {
           --color-bg: {{ scheme.settings.color_bg }};
@@ -169,6 +187,8 @@
           --body-color: var(--color-text);
           --color-link: {{ scheme.settings.color_link }};
           --color-link-hover: {{ scheme.settings.color_link_hover }};
+          --color-accent: {{ scheme.settings.color_accent | default: '#1e4abd' }};
+          --color-accent-2: {{ scheme.settings.color_accent_2 | default: '#D4872A' }};
           --color-btn-border: {{ scheme.settings.color_btn_border }};
           --color-btn-shadow: {{ scheme.settings.color_btn_shadow }};
           --color-input-bg: {{ scheme.settings.color_input_bg }};
@@ -190,6 +210,8 @@
           --btn-disabled-text: {{ scheme.settings.btn_disabled_text }};
           --btn-disabled-border: {{ scheme.settings.btn_disabled_border }};
           --btn-disabled-shadow: {{ scheme.settings.btn_disabled_shadow }};
+          --sale-badge-bg: {{ scheme.settings.sale_badge_bg | default: '#F5A30A' }};
+          --sale-badge-text: {{ scheme.settings.sale_badge_text | default: '#000000' }};
         }
 
         /* Global Theme Override: When active, force everything to this scheme's variables */
@@ -201,6 +223,8 @@
           --global-text: {{ scheme.settings.color_text }};
           --global-link: {{ scheme.settings.color_link }};
           --global-link-hover: {{ scheme.settings.color_link_hover }};
+          --global-accent: {{ scheme.settings.color_accent | default: '#F5A30A' }};
+          --global-accent-2: {{ scheme.settings.color_accent_2 | default: '#D4872A' }};
           --global-btn-border: {{ scheme.settings.color_btn_border }};
           --global-btn-shadow: {{ scheme.settings.color_btn_shadow }};
           --global-input-bg: {{ scheme.settings.color_input_bg }};
@@ -222,6 +246,8 @@
           --global-btn-disabled-text: {{ scheme.settings.btn_disabled_text }};
           --global-btn-disabled-border: {{ scheme.settings.btn_disabled_border }};
           --global-btn-disabled-shadow: {{ scheme.settings.btn_disabled_shadow }};
+          --sale-badge-bg: {{ scheme.settings.sale_badge_bg | default: '#F5A30A' }};
+          --sale-badge-text: {{ scheme.settings.sale_badge_text | default: '#000000' }};
         }
       {%- endfor -%}
 
@@ -239,6 +265,8 @@
         --body-color: var(--global-text) !important;
         --color-link: var(--global-link) !important;
         --color-link-hover: var(--global-link-hover) !important;
+        --color-accent: var(--global-accent) !important;
+        --color-accent-2: var(--global-accent-2) !important;
         --color-btn-border: var(--global-btn-border) !important;
         --color-btn-shadow: var(--global-btn-shadow) !important;
         --color-input-bg: var(--global-input-bg) !important;
@@ -317,7 +345,12 @@
     {{ 'component-global-btn.css' | asset_url | stylesheet_tag: preload: true }}
 
     {%- if localization.available_countries.size > 1 or localization.available_languages.size > 1 -%}
-      <link rel="stylesheet" href="{{ 'component-localization-form.css' | asset_url }}" media="print" onload="this.media='all'">
+      <link
+        rel="stylesheet"
+        href="{{ 'component-localization-form.css' | asset_url }}"
+        media="print"
+        onload="this.media='all'"
+      >
       <noscript><link rel="stylesheet" href="{{ 'component-localization-form.css' | asset_url }}"></noscript>
       <script src="{{ 'localization-form.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}

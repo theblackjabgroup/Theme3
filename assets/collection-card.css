@@ -9,6 +9,9 @@
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
   transform: translateY(-4px);
 }
+.custom-collection-card__hover-button .global-btn__content{
+  font-size: 15px  !important;
+}
 
 /* Image and content: same 1s overshoot for hover-in and hover-out */
 .custom-collection-card__image-container::before {

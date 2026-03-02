@@ -2,8 +2,8 @@
 .subfooter-section {
   content-visibility: auto;
   contain-intrinsic-size: auto 80px;
-  background-color: var(--color-heading);
-  color: var(--color-bg);
+  background-color: var(--color-card-bg);
+  color: var(--color-card-text);
   padding: var(--padding-top, 16px) var(--padding-horizontal, 24px) var(--padding-bottom, 16px) var(--padding-horizontal, 24px);
   margin-top: var(--margin-top, 0);
   margin-bottom: var(--margin-bottom, 0);
@@ -79,6 +79,11 @@
   text-decoration: var(--copyright-text-decoration, none);
 }
 
+.subfooter-copyright:hover {
+  color: var(--color-link-hover);
+  transition: color 0.2s ease;
+}
+
 .subfooter-shop-name {
   text-decoration: var(--shop-name-text-decoration, none);
 }
@@ -90,10 +95,11 @@
   font-size: inherit;
   font-weight: inherit;
   letter-spacing: inherit;
+  transition: color 0.2s ease;
 }
 
 .subfooter-powered a:hover {
-  opacity: 0.8;
+  color: var(--color-link-hover);
 }
 .subfooter-right {
   display: flex;
