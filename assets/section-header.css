@@ -134,13 +134,13 @@
 }
 
 .vertical-sidebar-logo-link:hover {
-  /* Hover effect removed per design */
+  /* Hover effect intentionally left blank per design */
 }
 
 .vertical-sidebar-logo-text {
   font-size: var(--logo-font-size, 28px);
   font-weight: var(--logo-font-weight, 700);
-  color: var(--color-header-logo-text);
+  color: var(--color-accent-2);
   font-family: var(--font-heading-family);
   letter-spacing: var(--logo-letter-spacing, -0.5px);
 }
@@ -188,7 +188,7 @@
 }
 
 .logo-orbit-svg-text {
-  fill: var(--color-card-bg);
+  fill: var(--color-header-logo-text, var(--color-card-bg));
   font-size: var(--logo-orbit-font-size, 7px);
   font-weight: var(--logo-orbit-font-weight, 600);
   letter-spacing: var(--logo-orbit-letter-spacing, 0.1em);
@@ -246,8 +246,8 @@
 }
 
 .header-action-button:hover {
-  background: var(--color-card-text);
-  color: var(--color-card-bg);
+  background: var(--color-accent);
+  color: var(--color-accent-2);
 }
 
 /* Horizontal expansion for multiple buttons in a row */
@@ -267,8 +267,8 @@
   padding: var(--button-padding-top, 14px) var(--button-padding-right, 18px) var(--button-padding-bottom, 14px) var(--button-padding-left, 18px);
   justify-content: center;
   box-shadow: 0 4px 8px color-mix(in srgb, var(--color-header-border, var(--color-heading)) 15%, transparent);
-  background: var(--color-card-text);
-  color: var(--color-card-bg);
+  background: var(--color-accent);
+  color: var(--color-accent-2);
 }
 
 /* Action Button Icon Styles */
@@ -457,8 +457,8 @@
 
 
 .header-nav-button:hover {
-  background: var(--color-card-text);
-  color: var(--color-card-bg);
+  background: var(--color-accent);
+  color: var(--color-accent-2);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px color-mix(in srgb, var(--color-text) 10%, transparent);
   min-height: 197px;

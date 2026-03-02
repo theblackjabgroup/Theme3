@@ -94,6 +94,12 @@
           },
           {
             "type": "color",
+            "id": "color_accent_2",
+            "label": "Accent Color 2",
+            "default": "#D4872A"
+          },
+          {
+            "type": "color",
             "id": "color_btn_border",
             "label": "Button Borders",
             "default": "#000000"

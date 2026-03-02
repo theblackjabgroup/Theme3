@@ -17,6 +17,12 @@
       "default": "scheme-1"
     },
     {
+      "type": "color_scheme",
+      "id": "dark_mode_color_scheme",
+      "label": "Dark mode color scheme",
+      "info": "When the theme toggle is in dark mode, use this scheme for the footer."
+    },
+    {
       "type": "header",
       "content": "Footer content"
     },
@@ -667,6 +673,32 @@
 
 {{ 'section-footer.css' | asset_url | stylesheet_tag }}
 
+{%- liquid
+  assign footer_scheme_ref = section.settings.color_scheme
+  assign footer_scheme_id = footer_scheme_ref.id | default: footer_scheme_ref | append: ''
+  assign footer_scheme_obj = null
+  for s in settings.color_schemes
+    assign sid = s.id | append: ''
+    if sid == footer_scheme_id or s.id == footer_scheme_ref
+      assign footer_scheme_obj = s
+      break
+    endif
+  endfor
+  assign footer_dark_scheme_id = null
+  assign footer_dark_scheme_obj = null
+  if section.settings.dark_mode_color_scheme != blank
+    assign footer_dark_ref = section.settings.dark_mode_color_scheme
+    assign footer_dark_scheme_id = footer_dark_ref.id | default: footer_dark_ref | append: ''
+    for s in settings.color_schemes
+      assign sid = s.id | append: ''
+      if sid == footer_dark_scheme_id or s.id == footer_dark_ref
+        assign footer_dark_scheme_obj = s
+        break
+      endif
+    endfor
+  endif
+-%}
+
 {%- capture newsletter_font_faces -%}
   {%- for block in section.blocks -%}
     {%- if block.type == 'newsletter' and block.settings.newsletter_font -%}
@@ -748,6 +780,42 @@
     --footer-box-left-gap-mobile: {{ section.settings.footer_box_left_gap_mobile | default: 24 }}px;
   }
 {%- endstyle -%}
+
+{%- comment -%} Footer: Section/Dark color schemes apply only to .footer-box when theme toggle is on {%- endcomment -%}
+{%- if footer_scheme_obj -%}
+{%- style -%}
+  html[data-global-theme-active="true"] #shopify-section-{{ section.id }} .footer-box {
+    --color-bg: {{ footer_scheme_obj.settings.color_bg }} !important;
+    --color-background: {{ footer_scheme_obj.settings.color_bg }} !important;
+    --color-card-bg: {{ footer_scheme_obj.settings.color_card_bg }} !important;
+    --color-card-text: {{ footer_scheme_obj.settings.color_card_text | default: footer_scheme_obj.settings.color_text }} !important;
+    --color-heading: {{ footer_scheme_obj.settings.color_heading }} !important;
+    --color-headings: {{ footer_scheme_obj.settings.color_heading }} !important;
+    --color-text: {{ footer_scheme_obj.settings.color_text }} !important;
+    --color-link: {{ footer_scheme_obj.settings.color_link }} !important;
+    --color-link-hover: {{ footer_scheme_obj.settings.color_link_hover }} !important;
+    --color-input-border: {{ footer_scheme_obj.settings.color_input_border }} !important;
+    --color-btn-shadow: {{ footer_scheme_obj.settings.color_btn_shadow }} !important;
+  }
+{%- endstyle -%}
+{%- endif -%}
+{%- if footer_dark_scheme_obj -%}
+{%- style -%}
+  html[data-global-theme-active="true"][data-active-scheme="color-{{ footer_dark_scheme_id }}"] #shopify-section-{{ section.id }} .footer-box {
+    --color-bg: {{ footer_dark_scheme_obj.settings.color_bg }} !important;
+    --color-background: {{ footer_dark_scheme_obj.settings.color_bg }} !important;
+    --color-card-bg: {{ footer_dark_scheme_obj.settings.color_card_bg }} !important;
+    --color-card-text: {{ footer_dark_scheme_obj.settings.color_card_text | default: footer_dark_scheme_obj.settings.color_text }} !important;
+    --color-heading: {{ footer_dark_scheme_obj.settings.color_heading }} !important;
+    --color-headings: {{ footer_dark_scheme_obj.settings.color_heading }} !important;
+    --color-text: {{ footer_dark_scheme_obj.settings.color_text }} !important;
+    --color-link: {{ footer_dark_scheme_obj.settings.color_link }} !important;
+    --color-link-hover: {{ footer_dark_scheme_obj.settings.color_link_hover }} !important;
+    --color-input-border: {{ footer_dark_scheme_obj.settings.color_input_border }} !important;
+    --color-btn-shadow: {{ footer_dark_scheme_obj.settings.color_btn_shadow }} !important;
+  }
+{%- endstyle -%}
+{%- endif -%}
 
 <footer class="custom-footer color-{{ section.settings.color_scheme }} gradient">
   <div class="footer-container">

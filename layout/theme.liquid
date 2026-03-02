@@ -78,6 +78,7 @@
         --color-link: {{ default_scheme.settings.color_link }};
         --color-link-hover: {{ default_scheme.settings.color_link_hover }};
         --color-accent: {{ default_scheme.settings.color_accent | default: '#F5A30A' }};
+        --color-accent-2: {{ default_scheme.settings.color_accent_2 | default: '#D4872A' }};
         --color-btn-border: {{ default_scheme.settings.color_btn_border }};
         --color-btn-shadow: {{ default_scheme.settings.color_btn_shadow }};
 
@@ -187,6 +188,7 @@
           --color-link: {{ scheme.settings.color_link }};
           --color-link-hover: {{ scheme.settings.color_link_hover }};
           --color-accent: {{ scheme.settings.color_accent | default: '#1e4abd' }};
+          --color-accent-2: {{ scheme.settings.color_accent_2 | default: '#D4872A' }};
           --color-btn-border: {{ scheme.settings.color_btn_border }};
           --color-btn-shadow: {{ scheme.settings.color_btn_shadow }};
           --color-input-bg: {{ scheme.settings.color_input_bg }};
@@ -222,6 +224,7 @@
           --global-link: {{ scheme.settings.color_link }};
           --global-link-hover: {{ scheme.settings.color_link_hover }};
           --global-accent: {{ scheme.settings.color_accent | default: '#F5A30A' }};
+          --global-accent-2: {{ scheme.settings.color_accent_2 | default: '#D4872A' }};
           --global-btn-border: {{ scheme.settings.color_btn_border }};
           --global-btn-shadow: {{ scheme.settings.color_btn_shadow }};
           --global-input-bg: {{ scheme.settings.color_input_bg }};
@@ -263,6 +266,7 @@
         --color-link: var(--global-link) !important;
         --color-link-hover: var(--global-link-hover) !important;
         --color-accent: var(--global-accent) !important;
+        --color-accent-2: var(--global-accent-2) !important;
         --color-btn-border: var(--global-btn-border) !important;
         --color-btn-shadow: var(--global-btn-shadow) !important;
         --color-input-bg: var(--global-input-bg) !important;

@@ -45,7 +45,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-text);
+  color: var(--btn-primary-text);
   font-size: 12px;
   padding: 0;
   line-height: 1;
@@ -84,11 +84,11 @@
   height: 38px;
   min-width: 38px;
   min-height: 38px;
-  background-color: var(--color-card-bg);
-  border: 1px solid var(--color-headings, #000);
+  background-color: var(--btn-primary-bg);
+  border: 1px solid var(--btn-primary-border, #000);
   border-radius: 10px;
   cursor: pointer;
-  color: var(--color-headings, #000);
+  color: var(--btn-primary-text, #000);
   font-size: 24px;
   font-weight: 400;
   padding: 0;

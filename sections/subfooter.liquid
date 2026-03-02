@@ -5,6 +5,29 @@
   if scheme == blank
     assign scheme = settings.color_schemes | first
   endif
+  assign subfooter_scheme_ref = section.settings.color_scheme
+  assign subfooter_scheme_id = subfooter_scheme_ref.id | default: subfooter_scheme_ref | append: ''
+  assign subfooter_scheme_obj = null
+  for s in settings.color_schemes
+    assign sid = s.id | append: ''
+    if sid == subfooter_scheme_id or s.id == subfooter_scheme_ref
+      assign subfooter_scheme_obj = s
+      break
+    endif
+  endfor
+  assign subfooter_dark_scheme_id = null
+  assign subfooter_dark_scheme_obj = null
+  if section.settings.dark_mode_color_scheme != blank
+    assign subfooter_dark_ref = section.settings.dark_mode_color_scheme
+    assign subfooter_dark_scheme_id = subfooter_dark_ref.id | default: subfooter_dark_ref | append: ''
+    for s in settings.color_schemes
+      assign sid = s.id | append: ''
+      if sid == subfooter_dark_scheme_id or s.id == subfooter_dark_ref
+        assign subfooter_dark_scheme_obj = s
+        break
+      endif
+    endfor
+  endif
 -%}
 
 {%- style -%}
@@ -28,6 +51,42 @@
     --powered-by-text-decoration: {{ section.settings.powered_by_underline }};
   }
 {%- endstyle -%}
+
+{%- comment -%} Subfooter: Section/Dark color schemes apply only to .subfooter-section when theme toggle is on {%- endcomment -%}
+{%- if subfooter_scheme_obj -%}
+{%- style -%}
+  html[data-global-theme-active="true"] #shopify-section-{{ section.id }} .subfooter-section {
+    --color-bg: {{ subfooter_scheme_obj.settings.color_bg }} !important;
+    --color-background: {{ subfooter_scheme_obj.settings.color_bg }} !important;
+    --color-card-bg: {{ subfooter_scheme_obj.settings.color_card_bg }} !important;
+    --color-card-text: {{ subfooter_scheme_obj.settings.color_card_text | default: subfooter_scheme_obj.settings.color_text }} !important;
+    --color-heading: {{ subfooter_scheme_obj.settings.color_heading }} !important;
+    --color-headings: {{ subfooter_scheme_obj.settings.color_heading }} !important;
+    --color-text: {{ subfooter_scheme_obj.settings.color_text }} !important;
+    --color-link: {{ subfooter_scheme_obj.settings.color_link }} !important;
+    --color-link-hover: {{ subfooter_scheme_obj.settings.color_link_hover }} !important;
+    --color-input-border: {{ subfooter_scheme_obj.settings.color_input_border }} !important;
+    --color-btn-shadow: {{ subfooter_scheme_obj.settings.color_btn_shadow }} !important;
+  }
+{%- endstyle -%}
+{%- endif -%}
+{%- if subfooter_dark_scheme_obj -%}
+{%- style -%}
+  html[data-global-theme-active="true"][data-active-scheme="color-{{ subfooter_dark_scheme_id }}"] #shopify-section-{{ section.id }} .subfooter-section {
+    --color-bg: {{ subfooter_dark_scheme_obj.settings.color_bg }} !important;
+    --color-background: {{ subfooter_dark_scheme_obj.settings.color_bg }} !important;
+    --color-card-bg: {{ subfooter_dark_scheme_obj.settings.color_card_bg }} !important;
+    --color-card-text: {{ subfooter_dark_scheme_obj.settings.color_card_text | default: subfooter_dark_scheme_obj.settings.color_text }} !important;
+    --color-heading: {{ subfooter_dark_scheme_obj.settings.color_heading }} !important;
+    --color-headings: {{ subfooter_dark_scheme_obj.settings.color_heading }} !important;
+    --color-text: {{ subfooter_dark_scheme_obj.settings.color_text }} !important;
+    --color-link: {{ subfooter_dark_scheme_obj.settings.color_link }} !important;
+    --color-link-hover: {{ subfooter_dark_scheme_obj.settings.color_link_hover }} !important;
+    --color-input-border: {{ subfooter_dark_scheme_obj.settings.color_input_border }} !important;
+    --color-btn-shadow: {{ subfooter_dark_scheme_obj.settings.color_btn_shadow }} !important;
+  }
+{%- endstyle -%}
+{%- endif -%}
 
 <div class="subfooter-section color-{{ scheme.id }} gradient">
   <div class="subfooter-container">
@@ -64,8 +123,14 @@
     {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color Scheme",
+      "label": "Section Color Scheme",
       "default": "scheme-1"
+    },
+    {
+      "type": "color_scheme",
+      "id": "dark_mode_color_scheme",
+      "label": "Dark mode color scheme",
+      "info": "When the theme toggle is in dark mode, use this scheme for the subfooter."
     },
     {
       "type": "header",
