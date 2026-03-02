@@ -314,53 +314,21 @@
     "name": "Page layout",
     "settings": [
       {
-        "type": "select",
-        "id": "container_width_token",
-        "label": "Page width",
-        "options": [
-          { "value": "desktop", "label": "Desktop (container-desktop)" },
-          { "value": "tablet", "label": "Tablet (container-tablet)" },
-          { "value": "mobile", "label": "Mobile (container-mobile)" }
-        ],
-        "default": "desktop"
-      },
-      {
-        "type": "select",
-        "id": "section_spacing_token",
-        "label": "Vertical spacing between sections",
-        "options": [
-          { "value": "spacing_s", "label": "XS / S" },
-          { "value": "spacing_m", "label": "Medium" },
-          { "value": "spacing_l", "label": "Large" },
-          { "value": "spacing_xl", "label": "XL+" }
-        ],
-        "default": "spacing_l"
-      },
-      {
-        "type": "select",
-        "id": "page_gap_token",
-        "label": "Page gap",
-        "options": [
-          { "value": "gap_component", "label": "Component (gap-component)" },
-          { "value": "gap_section", "label": "Section (gap-section)" },
-          { "value": "gap_page", "label": "Page (gap-page)" }
-        ],
-        "default": "gap_section"
-      },
-      {
         "type": "range",
         "id": "page_layout_gap",
-        "label": "Gap",
+        "label": "Page Layout Gap",
+        "info": "Controls spacing (gaps) throughout the site. Use the CSS variable --gap in your styles.",
         "min": 0,
-        "max": 64,
+        "max": 80,
         "step": 2,
         "unit": "px",
-        "default": 10
+        "default": 24
       },
       {
         "type": "range",
         "id": "page_layout_padding",
         "label": "Padding",
+        "info": "Horizontal padding for page content. Use the CSS variable --page-layout-padding in your styles.",
         "min": 0,
         "max": 80,
         "step": 2,

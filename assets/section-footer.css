@@ -4,7 +4,7 @@
   contain-intrinsic-size: auto 400px;
   background-color: var(--color-bg);
   color: var(--color-text);
-  padding: var(--padding-top) 24px var(--padding-bottom) 24px;
+  padding: var(--footer-padding-top) var(--footer-padding-right) var(--footer-padding-bottom) var(--footer-padding-left);
   width: 100%;
   box-sizing: border-box;
 }
@@ -21,7 +21,7 @@
   .custom-footer {
     margin-left: 0;
     width: 100%;
-    padding: 20px 16px;
+    padding: var(--footer-padding-top-mobile) var(--footer-padding-right-mobile) var(--footer-padding-bottom-mobile) var(--footer-padding-left-mobile);
   }
 }
 
@@ -33,7 +33,7 @@
 .footer-layout {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: var(--page-layout-gap,10px);
 }
 
 /* --- Left Column --- */

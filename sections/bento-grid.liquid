@@ -9,6 +9,9 @@
 -%}
 <style>
   /* Dynamic styles that require Liquid variables */
+  #bento-grid-{{ section.id }}.bento-grid-container {
+    padding: {{ section.settings.desktop_padding_vertical | default: 16 }}px {{ section.settings.desktop_padding_horizontal | default: 16 }}px;
+  }
   {%- if section.settings.section_background_color != blank and section.settings.section_background_color != 'rgba(0,0,0,0)' -%}
   #bento-grid-{{ section.id }}.bento-grid-container,
   #bento-grid-{{ section.id }}.bento-grid-container.color-{{ scheme.id }} {
@@ -48,7 +51,7 @@
   /* Responsive */
   @media (max-width: 768px) {
     #bento-grid-{{ section.id }}.bento-grid-container {
-      padding: {{ section.settings.mobile_section_padding }}px !important;
+      padding: {{ section.settings.mobile_padding_vertical | default: 16 }}px {{ section.settings.mobile_padding_horizontal | default: 16 }}px !important;
     }
 
     .bento-grid {
@@ -100,7 +103,7 @@
   /* Small Mobile Devices overrides */
   @media (max-width: 480px) {
     #bento-grid-{{ section.id }}.bento-grid-container {
-      padding: {{ section.settings.mobile_section_padding | divided_by: 1.5 | floor }}px !important;
+      padding: {{ section.settings.mobile_padding_vertical | default: 16 | divided_by: 1.5 | floor }}px {{ section.settings.mobile_padding_horizontal | default: 16 | divided_by: 1.5 | floor }}px !important;
     }
   }
 
@@ -380,7 +383,7 @@
                       --mobile-tag-font-size: {{ mobile_tag_font_size }}px;
                       --mobile-tag-font-weight: {{ mobile_tag_font_weight }};
                       {%- if block.settings.tag_bg_color != blank -%}
-                        background: {{ block.settings.tag_bg_color }} !important;
+                        background: {{ block.settings.tag_bg_color }} ;
                       {%- elsif tag_style == 'filled' -%}
                         background: var(--color-heading) !important;
                       {%- endif -%}
@@ -418,7 +421,7 @@
                     {%- assign words = plain_text | split: ' ' -%}
                     <h3
                       class="tag-card-main tag-card-main--heading"
-                      style="--desktop-main-font-size: {{ main_font_size }}px; --desktop-main-font-weight: {{ main_font_weight }}; --desktop-main-line-height: {{ main_line_height }}; --mobile-main-font-size: {{ mobile_main_font_size }}px; --mobile-main-font-weight: {{ mobile_main_font_weight }}; --mobile-main-line-height: {{ mobile_main_line_height }};{%- if block.settings.main_text_color != blank %} color: {{ block.settings.main_text_color }} !important;{% endif %}"
+                      style="--desktop-main-font-size: {{ main_font_size }}px; --desktop-main-font-weight: {{ main_font_weight }}; --desktop-main-line-height: {{ main_line_height }}; --mobile-main-font-size: {{ mobile_main_font_size }}px; --mobile-main-font-weight: {{ mobile_main_font_weight }}; --mobile-main-line-height: {{ mobile_main_line_height }};{%- if block.settings.main_text_color != blank %} color: {{ block.settings.main_text_color }} ;{% endif %}"
                     >
                       {%- for word in words -%}
                         <span class="tag-card-word">{{ word }}</span>
@@ -428,7 +431,7 @@
                   {%- else -%}
                     <div
                       class="tag-card-main tag-card-main--paragraph"
-                      style="--desktop-main-font-size: {{ main_font_size }}px; --desktop-main-font-weight: {{ main_font_weight }}; --desktop-main-line-height: {{ main_line_height }}; --mobile-main-font-size: {{ mobile_main_font_size }}px; --mobile-main-font-weight: {{ mobile_main_font_weight }}; --mobile-main-line-height: {{ mobile_main_line_height }};{%- if block.settings.main_text_color != blank %} color: {{ block.settings.main_text_color }} !important;{% endif %}"
+                      style="--desktop-main-font-size: {{ main_font_size }}px; --desktop-main-font-weight: {{ main_font_weight }}; --desktop-main-line-height: {{ main_line_height }}; --mobile-main-font-size: {{ mobile_main_font_size }}px; --mobile-main-font-weight: {{ mobile_main_font_weight }}; --mobile-main-line-height: {{ mobile_main_line_height }};{%- if block.settings.main_text_color != blank %} color: {{ block.settings.main_text_color }};{% endif %}"
                     >
                       {{ block.settings.main_text }}
                     </div>
@@ -1023,6 +1026,26 @@
     },
     {
       "type": "range",
+      "id": "desktop_padding_vertical",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Desktop padding (vertical)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "desktop_padding_horizontal",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Desktop padding (horizontal)",
+      "default": 16
+    },
+    {
+      "type": "range",
       "id": "grid_columns",
       "min": 4,
       "max": 12,
@@ -1097,13 +1120,23 @@
     },
     {
       "type": "range",
-      "id": "mobile_section_padding",
+      "id": "mobile_padding_vertical",
       "min": 0,
-      "max": 40,
+      "max": 80,
       "step": 2,
       "unit": "px",
-      "label": "Mobile Section Padding",
-      "default": 10
+      "label": "Mobile padding (vertical)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_horizontal",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile padding (horizontal)",
+      "default": 16
     }
   ],
   "blocks": [
@@ -2249,22 +2282,7 @@
           ],
           "default": "border"
         },
-        {
-          "type": "header",
-          "content": "Tag Colors"
-        },
-        {
-          "type": "color",
-          "id": "tag_bg_color",
-          "label": "Tag background color",
-          "info": "Optional override for filled tag style"
-        },
-        {
-          "type": "color",
-          "id": "tag_text_color",
-          "label": "Tag text/border color",
-          "info": "Optional override"
-        },
+
         {
           "type": "header",
           "content": "Typography"
@@ -2336,12 +2354,7 @@
           "type": "header",
           "content": "Main Text Colors"
         },
-        {
-          "type": "color",
-          "id": "main_text_color",
-          "label": "Main text color override",
-          "info": "Optional: override the scheme's text color"
-        },
+
         {
           "type": "color",
           "id": "card_border_color",
