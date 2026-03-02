@@ -37,8 +37,8 @@
   {%- for block in section.blocks -%}
     {%- if block.type == 'heading' -%}
   #shopify-section-{{ section.id }} .article-category-pill {
-    border: 1px solid {{ block.settings.pill_color }};
-    color: {{ block.settings.pill_color }};
+    border: 1px solid var(--color-link);
+    color: var(--color-link);
     font-size: {{ block.settings.tag_font_size_mobile }}px;
     font-weight: {{ block.settings.tag_font_weight_mobile }};
     line-height: {{ block.settings.tag_line_height_mobile | divided_by: 100.0 }};
@@ -94,13 +94,13 @@
   }
   #shopify-section-{{ section.id }} .article-sidebar .tag-pill {
     border-radius: {{ block.settings.tag_border_radius_mobile }}px;
-    border-color: {{ block.settings.tag_color }};
-    color: {{ block.settings.tag_color }};
-    background: {{ block.settings.tag_bg_color }};
+    border-color: var(--color-link);
+    color: var(--color-link);
+    background: var(--color-card-bg);
   }
   #shopify-section-{{ section.id }} .article-sidebar .tag-pill:hover {
-    background: {{ block.settings.tag_color }};
-    color: #fff;
+    background: var(--color-link);
+    color: var(--btn-primary-text);
   }
   #shopify-section-{{ section.id }} .article-sidebar .article-meta-group {
     display: flex;
@@ -136,9 +136,9 @@
     }
   }
   #shopify-section-{{ section.id }} .article-sidebar .custom-share-link {
-    {%- if block.settings.social_icon_show_bg_mobile -%}background: {{ block.settings.social_icon_bg_mobile }};{%- else -%}background: transparent;{%- endif -%}
+    {%- if block.settings.social_icon_show_bg_mobile -%}background: var(--color-card-bg);{%- else -%}background: transparent;{%- endif -%}
     border-radius: {{ block.settings.social_icon_border_radius_mobile }}px;
-    color: {{ block.settings.social_icon_color_mobile }};
+    color: var(--color-text);
     padding: {{ block.settings.social_icon_padding_vertical_mobile }}px {{ block.settings.social_icon_padding_horizontal_mobile }}px;
   }
   @media screen and (min-width: 750px) {
@@ -181,9 +181,9 @@
       justify-content: {% if block.settings.value_alignment_desktop == 'left' %}flex-start{% elsif block.settings.value_alignment_desktop == 'right' %}flex-end{% else %}center{% endif %};
     }
     #shopify-section-{{ section.id }} .article-sidebar .custom-share-link {
-      {%- if block.settings.social_icon_show_bg_desktop -%}background: {{ block.settings.social_icon_bg_desktop }};{%- else -%}background: transparent;{%- endif -%}
+      {%- if block.settings.social_icon_show_bg_desktop -%}background: var(--color-card-bg);{%- else -%}background: transparent;{%- endif -%}
       border-radius: {{ block.settings.social_icon_border_radius_desktop }}px;
-      color: {{ block.settings.social_icon_color_desktop }};
+      color: var(--color-text);
       padding: {{ block.settings.social_icon_padding_vertical_desktop }}px {{ block.settings.social_icon_padding_horizontal_desktop }}px;
     }
   }
@@ -855,12 +855,6 @@
           "default": "Blog"
         },
         {
-          "type": "color",
-          "id": "pill_color",
-          "label": "Category Pill Color",
-          "default": "#ff5500"
-        },
-        {
           "type": "header",
           "content": "Tag (Desktop)"
         },
@@ -1242,18 +1236,6 @@
           "unit": "px",
           "label": "Tag Border Radius (Mobile)",
           "default": 50
-        },
-        {
-          "type": "color",
-          "id": "tag_color",
-          "label": "Tag Color",
-          "default": "#ec4899"
-        },
-        {
-          "type": "color",
-          "id": "tag_bg_color",
-          "label": "Tag Background",
-          "default": "#fdf2f8"
         },
         {
           "type": "range",
@@ -1652,18 +1634,6 @@
           "default": true
         },
         {
-          "type": "color",
-          "id": "social_icon_bg_desktop",
-          "label": "Icon Background",
-          "default": "#f5f5f5"
-        },
-        {
-          "type": "color",
-          "id": "social_icon_color_desktop",
-          "label": "Icon Color",
-          "default": "#000000"
-        },
-        {
           "type": "range",
           "id": "social_icon_border_radius_desktop",
           "min": 0,
@@ -1712,18 +1682,6 @@
           "id": "social_icon_show_bg_mobile",
           "label": "Show icon background",
           "default": false
-        },
-        {
-          "type": "color",
-          "id": "social_icon_bg_mobile",
-          "label": "Icon Background",
-          "default": "#f5f5f5"
-        },
-        {
-          "type": "color",
-          "id": "social_icon_color_mobile",
-          "label": "Icon Color",
-          "default": "#000000"
         },
         {
           "type": "range",

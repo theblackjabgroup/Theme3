@@ -90,9 +90,7 @@
     letter-spacing: {{ title_letter_spacing | default: 0 }}px;
     text-transform: {{ title_text_transform | default: 'none' }};
     margin: 0;
-    {%- if title_text_color != blank -%}
-      color: {{ title_text_color }};
-    {%- endif -%}
+    color: {% if title_text_color != blank %}{{ title_text_color }}{% else %}var(--color-heading){% endif %};
   }
 
   .section-header-snippet-{{ id }} .section-header-snippet__badge {
@@ -111,9 +109,7 @@
     {%- if badge_margin_bottom != blank -%}
       margin-bottom: {{ badge_margin_bottom }}px;
     {%- endif -%}
-    {%- if badge_background_color != blank -%}
-      background-color: {{ badge_background_color }};
-    {%- endif -%}
+    background-color: {% if badge_background_color != blank %}{{ badge_background_color }}{% else %}var(--color-card-bg){% endif %};
     border-radius: {{ badge_border_radius | default: 20 }}px;
     {%- if badge_text_transform != blank -%}
       text-transform: {{ badge_text_transform }};
@@ -130,9 +126,7 @@
     line-height: {{ description_line_height | default: 1.5 }};
     margin-top: {{ description_margin_top | default: 10 }}px;
     margin-bottom: 0;
-    {%- if description_color != blank -%}
-      color: {{ description_color }};
-    {%- endif -%}
+    color: {% if description_color != blank %}{{ description_color }}{% else %}var(--color-text){% endif %};
   }
 
   .section-header-snippet-{{ id }} .section-header-snippet__media {

@@ -252,17 +252,13 @@
                       font-weight: {{ tag_font_weight }};
                       --mobile-tag-font-size: {{ mobile_tag_font_size }}px;
                       --mobile-tag-font-weight: {{ mobile_tag_font_weight }};
-                      {%- if tag_style == 'filled' and block.settings.tag_bg_color != blank -%}
-                        background: {{ block.settings.tag_bg_color }};
+                      {%- if tag_style == 'filled' -%}
+                        background: var(--color-card-bg);
                       {%- endif -%}
-                      {%- if tag_style == 'border' and block.settings.tag_border_color != blank -%}
-                        border-color: {{ block.settings.tag_border_color }};
+                      {%- if tag_style == 'border' -%}
+                        border-color: var(--color-link);
                       {%- endif -%}
-                      {%- if block.settings.tag_text_color != blank -%}
-                        color: {{ block.settings.tag_text_color }};
-                      {%- elsif tag_style == 'border' and block.settings.tag_border_color != blank -%}
-                        color: {{ block.settings.tag_border_color }};
-                      {%- endif -%}
+                      color: var(--color-link);
                     "
                   >
                     {{ block.settings.tag_text }}
@@ -636,7 +632,7 @@
             {%- assign mobile_title_font_weight = block.settings.mobile_title_font_weight
               | default: title_font_weight
             -%}
-            {%- assign title_text_color = block.settings.title_text_color | default: 'inherit' -%}
+            {%- assign title_text_color = 'var(--color-heading)' -%}
             <div
               class="bento-card product-card color-{{ block.settings.color_scheme.id }} gradient product-card--align-{{ align }} product-card--valign-{{ vertical_align }}"
               style=" --desktop-title-font-size: {{ title_font_size }}px; --desktop-title-font-weight: {{ title_font_weight }}; --mobile-title-font-size: {{ mobile_title_font_size }}px; --mobile-title-font-weight: {{ mobile_title_font_weight }}; --color-headings: {{ title_text_color }};"
@@ -707,7 +703,7 @@
             {%- assign video_hover_scale_pct = block.settings.video_hover_scale | default: 85 -%}
             <div
               class="bento-card video-card color-{{ block.settings.color_scheme.id }} gradient"
-              style="{% if block.settings.card_border_color != blank %}--video-border-color: {{ block.settings.card_border_color }};{% endif %}{% if block.settings.card_border_hover_color != blank %}--video-border-hover-color: {{ block.settings.card_border_hover_color }};{% endif %}--video-hover-scale: {{ video_hover_scale_pct | divided_by: 100.0 }};"
+              style="--video-border-color: var(--color-input-border); --video-border-hover-color: var(--color-link); --video-hover-scale: {{ video_hover_scale_pct | divided_by: 100.0 }};"
             >
               {%- assign has_video = false -%}
               {%- case block.settings.video_source -%}
@@ -754,7 +750,7 @@
               {%- if block.settings.marquee_text != blank -%}
                 <div
                   class="video-marquee"
-                  style="{% if block.settings.scrolling_text_background_color != blank %}background-color: {{ block.settings.scrolling_text_background_color }};{% endif %}{% if block.settings.scrolling_text_text_color != blank %} --marquee-text-color: {{ block.settings.scrolling_text_text_color }};{% endif %}"
+                  style="background-color: var(--color-card-bg); --marquee-text-color: var(--color-text);"
                 >
                   <div class="video-marquee-track">
                     <span class="video-marquee-item">{{ block.settings.marquee_text }}</span>
@@ -3305,13 +3301,6 @@
           "content": "Title Typography"
         },
         {
-          "type": "color",
-          "id": "title_text_color",
-          "label": "Title Text Color",
-          "default": "#121212",
-          "info": "Color for the product title"
-        },
-        {
           "type": "range",
           "id": "title_font_size",
           "min": 12,
@@ -3559,20 +3548,6 @@
           "info": "Image displayed between text repetitions"
         },
         {
-          "type": "color",
-          "id": "scrolling_text_background_color",
-          "label": "Scrolling Text Background Color",
-          "default": "#e63946",
-          "info": "Background color for the scrolling marquee text"
-        },
-        {
-          "type": "color",
-          "id": "scrolling_text_text_color",
-          "label": "Scrolling Text Color",
-          "default": "#ffffff",
-          "info": "Text color for the scrolling marquee. Choose white for dark backgrounds, dark for light backgrounds."
-        },
-        {
           "type": "range",
           "id": "video_hover_scale",
           "min": 50,
@@ -3582,18 +3557,6 @@
           "label": "Video size on hover",
           "default": 85,
           "info": "Controls how much of the card the video fills on hover."
-        },
-        {
-          "type": "color",
-          "id": "card_border_color",
-          "label": "Card Border Color (default)",
-          "default": "#d9d9d9"
-        },
-        {
-          "type": "color",
-          "id": "card_border_hover_color",
-          "label": "Card Border Color (hover)",
-          "default": "rgba(0,0,0,0)"
         },
         {
           "type": "header",

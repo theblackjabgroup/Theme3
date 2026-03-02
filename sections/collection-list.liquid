@@ -85,9 +85,7 @@
     font-weight: {{ settings.collection_card_badge_font_weight | default: 700 }};
     padding: {{ settings.collection_card_badge_padding_vertical | default: 4 }}px {{ settings.collection_card_badge_padding_horizontal | default: 16 }}px;
     margin-bottom: {{ settings.collection_card_badge_margin_bottom | default: 10 }}px;
-    {% if settings.collection_card_badge_background_color != blank %}
-      background-color: {{ settings.collection_card_badge_background_color }};
-    {% endif %}
+    background-color: var(--color-card-bg);
     color: var(--color-heading);
     border-color: var(--color-heading);
     {% if settings.collection_card_badge_border_width != blank %}
@@ -220,7 +218,6 @@
           badge_padding_vertical: block.settings.header_badge_padding_vertical,
           badge_padding_horizontal: block.settings.header_badge_padding_horizontal,
           badge_margin_bottom: block.settings.header_badge_margin_bottom,
-          badge_background_color: block.settings.header_badge_background_color,
           badge_text_color: block.settings.header_badge_text_color,
           badge_border_color: block.settings.header_badge_border_color,
           badge_border_width: block.settings.header_badge_border_width,
@@ -229,11 +226,9 @@
           description_font_size: block.settings.header_description_font_size,
           description_font_weight: block.settings.header_description_font_weight,
           description_line_height: block.settings.header_description_line_height,
-          description_color: block.settings.header_description_color,
           description_margin_top: block.settings.header_description_margin_top,
           title_font_size_mobile: block.settings.title_font_size_mobile,
           description_font_size_mobile: block.settings.header_description_font_size_mobile,
-          background_color: block.settings.header_background_color,
           border_radius: block.settings.header_border_radius
         %}
       {%- endif -%}
@@ -753,21 +748,6 @@
           "default": 14
         },
         {
-          "type": "color",
-          "id": "header_badge_background_color",
-          "label": "Badge Background Color"
-        },
-        {
-          "type": "color",
-          "id": "header_badge_text_color",
-          "label": "Badge Text Color"
-        },
-        {
-          "type": "color",
-          "id": "header_badge_border_color",
-          "label": "Badge Border Color"
-        },
-        {
           "type": "range",
           "id": "header_badge_border_width",
           "label": "Badge Border Width (px)",
@@ -848,18 +828,6 @@
           "max": 60,
           "step": 2,
           "default": 10
-        },
-        {
-          "type": "color",
-          "id": "header_description_color",
-          "label": "Description Color"
-        },
-        {
-          "type": "color",
-          "id": "header_background_color",
-          "label": "Header background color",
-          "default": "#E5E2DA",
-          "info": "Leave blank for transparent"
         },
         {
           "type": "range",
