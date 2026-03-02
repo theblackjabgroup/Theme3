@@ -143,12 +143,8 @@ if (!customElements.get('product-form')) {
           .finally(() => {
             if (this.submitButton) {
               this.submitButton.classList.remove('loading');
-              if (
-                this.submitButton &&
-                this.submitButtonText &&
-                this.submitButtonText.textContent !== window.variantStrings.soldOut &&
-                this.submitButtonText.textContent !== window.variantStrings.unavailable
-              ) {
+              // Re-enable only when there was no error (e.g. sold-out leaves button disabled)
+              if (!this.error) {
                 this.submitButton.removeAttribute('aria-disabled');
                 this.submitButton.disabled = false;
               }
