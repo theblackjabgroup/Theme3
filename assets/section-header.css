@@ -2048,13 +2048,3 @@ body.header-disabled .vertical-sidebar-header {
     padding-top: 20px;
   }
 }
-
-@media (max-width: 749px) {
-  .mega-menu-image-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .mega-menu-title {
-    font-size: 28px;
-  }
-}

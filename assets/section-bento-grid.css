@@ -1591,6 +1591,11 @@ a.tag-card.tag-card--link:hover {
     margin: calc(var(--bento-gap, 12px) / -2);
   }
 
+  /* Single-column layout: each block spans full width on mobile */
+  .bento-block-wrapper {
+    grid-column: span 2 !important;
+  }
+
   /* Hide logo and cart cards on mobile */
   .bento-block-wrapper--logo_card,
   .bento-block-wrapper--cart_card {
@@ -2018,72 +2023,6 @@ a.tag-card.tag-card--link:hover {
 
   .tag-card:hover .tag-card-image-strip-track {
     animation: scrollHorizontal 8s linear infinite;
-  }
-}
-
-/* Small Mobile Devices */
-@media (max-width: 749px) {
-  .bento-grid-container {
-    padding: 6px;
-  }
-
-  .bento-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 0 !important;
-    width: calc(100% + var(--bento-gap, 12px));
-    margin: calc(var(--bento-gap, 12px) / -2);
-  }
-
-  .bento-block-wrapper {
-    grid-column: span 2 !important;
-  }
-
-  .text-card {
-    padding: 10px 12px;
-  }
-
-  .text-card-heading {
-    font-size: var(--mobile-heading-font-size, 16px) !important;
-    font-weight: var(--mobile-heading-font-weight, 600) !important;
-  }
-
-  .text-card-paragraph {
-    font-size: var(--mobile-paragraph-font-size, 13px) !important;
-    font-weight: var(--mobile-paragraph-font-weight, 400) !important;
-    line-height: var(--mobile-paragraph-line-height, 1.5) !important;
-  }
-
-  .product-card-title {
-    font-size: var(--mobile-title-font-size, 20px) !important;
-    font-weight: var(--mobile-title-font-weight, 600) !important;
-  }
-
-  .content-card-text-side {
-    padding: 12px;
-  }
-
-  .content-card-main-text {
-    font-family: var(--font-heading-family);
-    font-size: var(--mobile-main-text-font-size, 18px) !important;
-    font-weight: var(--mobile-main-text-font-weight, 600) !important;
-    line-height: var(--mobile-main-text-line-height, 1.1) !important;
-    color: inherit;
-    margin: 0;
-  }
-
-  .content-card-tag {
-    font-size: var(--mobile-tag-font-size, 10px) !important;
-    font-weight: var(--mobile-tag-font-weight, 600) !important;
-  }
-
-  .tag-card {
-    padding: 10px 12px;
-  }
-
-  .tag-card-main {
-    font-size: var(--mobile-main-font-size, 13px) !important;
-    font-weight: var(--mobile-main-font-weight, 600) !important;
-    line-height: var(--mobile-main-line-height, 1.4) !important;
   }
 }
 
