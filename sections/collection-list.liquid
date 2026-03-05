@@ -36,9 +36,6 @@
     --collection-card-hover-button-border-radius: {{ settings.collection_card_hover_button_border_radius | default: 20 }}px;
     --collection-card-hover-button-font-size: {{ settings.collection_card_hover_button_font_size | default: 14 }}px;
     --collection-card-hover-button-font-weight: {{ settings.collection_card_hover_button_font_weight | default: 700 }};
-    --collection-card-hover-button-padding-vertical: {{ settings.collection_card_hover_button_padding_vertical | default: 10 }}px;
-    --collection-card-hover-button-padding-horizontal: {{ settings.collection_card_hover_button_padding_horizontal | default: 20 }}px;
-    padding: {{ section.settings.section_padding_top }}px {{ section.settings.section_padding_horizontal }}px {{ section.settings.section_padding_bottom }}px;
     background-color: var(--color-bg);
     {% if section.settings.min_height != blank %}
       min-height: {{ section.settings.min_height }}vh;
@@ -47,7 +44,6 @@
 
   .custom-collection-list__grid {
     grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
-    gap: {{ section.settings.grid_gap }}px;
   }
 
   .custom-collection-card {
@@ -123,10 +119,8 @@
     }
 
     .custom-collection-list {
-      padding: {{ section.settings.section_padding_top_mobile }}px {{ section.settings.section_padding_horizontal_mobile }}px {{ section.settings.section_padding_bottom_mobile }}px;
       --collection-card-hover-button-font-size: {{ settings.collection_card_hover_button_font_size_mobile | default: 12 }}px;
       --collection-card-hover-button-padding-vertical: {{ settings.collection_card_hover_button_padding_vertical_mobile | default: 8 }}px;
-      --collection-card-hover-button-padding-horizontal: {{ settings.collection_card_hover_button_padding_horizontal_mobile | default: 16 }}px;
     }
 
     .custom-collection-card {
@@ -194,7 +188,7 @@
 </style>
 
 <div class="custom-collection-list color-{{ section.settings.color_scheme }} gradient">
-  <div class="page-width">
+  <div>
     {%- for block in section.blocks -%}
       {%- if block.type == 'header' -%}
         {% render 'section-header',

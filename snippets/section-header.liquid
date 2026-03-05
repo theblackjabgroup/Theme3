@@ -39,7 +39,7 @@
 {% endcomment %}
 
 <div
-  class="section-header-snippet section-header-snippet-{{ id }} page-width"
+  class="section-header-snippet section-header-snippet-{{ id }} "
   style="text-align: {{ title_alignment | default: 'center' }};"
 >
   {%- if show_badge and badge_text != blank -%}
@@ -74,9 +74,7 @@
     padding-right: {% if header_padding_horizontal == blank or header_padding_horizontal == 0 %}20{% else %}{{ header_padding_horizontal }}{% endif %}px;
     background-color: var(--color-card-bg);
     border-radius: {{ border_radius | default: 20 }}px;
-    {%- if title_margin_bottom != blank -%}
-      margin-bottom: {{ title_margin_bottom }}px;
-    {%- endif -%}
+    margin-bottom: var(--bento-gap);
   }
 
   .section-header-snippet-{{ id }} .section-header-snippet__title {

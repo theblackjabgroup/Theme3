@@ -12,11 +12,11 @@
   assign product_card_radius = '20px'
   case settings.product_card_radius_token
     when 'radius_small'
-      assign product_card_radius = '14px'
+      assign product_card_radius = '4px'
     when 'radius_medium'
-      assign product_card_radius = '20px'
+      assign product_card_radius = '8px'
     when 'radius_large'
-      assign product_card_radius = '28px'
+      assign product_card_radius = '20px'
   endcase
 
   assign product_card_shadow = 'none'
@@ -242,7 +242,7 @@
   #shopify-section-{{ section.id }} .bb-slideshow__left,
   #shopify-section-{{ section.id }} .bb-slideshow__card-stage,
   #shopify-section-{{ section.id }} .bb-slideshow__view-more {
-    border-radius: 20px;
+    border-radius: var(--radius-2xl);
   }
 
   #shopify-section-{{ section.id }} .bb-slideshow__left {
@@ -255,7 +255,7 @@
   #shopify-section-{{ section.id }} .bb-slideshow__left-stage {
     position: relative;
     height: {{ section.settings.section_height }}px;
-    border-radius: 16px;
+    border-radius: var(--radius-xl);
     background: transparent;
     overflow: hidden;
   }
@@ -268,7 +268,7 @@
     bottom: 5px;
     height: 50%;
     background: var(--color-card-bg);
-    border-radius: 16px;
+    border-radius: var(--radius-xl);
     z-index: 0;
   }
 
@@ -348,7 +348,7 @@
 
   #shopify-section-{{ section.id }} .bb-slideshow__left-chip {
     border: 1px solid var(--color-link);
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     color: var(--color-link);
     font-size: 1.1rem;
     line-height: 1;
@@ -421,7 +421,7 @@
     font-size: var(--left-button-font-size-desktop, 14px);
     font-weight: var(--left-button-font-weight, 700);
     letter-spacing: var(--left-button-letter-spacing, 1px);
-    border-radius: var(--left-button-radius, 16px);
+    border-radius: var(--left-button-radius, var(--radius-xl));
     border-color: var(--left-button-border-color, var(--btn-primary-border));
     background-color: var(--left-button-bg-color, var(--btn-primary-bg));
     color: var(--left-button-text-color, var(--btn-primary-text));
@@ -430,7 +430,7 @@
 
   #shopify-section-{{ section.id }} .bb-slideshow__left-cta .bb-slideshow__shop-now .submit-button__shadow {
     background-color: var(--left-button-shadow-color, var(--btn-primary-shadow));
-    border-radius: var(--left-button-radius, 16px);
+    border-radius: var(--left-button-radius, var(--radius-xl));
     top: var(--left-button-shadow-offset, 2px);
   }
 
@@ -596,7 +596,7 @@
   #shopify-section-{{ section.id }} .bb-slideshow__right-placeholder {
     height: 100%;
     min-height: 0;
-    border-radius: 16px;
+    border-radius: var(--radius-xl);
     border: 1px dashed var(--color-borders);
     display: flex;
     align-items: center;

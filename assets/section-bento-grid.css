@@ -1,29 +1,50 @@
 /* Bento Grid Container */
 .bento-grid-container {
   width: 100%;
-  padding: var(--spacing-5);
-  margin: var(--spacing-0);
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .bento-grid {
   display: grid;
-  gap: var(--page-layout-gap,10px);
-  max-width: 100%;
+  gap: 0 !important; /* Gap removed to prevent large minimum width from 120 columns */
+  margin: calc(var(--bento-gap, 12px) / -2); /* Compensate for item padding */
+  max-width: none; /* Allow margin to pull grid slightly wider than container */
+  width: calc(100% + var(--bento-gap, 12px));
+  min-width: 0;
 }
 
 /*
   Wrapper handles the positioning and the "gap" via padding.
   content-visibility: auto skips layout/paint for off-screen cards.
   First row (first 3 wrappers) forced visible so LCP element paints immediately and isn't delayed by auto.
+  min-width: 0 allows grid items to shrink so the grid remains responsive and doesn't overflow.
 */
 .bento-block-wrapper {
   display: flex;
   content-visibility: auto;
   contain-intrinsic-size: auto 120px;
+  min-width: 0;
+  padding: calc(var(--bento-gap, 12px) / 2); /* Simulated gap using padding */
+  box-sizing: border-box;
 }
 
 .bento-grid .bento-block-wrapper:nth-child(-n+3) {
   content-visibility: visible;
+}
+
+/* Allow cards (flex children) to shrink so grid stays within viewport */
+.bento-block-wrapper > .bento-card,
+.bento-block-wrapper > .text-card,
+.bento-block-wrapper > .content-card,
+.bento-block-wrapper > .tag-card,
+.bento-block-wrapper > .video-card,
+.bento-block-wrapper > .product-card,
+.bento-block-wrapper > .search-card,
+.bento-block-wrapper > .login-card,
+.bento-block-wrapper > .generic-card {
+  min-width: 0;
 }
 
 @media (max-width: 768px) {
@@ -46,9 +67,9 @@
   width: 100%;
   height: 100%;
   gap: var(--spacing-8);
-  overflow-y: auto;
+  overflow-y: hidden;
   overflow-x: hidden;
-  padding-right: var(--spacing-2);
+  padding-right: var(--spacing-0);
   padding-left: var(--spacing-0);
   scrollbar-color: var(--color-heading)
     color-mix(in srgb, var(--color-heading) 10%, transparent);
@@ -62,13 +83,13 @@
 .text-card-inner::-webkit-scrollbar-track {
   background: color-mix(in srgb, var(--color-heading) 10%, transparent);
   margin: var(--spacing-10) var(--spacing-0);
-  border-radius: 12px;
+  border-radius: var(--radius-l);
 }
 
 .text-card-inner::-webkit-scrollbar-thumb {
   background-color: var(--color-heading);
   margin: 100px var(--spacing-0);
-  border-radius: 12px;
+  border-radius: var(--radius-l);
 }
 
 .text-card-svg {
@@ -608,7 +629,7 @@
   background-color: var(--color-card-bg) !important;
   color: var(--color-card-text) !important;
   transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  border-radius: 20px !important; /* Force a pill shape */
+  border-radius: var(--radius-pill);
 }
 
 .toggle-switch-custom {
@@ -634,8 +655,8 @@
   justify-content: space-between;
   width: 100%;
   height: 100%;
-  padding: 12px 16px 16px;
-  gap: 0;
+  padding: 16px 16px; /* Slightly less at top to lift the sun knob higher */
+  gap: 8px;
   position: relative;
   box-sizing: border-box;
 }
@@ -651,14 +672,13 @@
   aspect-ratio: 1;
   max-width: 80px;
   background: var(--color-card-text);
-  border-radius: 24px;
+  border-radius: var(--radius-xl);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   flex-shrink: 0;
-  transition: transform 0.5s cubic-bezier(0.34, 1.2, 0.64, 1), background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: none !important; /* Remove shadow to match design */
+  transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.5s ease;
   z-index: 2;
 }
 
@@ -709,25 +729,26 @@
   opacity: 1;
 }
 
-/* Two fixed slots: equal height so icon track is clear; top = "on", bottom = "off" */
+/* Labels: stable layout, no jumping */
 .toggle-labels {
   width: 100%;
-  min-height: 2.75em;
+  height: 40px; /* Precise fixed height for symmetric slots */
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px 0;
+  padding: 0;
   text-align: center;
   font-family: var(--font-heading-family), sans-serif !important;
-  font-size: 16px !important;
+  font-size: 13px !important;
   font-weight: 800 !important;
-  line-height: 1.15 !important;
-  letter-spacing: 0.02em;
+  line-height: 1.1 !important;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: inherit;
   flex-shrink: 0;
-  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   box-sizing: border-box;
+  z-index: 1;
 }
 
 .toggle-card--horizontal .toggle-labels {
@@ -735,52 +756,46 @@
   padding: 0 12px;
   text-align: left;
   justify-content: flex-start;
+  width: auto;
+}
+
+/* Vertical specific label positioning */
+.toggle-labels--top {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.toggle-labels--bottom {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Horizontal specific label positioning */
+.toggle-card--horizontal .toggle-labels--top {
+  transform: translateX(10px);
 }
 
 .toggle-card--horizontal .toggle-labels--bottom {
-  min-width: 4.5em;
+  transform: translateX(0);
 }
 
-.toggle-card--horizontal .toggle-labels--top {
-  min-width: 0;
+/* Checked states */
+.toggle-input-hidden:checked + .toggle-ui .toggle-labels--top {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .toggle-card--horizontal .toggle-input-hidden:checked + .toggle-ui .toggle-labels--top {
-  min-width: 4.5em;
-}
-
-/* Top slot: when unchecked remove from flow so only knob + bottom labels exist → icon at top, text at bottom */
-.toggle-labels--top {
-  opacity: 0;
-  pointer-events: none;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 0;
-  min-height: 0;
-  padding: 0;
-  overflow: hidden;
-  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), height 0.5s cubic-bezier(0.4, 0, 0.2, 1), min-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), padding 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.toggle-input-hidden:checked + .toggle-ui .toggle-labels--top {
-  position: relative;
-  opacity: 1;
-  pointer-events: auto;
-  height: auto;
-  min-height: 2.75em;
-  padding: 8px 0;
-}
-
-/* Bottom slot: "off" label – always takes space so layout is stable; disappears when checked */
-.toggle-labels--bottom {
-  opacity: 1;
+  transform: translateX(0);
 }
 
 .toggle-input-hidden:checked + .toggle-ui .toggle-labels--bottom {
   opacity: 0;
-  pointer-events: none;
+  transform: translateY(-10px);
+}
+
+.toggle-card--horizontal .toggle-input-hidden:checked + .toggle-ui .toggle-labels--bottom {
+  transform: translateX(-10px);
 }
 
 .toggle-label-inner {
@@ -790,17 +805,21 @@
   transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.toggle-word {
-  display: block;
+/* Knob positioning using JS-calculated offsets for perfect overlay */
+.toggle-knob {
+  transform: translateY(var(--toggle-knob-start-y, 0));
 }
 
-/* Icon slides full down (vertical) or full right (horizontal); text slots stay fixed and fade */
 .toggle-input-hidden:checked + .toggle-ui .toggle-knob {
-  transform: translateY(var(--toggle-knob-slide, 56px));
+  transform: translateY(calc(var(--toggle-knob-end-y, 56px) - 10px));
+}
+
+.toggle-card--horizontal .toggle-knob {
+  transform: translateX(var(--toggle-knob-start-x, 0));
 }
 
 .toggle-card--horizontal .toggle-input-hidden:checked + .toggle-ui .toggle-knob {
-  transform: translateX(var(--toggle-knob-slide-x, 48px));
+  transform: translateX(var(--toggle-knob-end-x, 48px));
 }
 
 /* Toggle card mobile: single source of truth for 768px and below */
@@ -809,7 +828,7 @@
     padding: 16px 12px;
   }
   .toggle-knob {
-    border-radius: 12px;
+    border-radius: var(--radius-l);
   }
   .toggle-labels {
     font-size: 12px;
@@ -1048,7 +1067,7 @@ a.tag-card.tag-card--link:hover {
   text-transform: uppercase;
   margin-bottom: 8px;
   line-height: 1;
-  border-radius: 20px;
+  border-radius: var(--radius-2xl);
   letter-spacing: 0.05em;
 }
 
@@ -1567,7 +1586,9 @@ a.tag-card.tag-card--link:hover {
 
   .bento-grid {
     grid-template-columns: repeat(2, 1fr) !important;
-    margin: 0;
+    gap: 0 !important;
+    width: calc(100% + var(--bento-gap, 12px));
+    margin: calc(var(--bento-gap, 12px) / -2);
   }
 
   /* Hide logo and cart cards on mobile */
@@ -1578,7 +1599,7 @@ a.tag-card.tag-card--link:hover {
 
   .bento-card {
     height: 100%;
-    border-radius: var(--radius-l) !important;
+    border-radius: var(--radius-l);
   }
 
   /* Text Card Mobile */
@@ -1714,7 +1735,7 @@ a.tag-card.tag-card--link:hover {
   text-transform: uppercase;
   margin-bottom: 8px;
   line-height: 1;
-  border-radius: 20px;
+  border-radius: var(--radius-2xl);
   letter-spacing: 0.05em;
 }
 
@@ -2008,6 +2029,9 @@ a.tag-card.tag-card--link:hover {
 
   .bento-grid {
     grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0 !important;
+    width: calc(100% + var(--bento-gap, 12px));
+    margin: calc(var(--bento-gap, 12px) / -2);
   }
 
   .bento-block-wrapper {
@@ -2070,5 +2094,4 @@ a.tag-card.tag-card--link:hover {
   transform: none;
   z-index: 10;
 }
-
 

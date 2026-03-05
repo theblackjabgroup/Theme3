@@ -25,7 +25,7 @@
     width: {{ section.settings.button_size | default: 50 }}px !important;
     height: {{ section.settings.button_size | default: 50 }}px !important;
     padding: 0 !important;
-    border-radius: {{ section.settings.border_radius | default: 20 }}px !important;
+    border-radius: {% if section.settings.border_radius != blank %}{{ section.settings.border_radius }}px{% else %}var(--radius-2xl){% endif %};
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;

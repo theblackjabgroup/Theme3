@@ -123,7 +123,7 @@
   display: inline-block;
   padding: 4px 12px;
   border: 1px solid var(--color-accent-pink);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   font-size: 12px;
   background: var(--color-accent-pink-soft); 
   color: var(--color-accent-pink);
@@ -181,8 +181,8 @@
 }
 
 .share-icons-container svg {
-  width: 20px;
-  height: 20px;
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
   fill: currentColor;
 }
 
@@ -201,8 +201,8 @@
 }
 
 .share-button__button .svg-wrapper {
-  width: 20px;
-  height: 20px;
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
   display: flex;
 }
 
@@ -235,8 +235,8 @@
 
 .custom-share-link svg,
 .custom-share-link img.custom-share-icon {
-  width: 24px;
-  height: 24px;
+  width: var(--icon-size-lg);
+  height: var(--icon-size-lg);
   stroke: currentColor;
   stroke-width: 2;
   fill: none;
@@ -442,7 +442,7 @@
 
 /* Ensure icons are a good size */
 .custom-share-link img.custom-share-icon {
-  width: 24px;
-  height: 24px;
+  width: var(--icon-size-lg);
+  height: var(--icon-size-lg);
   object-fit: contain;
 }

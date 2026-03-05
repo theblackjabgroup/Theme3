@@ -8,8 +8,7 @@
   width: 100%;
   background: var(--color-card-bg);
   border: 1px solid var(--color-borders);
-  border-radius: 24px;
-  padding: 24px;
+  border-radius: var(--radius-2xl);
   margin-bottom: 20px !important;
   display: flex;
   flex-direction: column;
@@ -48,7 +47,7 @@
 .custom-collection-list__grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
+  gap: var(--bento-gap);
   width: 100%;
   list-style: none;
   padding: 0;

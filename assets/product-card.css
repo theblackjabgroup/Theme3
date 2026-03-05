@@ -168,7 +168,7 @@
 .custom-product-card__badge {
   border: 1px solid var(--color-heading);
   color: var(--color-heading);
-  border-radius: 20px;
+  border-radius: var(--radius-2xl);
   padding: 4px 16px;
   font-weight: 700;
   font-size: 12px;

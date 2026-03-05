@@ -384,11 +384,17 @@ function initializePageLoadAnimations(rootEl = document) {
   restJobs.forEach((job) => observer.observe(job.triggerEl));
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-  initializeScrollAnimationTrigger();
+function runAnimationInitializers(rootEl = document) {
+  initializeScrollAnimationTrigger(rootEl);
   initializeScrollZoomAnimationTrigger();
-  initializePageLoadAnimations();
-});
+  initializePageLoadAnimations(rootEl);
+}
+
+if (document.readyState === 'loading') {
+  window.addEventListener('DOMContentLoaded', () => runAnimationInitializers());
+} else {
+  runAnimationInitializers();
+}
 
 if (Shopify.designMode) {
   document.addEventListener('shopify:section:load', (event) => {

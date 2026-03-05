@@ -32,7 +32,6 @@
 /* Top box: active facet links with dot separators */
 .facets-links-bar {
   width: 100%;
-  margin-bottom: 1rem;
 }
 
 .facets-links-bar__inner {
@@ -43,7 +42,7 @@
   gap: 0.25rem 1.5rem;
   padding: 1rem 1.25rem;
   background: var(--color-card-bg);
-  border-radius: 16px;
+  border-radius: var(--radius-xl);
 }
 
 .facets-links-bar__link {
@@ -79,7 +78,7 @@
   width: 100%;
   padding: 0.75rem 1.25rem;
   background: var(--color-card-bg);
-  border-radius: 16px;
+  border-radius: var(--radius-xl);
 }
 
 .facets-drawer--left {
@@ -178,7 +177,7 @@ body.facets-drawer-open .facets-drawer * {
   overflow-x: hidden;
   padding: 20px;
   box-sizing: border-box;
-  border-radius: 20px;
+  border-radius: var(--radius-2xl);
   box-shadow: -4px 0 24px rgba(0, 0, 0, 0.05);
 }
 
@@ -296,14 +295,16 @@ body.facets-drawer-open .facets-drawer * {
 }
 
 .facets-drawer__close {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 6px;
-  color: var(--color-headings);
   display: flex;
   align-items: center;
   justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 12px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--color-headings);
   transition: opacity 0.2s ease;
 }
 
@@ -312,8 +313,8 @@ body.facets-drawer-open .facets-drawer * {
 }
 
 .facets-drawer__close svg {
-  width: 20px;
-  height: 20px;
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
   display: block;
 }
 
@@ -352,7 +353,7 @@ body.facets-drawer-open .facets-drawer * {
   gap: 6px;
   border: var(--collection-filter-tag-border-width, 0px) solid
     var(--collection-filter-tag-border-color, transparent);
-  border-radius: var(--collection-filter-tag-border-radius, 10px);
+  border-radius: var(--collection-filter-tag-border-radius, var(--radius-m));
   text-transform: var(--collection-filter-tag-text-transform, uppercase);
   letter-spacing: var(--collection-filter-tag-letter-spacing, 0.03em);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -374,8 +375,8 @@ body.facets-drawer-open .facets-drawer * {
 }
 
 .facets-drawer .active-facets__button-close svg {
-  width: var(--collection-filter-tag-close-icon-size, 10px);
-  height: var(--collection-filter-tag-close-icon-size, 10px);
+  width: var(--collection-filter-tag-close-icon-size, var(--icon-size-xs));
+  height: var(--collection-filter-tag-close-icon-size, var(--icon-size-xs));
   display: block;
   vertical-align: middle;
 }
@@ -429,7 +430,7 @@ body.facets-drawer-open .facets-drawer * {
   width: 28px;
   height: 20px;
   border: 1.5px solid var(--btn-primary-border, var(--color-btn-shadow, #000000));
-  border-radius: 6px;
+  border-radius: var(--radius-m);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -520,13 +521,13 @@ body.facets-drawer-open .facets-drawer * {
 
 .price-facet-slider__input::-webkit-slider-runnable-track {
   height: 6px;
-  border-radius: 3px;
+  border-radius: var(--radius-s);
   background: color-mix(in srgb, var(--color-headings) 20%, transparent);
 }
 
 .price-facet-slider__input::-moz-range-track {
   height: 6px;
-  border-radius: 3px;
+  border-radius: var(--radius-s);
   background: color-mix(in srgb, var(--color-headings) 20%, transparent);
 }
 
@@ -586,7 +587,7 @@ body.facets-drawer-open .facets-drawer * {
 .price-facet-inputs-container .field {
   flex: 1;
   border: 1px solid var(--color-text);
-  border-radius: 8px;
+  border-radius: var(--radius-m);
   padding: 8px 12px;
   display: flex;
   align-items: center;
@@ -638,7 +639,7 @@ body.facets-drawer-open .facets-drawer * {
   padding: 8px 12px;
   background: transparent;
   border: 2px solid transparent;
-  border-radius: 8px;
+  border-radius: var(--radius-m);
   font-family: monospace;
   font-size: 1.05rem;
   font-weight: 500;
@@ -656,7 +657,7 @@ body.facets-drawer-open .facets-drawer * {
   width: 28px;
   height: 20px;
   border: 1.5px solid var(--btn-primary-border, var(--color-btn-shadow, #000000));
-  border-radius: 6px;
+  border-radius: var(--radius-m);
   background: var(--btn-primary-bg, #F8F3F8);
   flex-shrink: 0;
   position: relative;
@@ -721,7 +722,7 @@ facet-filters-form.facets .facets__form {
   align-items: center;
   justify-content: space-between;
   padding: 7px 20px !important;
-  border-radius: 50px !important;
+  border-radius: var(--radius-pill);
   border: 2px solid black !important;
   background-color: var(--color-card-bg) !important;
   color: black !important;
@@ -756,8 +757,8 @@ facet-filters-form.facets .facets__form {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 16px;
-  height: 16px;
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
   transition: transform 0.2s ease;
 }
 
@@ -784,7 +785,7 @@ details[open] .facets__summary {
 
 .facets__display {
   border: 2px solid black !important;
-  border-radius: 20px !important;
+  border-radius: var(--radius-2xl);
   background-color: white !important;
   box-shadow: 8px 8px 0px 0px rgba(0,0,0,0.08) !important;
   margin-top: 12px !important;
@@ -846,12 +847,12 @@ details[open] .facets__summary {
 
 .facets-wrap::-webkit-scrollbar-track {
   background: rgba(0,0,0,0.05);
-  border-radius: 3px;
+  border-radius: var(--radius-s);
 }
 
 .facets-wrap::-webkit-scrollbar-thumb {
   background: rgba(0,0,0,0.2);
-  border-radius: 3px;
+  border-radius: var(--radius-s);
 }
 
 .facets-wrap::-webkit-scrollbar-thumb:hover {
@@ -867,7 +868,7 @@ details[open] .facets__summary {
   align-items: center;
   gap: 12px;
   padding: 10px 8px;
-  border-radius: 8px;
+  border-radius: var(--radius-m);
   cursor: pointer;
   transition: background-color 0.2s ease;
   width: 100%;
@@ -921,7 +922,7 @@ details[open] .facets__summary {
 .facets__price .field__input {
   flex: 1;
   padding: 10px 12px;
-  border-radius: 8px;
+  border-radius: var(--radius-m);
   font-size: 0.95rem;
   font-weight: 500;
   transition: border-color 0.2s ease;
@@ -957,7 +958,7 @@ details[open] .facets__summary {
 
 .facet-filters__sort {
   padding: 10px 40px 10px 20px !important;
-  border-radius: 50px !important;
+  border-radius: var(--radius-pill);
   border: 2px solid black !important;
   background-color: var(--color-card-bg) !important;
   font-family: var(--font-body-family);

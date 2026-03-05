@@ -9,10 +9,6 @@
   /* Submit button styles for hover overlay button */
   /* Section Level Settings */
   .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.section_padding_top }}px;
-    padding-bottom: {{ section.settings.section_padding_bottom }}px;
-    padding-left: {{ section.settings.section_padding_horizontal_mobile }}px;
-    padding-right: {{ section.settings.section_padding_horizontal_mobile }}px;
     --collection-filter-tag-bg: var(--btn-primary-bg);
     --collection-filter-tag-text-color: var(--btn-primary-text);
     --collection-filter-tag-border: var(--btn-primary-border);
@@ -32,26 +28,13 @@
     {% endif %}
   }
 
-  @media screen and (min-width: 750px) {
-    .section-{{ section.id }}-padding {
-      padding-left: {{ section.settings.section_padding_horizontal }}px;
-      padding-right: {{ section.settings.section_padding_horizontal }}px;
-    }
-  }
 
-  @media screen and (max-width: 749px) {
-    .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.section_padding_top_mobile }}px;
-      padding-bottom: {{ section.settings.section_padding_bottom_mobile }}px;
-      padding-left: {{ section.settings.section_padding_horizontal_mobile }}px;
-      padding-right: {{ section.settings.section_padding_horizontal_mobile }}px;
-    }
-  }
+
 
   #product-grid-{{ section.id }} {
     display: grid;
     grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
-    gap: {{ section.settings.grid_gap }}px;
+    gap: var(--bento-gap);
     list-style: none;
     padding: 0;
     margin: 0;
@@ -284,13 +267,13 @@
     {% comment %} Sort is the first tabbable element when filter type is vertical {% endcomment %}
     {% comment %} Redundant sorting removed per user request {% endcomment %}
 
-    <div class="{% if section.settings.filter_type == 'vertical' %} facets-vertical page-width{% endif %}">
+    <div class="{% if section.settings.filter_type == 'vertical' %} facets-vertical  {% endif %}">
       {{ 'facets.css' | asset_url | stylesheet_tag }}
       <script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
       {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
         <aside
           aria-labelledby="verticalTitle"
-          class="facets-wrapper{% unless section.settings.enable_filtering %} facets-wrapper--no-filters{% endunless %}{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
+          class="facets-wrapper{% unless section.settings.enable_filtering %} facets-wrapper--no-filters{% endunless %}{% if section.settings.filter_type != 'vertical' %}  {% endif %}"
           id="main-collection-filters"
           data-id="{{ section.id }}"
         >
@@ -315,7 +298,7 @@
       >
         {%- if collection.products.size == 0 or visible_products_count == 0 -%}
           <div
-            class="collection collection--empty page-width"
+            class="collection collection--empty"
             id="product-grid-{{ section.id }}"
             data-id="{{ section.id }}"
           >
@@ -333,7 +316,7 @@
           </div>
         {%- else -%}
           <div
-            class="collection{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
+            class="collection{% if section.settings.filter_type != 'vertical' %}  {% endif %}"
           >
             <div class="loading-overlay gradient"></div>
             <ul

@@ -51,16 +51,11 @@
         /* ─── Essential Static Tokens ─── */
         --color-white: #FFFFFF;
         --color-black: #000000;
-        --gap-section: 24px;
-        --gap-component: 8px;
-        --page-layout-gap: {{ settings.page_layout_gap | default: 10 }}px;
+        --page-layout-gap: {{ settings.page_layout_gap }}px;
+        --bento-gap: {{ settings.bento_gap | default: 12 }}px;
         --page-layout-padding: {{ settings.page_layout_padding | default: 24 }}px;
         --padding-medium: 16px;
         --padding-large: 24px;
-        --radius-small: 4px;
-        --radius-medium: 8px;
-        --radius-large: 25px;
-        --radius-pill: 9999px;
         --height-button: 48px;
         --border-width-medium: 2px;
         --shadow-elevation-1: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
@@ -133,12 +128,6 @@
         --spacing-xl: 32px;
         --spacing-xxl: 48px;
 
-        /* ─── Border Radius ─── */
-        --border-radius-s: 4px;
-        --border-radius-m: 8px;
-        --border-radius-l: 16px;
-        --border-radius-pill: 100px;
-        --icon-size-medium: 20px;
         --border-width-thin: 1px;
 
         /* ─── Sale Badge (cart + product cards, from color scheme) ─── */
@@ -169,11 +158,6 @@
         width: 100%;
       }
 
-      /* Page layout padding: horizontal padding for .page-width containers */
-      .page-width {
-        padding-left: var(--page-layout-padding, 24px);
-        padding-right: var(--page-layout-padding, 24px);
-      }
 
       {%- for scheme in settings.color_schemes -%}
         .color-{{ scheme.id }} {
@@ -331,7 +315,7 @@
       html::-webkit-scrollbar-thumb,
       body::-webkit-scrollbar-thumb {
         background: var(--color-heading) !important;
-        border-radius: 10px !important;
+        border-radius: var(--radius-m);
       }
 
       ::-webkit-scrollbar-thumb:hover,
@@ -477,9 +461,28 @@
         (function(){
           var url = {{ 'cart-drawer.js' | asset_url | json }};
           var done = false;
-          function load(){ if(done)return; done=true; var s=document.createElement('script'); s.src=url; s.defer=true; document.body.appendChild(s); }
+          function load(triggerEl){
+            if(done)return;
+            done=true;
+            var s=document.createElement('script');
+            s.src=url;
+            s.defer=true;
+            if(triggerEl){
+              s.onload=function(){
+                var drawer=document.querySelector('cart-drawer');
+                if(drawer&&typeof drawer.open==='function') drawer.open(triggerEl);
+              };
+            }
+            document.body.appendChild(s);
+          }
           document.addEventListener('click', function fn(e){
-            if (e.target && e.target.closest && (e.target.closest('a[href*="/cart"]') || e.target.closest('[data-open-cart-drawer]'))) { document.removeEventListener('click', fn); load(); }
+            var trigger = e.target && e.target.closest && (e.target.closest('a[href*="/cart"]') || e.target.closest('.cart-drawer-trigger') || e.target.closest('[data-open-cart-drawer]'));
+            if (trigger) {
+              e.preventDefault();
+              e.stopPropagation();
+              document.removeEventListener('click', fn);
+              load(trigger);
+            }
           }, true);
           (window.requestIdleCallback||setTimeout)(function(){ load(); }, 2500);
         })();
@@ -507,7 +510,12 @@
       <script>
         (function(){
           var url = {{ 'animations.js' | asset_url | json }};
-          (window.requestIdleCallback||function(fn){ setTimeout(fn, 1500); })(function(){ var s=document.createElement('script'); s.src=url; s.defer=true; document.body.appendChild(s); });
+          var load = function(){ var s=document.createElement('script'); s.src=url; s.defer=true; document.body.appendChild(s); };
+          if (document.readyState === 'loading') {
+            window.addEventListener('DOMContentLoaded', load);
+          } else {
+            (window.requestIdleCallback || function(fn) { setTimeout(fn, 0); })(load);
+          }
         })();
       </script>
     {%- endif -%}

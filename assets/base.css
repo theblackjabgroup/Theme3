@@ -101,29 +101,34 @@
   --color-border-light: var(--color-gray-200);
   
   /* ============================================
-     BORDER RADIUS TOKENS
+     BORDER RADIUS TOKENS (WEB: 4, 8, 12, 16, 20px)
      ============================================ */
   
   --radius-none: 0;
-  --radius-xs: 2px;
-  --radius-sm: 3px;
   --radius-s: 4px;
   --radius-m: 8px;
-  --radius-l: 14px;
+  --radius-l: 12px;
   --radius-xl: 16px;
   --radius-2xl: 20px;
-  --radius-3xl: 24px;
-  --radius-4xl: 32px;
-  --radius-pill: 50px;
-  --radius-full: 100px;
-  --radius-round: 999px;
-  --radius-9999: 9999px;
-  
-  /* Semantic border radius */
+  --radius-pill: 9999px;
+
+  /* Semantic aliases for settings (radius_small, radius_medium, radius_large, radius_pill) */
+  --radius-small: var(--radius-s);
+  --radius-medium: var(--radius-m);
+  --radius-large: var(--radius-2xl);
   --border-radius-s: var(--radius-s);
   --border-radius-m: var(--radius-m);
-  --border-radius-l: var(--radius-xl);
-  --border-radius-pill: var(--radius-full);
+  --border-radius-l: var(--radius-l);
+  --border-radius-pill: var(--radius-pill);
+
+  /* Backward compatibility: map old tokens to new scale */
+  --radius-xs: var(--radius-s);
+  --radius-sm: var(--radius-s);
+  --radius-3xl: var(--radius-2xl);
+  --radius-4xl: var(--radius-2xl);
+  --radius-full: var(--radius-pill);
+  --radius-round: var(--radius-pill);
+  --radius-9999: var(--radius-pill);
   
   /* ============================================
      TYPOGRAPHY TOKENS
@@ -273,11 +278,15 @@
   --icon-size-lg: 24px;
   --icon-size-xl: 32px;
   --icon-size-2xl: 40px;
-  --icon-size-3xl: 45px;
+  --icon-size-3xl: 48px;
   
   --icon-size-small: var(--icon-size-sm);
   --icon-size-medium: var(--icon-size-md);
   --icon-size-large: var(--icon-size-lg);
+  
+  /* Semantic icon colors (themes can override) */
+  --color-icon-error: #EB001B;
+  --color-icon-success: #108043;
   
   /* Button heights */
   --height-button-sm: 32px;
@@ -286,6 +295,13 @@
   --height-button-xl: 56px;
   
   --height-button: var(--height-button-lg);
+}
+
+/* Mobile: design scale max 16px */
+@media (max-width: 768px) {
+  :root {
+    --radius-2xl: 16px;
+  }
 }
 
 /* ============================================
@@ -329,4 +345,37 @@ button {
   0% { transform: scale(1); }
   50% { transform: scale(0.9); }
   100% { transform: scale(1); }
+}
+
+/* ============================================
+   SCROLL REVEAL ANIMATIONS (theme setting: animations_reveal_on_scroll)
+   Used with .scroll-trigger and .animate--slide-in / .animate--fade-in
+   ============================================ */
+.scroll-trigger.animate--slide-in {
+  transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.scroll-trigger.scroll-trigger--offscreen.animate--slide-in {
+  opacity: 0;
+  transform: translateY(var(--animation-slide-offset, 20px));
+}
+.scroll-trigger.animate--fade-in {
+  transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.scroll-trigger.scroll-trigger--offscreen.animate--fade-in {
+  opacity: 0;
+}
+.scroll-trigger.scroll-trigger--cancel {
+  opacity: 1 !important;
+  transform: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-trigger.animate--slide-in,
+  .scroll-trigger.animate--fade-in {
+    transition: none;
+  }
+  .scroll-trigger.scroll-trigger--offscreen.animate--slide-in,
+  .scroll-trigger.scroll-trigger--offscreen.animate--fade-in {
+    opacity: 1;
+    transform: none;
+  }
 }

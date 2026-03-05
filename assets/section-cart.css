@@ -21,7 +21,7 @@
 }
 
 /* Hide breadcrumbs in sidebar if any */
-.cart__footer-wrapper .page-width {
+.cart__footer-wrapper .  {
     padding: 0 !important;
     max-width: 100% !important;
 }
@@ -32,7 +32,7 @@
   background-color: #fff !important;
 }
 
-#shopify-section-cart-items .page-width {
+#shopify-section-cart-items .  {
     padding: 0 !important;
     max-width: 100% !important;
 }
@@ -96,7 +96,7 @@
 .cart__checkout-button {
   background-color: #ff0000 !important;
   color: #fff !important;
-  border-radius: 30px !important;
+  border-radius: var(--radius-2xl);
   height: 65px !important;
   font-size: 16px !important;
   font-weight: 800 !important;
@@ -162,7 +162,7 @@
 }
 
 .cart-item__image-container {
-  border-radius: 25px !important;
+  border-radius: var(--radius-2xl);
   overflow: hidden !important;
   background: #fdfdfd !important;
   width: 110px !important;
@@ -178,7 +178,7 @@
   padding: 4px 12px;
   border: 1px solid #ff0000;
   color: #ff0000;
-  border-radius: 12px;
+  border-radius: var(--radius-l);
   font-size: 9px;
   font-weight: 800;
   text-transform: uppercase;
@@ -203,7 +203,7 @@
 
 .quantity {
   background: #fdfdfd !important;
-  border-radius: 20px !important;
+  border-radius: var(--radius-2xl);
   border: 1px solid #f5f5f5 !important;
   width: 100% !important;
   height: 50px !important;
@@ -253,7 +253,7 @@
 .update-button {
   background: #fff !important;
   border: 1px solid #e0e0e0 !important;
-  border-radius: 18px !important;
+  border-radius: var(--radius-2xl);
   padding: 15px 40px !important;
   color: #bbb !important;
   font-weight: 800 !important;

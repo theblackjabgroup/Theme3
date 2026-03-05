@@ -1,9 +1,8 @@
-{% schema %}{
+{% schema %}
+{
   "name": "Footer",
   "enabled_on": {
-    "groups": [
-      "footer"
-    ]
+    "groups": ["footer"]
   },
   "settings": [
     {
@@ -380,14 +379,18 @@
       "default": 24
     },
     {
+      "type": "header",
+      "content": "Footer padding (desktop)"
+    },
+    {
       "type": "range",
       "id": "padding_top",
       "min": 0,
       "max": 100,
       "step": 4,
       "unit": "px",
-      "label": "Padding Top",
-      "default": 20
+      "label": "Padding top",
+      "default": 0
     },
     {
       "type": "range",
@@ -396,8 +399,72 @@
       "max": 100,
       "step": 4,
       "unit": "px",
-      "label": "Padding Bottom",
+      "label": "Padding bottom",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_left",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding left",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_right",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding right",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Footer padding (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
       "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_left_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding left",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_right_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding right",
+      "default": 16
     },
     {
       "type": "header",
@@ -669,7 +736,8 @@
       ]
     }
   ]
-}{% endschema %}
+}
+{% endschema %}
 
 {{ 'section-footer.css' | asset_url | stylesheet_tag }}
 
@@ -713,8 +781,14 @@
 {%- style -%}
   #shopify-section-{{ section.id }} {
     --footer-content-max-width: {{ section.settings.footer_content_max_width | default: 1400 }}px;
-    --padding-top: {{ section.settings.padding_top }}px;
-    --padding-bottom: {{ section.settings.padding_bottom }}px;
+    --footer-padding-top: {{ section.settings.padding_top | default: 0 }}px;
+    --footer-padding-bottom: {{ section.settings.padding_bottom }}px;
+    --footer-padding-left: {{ section.settings.padding_left | default: 24 }}px;
+    --footer-padding-right: {{ section.settings.padding_right | default: 24 }}px;
+    --footer-padding-top-mobile: {{ section.settings.padding_top_mobile | default: 20 }}px;
+    --footer-padding-bottom-mobile: {{ section.settings.padding_bottom_mobile | default: 20 }}px;
+    --footer-padding-left-mobile: {{ section.settings.padding_left_mobile | default: 16 }}px;
+    --footer-padding-right-mobile: {{ section.settings.padding_right_mobile | default: 16 }}px;
     --footer-social-icon-size: {{ section.settings.social_icon_size | default: 40 }}px;
     --footer-social-icon-size-mobile: {{ section.settings.social_icon_size_mobile | default: 20 }}px;
     --footer-social-box-height: {{ section.settings.social_box_height | default: 92 }}px;
@@ -783,38 +857,38 @@
 
 {%- comment -%} Footer: Section/Dark color schemes apply only to .footer-box when theme toggle is on {%- endcomment -%}
 {%- if footer_scheme_obj -%}
-{%- style -%}
-  html[data-global-theme-active="true"] #shopify-section-{{ section.id }} .footer-box {
-    --color-bg: {{ footer_scheme_obj.settings.color_bg }} !important;
-    --color-background: {{ footer_scheme_obj.settings.color_bg }} !important;
-    --color-card-bg: {{ footer_scheme_obj.settings.color_card_bg }} !important;
-    --color-card-text: {{ footer_scheme_obj.settings.color_card_text | default: footer_scheme_obj.settings.color_text }} !important;
-    --color-heading: {{ footer_scheme_obj.settings.color_heading }} !important;
-    --color-headings: {{ footer_scheme_obj.settings.color_heading }} !important;
-    --color-text: {{ footer_scheme_obj.settings.color_text }} !important;
-    --color-link: {{ footer_scheme_obj.settings.color_link }} !important;
-    --color-link-hover: {{ footer_scheme_obj.settings.color_link_hover }} !important;
-    --color-input-border: {{ footer_scheme_obj.settings.color_input_border }} !important;
-    --color-btn-shadow: {{ footer_scheme_obj.settings.color_btn_shadow }} !important;
-  }
-{%- endstyle -%}
+  {%- style -%}
+    html[data-global-theme-active="true"] #shopify-section-{{ section.id }} .footer-box {
+      --color-bg: {{ footer_scheme_obj.settings.color_bg }} !important;
+      --color-background: {{ footer_scheme_obj.settings.color_bg }} !important;
+      --color-card-bg: {{ footer_scheme_obj.settings.color_card_bg }} !important;
+      --color-card-text: {{ footer_scheme_obj.settings.color_card_text | default: footer_scheme_obj.settings.color_text }} !important;
+      --color-heading: {{ footer_scheme_obj.settings.color_heading }} !important;
+      --color-headings: {{ footer_scheme_obj.settings.color_heading }} !important;
+      --color-text: {{ footer_scheme_obj.settings.color_text }} !important;
+      --color-link: {{ footer_scheme_obj.settings.color_link }} !important;
+      --color-link-hover: {{ footer_scheme_obj.settings.color_link_hover }} !important;
+      --color-input-border: {{ footer_scheme_obj.settings.color_input_border }} !important;
+      --color-btn-shadow: {{ footer_scheme_obj.settings.color_btn_shadow }} !important;
+    }
+  {%- endstyle -%}
 {%- endif -%}
 {%- if footer_dark_scheme_obj -%}
-{%- style -%}
-  html[data-global-theme-active="true"][data-active-scheme="color-{{ footer_dark_scheme_id }}"] #shopify-section-{{ section.id }} .footer-box {
-    --color-bg: {{ footer_dark_scheme_obj.settings.color_bg }} !important;
-    --color-background: {{ footer_dark_scheme_obj.settings.color_bg }} !important;
-    --color-card-bg: {{ footer_dark_scheme_obj.settings.color_card_bg }} !important;
-    --color-card-text: {{ footer_dark_scheme_obj.settings.color_card_text | default: footer_dark_scheme_obj.settings.color_text }} !important;
-    --color-heading: {{ footer_dark_scheme_obj.settings.color_heading }} !important;
-    --color-headings: {{ footer_dark_scheme_obj.settings.color_heading }} !important;
-    --color-text: {{ footer_dark_scheme_obj.settings.color_text }} !important;
-    --color-link: {{ footer_dark_scheme_obj.settings.color_link }} !important;
-    --color-link-hover: {{ footer_dark_scheme_obj.settings.color_link_hover }} !important;
-    --color-input-border: {{ footer_dark_scheme_obj.settings.color_input_border }} !important;
-    --color-btn-shadow: {{ footer_dark_scheme_obj.settings.color_btn_shadow }} !important;
-  }
-{%- endstyle -%}
+  {%- style -%}
+    html[data-global-theme-active="true"][data-active-scheme="color-{{ footer_dark_scheme_id }}"] #shopify-section-{{ section.id }} .footer-box {
+      --color-bg: {{ footer_dark_scheme_obj.settings.color_bg }} !important;
+      --color-background: {{ footer_dark_scheme_obj.settings.color_bg }} !important;
+      --color-card-bg: {{ footer_dark_scheme_obj.settings.color_card_bg }} !important;
+      --color-card-text: {{ footer_dark_scheme_obj.settings.color_card_text | default: footer_dark_scheme_obj.settings.color_text }} !important;
+      --color-heading: {{ footer_dark_scheme_obj.settings.color_heading }} !important;
+      --color-headings: {{ footer_dark_scheme_obj.settings.color_heading }} !important;
+      --color-text: {{ footer_dark_scheme_obj.settings.color_text }} !important;
+      --color-link: {{ footer_dark_scheme_obj.settings.color_link }} !important;
+      --color-link-hover: {{ footer_dark_scheme_obj.settings.color_link_hover }} !important;
+      --color-input-border: {{ footer_dark_scheme_obj.settings.color_input_border }} !important;
+      --color-btn-shadow: {{ footer_dark_scheme_obj.settings.color_btn_shadow }} !important;
+    }
+  {%- endstyle -%}
 {%- endif -%}
 
 <footer class="custom-footer color-{{ section.settings.color_scheme }} gradient">
@@ -883,7 +957,11 @@
               {%- when 'social_icon' -%}
                 {%- assign next_index = forloop.index0 | plus: 1 -%}
                 {%- unless in_social_grid -%}
-                  <div class="footer-social-grid footer-social-row" data-icons-per-row="{{ section.settings.social_icons_per_row | default: 2 }}" data-icons-per-row-mobile="{{ section.settings.social_icons_per_row_mobile | default: 4 }}">
+                  <div
+                    class="footer-social-grid footer-social-row"
+                    data-icons-per-row="{{ section.settings.social_icons_per_row | default: 2 }}"
+                    data-icons-per-row-mobile="{{ section.settings.social_icons_per_row_mobile | default: 4 }}"
+                  >
                     {%- assign in_social_grid = true -%}
                 {%- endunless -%}
                 {%- render 'footer-social-box', block: block -%}

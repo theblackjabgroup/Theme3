@@ -110,7 +110,8 @@
           "btn_disabled_text": "#A08070",
           "btn_disabled_border": "#3D2B1F",
           "btn_disabled_shadow": "#3D2B1F",
-          "color_card_bg": "#FDFAF5"
+          "color_card_bg": "#1E4ABD",
+          "color_card_text": "#F8F3F8"
         }
       },
       "scheme-3": {

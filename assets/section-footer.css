@@ -4,7 +4,7 @@
   contain-intrinsic-size: auto 400px;
   background-color: var(--color-bg);
   color: var(--color-text);
-  padding: var(--padding-top) 24px var(--padding-bottom) 24px;
+  padding: var(--footer-padding-top) var(--footer-padding-right) var(--footer-padding-bottom) var(--footer-padding-left);
   width: 100%;
   box-sizing: border-box;
 }
@@ -21,7 +21,7 @@
   .custom-footer {
     margin-left: 0;
     width: 100%;
-    padding: 20px 16px;
+    padding: var(--footer-padding-top-mobile) var(--footer-padding-right-mobile) var(--footer-padding-bottom-mobile) var(--footer-padding-left-mobile);
   }
 }
 
@@ -33,7 +33,7 @@
 .footer-layout {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: var(--page-layout-gap,10px);
 }
 
 /* --- Left Column --- */
@@ -66,7 +66,7 @@
 
 .newsletter-field {
   background-color: var(--color-card-bg);
-  border-radius: var(--footer-social-border-radius, 20px);
+  border-radius: var(--footer-social-border-radius, var(--radius-2xl));
   padding: var(--newsletter-field-padding, 12px);
   display: flex;
   flex-direction: column;
@@ -105,7 +105,7 @@
   min-width: calc((100% - (var(--footer-social-icons-per-row, 4) - 1) * var(--footer-social-gap, 12px)) / var(--footer-social-icons-per-row, 4));
   height: var(--footer-social-box-height, 94px);
   background-color: var(--color-card-bg);
-  border-radius: var(--footer-social-border-radius, 20px);
+  border-radius: var(--footer-social-border-radius, var(--radius-2xl));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -193,7 +193,7 @@
   background-color: var(--color-card-bg);
   color: var(--color-card-text);
   width: 100%;
-  border-radius: 32px;
+  border-radius: var(--radius-2xl);
   padding: var(--footer-box-padding-top, 32px) var(--footer-box-padding-right, 32px)
     var(--footer-box-padding-bottom, 32px) var(--footer-box-padding-left, 32px);
   min-height: 200px;
@@ -306,7 +306,7 @@
   width: 100%;
   height: 82%;
   background-color: var(--btn-primary-shadow);
-  border-radius: var(--footer-selector-border-radius, 8px);
+  border-radius: var(--footer-selector-border-radius, var(--radius-m));
   z-index: 1;
 }
 
@@ -321,7 +321,7 @@
   border: var(--footer-selector-border-width, 1px) solid var(--btn-primary-border);
   padding: var(--footer-selector-padding-top, 8px) var(--footer-selector-padding-right, 16px)
     var(--footer-selector-padding-bottom, 8px) var(--footer-selector-padding-left, 16px);
-  border-radius: var(--footer-selector-border-radius, 8px);
+  border-radius: var(--footer-selector-border-radius, var(--radius-m));
   font-size: var(--footer-selector-font-size, 13px);
   font-weight: 700;
   line-height: 1;

@@ -122,7 +122,7 @@
 .payment-icon {
   height: var(--icon-size-desktop, 24px);
   width: auto;
-  border-radius: 4px;
+  border-radius: var(--radius-s);
   box-sizing: border-box;
 }
 
