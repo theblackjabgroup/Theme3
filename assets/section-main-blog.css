@@ -180,7 +180,7 @@
   box-shadow: 0 2px 0 var(--color-primary-button-border);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 749px) {
     .main-blog-slider__track {
         gap: 15px;
     }
@@ -256,7 +256,7 @@
 #ProductGridContainer .grid__item .main-blog-card__image-wrapper {
   height: 250px;
 }
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 989px) {
   #ProductGridContainer .grid__item .main-blog-card__image-wrapper {
     height: 200px;
   }

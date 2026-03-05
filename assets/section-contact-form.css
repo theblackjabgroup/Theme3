@@ -113,7 +113,7 @@
   }
 }
 
-@media (max-width: 389px) {
+@media (max-width: 749px) {
   .contact-page__inner {
     padding: 0 12px;
   }
@@ -535,7 +535,7 @@
   color: #b8e0b8;
 }
 
-@media (max-width: 549px) {
+@media (max-width: 749px) {
   .contact-page__newsletter-row {
     flex-direction: column;
     border-radius: var(--radius-2xl);

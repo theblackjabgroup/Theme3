@@ -291,7 +291,7 @@ input[type="search"]::-webkit-search-results-decoration {
   flex-grow: 1;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 749px) {
 
   .disclosure__list-wrapper {
     position: fixed;

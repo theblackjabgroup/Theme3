@@ -8,7 +8,7 @@
     const desktopHeader = document.querySelector('.vertical-sidebar-header');
     const body = document.body;
 
-    if (desktopHeader && window.innerWidth > 1024) {
+    if (desktopHeader && window.innerWidth >= 1025) {
       // Header exists and we're on desktop
       body.classList.remove('header-disabled');
     } else {

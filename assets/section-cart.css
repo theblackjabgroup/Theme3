@@ -289,7 +289,7 @@
 }
 
 /* Mobile: tablet and below */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 749px) {
     .template-cart .cart__footer-wrapper {
         padding: 30px 20px !important;
     }
@@ -354,7 +354,7 @@
 }
 
 /* Mobile: small phones */
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 749px) {
     .template-cart .cart__footer-wrapper {
         padding: 24px 16px !important;
     }

@@ -260,7 +260,7 @@ body.facets-drawer-open .facets-drawer * {
 }
 
 /* Mobile: full-width drawer like cart (no floating) */
-@media screen and (max-width: 990px) {
+@media screen and (max-width: 989px) {
   .facets-drawer__panel {
     top: 0;
     left: 0 !important;

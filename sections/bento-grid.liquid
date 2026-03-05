@@ -74,7 +74,7 @@
   }
 
   /* Responsive */
-  @media (max-width: 768px) {
+  @media (max-width: 749px) {
     #bento-grid-{{ section.id }}.bento-grid-container {
       padding: {{ section.settings.mobile_padding_vertical | default: 16 }}px {{ section.settings.mobile_padding_horizontal | default: 16 }}px {{ section.settings.mobile_padding_bottom | default: 0 }}px {{ section.settings.mobile_padding_horizontal | default: 16 }}px !important;
     }
@@ -126,7 +126,7 @@
   }
 
   /* Small Mobile Devices overrides */
-  @media (max-width: 480px) {
+  @media (max-width: 749px) {
     #bento-grid-{{ section.id }}.bento-grid-container {
       padding: {{ section.settings.mobile_padding_vertical | default: 16 | divided_by: 1.5 | floor }}px {{ section.settings.mobile_padding_horizontal | default: 16 | divided_by: 1.5 | floor }}px {{ section.settings.mobile_padding_bottom | default: 0 }}px {{ section.settings.mobile_padding_horizontal | default: 16 | divided_by: 1.5 | floor }}px !important;
     }

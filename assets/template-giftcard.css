@@ -28,7 +28,7 @@ body {
   box-sizing: border-box;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 749px) {
   .gc-container {
     flex-direction: column;
     align-items: center;
@@ -397,7 +397,7 @@ body {
 }
 
 /* Tablet / Smaller Laptop Customizations */
-@media (max-width: 1200px) {
+@media (max-width: 1024px) {
   .gc-card-value {
     font-size: 1.8rem; /* Reduced from clamp default */
   }
@@ -408,7 +408,7 @@ body {
 }
   
 /* Mobile Customizations */
-@media (max-width: 600px) {
+@media (max-width: 749px) {
   .gc-panel {
     padding: 20px; /* Reduced padding for mobile */
     min-height: auto; /* Allow height to shrink */

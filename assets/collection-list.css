@@ -56,21 +56,21 @@
 }
 
 /* Responsive - Tablet */
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1024px) {
   .custom-collection-list__grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
 /* Responsive - Mobile */
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 989px) {
   .custom-collection-list__grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 /* Responsive - Small Mobile */
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 749px) {
   .custom-collection-list__grid {
     grid-template-columns: 1fr;
     gap: 16px;

@@ -277,8 +277,8 @@ predictive-search[results="true"] .predictive-search--search-template {
   }
 }
 
-/* ========== Small mobile (max-width: 390px) ========== */
-@media screen and (max-width: 390px) {
+/* ========== Mobile (max-width: 749px) ========== */
+@media screen and (max-width: 749px) {
   .template-search {
     padding: 16px 16px;
   }

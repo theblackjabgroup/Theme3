@@ -242,7 +242,7 @@
   transition-delay: 0s, 0s, 0s;
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 989px) {
   .custom-product-card,
   .custom-collection-card {
     padding: 16px !important;
@@ -296,7 +296,7 @@
   }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 749px) {
 
 
   .custom-product-card,

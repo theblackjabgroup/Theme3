@@ -132,7 +132,7 @@
   }
 }
 
-@media (max-width: 549px) {
+@media (max-width: 749px) {
   .newsletter-section__row {
     flex-direction: column;
   }

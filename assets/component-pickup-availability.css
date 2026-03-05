@@ -110,7 +110,7 @@ body.pickup-drawer-open pickup-availability-drawer * {
   border-radius: var(--radius-2xl);
 }
 
-@media screen and (max-width: 990px) {
+@media screen and (max-width: 989px) {
   pickup-availability-drawer {
     width: 100vw;
     max-width: none;
