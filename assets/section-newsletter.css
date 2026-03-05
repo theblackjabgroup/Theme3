@@ -130,9 +130,7 @@
     font-size: clamp(0.8125rem, 2vw + 0.5rem, var(--newsletter-desc-size, 0.9375rem));
     margin-bottom: 1.25rem;
   }
-}
 
-@media (max-width: 749px) {
   .newsletter-section__row {
     flex-direction: column;
   }
