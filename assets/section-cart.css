@@ -21,7 +21,7 @@
 }
 
 /* Hide breadcrumbs in sidebar if any */
-.cart__footer-wrapper .page-width {
+.cart__footer-wrapper .  {
     padding: 0 !important;
     max-width: 100% !important;
 }
@@ -32,7 +32,7 @@
   background-color: #fff !important;
 }
 
-#shopify-section-cart-items .page-width {
+#shopify-section-cart-items .  {
     padding: 0 !important;
     max-width: 100% !important;
 }

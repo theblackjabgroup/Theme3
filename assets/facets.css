@@ -32,7 +32,6 @@
 /* Top box: active facet links with dot separators */
 .facets-links-bar {
   width: 100%;
-  margin-bottom: 1rem;
 }
 
 .facets-links-bar__inner {

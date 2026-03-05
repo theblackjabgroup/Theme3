@@ -54,7 +54,7 @@
 {%- endstyle -%}
 
 <div class="contact-page contact-page-{{ section.id }} color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
-  <div class="contact-page__inner page-width">
+  <div class="contact-page__inner ">
     <div class="contact-page__grid">
       {%- comment -%} Left: single card = Map (top, rounded top corners) + Contact details (bottom) {%- endcomment -%}
       <div class="contact-page__left">
@@ -299,7 +299,6 @@
         </div>
       </div>
     </div>
-
   </div>
 </div>
 
@@ -378,10 +377,7 @@
   "tag": "section",
   "class": "section",
   "disabled_on": {
-    "groups": [
-      "header",
-      "footer"
-    ]
+    "groups": ["header", "footer"]
   },
   "settings": [
     {

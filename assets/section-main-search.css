@@ -300,7 +300,7 @@ predictive-search[results="true"] .predictive-search--search-template {
 
 /* ========== Page width / facets / grid responsive ========== */
 @media screen and (max-width: 749px) {
-  .template-search .page-width {
+  .template-search .  {
     padding-left: 0;
     padding-right: 0;
   }

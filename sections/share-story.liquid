@@ -129,7 +129,7 @@
 {%- endstyle -%}
 
 <div class="share-story-section section-{{ section.id }}-padding color-{{ section.settings.color_scheme }}">
-  <div class="page-width">
+  <div class="">
     {% form 'contact', id: 'ShareStoryForm' %}
       {%- if form.posted_successfully? -%}
         <div class="form-status form-status-list form__message" tabindex="-1" autofocus>
@@ -229,10 +229,7 @@
   "tag": "section",
   "class": "section",
   "disabled_on": {
-    "groups": [
-      "header",
-      "footer"
-    ]
+    "groups": ["header", "footer"]
   },
   "settings": [
     {

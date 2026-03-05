@@ -158,11 +158,6 @@
         width: 100%;
       }
 
-      /* Page layout padding: horizontal padding for .page-width containers */
-      .page-width {
-        padding-left: var(--page-layout-padding, 24px);
-        padding-right: var(--page-layout-padding, 24px);
-      }
 
       {%- for scheme in settings.color_schemes -%}
         .color-{{ scheme.id }} {
@@ -466,9 +461,28 @@
         (function(){
           var url = {{ 'cart-drawer.js' | asset_url | json }};
           var done = false;
-          function load(){ if(done)return; done=true; var s=document.createElement('script'); s.src=url; s.defer=true; document.body.appendChild(s); }
+          function load(triggerEl){
+            if(done)return;
+            done=true;
+            var s=document.createElement('script');
+            s.src=url;
+            s.defer=true;
+            if(triggerEl){
+              s.onload=function(){
+                var drawer=document.querySelector('cart-drawer');
+                if(drawer&&typeof drawer.open==='function') drawer.open(triggerEl);
+              };
+            }
+            document.body.appendChild(s);
+          }
           document.addEventListener('click', function fn(e){
-            if (e.target && e.target.closest && (e.target.closest('a[href*="/cart"]') || e.target.closest('[data-open-cart-drawer]'))) { document.removeEventListener('click', fn); load(); }
+            var trigger = e.target && e.target.closest && (e.target.closest('a[href*="/cart"]') || e.target.closest('.cart-drawer-trigger') || e.target.closest('[data-open-cart-drawer]'));
+            if (trigger) {
+              e.preventDefault();
+              e.stopPropagation();
+              document.removeEventListener('click', fn);
+              load(trigger);
+            }
           }, true);
           (window.requestIdleCallback||setTimeout)(function(){ load(); }, 2500);
         })();
