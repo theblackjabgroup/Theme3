@@ -90,27 +90,50 @@
   function setToggleSlideDistance(card) {
     const ui = card.querySelector('.toggle-ui');
     const knob = card.querySelector('.toggle-knob');
+    const labelsTop = card.querySelector('.toggle-labels--top');
     const labelsBottom = card.querySelector('.toggle-labels--bottom');
-    if (!ui || !knob || !labelsBottom) return;
+    if (!ui || !knob || !labelsTop || !labelsBottom) return;
 
     const isHorizontal = card.classList.contains('toggle-card--horizontal');
-    /* Measure knob at rest: getBoundingClientRect() includes CSS transform, so when
-       the toggle is checked the knob is already translated and the computed distance
-       would be wrong. Temporarily clear transform so we measure untransformed position. */
-    const prevTransform = knob.style.transform;
-    knob.style.transform = 'none';
-    const knobRect = knob.getBoundingClientRect();
-    knob.style.transform = prevTransform;
 
+    // Reset transforms to measure clean coordinates
+    const prevKnobTransform = knob.style.transform;
+    const prevTopTransform = labelsTop.style.transform;
+    const prevBottomTransform = labelsBottom.style.transform;
+
+    knob.style.transform = 'none';
+    labelsTop.style.transform = 'none';
+    labelsBottom.style.transform = 'none';
+
+    const knobRect = knob.getBoundingClientRect();
+    const topRect = labelsTop.getBoundingClientRect();
     const bottomRect = labelsBottom.getBoundingClientRect();
-    const gap = 12; /* Spacing between icon and edge when at bottom/right */
+
+    // Restore transforms
+    knob.style.transform = prevKnobTransform;
+    labelsTop.style.transform = prevTopTransform;
+    labelsBottom.style.transform = prevBottomTransform;
+
     if (isHorizontal) {
-      const slideX = bottomRect.left - knobRect.left - gap;
-      ui.style.setProperty('--toggle-knob-slide-x', Math.max(0, slideX) + 'px');
+      // In horizontal mode, calculate offsets from center to both labels
+      const knobCenter = knobRect.left + knobRect.width / 2;
+      const topCenter = topRect.left + topRect.width / 2;
+      const bottomCenter = bottomRect.left + bottomRect.width / 2;
+
+      const startX = topCenter - knobCenter;
+      const endX = bottomCenter - knobCenter;
+      ui.style.setProperty('--toggle-knob-start-x', startX + 'px');
+      ui.style.setProperty('--toggle-knob-end-x', endX + 'px');
     } else {
-      /* Distance for knob to move down, stopping short so there's spacing after the icon */
-      const slideY = bottomRect.top - knobRect.top - gap;
-      ui.style.setProperty('--toggle-knob-slide', Math.max(0, slideY) + 'px');
+      // Calculate how far the knob needs to move to reach the top and bottom labels
+      const knobCenter = knobRect.top + knobRect.height / 2;
+      const topCenter = topRect.top + topRect.height / 2;
+      const bottomCenter = bottomRect.top + bottomRect.height / 2;
+
+      const startY = topCenter - knobCenter;
+      const endY = bottomCenter - knobCenter;
+      ui.style.setProperty('--toggle-knob-start-y', startY + 'px');
+      ui.style.setProperty('--toggle-knob-end-y', endY + 'px');
     }
   }
 

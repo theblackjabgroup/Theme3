@@ -28,7 +28,7 @@
   gap: var(--gap-section);
   margin-bottom: var(--spacing-xl);
   background-color: var(--color-card-bg);
-  border-radius: 20px;
+  border-radius: var(--radius-2xl);
   padding:  20px;
 }
 
@@ -132,7 +132,7 @@
   inset: 0;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden; /* Add webkit prefix */
-  border-radius: 20px;
+  border-radius: var(--radius-2xl);
   overflow: visible;
   padding: 4px;
   /* Force GPU acceleration */
@@ -155,7 +155,7 @@
   background-position: center;
   background-repeat: no-repeat;
   border: none;
-  border-radius: 20px;
+  border-radius: var(--radius-2xl);
   padding: 0;
   text-decoration: none;
   color: #ffffff;
@@ -351,7 +351,7 @@
     align-items: flex-start;
     gap: 14px;
     padding: 18px 16px;
-    border-radius: 16px;
+    border-radius: var(--radius-xl);
   }
 
   .fc3d__title {

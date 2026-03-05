@@ -127,7 +127,7 @@
 @media screen and (max-width: 749px) {
   .article-card-slider {
     min-height: 280px;
-    border-radius: var(--spacing-15);
+    border-radius: var(--radius-2xl);
   }
   .article-card-slider .card__heading {
     font-size: 1.8rem;

@@ -781,7 +781,7 @@
 {%- style -%}
   #shopify-section-{{ section.id }} {
     --footer-content-max-width: {{ section.settings.footer_content_max_width | default: 1400 }}px;
-    --footer-padding-top: {{ section.settings.padding_top }}px;
+    --footer-padding-top: {{ section.settings.padding_top | default: 0 }}px;
     --footer-padding-bottom: {{ section.settings.padding_bottom }}px;
     --footer-padding-left: {{ section.settings.padding_left | default: 24 }}px;
     --footer-padding-right: {{ section.settings.padding_right | default: 24 }}px;

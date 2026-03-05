@@ -5,7 +5,7 @@
   width: 100%;
   background: var(--color-card-bg);
   border: 1px solid var(--color-borders);
-  border-radius: 24px;
+  border-radius: var(--radius-2xl);
   padding: 24px;
   margin-bottom: 20px !important;
   display: flex;
@@ -52,7 +52,7 @@
   letter-spacing: 0.1em;
   color: #FF4D4D;
   border: 1px solid #FF4D4D;
-  border-radius: 20px;
+  border-radius: var(--radius-2xl);
 }
 
 @media screen and (max-width: 600px) {

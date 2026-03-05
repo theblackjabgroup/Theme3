@@ -73,7 +73,7 @@
   padding: var(--eyebrow-padding-vertical, 8px) var(--eyebrow-padding-horizontal, 24px);
   border: var(--border-width-thin) solid var(--eyebrow-color);
   color: var(--eyebrow-color);
-  border-radius: var(--eyebrow-border-radius, 50px);
+  border-radius: var(--eyebrow-border-radius, var(--radius-pill));
   text-transform: uppercase;
   font-size: var(--eyebrow-font-size, 0.8rem);
   line-height: var(--eyebrow-line-height, 1.2);
@@ -117,7 +117,7 @@
     line-height: var(--eyebrow-line-height-mobile, 1.2);
     font-weight: var(--eyebrow-font-weight-mobile, 700);
     padding: var(--eyebrow-padding-vertical-mobile, 6px) var(--eyebrow-padding-horizontal-mobile, 16px);
-    border-radius: var(--eyebrow-border-radius-mobile, 50px);
+    border-radius: var(--eyebrow-border-radius-mobile, var(--radius-pill));
   }
   .content-hero__heading {
     font-size: var(--heading-font-size-mobile, 3rem);

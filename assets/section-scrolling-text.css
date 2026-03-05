@@ -59,7 +59,7 @@
   color: var(--pill-color, #E8E4DC);
   font-size: var(--text-font-size, 24px);
   font-weight: var(--text-font-weight, 700);
-  border-radius: var(--pill-border-radius, 999px);
+  border-radius: var(--pill-border-radius, var(--radius-pill));
   text-transform: var(--pill-text-transform, uppercase);
   white-space: nowrap;
 }

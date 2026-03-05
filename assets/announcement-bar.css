@@ -69,7 +69,7 @@
   background: var(--ab-pill-bg, #2d5a27);
   color: var(--ab-pill-color, #ffffff);
   padding: var(--ab-pill-py, 8px) var(--ab-pill-px, 20px);
-  border-radius: var(--ab-pill-radius, 50px);
+  border-radius: var(--ab-pill-radius, var(--radius-pill));
   font-size: var(--ab-font-size, 14px);
   font-weight: var(--ab-font-weight, 700);
   text-transform: var(--ab-text-transform, uppercase);

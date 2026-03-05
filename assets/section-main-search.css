@@ -3,7 +3,7 @@
   margin-bottom: var(--search-header-margin-bottom, 0.75rem);
   background-color: var(--color-card-bg);
   padding: var(--search-header-padding, 20px);
-  border-radius: 20px;
+  border-radius: var(--radius-2xl);
   box-sizing: border-box;
 }
 
@@ -75,7 +75,7 @@
   padding: var(--search-header-field-padding-y, 4px) var(--search-header-field-padding-x, 16px);
   background: transparent;
   border: 1.5px solid var(--color-heading);
-  border-radius: 15px;
+  border-radius: var(--radius-xl);
   box-shadow: 0 3px 0 0 color-mix(in srgb, var(--color-heading) 100%, transparent);
   box-sizing: border-box;
 }
@@ -90,10 +90,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
-  min-width: 28px;
-  min-height: 28px;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
   padding: 0;
   border: none;
   background: transparent;
@@ -103,8 +103,8 @@
 
 .main-search-page-header__submit .svg-wrapper svg,
 .main-search-page-header__submit .main-search-page-header__submit-icon-img {
-  width: 18px;
-  height: 18px;
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
   display: block;
   object-fit: contain;
 }
@@ -114,10 +114,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
-  min-width: 28px;
-  min-height: 28px;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
   padding: 0;
   border: none;
   background: transparent;
@@ -135,8 +135,8 @@
 }
 
 .main-search-page-header__reset .svg-wrapper svg {
-  width: 18px;
-  height: 18px;
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
 }
 
 .main-search-page-header__submit .svg-wrapper {
@@ -146,8 +146,8 @@
 }
 
 .main-search-page-header__submit .icon {
-  width: 20px;
-  height: 20px;
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
 }
 
 .main-search-page-header__input {
@@ -248,7 +248,7 @@ predictive-search[results="true"] .predictive-search--search-template {
   .main-search-page-header__field {
     min-height: 48px;
     padding: 4px 14px;
-    border-radius: 12px;
+    border-radius: var(--radius-l);
     gap: 10px;
     border-width: 1.5px;
   }

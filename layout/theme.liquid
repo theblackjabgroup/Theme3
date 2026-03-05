@@ -52,13 +52,10 @@
         --color-white: #FFFFFF;
         --color-black: #000000;
         --page-layout-gap: {{ settings.page_layout_gap }}px;
+        --bento-gap: {{ settings.bento_gap | default: 12 }}px;
         --page-layout-padding: {{ settings.page_layout_padding | default: 24 }}px;
         --padding-medium: 16px;
         --padding-large: 24px;
-        --radius-small: 4px;
-        --radius-medium: 8px;
-        --radius-large: 25px;
-        --radius-pill: 9999px;
         --height-button: 48px;
         --border-width-medium: 2px;
         --shadow-elevation-1: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
@@ -131,12 +128,6 @@
         --spacing-xl: 32px;
         --spacing-xxl: 48px;
 
-        /* ─── Border Radius ─── */
-        --border-radius-s: 4px;
-        --border-radius-m: 8px;
-        --border-radius-l: 16px;
-        --border-radius-pill: 100px;
-        --icon-size-medium: 20px;
         --border-width-thin: 1px;
 
         /* ─── Sale Badge (cart + product cards, from color scheme) ─── */
@@ -329,7 +320,7 @@
       html::-webkit-scrollbar-thumb,
       body::-webkit-scrollbar-thumb {
         background: var(--color-heading) !important;
-        border-radius: 10px !important;
+        border-radius: var(--radius-m);
       }
 
       ::-webkit-scrollbar-thumb:hover,
@@ -505,7 +496,12 @@
       <script>
         (function(){
           var url = {{ 'animations.js' | asset_url | json }};
-          (window.requestIdleCallback||function(fn){ setTimeout(fn, 1500); })(function(){ var s=document.createElement('script'); s.src=url; s.defer=true; document.body.appendChild(s); });
+          var load = function(){ var s=document.createElement('script'); s.src=url; s.defer=true; document.body.appendChild(s); };
+          if (document.readyState === 'loading') {
+            window.addEventListener('DOMContentLoaded', load);
+          } else {
+            (window.requestIdleCallback || function(fn) { setTimeout(fn, 0); })(load);
+          }
         })();
       </script>
     {%- endif -%}

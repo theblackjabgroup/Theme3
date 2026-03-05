@@ -48,7 +48,7 @@
   min-height: 400px;
   position: relative;
   overflow: hidden;
-  border-radius: 16px; 
+  border-radius: var(--radius-xl); 
 }
 
 .main-blog-card__image-wrapper {
@@ -59,7 +59,7 @@
   margin-bottom: 20px;
   transition: transform var(--blog-card-transition-duration, 0.8s) cubic-bezier(0.4, 0, 0.2, 1), box-shadow var(--blog-card-transition-duration, 0.8s) cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
-  border-radius: 8px;
+  border-radius: var(--radius-m);
 }
 
 .main-blog-card__image {
@@ -80,7 +80,7 @@
 .main-blog-card__tag {
   display: inline-block;
   border: 1px solid var(--color-primary-button-border);
-  border-radius: var(--tag-border-radius, 20px);
+  border-radius: var(--tag-border-radius, var(--radius-2xl));
   padding: var(--tag-padding-vertical, 4px) var(--tag-padding-horizontal, 12px);
   text-transform: uppercase;
   letter-spacing: 1px;

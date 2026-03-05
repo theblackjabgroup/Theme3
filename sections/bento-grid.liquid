@@ -9,8 +9,33 @@
 -%}
 <style>
   /* Dynamic styles that require Liquid variables */
+  main#MainContent.content-for-layout {
+    overflow-y: visible !important;
+    max-height: none !important;
+    height: auto !important;
+  }
+
+  #shopify-section-{{ section.id }} {
+    overflow-y: visible !important;
+    max-height: none !important;
+    height: auto !important;
+  }
+
   #bento-grid-{{ section.id }}.bento-grid-container {
-    padding: {{ section.settings.desktop_padding_vertical | default: 16 }}px {{ section.settings.desktop_padding_horizontal | default: 16 }}px;
+    padding: {{ section.settings.desktop_padding_vertical | default: 16 }}px {{ section.settings.desktop_padding_horizontal | default: 16 }}px {{ section.settings.desktop_padding_bottom | default: 0 }}px {{ section.settings.desktop_padding_horizontal | default: 16 }}px;
+    overflow-y: hidden;
+    max-height: none !important;
+    height: auto !important;
+  }
+
+  #bento-grid-{{ section.id }} .text-card-inner {
+    overflow: visible !important;
+    scrollbar-width: none !important;
+  }
+
+  #bento-grid-{{ section.id }} .text-card-inner::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
   }
   {%- if section.settings.section_background_color != blank and section.settings.section_background_color != 'rgba(0,0,0,0)' -%}
   #bento-grid-{{ section.id }}.bento-grid-container,
@@ -51,7 +76,7 @@
   /* Responsive */
   @media (max-width: 768px) {
     #bento-grid-{{ section.id }}.bento-grid-container {
-      padding: {{ section.settings.mobile_padding_vertical | default: 16 }}px {{ section.settings.mobile_padding_horizontal | default: 16 }}px !important;
+      padding: {{ section.settings.mobile_padding_vertical | default: 16 }}px {{ section.settings.mobile_padding_horizontal | default: 16 }}px {{ section.settings.mobile_padding_bottom | default: 0 }}px {{ section.settings.mobile_padding_horizontal | default: 16 }}px !important;
     }
 
     .bento-grid {
@@ -103,7 +128,7 @@
   /* Small Mobile Devices overrides */
   @media (max-width: 480px) {
     #bento-grid-{{ section.id }}.bento-grid-container {
-      padding: {{ section.settings.mobile_padding_vertical | default: 16 | divided_by: 1.5 | floor }}px {{ section.settings.mobile_padding_horizontal | default: 16 | divided_by: 1.5 | floor }}px !important;
+      padding: {{ section.settings.mobile_padding_vertical | default: 16 | divided_by: 1.5 | floor }}px {{ section.settings.mobile_padding_horizontal | default: 16 | divided_by: 1.5 | floor }}px {{ section.settings.mobile_padding_bottom | default: 0 }}px {{ section.settings.mobile_padding_horizontal | default: 16 | divided_by: 1.5 | floor }}px !important;
     }
   }
 
@@ -251,7 +276,7 @@
       {%- endif -%}
 
       <div
-        class="bento-block-wrapper bento-block-wrapper--{{ block.type }}{% if block.settings.hide_on_mobile %} hidden-mobile{% endif %}"
+        class="bento-block-wrapper bento-block-wrapper--{{ block.type }}{% if block.settings.hide_on_mobile %} hidden-mobile{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger scroll-trigger--offscreen animate--slide-in{% endif %}"
         style="grid-column: span {{ col_span }}; grid-row: span {{ row_span }};"
         data-block-id="{{ block.id }}"
         {{ block.shopify_attributes }}
@@ -1032,7 +1057,7 @@
       "step": 2,
       "unit": "px",
       "label": "Desktop padding (vertical)",
-      "default": 16
+      "default": 0
     },
     {
       "type": "range",
@@ -1042,7 +1067,18 @@
       "step": 2,
       "unit": "px",
       "label": "Desktop padding (horizontal)",
-      "default": 16
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "desktop_padding_bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Desktop padding (bottom)",
+      "default": 0,
+      "info": "Reduces the gap between the grid and the footer"
     },
     {
       "type": "range",
@@ -1137,6 +1173,17 @@
       "unit": "px",
       "label": "Mobile padding (horizontal)",
       "default": 16
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile padding (bottom)",
+      "default": 0,
+      "info": "Reduces the gap between the grid and the footer on mobile"
     }
   ],
   "blocks": [
@@ -2228,7 +2275,6 @@
           "type": "color_scheme",
           "id": "color_scheme",
           "label": "Color scheme for this card",
-          "default": "scheme-1",
           "info": "Choose a theme color scheme to style this card's background, text, and accents."
         },
         {
