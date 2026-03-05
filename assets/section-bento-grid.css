@@ -1607,9 +1607,9 @@ a.tag-card.tag-card--link:hover {
     border-radius: var(--radius-l);
   }
 
-  /* Text Card Mobile */
+  /* Text Card Mobile (refined for small phones: compact padding and typography) */
   .text-card {
-    padding: var(--spacing-6) var(--spacing-8);
+    padding: 10px 12px;
   }
 
   .text-card-svg-icon {
@@ -1618,23 +1618,23 @@ a.tag-card.tag-card--link:hover {
   }
 
   .text-card-heading {
-    font-size: var(--mobile-heading-font-size, 18px) !important;
+    font-size: var(--mobile-heading-font-size, 16px) !important;
     font-weight: var(--mobile-heading-font-weight, 600) !important;
   }
 
   .text-card-paragraph {
-    font-size: var(--mobile-paragraph-font-size, 14px) !important;
+    font-size: var(--mobile-paragraph-font-size, 13px) !important;
     font-weight: var(--mobile-paragraph-font-weight, 400) !important;
     line-height: var(--mobile-paragraph-line-height, 1.5) !important;
   }
 
   /* Product Card Mobile */
   .product-card {
-    padding: var(--spacing-6) var(--spacing-8);
+    padding: 10px 12px;
   }
 
   .product-card-title {
-    font-size: var(--mobile-title-font-size, 24px) !important;
+    font-size: var(--mobile-title-font-size, 20px) !important;
     font-weight: var(--mobile-title-font-weight, 600) !important;
   }
 
@@ -1646,7 +1646,7 @@ a.tag-card.tag-card--link:hover {
 
   /* Tag Card Mobile */
   .tag-card {
-    padding: var(--tag-card-mobile-padding-y, var(--spacing-6)) var(--tag-card-mobile-padding-x, var(--spacing-8));
+    padding: 10px 12px;
   }
 
   .tag-card-inner {
@@ -1836,6 +1836,25 @@ a.tag-card.tag-card--link:hover {
     align-items: flex-end !important;
   }
 
+  /* Content card typography and spacing (refined for small phones) */
+  .content-card-text-side {
+    padding: 12px;
+  }
+
+  .content-card-main-text {
+    font-family: var(--font-heading-family);
+    font-size: var(--mobile-main-text-font-size, 18px) !important;
+    font-weight: var(--mobile-main-text-font-weight, 600) !important;
+    line-height: var(--mobile-main-text-line-height, 1.1) !important;
+    color: inherit;
+    margin: 0;
+  }
+
+  .content-card-tag {
+    font-size: var(--mobile-tag-font-size, 10px) !important;
+    font-weight: var(--mobile-tag-font-weight, 600) !important;
+  }
+
   /* Sprite side sizing for mobile */
   .content-card[data-mobile-direction='column'] .content-card-sprite-side {
     width: 100% !important;
@@ -1865,9 +1884,9 @@ a.tag-card.tag-card--link:hover {
   }
 
   .tag-card-main {
-    font-size: var(--mobile-main-font-size) !important;
-    font-weight: var(--mobile-main-font-weight) !important;
-    line-height: var(--mobile-main-line-height) !important;
+    font-size: var(--mobile-main-font-size, 13px) !important;
+    font-weight: var(--mobile-main-font-weight, 600) !important;
+    line-height: var(--mobile-main-line-height, 1.4) !important;
   }
 
   .tag-card-text-group {
