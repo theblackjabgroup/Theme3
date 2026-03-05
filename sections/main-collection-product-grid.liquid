@@ -108,13 +108,13 @@
   }
 
   /* Responsive Adjustments */
-  @media screen and (max-width: 1200px) {
+  @media screen and (max-width: 1024px) {
     #product-grid-{{ section.id }} {
       grid-template-columns: repeat({{ section.settings.columns_tablet | default: 2 }}, 1fr);
     }
   }
 
-  @media screen and (max-width: 900px) {
+  @media screen and (max-width: 989px) {
     #product-grid-{{ section.id }} {
       grid-template-columns: repeat({{ section.settings.columns_mobile | default: 1 }}, 1fr);
       gap: {{ section.settings.grid_gap_mobile | default: 9 }}px;

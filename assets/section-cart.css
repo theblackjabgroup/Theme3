@@ -289,7 +289,7 @@
 }
 
 /* Mobile: tablet and below */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 749px) {
     .template-cart .cart__footer-wrapper {
         padding: 30px 20px !important;
     }
@@ -350,38 +350,6 @@
         margin-top: 30px;
         padding-top: 30px;
         flex-wrap: wrap;
-    }
-}
-
-/* Mobile: small phones */
-@media screen and (max-width: 480px) {
-    .template-cart .cart__footer-wrapper {
-        padding: 24px 16px !important;
-    }
-    .cart-sidebar__title {
-        font-size: 20px;
-    }
-    .cart-content-inner {
-        padding: 24px 16px;
-    }
-    .cart-title {
-        font-size: 28px;
-        margin-bottom: 24px;
-    }
-    .cart-item__name {
-        font-size: 18px !important;
-    }
-    .cart__checkout-button {
-        height: 52px !important;
-        font-size: 14px !important;
-    }
-    .cart-sidebar__row {
-        margin-bottom: 18px;
-        font-size: 13px;
-    }
-    .cart-sidebar__row.total {
-        font-size: 15px;
-        margin-top: 24px;
     }
 }
 

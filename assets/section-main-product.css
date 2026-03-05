@@ -951,7 +951,7 @@ accordion-item[open] .accordion__wrapper {
   display: none;
 }
 
-@media (max-width: 1250px) {
+@media (max-width: 1024px) {
   .product-hero-section {
     display: none;
   }

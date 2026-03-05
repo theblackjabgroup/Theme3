@@ -1955,7 +1955,7 @@ body.header-disabled .vertical-sidebar-header {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 749px) {
   #MainContent,
   main {
     padding-top: calc(var(--header-height-mobile, 50px) + 20px);
@@ -2046,15 +2046,5 @@ body.header-disabled .vertical-sidebar-header {
   .mega-menu-predictive-search {
     margin-top: 20px;
     padding-top: 20px;
-  }
-}
-
-@media (max-width: 480px) {
-  .mega-menu-image-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .mega-menu-title {
-    font-size: 28px;
   }
 }

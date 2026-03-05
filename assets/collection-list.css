@@ -55,22 +55,15 @@
   align-items: stretch;
 }
 
-/* Responsive - Tablet */
-@media screen and (max-width: 1200px) {
+/* Responsive - Tablet (750–989px): 3 columns */
+@media screen and (min-width: 750px) and (max-width: 989px) {
   .custom-collection-list__grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
-/* Responsive - Mobile */
-@media screen and (max-width: 900px) {
-  .custom-collection-list__grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* Responsive - Small Mobile */
-@media screen and (max-width: 600px) {
+/* Responsive - Mobile (≤749px): 1 column; 750–989 already set above */
+@media screen and (max-width: 749px) {
   .custom-collection-list__grid {
     grid-template-columns: 1fr;
     gap: 16px;

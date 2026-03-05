@@ -113,24 +113,6 @@
   }
 }
 
-@media (max-width: 389px) {
-  .contact-page__inner {
-    padding: 0 12px;
-  }
-
-  .contact-page__left-card {
-    padding: var(--contact-card-padding-mobile, 16px);
-  }
-
-  .contact-page__form-card {
-    padding: 1rem;
-  }
-
-  .contact-page__newsletter {
-    padding: 1.5rem 1rem;
-  }
-}
-
 .contact-page__grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -535,6 +517,7 @@
   color: #b8e0b8;
 }
 
+/* Newsletter row: stack only on very narrow screens so 550–749px keeps horizontal row */
 @media (max-width: 549px) {
   .contact-page__newsletter-row {
     flex-direction: column;

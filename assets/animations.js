@@ -5,7 +5,7 @@ const SCROLL_ANIMATION_CANCEL_CLASSNAME = 'scroll-trigger--cancel';
 const PAGE_LOAD_ANIMATION_SELECTOR = '[data-page-load-animate]';
 
 function isMobileViewport() {
-  return window.innerWidth <= 768;
+  return window.innerWidth <= 749;
 }
 
 function getThemeScrollAnimationSettings() {

@@ -178,7 +178,7 @@ img.scrolling-text-flip-icon {
   }
 }
 
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 749px) {
   .scrolling-text-flip-item {
     width: calc(var(--flip-width) * 0.8);
     height: calc(var(--flip-height) * 0.8);

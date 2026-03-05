@@ -55,7 +55,7 @@
   border-radius: var(--radius-2xl);
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 749px) {
   .product-grid-header__title {
     font-size: 32px;
   }

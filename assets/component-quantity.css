@@ -193,7 +193,7 @@
   display: none;
 }
 
-@media screen and (max-width: 990px) {
+@media screen and (max-width: 989px) {
   .cart-item__quantity-cell {
     width: 90px;
     padding: 12px 5px;
@@ -216,7 +216,7 @@
   }
 }
 
-@media screen and (max-width: 640px) {
+@media screen and (max-width: 749px) {
   .cart-item__quantity-selector {
     padding: 5px 6px;
     gap: 6px;

@@ -129,6 +129,17 @@
   --radius-full: var(--radius-pill);
   --radius-round: var(--radius-pill);
   --radius-9999: var(--radius-pill);
+
+  /* ============================================
+     BREAKPOINT TOKENS (mobile-first)
+     Tiers: mobile <=749 | tablet 750–989 | large >=990 | desktop >=1025
+     ============================================ */
+  --breakpoint-mobile-max: 749px;   /* max-width for mobile-only */
+  --breakpoint-tablet: 750px;       /* min-width for tablet and up */
+  --breakpoint-tablet-max: 989px;  /* max-width for tablet-only (use with min-width: 750px) */
+  --breakpoint-large: 990px;        /* min-width for large and up */
+  --breakpoint-desktop: 1025px;    /* min-width for desktop */
+  --breakpoint-desktop-max: 1024px; /* max-width for below-desktop */
   
   /* ============================================
      TYPOGRAPHY TOKENS
@@ -261,13 +272,6 @@
   --container-xl: 1280px;
   --container-2xl: 1536px;
   
-  /* Breakpoints (for reference) */
-  --breakpoint-sm: 640px;
-  --breakpoint-md: 768px;
-  --breakpoint-lg: 1024px;
-  --breakpoint-xl: 1280px;
-  --breakpoint-2xl: 1536px;
-  
   /* ============================================
      ICON & SIZE TOKENS
      ============================================ */
@@ -298,7 +302,8 @@
 }
 
 /* Mobile: design scale max 16px */
-@media (max-width: 768px) {
+/* Mobile tier: <=749px */
+@media (max-width: 749px) {
   :root {
     --radius-2xl: 16px;
   }

@@ -15,7 +15,7 @@ class AnimatedHeader {
     this.animationSpeed = window.headerAnimationSpeed || 1;
 
     // Check if mobile device (disable animations on mobile)
-    this.isMobile = window.innerWidth <= 768;
+    this.isMobile = window.innerWidth <= 749;
 
     // State tracking
     this.desktopIsVisible = true;
@@ -51,7 +51,7 @@ class AnimatedHeader {
       'resize',
       () => {
         // Update mobile detection on resize
-        this.isMobile = window.innerWidth <= 768;
+        this.isMobile = window.innerWidth <= 749;
         // Update transition styles based on new mobile state
         this.setInitialStyles();
         // Update header position based on current scroll state
