@@ -64,6 +64,7 @@
           render 'global-btn',
           text: section.settings.shop_all_label | default: 'Shop all',
           url: section.settings.shop_all_link | default: featured_collection.url,
+          fit_width: false,
           class: 'fc3d__shop-all'
         -%}
       {%- endif -%}
@@ -148,12 +149,14 @@
       {% render 'global-btn',
         text: '←',
         type: 'button',
+        fit_width: false,
         class: 'fc3d__nav fc3d__nav--prev',
         attributes: 'data-fc3d-prev aria-label="Previous"'
       %}
       {% render 'global-btn',
         text: '→',
         type: 'button',
+        fit_width: false,
         class: 'fc3d__nav fc3d__nav--next',
         attributes: 'data-fc3d-next aria-label="Next"'
       %}
