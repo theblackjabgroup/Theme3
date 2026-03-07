@@ -28,15 +28,6 @@
     height: auto !important;
   }
 
-  #bento-grid-{{ section.id }} .text-card-inner {
-    overflow: visible !important;
-    scrollbar-width: none !important;
-  }
-
-  #bento-grid-{{ section.id }} .text-card-inner::-webkit-scrollbar {
-    width: 0 !important;
-    height: 0 !important;
-  }
   {%- if section.settings.section_background_color != blank and section.settings.section_background_color != 'rgba(0,0,0,0)' -%}
   #bento-grid-{{ section.id }}.bento-grid-container,
   #bento-grid-{{ section.id }}.bento-grid-container.color-{{ scheme.id }} {
@@ -741,30 +732,39 @@
               style=" {{ block_scheme_style }} --desktop-heading-font-size: {{ heading_size }}px; --desktop-heading-font-weight: {{ heading_weight }}; --mobile-heading-font-size: {{ mobile_heading_size }}px; --mobile-heading-font-weight: {{ mobile_heading_weight }}; --desktop-paragraph-font-size: {{ para_size }}px; --desktop-paragraph-font-weight: {{ para_weight }}; --desktop-paragraph-line-height: {{ para_line_height }}; --mobile-paragraph-font-size: {{ mobile_para_size }}px; --mobile-paragraph-font-weight: {{ mobile_para_weight }}; --mobile-paragraph-line-height: {{ mobile_para_line_height }}; --desktop-button-font-size: {{ button_size }}px; --desktop-button-font-weight: {{ button_weight }}; --mobile-button-font-size: {{ mobile_button_size }}px; --mobile-button-font-weight: {{ mobile_button_weight }};"
             >
               <div class="text-card-inner">
-                {%- if block.settings.enable_svg and block.settings.svg_icon != blank -%}
-                  <div class="text-card-svg">
-                    <img
-                      src="{{ block.settings.svg_icon | image_url: width: 80 }}"
-                      alt=""
-                      class="text-card-svg-icon"
-                      width="80"
-                      height="80"
-                      loading="lazy"
-                    >
-                  </div>
-                {%- endif -%}
+                <div class="text-card-scroll-wrapper">
+                  <div class="text-card-scroll">
+                    {%- if block.settings.enable_svg and block.settings.svg_icon != blank -%}
+                      <div class="text-card-svg">
+                        <img
+                          src="{{ block.settings.svg_icon | image_url: width: 80 }}"
+                          alt=""
+                          class="text-card-svg-icon"
+                          width="80"
+                          height="80"
+                          loading="lazy"
+                        >
+                      </div>
+                    {%- endif -%}
 
-                {%- if block.settings.enable_heading and block.settings.heading != blank -%}
-                  <h3 class="text-card-heading" style="color: var(--color-heading, {{ heading_color }});">
-                    {{ block.settings.heading }}
-                  </h3>
-                {%- endif -%}
+                    {%- if block.settings.enable_heading and block.settings.heading != blank -%}
+                      <h3 class="text-card-heading" style="color: var(--color-heading, {{ heading_color }});">
+                        {{ block.settings.heading }}
+                      </h3>
+                    {%- endif -%}
 
-                {%- if block.settings.paragraph != blank -%}
-                  <div class="text-card-paragraph">
-                    {{ block.settings.paragraph }}
+                    {%- if block.settings.paragraph != blank -%}
+                      <div class="text-card-paragraph">
+                        {{ block.settings.paragraph }}
+                      </div>
+                    {%- endif -%}
                   </div>
-                {%- endif -%}
+                  <div class="text-card-scrollbar" aria-hidden="true">
+                    <div class="text-card-scrollbar-track">
+                      <div class="text-card-scrollbar-thumb"></div>
+                    </div>
+                  </div>
+                </div>
 
                 {%- if block.settings.button_text != blank -%}
                   <div class="text-card-button-wrapper text-card-button--align-{{ button_align }}">
@@ -826,29 +826,9 @@
                         | image_tag: loading: 'lazy', alt: product.title, class: 'product-card-image'
                       }}
                     </div>
-                  {%- elsif block.settings.default_product_image != blank -%}
-                    <div class="product-card-image-wrapper">
-                      {{
-                        block.settings.default_product_image
-                        | image_url: width: 600
-                        | image_tag:
-                          loading: 'lazy',
-                          alt: 'Product',
-                          class: 'product-card-image',
-                          width: 600,
-                          height: 600
-                      }}
-                    </div>
                   {%- else -%}
                     <div class="product-card-image-wrapper">
-                      <img
-                        src="https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-collection-1_large.png?v=1530129113"
-                        alt="Product placeholder"
-                        class="product-card-image"
-                        loading="lazy"
-                        width="600"
-                        height="600"
-                      >
+                      {{ 'product-apparel-2' | placeholder_svg_tag: 'product-card-image product-card-placeholder' }}
                     </div>
                   {%- endif -%}
                 </div>
@@ -952,8 +932,8 @@
 
           {%- when 'toggle_card' -%}
             {%- assign orientation = block.settings.toggle_orientation | default: 'vertical' -%}
-            {%- assign label_off = block.settings.label_off | default: 'SWITCH TO LIGHT' -%}
-            {%- assign label_on = block.settings.label_on | default: 'SWITCH TO DARK' -%}
+            {%- assign label_off = block.settings.label_off | default: 'LIGHT MODE' -%}
+            {%- assign label_on = block.settings.label_on | default: 'DARK MODE' -%}
             {%- assign svg_off = block.settings.svg_off -%}
             {%- assign svg_on = block.settings.svg_on -%}
 
@@ -968,7 +948,7 @@
                   id="toggle-{{ block.id }}"
                   class="toggle-input-hidden"
                   data-toggle-input
-                  data-scheme-on="color-{{ block.settings.scheme_on.id | default: 'scheme-2' }}"
+                  data-scheme-on="color-{{ block.settings.scheme_on.id | default: 'scheme-4' }}"
                   data-scheme-off="color-{{ block.settings.scheme_off.id | default: 'scheme-1' }}"
                   {% if block.settings.checked_by_default %}
                     checked
@@ -3426,12 +3406,6 @@
           "label": "Product"
         },
         {
-          "type": "image_picker",
-          "id": "default_product_image",
-          "label": "Default Product Image",
-          "info": "Image to display when no product is selected or product has no image"
-        },
-        {
           "type": "checkbox",
           "id": "show_tag",
           "label": "Show tag",
@@ -3843,13 +3817,13 @@
           "type": "text",
           "id": "label_off",
           "label": "Label (Off)",
-          "default": "SWITCH TO LIGHT"
+          "default": "LIGHT MODE"
         },
         {
           "type": "text",
           "id": "label_on",
           "label": "Label (On)",
-          "default": "SWITCH TO DARK"
+          "default": "DARK MODE"
         },
         {
           "type": "checkbox",
@@ -3871,7 +3845,7 @@
           "type": "color_scheme",
           "id": "scheme_on",
           "label": "Scheme (On / Toggled)",
-          "default": "scheme-3"
+          "default": "scheme-4"
         },
         {
           "type": "header",
@@ -4006,8 +3980,8 @@
             "column_span": 1.5,
             "row_span": 3.0,
             "toggle_orientation": "vertical",
-            "label_on": "SWITCH TO DARK",
-            "label_off": "SWITCH TO LIGHT"
+            "label_on": "DARK MODE",
+            "label_off": "LIGHT MODE"
           }
         }
       ]

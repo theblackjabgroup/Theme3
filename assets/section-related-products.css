@@ -7,8 +7,11 @@
   width: calc(100% - var(--margin-horizontal, 0) * 2);
   box-sizing: border-box;
 }
-.related-products .global-btn__shadow{
+.related-products .global-btn:not(.global-btn--fit-content) .global-btn__shadow {
   width: 100%;
+}
+.scroll-nav .global-btn .global-btn__shadow {
+  top:6px;
 }
 
 /* Header Banner */
@@ -59,9 +62,12 @@
   white-space: nowrap;
   display: inline-block;
 }
-.related-products-header__button .global-btn__shadow {
-  top: 9px;
+/* Keep View all button content-width (fit_width: false) in flex header */
+.related-products-header__button.global-btn--fit-content {
+  width: auto;
+  flex: 0 0 auto;
 }
+
 
 /* Desktop button - show in banner */
 .related-products-header__button--desktop {

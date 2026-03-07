@@ -8,7 +8,7 @@
 {%- endcomment -%}
 
 {%- if collection and collection != empty -%}
-  {%- assign overlay_btn_text = section_settings.overlay_button_text | default: 'Love that! (Check it out)' -%}
+  {%- assign overlay_btn_text = section_settings.overlay_button_text | default: 'Check it out' -%}
   <div class="custom-collection-card-wrapper">
     <div class="custom-collection-card">
       <a href="{{ collection.url }}" class="custom-collection-card__main-link">

@@ -118,7 +118,12 @@
             {{ block.shopify_attributes }}
           >
             <span class="price-main">{{- current_variant.price | money_without_trailing_zeros -}}</span>
-            <span class="price-compare" {% unless current_variant.compare_at_price > current_variant.price %}style="display:none"{% endunless %}>
+            <span
+              class="price-compare"
+              {% unless current_variant.compare_at_price > current_variant.price %}
+                style="display:none"
+              {% endunless %}
+            >
               {{ current_variant.compare_at_price | money_without_trailing_zeros }}
             </span>
           </div>
@@ -161,29 +166,46 @@
                   {% endunless %}
                   <div class="variant-options-row">
                     {% for value in option.values %}
+                      {%- assign radio_id = section.id
+                        | append: '-'
+                        | append: option.position
+                        | append: '-'
+                        | append: forloop.index
+                      -%}
                       <input
                         type="radio"
-                        id="{{ section.id }}-{{ option.position }}-{{ forloop.index }}"
+                        id="{{ radio_id }}"
                         name="{{ option.name }}"
                         value="{{ value | escape }}"
                         form="{{ product_form_id }}"
+                        class="product-form__variant-radio visually-hidden"
                         {% if option.selected_value == value %}
                           checked
                         {% endif %}
                       >
                       <label
-                        for="{{ section.id }}-{{ option.position }}-{{ forloop.index }}"
+                        for="{{ radio_id }}"
+                        class="product-form__variant-option-label{% if option.name == 'Color' %} product-form__variant-option-label--color{% endif %}"
                         {% if option.name == 'Color' %}
-                          class="color-swatch" style="background-color: {{ value | downcase | replace: ' ', '' }}"
+                          style="--variant-swatch-color: {{ value | downcase | replace: ' ', '' }}"
                         {% endif %}
                       >
-                        <span
-                          {% if option.name == 'Color' %}
-                            style="display:none"
-                          {% endif %}
-                        >
-                          {{- value -}}
-                        </span>
+                        {% if option.name == 'Color' %}
+                          <span
+                            class="product-form__variant-swatch"
+                            style="background-color: {{ value | downcase | replace: ' ', '' }}"
+                            aria-hidden="true"
+                          ></span>
+                          <span class="visually-hidden">{{ value }}</span>
+                        {% else %}
+                          {% comment %} Always primary; selected state is applied via CSS (:checked + label) so previous selection reverts when user picks another {% endcomment %}
+                          {% render 'global-btn',
+                            text: value,
+                            variant: 'primary',
+                            type: 'button',
+                            class: 'product-form__variant-option-btn'
+                          %}
+                        {% endif %}
                       </label>
                     {% endfor %}
                   </div>

@@ -18,12 +18,11 @@
             "column_span": 0.7,
             "row_span": 2.2,
             "toggle_orientation": "vertical",
-            "label_on": "SWITCH TO LIGHT",
-            "label_off": "SWITCH TO DARK",
+            "label_on": "DARK MODE",
+            "label_off": "LIGHT MODE",
             "mobile_column_span": 0.6,
             "mobile_row_span": 0.3,
-                        "color_scheme": "scheme-2",
-            "dark_mode_color_scheme": "scheme-2"
+            "color_scheme": "scheme-1"
           }
         },
         "card_1": { 
@@ -96,7 +95,9 @@
             "tag_border_color": "#306030",
             "main_text_color": "#306030",
             "show_icon": true,
-            "mobile_layout_direction": "column"
+            "mobile_layout_direction": "column",
+                            "color_scheme": "scheme-1",
+            "dark_mode_color_scheme": "scheme-4"
           } 
         },
         "card_6": { 

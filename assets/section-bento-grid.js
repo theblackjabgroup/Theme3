@@ -203,9 +203,91 @@
     });
   }
 
+  function initTextCardScrollbars() {
+    document.querySelectorAll('.text-card-scroll-wrapper').forEach((wrapper) => {
+      const scrollEl = wrapper.querySelector('.text-card-scroll');
+      const track = wrapper.querySelector('.text-card-scrollbar-track');
+      const thumb = wrapper.querySelector('.text-card-scrollbar-thumb');
+      if (!scrollEl || !track || !thumb) return;
+
+      function updateThumb() {
+        const { scrollHeight, clientHeight, scrollTop } = scrollEl;
+        const trackHeight = track.clientHeight;
+        const canScroll = scrollHeight > clientHeight;
+
+        thumb.style.display = canScroll ? 'block' : 'none';
+        if (!canScroll) return;
+
+        const thumbHeight = Math.max(24, Math.round((clientHeight / scrollHeight) * trackHeight));
+        const maxTop = trackHeight - thumbHeight;
+        const thumbTop = scrollHeight === clientHeight ? 0 : (scrollTop / (scrollHeight - clientHeight)) * maxTop;
+        thumb.style.height = `${thumbHeight}px`;
+        thumb.style.top = `${thumbTop}px`;
+      }
+
+      function scrollToThumbPosition(thumbTop) {
+        const trackHeight = track.clientHeight;
+        const thumbHeight = thumb.clientHeight;
+        const maxThumbTop = trackHeight - thumbHeight;
+        if (maxThumbTop <= 0) return;
+        const p = thumbTop / maxThumbTop;
+        const { scrollHeight, clientHeight } = scrollEl;
+        scrollEl.scrollTop = p * (scrollHeight - clientHeight);
+      }
+
+      scrollEl.addEventListener('scroll', updateThumb);
+
+      let dragStartY = 0;
+      let scrollStartTop = 0;
+      function onThumbPointerDown(e) {
+        e.preventDefault();
+        dragStartY = e.clientY ?? e.touches?.[0]?.clientY;
+        scrollStartTop = parseFloat(thumb.style.top) || 0;
+        const onMove = (e2) => {
+          const y = e2.clientY ?? e2.touches?.[0]?.clientY;
+          const dy = y - dragStartY;
+          const trackHeight = track.clientHeight;
+          const thumbHeight = thumb.clientHeight;
+          const maxTop = trackHeight - thumbHeight;
+          const newTop = Math.max(0, Math.min(maxTop, scrollStartTop + dy));
+          thumb.style.top = `${newTop}px`;
+          scrollToThumbPosition(newTop);
+        };
+        const onUp = () => {
+          document.removeEventListener('mousemove', onMove);
+          document.removeEventListener('mouseup', onUp);
+          document.removeEventListener('touchmove', onMove, { passive: false });
+          document.removeEventListener('touchend', onUp);
+        };
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+        document.addEventListener('touchmove', onMove, { passive: false });
+        document.addEventListener('touchend', onUp);
+      }
+      thumb.addEventListener('mousedown', onThumbPointerDown);
+      thumb.addEventListener('touchstart', onThumbPointerDown, { passive: false });
+
+      track.addEventListener('mousedown', (e) => {
+        if (e.target !== track) return;
+        const rect = track.getBoundingClientRect();
+        const y = e.clientY - rect.top;
+        const trackHeight = track.clientHeight;
+        const thumbHeight = thumb.clientHeight;
+        const maxTop = trackHeight - thumbHeight;
+        const newTop = Math.max(0, Math.min(maxTop, y - thumbHeight / 2));
+        scrollToThumbPosition(newTop);
+      });
+
+      const ro = new ResizeObserver(updateThumb);
+      ro.observe(wrapper);
+      updateThumb();
+    });
+  }
+
   function initAll() {
     initSpritesheetAnimations();
     initToggleCards();
+    initTextCardScrollbars();
   }
 
   if (document.readyState === 'loading') {
@@ -220,6 +302,7 @@
     if (section?.matches?.('.bento-grid-container')) {
       initSpritesheetAnimations();
       initToggleCards();
+      initTextCardScrollbars();
     }
   });
 })();

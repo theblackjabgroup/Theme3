@@ -37,7 +37,7 @@
   height: 100%;
   padding: var(--page-layout-padding, 24px);
   padding-right: 0 !important;
-  gap: var(--page-layout-gap,10px);
+  gap: var(--header-gap, var(--page-layout-gap, 10px));
   min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
@@ -434,7 +434,7 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
-  gap: var(--page-layout-gap,10px);
+  gap: var(--header-gap, var(--page-layout-gap, 10px));
   padding: var(--nav-item-padding, var(--nav-item-padding-top, 16px) var(--nav-item-padding-right, 16px) var(--nav-item-padding-bottom, 16px) var(--nav-item-padding-left, 16px));
   min-height: 100px;
   height: auto;

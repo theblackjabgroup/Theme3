@@ -60,9 +60,11 @@
       {%- endif -%}
 
       {%- if section.settings.show_shop_all and featured_collection != blank and featured_collection.url != blank -%}
-        {%- render 'global-btn',
+        {%-
+          render 'global-btn',
           text: section.settings.shop_all_label | default: 'Shop all',
           url: section.settings.shop_all_link | default: featured_collection.url,
+          fit_width: false,
           class: 'fc3d__shop-all'
         -%}
       {%- endif -%}
@@ -93,8 +95,7 @@
           {%- for product in featured_collection.products limit: products_to_show -%}
             <div class="fc3d-card fc3d-card--custom" data-fc3d-card data-fc3d-card-clone role="listitem">
               <div class="fc3d-card__custom">
-                {%-
-                  render 'card-product',
+                {%- render 'card-product',
                   card_product: product,
                   section_id: section.id,
                   quick_add: 'none',
@@ -115,18 +116,27 @@
                 <div class="fc3d-card__placeholder">
                   {{ 'product-apparel-2' | placeholder_svg_tag: 'fc3d-card__placeholder-svg' }}
                   <div class="fc3d-card__placeholder-title">Product {{ i }}</div>
-                  <p class="fc3d-card__placeholder-text">Add a collection in the section settings. By default the first collection is used.</p>
+                  <p class="fc3d-card__placeholder-text">
+                    Add a collection in the section settings. By default the first collection is used.
+                  </p>
                 </div>
               </div>
             </div>
           {%- endfor -%}
           {%- for i in (1..products_to_show) -%}
-            <div class="fc3d-card fc3d-card--custom fc3d-card--placeholder" data-fc3d-card data-fc3d-card-clone role="listitem">
+            <div
+              class="fc3d-card fc3d-card--custom fc3d-card--placeholder"
+              data-fc3d-card
+              data-fc3d-card-clone
+              role="listitem"
+            >
               <div class="fc3d-card__custom">
                 <div class="fc3d-card__placeholder">
                   {{ 'product-apparel-2' | placeholder_svg_tag: 'fc3d-card__placeholder-svg' }}
                   <div class="fc3d-card__placeholder-title">Product {{ i }}</div>
-                  <p class="fc3d-card__placeholder-text">Add a collection in the section settings. By default the first collection is used.</p>
+                  <p class="fc3d-card__placeholder-text">
+                    Add a collection in the section settings. By default the first collection is used.
+                  </p>
                 </div>
               </div>
             </div>
@@ -139,12 +149,14 @@
       {% render 'global-btn',
         text: '←',
         type: 'button',
+        fit_width: false,
         class: 'fc3d__nav fc3d__nav--prev',
         attributes: 'data-fc3d-prev aria-label="Previous"'
       %}
       {% render 'global-btn',
         text: '→',
         type: 'button',
+        fit_width: false,
         class: 'fc3d__nav fc3d__nav--next',
         attributes: 'data-fc3d-next aria-label="Next"'
       %}
@@ -156,10 +168,7 @@
 {
   "name": "Featured collection",
   "disabled_on": {
-    "groups": [
-      "header",
-      "footer"
-    ]
+    "groups": ["header", "footer"]
   },
   "tag": "section",
   "class": "section",
@@ -229,7 +238,7 @@
       "type": "text",
       "id": "overlay_button_text",
       "label": "Overlay button text",
-      "default": "Love that! (Check it out)"
+      "default": "Check it out"
     },
     {
       "type": "textarea",

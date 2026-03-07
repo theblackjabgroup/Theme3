@@ -38,8 +38,7 @@
     {%- endif -%}
 
     --header-width: {{ section.settings.header_width | default: 200 }}px;
-    --header-padding: {{ section.settings.header_padding | default: 16 }}px;
-    --header-gap: {{ section.settings.header_gap | default: 8 }}px;
+    --header-gap: {{ section.settings.header_gap | default: 16 }}px;
 
     /* Logo */
     --logo-padding-top: {{ section.settings.logo_padding_top | default: 24 }}px;
@@ -1356,6 +1355,7 @@
       "type": "color_scheme",
       "id": "dark_mode_color_scheme",
       "label": "Dark mode color scheme",
+      "default": "scheme-4",
       "info": "When the theme toggle is in dark mode, use this scheme for the header. Leave as default to keep the same as above."
     },
     {
@@ -1398,24 +1398,13 @@
     },
     {
       "type": "range",
-      "id": "header_padding",
-      "min": 8,
-      "max": 48,
-      "step": 4,
-      "unit": "px",
-      "label": "Header Inner Padding",
-      "default": 16,
-      "info": "Padding around the header content"
-    },
-    {
-      "type": "range",
       "id": "header_gap",
       "min": 8,
       "max": 48,
       "step": 4,
       "unit": "px",
       "label": "Header Section Gap",
-      "default": 8,
+      "default": 16,
       "info": "Gap between header sections (logo, buttons, nav)"
     },
     {
