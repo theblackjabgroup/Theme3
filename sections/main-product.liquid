@@ -560,6 +560,20 @@
       radio.addEventListener('change', updateProductState);
     });
 
+    // When variant option is the global-btn snippet (button inside label), sync click to radio
+    sectionContainer.addEventListener('click', (e) => {
+      const btn = e.target.closest('.product-form__variant-option-btn');
+      if (!btn) return;
+      const label = btn.closest('label[for]');
+      if (!label?.htmlFor) return;
+      const radio = document.getElementById(label.htmlFor);
+      if (radio && radio.type === 'radio') {
+        e.preventDefault();
+        radio.checked = true;
+        radio.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    });
+
     // Initial call to set correct initial state
     updateProductState();
   });

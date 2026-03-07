@@ -11,6 +11,7 @@
   - icon       {String}  SVG markup to prepend inside the button
   - badge      {String}  Badge text/number
   - icon_only  {Boolean} Show icon only, hide text label
+  - fit_width  {Boolean} When true, button takes full width of container; when false, width fits content (default: true)
   - attributes {String}  Extra HTML attributes (e.g. aria-label, data-*)
   - is_add_to_cart {Boolean} Adds sold-out message + loading spinner internals
 {%- endcomment -%}
@@ -19,6 +20,9 @@
 {%- assign btn_variant = variant | default: 'primary' -%}
 {%- assign btn_type = type | default: 'button' -%}
 {%- assign btn_icon_only = icon_only | default: false -%}
+{%- if fit_width == null -%}
+  {%- assign fit_width = true -%}
+{%- endif -%}
 
 {%- if class != blank -%}
   {%- assign btn_class = 'global-btn global-btn--' | append: btn_variant | append: ' ' | append: class -%}
@@ -29,6 +33,10 @@
 {%- if btn_icon_only -%}
   {%- assign btn_class = btn_class | append: ' global-btn--icon-only' -%}
 {%- endif -%}
+
+{%- unless fit_width -%}
+  {%- assign btn_class = btn_class | append: ' global-btn--fit-content' -%}
+{%- endunless -%}
 
 {%- if btn_variant == 'disabled' -%}
   {%- assign is_disabled = true -%}

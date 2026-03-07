@@ -51,7 +51,6 @@
     "subfooter": {
       "type": "subfooter",
       "settings": {
-        "color_scheme": "scheme-1",
         "margin_top": 0,
         "margin_bottom": 24,
         "margin_horizontal": 24,
@@ -59,7 +58,9 @@
         "padding_bottom": 20,
         "padding_horizontal": 24,
         "border_radius": 20,
-        "text_transform": "uppercase"
+        "text_transform": "uppercase",
+        "color_scheme": "scheme-2",
+        "dark_mode_color_scheme": "scheme-2"
       }
     }
   },

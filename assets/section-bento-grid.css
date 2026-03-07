@@ -55,10 +55,11 @@
 
 /* Text Card */
 .text-card {
-  padding: var(--spacing-8) var(--spacing-0) var(--spacing-8) var(--spacing-10);
+  padding: 24px var(--spacing-0) 24px 24px;
   align-items: flex-start;
   justify-content: flex-start;
   overflow: hidden;
+  min-height: 0; /* allow flex child to shrink so .text-card-inner can scroll */
 }
 
 .text-card-inner {
@@ -67,29 +68,74 @@
   width: 100%;
   height: 100%;
   gap: var(--spacing-8);
-  overflow-y: hidden;
-  overflow-x: hidden;
-  padding-right: var(--spacing-0);
+  min-height: 0;
+  padding-right: var(--spacing-12);
   padding-left: var(--spacing-0);
-  scrollbar-color: var(--color-heading)
-    color-mix(in srgb, var(--color-heading) 10%, transparent);
-  scrollbar-width: thin;
 }
 
-.text-card-inner::-webkit-scrollbar {
+/* Scrollable content only; CTA stays sticky at bottom. Custom scrollbar always visible. */
+.text-card-scroll-wrapper {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+
+.text-card-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+  padding-right: var(--spacing-2);
+  /* Hide native scrollbar; custom one is always visible */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.text-card-scroll::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+/* Custom scrollbar - always visible */
+.text-card-scrollbar {
+  flex-shrink: 0;
   width: var(--spacing-3);
+  padding: var(--spacing-10) 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  transform: translateX(24px);
 }
 
-.text-card-inner::-webkit-scrollbar-track {
+.text-card-scrollbar-track {
+  position: relative;
+  flex: 1;
+  min-height: 40px;
   background: color-mix(in srgb, var(--color-heading) 10%, transparent);
-  margin: var(--spacing-10) var(--spacing-0);
   border-radius: var(--radius-l);
+  cursor: pointer;
 }
 
-.text-card-inner::-webkit-scrollbar-thumb {
-  background-color: var(--color-heading);
-  margin: 100px var(--spacing-0);
+.text-card-scrollbar-thumb {
+  position: absolute;
+  left: 0;
+  width: 100%;
   border-radius: var(--radius-l);
+  background-color: var(--color-heading);
+  min-height: 24px;
+  pointer-events: auto;
+  cursor: grab;
+}
+
+.text-card-scrollbar-thumb:active {
+  cursor: grabbing;
 }
 
 .text-card-svg {
@@ -139,13 +185,14 @@
 }
 
 .text-card-button-wrapper {
-  max-width: 80%;
+  width: 100%;
   display: flex;
+  flex-shrink: 0; /* sticky at bottom of card */
   padding-bottom: 2px; /* prevent global-btn 3D shadow from being clipped */
 }
 .text-card-button-wrapper .global-btn__shadow {
 
-  top: 8px !important;
+  top: 3px !important;
 }
 
 .text-card-button--align-left {
@@ -165,27 +212,30 @@
 }
 
 /* Text Card Horizontal Alignment */
-.text-card--align-left .text-card-inner {
+.text-card--align-left .text-card-inner,
+.text-card--align-left .text-card-scroll {
   align-items: flex-start;
   text-align: left;
 }
 
-.text-card--align-center .text-card-inner {
+.text-card--align-center .text-card-inner,
+.text-card--align-center .text-card-scroll {
   align-items: center;
   text-align: center;
 }
 
-.text-card--align-right .text-card-inner {
+.text-card--align-right .text-card-inner,
+.text-card--align-right .text-card-scroll {
   align-items: flex-end;
   text-align: right;
 }
 
-/* Text Card Vertical Alignment */
+/* Text Card Vertical Alignment (within scroll area; CTA stays at bottom) */
 .text-card--valign-top {
   align-items: flex-start;
 }
 
-.text-card--valign-top .text-card-inner {
+.text-card--valign-top .text-card-scroll {
   justify-content: flex-start;
 }
 
@@ -193,7 +243,7 @@
   align-items: center;
 }
 
-.text-card--valign-center .text-card-inner {
+.text-card--valign-center .text-card-scroll {
   justify-content: center;
 }
 
@@ -201,7 +251,7 @@
   align-items: flex-end;
 }
 
-.text-card--valign-bottom .text-card-inner {
+.text-card--valign-bottom .text-card-scroll {
   justify-content: flex-end;
 }
 
@@ -236,7 +286,7 @@
 
 .product-card-title {
   font-family: var(--font-heading-family);
-  font-size: var(--desktop-title-font-size, 38px);
+  font-size: var(--desktop-title-font-size, 24px);
   font-weight: var(--desktop-title-font-weight, 600);
   color: var(--color-heading);
   line-height: 1.2;
@@ -448,11 +498,11 @@
 
 /* Video card border customization */
 .bento-card.video-card {
-  border: var(--border-width-thin, 1px) solid var(--video-border-color, var(--color-borders, var(--color-gray-300)));
+  border: none;
 }
 
 .bento-card.video-card:hover {
-  border: var(--border-width-thin, 1px) solid var(--video-border-hover-color, var(--video-border-color, var(--color-heading))) !important;
+  border: none;
 }
 
 /* Card Color Variants */
@@ -592,7 +642,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-background, var(--color-white)) !important;
+  background: var(--color-card-bg, var(--color-white)) !important;
   padding: 0;
   cursor: pointer;
   width: 100%;
@@ -630,6 +680,12 @@
   color: var(--color-card-text) !important;
   transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: var(--radius-pill);
+}
+
+/* When toggle is on (dark mode), use active scheme's card bg so the card matches scheme 4 */
+html[data-global-theme-active="true"] .bento-card.toggle-card {
+  background-color: var(--global-card-bg) !important;
+  color: var(--global-card-text) !important;
 }
 
 .toggle-switch-custom {
