@@ -267,7 +267,7 @@
         document.addEventListener('touchend', onUp);
       }
       thumb.addEventListener('mousedown', onThumbPointerDown);
-      thumb.addEventListener('touchstart', onThumbPointerDown, { passive: true });
+      thumb.addEventListener('touchstart', onThumbPointerDown, { passive: false });
 
       track.addEventListener('mousedown', (e) => {
         if (e.target !== track) return;

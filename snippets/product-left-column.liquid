@@ -198,9 +198,13 @@
                           ></span>
                           <span class="visually-hidden">{{ value }}</span>
                         {% else %}
+                          {%- assign option_btn_variant = 'primary' -%}
+                          {%- if option.selected_value == value -%}
+                            {%- assign option_btn_variant = 'secondary' -%}
+                          {%- endif -%}
                           {% render 'global-btn',
                             text: value,
-                            variant: 'primary',
+                            variant: option_btn_variant,
                             type: 'button',
                             class: 'product-form__variant-option-btn'
                           %}
