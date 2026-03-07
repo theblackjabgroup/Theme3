@@ -266,7 +266,7 @@
 }
 .variant-options-row {
   display: flex;
-  gap: var(--product-variant-gap, var(--spacing-l));
+  gap: var(--spacing-8);
   flex-wrap: wrap;
   padding: 0 64px;
 }
@@ -1031,7 +1031,7 @@ accordion-item[open] .accordion__wrapper {
     padding: var(--product-variant-padding-vertical-mobile, var(--product-variant-padding-vertical, 12px)) var(--product-variant-padding-horizontal-mobile, var(--product-variant-padding-horizontal, 20px));
   }
   .variant-options-row {
-    gap: var(--product-variant-gap-mobile, var(--product-variant-gap, 16px));
+    gap: var(--spacing-8);
   }
   .product-actions-row .quantity.quantity--drawer-style .quantity__button {
     border-radius: var(--product-quantity-border-radius-mobile, var(--radius-m));

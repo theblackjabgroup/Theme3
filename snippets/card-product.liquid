@@ -5,7 +5,7 @@
   - card_product: {Object} Product Liquid object (required)
   - show_badge: {Boolean} Show badge on card. Default: true (optional)
   - badge_text: {String} Badge text. Only shown when not blank (optional)
-  - overlay_button_text: {String} Overlay button text. Default: 'Love that! (Check it out)' (optional)
+  - overlay_button_text: {String} Overlay button text. Default: 'Check it out' (optional)
   - fallback_description: {String} Fallback text when product has no description. Default: 'Discover our amazing product.' (optional)
   - section_id: {String} The ID of the section that contains this card (optional)
   - quick_add: {String} Quick add mode. Values: 'none', 'standard', 'bulk'. Default: 'none' (optional)
@@ -35,7 +35,7 @@
       assign card_discount_pct = savings | times: 100 | divided_by: card_product.compare_at_price_max
     endif
   -%}
-  {%- assign overlay_btn_text = overlay_button_text | default: 'Love that! (Check it out)' -%}
+  {%- assign overlay_btn_text = overlay_button_text | default: 'Check it out' -%}
   {%- if use_quick_add_overlay -%}
     {%- assign overlay_btn_text = overlay_button_text | default: 'Love that! (Buy it)' -%}
   {%- endif -%}

@@ -166,7 +166,12 @@
                   {% endunless %}
                   <div class="variant-options-row">
                     {% for value in option.values %}
-                      {%- assign radio_id = section.id | append: '-' | append: option.position | append: '-' | append: forloop.index -%}
+                      {%- assign radio_id = section.id
+                        | append: '-'
+                        | append: option.position
+                        | append: '-'
+                        | append: forloop.index
+                      -%}
                       <input
                         type="radio"
                         id="{{ radio_id }}"
@@ -178,9 +183,19 @@
                           checked
                         {% endif %}
                       >
-                      <label for="{{ radio_id }}" class="product-form__variant-option-label{% if option.name == 'Color' %} product-form__variant-option-label--color{% endif %}"{% if option.name == 'Color' %} style="--variant-swatch-color: {{ value | downcase | replace: ' ', '' }}"{% endif %}>
+                      <label
+                        for="{{ radio_id }}"
+                        class="product-form__variant-option-label{% if option.name == 'Color' %} product-form__variant-option-label--color{% endif %}"
                         {% if option.name == 'Color' %}
-                          <span class="product-form__variant-swatch" style="background-color: {{ value | downcase | replace: ' ', '' }}" aria-hidden="true"></span>
+                          style="--variant-swatch-color: {{ value | downcase | replace: ' ', '' }}"
+                        {% endif %}
+                      >
+                        {% if option.name == 'Color' %}
+                          <span
+                            class="product-form__variant-swatch"
+                            style="background-color: {{ value | downcase | replace: ' ', '' }}"
+                            aria-hidden="true"
+                          ></span>
                           <span class="visually-hidden">{{ value }}</span>
                         {% else %}
                           {% render 'global-btn',

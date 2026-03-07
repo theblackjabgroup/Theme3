@@ -33,8 +33,6 @@
   assign variant_padding_vertical_mobile = 12
   assign variant_padding_horizontal = 28
   assign variant_padding_horizontal_mobile = 20
-  assign variant_gap = 24
-  assign variant_gap_mobile = 16
   assign quantity_border_radius = 10
   assign quantity_border_radius_mobile = 10
   assign add_to_cart_border_radius = 14
@@ -69,8 +67,6 @@
       assign variant_padding_vertical_mobile = block.settings.padding_vertical_mobile | default: 12
       assign variant_padding_horizontal = block.settings.padding_horizontal | default: 28
       assign variant_padding_horizontal_mobile = block.settings.padding_horizontal_mobile | default: 20
-      assign variant_gap = block.settings.gap | default: 24
-      assign variant_gap_mobile = block.settings.gap_mobile | default: 16
     elsif block.type == 'product_media'
       assign media_arrows_height = block.settings.media_arrows_height | default: 38
       assign arrows_border_radius = block.settings.arrows_border_radius | default: 14
@@ -116,8 +112,6 @@
     --product-variant-padding-vertical-mobile: {{ variant_padding_vertical_mobile }}px;
     --product-variant-padding-horizontal: {{ variant_padding_horizontal }}px;
     --product-variant-padding-horizontal-mobile: {{ variant_padding_horizontal_mobile }}px;
-    --product-variant-gap: {{ variant_gap }}px;
-    --product-variant-gap-mobile: {{ variant_gap_mobile }}px;
     --product-quantity-border-radius: {{ quantity_border_radius }}px;
     --product-quantity-border-radius-mobile: {{ quantity_border_radius_mobile }}px;
     --product-add-to-cart-border-radius: {{ add_to_cart_border_radius }}px;
@@ -1536,26 +1530,6 @@
           "unit": "px",
           "label": "Button Padding Horizontal (Mobile)",
           "default": 20
-        },
-        {
-          "type": "range",
-          "id": "gap",
-          "min": 4,
-          "max": 48,
-          "step": 2,
-          "unit": "px",
-          "label": "Gap Between Variants (Desktop)",
-          "default": 24
-        },
-        {
-          "type": "range",
-          "id": "gap_mobile",
-          "min": 4,
-          "max": 32,
-          "step": 2,
-          "unit": "px",
-          "label": "Gap Between Variants (Mobile)",
-          "default": 16
         }
       ]
     },
@@ -2273,7 +2247,7 @@
           "id": "show_border",
           "label": "Show Borders",
           "default": true
-        },
+        }
       ]
     },
     {

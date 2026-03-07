@@ -10,6 +10,9 @@
 .related-products .global-btn:not(.global-btn--fit-content) .global-btn__shadow {
   width: 100%;
 }
+.scroll-nav .global-btn .global-btn__shadow {
+  top:6px;
+}
 
 /* Header Banner */
 .related-products-header-banner {

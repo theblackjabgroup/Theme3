@@ -145,7 +145,8 @@
               variant: 'primary',
               type: 'button',
               class: 'scroll-nav-button scroll-prev',
-              attributes: 'aria-label="Previous products"'
+              attributes: 'aria-label="Previous products"',
+              fit_width: false
             -%}
             {%- capture next_arrow_icon -%}
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -158,20 +159,11 @@
               variant: 'primary',
               type: 'button',
               class: 'scroll-nav-button scroll-next',
-              attributes: 'aria-label="Next products"'
+              attributes: 'aria-label="Next products"',
+              fit_width: false
             -%}
           </div>
         </div>
-
-        {%- if header_button_text != blank -%}
-          {%- render 'global-btn',
-            text: header_button_text,
-            url: header_button_link,
-            variant: 'primary',
-            fit_width: false,
-            class: 'related-products-header__button related-products-header__button--mobile'
-          -%}
-        {%- endif -%}
       {%- endif -%}
     </product-recommendations>
   </div>
