@@ -281,6 +281,16 @@
   width: 100%;
 }
 
+/* Selected variant option: secondary look (sync with radio :checked for JS-driven selection) */
+.product-form__variant-radio:checked + .product-form__variant-option-label .global-btn__shadow {
+  background-color: var(--btn-secondary-shadow, var(--color-btn-shadow, #000000));
+}
+.product-form__variant-radio:checked + .product-form__variant-option-label .global-btn__content {
+  background-color: var(--btn-secondary-bg, #1E4ABD);
+  color: var(--btn-secondary-text, #F8F3F8);
+  border-color: var(--btn-secondary-border, #000000);
+}
+
 .product-form__input input[type='radio'] {
   display: none;
 }

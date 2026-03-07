@@ -198,13 +198,10 @@
                           ></span>
                           <span class="visually-hidden">{{ value }}</span>
                         {% else %}
-                          {%- assign option_btn_variant = 'primary' -%}
-                          {%- if option.selected_value == value -%}
-                            {%- assign option_btn_variant = 'secondary' -%}
-                          {%- endif -%}
+                          {% comment %} Always primary; selected state is applied via CSS (:checked + label) so previous selection reverts when user picks another {% endcomment %}
                           {% render 'global-btn',
                             text: value,
-                            variant: option_btn_variant,
+                            variant: 'primary',
                             type: 'button',
                             class: 'product-form__variant-option-btn'
                           %}
