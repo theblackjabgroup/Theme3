@@ -249,11 +249,9 @@
           const trackHeight = track.clientHeight;
           const thumbHeight = thumb.clientHeight;
           const maxTop = trackHeight - thumbHeight;
-          let newTop = Math.max(0, Math.min(maxTop, scrollStartTop + dy));
+          const newTop = Math.max(0, Math.min(maxTop, scrollStartTop + dy));
           thumb.style.top = `${newTop}px`;
           scrollToThumbPosition(newTop);
-          dragStartY = y;
-          scrollStartTop = newTop;
         };
         const onUp = () => {
           document.removeEventListener('mousemove', onMove);
