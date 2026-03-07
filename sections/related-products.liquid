@@ -164,6 +164,16 @@
             -%}
           </div>
         </div>
+
+        {%- if header_button_text != blank -%}
+          {%- render 'global-btn',
+            text: header_button_text,
+            url: header_button_link,
+            variant: 'primary',
+            fit_width: false,
+            class: 'related-products-header__button related-products-header__button--mobile'
+          -%}
+        {%- endif -%}
       {%- endif -%}
     </product-recommendations>
   </div>
