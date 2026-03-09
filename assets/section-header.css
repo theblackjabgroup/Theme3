@@ -301,9 +301,7 @@
   flex-shrink: 0;
   overflow: visible;
   object-fit: contain;
-  stroke: currentColor;
-  stroke-width: 2;
-  fill: none;
+  /* Icons (account, cart, search) are fill-based; path fill is set in SVG */
 }
 
 .action-icon-hover {
