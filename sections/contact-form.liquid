@@ -1,5 +1,35 @@
 {{ 'section-contact-form.css' | asset_url | stylesheet_tag }}
 
+{%- liquid
+  assign scheme = section.settings.color_scheme
+  if scheme == blank
+    assign scheme = settings.color_schemes | first
+  endif
+  assign contact_scheme_ref = section.settings.color_scheme
+  assign contact_scheme_id = contact_scheme_ref.id | default: contact_scheme_ref | append: ''
+  assign contact_scheme_obj = null
+  for s in settings.color_schemes
+    assign sid = s.id | append: ''
+    if sid == contact_scheme_id or s.id == contact_scheme_ref
+      assign contact_scheme_obj = s
+      break
+    endif
+  endfor
+  assign contact_dark_scheme_id = null
+  assign contact_dark_scheme_obj = null
+  if section.settings.dark_mode_color_scheme != blank
+    assign contact_dark_ref = section.settings.dark_mode_color_scheme
+    assign contact_dark_scheme_id = contact_dark_ref.id | default: contact_dark_ref | append: ''
+    for s in settings.color_schemes
+      assign sid = s.id | append: ''
+      if sid == contact_dark_scheme_id or s.id == contact_dark_ref
+        assign contact_dark_scheme_obj = s
+        break
+      endif
+    endfor
+  endif
+-%}
+
 {%- assign use_google_maps = false -%}
 {%- if section.settings.map_provider == 'google' and section.settings.google_maps_api_key != blank -%}
   {%- assign use_google_maps = true -%}

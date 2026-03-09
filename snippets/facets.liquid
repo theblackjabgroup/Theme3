@@ -216,13 +216,26 @@
                             break
                           endif
                         endfor
-                        if has_price_range_filter == false and results.products.size > 0
-                          for product in results.products
-                            if product.price > fallback_price_range_max
-                              assign fallback_price_range_max = product.price
+                        if has_price_range_filter == false
+                          assign is_paginated_slice = false
+                          if results.all_products_count and results.all_products_count > results.products.size
+                            assign is_paginated_slice = true
+                          endif
+                          if results.results_count and results.results_count > results.products.size
+                            assign is_paginated_slice = true
+                          endif
+                          if is_paginated_slice
+                            assign fallback_price_range_max = 100000
+                          elsif results.products.size > 0
+                            for product in results.products
+                              if product.price > fallback_price_range_max
+                                assign fallback_price_range_max = product.price
+                              endif
+                            endfor
+                            if fallback_price_range_max == 0
+                              assign fallback_price_range_max = 100000
                             endif
-                          endfor
-                          if fallback_price_range_max == 0
+                          else
                             assign fallback_price_range_max = 100000
                           endif
                         endif
