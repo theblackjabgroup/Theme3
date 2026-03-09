@@ -146,7 +146,6 @@
 }
 
 .global-btn--primary .global-btn__badge {
-  background: var(--btn-primary-border, #000000);
   color:       var(--btn-primary-bg, #F8F3F8);
 }
 

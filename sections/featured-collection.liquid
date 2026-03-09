@@ -109,17 +109,23 @@
             </div>
           {%- endfor -%}
         {%- else -%}
-          {%- comment -%} Placeholder when no collection or no products {%- endcomment -%}
+          {%- comment -%} Default placeholder cards using card-product snippet with dummy data {%- endcomment -%}
+          {%- assign placeholder_description_text = 'sections.featured_collection.placeholder_description' | t | default: 'Add a collection in the section settings. By default the first collection is used.' -%}
           {%- for i in (1..products_to_show) -%}
             <div class="fc3d-card fc3d-card--custom fc3d-card--placeholder" data-fc3d-card role="listitem">
               <div class="fc3d-card__custom">
-                <div class="fc3d-card__placeholder">
-                  {{ 'product-apparel-2' | placeholder_svg_tag: 'fc3d-card__placeholder-svg' }}
-                  <div class="fc3d-card__placeholder-title">Product {{ i }}</div>
-                  <p class="fc3d-card__placeholder-text">
-                    Add a collection in the section settings. By default the first collection is used.
-                  </p>
-                </div>
+                {%- capture placeholder_card_title -%}{{ 'sections.featured_collection.placeholder_title' | t | default: 'Product' }} {{ i }}{%- endcapture -%}
+                {%- render 'card-product',
+                  card_product: nil,
+                  placeholder_title: placeholder_card_title,
+                  placeholder_description: placeholder_description_text,
+                  section_id: section.id,
+                  quick_add: 'none',
+                  lazy_load: forloop.index > 3,
+                  show_badge: false,
+                  overlay_button_text: section.settings.overlay_button_text,
+                  fallback_description: placeholder_description_text
+                -%}
               </div>
             </div>
           {%- endfor -%}
@@ -131,13 +137,18 @@
               role="listitem"
             >
               <div class="fc3d-card__custom">
-                <div class="fc3d-card__placeholder">
-                  {{ 'product-apparel-2' | placeholder_svg_tag: 'fc3d-card__placeholder-svg' }}
-                  <div class="fc3d-card__placeholder-title">Product {{ i }}</div>
-                  <p class="fc3d-card__placeholder-text">
-                    Add a collection in the section settings. By default the first collection is used.
-                  </p>
-                </div>
+                {%- capture placeholder_card_title -%}{{ 'sections.featured_collection.placeholder_title' | t | default: 'Product' }} {{ i }}{%- endcapture -%}
+                {%- render 'card-product',
+                  card_product: nil,
+                  placeholder_title: placeholder_card_title,
+                  placeholder_description: placeholder_description_text,
+                  section_id: section.id,
+                  quick_add: 'none',
+                  lazy_load: true,
+                  show_badge: false,
+                  overlay_button_text: section.settings.overlay_button_text,
+                  fallback_description: placeholder_description_text
+                -%}
               </div>
             </div>
           {%- endfor -%}

@@ -63,13 +63,13 @@
     --card-hover-button-padding-horizontal: {{ settings.product_card_hover_button_padding_horizontal | default: 20 }}px;
     --card-hover-content-gap: {{ settings.product_card_hover_content_gap | default: 10 }}px;
     --card-hover-button-border-radius: {{ settings.product_card_hover_button_border_radius | default: 20 }}px;
-    --card-price-button-border-radius: {{ settings.product_card_price_button_border_radius | default: 20 }}px;
+    --card-price-button-border-radius: {{ settings.product_card_price_button_border_radius | default: 12 }}px;
     --card-price-font-size: {{ settings.product_card_price_font_size | default: 16 }}px;
     --card-price-font-weight: {{ settings.product_card_price_font_weight | default: 700 }};
     --card-price-padding-vertical: {{ settings.product_card_price_padding_vertical | default: 10 }}px;
     --card-price-padding-horizontal: {{ settings.product_card_price_padding_horizontal | default: 18 }}px;
     --card-price-border-width: {{ settings.product_card_price_border_width | default: 1 }}px;
-    --card-price-border-radius: {{ settings.product_card_price_border_radius | default: 20 }}px;
+    --card-price-border-radius: {{ settings.product_card_price_border_radius | default: 12 }}px;
     transition: all 0.3s ease;
   }
 
@@ -372,7 +372,8 @@
 {
   "name": "t:sections.main-collection-product-grid.name",
   "disabled_on": {
-    "groups": ["header", "footer"]
+    "groups": ["header", "footer"],
+    "templates": ["index"]
   },
   "class": "section",
   "settings": [

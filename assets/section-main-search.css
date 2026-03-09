@@ -53,7 +53,7 @@
   text-transform: uppercase;
   color: var(--color-heading);
   margin: var(--search-header-title-margin-top, 0.5rem) 0 var(--search-header-title-margin-bottom, 1.5rem);
-  line-height: var(--search-header-title-line-height, 0.9);
+  line-height: var(--search-header-title-line-height, 1.1);
 }
 
 .main-search-page-header__search {

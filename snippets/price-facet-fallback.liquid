@@ -1,0 +1,62 @@
+{%- comment -%}
+  Fallback price filter UI when collection.filters does not include price_range
+  (e.g. after currency/market change). Uses standard Shopify param names so
+  form submit still triggers price filtering when the backend supports it.
+  Accepts: range_max (number, in cents), id_prefix (string)
+{%- endcomment -%}
+{%- liquid
+  assign range_max = range_max | default: 100000
+  assign id_prefix = id_prefix | default: 'Filter-'
+  assign price_label = 'Price' | escape
+-%}
+<div class="price-facet-slider" data-price-range-max="{{ range_max }}" data-price-min-input-id="{{ id_prefix }}{{ price_label }}-GTE" data-price-max-input-id="{{ id_prefix }}{{ price_label }}-LTE">
+  <div class="price-facet-slider__track">
+    <input
+      type="range"
+      class="price-facet-slider__input price-facet-slider__input--min"
+      min="0"
+      max="{{ range_max }}"
+      value="0"
+      aria-label="{{ 'products.facets.from' | t | default: 'Min' }}"
+    >
+    <input
+      type="range"
+      class="price-facet-slider__input price-facet-slider__input--max"
+      min="0"
+      max="{{ range_max }}"
+      value="{{ range_max }}"
+      aria-label="{{ 'products.facets.to' | t | default: 'Max' }}"
+    >
+  </div>
+</div>
+<div class="price-facet-inputs-container">
+  <div class="field">
+    <span class="field-currency">{{ cart.currency.symbol }}</span>
+    <input
+      class="field__input price-facet-input-min"
+      name="filter.v.price.gte"
+      id="{{ id_prefix }}{{ price_label }}-GTE"
+      type="text"
+      inputmode="decimal"
+      placeholder="0"
+      data-pattern="\d| |,|\."
+      data-min="0"
+      data-max="{{ range_max | money_without_currency }}"
+    >
+  </div>
+  <span class="price-range-separator">-</span>
+  <div class="field">
+    <span class="field-currency">{{ cart.currency.symbol }}</span>
+    <input
+      class="field__input price-facet-input-max"
+      name="filter.v.price.lte"
+      id="{{ id_prefix }}{{ price_label }}-LTE"
+      type="text"
+      inputmode="decimal"
+      placeholder="{{ range_max | money_without_currency }}"
+      data-pattern="\d| |,|\."
+      data-min="0"
+      data-max="{{ range_max | money_without_currency }}"
+    >
+  </div>
+</div>

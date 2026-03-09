@@ -54,7 +54,7 @@
   font-weight: 950;
   color: var(--sale-badge-text, #000000);
   transform: rotate(var(--sale-badge-rotation, -15deg));
-  line-height: 0.8;
+  line-height: 1.1;
 }
 
 .custom-product-card__sale-badge-text span:first-child {
@@ -105,9 +105,9 @@
   justify-content: center;
   gap: 8px;
   padding: var(--card-price-padding-vertical, 10px) var(--card-price-padding-horizontal, 18px);
-  min-width: 80px;
+  min-width: 165px;
   border: var(--card-price-border-width, 1px) solid var(--color-text);
-  border-radius: var(--card-price-border-radius, var(--card-price-button-border-radius, 20px));
+  border-radius: var(--card-price-border-radius, var(--card-price-button-border-radius, 12px));
   font-family: var(--font-heading-family);
   font-weight: var(--card-price-font-weight, 700);
   font-size: var(--card-price-font-size, 1rem);
@@ -146,7 +146,7 @@
   padding: 12px 20px;
   min-width: 120px;
   height: 48px;
-  border-radius: var(--card-price-button-border-radius, 20px);
+  border-radius: var(--card-price-button-border-radius, 12px);
   font-family: var(--font-heading-family);
   font-weight: 700;
   font-size: 1rem;
@@ -246,7 +246,7 @@
     padding: 10px 14px;
     font-size: 0.85rem;
     border-width: 1.5px;
-    border-radius: var(--card-price-button-border-radius, 20px);
+    border-radius: var(--card-price-button-border-radius, 12px);
     box-shadow: 0 3px 0 0 var(--color-shadow);
     min-width: 0;
     height: 38px;

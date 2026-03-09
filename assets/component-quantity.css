@@ -49,6 +49,7 @@
   font-size: 12px;
   padding: 0;
   line-height: 1;
+  transition: transform 0.15s ease;
 }
 
 .quantity__button > * {
@@ -58,6 +59,14 @@
 .quantity__button svg {
   width: 12px;
   height: 12px;
+}
+
+.quantity__button:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.quantity__button:active:not(:disabled) {
+  transform: scale(0.96);
 }
 
 .quantity__button:disabled,
@@ -93,6 +102,17 @@
   font-weight: 400;
   padding: 0;
   box-shadow: 0 2px 0 #000;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.quantity.quantity--drawer-style .quantity__button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 0 #000;
+}
+
+.quantity.quantity--drawer-style .quantity__button:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: none;
 }
 
 .quantity.quantity--drawer-style .quantity__button svg {
@@ -121,17 +141,19 @@
   font-size: 16px !important;
   padding: 0 !important;
   margin: 0 !important;
-  box-shadow: 0 2px 0 #000;
   -moz-appearance: textfield;
   appearance: textfield;
-  cursor: default;
+  cursor: text;
   outline: none;
+  pointer-events: auto;
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
 }
 
 .quantity.quantity--drawer-style .quantity__input:focus,
 .quantity.quantity--drawer-style input:focus {
   outline: none;
-  box-shadow: 0 2px 0 #000;
 }
 
 .quantity.quantity--drawer-style .quantity__input::-webkit-outer-spin-button,

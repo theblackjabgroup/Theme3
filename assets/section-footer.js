@@ -121,7 +121,7 @@ function initFooterSocialHover() {
 
     let perRow = parseInt(grid.getAttribute('data-icons-per-row') || '4', 10);
     if (window.matchMedia('(max-width: 749px)').matches) {
-      perRow = parseInt(grid.getAttribute('data-icons-per-row-mobile') || '4', 10);
+      perRow = parseInt(grid.getAttribute('data-icons-per-row-mobile') || '6', 10);
     }
     const hoveredIndex = buttons.indexOf(box);
     const hoveredRow = Math.floor(hoveredIndex / perRow);

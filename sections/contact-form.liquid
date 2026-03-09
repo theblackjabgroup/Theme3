@@ -53,6 +53,42 @@
   }
 {%- endstyle -%}
 
+{%- comment -%} Contact: apply color scheme vars when theme toggle is active so section respects light/dark mode {%- endcomment -%}
+{%- if contact_scheme_obj -%}
+  {%- style -%}
+    html[data-global-theme-active="true"] #shopify-section-{{ section.id }} .contact-page {
+      --color-bg: {{ contact_scheme_obj.settings.color_bg }} !important;
+      --color-background: {{ contact_scheme_obj.settings.color_bg }} !important;
+      --color-card-bg: {{ contact_scheme_obj.settings.color_card_bg }} !important;
+      --color-card-text: {{ contact_scheme_obj.settings.color_card_text | default: contact_scheme_obj.settings.color_text }} !important;
+      --color-heading: {{ contact_scheme_obj.settings.color_heading }} !important;
+      --color-headings: {{ contact_scheme_obj.settings.color_heading }} !important;
+      --color-text: {{ contact_scheme_obj.settings.color_text }} !important;
+      --color-link: {{ contact_scheme_obj.settings.color_link }} !important;
+      --color-link-hover: {{ contact_scheme_obj.settings.color_link_hover }} !important;
+      --color-input-border: {{ contact_scheme_obj.settings.color_input_border }} !important;
+      --color-btn-shadow: {{ contact_scheme_obj.settings.color_btn_shadow }} !important;
+    }
+  {%- endstyle -%}
+{%- endif -%}
+{%- if contact_dark_scheme_obj -%}
+  {%- style -%}
+    html[data-global-theme-active="true"][data-active-scheme="color-{{ contact_dark_scheme_id }}"] #shopify-section-{{ section.id }} .contact-page {
+      --color-bg: {{ contact_dark_scheme_obj.settings.color_bg }} !important;
+      --color-background: {{ contact_dark_scheme_obj.settings.color_bg }} !important;
+      --color-card-bg: {{ contact_dark_scheme_obj.settings.color_card_bg }} !important;
+      --color-card-text: {{ contact_dark_scheme_obj.settings.color_card_text | default: contact_dark_scheme_obj.settings.color_text }} !important;
+      --color-heading: {{ contact_dark_scheme_obj.settings.color_heading }} !important;
+      --color-headings: {{ contact_dark_scheme_obj.settings.color_heading }} !important;
+      --color-text: {{ contact_dark_scheme_obj.settings.color_text }} !important;
+      --color-link: {{ contact_dark_scheme_obj.settings.color_link }} !important;
+      --color-link-hover: {{ contact_dark_scheme_obj.settings.color_link_hover }} !important;
+      --color-input-border: {{ contact_dark_scheme_obj.settings.color_input_border }} !important;
+      --color-btn-shadow: {{ contact_dark_scheme_obj.settings.color_btn_shadow }} !important;
+    }
+  {%- endstyle -%}
+{%- endif -%}
+
 <div class="contact-page contact-page-{{ section.id }} color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
   <div class="contact-page__inner ">
     <div class="contact-page__grid">
@@ -293,7 +329,7 @@
               </div>
             </div>
             <div class="contact-page__submit">
-              {%- render 'global-btn', text: section.settings.button_text | default: 'Send', type: 'submit', class: 'contact-page__submit-btn' -%}
+              {%- render 'global-btn', text: section.settings.button_text | default: 'Send', type: 'submit', class: 'contact-page__submit-btn', fit_width: false -%}
             </div>
           {%- endform -%}
         </div>
@@ -689,6 +725,12 @@
       "id": "color_scheme",
       "label": "t:sections.all.colors.label",
       "default": "scheme-1"
+    },
+    {
+      "type": "color_scheme",
+      "id": "dark_mode_color_scheme",
+      "label": "Dark mode color scheme",
+      "info": "When the theme toggle is in dark mode, use this scheme for the contact section."
     },
     {
       "type": "header",

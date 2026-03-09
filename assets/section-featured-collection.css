@@ -219,7 +219,7 @@
 }
 
 .fc3d-card__title {
-  font-size: clamp(18px, 2vw, 32px);
+  font-size: clamp(1.125rem, 2vw, 2rem);
   font-weight: 900;
   text-transform: uppercase;
   line-height: 1.1;
@@ -250,7 +250,7 @@
 }
 
 .fc3d-card__back-title {
-  font-size: clamp(20px, 2vw, 28px);
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
   font-weight: 900;
   text-transform: uppercase;
   color: #ffffff;
@@ -259,7 +259,7 @@
 }
 
 .fc3d-card__back-price {
-  font-size: clamp(18px, 1.8vw, 24px);
+  font-size: clamp(1.125rem, 1.8vw, 1.5rem);
   font-weight: 800;
   color: #ffffff;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 0 12px rgba(0, 0, 0, 0.6);
@@ -267,7 +267,7 @@
 }
 
 .fc3d-card__back-text {
-  font-size: clamp(12px, 1.2vw, 16px);
+  font-size: clamp(0.75rem, 1.2vw, 1rem);
   line-height: 1.5;
   color: #ffffff;
   max-width: 90%;
@@ -288,7 +288,7 @@
   text-decoration: none;
   text-transform: uppercase;
   font-weight: 800;
-  font-size: clamp(12px, 1.2vw, 14px);
+  font-size: clamp(0.75rem, 1.2vw, 0.875rem);
   transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
@@ -356,7 +356,7 @@
 
   .fc3d__title {
     font-size: clamp(2rem, 10.5vw, 2.85rem);
-    line-height: 0.95;
+    line-height: 1.1;
     letter-spacing: -0.02em;
   }
 

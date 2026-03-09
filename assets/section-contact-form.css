@@ -339,18 +339,9 @@
   overflow: visible;
 }
 
-/* Same as submit-button__shadow: height 100% + top 3px so shadow extends 3px below */
+/* Shadow layer removed per design – input fields have no shadow */
 .contact-page__input-shadow {
-  position: absolute;
-  top: 3px;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0,1);
-  border-radius: var(--radius-l);
-  z-index: 0;
-  pointer-events: none;
-  transition: transform 0.2s ease;
+  display: none;
 }
 
 .contact-page__input-3d--textarea .contact-page__input-shadow {
