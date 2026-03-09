@@ -4,9 +4,19 @@
 
 {%- liquid
   assign slide_count = 0
+  assign preview_fallback_product = null
+  if request.design_mode
+    assign preview_fallback_product = collections.first.products.first
+  endif
   for block in section.blocks
-    if block.type == 'slide' and block.settings.product != blank
-      assign slide_count = slide_count | plus: 1
+    if block.type == 'slide'
+      assign block_product = block.settings.product
+      if block_product == blank and preview_fallback_product != blank
+        assign block_product = preview_fallback_product
+      endif
+      if block_product != blank
+        assign slide_count = slide_count | plus: 1
+      endif
     endif
   endfor
   assign product_card_radius = '20px'
@@ -40,8 +50,11 @@
       <div class="bb-slideshow__left-stage" data-left-stage>
         {%- assign valid_index = 0 -%}
         {%- for block in section.blocks -%}
-          {%- if block.type == 'slide' and block.settings.product != blank -%}
-            {%- assign product = block.settings.product -%}
+          {%- assign product = block.settings.product -%}
+          {%- if request.design_mode and product == blank and preview_fallback_product != blank -%}
+            {%- assign product = preview_fallback_product -%}
+          {%- endif -%}
+          {%- if block.type == 'slide' and product != blank -%}
             {%- assign image_media = product.media[1] -%}
             {%- if image_media == blank -%}
               {%- assign image_media = product.featured_media -%}
@@ -108,13 +121,17 @@
               <div class="bb-slideshow__left-hero">
                 <h2 class="bb-slideshow__left-title">{{ product.title | truncatewords: 2, '...' }}</h2>
                 {%- if image_media != blank -%}
+                  {%- assign img_aspect = image_media.aspect_ratio
+                    | default: image_media.preview_image.aspect_ratio
+                    | default: 1
+                  -%}
                   <img
                     src="{{ image_media | image_url: width: 1400 }}"
                     alt="{{ image_media.alt | default: product.title | escape }}"
                     class="bb-slideshow__left-image"
                     loading="{% if valid_index == 0 %}eager{% else %}lazy{% endif %}"
                     width="1400"
-                    height="{{ 1400 | divided_by: image_media.preview_image.aspect_ratio }}"
+                    height="{{ 1400 | divided_by: img_aspect }}"
                   >
                 {%- else -%}
                   {{ 'product-apparel-2' | placeholder_svg_tag: 'bb-slideshow__placeholder-svg' }}
@@ -175,8 +192,11 @@
       <div class="bb-slideshow__card-stage" data-card-stage>
         {%- assign valid_index = 0 -%}
         {%- for block in section.blocks -%}
-          {%- if block.type == 'slide' and block.settings.product != blank -%}
-            {%- assign product = block.settings.product -%}
+          {%- assign product = block.settings.product -%}
+          {%- if request.design_mode and product == blank and preview_fallback_product != blank -%}
+            {%- assign product = preview_fallback_product -%}
+          {%- endif -%}
+          {%- if block.type == 'slide' and product != blank -%}
             <div
               class="bb-slideshow__card-slide{% if valid_index == 0 %} is-active{% endif %}"
               data-card-slide
@@ -360,7 +380,7 @@
     margin: 0;
     text-align: center;
     font-size: clamp(3rem, 5vw, 8rem);
-    line-height: 0.95;
+    line-height: 1.1;
     color: var(--color-heading);
     position: absolute;
     top: 8px;
@@ -521,13 +541,13 @@
     --card-hover-button-padding-horizontal: {{ settings.product_card_hover_button_padding_horizontal | default: 20 }}px;
     --card-hover-content-gap: {{ settings.product_card_hover_content_gap | default: 10 }}px;
     --card-hover-button-border-radius: {{ settings.product_card_hover_button_border_radius | default: 20 }}px;
-    --card-price-button-border-radius: {{ settings.product_card_price_button_border_radius | default: 20 }}px;
+    --card-price-button-border-radius: {{ settings.product_card_price_button_border_radius | default: 12 }}px;
     --card-price-font-size: {{ settings.product_card_price_font_size | default: 16 }}px;
     --card-price-font-weight: {{ settings.product_card_price_font_weight | default: 700 }};
     --card-price-padding-vertical: {{ settings.product_card_price_padding_vertical | default: 10 }}px;
     --card-price-padding-horizontal: {{ settings.product_card_price_padding_horizontal | default: 18 }}px;
     --card-price-border-width: {{ settings.product_card_price_border_width | default: 1 }}px;
-    --card-price-border-radius: {{ settings.product_card_price_border_radius | default: 20 }}px;
+    --card-price-border-radius: {{ settings.product_card_price_border_radius | default: 12 }}px;
     height: 100% !important;
     min-height: 0;
     border-radius: {{ product_card_radius }};
@@ -680,7 +700,7 @@
     }
   }
 
-  @media screen and (min-width: 750px) and (max-width: 1024px) {
+  @media screen and (max-width: 1024px) {
     #shopify-section-{{ section.id }} .bb-slideshow__right {
       grid-template-rows: auto auto auto;
     }
@@ -698,7 +718,8 @@
     }
   }
 
-  @media screen and (max-width: 749px) {
+  /* Tablet and mobile: same layout and styling (triggered as soon as desktop view ends) */
+  @media screen and (max-width: 1024px) {
     #shopify-section-{{ section.id }} .bb-slideshow-section {
       padding: {{ section.settings.padding_top | times: 0.7 | round: 0 }}px 16px {{ section.settings.padding_bottom | times: 0.7 | round: 0 }}px;
     }

@@ -207,6 +207,39 @@
                     </div>
                     <div class="facets-drawer__panel-inner facets-drawer__panel-inner--filters">
                       <script src="{{ 'show-more.js' | asset_url }}" defer="defer"></script>
+                      {%- liquid
+                        assign has_price_range_filter = false
+                        assign fallback_price_range_max = 0
+                        for f in results.filters
+                          if f.type == 'price_range'
+                            assign has_price_range_filter = true
+                            break
+                          endif
+                        endfor
+                        if has_price_range_filter == false
+                          assign is_paginated_slice = false
+                          if results.all_products_count and results.all_products_count > results.products.size
+                            assign is_paginated_slice = true
+                          endif
+                          if results.results_count and results.results_count > results.products.size
+                            assign is_paginated_slice = true
+                          endif
+                          if is_paginated_slice
+                            assign fallback_price_range_max = 100000
+                          elsif results.products.size > 0
+                            for product in results.products
+                              if product.price > fallback_price_range_max
+                                assign fallback_price_range_max = product.price
+                              endif
+                            endfor
+                            if fallback_price_range_max == 0
+                              assign fallback_price_range_max = 100000
+                            endif
+                          else
+                            assign fallback_price_range_max = 100000
+                          endif
+                        endif
+                      -%}
                       {%- for filter in results.filters -%}
                         {% liquid
                           assign presentation = filter.presentation | default: default_presentation
@@ -315,6 +348,22 @@
                             </div>
                         {% endcase %}
                       {%- endfor -%}
+                      {%- if has_price_range_filter == false and fallback_price_range_max > 0 -%}
+                        <div
+                          class="facets-drawer__filter-group facets__disclosure-vertical js-filter"
+                          data-index="price-fallback"
+                        >
+                          <h3 class="facets-drawer__filter-heading">Price</h3>
+                          <div id="Facet-price-fallback-{{ section.id }}" class="facets__display-vertical">
+                            <price-range class="facets__price">
+                              {%- render 'price-facet-fallback',
+                                range_max: fallback_price_range_max,
+                                id_prefix: 'Filter-'
+                              -%}
+                            </price-range>
+                          </div>
+                        </div>
+                      {%- endif -%}
                     </div>
                     <div class="facets-drawer__footer">
                       {%- render 'global-btn',
@@ -330,7 +379,9 @@
               {% endif %}
               <div class="facets-showing-wrap">
                 <span class="facets-showing">
-                  {{ 'products.facets.showing' | t }}: {{ results.title | escape }} ({{ results.products_count }} {{ 'products.facets.products' | t }})
+                  {%- assign showing_count = results.products_count | default: results.results_count -%}
+                  {%- assign showing_title = results.title | default: results.terms -%}
+                  {{ 'products.facets.showing' | t }}: {{ showing_title | escape }} ({{ showing_count }} {{ 'products.facets.products' | t }})
                 </span>
               </div>
               {% if enable_sorting %}

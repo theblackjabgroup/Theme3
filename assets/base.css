@@ -145,25 +145,25 @@
      TYPOGRAPHY TOKENS
      ============================================ */
   
-  /* Font families */
-  --font-family-primary: var(--font-body-family, 'Anonymous Pro', monospace);
+  /* Font families (system fallback when theme font not set) */
+  --font-family-primary: var(--font-body-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
   --font-family-heading: var(--font-heading-family, var(--font-body-family));
   --font-family-body: var(--font-body-family);
   --font-family-mono: 'Courier New', Courier, monospace;
   
-  /* Font sizes */
-  --font-size-xs: 10px;
-  --font-size-sm: 11px;
-  --font-size-base: 12px;
-  --font-size-md: 13px;
-  --font-size-lg: 14px;
-  --font-size-xl: 16px;
-  --font-size-2xl: 18px;
-  --font-size-3xl: 20px;
-  --font-size-4xl: 24px;
-  --font-size-5xl: 32px;
-  --font-size-6xl: 38px;
-  --font-size-7xl: 48px;
+  /* Font sizes (rem for user zoom; ascending scale; xs/sm ≥12px for WCAG 1.4.4) */
+  --font-size-xs: 0.75rem;   /* 12px */
+  --font-size-sm: 0.8125rem; /* 13px */
+  --font-size-base: 0.875rem; /* 14px - base/body default */
+  --font-size-md: 0.9375rem;  /* 15px */
+  --font-size-lg: 1rem;      /* 16px */
+  --font-size-xl: 1.0625rem; /* 17px */
+  --font-size-2xl: 1.125rem; /* 18px */
+  --font-size-3xl: 1.25rem;  /* 20px */
+  --font-size-4xl: 1.5rem;   /* 24px */
+  --font-size-5xl: 2rem;     /* 32px */
+  --font-size-6xl: 2.375rem; /* 38px */
+  --font-size-7xl: 3rem;     /* 48px */
   
   /* Semantic font sizes */
   --body-text-small: var(--font-size-base);
@@ -173,6 +173,8 @@
   --h2-size: var(--font-size-6xl);
   --h3-size: var(--font-size-2xl);
   --h4-size: var(--font-size-xl);
+  --h5-size: 0.875rem;   /* 14px */
+  --h6-size: 0.75rem;    /* 12px */
   
   /* Font weights */
   --font-weight-normal: 400;
@@ -321,22 +323,28 @@
 
 body {
     font-family: var(--font-family-primary);
+    font-style: var(--font-body-style, normal);
+    font-weight: var(--font-body-weight, var(--font-weight-normal));
     color: var(--body-color, var(--color-text));
     background-color: var(--color-background);
     font-size: var(--body-text-regular);
     line-height: var(--line-height-relaxed);
 }
 
-h1, h2, h3, h4 {
+h1, h2, h3, h4, h5, h6 {
     font-weight: var(--font-heading-weight, var(--font-weight-bold));
+    font-style: var(--font-heading-style, normal);
     color: var(--heading-color, var(--color-headings));
     font-family: var(--font-family-heading, var(--font-heading-family, var(--font-body-family)));
+    line-height: var(--line-height-tight);
 }
 
 h1 { font-size: var(--h1-size); }
 h2 { font-size: var(--h2-size); }
 h3 { font-size: var(--h3-size); }
 h4 { font-size: var(--h4-size); }
+h5 { font-size: var(--h5-size); }
+h6 { font-size: var(--h6-size); }
 
 button {
     font-size: var(--button-text-size, var(--body-text-regular));

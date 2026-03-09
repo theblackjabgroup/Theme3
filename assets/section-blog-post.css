@@ -29,7 +29,7 @@
 .article-title {
   font-family: var(--font-heading-family);
   font-size: clamp(3.2rem, 5vw, 6rem);
-  line-height: 0.95;
+  line-height: 1.1;
   font-weight: var(--font-weight-bold);
   letter-spacing: -0.03em;
   text-transform: uppercase;

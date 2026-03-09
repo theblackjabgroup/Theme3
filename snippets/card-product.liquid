@@ -2,7 +2,9 @@
   Renders a custom product card matching the collection list card design
 
   Accepts:
-  - card_product: {Object} Product Liquid object (required)
+  - card_product: {Object} Product Liquid object (optional when placeholder_* are used)
+  - placeholder_title: {String} When set with no card_product, render a placeholder card with this title (optional)
+  - placeholder_description: {String} Description for placeholder card (optional)
   - show_badge: {Boolean} Show badge on card. Default: true (optional)
   - badge_text: {String} Badge text. Only shown when not blank (optional)
   - overlay_button_text: {String} Overlay button text. Default: 'Check it out' (optional)
@@ -15,7 +17,52 @@
 {%- endcomment -%}
 {%- comment -%} Card CSS is loaded once at section level (e.g. main-collection-product-grid.liquid). {%- endcomment -%}
 
-{%- if card_product and card_product != empty -%}
+{%- assign is_placeholder = false -%}
+{%- if card_product == blank or card_product == empty -%}
+  {%- if placeholder_title != blank -%}
+    {%- assign is_placeholder = true -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- if is_placeholder -%}
+  {%- comment -%} Placeholder card with dummy data (same structure as real card) {%- endcomment -%}
+  {%- assign placeholder_desc = placeholder_description | default: fallback_description | default: 'Add a collection in the section settings to display products.' -%}
+  <div class="custom-product-card-wrapper">
+    <div class="custom-product-card">
+      <a href="#" class="custom-product-card__main-link" aria-disabled="true" onclick="return false;">
+        <div class="custom-product-card__image-container">
+          {{ 'product-apparel-2' | placeholder_svg_tag: 'custom-product-card__image placeholder-svg' }}
+        </div>
+        <div class="custom-product-card__content">
+          <div class="custom-product-card__title">{{ placeholder_title | escape }}</div>
+          <p class="custom-product-card__description">
+            {{ placeholder_desc | strip_html | truncatewords: 12, '....' }}
+          </p>
+          <div class="custom-product-card__footer">
+            <div class="custom-product-card__price">
+              <span class="custom-product-card__price-current">{{ 0 | money }}</span>
+            </div>
+            <button type="button" class="custom-product-card__add-to-cart" disabled aria-hidden="true">
+              {{ 'products.product.add_to_cart' | t }}
+            </button>
+          </div>
+        </div>
+      </a>
+      <div class="custom-product-card__overlay-clip">
+        <div class="custom-product-card__hover-overlay">
+          <div class="custom-product-card__hover-content">
+            <p class="custom-product-card__hover-description">
+              {{ placeholder_desc | strip_html | truncatewords: 12, '....' | upcase }}
+            </p>
+            <span class="button button--primary" style="pointer-events: none; opacity: 0.8;">
+              {{ overlay_button_text | default: 'Check it out' }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{%- elsif card_product and card_product != empty -%}
   {%- assign product_form_id = 'quick-add-' | append: section_id | append: card_product.id -%}
   {%- liquid
     assign use_quick_add_overlay = false

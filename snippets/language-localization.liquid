@@ -3,6 +3,7 @@
 
   Accepts:
     - localPosition: pass in the position in which the form is coming up to create specific IDs
+    - use_global_btn: when true, render the trigger with global-btn snippet (primary variant)
 {%- endcomment -%}
 
 <div class="disclosure">
@@ -17,6 +18,20 @@
     {{ 'icon-caret.svg' | inline_asset_content }}
   {%- endcapture -%}
 
+  {%- if use_global_btn -%}
+    {%- assign language_btn_text = localization.language.endonym_name | capitalize -%}
+    {%- capture language_btn_attrs -%}aria-expanded="false" aria-controls="{{ localPosition }}List" aria-describedby="{{ localPosition }}Label"{%- endcapture -%}
+    {%- render 'global-btn',
+      variant: 'primary',
+      type: 'button',
+      text: language_btn_text,
+      icon: flag,
+      badge: caret,
+      fit_width: false,
+      class: 'disclosure__button localization-form__select localization-selector',
+      attributes: language_btn_attrs
+    -%}
+  {%- else -%}
   <button
     type="button"
     class="custom-3d-button disclosure__button localization-form__select localization-selector"
@@ -31,6 +46,7 @@
       <span class="submit-button__badge">{{ caret }}</span>
     </span>
   </button>
+  {%- endif -%}
   <div class="disclosure__list-wrapper language-selector" hidden>
     <div class="country-filter">
       <div class="field">

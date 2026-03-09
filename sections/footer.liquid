@@ -123,7 +123,7 @@
       "step": 1,
       "unit": "px",
       "label": "Link font size (mobile)",
-      "default": 18
+      "default": 12
     },
     {
       "type": "select",
@@ -336,7 +336,7 @@
       "max": 80,
       "step": 2,
       "unit": "px",
-      "label": "Left/right columns gap (mobile)",
+      "label": "Top/bottom gap (mobile)",
       "default": 30
     },
     {
@@ -479,7 +479,7 @@
       "step": 2,
       "unit": "px",
       "label": "Icon size (desktop)",
-      "default": 40
+      "default": 36
     },
     {
       "type": "range",
@@ -499,7 +499,7 @@
       "step": 4,
       "unit": "px",
       "label": "Box height (desktop)",
-      "default": 92
+      "default": 64
     },
     {
       "type": "range",
@@ -539,7 +539,7 @@
       "step": 2,
       "unit": "px",
       "label": "Border radius",
-      "default": 20
+      "default": 16
     },
     {
       "type": "range",
@@ -614,12 +614,12 @@
         {
           "type": "range",
           "id": "newsletter_font_size_mobile",
-          "min": 14,
+          "min": 12,
           "max": 48,
           "step": 2,
           "unit": "px",
           "label": "Font size (mobile)",
-          "default": 20
+          "default": 12
         },
         {
           "type": "select",
@@ -790,17 +790,17 @@
     --footer-padding-bottom-mobile: {{ section.settings.padding_bottom_mobile | default: 20 }}px;
     --footer-padding-left-mobile: {{ section.settings.padding_left_mobile | default: 16 }}px;
     --footer-padding-right-mobile: {{ section.settings.padding_right_mobile | default: 16 }}px;
-    --footer-social-icon-size: {{ section.settings.social_icon_size | default: 40 }}px;
+    --footer-social-icon-size: {{ section.settings.social_icon_size | default: 36 }}px;
     --footer-social-icon-size-mobile: {{ section.settings.social_icon_size_mobile | default: 20 }}px;
-    --footer-social-box-height: {{ section.settings.social_box_height | default: 92 }}px;
+    --footer-social-box-height: {{ section.settings.social_box_height | default: 64 }}px;
     --footer-social-box-height-mobile: {{ section.settings.social_box_height_mobile | default: 56 }}px;
     --footer-social-gap: {{ section.settings.social_gap | default: 12 }}px;
     --footer-social-gap-mobile: {{ section.settings.social_gap_mobile | default: 8 }}px;
-    --footer-social-border-radius: {{ section.settings.social_border_radius | default: 20 }}px;
+    --footer-social-border-radius: {{ section.settings.social_border_radius | default: 16 }}px;
     --footer-social-icons-per-row: {{ section.settings.social_icons_per_row | default: 2 }};
-    --footer-social-icons-per-row-mobile: {{ section.settings.social_icons_per_row_mobile | default: 4 }};
+    --footer-social-icons-per-row-mobile: {{ section.settings.social_icons_per_row_mobile | default: 6 }};
     --footer-social-animation-duration: {{ section.settings.social_icon_animation_speed | default: 0.2 }}s;
-    --footer-selector-font-size: {{ settings.selector_font_size | default: 13 }}px;
+    --footer-selector-font-size: {{ settings.selector_font_size | default: 16 }}px;
     --footer-selector-font-weight: {{ settings.selector_font_weight | default: 700 }};
     --footer-selector-letter-spacing: {{ settings.selector_letter_spacing | default: 0 }}px;
     --footer-selector-text-transform: {{ settings.selector_text_transform | default: 'uppercase' }};
@@ -809,7 +809,7 @@
     --footer-selector-padding-left: {{ settings.selector_padding_left | default: 16 }}px;
     --footer-selector-padding-right: {{ settings.selector_padding_right | default: 16 }}px;
     --footer-selector-gap: {{ settings.selector_gap | default: 8 }}px;
-    --footer-selector-border-radius: {{ settings.selector_border_radius | default: 8 }}px;
+    --footer-selector-border-radius: {{ settings.selector_border_radius | default: 12 }}px;
     --footer-selector-border-width: {{ settings.selector_border_width | default: 1 }}px;
     --footer-selector-icon-size: {{ settings.selector_icon_size | default: 16 }}px;
     --footer-selector-flag-gap: {{ settings.selector_flag_gap | default: 6 }}px;
@@ -831,7 +831,7 @@
     --footer-heading-font-size-mobile: {{ section.settings.footer_heading_font_size_mobile | default: 36 }}px;
     --footer-heading-line-height: {{ section.settings.footer_heading_line_height | default: 1.0 }};
     --footer-link-font-size: {{ section.settings.footer_link_font_size | default: 18 }}px;
-    --footer-link-font-size-mobile: {{ section.settings.footer_link_font_size_mobile | default: 18 }}px;
+    --footer-link-font-size-mobile: {{ section.settings.footer_link_font_size_mobile | default: 12 }}px;
     --footer-link-font-weight: {{ section.settings.footer_link_font_weight | default: 700 }};
     --footer-link-line-height: {{ section.settings.footer_link_line_height | default: 1.3 }};
     --footer-link-letter-spacing: {{ section.settings.footer_link_letter_spacing | default: 0.8 }}px;
@@ -933,7 +933,7 @@
                       --newsletter-font-family: {{ block.settings.newsletter_font.family }}, {{ block.settings.newsletter_font.fallback_families }};
                     {%- endif -%}
                     --newsletter-font-size: {{ block.settings.newsletter_font_size | default: 20 }}px;
-                    --newsletter-font-size-mobile: {{ block.settings.newsletter_font_size_mobile | default: 20 }}px;
+                    --newsletter-font-size-mobile: {{ block.settings.newsletter_font_size_mobile | default: 12 }}px;
                     --newsletter-font-weight: {{ block.settings.newsletter_font_weight | default: 800 }};
                     --newsletter-letter-spacing: {{ block.settings.newsletter_letter_spacing | default: 0.1 }}em;
                     --newsletter-field-padding: {{ block.settings.newsletter_field_padding | default: 12 }}px;
@@ -961,7 +961,7 @@
                   <div
                     class="footer-social-grid footer-social-row"
                     data-icons-per-row="{{ section.settings.social_icons_per_row | default: 2 }}"
-                    data-icons-per-row-mobile="{{ section.settings.social_icons_per_row_mobile | default: 4 }}"
+                    data-icons-per-row-mobile="{{ section.settings.social_icons_per_row_mobile | default: 6 }}"
                   >
                     {%- assign in_social_grid = true -%}
                 {%- endunless -%}
@@ -1030,7 +1030,7 @@
                   <localization-form>
                     {%- form 'localization', id: 'FooterCountryForm', class: 'localization-form' -%}
                       <div class="no-js-hidden">
-                        {%- render 'country-localization', localPosition: 'FooterCountry' -%}
+                        {%- render 'country-localization', localPosition: 'FooterCountry', use_global_btn: true -%}
                       </div>
                     {%- endform -%}
                   </localization-form>
@@ -1039,7 +1039,7 @@
                   <localization-form>
                     {%- form 'localization', id: 'FooterLanguageForm', class: 'localization-form' -%}
                       <div class="no-js-hidden">
-                        {%- render 'language-localization', localPosition: 'FooterLanguage' -%}
+                        {%- render 'language-localization', localPosition: 'FooterLanguage', use_global_btn: true -%}
                       </div>
                     {%- endform -%}
                   </localization-form>

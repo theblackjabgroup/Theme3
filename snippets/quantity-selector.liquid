@@ -70,7 +70,6 @@
     data-min="1"
     class="quantity__input"
     aria-label="{{ 'products.product.quantity.input_label' | t: product: product_title | default: 'Quantity' }}"
-    readonly
     {% if max_quantity != null %}
       max="{{ max_quantity }}"
       data-max="{{ max_quantity }}"

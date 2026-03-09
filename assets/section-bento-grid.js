@@ -94,7 +94,10 @@
     const labelsBottom = card.querySelector('.toggle-labels--bottom');
     if (!ui || !knob || !labelsTop || !labelsBottom) return;
 
-    const isHorizontal = card.classList.contains('toggle-card--horizontal');
+    const isMobile = window.innerWidth <= 749;
+    const isHorizontal = isMobile
+      ? card.classList.contains('toggle-card--mobile-horizontal')
+      : card.classList.contains('toggle-card--horizontal');
 
     // Reset transforms to measure clean coordinates
     const prevKnobTransform = knob.style.transform;

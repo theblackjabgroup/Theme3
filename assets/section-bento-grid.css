@@ -439,8 +439,8 @@
 .video-marquee-item {
   white-space: nowrap;
   font-family: var(--font-body-family);
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-semibold);
+  font-size: var(--body-text-regular, var(--font-size-lg));
+  font-weight: var(--font-weight-medium);
   text-transform: uppercase;
   color: var(--color-text, var(--color-card-bg));
 }
@@ -889,6 +889,75 @@ html[data-global-theme-active="true"] .bento-card.toggle-card {
   .toggle-labels {
     font-size: 12px;
   }
+
+  /* Mobile orientation: override desktop layout */
+  .toggle-card--mobile-horizontal .toggle-ui {
+    flex-direction: row;
+    padding: 16px 24px;
+  }
+  .toggle-card--mobile-horizontal .toggle-knob {
+    height: 100%;
+    width: auto;
+    max-width: none;
+    max-height: 60px;
+    transform: translateX(var(--toggle-knob-start-x, 0));
+  }
+  .toggle-card--mobile-horizontal .toggle-input-hidden:checked + .toggle-ui .toggle-knob {
+    transform: translateX(var(--toggle-knob-end-x, 48px));
+  }
+  .toggle-card--mobile-horizontal .toggle-labels {
+    min-height: 0;
+    padding: 0 12px;
+    text-align: left;
+    justify-content: flex-start;
+    width: auto;
+  }
+  .toggle-card--mobile-horizontal .toggle-labels--top {
+    transform: translateX(10px);
+  }
+  .toggle-card--mobile-horizontal .toggle-labels--bottom {
+    transform: translateX(0);
+  }
+  .toggle-card--mobile-horizontal .toggle-input-hidden:checked + .toggle-ui .toggle-labels--top {
+    transform: translateX(0);
+  }
+  .toggle-card--mobile-horizontal .toggle-input-hidden:checked + .toggle-ui .toggle-labels--bottom {
+    transform: translateX(-10px);
+  }
+
+  /* Force vertical on mobile when mobile orientation is vertical (overrides desktop horizontal) */
+  .toggle-card--mobile-vertical .toggle-ui {
+    flex-direction: column;
+  }
+  .toggle-card--mobile-vertical .toggle-knob {
+    height: auto;
+    width: 100%;
+    max-width: 80px;
+    max-height: none;
+    transform: translateY(var(--toggle-knob-start-y, 0));
+  }
+  .toggle-card--mobile-vertical .toggle-input-hidden:checked + .toggle-ui .toggle-knob {
+    transform: translateY(calc(var(--toggle-knob-end-y, 56px) - 10px));
+  }
+  .toggle-card--mobile-vertical .toggle-labels {
+    min-height: 40px;
+    padding: 0;
+    text-align: center;
+    justify-content: center;
+    width: 100%;
+  }
+  .toggle-card--mobile-vertical .toggle-labels--top {
+    transform: translateY(10px);
+  }
+  .toggle-card--mobile-vertical .toggle-labels--bottom {
+    transform: translateY(0);
+  }
+  .toggle-card--mobile-vertical .toggle-input-hidden:checked + .toggle-ui .toggle-labels--top {
+    transform: translateY(0);
+  }
+  .toggle-card--mobile-vertical .toggle-input-hidden:checked + .toggle-ui .toggle-labels--bottom {
+    transform: translateY(-10px);
+  }
 }
 
 /* Login/Welcome Card */
@@ -1117,7 +1186,7 @@ a.tag-card.tag-card--link:hover {
 .tag-card-tag {
   display: inline-flex;
   align-items: center;
-  padding: 4px 12px;
+  padding: 4px 16px;
   font-size: var(--font-size-sm);
   font-weight: 700;
   text-transform: uppercase;
@@ -1479,7 +1548,7 @@ a.tag-card.tag-card--link:hover {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--spacing-6);
+  gap: var(--content-card-text-gap, var(--spacing-6));
   text-align: left;
 }
 
@@ -1790,7 +1859,7 @@ a.tag-card.tag-card--link:hover {
   .tag-card-tag {
   display: inline-flex;
   align-items: center;
-  padding: 4px 12px;
+  padding: 4px 16px;
   font-size: var(--font-size-sm);
   font-weight: 700;
   text-transform: uppercase;
@@ -1897,6 +1966,10 @@ a.tag-card.tag-card--link:hover {
     padding: 12px;
   }
 
+  .content-card-text-content {
+    gap: var(--content-card-text-gap-mobile, var(--content-card-text-gap, var(--spacing-6)));
+  }
+
   .content-card-main-text {
     font-family: var(--font-heading-family);
     font-size: var(--mobile-main-text-font-size, 18px) !important;
@@ -1962,6 +2035,10 @@ a.tag-card.tag-card--link:hover {
   .content-card-text-side {
     padding: var(--spacing-8);
     gap: var(--spacing-6);
+  }
+
+  .content-card-text-content {
+    gap: var(--content-card-text-gap-mobile, var(--content-card-text-gap, var(--spacing-6)));
   }
 
   .content-card-main-text {

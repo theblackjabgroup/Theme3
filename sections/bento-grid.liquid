@@ -574,6 +574,8 @@
             {%- assign mobile_sub_text_line_height = block.settings.mobile_sub_text_line_height
               | default: sub_text_line_height
             -%}
+            {%- assign text_gap = block.settings.text_gap | default: 8 -%}
+            {%- assign mobile_text_gap = block.settings.mobile_text_gap | default: text_gap -%}
             {%- assign align = block.settings.content_alignment | default: 'left' -%}
             {%- assign mobile_align = block.settings.mobile_content_alignment | default: align -%}
             {%- assign vertical_align = block.settings.vertical_alignment | default: 'top' -%}
@@ -629,6 +631,8 @@
                 --mobile-sub-text-font-size: {{ mobile_sub_text_font_size }}px;
                 --mobile-sub-text-font-weight: {{ mobile_sub_text_font_weight }};
                 --mobile-sub-text-line-height: {{ mobile_sub_text_line_height }};
+                --content-card-text-gap: {{ text_gap }}px;
+                --content-card-text-gap-mobile: {{ mobile_text_gap }}px;
               "
               {% if block.settings.link != blank %}
                 onclick="window.location.href='{{ block.settings.link }}'"
@@ -932,13 +936,14 @@
 
           {%- when 'toggle_card' -%}
             {%- assign orientation = block.settings.toggle_orientation | default: 'vertical' -%}
+            {%- assign mobile_orientation = block.settings.mobile_toggle_orientation | default: orientation -%}
             {%- assign label_off = block.settings.label_off | default: 'LIGHT MODE' -%}
             {%- assign label_on = block.settings.label_on | default: 'DARK MODE' -%}
             {%- assign svg_off = block.settings.svg_off -%}
             {%- assign svg_on = block.settings.svg_on -%}
 
             <div
-              class="bento-card toggle-card toggle-card--{{ orientation }} color-{{ block_scheme_id }} gradient"
+              class="bento-card toggle-card toggle-card--{{ orientation }} toggle-card--mobile-{{ mobile_orientation }} color-{{ block_scheme_id }} gradient"
               style="{{ block_scheme_style }}"
               data-toggle-card
             >
@@ -1637,6 +1642,31 @@
           "step": 0.1,
           "label": "Sub text line height",
           "default": 1.4
+        },
+        {
+          "type": "header",
+          "content": "Text spacing"
+        },
+        {
+          "type": "range",
+          "id": "text_gap",
+          "min": 0,
+          "max": 48,
+          "step": 2,
+          "unit": "px",
+          "label": "Gap between tag, main text and sub text",
+          "default": 8
+        },
+        {
+          "type": "range",
+          "id": "mobile_text_gap",
+          "min": 0,
+          "max": 40,
+          "step": 2,
+          "unit": "px",
+          "label": "Gap between texts (mobile)",
+          "default": 8,
+          "info": "Leave at default to match desktop"
         },
         {
           "type": "header",
@@ -3796,7 +3826,7 @@
         {
           "type": "select",
           "id": "toggle_orientation",
-          "label": "Orientation",
+          "label": "Orientation (Desktop)",
           "options": [
             {
               "value": "vertical",
@@ -3808,6 +3838,23 @@
             }
           ],
           "default": "vertical"
+        },
+        {
+          "type": "select",
+          "id": "mobile_toggle_orientation",
+          "label": "Orientation (Mobile)",
+          "options": [
+            {
+              "value": "vertical",
+              "label": "Vertical"
+            },
+            {
+              "value": "horizontal",
+              "label": "Horizontal"
+            }
+          ],
+          "default": "vertical",
+          "info": "Layout of the toggle on small screens"
         },
         {
           "type": "header",

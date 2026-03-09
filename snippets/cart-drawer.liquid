@@ -125,7 +125,7 @@
 
   .drawer__heading {
     font-family: var(--font-heading-family);
-    font-size: clamp(24px, 5vw, 36px);
+    font-size: clamp(1.5rem, 5vw, 2.25rem);
     font-weight: 900;
     letter-spacing: -0.02em;
     margin: 0;
@@ -451,7 +451,7 @@
     cursor: not-allowed;
   }
 
-  /* Quantity value [1]: filled 3D – heading bg, card text (match first image) */
+  /* Quantity value [1]: flat (no shadow), editable */
   .cart-drawer__quantity-selector .quantity__input,
   .cart-drawer__quantity-input,
   .cart-drawer__edit-quantity-row .quantity__input {
@@ -468,16 +468,16 @@
     font-size: 16px !important;
     padding: 0 !important;
     margin: 0 !important;
-    box-shadow: 0 3px 0 var(--color-btn-shadow);
-    cursor: default;
+    cursor: text;
     outline: none;
+    pointer-events: auto !important;
+    user-select: text;
   }
 
   .cart-drawer__quantity-selector .quantity__input:focus,
   .cart-drawer__quantity-input:focus,
   .cart-drawer__edit-quantity-row .quantity__input:focus {
     outline: none;
-    box-shadow: 0 2px 0 var(--color-btn-shadow);
   }
 
   .cart-drawer__quantity-selector .quantity__input::-webkit-outer-spin-button,
@@ -552,7 +552,7 @@
     font-weight: 900;
     color: var(--color-text);
     letter-spacing: -0.04em;
-    line-height: 0.8;
+    line-height: 1.1;
   }
 
   /* Continue shopping (empty state): global-btn tertiary, full width */

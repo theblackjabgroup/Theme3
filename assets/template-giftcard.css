@@ -442,7 +442,7 @@ body {
 /* Specific Element Overrides in Expired State */
 .gc-container--expired .gc-title {
     color: var(--gc-title-color, var(--gc-green)); /* Use heading color, fallback to accent */
-    line-height: 0.9;
+    line-height: 1.1;
 }
 
 .gc-container--expired .gc-card {

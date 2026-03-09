@@ -51,9 +51,9 @@
 }
 
 .cart-sidebar__title {
-  font-family: 'Inter', -apple-system, sans-serif;
-  font-size: 26px;
-  font-weight: 800;
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-extrabold);
   margin: 0;
   letter-spacing: -0.03em;
   color: #000;
@@ -70,12 +70,12 @@
   align-items: center;
   margin-bottom: 25px;
   font-family: var(--font-family-mono);
-  font-size: 14px;
+  font-size: var(--font-size-lg);
   color: #333;
 }
 
 .cart-sidebar__row .label {
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
 }
 
 .cart-sidebar__row .value {
@@ -83,8 +83,8 @@
 }
 
 .cart-sidebar__row.total {
-  font-weight: 800;
-  font-size: 16px;
+  font-weight: var(--font-weight-extrabold);
+  font-size: var(--font-size-xl);
   color: #000;
   margin-top: 40px;
 }
@@ -98,8 +98,8 @@
   color: #fff !important;
   border-radius: var(--radius-2xl);
   height: 65px !important;
-  font-size: 16px !important;
-  font-weight: 800 !important;
+  font-size: var(--font-size-xl) !important;
+  font-weight: var(--font-weight-extrabold) !important;
   width: 100% !important;
   box-shadow: 0 6px 0 #000 !important;
   border: 2px solid #000 !important;
@@ -123,12 +123,12 @@
 }
 
 .cart-title {
-  font-family: 'Inter', sans-serif;
-  font-size: 64px;
-  font-weight: 900;
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-7xl);
+  font-weight: var(--font-weight-black);
   margin-bottom: 50px;
   letter-spacing: -0.05em;
-  line-height: 0.9;
+  line-height: 1.1;
 }
 
 .cart-items thead {
@@ -137,9 +137,9 @@
 
 .cart-items thead th {
   text-transform: capitalize !important;
-  font-family: 'Inter', sans-serif !important;
-  font-weight: 800 !important;
-  font-size: 13px !important;
+  font-family: var(--font-family-primary) !important;
+  font-weight: var(--font-weight-extrabold) !important;
+  font-size: var(--font-size-md) !important;
   border: none !important;
   padding: 0 0 30px 0 !important;
   color: #333 !important;
@@ -179,17 +179,17 @@
   border: 1px solid #ff0000;
   color: #ff0000;
   border-radius: var(--radius-l);
-  font-size: 9px;
-  font-weight: 800;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-extrabold);
   text-transform: uppercase;
   margin-bottom: 12px;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-family-primary);
 }
 
 .cart-item__name {
-  font-family: 'Inter', sans-serif !important;
-  font-size: 28px !important;
-  font-weight: 800 !important;
+  font-family: var(--font-family-primary) !important;
+  font-size: var(--font-size-4xl) !important;
+  font-weight: var(--font-weight-extrabold) !important;
   letter-spacing: -0.03em !important;
   margin: 0 !important;
   color: #222 !important;
@@ -214,25 +214,27 @@
 }
 
 .quantity__input {
-  font-size: 15px !important;
-  font-weight: 700 !important;
+  font-size: var(--font-size-md) !important;
+  font-weight: var(--font-weight-bold) !important;
   font-family: var(--font-family-mono) !important;
   width: 40px !important;
+  pointer-events: auto !important;
+  cursor: text !important;
 }
 
 .cart-item__totals {
     vertical-align: middle !important;
     font-family: var(--font-family-mono) !important;
-    font-size: 15px !important;
-    font-weight: 700 !important;
+    font-size: var(--font-size-md) !important;
+    font-weight: var(--font-weight-bold) !important;
 }
 
 .coupon-section {
   display: flex;
   align-items: center;
   margin-top: 50px;
-  font-family: 'Inter', sans-serif;
-  font-size: 14px;
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-lg);
   color: #333;
   padding-top: 50px;
   border-top: 1px solid #f9f9f9;
@@ -246,7 +248,7 @@
 
 .coupon-section a {
     color: #000;
-    font-weight: 600;
+    font-weight: var(--font-weight-semibold);
     margin-left: 5px;
 }
 
@@ -256,13 +258,13 @@
   border-radius: var(--radius-2xl);
   padding: 15px 40px !important;
   color: #bbb !important;
-  font-weight: 800 !important;
+  font-weight: var(--font-weight-extrabold) !important;
   box-shadow: 0 5px 0 #e0e0e0 !important;
   position: absolute !important;
   right: 60px !important;
   bottom: 0px !important;
   cursor: pointer !important;
-  font-size: 14px !important;
+  font-size: var(--font-size-lg) !important;
   transition: all 0.2s ease !important;
 }
 

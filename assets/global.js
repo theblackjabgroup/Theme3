@@ -239,6 +239,12 @@ class QuantityInput extends HTMLElement {
   }
 
   onInputChange(event) {
+    const min = this.input.min ? parseInt(this.input.min, 10) : 1;
+    const max = this.input.max ? parseInt(this.input.max, 10) : null;
+    let val = parseInt(this.input.value, 10);
+    if (isNaN(val) || val < min) val = min;
+    if (max != null && val > max) val = max;
+    this.input.value = val;
     this.validateQtyRules();
   }
 

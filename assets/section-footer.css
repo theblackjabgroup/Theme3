@@ -1,12 +1,11 @@
-/* content-visibility: skip layout/paint until near viewport to reduce main-thread work */
+/* Avoid content-visibility here so localization dropdown can extend above footer without clipping */
 .custom-footer {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 400px;
   background-color: var(--color-bg);
   color: var(--color-text);
   padding: var(--footer-padding-top) var(--footer-padding-right) var(--footer-padding-bottom) var(--footer-padding-left);
   width: 100%;
   box-sizing: border-box;
+  overflow: visible;
 }
 
 /* Offset for vertical header */
@@ -43,6 +42,17 @@
   gap: 20px;
 }
 
+@media (max-width: 989px) {
+  .footer-social-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--footer-social-gap-mobile, 8px);
+  }
+  .social-box {
+    min-width: calc((100% - (var(--footer-social-icons-per-row-mobile, 6) - 1) * var(--footer-social-gap-mobile, 8px)) / var(--footer-social-icons-per-row-mobile, 6));
+  }
+}
+
 @media (min-width: 990px) {
   .footer-left {
     flex-direction: row;
@@ -66,7 +76,7 @@
 
 .newsletter-field {
   background-color: var(--color-card-bg);
-  border-radius: var(--footer-social-border-radius, var(--radius-2xl));
+  border-radius: var(--footer-social-border-radius, 16px);
   padding: var(--newsletter-field-padding, 12px);
   display: flex;
   flex-direction: column;
@@ -74,7 +84,7 @@
   border: none;
   text-align: center;
   justify-content: center;
-  height: var(--footer-social-box-height, 94px);
+  height: var(--footer-social-box-height, 64px);
   box-shadow: 0 4px 12px rgba(0,0,0,0.03);
 }
 
@@ -103,9 +113,9 @@
 .social-box {
   flex: 1 1 0;
   min-width: calc((100% - (var(--footer-social-icons-per-row, 4) - 1) * var(--footer-social-gap, 12px)) / var(--footer-social-icons-per-row, 4));
-  height: var(--footer-social-box-height, 94px);
+  height: var(--footer-social-box-height, 64px);
   background-color: var(--color-card-bg);
-  border-radius: var(--footer-social-border-radius, var(--radius-2xl));
+  border-radius: var(--footer-social-border-radius, 16px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -141,8 +151,8 @@
 
 .social-box svg,
 .social-box__image {
-  width: var(--footer-social-icon-size, 40px);
-  height: var(--footer-social-icon-size, 40px);
+  width: var(--footer-social-icon-size, 36px);
+  height: var(--footer-social-icon-size, 36px);
   object-fit: contain;
 }
 
@@ -151,8 +161,8 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  width: var(--footer-social-icon-size, 40px);
-  height: var(--footer-social-icon-size, 40px);
+  width: var(--footer-social-icon-size, 36px);
+  height: var(--footer-social-icon-size, 36px);
 }
 
 .social-box__icon {
@@ -283,7 +293,40 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
-  gap: var(--footer-selector-gap, 8px);
+  align-items: center;
+  gap: 8px;
+}
+.localization-pills .global-btn__shadow{
+  top:6px;
+}
+
+/* Apply theme selector typography and spacing to footer localization buttons */
+.custom-footer .localization-form__select.global-btn .global-btn__content {
+  gap: 0;
+  font-size: var(--footer-selector-font-size, 16px);
+  font-weight: var(--footer-selector-font-weight, 700);
+  letter-spacing: var(--footer-selector-letter-spacing, 0);
+  text-transform: var(--footer-selector-text-transform, uppercase);
+}
+.custom-footer .localization-form__select.global-btn .global-btn__icon {
+  margin-right: var(--footer-selector-flag-gap, 6px);
+}
+.custom-footer .localization-form__select.global-btn .global-btn__badge {
+  margin-left: var(--footer-selector-caret-gap, 4px);
+}
+
+@media (max-width: 749px) {
+  .localization-pills {
+    justify-content: flex-start;
+  }
+
+  .box-nav-list a {
+    font-size: var(--footer-link-font-size-mobile, 12px);
+  }
+
+  .newsletter-input {
+    font-size: var(--newsletter-font-size-mobile, 12px);
+  }
 }
 
 .custom-3d-button {
@@ -322,7 +365,7 @@
   padding: var(--footer-selector-padding-top, 8px) var(--footer-selector-padding-right, 16px)
     var(--footer-selector-padding-bottom, 8px) var(--footer-selector-padding-left, 16px);
   border-radius: var(--footer-selector-border-radius, var(--radius-m));
-  font-size: var(--footer-selector-font-size, 13px);
+  font-size: var(--footer-selector-font-size, 16px);
   font-weight: 700;
   line-height: 1;
   transition: transform 0.1s ease;
