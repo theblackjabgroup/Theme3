@@ -45,7 +45,7 @@
         "logo_spacing_top": 40,
         "padding_top_mobile": 16,
         "padding_bottom_mobile": 40,
-        "logo_spacing_top_mobile": 40,
+        "logo_spacing_top_mobile": 40
       }
     },
     "subfooter": {
@@ -62,8 +62,7 @@
         "color_scheme": "scheme-2",
         "dark_mode_color_scheme": "scheme-2",
         "shop_name_underline": "underline",
-        "powered_by_underline": "underline",
-
+        "powered_by_underline": "underline"
       }
     }
   },

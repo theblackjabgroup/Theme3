@@ -264,7 +264,7 @@
   padding: var(--button-padding-top, 14px) var(--button-padding-right, 18px) var(--button-padding-bottom, 14px) var(--button-padding-left, 18px);
   justify-content: center;
   box-shadow: 0 4px 8px color-mix(in srgb, var(--color-header-border, var(--color-heading)) 15%, transparent);
-  background: var(--colc4ed or-accent);
+  background: var(--color-accent);
   color: var(--color-accent-2);
 }
 

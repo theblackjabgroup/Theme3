@@ -151,12 +151,12 @@
   --font-family-body: var(--font-body-family);
   --font-family-mono: 'Courier New', Courier, monospace;
   
-  /* Font sizes (rem for user zoom; xs/sm ≥12px for WCAG 1.4.4) */
+  /* Font sizes (rem for user zoom; ascending scale; xs/sm ≥12px for WCAG 1.4.4) */
   --font-size-xs: 0.75rem;   /* 12px */
   --font-size-sm: 0.8125rem; /* 13px */
-  --font-size-base: 0.75rem; /* 12px */
-  --font-size-md: 0.8125rem; /* 13px */
-  --font-size-lg: 0.875rem;  /* 14px */
+  --font-size-base: 0.875rem; /* 14px - base/body default */
+  --font-size-md: 0.9375rem;  /* 15px */
+  --font-size-lg: 1rem;      /* 16px */
   --font-size-xl: 1rem;      /* 16px */
   --font-size-2xl: 1.125rem; /* 18px */
   --font-size-3xl: 1.25rem;  /* 20px */
