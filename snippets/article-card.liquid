@@ -6,54 +6,54 @@
 
 {%- if article and article != empty -%}
   {%- if card_link -%}
-    <a href="{{ article.url }}" class="main-blog-card {{ custom_class }}" style="text-decoration: none; color: inherit; display: flex;">
+    <a
+      href="{{ article.url }}"
+      class="main-blog-card {{ custom_class }}"
+      style="text-decoration: none; color: inherit; display: flex;"
+    >
   {%- else -%}
     <div class="main-blog-card {{ custom_class }}">
   {%- endif -%}
-    <div class="main-blog-card__image-wrapper">
-      {%- if article.image -%}
-        {%- liquid
-          assign loading_strategy = 'lazy'
-          if lazy_load == false
-            assign loading_strategy = 'eager'
-          endif
-        -%}
-        {{
-          article.image
-          | image_url: width: 600
-          | image_tag: loading: loading_strategy, class: 'main-blog-card__image'
-        }}
-      {%- else -%}
-        {{ 'image' | placeholder_svg_tag: 'main-blog-card__image' }}
-      {%- endif -%}
-    </div>
-    <div class="main-blog-card__content">
-      {%- if show_tags -%}
-        {%- if article.tags.size > 0 -%}
-          <span class="main-blog-card__tag">{{ article.tags.first }}</span>
-        {%- elsif placeholder_tag_text != blank -%}
-          <span class="main-blog-card__tag">{{ placeholder_tag_text }}</span>
-        {%- endif -%}
-      {%- endif -%}
-
-      <h3 class="main-blog-card__title">
-        {{ article.title | default: 'Default Title' }}
-      </h3>
-
-      {%- if show_excerpt -%}
-        <div class="main-blog-card__excerpt">
-          {%- if article.excerpt.size > 0 -%}
-            {{ article.excerpt | strip_html | truncatewords: 15 }}
-          {%- else -%}
-            {{ article.content | strip_html | truncatewords: 15 }}
-          {%- endif -%}
-        </div>
-      {%- endif -%}
-    </div>
-
-    {%- if show_read_more_button -%}
-      {% render 'global-btn', text: cta_text, url: article.url, class: 'main-blog-card__button' %}
+  <div class="main-blog-card__image-wrapper">
+    {%- if article.image -%}
+      {%- liquid
+        assign loading_strategy = 'lazy'
+        if lazy_load == false
+          assign loading_strategy = 'eager'
+        endif
+      -%}
+      {{ article.image | image_url: width: 600 | image_tag: loading: loading_strategy, class: 'main-blog-card__image' }}
+    {%- else -%}
+      {{ 'image' | placeholder_svg_tag: 'main-blog-card__image' }}
     {%- endif -%}
+  </div>
+  <div class="main-blog-card__content">
+    {%- if show_tags -%}
+      {%- if article.tags.size > 0 -%}
+        <span class="main-blog-card__tag">{{ article.tags.first }}</span>
+      {%- elsif placeholder_tag_text != blank -%}
+        <span class="main-blog-card__tag">{{ placeholder_tag_text }}</span>
+      {%- endif -%}
+    {%- endif -%}
+
+    <h3 class="main-blog-card__title">
+      {{ article.title | default: 'Default Title' }}
+    </h3>
+
+    {%- if show_excerpt -%}
+      <div class="main-blog-card__excerpt">
+        {%- if article.excerpt.size > 0 -%}
+          {{ article.excerpt | strip_html | truncatewords: 15 }}
+        {%- else -%}
+          {{ article.content | strip_html | truncatewords: 15 }}
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- if show_read_more_button -%}
+    {% render 'global-btn', text: cta_text, url: article.url, variant: 'primary', fit_width: true %}
+  {%- endif -%}
   {%- if card_link -%}
     </a>
   {%- else -%}

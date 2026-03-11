@@ -3,8 +3,8 @@
 }
 .share-story-wrapper {
   display: flex;
-  gap: var(--gap-l); 
   flex-direction: column;
+  padding: var(--page-layout-padding);
   max-width: 1300px; 
   margin: var(--spacing-0) auto;
 }
@@ -19,9 +19,8 @@
 .share-story-card {
   flex: 1;
   border-radius: var(--radius-xl);
-  background: var(--color-primary-button-bg);
-  padding: var(--spacing-12) var(--spacing-16); 
-  box-shadow: var(--shadow-xl);
+  background: var(--color-card-bg);
+  padding: var(--page-layout-padding); 
   display: flex;
   flex-direction: column;
 }
@@ -45,8 +44,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: var(--border-width-thin) solid var(--color-text);
-  color: var(--color-text);
+  border: var(--border-width-thin) solid var(--color-heading);
+  color: var(--color-heading);
   padding: var(--spacing-2) var(--spacing-8);
   border-radius: var(--radius-pill);
   font-weight: var(--font-weight-bold);
@@ -87,7 +86,7 @@
   font-weight: var(--share-story-label-font-weight, var(--font-weight-bold));
   margin-bottom: var(--spacing-3);
   font-size: var(--share-story-label-font-size, var(--font-size-lg));
-  color: var(--color-text);
+  color: var(--color-heading);
   letter-spacing: var(--letter-spacing-wider);
   position: relative;
   overflow: hidden;
@@ -126,7 +125,7 @@
   padding: var(--spacing-6) var(--spacing-10);
   border-radius: var(--radius-m);
   border: var(--border-width-thin) solid var(--color-input-border);
-  background: var(--color-input-bg);
+  background: var(--color-card-bg);
   font-size: var(--share-story-placeholder-font-size, var(--font-size-lg));
   font-weight: var(--share-story-placeholder-font-weight, 400);
   line-height: var(--share-story-placeholder-line-height, 1.5);
@@ -157,7 +156,7 @@
   padding: var(--spacing-8);
   border-radius: var(--radius-m);
   border: var(--border-width-thin) solid var(--color-input-border);
-  background: var(--color-input-bg);
+  background: var(--color-card-bg);
   font-size: var(--share-story-placeholder-font-size, var(--font-size-lg));
   font-weight: var(--share-story-placeholder-font-weight, 400);
   line-height: var(--share-story-placeholder-line-height, 1.5);
@@ -201,9 +200,10 @@
   margin-top: auto; 
 }
 
+
 @media screen and (max-width: 749px) {
   .share-story-wrapper {
-    gap: var(--spacing-12);
+    gap: var(--bento-gap, 16px);
   }
   .share-story-card {
     padding: var(--spacing-12);

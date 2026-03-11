@@ -1,5 +1,5 @@
 .main-blog-slider {
-  background-color: var(--color-background);
+  background-color: var(--color-bg);
   overflow: hidden;
   font-family: var(--font-body-family);
 }
@@ -21,8 +21,7 @@
 
 .main-blog-slider__track {
   display: flex;
-  gap: 30px;
-  padding: 0 50%; 
+  gap: var(--page-layout-gap, 16px);
   width: max-content;
   position: relative;
 }
@@ -35,7 +34,7 @@
 
 .main-blog-card {
   width: 300px;
-  background-color: var(--color-primary-button-bg);
+  background-color: var(--color-card-bg);
 
   padding: 20px;
   display: flex !important; /* Force flex as we are inside a slide wrapper now */
@@ -112,8 +111,8 @@
 
 /* Active State Styles */
 .main-blog-slider__slide.is-active .main-blog-card {
-  background-color: var(--color-primary-button-text);
-  color: var(--color-primary-button-hover-text);
+  background-color: var(--color-accent);
+  color: var(--color-accent-2);
   transform: translateY(-30px);
   opacity: 1;
   z-index: 2;
@@ -145,39 +144,20 @@
 .main-blog-slider__controls {
   display: flex;
   justify-content: center;
-  gap: 15px;
+  gap: var(--page-layout-gap, 16px);
   padding-left: 10px;
   padding-right: 10px;
 }
+.main-blog-slider__controls .global-btn__shadow{
+  top:6px;
+}
 
 .main-blog-slider__arrow {
-  width: 84px;
-  height: 38px;
-  border-radius: var(--radius-l);
-  border: var(--border-width-thin) solid var(--color-primary-button-border);
-  background: var(--color-primary-button-bg);
-  box-shadow: 0 3px 0 var(--color-primary-button-border);
+
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-  color: var(--color-primary-button-text);
-  /* Reset old styles */
-  background-color: var(--color-primary-button-bg); 
-}
-
-.main-blog-slider__arrow:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 7px 0 var(--color-primary-button-border);
-  background-color: var(--color-primary-button-bg);
-  border-color: var(--color-primary-button-border);
-  color: var(--color-primary-button-text);
-}
-
-.main-blog-slider__arrow:active {
-  transform: translateY(1px);
-  box-shadow: 0 2px 0 var(--color-primary-button-border);
 }
 
 @media (max-width: 749px) {
@@ -203,7 +183,11 @@
   transition: none !important;
 }
 
+/* Hide Read more on inactive slides (by class and by structure) */
+.main-blog-slider__slide:not(.is-active) .main-blog-card .global-btn,
+.main-blog-slider__slide:not(.is-active) .main-blog-card__button,
 .main-blog-card__button {
+  display: none !important;
   width: 100%;
   margin-top: 0;
   opacity: 0;
@@ -215,7 +199,7 @@
   right: 0;
   margin-left: auto;
   margin-right: auto;
-  height: 38px; 
+  height: 38px;
 }
 
 .share-story-submit.main-blog-card__button {
@@ -235,7 +219,9 @@
   font-size: 12px;
 }
 
+.main-blog-slider__slide.is-active .main-blog-card .global-btn,
 .main-blog-slider__slide.is-active .main-blog-card__button {
+  display: block !important;
   opacity: 1;
   pointer-events: auto;
 }

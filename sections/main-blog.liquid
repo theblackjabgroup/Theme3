@@ -1,4 +1,33 @@
 {{ 'section-main-blog.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign scheme = section.settings.color_scheme
+  if scheme == blank
+    assign scheme = settings.color_schemes | first
+  endif
+  assign blog_scheme_ref = section.settings.color_scheme
+  assign blog_scheme_id = blog_scheme_ref.id | default: blog_scheme_ref | append: ''
+  assign blog_scheme_obj = null
+  for s in settings.color_schemes
+    assign sid = s.id | append: ''
+    if sid == blog_scheme_id or s.id == blog_scheme_ref
+      assign blog_scheme_obj = s
+      break
+    endif
+  endfor
+  assign blog_dark_scheme_id = null
+  assign blog_dark_scheme_obj = null
+  if section.settings.dark_mode_color_scheme != blank
+    assign blog_dark_ref = section.settings.dark_mode_color_scheme
+    assign blog_dark_scheme_id = blog_dark_ref.id | default: blog_dark_ref | append: ''
+    for s in settings.color_schemes
+      assign sid = s.id | append: ''
+      if sid == blog_dark_scheme_id or s.id == blog_dark_ref
+        assign blog_dark_scheme_obj = s
+        break
+      endif
+    endfor
+  endif
+-%}
 {%- style -%}
   .section-{{ section.id }}-margin {
     margin-top: {{ section.settings.margin_top_mobile }}px;
@@ -71,6 +100,52 @@
   }
 {%- endstyle -%}
 
+{%- comment -%} Blog slider: respect theme light/dark toggle using section color schemes {%- endcomment -%}
+{%- if blog_scheme_obj -%}
+  {%- style -%}
+    html[data-global-theme-active="true"] #shopify-section-{{ section.id }} .main-blog-slider {
+      --color-bg: {{ blog_scheme_obj.settings.color_bg }} !important;
+      --color-background: {{ blog_scheme_obj.settings.color_bg }} !important;
+      --color-card-bg: {{ blog_scheme_obj.settings.color_card_bg }} !important;
+      --color-card-text: {{ blog_scheme_obj.settings.color_card_text | default: blog_scheme_obj.settings.color_text }} !important;
+      --color-heading: {{ blog_scheme_obj.settings.color_heading }} !important;
+      --color-headings: {{ blog_scheme_obj.settings.color_heading }} !important;
+      --color-text: {{ blog_scheme_obj.settings.color_text }} !important;
+      --color-link: {{ blog_scheme_obj.settings.color_link }} !important;
+      --color-link-hover: {{ blog_scheme_obj.settings.color_link_hover }} !important;
+      --color-primary-button-bg: {{ blog_scheme_obj.settings.primary_button }} !important;
+      --color-primary-button-text: {{ blog_scheme_obj.settings.on_primary_button }} !important;
+      --color-primary-button-border: {{ blog_scheme_obj.settings.primary_button_border }} !important;
+      --btn-primary-bg: {{ blog_scheme_obj.settings.btn_primary_bg | default: blog_scheme_obj.settings.primary_button }} !important;
+      --btn-primary-text: {{ blog_scheme_obj.settings.btn_primary_text | default: blog_scheme_obj.settings.on_primary_button }} !important;
+      --btn-primary-border: {{ blog_scheme_obj.settings.btn_primary_border | default: blog_scheme_obj.settings.primary_button_border }} !important;
+      --btn-primary-shadow: {{ blog_scheme_obj.settings.btn_primary_shadow | default: blog_scheme_obj.settings.color_btn_shadow }} !important;
+    }
+  {%- endstyle -%}
+{%- endif -%}
+{%- if blog_dark_scheme_obj -%}
+  {%- style -%}
+    html[data-global-theme-active="true"][data-active-scheme="color-{{ blog_dark_scheme_id }}"] #shopify-section-{{ section.id }} .main-blog-slider {
+      --color-bg: {{ blog_dark_scheme_obj.settings.color_bg }} !important;
+      --color-background: {{ blog_dark_scheme_obj.settings.color_bg }} !important;
+      --color-card-bg: {{ blog_dark_scheme_obj.settings.color_card_bg }} !important;
+      --color-card-text: {{ blog_dark_scheme_obj.settings.color_card_text | default: blog_dark_scheme_obj.settings.color_text }} !important;
+      --color-heading: {{ blog_dark_scheme_obj.settings.color_heading }} !important;
+      --color-headings: {{ blog_dark_scheme_obj.settings.color_heading }} !important;
+      --color-text: {{ blog_dark_scheme_obj.settings.color_text }} !important;
+      --color-link: {{ blog_dark_scheme_obj.settings.color_link }} !important;
+      --color-link-hover: {{ blog_dark_scheme_obj.settings.color_link_hover }} !important;
+      --color-primary-button-bg: {{ blog_dark_scheme_obj.settings.primary_button }} !important;
+      --color-primary-button-text: {{ blog_dark_scheme_obj.settings.on_primary_button }} !important;
+      --color-primary-button-border: {{ blog_dark_scheme_obj.settings.primary_button_border }} !important;
+      --btn-primary-bg: {{ blog_dark_scheme_obj.settings.btn_primary_bg | default: blog_dark_scheme_obj.settings.primary_button }} !important;
+      --btn-primary-text: {{ blog_dark_scheme_obj.settings.btn_primary_text | default: blog_dark_scheme_obj.settings.on_primary_button }} !important;
+      --btn-primary-border: {{ blog_dark_scheme_obj.settings.btn_primary_border | default: blog_dark_scheme_obj.settings.primary_button_border }} !important;
+      --btn-primary-shadow: {{ blog_dark_scheme_obj.settings.btn_primary_shadow | default: blog_dark_scheme_obj.settings.color_btn_shadow }} !important;
+    }
+  {%- endstyle -%}
+{%- endif -%}
+
 <div class="main-blog-slider color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-margin">
   <div class="main-blog-slider__container" id="MainBlogContainer-{{ section.id }}">
     <div class="main-blog-slider__track" id="MainBlogSliderTrack-{{ section.id }}">
@@ -111,16 +186,22 @@
   </div>
 
   <div class="main-blog-slider__controls">
-    <button class="main-blog-slider__arrow main-blog-slider__arrow--prev" id="MainBlogPrev-{{ section.id }}">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </button>
-    <button class="main-blog-slider__arrow main-blog-slider__arrow--next" id="MainBlogNext-{{ section.id }}">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </button>
+    {% render 'global-btn',
+      variant: 'primary',
+      icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+      icon_only: true,
+      fit_width: false,
+      class: 'main-blog-slider__arrow main-blog-slider__arrow--prev',
+      attributes: 'id="MainBlogPrev-{{ section.id }}" aria-label="Previous article"'
+    %}
+    {% render 'global-btn',
+      variant: 'primary',
+      icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+      icon_only: true,
+      fit_width: false,
+      class: 'main-blog-slider__arrow main-blog-slider__arrow--next',
+      attributes: 'id="MainBlogNext-{{ section.id }}" aria-label="Next article"'
+    %}
   </div>
 </div>
 
@@ -140,8 +221,8 @@
       if (!track) return;
 
       const container = document.getElementById('MainBlogContainer-{{ section.id }}');
-      const prevBtn = document.getElementById('MainBlogPrev-{{ section.id }}');
-      const nextBtn = document.getElementById('MainBlogNext-{{ section.id }}');
+      const sectionEl = document.querySelector('.section-{{ section.id }}-margin');
+      const controlsEl = sectionEl ? sectionEl.querySelector('.main-blog-slider__controls') : null;
 
       const existingClones = track.querySelectorAll('.is-clone');
       existingClones.forEach((clone) => clone.remove());
@@ -321,18 +402,20 @@
 
       container.addEventListener('scroll', onScroll, { passive: true });
 
-      const newPrevBtn = prevBtn.cloneNode(true);
-      const newNextBtn = nextBtn.cloneNode(true);
-      prevBtn.parentNode.replaceChild(newPrevBtn, prevBtn);
-      nextBtn.parentNode.replaceChild(newNextBtn, nextBtn);
-
-      newPrevBtn.addEventListener('click', () => {
-        updateSlider(currentIndex - 1);
-      });
-
-      newNextBtn.addEventListener('click', () => {
-        updateSlider(currentIndex + 1);
-      });
+      function onControlsClick(e) {
+        const prevArrow = e.target.closest('.main-blog-slider__arrow--prev');
+        const nextArrow = e.target.closest('.main-blog-slider__arrow--next');
+        if (prevArrow) {
+          e.preventDefault();
+          updateSlider(currentIndex - 1);
+        } else if (nextArrow) {
+          e.preventDefault();
+          updateSlider(currentIndex + 1);
+        }
+      }
+      if (controlsEl) {
+        controlsEl.addEventListener('click', onControlsClick);
+      }
 
       const resizeHandler = () => {
         handleVisualUpdate(currentIndex, false);
@@ -343,6 +426,9 @@
       return () => {
         window.removeEventListener('resize', resizeHandler);
         container.removeEventListener('scroll', onScroll);
+        if (controlsEl) {
+          controlsEl.removeEventListener('click', onControlsClick);
+        }
       };
     }
 
@@ -401,6 +487,12 @@
       "id": "color_scheme",
       "label": "t:sections.all.colors.label",
       "default": "scheme-1"
+    },
+    {
+      "type": "color_scheme",
+      "id": "dark_mode_color_scheme",
+      "label": "Dark mode color scheme",
+      "info": "When the theme toggle is in dark mode, use this color scheme for the blog slider. Leave blank to reuse the main color scheme."
     },
     {
       "type": "range",

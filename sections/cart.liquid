@@ -259,8 +259,7 @@
       max-width: 100%;
       margin-left: auto;
       text-align: right;
-      font-size: 20px;
-      font-weight: 900;
+      font-size: 18px;
       color: var(--color-text);
       white-space: nowrap;
     }
@@ -268,6 +267,19 @@
     .cart-item-card__total .cart-item-card__current-price,
     .cart-item-card__total .cart-item-card__old-price {
       white-space: nowrap;
+    }
+
+    .cart-item-card__total .cart-item-card__old-price {
+      font-size: 0.85em;
+      font-weight: 400;
+      text-decoration: line-through;
+      opacity: 0.8;
+      margin-right: 0.4em;
+    }
+
+    .cart-item-card__total .cart-item-card__current-price {
+      font-size: 1em;
+      font-weight: 700;
     }
 
     /* Summary Card */
@@ -332,29 +344,10 @@
       margin-bottom: 10px;
     }
 
-    /* Order note – 3D same as submit button */
-    .cart-note-input-wrap {
-      position: relative;
-      display: block;
-    }
-
-    .cart-note-input__shadow {
-      position: absolute;
-      top: 4px;
-      left: 0;
+    /* Order note – input-box snippet (no shadow) */
+    .cart-summary__note .input-box__input {
       width: 100%;
-      height: 95%;
-      background-color: var(--color-btn-shadow);
-      border-radius: 14px;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    .cart-note-input {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      height: 120px;
+      min-height: 120px;
       box-sizing: border-box;
       background-color: var(--color-card-bg);
       border: 1px solid var(--color-text);
@@ -363,15 +356,15 @@
       font-family: inherit;
       font-size: 14px;
       color: var(--color-text);
-      resize: none;
+      resize: vertical;
     }
 
-    .cart-note-input::placeholder {
+    .cart-summary__note .input-box__input::placeholder {
       color: var(--color-text);
       opacity: 0.7;
     }
 
-    .cart-note-input:focus {
+    .cart-summary__note .input-box__input:focus {
       outline: none;
       box-shadow: none;
     }
@@ -515,7 +508,7 @@
 
 
     /* Tablet: stack columns, constrain summary width for readability */
-    @media screen and (max-width: 1024px) {
+    @media screen and (max-width: 1124px) {
         .header-label-quantity {
       flex: 0.35;
     }
@@ -670,8 +663,8 @@
       .cart-summary__note label {
         font-size: 14px;
       }
-      .cart-note-input {
-        height: 100px;
+      .cart-summary__note .input-box__input {
+        min-height: 100px;
         font-size: 14px;
         padding: 12px;
       }
@@ -820,15 +813,30 @@
                             {% render 'quantity-selector', item: item %}
                           </div>
 
-                          <!-- Total Price -->
+                          <!-- Total Price (strikethrough original/compare_at when sale or discounted) -->
+                          {%- liquid
+                            assign show_old_price = false
+                            assign old_line_price = item.original_line_price
+                            if item.variant.compare_at_price != blank and item.variant.compare_at_price > item.final_price
+                              assign compare_at_line = item.variant.compare_at_price | times: item.quantity
+                              assign show_old_price = true
+                              assign old_line_price = compare_at_line
+                            elsif item.original_line_price > item.final_line_price
+                              assign show_old_price = true
+                              assign old_line_price = item.original_line_price
+                            endif
+                          -%}
                           <div
                             class="cart-item-card__total"
                             data-item-index="{{ item.index | plus: 1 }}"
                             data-unit-price="{{ item.final_price }}"
                             data-original-unit-price="{{ item.original_price }}"
+                            {% if item.variant.compare_at_price != blank and item.variant.compare_at_price > item.final_price %}
+                              data-compare-at-unit-price="{{ item.variant.compare_at_price }}"
+                            {% endif %}
                           >
-                            {%- if item.original_line_price != item.final_line_price -%}
-                              <s class="cart-item-card__old-price">{{ item.original_line_price | money }}</s>
+                            {%- if show_old_price -%}
+                              <s class="cart-item-card__old-price" aria-label="Original price">{{ old_line_price | money }}</s>
                             {%- endif -%}
                             <span class="cart-item-card__current-price">{{ item.final_line_price | money }}</span>
                           </div>
@@ -847,8 +855,8 @@
                           {% capture remove_btn_attrs %}data-line-index="{{ item.index | plus: 1 }}" aria-label="Remove {{ item.product.title | escape }}"{% endcapture %}
                           {% render 'global-btn',
                             text: 'Remove',
-                            url: item.url_to_remove,
                             variant: 'primary',
+                            type: 'button',
                             class: 'cart-item-action-btn cart-item-remove-btn',
                             attributes: remove_btn_attrs
                           %}
@@ -881,17 +889,15 @@
               </div>
 
               <div class="cart-summary__note">
-                <label for="Cart-note">Add a note to your order</label>
-                <div class="cart-note-input-wrap">
-                  <span class="cart-note-input__shadow" aria-hidden="true"></span>
-                  <textarea
-                    name="note"
-                    form="cart"
-                    id="Cart-note"
-                    class="cart-note-input"
-                    placeholder="Order Note"
-                  >{{ cart.note }}</textarea>
-                </div>
+                {% render 'input-box',
+                  id: 'Cart-note',
+                  name: 'note',
+                  form: 'cart',
+                  placeholder: 'Order Note',
+                  value: cart.note,
+                  label: 'Add a note to your order',
+                  rows: 4
+                %}
               </div>
 
               <div class="cart-summary__totals">
@@ -1128,13 +1134,16 @@
 
         if (!itemTotalCell || !quantityInput) return;
 
-        // Get unit price from data attribute
+        // Get unit price and original/compare-at from data attributes
         const unitPrice = parseInt(itemTotalCell.getAttribute('data-unit-price')) || 0;
+        const compareAtUnitPrice = parseInt(itemTotalCell.getAttribute('data-compare-at-unit-price')) || 0;
         const originalUnitPrice = parseInt(itemTotalCell.getAttribute('data-original-unit-price')) || 0;
+        const oldUnitPrice = compareAtUnitPrice > 0 ? compareAtUnitPrice : originalUnitPrice;
 
-        // Calculate new line total
+        // Calculate new line total and original (strikethrough) line total
         const newLineTotal = unitPrice * newQuantity;
-        const newOriginalLineTotal = originalUnitPrice * newQuantity;
+        const newOriginalLineTotal = oldUnitPrice * newQuantity;
+        const showOldPrice = oldUnitPrice > 0 && oldUnitPrice !== unitPrice;
 
         // Update quantity display
         quantityInput.value = newQuantity;
@@ -1142,17 +1151,28 @@
         // Update item total
         const formattedPrice = formatMoney(newLineTotal);
         const currentPriceSpan = itemTotalCell.querySelector('.cart-item-card__current-price');
-        const oldPriceSpan = itemTotalCell.querySelector('.cart-item-card__old-price');
+        let oldPriceSpan = itemTotalCell.querySelector('.cart-item-card__old-price');
         if (currentPriceSpan) {
           currentPriceSpan.textContent = formattedPrice;
         } else {
           itemTotalCell.textContent = formattedPrice;
         }
 
-        // Update discounted item's original (strikethrough) line price, if present
-        if (oldPriceSpan && originalUnitPrice && originalUnitPrice !== unitPrice) {
-          const originalFormat = oldPriceSpan.textContent.trim();
-          oldPriceSpan.textContent = formatMoney(newOriginalLineTotal, originalFormat);
+        // Update or add strikethrough (original/compare_at) line price when discounted
+        if (showOldPrice) {
+          const originalFormat = oldPriceSpan ? oldPriceSpan.textContent.trim() : null;
+          const formattedOld = formatMoney(newOriginalLineTotal, originalFormat);
+          if (oldPriceSpan) {
+            oldPriceSpan.textContent = formattedOld;
+          } else {
+            const s = document.createElement('s');
+            s.className = 'cart-item-card__old-price';
+            s.setAttribute('aria-label', 'Original price');
+            s.textContent = formattedOld;
+            itemTotalCell.insertBefore(s, currentPriceSpan || itemTotalCell.firstChild);
+          }
+        } else if (oldPriceSpan) {
+          oldPriceSpan.remove();
         }
 
         // Recalculate cart totals
@@ -1280,32 +1300,50 @@
     }, 500);
   })();
 
-  // Remove button: use cart API then reload (works in storefront and theme editor)
+  // Remove button: use cart change.js API then reload (works in storefront and theme editor)
   (function () {
-    const cartForm = document.getElementById('cart');
-    if (!cartForm || !window.routes || !window.routes.cart_change_url) return;
+    function initRemoveHandler() {
+      const cartForm = document.getElementById('cart');
+      if (!cartForm) return;
 
-    cartForm.addEventListener('click', function (e) {
-      const removeBtn = e.target.closest('.cart-item-remove-btn');
-      if (!removeBtn || !removeBtn.href) return;
-      const line = removeBtn.getAttribute('data-line-index');
-      if (!line) return;
+      const changeUrl =
+        window.routes && window.routes.cart_change_url
+          ? window.routes.cart_change_url.replace(/\/change\/?(\?.*)?$/i, '/change.js')
+          : '/cart/change.js';
 
-      e.preventDefault();
-      e.stopPropagation();
+      cartForm.addEventListener(
+        'click',
+        function (e) {
+          const removeBtn = e.target.closest('.cart-item-remove-btn');
+          if (!removeBtn) return;
+          const line = removeBtn.getAttribute('data-line-index');
+          if (!line) return;
 
-      fetch(window.routes.cart_change_url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ line: parseInt(line, 10), quantity: 0 }),
-      })
-        .then(() => {})
-        .catch(() => {})
-        .finally(() => {
-          // Reload current URL so editor preview keeps its context (path + query)
-          window.location.reload();
-        });
-    });
+          e.preventDefault();
+          e.stopPropagation();
+
+          fetch(changeUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({ line: parseInt(line, 10), quantity: 0 }),
+          })
+            .then((res) => (res.ok ? res.json() : Promise.reject(new Error('Cart update failed'))))
+            .then(() => {
+              window.location.reload();
+            })
+            .catch(() => {
+              window.location.reload();
+            });
+        },
+        true
+      );
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initRemoveHandler);
+    } else {
+      initRemoveHandler();
+    }
   })();
 
   // Handle checkout button - update cart via API first, then redirect

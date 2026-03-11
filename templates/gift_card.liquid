@@ -13,6 +13,8 @@
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
     {%- endif -%}
 
+    {{ 'base.css' | asset_url | stylesheet_tag }}
+    {{ 'component-global-btn.css' | asset_url | stylesheet_tag }}
     {{ 'template-giftcard.css' | asset_url | stylesheet_tag }}
 
     {%- unless settings.type_header_font.system? -%}
@@ -26,6 +28,15 @@
     {{ content_for_header }}
   </head>
   <body>
+    <script>
+      (function () {
+        var savedScheme = localStorage.getItem('global-theme-scheme');
+        if (savedScheme) {
+          document.documentElement.setAttribute('data-global-theme-active', 'true');
+          document.documentElement.setAttribute('data-active-scheme', savedScheme);
+        }
+      })();
+    </script>
     {% section 'gift-card' %}
   </body>
 </html>

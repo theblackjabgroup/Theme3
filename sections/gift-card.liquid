@@ -1,10 +1,58 @@
+{%- liquid
+  assign gc_scheme_ref = section.settings.color_scheme
+  if gc_scheme_ref == blank
+    assign gc_scheme_ref = settings.color_schemes | first
+  endif
+  assign gc_scheme_id = gc_scheme_ref.id | default: gc_scheme_ref | append: ''
+  assign gc_scheme_obj = null
+  for s in settings.color_schemes
+    assign sid = s.id | append: ''
+    if sid == gc_scheme_id or s.id == gc_scheme_ref
+      assign gc_scheme_obj = s
+      break
+    endif
+  endfor
+  assign gc_dark_scheme_obj = null
+  if section.settings.dark_mode_color_scheme != blank
+    assign gc_dark_ref = section.settings.dark_mode_color_scheme
+    assign gc_dark_scheme_id = gc_dark_ref.id | default: gc_dark_ref | append: ''
+    for s in settings.color_schemes
+      assign sid = s.id | append: ''
+      if sid == gc_dark_scheme_id or s.id == gc_dark_ref
+        assign gc_dark_scheme_obj = s
+        break
+      endif
+    endfor
+  endif
+  unless gc_scheme_obj
+    assign gc_scheme_obj = settings.color_schemes | first
+  endunless
+-%}
+
 <style>
   :root {
-    --gc-bg: {{ section.settings.bg }};
-    --gc-panel-bg: {{ section.settings.panel_bg }};
-    --gc-text-color: {{ section.settings.text }};
-    --gc-title-color: {{ section.settings.title_color }};
-    --gc-green: {{ section.settings.accent }};
+    {%- if gc_scheme_obj -%}
+    --color-bg: {{ gc_scheme_obj.settings.color_bg }};
+    --color-background: {{ gc_scheme_obj.settings.color_bg }};
+    --color-card-bg: {{ gc_scheme_obj.settings.color_card_bg }};
+    --color-heading: {{ gc_scheme_obj.settings.color_heading }};
+    --color-headings: {{ gc_scheme_obj.settings.color_heading }};
+    --color-text: {{ gc_scheme_obj.settings.color_text }};
+    --color-accent: {{ gc_scheme_obj.settings.color_accent | default: '#F5A30A' }};
+    --color-accent-2: {{ gc_scheme_obj.settings.color_accent_2 | default: '#D4872A' }};
+    --color-input-bg: {{ gc_scheme_obj.settings.color_input_bg }};
+    --btn-primary-bg: {{ gc_scheme_obj.settings.btn_primary_bg }};
+    --btn-primary-text: {{ gc_scheme_obj.settings.btn_primary_text }};
+    --btn-primary-border: {{ gc_scheme_obj.settings.btn_primary_border }};
+    --btn-primary-shadow: {{ gc_scheme_obj.settings.btn_primary_shadow }};
+    --btn-secondary-bg: {{ gc_scheme_obj.settings.btn_secondary_bg }};
+    --btn-secondary-text: {{ gc_scheme_obj.settings.btn_secondary_text }};
+    --btn-secondary-border: {{ gc_scheme_obj.settings.btn_secondary_border }};
+    --btn-secondary-shadow: {{ gc_scheme_obj.settings.btn_secondary_shadow }};
+    {%- endif -%}
+
+    --page-layout-gap: {{ settings.page_layout_gap | default: 16 }}px;
+    --page-layout-padding: {{ settings.page_layout_padding | default: 24 }}px;
 
     --gc-title-size: {{ section.settings.title_size }}px;
     --gc-value-size: {{ section.settings.value_size }}px;
@@ -18,17 +66,9 @@
     --gc-logo-text-size-mobile: {{ section.settings.logo_text_size_mobile }}px;
     --gc-logo-text-padding: {{ section.settings.logo_text_padding }}px;
     --gc-logo-text-padding-mobile: {{ section.settings.logo_text_padding_mobile }}px;
-    --gc-btn-face: {{ section.settings.button_face }};
-    --gc-btn-bg: {{ section.settings.button_bg }};
-    --gc-btn-text: {{ section.settings.button_text }};
-    --gc-btn-border: {{ section.settings.button_bg }};
-    --gc-btn-hover-bg: {{ section.settings.button_text }};
-    --gc-btn-hover-text: {{ section.settings.button_bg }};
-
     --gc-radius: {{ section.settings.button_radius }}px;
     --gc-btn-height: {{ section.settings.button_height }}px;
     --gc-btn-max-width: {{ section.settings.button_width }}px;
-    --gc-qr-bg: {{ section.settings.qr_bg }};
 
     {% if section.settings.animation_enabled %}
       --gc-animation-duration: {{ section.settings.animation_duration }}s;
@@ -38,6 +78,29 @@
       --gc-animation-name: none;
     {% endif %}
   }
+
+  {%- if gc_dark_scheme_obj -%}
+  /* Dark scheme follows theme toggle (bento), not device prefers-color-scheme */
+  html[data-global-theme-active="true"][data-active-scheme="color-{{ gc_dark_scheme_obj.id }}"] {
+    --color-bg: {{ gc_dark_scheme_obj.settings.color_bg }};
+    --color-background: {{ gc_dark_scheme_obj.settings.color_bg }};
+    --color-card-bg: {{ gc_dark_scheme_obj.settings.color_card_bg }};
+    --color-heading: {{ gc_dark_scheme_obj.settings.color_heading }};
+    --color-headings: {{ gc_dark_scheme_obj.settings.color_heading }};
+    --color-text: {{ gc_dark_scheme_obj.settings.color_text }};
+    --color-accent: {{ gc_dark_scheme_obj.settings.color_accent | default: '#F5A30A' }};
+    --color-accent-2: {{ gc_dark_scheme_obj.settings.color_accent_2 | default: '#D4872A' }};
+    --color-input-bg: {{ gc_dark_scheme_obj.settings.color_input_bg }};
+    --btn-primary-bg: {{ gc_dark_scheme_obj.settings.btn_primary_bg }};
+    --btn-primary-text: {{ gc_dark_scheme_obj.settings.btn_primary_text }};
+    --btn-primary-border: {{ gc_dark_scheme_obj.settings.btn_primary_border }};
+    --btn-primary-shadow: {{ gc_dark_scheme_obj.settings.btn_primary_shadow }};
+    --btn-secondary-bg: {{ gc_dark_scheme_obj.settings.btn_secondary_bg }};
+    --btn-secondary-text: {{ gc_dark_scheme_obj.settings.btn_secondary_text }};
+    --btn-secondary-border: {{ gc_dark_scheme_obj.settings.btn_secondary_border }};
+    --btn-secondary-shadow: {{ gc_dark_scheme_obj.settings.btn_secondary_shadow }};
+  }
+  {%- endif -%}
 
   .gc-title { font-size: var(--gc-title-size); }
   .gc-card-value { font-size: var(--gc-value-size); }
@@ -51,9 +114,6 @@
     .gc-code-input { font-size: var(--gc-code-size-mobile); }
     .gc-logo-text { font-size: var(--gc-logo-text-size-mobile); padding: var(--gc-logo-text-padding-mobile); }
   }
-
-  .gc-print-btn__shadow { background-color: var(--gc-btn-bg); opacity: 0.5; }
-  .gc-print-btn__content { background-color: var(--gc-btn-face) !important; }
 </style>
 
 {%- assign is_expired = false -%}
@@ -80,13 +140,10 @@
         viewBox="0 0 578 319"
         fill="none"
       >
-        <path d="M283.98 3.21932C287.886 1.20004 292.529 1.20003 296.435 3.21932L431.516 73.0492C444.14 79.5753 439.499 98.657 425.288 98.657H155.127C140.916 98.657 136.275 79.5753 148.9 73.0492L283.98 3.21932Z" fill="{{ section.settings.envelope_back }}"/>
-        <path d="M246.474 31.1906L83.0625 112.896L282.072 190.872H298.006L495.998 112.557L343.436 31.1906H246.474Z" fill="{{ section.settings.envelope_back }}"/>
+        <path d="M283.98 3.21932C287.886 1.20004 292.529 1.20003 296.435 3.21932L431.516 73.0492C444.14 79.5753 439.499 98.657 425.288 98.657H155.127C140.916 98.657 136.275 79.5753 148.9 73.0492L283.98 3.21932Z" fill="var(--color-bg)"/>
+        <path d="M246.474 31.1906L83.0625 112.896L282.072 190.872H298.006L495.998 112.557L343.436 31.1906H246.474Z" fill="var(--color-bg)"/>
       </svg>
-      <div
-        class="gc-card"
-        style="background-color: {{ section.settings.accent }}; color: {{ section.settings.bg }};"
-      >
+      <div class="gc-card" style="background-color: var(--color-accent); color: var(--btn-primary-text);">
         {% if is_expired %}
           <div class="gc-expired-stamp">
             <span>{{ 'gift_cards.issued.expired_stamp' | t }}</span>
@@ -102,7 +159,10 @@
             {{ gift_card.balance | money }}
           {% endif %}
         </div>
-        <div class="gc-card-visual gc-card-visual--align-{{ section.settings.card_logo_align }} gc-card-visual--pos-{{ section.settings.card_logo_position }}" style="--gc-card-logo-width: {{ section.settings.card_logo_width }}px; --gc-card-logo-height: {{ section.settings.card_logo_height }}px; --gc-card-logo-rotation: {{ section.settings.card_logo_rotation }}deg;">
+        <div
+          class="gc-card-visual gc-card-visual--align-{{ section.settings.card_logo_align }} gc-card-visual--pos-{{ section.settings.card_logo_position }}"
+          style="--gc-card-logo-width: {{ section.settings.card_logo_width }}px; --gc-card-logo-height: {{ section.settings.card_logo_height }}px; --gc-card-logo-rotation: {{ section.settings.card_logo_rotation }}deg;"
+        >
           {% if section.settings.card_logo != blank %}
             {%- assign logo_width_2x = section.settings.card_logo_width | times: 2 -%}
             <img
@@ -125,9 +185,9 @@
         viewBox="0 0 578 319"
         fill="none"
       >
-        <path d="M287.278 188.214C288.936 187.528 290.799 187.528 292.457 188.214L497.002 272.753C503.862 275.588 501.835 285.8 494.412 285.8H85.3228C77.9004 285.8 75.8733 275.588 82.7329 272.753L287.278 188.214Z" fill="{{ section.settings.envelope_front }}"/>
-        <path opacity="0.7" d="M289.47 205.327C283.711 203.083 283.711 194.935 289.47 192.691L492.347 113.647C496.792 111.915 501.589 115.194 501.589 119.965L501.589 278.053C501.589 282.824 496.792 286.103 492.347 284.371L289.47 205.327Z" fill="{{ section.settings.envelope_front }}"/>
-        <path opacity="0.7" d="M288.229 205.327C293.988 203.083 293.988 194.935 288.229 192.691L85.3525 113.647C80.907 111.915 76.1104 115.194 76.1104 119.965L76.1104 278.053C76.1104 282.824 80.907 286.103 85.3525 284.371L288.229 205.327Z" fill="{{ section.settings.envelope_front }}"/>
+        <path d="M287.278 188.214C288.936 187.528 290.799 187.528 292.457 188.214L497.002 272.753C503.862 275.588 501.835 285.8 494.412 285.8H85.3228C77.9004 285.8 75.8733 275.588 82.7329 272.753L287.278 188.214Z" fill="var(--color-bg)"/>
+        <path opacity="0.7" d="M289.47 205.327C283.711 203.083 283.711 194.935 289.47 192.691L492.347 113.647C496.792 111.915 501.589 115.194 501.589 119.965L501.589 278.053C501.589 282.824 496.792 286.103 492.347 284.371L289.47 205.327Z" fill="var(--color-bg)"/>
+        <path opacity="0.7" d="M288.229 205.327C293.988 203.083 293.988 194.935 288.229 192.691L85.3525 113.647C80.907 111.915 76.1104 115.194 76.1104 119.965L76.1104 278.053C76.1104 282.824 80.907 286.103 85.3525 284.371L288.229 205.327Z" fill="var(--color-bg)"/>
       </svg>
     </div>
 
@@ -158,10 +218,15 @@
       <button class="gc-copy-btn">{{ 'gift_cards.issued.copy_button' | t }}</button>
     </div>
 
-    <button class="gc-print-btn" onclick="window.print();">
-      <span class="gc-print-btn__shadow"></span>
-      <span class="gc-print-btn__content">{{ 'gift_cards.issued.print_button' | t }}</span>
-    </button>
+    {%- assign print_btn_text = 'gift_cards.issued.print_button' | t -%}
+    {%- render 'global-btn',
+      text: print_btn_text,
+      variant: 'secondary',
+      type: 'button',
+      class: 'gc-print-btn',
+      fit_width: true,
+      attributes: 'onclick="window.print();"'
+    -%}
   </div>
 </div>
 
@@ -214,15 +279,17 @@
       let isMessageDisplayed = false;
       copyBtn.addEventListener('click', function () {
         if (isMessageDisplayed) return;
-        copyToClipboard(codeInput.value).then(function () {
-          const originalText = copyBtn.innerText;
-          copyBtn.innerText = 'COPIED';
-          isMessageDisplayed = true;
-          setTimeout(function () {
-            copyBtn.innerText = originalText;
-            isMessageDisplayed = false;
-          }, 2000);
-        }).catch(function () {});
+        copyToClipboard(codeInput.value)
+          .then(function () {
+            const originalText = copyBtn.innerText;
+            copyBtn.innerText = 'COPIED';
+            isMessageDisplayed = true;
+            setTimeout(function () {
+              copyBtn.innerText = originalText;
+              isMessageDisplayed = false;
+            }, 2000);
+          })
+          .catch(function () {});
       });
     }
   }
@@ -450,70 +517,16 @@
       "content": "Colors"
     },
     {
-      "type": "color",
-      "id": "title_color",
-      "label": "Heading Color",
-      "default": "#2f4f2f"
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Light mode color scheme",
+      "default": "scheme-1"
     },
     {
-      "type": "color",
-      "id": "bg",
-      "label": "Page Background",
-      "default": "#e5e2da"
-    },
-    {
-      "type": "color",
-      "id": "panel_bg",
-      "label": "Panel Background",
-      "default": "#ebe9e3"
-    },
-    {
-      "type": "color",
-      "id": "text",
-      "label": "Text Color",
-      "default": "#2f4f2f"
-    },
-    {
-      "type": "color",
-      "id": "accent",
-      "label": "Card Color",
-      "default": "#2f4f2f"
-    },
-    {
-      "type": "color",
-      "id": "envelope_back",
-      "label": "Envelope Back Color",
-      "default": "#273827"
-    },
-    {
-      "type": "color",
-      "id": "envelope_front",
-      "label": "Envelope Front Color",
-      "default": "#D2CDC4"
-    },
-    {
-      "type": "color",
-      "id": "qr_bg",
-      "label": "QR Code Background",
-      "default": "#ffffff"
-    },
-    {
-      "type": "color",
-      "id": "button_face",
-      "label": "Button Face Color",
-      "default": "#2f4f2f"
-    },
-    {
-      "type": "color",
-      "id": "button_bg",
-      "label": "Button Shadow Color",
-      "default": "#273827"
-    },
-    {
-      "type": "color",
-      "id": "button_text",
-      "label": "Button Text",
-      "default": "#e5e1da"
+      "type": "color_scheme",
+      "id": "dark_mode_color_scheme",
+      "label": "Dark mode color scheme",
+      "info": "Used when the theme toggle (e.g. bento toggle card) is set to this scheme. Choose the same scheme as your dark toggle so the gift card follows the toggle."
     },
     {
       "type": "range",

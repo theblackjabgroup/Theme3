@@ -6,8 +6,6 @@
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
     margin-top: {{ section.settings.margin_top | times: 0.75 | round: 0 }}px;
     margin-bottom: {{ section.settings.margin_bottom | times: 0.75 | round: 0 }}px;
-    margin-left: {{ section.settings.margin_horizontal | times: 0.75 | round: 0 }}px;
-    margin-right: {{ section.settings.margin_horizontal | times: 0.75 | round: 0 }}px;
     --share-story-input-height: {{ section.settings.input_height_mobile }}px;
     --share-story-input-width: {{ section.settings.input_width_mobile }}%;
     --share-story-label-font-size: {{ section.settings.label_font_size_mobile }}px;
@@ -19,12 +17,12 @@
   }
 
   #shopify-section-{{ section.id }} .share-story-wrapper {
-    gap: {{ section.settings.cards_gap_mobile }}px;
+    gap: var(--bento-gap, 16px);
   }
 
   @media screen and (min-width: 990px) {
     #shopify-section-{{ section.id }} .share-story-wrapper {
-      gap: {{ section.settings.cards_gap_desktop }}px;
+      gap: var(--bento-gap, 16px);
     }
   }
 
@@ -34,8 +32,6 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
       margin-top: {{ section.settings.margin_top }}px;
       margin-bottom: {{ section.settings.margin_bottom }}px;
-      margin-left: {{ section.settings.margin_horizontal }}px;
-      margin-right: {{ section.settings.margin_horizontal }}px;
       --share-story-input-height: {{ section.settings.input_height_desktop }}px;
       --share-story-input-width: {{ section.settings.input_width_desktop }}%;
       --share-story-label-font-size: {{ section.settings.label_font_size_desktop }}px;
@@ -51,7 +47,7 @@
     {%- if block.type == 'profile_card' -%}
       #shopify-section-{{ section.id }} .share-story-left {
         border-radius: {{ block.settings.card_border_radius_mobile }}px;
-        padding: {{ block.settings.card_padding_vertical_mobile }}px {{ block.settings.card_padding_horizontal_mobile }}px;
+        padding: var(--page-layout-padding);
       }
       #shopify-section-{{ section.id }} .share-story-left .share-story-badge {
         font-size: {{ block.settings.tag_font_size_mobile }}px;
@@ -73,7 +69,7 @@
       @media screen and (min-width: 750px) {
         #shopify-section-{{ section.id }} .share-story-left {
           border-radius: {{ block.settings.card_border_radius_desktop }}px;
-          padding: {{ block.settings.card_padding_vertical_desktop }}px {{ block.settings.card_padding_horizontal_desktop }}px;
+          padding: var(--page-layout-padding);
         }
         #shopify-section-{{ section.id }} .share-story-left .share-story-badge {
           font-size: {{ block.settings.tag_font_size_desktop }}px;
@@ -96,7 +92,7 @@
     {%- elsif block.type == 'story_card' -%}
       #shopify-section-{{ section.id }} .share-story-right {
         border-radius: {{ block.settings.card_border_radius_mobile }}px;
-        padding: {{ block.settings.card_padding_vertical_mobile }}px {{ block.settings.card_padding_horizontal_mobile }}px;
+        padding: var(--page-layout-padding);
       }
       #shopify-section-{{ section.id }} .share-story-right .share-story-title {
         font-size: {{ block.settings.title_font_size_mobile }}px;
@@ -111,7 +107,7 @@
       @media screen and (min-width: 750px) {
         #shopify-section-{{ section.id }} .share-story-right {
           border-radius: {{ block.settings.card_border_radius_desktop }}px;
-          padding: {{ block.settings.card_padding_vertical_desktop }}px {{ block.settings.card_padding_horizontal_desktop }}px;
+          padding: var(--page-layout-padding);
         }
         #shopify-section-{{ section.id }} .share-story-right .share-story-title {
           font-size: {{ block.settings.title_font_size_desktop }}px;
@@ -210,7 +206,7 @@
                 %}
 
                 <div class="share-story-footer-flex">
-                  {% render 'global-btn', text: block.settings.button_text, type: 'submit' %}
+                  {% render 'global-btn', text: block.settings.button_text, type: 'submit', variant: 'secondary', fit_width: false, class: 'share-story-submit' %}
                   <p class="share-story-disclaimer">
                     {{ block.settings.disclaimer }}
                   </p>
@@ -300,30 +296,6 @@
     {
       "type": "header",
       "content": "Cards"
-    },
-    {
-      "type": "range",
-      "id": "cards_gap_desktop",
-      "min": 0,
-      "max": 80,
-      "step": 4,
-      "unit": "px",
-      "label": "Gap Between Cards (Desktop)",
-      "default": 24
-    },
-    {
-      "type": "range",
-      "id": "cards_gap_mobile",
-      "min": 0,
-      "max": 80,
-      "step": 4,
-      "unit": "px",
-      "label": "Gap Between Cards (Mobile)",
-      "default": 48
-    },
-    {
-      "type": "header",
-      "content": "Input (Desktop)"
     },
     {
       "type": "range",
