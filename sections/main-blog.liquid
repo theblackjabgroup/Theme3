@@ -113,12 +113,12 @@
       --color-text: {{ blog_scheme_obj.settings.color_text }} !important;
       --color-link: {{ blog_scheme_obj.settings.color_link }} !important;
       --color-link-hover: {{ blog_scheme_obj.settings.color_link_hover }} !important;
-      --color-primary-button-bg: {{ blog_scheme_obj.settings.primary_button }} !important;
-      --color-primary-button-text: {{ blog_scheme_obj.settings.on_primary_button }} !important;
-      --color-primary-button-border: {{ blog_scheme_obj.settings.primary_button_border }} !important;
-      --btn-primary-bg: {{ blog_scheme_obj.settings.btn_primary_bg | default: blog_scheme_obj.settings.primary_button }} !important;
-      --btn-primary-text: {{ blog_scheme_obj.settings.btn_primary_text | default: blog_scheme_obj.settings.on_primary_button }} !important;
-      --btn-primary-border: {{ blog_scheme_obj.settings.btn_primary_border | default: blog_scheme_obj.settings.primary_button_border }} !important;
+      --color-primary-button-bg: {{ blog_scheme_obj.settings.btn_primary_bg }} !important;
+      --color-primary-button-text: {{ blog_scheme_obj.settings.btn_primary_text }} !important;
+      --color-primary-button-border: {{ blog_scheme_obj.settings.btn_primary_border }} !important;
+      --btn-primary-bg: {{ blog_scheme_obj.settings.btn_primary_bg }} !important;
+      --btn-primary-text: {{ blog_scheme_obj.settings.btn_primary_text }} !important;
+      --btn-primary-border: {{ blog_scheme_obj.settings.btn_primary_border }} !important;
       --btn-primary-shadow: {{ blog_scheme_obj.settings.btn_primary_shadow | default: blog_scheme_obj.settings.color_btn_shadow }} !important;
     }
   {%- endstyle -%}
@@ -135,12 +135,12 @@
       --color-text: {{ blog_dark_scheme_obj.settings.color_text }} !important;
       --color-link: {{ blog_dark_scheme_obj.settings.color_link }} !important;
       --color-link-hover: {{ blog_dark_scheme_obj.settings.color_link_hover }} !important;
-      --color-primary-button-bg: {{ blog_dark_scheme_obj.settings.primary_button }} !important;
-      --color-primary-button-text: {{ blog_dark_scheme_obj.settings.on_primary_button }} !important;
-      --color-primary-button-border: {{ blog_dark_scheme_obj.settings.primary_button_border }} !important;
-      --btn-primary-bg: {{ blog_dark_scheme_obj.settings.btn_primary_bg | default: blog_dark_scheme_obj.settings.primary_button }} !important;
-      --btn-primary-text: {{ blog_dark_scheme_obj.settings.btn_primary_text | default: blog_dark_scheme_obj.settings.on_primary_button }} !important;
-      --btn-primary-border: {{ blog_dark_scheme_obj.settings.btn_primary_border | default: blog_dark_scheme_obj.settings.primary_button_border }} !important;
+      --color-primary-button-bg: {{ blog_dark_scheme_obj.settings.btn_primary_bg }} !important;
+      --color-primary-button-text: {{ blog_dark_scheme_obj.settings.btn_primary_text }} !important;
+      --color-primary-button-border: {{ blog_dark_scheme_obj.settings.btn_primary_border }} !important;
+      --btn-primary-bg: {{ blog_dark_scheme_obj.settings.btn_primary_bg }} !important;
+      --btn-primary-text: {{ blog_dark_scheme_obj.settings.btn_primary_text }} !important;
+      --btn-primary-border: {{ blog_dark_scheme_obj.settings.btn_primary_border }} !important;
       --btn-primary-shadow: {{ blog_dark_scheme_obj.settings.btn_primary_shadow | default: blog_dark_scheme_obj.settings.color_btn_shadow }} !important;
     }
   {%- endstyle -%}
