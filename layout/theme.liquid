@@ -494,12 +494,17 @@
             document.removeEventListener('click', fn);
             load(trigger);
             if (isEditTrigger && done) {
-              var drawer = document.querySelector('cart-drawer');
-              if (drawer && typeof drawer.open === 'function') {
-                drawer.open(trigger);
-                var line = trigger.getAttribute('data-line-index');
-                if (line && typeof drawer.openEditPanel === 'function') drawer.openEditPanel(parseInt(line, 10));
+              function tryOpenEdit(attempt) {
+                var drawer = document.querySelector('cart-drawer');
+                if (drawer && typeof drawer.open === 'function') {
+                  drawer.open(trigger);
+                  var line = trigger.getAttribute('data-line-index');
+                  if (line && typeof drawer.openEditPanel === 'function') drawer.openEditPanel(parseInt(line, 10));
+                  return;
+                }
+                if (attempt < 5) setTimeout(function() { tryOpenEdit(attempt + 1); }, attempt * 50 + 30);
               }
+              tryOpenEdit(0);
             }
           }, true);
           (window.requestIdleCallback||setTimeout)(function(){ load(); }, 2500);

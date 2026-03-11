@@ -221,7 +221,6 @@
 
 .main-blog-slider__slide.is-active .main-blog-card .global-btn,
 .main-blog-slider__slide.is-active .main-blog-card__button {
-  display: block !important;
   opacity: 1;
   pointer-events: auto;
 }
