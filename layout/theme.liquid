@@ -491,7 +491,7 @@
             var isEditTrigger = trigger.hasAttribute && trigger.hasAttribute('data-open-cart-drawer-edit');
             e.preventDefault();
             e.stopPropagation();
-            if (!isEditTrigger) document.removeEventListener('click', fn);
+            document.removeEventListener('click', fn);
             load(trigger);
             if (isEditTrigger && done) {
               var drawer = document.querySelector('cart-drawer');
