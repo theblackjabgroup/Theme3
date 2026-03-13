@@ -67,7 +67,7 @@
   .template-404__scrolling-bg .marquee-scroll--404 {
     position: absolute;
     top: {{ section.settings.scrolling_text_vertical_position | default: 0 }}%;
-    left: 50%;
+    left: {{ section.settings.scrolling_text_horizontal_position | default: 50 }}%;
     transform: translateX(-50%);
     width: 100%;
     max-width: 1200px;
@@ -75,6 +75,15 @@
     --section-gap: 24px;
     background: transparent;
     padding: 12px 0;
+  }
+
+  {%- if section.settings.scrolling_text_font != blank -%}
+  .template-404__scrolling-bg .marquee-scroll__pill {
+    font-family: {{ section.settings.scrolling_text_font.family }}, {{ section.settings.scrolling_text_font.fallback_families }};
+  }
+  {%- endif -%}
+  .template-404__scrolling-bg .marquee-scroll__pill {
+    letter-spacing: {{ section.settings.scrolling_text_letter_spacing | default: '-0.02em' }};
   }
 
   .template-404__content {
@@ -216,7 +225,7 @@
 
     .template-404__scrolling-bg .marquee-scroll--404 {
       top: {{ section.settings.scrolling_text_vertical_position_mobile | default: 0 }}%;
-      left: 50%;
+      left: {{ section.settings.scrolling_text_horizontal_position_mobile | default: 50 }}%;
       transform: translateX(-50%);
     }
 
@@ -251,7 +260,8 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .template-404__scrolling-bg .scrolling-text-track {
+    .template-404__scrolling-bg .marquee-scroll__track,
+    .template-404__scrolling-bg .marquee-scroll__orbit-track {
       animation: none;
     }
   }
@@ -290,6 +300,7 @@
         icon_height: 58,
         circle_icon: section.settings.scrolling_icon,
         orbit_text: section.settings.background_orbit_text | default: '404',
+        text_transform: section.settings.scrolling_text_text_transform | default: 'uppercase',
         text: bg_text | append: ' LOST'
       %}
       {% render 'scrolling-text-item',
@@ -322,6 +333,7 @@
         icon_height: 58,
         circle_icon: section.settings.scrolling_icon,
         orbit_text: section.settings.background_orbit_text | default: '404',
+        text_transform: section.settings.scrolling_text_text_transform | default: 'uppercase',
         text: bg_text | append: ' LOST'
       %}
     </div>
@@ -534,36 +546,6 @@
     },
     {
       "type": "range",
-      "id": "scrolling_text_font_size_min",
-      "min": 2,
-      "max": 8,
-      "step": 0.5,
-      "unit": "rem",
-      "label": "Font size (min)",
-      "default": 4
-    },
-    {
-      "type": "range",
-      "id": "scrolling_text_font_size_vw",
-      "min": 8,
-      "max": 28,
-      "step": 1,
-      "unit": "vw",
-      "label": "Font size (viewport)",
-      "default": 18
-    },
-    {
-      "type": "range",
-      "id": "scrolling_text_font_size_max",
-      "min": 6,
-      "max": 20,
-      "step": 0.5,
-      "unit": "rem",
-      "label": "Font size (max)",
-      "default": 12
-    },
-    {
-      "type": "range",
       "id": "scrolling_text_font_weight",
       "min": 400,
       "max": 900,
@@ -600,36 +582,6 @@
         }
       ],
       "default": "uppercase"
-    },
-    {
-      "type": "range",
-      "id": "scrolling_text_font_size_min_mobile",
-      "min": 1.5,
-      "max": 6,
-      "step": 0.5,
-      "unit": "rem",
-      "label": "Mobile font size (min)",
-      "default": 3
-    },
-    {
-      "type": "range",
-      "id": "scrolling_text_font_size_vw_mobile",
-      "min": 8,
-      "max": 22,
-      "step": 1,
-      "unit": "vw",
-      "label": "Mobile font size (viewport)",
-      "default": 14
-    },
-    {
-      "type": "range",
-      "id": "scrolling_text_font_size_max_mobile",
-      "min": 4,
-      "max": 14,
-      "step": 0.5,
-      "unit": "rem",
-      "label": "Mobile font size (max)",
-      "default": 8
     },
     {
       "type": "header",
