@@ -727,6 +727,7 @@ html[data-global-theme-active="true"] .bento-card.toggle-card {
   width: 100%;
   aspect-ratio: 1;
   max-width: 80px;
+  min-width: 40px;
   background: var(--color-card-text);
   border-radius: var(--radius-xl);
   display: flex;
