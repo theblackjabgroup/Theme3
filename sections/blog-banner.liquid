@@ -2,11 +2,10 @@
 
 {%- style -%}
   .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top }}px;
-    padding-bottom: {{ section.settings.padding_bottom }}px;
-    background-color: {{ section.settings.color_scheme.settings.primary_button_bg }};
-    border-radius: {{ section.settings.border_radius }}px;
-    margin: {{ section.settings.margin_vertical }}px {{ section.settings.margin_horizontal }}px;
+    padding-top: var(--page-layout-padding);
+    padding-bottom: var(--page-layout-padding);
+    background-color: var(--color-card-bg) ;
+    border-radius: var(--radius-l);
     {% if section.settings.bg_image != blank %}background-image: url('{{ section.settings.bg_image | image_url: width: 1920 }}'); background-size: cover; background-position: center;{% endif %}
 
     --eyebrow-color: {{ section.settings.color_scheme.settings.accent_red }};

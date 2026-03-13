@@ -466,7 +466,7 @@
           var url = {{ 'cart-drawer.js' | asset_url | json }};
           var done = false;
           function load(triggerEl){
-            if(done)return;
+            if(done) return false;
             done=true;
             var s=document.createElement('script');
             s.src=url;
@@ -474,18 +474,38 @@
             if(triggerEl){
               s.onload=function(){
                 var drawer=document.querySelector('cart-drawer');
-                if(drawer&&typeof drawer.open==='function') drawer.open(triggerEl);
+                if(drawer&&typeof drawer.open==='function') {
+                  drawer.open(triggerEl);
+                  if(triggerEl.hasAttribute&&triggerEl.hasAttribute('data-open-cart-drawer-edit')){
+                    var line=triggerEl.getAttribute('data-line-index');
+                    if(line&&typeof drawer.openEditPanel==='function') drawer.openEditPanel(parseInt(line,10));
+                  }
+                }
               };
             }
             document.body.appendChild(s);
+            return true;
           }
           document.addEventListener('click', function fn(e){
-            var trigger = e.target && e.target.closest && (e.target.closest('a[href*="/cart"]') || e.target.closest('.cart-drawer-trigger') || e.target.closest('[data-open-cart-drawer]'));
-            if (trigger) {
-              e.preventDefault();
-              e.stopPropagation();
-              document.removeEventListener('click', fn);
-              load(trigger);
+            var trigger = e.target && e.target.closest && (e.target.closest('a[href*="/cart"]') || e.target.closest('.cart-drawer-trigger') || e.target.closest('[data-open-cart-drawer]') || e.target.closest('[data-open-cart-drawer-edit]'));
+            if (!trigger) return;
+            var isEditTrigger = trigger.hasAttribute && trigger.hasAttribute('data-open-cart-drawer-edit');
+            e.preventDefault();
+            e.stopPropagation();
+            document.removeEventListener('click', fn);
+            var scriptJustLoaded = load(trigger);
+            if (isEditTrigger && !scriptJustLoaded) {
+              function tryOpenEdit(attempt) {
+                var drawer = document.querySelector('cart-drawer');
+                if (drawer && typeof drawer.open === 'function') {
+                  drawer.open(trigger);
+                  var line = trigger.getAttribute('data-line-index');
+                  if (line && typeof drawer.openEditPanel === 'function') drawer.openEditPanel(parseInt(line, 10));
+                  return;
+                }
+                if (attempt < 5) setTimeout(function() { tryOpenEdit(attempt + 1); }, attempt * 50 + 30);
+              }
+              tryOpenEdit(0);
             }
           }, true);
           (window.requestIdleCallback||setTimeout)(function(){ load(); }, 2500);

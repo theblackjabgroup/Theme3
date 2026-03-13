@@ -126,17 +126,19 @@ class CartDrawer extends HTMLElement {
     });
     this.setHeaderCartIconAccessibility();
 
-    // Cart page: when Edit is clicked, open drawer and show edit panel for that line
+    // Cart page: when Edit is clicked, open drawer and show edit panel for that line (bound ref so it works after close/reopen)
+    const drawerEl = this;
     document.addEventListener('click', (e) => {
       const trigger = e.target.closest('[data-open-cart-drawer-edit]');
       if (!trigger) return;
       e.preventDefault();
+      e.stopPropagation();
       const lineIndex = trigger.getAttribute('data-line-index');
-      if (lineIndex) {
-        this.open();
-        this.openEditPanel(parseInt(lineIndex, 10));
+      if (lineIndex && typeof drawerEl.open === 'function' && typeof drawerEl.openEditPanel === 'function') {
+        drawerEl.open();
+        drawerEl.openEditPanel(parseInt(lineIndex, 10));
       }
-    });
+    }, true);
   }
 
   openEditPanel(lineIndex) {

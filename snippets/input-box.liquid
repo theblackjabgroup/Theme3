@@ -1,0 +1,28 @@
+{%- comment -%}
+  Renders a textarea input box with no shadow (flat style).
+  Use on cart page and elsewhere where a simple textarea is needed.
+
+  Accepts:
+  - id          {String}  Input id (required)
+  - name        {String}  Input name (required)
+  - form        {String}  Form id when input is outside form (optional)
+  - placeholder {String}  Placeholder text (optional)
+  - value       {String}  Initial value (optional)
+  - label       {String}  Label text (optional)
+  - class       {String}  Extra wrapper class (optional)
+  - rows        {Number}  Textarea rows (optional, default 4)
+{%- endcomment -%}
+{%- assign input_rows = rows | default: 4 -%}
+<div class="input-box input-box--no-shadow{% if class != blank %} {{ class }}{% endif %}">
+  {%- if label != blank -%}
+    <label for="{{ id }}">{{ label }}</label>
+  {%- endif -%}
+  <textarea
+    class="input-box__input field__input text-area"
+    id="{{ id }}"
+    name="{{ name }}"
+    {% if form != blank %}form="{{ form }}"{% endif %}
+    placeholder="{{ placeholder }}"
+    rows="{{ input_rows }}"
+  >{{ value }}</textarea>
+</div>

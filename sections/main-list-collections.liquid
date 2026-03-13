@@ -2,7 +2,73 @@
 {{ 'collection-card.css' | asset_url | stylesheet_tag }}
 {{ 'section-collection-list.css' | asset_url | stylesheet_tag }}
 
-<div class="">
+{%- liquid
+  assign scheme = section.settings.color_scheme
+  if scheme == blank
+    assign scheme = settings.color_schemes | first
+  endif
+  assign list_scheme_ref = section.settings.color_scheme
+  assign list_scheme_id = list_scheme_ref.id | default: list_scheme_ref | append: ''
+  assign list_scheme_obj = null
+  for s in settings.color_schemes
+    assign sid = s.id | append: ''
+    if sid == list_scheme_id or s.id == list_scheme_ref
+      assign list_scheme_obj = s
+      break
+    endif
+  endfor
+  assign list_dark_scheme_id = null
+  assign list_dark_scheme_obj = null
+  if section.settings.dark_mode_color_scheme != blank
+    assign list_dark_ref = section.settings.dark_mode_color_scheme
+    assign list_dark_scheme_id = list_dark_ref.id | default: list_dark_ref | append: ''
+    for s in settings.color_schemes
+      assign sid = s.id | append: ''
+      if sid == list_dark_scheme_id or s.id == list_dark_ref
+        assign list_dark_scheme_obj = s
+        break
+      endif
+    endfor
+  endif
+-%}
+
+{%- comment -%} Collection list: light/dark color schemes when theme toggle is active {%- endcomment -%}
+{%- if list_scheme_obj -%}
+  {%- style -%}
+    html[data-global-theme-active="true"] #shopify-section-{{ section.id }} .main-list-collections-section {
+      --color-bg: {{ list_scheme_obj.settings.color_bg }} !important;
+      --color-background: {{ list_scheme_obj.settings.color_bg }} !important;
+      --color-card-bg: {{ list_scheme_obj.settings.color_card_bg }} !important;
+      --color-card-text: {{ list_scheme_obj.settings.color_card_text | default: list_scheme_obj.settings.color_text }} !important;
+      --color-heading: {{ list_scheme_obj.settings.color_heading }} !important;
+      --color-headings: {{ list_scheme_obj.settings.color_heading }} !important;
+      --color-text: {{ list_scheme_obj.settings.color_text }} !important;
+      --color-link: {{ list_scheme_obj.settings.color_link }} !important;
+      --color-link-hover: {{ list_scheme_obj.settings.color_link_hover }} !important;
+      --color-input-border: {{ list_scheme_obj.settings.color_input_border }} !important;
+      --color-btn-shadow: {{ list_scheme_obj.settings.color_btn_shadow }} !important;
+    }
+  {%- endstyle -%}
+{%- endif -%}
+{%- if list_dark_scheme_obj -%}
+  {%- style -%}
+    html[data-global-theme-active="true"][data-active-scheme="color-{{ list_dark_scheme_id }}"] #shopify-section-{{ section.id }} .main-list-collections-section {
+      --color-bg: {{ list_dark_scheme_obj.settings.color_bg }} !important;
+      --color-background: {{ list_dark_scheme_obj.settings.color_bg }} !important;
+      --color-card-bg: {{ list_dark_scheme_obj.settings.color_card_bg }} !important;
+      --color-card-text: {{ list_dark_scheme_obj.settings.color_card_text | default: list_dark_scheme_obj.settings.color_text }} !important;
+      --color-heading: {{ list_dark_scheme_obj.settings.color_heading }} !important;
+      --color-headings: {{ list_dark_scheme_obj.settings.color_heading }} !important;
+      --color-text: {{ list_dark_scheme_obj.settings.color_text }} !important;
+      --color-link: {{ list_dark_scheme_obj.settings.color_link }} !important;
+      --color-link-hover: {{ list_dark_scheme_obj.settings.color_link_hover }} !important;
+      --color-input-border: {{ list_dark_scheme_obj.settings.color_input_border }} !important;
+      --color-btn-shadow: {{ list_dark_scheme_obj.settings.color_btn_shadow }} !important;
+    }
+  {%- endstyle -%}
+{%- endif -%}
+
+<div class="main-list-collections-section section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }}">
   <h1 class="title title--primary inline-richtext{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
     {{ section.settings.title }}
   </h1>
@@ -131,6 +197,18 @@
       ],
       "default": "2",
       "label": "t:sections.main-list-collections.settings.columns_mobile.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Light mode color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "color_scheme",
+      "id": "dark_mode_color_scheme",
+      "label": "Dark mode color scheme",
+      "info": "When the theme toggle is in dark mode, use this scheme for the collection list section."
     }
   ]
 }

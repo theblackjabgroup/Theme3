@@ -3,6 +3,36 @@
 {{ 'collection-card.css' | asset_url | stylesheet_tag }}
 {{ 'main-collection-product-grid.css' | asset_url | stylesheet_tag }}
 
+{%- liquid
+  assign scheme = section.settings.color_scheme
+  if scheme == blank
+    assign scheme = settings.color_schemes | first
+  endif
+  assign list_scheme_ref = section.settings.color_scheme
+  assign list_scheme_id = list_scheme_ref.id | default: list_scheme_ref | append: ''
+  assign list_scheme_obj = null
+  for s in settings.color_schemes
+    assign sid = s.id | append: ''
+    if sid == list_scheme_id or s.id == list_scheme_ref
+      assign list_scheme_obj = s
+      break
+    endif
+  endfor
+  assign list_dark_scheme_id = null
+  assign list_dark_scheme_obj = null
+  if section.settings.dark_mode_color_scheme != blank
+    assign list_dark_ref = section.settings.dark_mode_color_scheme
+    assign list_dark_scheme_id = list_dark_ref.id | default: list_dark_ref | append: ''
+    for s in settings.color_schemes
+      assign sid = s.id | append: ''
+      if sid == list_dark_scheme_id or s.id == list_dark_ref
+        assign list_dark_scheme_obj = s
+        break
+      endif
+    endfor
+  endif
+-%}
+
 <style>
   /* Submit button styles for hover overlay button */
   .custom-collection-list .share-story-submit {
@@ -187,7 +217,51 @@
   }
 </style>
 
-<div class="custom-collection-list color-{{ section.settings.color_scheme }} gradient">
+{%- comment -%} Collection list: light/dark color schemes — apply section's chosen schemes when theme toggle is used {%- endcomment -%}
+{%- if list_scheme_obj -%}
+  {%- style -%}
+    html[data-global-theme-active="true"] #shopify-section-{{ section.id }} .custom-collection-list {
+      --color-bg: {{ list_scheme_obj.settings.color_bg }} !important;
+      --color-background: {{ list_scheme_obj.settings.color_bg }} !important;
+      --color-card-bg: {{ list_scheme_obj.settings.color_card_bg }} !important;
+      --color-card-text: {{ list_scheme_obj.settings.color_card_text | default: list_scheme_obj.settings.color_text }} !important;
+      --color-heading: {{ list_scheme_obj.settings.color_heading }} !important;
+      --color-headings: {{ list_scheme_obj.settings.color_heading }} !important;
+      --color-text: {{ list_scheme_obj.settings.color_text }} !important;
+      --color-link: {{ list_scheme_obj.settings.color_link }} !important;
+      --color-link-hover: {{ list_scheme_obj.settings.color_link_hover }} !important;
+      --color-input-border: {{ list_scheme_obj.settings.color_input_border }} !important;
+      --color-btn-shadow: {{ list_scheme_obj.settings.color_btn_shadow }} !important;
+      --color-primary-button-bg: {{ list_scheme_obj.settings.btn_primary_bg }} !important;
+      --color-primary-button-text: {{ list_scheme_obj.settings.btn_primary_text }} !important;
+      --color-primary-button-border: {{ list_scheme_obj.settings.btn_primary_border }} !important;
+      --color-shadow: {{ list_scheme_obj.settings.color_btn_shadow }} !important;
+    }
+  {%- endstyle -%}
+{%- endif -%}
+{%- if list_dark_scheme_obj -%}
+  {%- style -%}
+    html[data-global-theme-active="true"][data-active-scheme="color-{{ list_dark_scheme_id }}"] #shopify-section-{{ section.id }} .custom-collection-list {
+      --color-bg: {{ list_dark_scheme_obj.settings.color_bg }} !important;
+      --color-background: {{ list_dark_scheme_obj.settings.color_bg }} !important;
+      --color-card-bg: {{ list_dark_scheme_obj.settings.color_card_bg }} !important;
+      --color-card-text: {{ list_dark_scheme_obj.settings.color_card_text | default: list_dark_scheme_obj.settings.color_text }} !important;
+      --color-heading: {{ list_dark_scheme_obj.settings.color_heading }} !important;
+      --color-headings: {{ list_dark_scheme_obj.settings.color_heading }} !important;
+      --color-text: {{ list_dark_scheme_obj.settings.color_text }} !important;
+      --color-link: {{ list_dark_scheme_obj.settings.color_link }} !important;
+      --color-link-hover: {{ list_dark_scheme_obj.settings.color_link_hover }} !important;
+      --color-input-border: {{ list_dark_scheme_obj.settings.color_input_border }} !important;
+      --color-btn-shadow: {{ list_dark_scheme_obj.settings.color_btn_shadow }} !important;
+      --color-primary-button-bg: {{ list_dark_scheme_obj.settings.btn_primary_bg }} !important;
+      --color-primary-button-text: {{ list_dark_scheme_obj.settings.btn_primary_text }} !important;
+      --color-primary-button-border: {{ list_dark_scheme_obj.settings.btn_primary_border }} !important;
+      --color-shadow: {{ list_dark_scheme_obj.settings.color_btn_shadow }} !important;
+    }
+  {%- endstyle -%}
+{%- endif -%}
+
+<div class="custom-collection-list color-{{ list_scheme_id | default: section.settings.color_scheme }} gradient">
   <div>
     {%- for block in section.blocks -%}
       {%- if block.type == 'header' -%}
@@ -270,8 +344,14 @@
     {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme",
+      "label": "Light mode color scheme",
       "default": "scheme-1"
+    },
+    {
+      "type": "color_scheme",
+      "id": "dark_mode_color_scheme",
+      "label": "Dark mode color scheme",
+      "info": "When the theme toggle is in dark mode, this scheme is used for this section."
     },
     {
       "type": "header",
