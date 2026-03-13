@@ -50,10 +50,8 @@
     --logo-font-size: {{ section.settings.logo_font_size | default: 16 }}px;
     --logo-font-weight: {{ section.settings.logo_font_weight | default: 700 }};
     --logo-letter-spacing: {{ section.settings.logo_letter_spacing | default: -0.5 }}px;
-
-    --color-header-logo-background: {{ section.settings.logo_background_color | default: 'var(--color-heading)' }} !important;
-    --color-header-logo-text: {{ section.settings.logo_text_color | default: 'var(--color-card-bg)' }} !important;
-
+    --color-header-logo-background: var(--color-heading);
+    --color-header-logo-text: var(--color-card-bg);
     --logo-image-max-width: {{ section.settings.logo_image_max_width | default: 80 }}px;
     --logo-image-max-height: {{ section.settings.logo_image_max_height | default: 80 }}px;
     --logo-image-width: {% if section.settings.logo_image_width > 0 %}{{ section.settings.logo_image_width }}px{% else %}auto{% endif %};
@@ -1348,7 +1346,7 @@
   "settings": [
     {
       "type": "header",
-      "content": "Header color scheme"
+      "content": "General · Brand & color"
     },
     {
       "type": "color_scheme",
@@ -1372,7 +1370,7 @@
     },
     {
       "type": "header",
-      "content": "Desktop Header Settings"
+      "content": "Desktop · Logo"
     },
     {
       "type": "image_picker",
@@ -1389,7 +1387,7 @@
     },
     {
       "type": "header",
-      "content": "Header Layout"
+      "content": "Desktop · Layout"
     },
     {
       "type": "range",
@@ -1415,21 +1413,7 @@
     },
     {
       "type": "header",
-      "content": "Logo Styling"
-    },
-    {
-      "type": "color",
-      "id": "logo_background_color",
-      "label": "Logo Background Color"
-    },
-    {
-      "type": "color",
-      "id": "logo_text_color",
-      "label": "Logo Text Color"
-    },
-    {
-      "type": "header",
-      "content": "Logo Settings"
+      "content": "Desktop · Logo text"
     },
     {
       "type": "select",
@@ -1552,7 +1536,7 @@
     },
     {
       "type": "header",
-      "content": "Logo Image Settings"
+      "content": "Desktop · Logo image"
     },
     {
       "type": "range",
@@ -1629,7 +1613,7 @@
     },
     {
       "type": "header",
-      "content": "Logo orbit"
+      "content": "Desktop · Logo orbit text"
     },
     {
       "type": "checkbox",
@@ -1682,7 +1666,7 @@
     },
     {
       "type": "header",
-      "content": "Logo orbit style"
+      "content": "Desktop · Logo orbit style"
     },
     {
       "type": "range",
@@ -1751,7 +1735,7 @@
     },
     {
       "type": "header",
-      "content": "Action Buttons Settings"
+      "content": "Desktop · Action buttons"
     },
     {
       "type": "range",
@@ -1826,7 +1810,7 @@
     },
     {
       "type": "header",
-      "content": "Navigation Settings"
+      "content": "Desktop · Navigation"
     },
     {
       "type": "range",
@@ -1970,7 +1954,7 @@
     },
     {
       "type": "header",
-      "content": "Default Navigation Icon (Fallback)"
+      "content": "Desktop · Default icon (fallback)"
     },
     {
       "type": "image_picker",
@@ -1986,7 +1970,7 @@
     },
     {
       "type": "header",
-      "content": "Default Navigation Hover Icon (Fallback)"
+      "content": "Desktop · Default hover icon (fallback)"
     },
     {
       "type": "image_picker",
@@ -2002,7 +1986,7 @@
     },
     {
       "type": "header",
-      "content": "Dropdown Caret Icon"
+      "content": "Desktop · Dropdown caret icon"
     },
     {
       "type": "range",
@@ -2036,7 +2020,7 @@
     },
     {
       "type": "header",
-      "content": "Scroll Animation Settings"
+      "content": "Desktop · Scroll behavior"
     },
     {
       "type": "range",
@@ -2051,7 +2035,7 @@
     },
     {
       "type": "header",
-      "content": "Mobile Header Settings"
+      "content": "Mobile · Logo"
     },
     {
       "type": "image_picker",
@@ -2068,7 +2052,7 @@
     },
     {
       "type": "header",
-      "content": "Mobile Logo Image Size"
+      "content": "Mobile · Logo image"
     },
     {
       "type": "range",
@@ -2134,7 +2118,7 @@
     },
     {
       "type": "header",
-      "content": "Mobile Logo Text (when no image)"
+      "content": "Mobile · Logo text (no image)"
     },
     {
       "type": "range",
@@ -2157,7 +2141,7 @@
     },
     {
       "type": "header",
-      "content": "Mobile Logo Orbit"
+      "content": "Mobile · Logo orbit"
     },
     {
       "type": "checkbox",
@@ -2231,7 +2215,7 @@
     },
     {
       "type": "header",
-      "content": "Mobile Action Buttons"
+      "content": "Mobile · Action buttons"
     },
     {
       "type": "range",

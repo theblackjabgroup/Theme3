@@ -67,9 +67,6 @@
     --collection-card-hover-button-font-size: {{ settings.collection_card_hover_button_font_size | default: 14 }}px;
     --collection-card-hover-button-font-weight: {{ settings.collection_card_hover_button_font_weight | default: 700 }};
     background-color: var(--color-bg);
-    {% if section.settings.min_height != blank %}
-      min-height: {{ section.settings.min_height }}vh;
-    {% endif %}
   }
 
   .custom-collection-list__grid {
@@ -77,16 +74,14 @@
   }
 
   .custom-collection-card {
-    padding: {{ section.settings.card_padding_top }}px {{ section.settings.card_padding_horizontal }}px {{ section.settings.card_padding_bottom }}px;
-    text-align: {{ section.settings.card_text_alignment }};
-    align-items: {{ section.settings.card_content_alignment }};
+    padding: 0px 24px 24px;
+    text-align: center;
+    align-items: center;
   }
 
   .custom-collection-card__image-container {
-    height: {{ section.settings.image_height }}px;
-    {% if section.settings.image_margin_bottom != blank %}
-      margin-bottom: {{ section.settings.image_margin_bottom }}px;
-    {% endif %}
+    height: 340px;
+    margin-bottom: 20px;
   }
 
   /* Card Typography & Spacing Variables - Using Theme Settings */
@@ -145,7 +140,7 @@
   @media screen and (max-width: 989px) {
     .custom-collection-list__grid {
       grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr);
-      gap: {{ section.settings.grid_gap_mobile }}px;
+      gap: 16px;
     }
 
     .custom-collection-list {
@@ -154,12 +149,12 @@
     }
 
     .custom-collection-card {
-      padding: {{ section.settings.card_padding_top_mobile }}px {{ section.settings.card_padding_horizontal_mobile }}px {{ section.settings.card_padding_bottom_mobile }}px;
+      padding: 0px 16px 20px;
     }
 
     .custom-collection-card__image-container {
-      height: {{ section.settings.image_height_mobile }}px;
-      margin-bottom: {{ section.settings.image_margin_bottom_mobile }}px;
+      height: 130px;
+      margin-bottom: 16px;
     }
 
     .custom-collection-card__title {
@@ -315,7 +310,7 @@
           <li class="custom-collection-list__item">
             {% render 'card-collection',
               collection: collection,
-              show_badge: section.settings.show_card_badge,
+              show_badge: false,
               section_settings: section.settings
             %}
           </li>
@@ -338,10 +333,6 @@
   },
   "settings": [
     {
-      "type": "header",
-      "content": "Section Settings"
-    },
-    {
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "Light mode color scheme",
@@ -352,47 +343,6 @@
       "id": "dark_mode_color_scheme",
       "label": "Dark mode color scheme",
       "info": "When the theme toggle is in dark mode, this scheme is used for this section."
-    },
-    {
-      "type": "header",
-      "content": "Spacing & Layout"
-    },
-    {
-      "type": "range",
-      "id": "section_padding_top",
-      "label": "Section Padding Top (px)",
-      "min": 0,
-      "max": 200,
-      "step": 10,
-      "default": 20
-    },
-    {
-      "type": "range",
-      "id": "section_padding_bottom",
-      "label": "Section Padding Bottom (px)",
-      "min": 0,
-      "max": 200,
-      "step": 10,
-      "default": 20
-    },
-    {
-      "type": "range",
-      "id": "section_padding_horizontal",
-      "label": "Section Padding Horizontal (px)",
-      "min": 0,
-      "max": 100,
-      "step": 5,
-      "default": 20
-    },
-    {
-      "type": "range",
-      "id": "min_height",
-      "label": "Minimum Section Height (vh)",
-      "min": 0,
-      "max": 100,
-      "step": 10,
-      "default": 100,
-      "info": "Set to 0 to disable"
     },
     {
       "type": "header",
@@ -450,208 +400,6 @@
       "max": 60,
       "step": 4,
       "default": 24
-    },
-    {
-      "type": "header",
-      "content": "Card Settings"
-    },
-    {
-      "type": "paragraph",
-      "content": "Card typography and spacing settings are available in Theme Settings > Collection cards"
-    },
-    {
-      "type": "select",
-      "id": "card_text_alignment",
-      "label": "Card Text Alignment",
-      "options": [
-        {
-          "value": "left",
-          "label": "Left"
-        },
-        {
-          "value": "center",
-          "label": "Center"
-        },
-        {
-          "value": "right",
-          "label": "Right"
-        }
-      ],
-      "default": "center"
-    },
-    {
-      "type": "select",
-      "id": "card_content_alignment",
-      "label": "Card Content Alignment",
-      "options": [
-        {
-          "value": "flex-start",
-          "label": "Start"
-        },
-        {
-          "value": "center",
-          "label": "Center"
-        },
-        {
-          "value": "flex-end",
-          "label": "End"
-        }
-      ],
-      "default": "center"
-    },
-    {
-      "type": "range",
-      "id": "card_padding_top",
-      "label": "Card Padding Top (px)",
-      "min": 0,
-      "max": 60,
-      "step": 4,
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "card_padding_bottom",
-      "label": "Card Padding Bottom (px)",
-      "min": 0,
-      "max": 60,
-      "step": 4,
-      "default": 24
-    },
-    {
-      "type": "range",
-      "id": "card_padding_horizontal",
-      "label": "Card Padding Horizontal (px)",
-      "min": 0,
-      "max": 60,
-      "step": 4,
-      "default": 24
-    },
-    {
-      "type": "header",
-      "content": "Image Settings"
-    },
-    {
-      "type": "range",
-      "id": "image_height",
-      "label": "Image Container Height (px)",
-      "min": 150,
-      "max": 400,
-      "step": 10,
-      "default": 340
-    },
-    {
-      "type": "range",
-      "id": "image_margin_bottom",
-      "label": "Image Bottom Margin (px)",
-      "min": 0,
-      "max": 60,
-      "step": 4,
-      "default": 20
-    },
-    {
-      "type": "header",
-      "content": "Card Badge & Overlay"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_card_badge",
-      "label": "Show Badge on Cards",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "overlay_button_text",
-      "label": "Overlay Button Text",
-      "default": "Check it out"
-    },
-    {
-      "type": "header",
-      "content": "Mobile Settings"
-    },
-    {
-      "type": "range",
-      "id": "section_padding_top_mobile",
-      "label": "Section Padding Top - Mobile (px)",
-      "min": 0,
-      "max": 100,
-      "step": 5,
-      "default": 30
-    },
-    {
-      "type": "range",
-      "id": "section_padding_bottom_mobile",
-      "label": "Section Padding Bottom - Mobile (px)",
-      "min": 0,
-      "max": 100,
-      "step": 5,
-      "default": 30
-    },
-    {
-      "type": "range",
-      "id": "section_padding_horizontal_mobile",
-      "label": "Section Padding Horizontal - Mobile (px)",
-      "min": 0,
-      "max": 50,
-      "step": 5,
-      "default": 20
-    },
-    {
-      "type": "range",
-      "id": "grid_gap_mobile",
-      "label": "Grid Gap - Mobile (px)",
-      "min": 0,
-      "max": 40,
-      "step": 4,
-      "default": 16
-    },
-    {
-      "type": "range",
-      "id": "card_padding_top_mobile",
-      "label": "Card Padding Top - Mobile (px)",
-      "min": 0,
-      "max": 40,
-      "step": 4,
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "card_padding_bottom_mobile",
-      "label": "Card Padding Bottom - Mobile (px)",
-      "min": 0,
-      "max": 40,
-      "step": 4,
-      "default": 20
-    },
-    {
-      "type": "range",
-      "id": "card_padding_horizontal_mobile",
-      "label": "Card Padding Horizontal - Mobile (px)",
-      "min": 0,
-      "max": 40,
-      "step": 4,
-      "default": 16
-    },
-    {
-      "type": "range",
-      "id": "image_height_mobile",
-      "label": "Image Container Height - Mobile (px)",
-      "min": 120,
-      "max": 300,
-      "step": 10,
-      "default": 130
-    },
-    {
-      "type": "range",
-      "id": "image_margin_bottom_mobile",
-      "label": "Image Bottom Margin - Mobile (px)",
-      "min": 0,
-      "max": 40,
-      "step": 4,
-      "default": 16
-    },
-    {
-      "type": "paragraph",
-      "content": "Card typography and spacing mobile settings are available in Theme Settings > Collection cards"
     }
   ],
   "blocks": [
