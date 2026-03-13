@@ -164,16 +164,6 @@
             -%}
           </div>
         </div>
-
-        {%- if header_button_text != blank -%}
-          {%- render 'global-btn',
-            text: header_button_text,
-            url: header_button_link,
-            variant: 'primary',
-            fit_width: false,
-            class: 'related-products-header__button related-products-header__button--mobile'
-          -%}
-        {%- endif -%}
       {%- endif -%}
     </product-recommendations>
   </div>
@@ -259,6 +249,13 @@
       "id": "color_scheme",
       "label": "Color scheme",
       "default": "scheme-1"
+    },
+    {
+      "type": "color_scheme",
+      "id": "dark_mode_color_scheme",
+      "label": "Dark mode color scheme",
+      "default": "scheme-4",
+      "info": "When the theme toggle is in dark mode, use this scheme for this section."
     },
     {
       "type": "checkbox",

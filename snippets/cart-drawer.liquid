@@ -11,11 +11,6 @@
 {% comment %} cart-drawer.js is loaded by theme.liquid (idle/on cart click) {% endcomment %}
 
 <style>
-  /* Cart drawer uses theme color scheme variables */
-  .drawer {
-    visibility: hidden;
-  }
-
   cart-drawer {
     position: fixed;
     top: 0;
@@ -38,9 +33,7 @@
     transform: translateX(0);
   }
 
-  cart-drawer.animate {
-    visibility: visible;
-  }
+
 
   .cart-drawer {
     width: 100%;
@@ -88,8 +81,7 @@
     pointer-events: auto;
   }
 
-  cart-drawer:not(.active) .drawer__inner { content-visibility: hidden; }
-  cart-drawer.active .drawer__inner { content-visibility: visible; }
+
   /* overflow: visible so global-btn 3D shadow is not clipped; outer cart-drawer still clips with overflow: hidden */
   .drawer__inner {
     width: 100%;
@@ -119,7 +111,7 @@
     align-items: center;
     padding: 20px 24px;
     background-color: var(--color-card-bg);
-    border-bottom: 1px solid var(--color-heading);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
     flex-shrink: 0;
   }
 
@@ -636,14 +628,12 @@
       height: 90vh;
       border-radius: 0 0 20px 20px;
       transform: translateY(-100%);
-      transition: visibility 0s 1.2s, transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-      visibility: hidden;
+      transition:  transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     cart-drawer.active {
       transform: translateY(0);
-      visibility: visible;
-      transition: visibility 0s 0s, transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .drawer__inner {
@@ -678,7 +668,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 20px 24px;
-    border-bottom: 1px solid var(--color-heading);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
     flex-shrink: 0;
   }
 
@@ -789,8 +779,10 @@
 
   .cart-drawer__edit-stock-wrap {
     margin-top: 16px;
-    padding-top: 16px;
-    border-top: 1px solid var(--color-heading);
+    margin-left: -24px;
+    margin-right: -24px;
+    padding: 16px 24px 0;
+    border-top: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
     text-align: center;
     display: flex;
     align-items: center;
@@ -818,39 +810,14 @@
     gap: 10px;
   }
 
-  .cart-drawer__edit-variant-btn {
-    background: transparent;
-    border: 0;
-    padding: 0;
-    text-decoration: none;
-    cursor: pointer;
+  /* Variant buttons: global-btn primary (unselected), secondary (selected) */
+  .cart-drawer__edit-variant-btn.global-btn {
+    min-width: 0;
   }
 
-  .cart-drawer__edit-variant-btn .submit-button__shadow {
-    background-color: var(--color-text);
-    border-radius: 10px;
-  }
-
-  .cart-drawer__edit-variant-btn .submit-button__content {
-    background-color: var(--color-card-bg);
-    color: var(--color-text);
-    border: 1.5px solid var(--color-text);
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 700;
-    font-family: var(--font-heading-family);
+  .cart-drawer__edit-variant-btn.global-btn .global-btn__content {
     padding: 10px 20px;
-    text-transform: none;
-    white-space: nowrap;
-  }
-
-  .cart-drawer__edit-variant-btn:hover .submit-button__content {
-    background: var(--color-btn-border, color-mix(in srgb, var(--color-text) 20%, transparent));
-  }
-
-  .cart-drawer__edit-variant-btn.is-selected .submit-button__content {
-    background: var(--color-accent-pink, var(--btn-tertiary-bg, #F5A30A));
-    color: var(--color-text);
+    font-size: 14px;
   }
 
   .cart-drawer__edit-variant-btn--unavailable,
@@ -862,9 +829,11 @@
 
   .cart-drawer__edit-update-wrap {
     margin-top: auto;
-    padding-top: 24px;
-    border-top: 1px solid var(--color-heading);
-    width: 100%;
+    margin-left: -24px;
+    margin-right: -24px;
+    padding: 24px 24px 0;
+    border-top: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
+    width: auto;
   }
 
   /* Update Cart: global-btn tertiary, full width */

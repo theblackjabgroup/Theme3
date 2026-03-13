@@ -64,41 +64,17 @@
     overflow: hidden;
   }
 
-  .template-404__scrolling-bg .scrolling-text-strip {
+  .template-404__scrolling-bg .marquee-scroll--404 {
     position: absolute;
     top: {{ section.settings.scrolling_text_vertical_position | default: 0 }}%;
-    left: {{ section.settings.scrolling_text_horizontal_position | default: 50 }}%;
+    left: 50%;
     transform: translateX(-50%);
-    --bg-color: transparent;
-    --text-color: var(--color-heading);
-    --speed: {{ section.settings.background_text_speed | default: 30 }}s;
-    --angle: 0deg;
-    --item-font-size: clamp({{ section.settings.scrolling_text_font_size_min | default: 4 }}rem, {{ section.settings.scrolling_text_font_size_vw | default: 18 }}vw, {{ section.settings.scrolling_text_font_size_max | default: 12 }}rem);
-    --direction: normal;
-    --tilt-margin: 0;
-    --item-gap: 0.15em;
-    --strip-padding: 0.1em 0;
-    --strip-width: 100%;
-    --margin-left: 0;
-    --margin-right: 0;
-    --border-width: 0;
-    --border-style: none;
     width: 100%;
-    margin: 0;
-    transform: translateX(-50%);
-    font-weight: {{ section.settings.scrolling_text_font_weight | default: 700 }};
-    text-transform: {{ section.settings.scrolling_text_text_transform | default: 'uppercase' }};
-    letter-spacing: {{ section.settings.scrolling_text_letter_spacing | default: '-0.02em' }};
-    line-height: 1.1;
-  }
-
-  .template-404__scrolling-bg .scrolling-text-inner {
-    width: 100%;
-  }
-
-  .template-404__scrolling-bg .scrolling-text-item {
-    font-family: {% if section.settings.scrolling_text_font != blank %}{{ section.settings.scrolling_text_font.family }}, {{ section.settings.scrolling_text_font.fallback_families }}{% else %}var(--font-heading-family), sans-serif{% endif %};
-    font-style: {% if section.settings.scrolling_text_font != blank %}{{ section.settings.scrolling_text_font.style }}{% else %}normal{% endif %};
+    max-width: 1200px;
+    margin: 0 auto;
+    --section-gap: 24px;
+    background: transparent;
+    padding: 12px 0;
   }
 
   .template-404__content {
@@ -238,10 +214,10 @@
       max-width: min({{ section.settings.image_max_width | default: 400 }}px, 100%);
     }
 
-    .template-404__scrolling-bg .scrolling-text-strip {
+    .template-404__scrolling-bg .marquee-scroll {
       top: {{ section.settings.scrolling_text_vertical_position_mobile | default: 0 }}%;
-      left: {{ section.settings.scrolling_text_horizontal_position_mobile | default: 50 }}%;
-      --item-font-size: clamp({{ section.settings.scrolling_text_font_size_min_mobile | default: 3 }}rem, {{ section.settings.scrolling_text_font_size_vw_mobile | default: 14 }}vw, {{ section.settings.scrolling_text_font_size_max_mobile | default: 8 }}rem);
+      left: 50%;
+      transform: translateX(-50%);
     }
 
     .template-404__message {
@@ -283,23 +259,71 @@
 
 <div class="template-404 color-{{ section.settings.color_scheme }}">
   <div class="template-404__scrolling-bg" aria-hidden="true">
-    <div
-      class="scrolling-text-strip"
-      style="
-        --bg-color: transparent;
-        --text-color: var(--color-heading);
-        --speed: {{ section.settings.background_text_speed | default: 30 }}s;
-        --item-font-size: clamp({{ section.settings.scrolling_text_font_size_min | default: 4 }}rem, {{ section.settings.scrolling_text_font_size_vw | default: 18 }}vw, {{ section.settings.scrolling_text_font_size_max | default: 12 }}rem);
-        --item-gap: 0.15em;
-      "
-    >
-      <div class="scrolling-text-inner">
-        {%- for i in (1..12) -%}
-          <div class="scrolling-text-track">
-            <span class="scrolling-text-item">{{ bg_text }}</span>
-          </div>
-        {%- endfor -%}
-      </div>
+    <div class="marquee-scroll marquee-scroll--404">
+      {% render 'scrolling-text-item',
+        id: section.id,
+        shopify_attributes: '',
+        speed: section.settings.background_text_speed | default: 30,
+        direction: 'normal',
+        pause_on_hover: false,
+        bg_color: 'var(--color-card-bg)',
+        border_radius: 0,
+        padding: 8,
+        text_size: section.settings.scrolling_text_font_size | default: 24,
+        text_weight: section.settings.scrolling_text_font_weight | default: 700,
+        pill_bg: 'var(--btn-secondary-bg)',
+        pill_color: 'var(--btn-secondary-text)',
+        pill_height: 44,
+        pill_width: 0,
+        pill_radius: 14,
+        item_gap: 16,
+        orbit_speed: 20,
+        orbit_direction: 'normal',
+        orbit_font_size: 10,
+        orbit_text_gap: 8,
+        orbit_color: 'var(--btn-secondary-text)',
+        orbit_text_transform: 'uppercase',
+        circle_width: 56,
+        circle_height: 56,
+        circle_bg: 'var(--btn-tertiary-bg)',
+        icon_width: 58,
+        icon_height: 58,
+        circle_icon: section.settings.scrolling_icon,
+        orbit_text: section.settings.background_orbit_text | default: '404',
+        text: bg_text | append: ' LOST'
+      %}
+      {% render 'scrolling-text-item',
+        id: section.id | append: '-2',
+        shopify_attributes: '',
+        speed: section.settings.background_text_speed | default: 30,
+        direction: 'reverse',
+        pause_on_hover: false,
+        bg_color: 'var(--color-card-bg)',
+        border_radius: 0,
+        padding: 8,
+        text_size: section.settings.scrolling_text_font_size | default: 24,
+        text_weight: section.settings.scrolling_text_font_weight | default: 700,
+        pill_bg: 'var(--btn-secondary-bg)',
+        pill_color: 'var(--btn-secondary-text)',
+        pill_height: 44,
+        pill_width: 0,
+        pill_radius: 14,
+        item_gap: 16,
+        orbit_speed: 20,
+        orbit_direction: 'reverse',
+        orbit_font_size: 10,
+        orbit_text_gap: 8,
+        orbit_color: 'var(--btn-secondary-text)',
+        orbit_text_transform: 'uppercase',
+        circle_width: 56,
+        circle_height: 56,
+        circle_bg: 'var(--btn-tertiary-bg)',
+        icon_width: 58,
+        icon_height: 58,
+        circle_icon: section.settings.scrolling_icon,
+        orbit_text: section.settings.background_orbit_text | default: '404',
+        text: bg_text | append: ' LOST'
+      %}
     </div>
   </div>
 
@@ -377,6 +401,13 @@
       "default": "scheme-1"
     },
     {
+      "type": "color_scheme",
+      "id": "dark_mode_color_scheme",
+      "label": "Dark mode color scheme",
+      "default": "scheme-4",
+      "info": "When the theme toggle is in dark mode, use this scheme for this section."
+    },
+    {
       "type": "header",
       "content": "Scrolling background text"
     },
@@ -385,6 +416,18 @@
       "id": "background_text",
       "label": "Background text",
       "default": "OOPS! YOU'RE"
+    },
+    {
+      "type": "text",
+      "id": "background_orbit_text",
+      "label": "Orbit text",
+      "default": "404"
+    },
+    {
+      "type": "image_picker",
+      "id": "scrolling_icon",
+      "label": "Orbit icon image",
+      "info": "Optional. Uses the same circular icon style as the Scrolling Text section."
     },
     {
       "type": "range",

@@ -30,10 +30,7 @@
     align-items: center !important;
     justify-content: center !important;
     min-width: unset !important;
-    background-color: var(--btn-primary-bg) !important;
-    color: var(--btn-primary-text) !important;
-    border: 2px solid var(--btn-primary-border) !important;
-    }
+  }
 
   .back-to-top-button .global-btn__icon {
     width: {{ section.settings.icon_size | default: 60 }}%;
@@ -71,6 +68,7 @@
     url: '#',
     icon: icon_content,
     icon_only: true,
+    variant: section.settings.button_variant | default: 'primary',
     class: 'back-to-top-button',
     attributes: 'data-back-to-top-trigger aria-label="Back to top"',
     type: 'button'
@@ -131,6 +129,13 @@
       "default": "scheme-1"
     },
     {
+      "type": "color_scheme",
+      "id": "dark_mode_color_scheme",
+      "label": "Dark mode color scheme",
+      "default": "scheme-4",
+      "info": "When the theme toggle is in dark mode, use this scheme for this section."
+    },
+    {
       "type": "image_picker",
       "id": "icon_image",
       "label": "Custom Icon Image",
@@ -141,6 +146,18 @@
       "id": "icon_svg",
       "label": "Custom SVG Icon",
       "info": "Paste custom SVG code here. Use 'currentColor' for stroke/fill to match button text color."
+    },
+    {
+      "type": "select",
+      "id": "button_variant",
+      "label": "Button style",
+      "options": [
+        { "value": "primary", "label": "Primary" },
+        { "value": "secondary", "label": "Secondary" },
+        { "value": "tertiary", "label": "Tertiary" }
+      ],
+      "default": "primary",
+      "info": "Uses the global button styles from your color scheme."
     },
     {
       "type": "header",

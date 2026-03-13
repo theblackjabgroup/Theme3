@@ -2,11 +2,11 @@
 
 .fc3d {
   width: 100%;
-  padding: 20px;
   color: var(--color-text);
   overflow-y: hidden;
   position: relative;
-  padding-top: 0px;
+  padding-top:var(--page-layout-gap);
+  padding-bottom:var(--page-layout-gap);
 }
 
 .fc3d--has-background {
@@ -26,7 +26,7 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--gap-section);
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--bento-gap);
   background-color: var(--color-card-bg);
   border-radius: var(--radius-2xl);
   padding:  20px;
@@ -63,7 +63,7 @@
 .fc3d__rail {
   display: flex;
   align-items: stretch;
-  gap: var(--spacing-l);
+  gap: var(--page-layout-gap);
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
