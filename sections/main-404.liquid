@@ -214,7 +214,7 @@
       max-width: min({{ section.settings.image_max_width | default: 400 }}px, 100%);
     }
 
-    .template-404__scrolling-bg .marquee-scroll {
+    .template-404__scrolling-bg .marquee-scroll--404 {
       top: {{ section.settings.scrolling_text_vertical_position_mobile | default: 0 }}%;
       left: 50%;
       transform: translateX(-50%);
@@ -515,6 +515,16 @@
     {
       "type": "header",
       "content": "Scrolling text typography"
+    },
+    {
+      "type": "range",
+      "id": "scrolling_text_font_size",
+      "min": 14,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Scrolling text font size",
+      "default": 24
     },
     {
       "type": "font_picker",
