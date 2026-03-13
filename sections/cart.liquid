@@ -68,7 +68,7 @@
       display: flex;
       padding: 20px 40px;
       background-color: var(--color-card-bg);
-      border-radius: 20px;
+      border-radius: 16px;
       margin-bottom: var(--bento-gap);
       font-weight: 800;
       font-size: 14px;
@@ -79,7 +79,7 @@
       flex: 1;
     }
     .header-label-quantity {
-      flex: .6;
+      flex: .55;
     }
     .header-label-total {
   text-align: right;
@@ -113,7 +113,7 @@
 
     .cart-item-card__image-container {
       background-color: var(--color-bg);
-      border-radius: 20px;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -179,7 +179,7 @@
     /* First row: product name, variant, quantity, price – full width */
     .cart-item-card__top-row {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       gap: 20px;
       width: 100%;
       flex-basis: 100%;
@@ -190,12 +190,16 @@
       flex: 1;
       min-width: 0;
       max-width: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
     }
 
     .cart-item-card__name {
       display: block;
       font-family: var(--font-heading-family);
-      font-size: 22px;
+      font-size: 16px;
       font-weight: 900;
       color: var(--color-text);
       text-decoration: none;
@@ -208,7 +212,6 @@
       color: var(--color-text);
       opacity: 0.7;
       display: block;
-      margin-bottom: 15px;
     }
 
     /* Separator above Edit/Remove – full width under quantity and price */
@@ -270,7 +273,7 @@
     }
 
     .cart-item-card__total .cart-item-card__old-price {
-      font-size: 0.85em;
+      font-size: 12px;
       font-weight: 400;
       text-decoration: line-through;
       opacity: 0.8;
@@ -278,7 +281,7 @@
     }
 
     .cart-item-card__total .cart-item-card__current-price {
-      font-size: 1em;
+      font-size: 16px;
       font-weight: 700;
     }
 
@@ -333,7 +336,7 @@
     }
 
     .cart-summary__note {
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
 
     .cart-summary__note label {
@@ -370,8 +373,9 @@
     }
 
     .cart-summary__totals {
-      padding-top: 25px;
+      padding-top: 16px;
       margin-bottom: 30px;
+      border-top: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
     }
 
     .cart-summary__subtotal-row {
@@ -388,7 +392,7 @@
     }
 
     .subtotal-label {
-      font-size: 20px;
+      font-size: 16px;
       font-weight: 800;
       color: var(--color-text);
     }
@@ -786,8 +790,8 @@
                               src="{{ item.image | image_url: width: 300 }}"
                               alt="{{ item.image.alt | escape }}"
                               class="cart-item-card__image"
-                              width="120"
-                              height="{{ 120 | divided_by: item.image.aspect_ratio | ceil }}"
+                              width="196"
+                              height="{{ 196 | divided_by: item.image.aspect_ratio | ceil }}"
                               loading="lazy"
                             >
                           {% endif %}
@@ -831,12 +835,16 @@
                             data-item-index="{{ item.index | plus: 1 }}"
                             data-unit-price="{{ item.final_price }}"
                             data-original-unit-price="{{ item.original_price }}"
-                            {% if item.variant.compare_at_price != blank and item.variant.compare_at_price > item.final_price %}
+                            {% if item.variant.compare_at_price != blank
+                              and item.variant.compare_at_price > item.final_price
+                            %}
                               data-compare-at-unit-price="{{ item.variant.compare_at_price }}"
                             {% endif %}
                           >
                             {%- if show_old_price -%}
-                              <s class="cart-item-card__old-price" aria-label="Original price">{{ old_line_price | money }}</s>
+                              <s class="cart-item-card__old-price" aria-label="Original price">
+                                {{- old_line_price | money -}}
+                              </s>
                             {%- endif -%}
                             <span class="cart-item-card__current-price">{{ item.final_line_price | money }}</span>
                           </div>
@@ -1413,6 +1421,13 @@
       "id": "color_scheme",
       "label": "Color scheme",
       "default": "scheme-1"
+    },
+    {
+      "type": "color_scheme",
+      "id": "dark_mode_color_scheme",
+      "label": "Dark mode color scheme",
+      "default": "scheme-4",
+      "info": "When the theme toggle is in dark mode, use this scheme for this section."
     },
     {
       "type": "header",

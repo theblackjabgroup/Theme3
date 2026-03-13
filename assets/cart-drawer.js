@@ -258,21 +258,22 @@ class CartDrawer extends HTMLElement {
             const variant = this.findVariantForOptionValue(variants, optionIndex, value, currentOptions);
             const isSelected = variant && variant.id === selectedVariantId;
             const isUnavailable = !variant;
-            const baseClass = 'cart-drawer__edit-variant-btn';
-            const classes = [
-              'share-story-submit',
-              baseClass,
+            const variantClasses = [
+              'global-btn',
+              'global-btn--fit-content',
+              isSelected ? 'global-btn--secondary' : 'global-btn--primary',
+              'cart-drawer__edit-variant-btn',
               isSelected ? 'is-selected' : '',
               isUnavailable ? 'cart-drawer__edit-variant-btn--unavailable' : '',
             ]
               .filter(Boolean)
               .join(' ');
-            return `<button type="button" class="${classes}" data-edit-variant-btn data-variant-id="${
+            return `<button type="button" class="${variantClasses}" data-edit-variant-btn data-variant-id="${
               variant ? variant.id : ''
             }"${isUnavailable ? ' disabled aria-disabled="true"' : ''}>
-              <span class="submit-button__shadow"></span>
-              <span class="submit-button__content">
-                <span class="submit-button__text">${escapeHtml(value)}</span>
+              <span class="global-btn__shadow" aria-hidden="true"></span>
+              <span class="global-btn__content">
+                <span class="global-btn__text">${escapeHtml(value)}</span>
               </span>
             </button>`;
           })
