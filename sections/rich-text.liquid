@@ -8,7 +8,7 @@
   {%- endif -%}
 
   {{ section_selector }} {
-    --rte-header-margin-bottom: {{ section.settings.header_margin_bottom }}px;
+    --rte-header-margin-bottom: {{ section.settings.header_margin_bottom | default: 16 }}px;
     --rte-context-block-spacing: {{ section.settings.context_block_spacing }}px;
   }
 
@@ -35,12 +35,9 @@
   {{ section_selector }} .rte-rich-text__header-card,
   {{ section_selector }} .rte-rich-text__context-card {
     background-color: var(--color-card-bg);
-    border: 1px solid var(--color-input-border);
     border-radius: {{ section.settings.content_border_radius }}px;
     padding: {{ section.settings.content_padding }}px;
-    {%- if section.settings.card_shadow != blank -%}
-    box-shadow: {{ section.settings.card_shadow }};
-    {%- endif -%}
+
   }
 
   {{ section_selector }} .rte-rich-text__header-card {
@@ -100,7 +97,10 @@
   {%- endfor -%}
 {%- endstyle -%}
 
-<div class="rte-rich-text color-{{ section.settings.color_scheme }} section-{{ section.id }}-padding" data-section-id="{{ section.id }}">
+<div
+  class="rte-rich-text color-{{ section.settings.color_scheme }} "
+  data-section-id="{{ section.id }}"
+>
   <div class="rte-rich-text__outer">
     {%- for block in section.blocks -%}
       {%- if block.type == 'header' -%}
@@ -159,7 +159,11 @@
                     >
                   </div>
                 {%- else -%}
-                  <div class="rte-rich-text__image-inner rte-rich-text__image-placeholder" role="img" aria-label="{{ block.settings.placeholder_label | default: 'Image' | escape }}">
+                  <div
+                    class="rte-rich-text__image-inner rte-rich-text__image-placeholder"
+                    role="img"
+                    aria-label="{{ block.settings.placeholder_label | default: 'Image' | escape }}"
+                  >
                     {{ 'lifestyle-1' | placeholder_svg_tag: 'rte-rich-text__placeholder-svg' }}
                   </div>
                 {%- endif -%}
@@ -177,10 +181,7 @@
   "tag": "section",
   "class": "section",
   "disabled_on": {
-    "groups": [
-      "header",
-      "footer"
-    ]
+    "groups": ["header", "footer"]
   },
   "settings": [
     {
@@ -208,7 +209,7 @@
       "step": 4,
       "unit": "px",
       "label": "Content padding",
-      "default": 32
+      "default": 24
     },
     {
       "type": "range",
@@ -220,13 +221,7 @@
       "label": "Content border radius",
       "default": 12
     },
-    {
-      "type": "text",
-      "id": "card_shadow",
-      "label": "Card shadow",
-      "default": "0 4px 12px rgba(0, 0, 0, 0.08)",
-      "info": "CSS box-shadow value for the cards"
-    },
+
     {
       "type": "header",
       "content": "Block spacing"
@@ -239,7 +234,7 @@
       "step": 4,
       "unit": "px",
       "label": "Header to context margin",
-      "default": 32
+      "default": 16
     },
     {
       "type": "range",
@@ -263,7 +258,7 @@
       "step": 4,
       "unit": "px",
       "label": "Side margin",
-      "default": 24,
+      "default": 0,
       "info": "Left and right margin for the entire section"
     },
     {

@@ -3,10 +3,14 @@
 .fc3d {
   width: 100%;
   color: var(--color-text);
-  overflow-y: hidden;
+  overflow: visible;
   position: relative;
-  padding-top:var(--page-layout-gap);
+  padding-top: calc(var(--page-layout-gap) * 1.75);
   padding-bottom:var(--page-layout-gap);
+}
+.fc3d-card__custom{
+  min-width: 300px;
+    height: 500px;
 }
 
 .fc3d--has-background {
@@ -26,7 +30,7 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--gap-section);
-  margin-bottom: var(--bento-gap);
+  margin-bottom: calc(var(--bento-gap) * 2);
   background-color: var(--color-card-bg);
   border-radius: var(--radius-2xl);
   padding:  20px;
@@ -68,6 +72,8 @@
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
   scroll-padding: 25vw;
+  padding-top: 70px;
+  margin-top: -70px;
   padding-bottom: 15px;
   -webkit-overflow-scrolling: touch;
 }
@@ -76,229 +82,7 @@
   display: none;
 }
 
-.fc3d-card {
-  flex: 0 0 auto;
-  width: clamp(200px, 20vw, 280px);
-  aspect-ratio: 2.5 / 3.5;
-  scroll-snap-align: center;
-  position: relative;
-  perspective: 1200px;
-  transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
 
-/* Custom product card in scroll slot */
-.fc3d-card--custom {
-  aspect-ratio: auto;
-  align-self: stretch;
-}
-
-.fc3d-card--custom .fc3d-card__custom {
-  width: 100%;
-  height: 100%;
-}
-
-.fc3d-card.is-center {
-  z-index: 2;
-}
-
-.fc3d-card.is-center .fc3d-card__inner {
-  transform: none;
-}
-
-.fc3d-card__inner {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  transform-style: preserve-3d;
-  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  will-change: transform;
-  /* Add these for better performance */
-  -webkit-transform-style: preserve-3d;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-}
-
-.fc3d-card.is-center:hover .fc3d-card__inner {
-  animation: none;
-  will-change: transform;
-}
-
-/* Smooth flip back when hover ends */
-.fc3d-card.is-center:not(:hover) .fc3d-card__inner {
-  animation: none;
-}
-.fc3d-card__face {
-  position: absolute;
-  inset: 0;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden; /* Add webkit prefix */
-  border-radius: var(--radius-2xl);
-  overflow: visible;
-  padding: 4px;
-  /* Force GPU acceleration */
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
-}
-
-.fc3d-card__face--back {
-  transform: rotateY(180deg) translateZ(0); /* Add translateZ */
-}
-
-
-
-.fc3d-card__link {
-  display: block;
-  width: 100%;
-  height: 100%;
-  position: relative;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  border: none;
-  border-radius: var(--radius-2xl);
-  padding: 0;
-  text-decoration: none;
-  color: #ffffff;
-  overflow: hidden;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-}
-
-.fc3d-card__link::before {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 60%;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.3) 40%, transparent 100%);
-  z-index: 1;
-  transition: background 0.3s ease;
-}
-
-.fc3d-card.is-center .fc3d-card__link::before {
-  background: linear-gradient(to top, rgba(255, 179, 217, 0.5) 0%, rgba(255, 179, 217, 0.2) 40%, transparent 100%);
-}
-
-.fc3d-card.is-center .fc3d-card__face--front .fc3d-card__link {
-  background-color: #ffb3d9;
-}
-
-.fc3d-card.is-center .fc3d-card__face--back .fc3d-card__link {
-  background-color: #ffb3d9;
-}
-
-/* Featured collection slider: keep cards stable without tilt/rotation on interaction */
-.fc3d .custom-product-card:hover .custom-product-card__image,
-.fc3d .custom-product-card:active .custom-product-card__image,
-.fc3d .custom-product-card:hover .custom-product-card__badge,
-.fc3d .custom-product-card:active .custom-product-card__badge,
-.fc3d .custom-product-card:hover .custom-product-card__title,
-.fc3d .custom-product-card:active .custom-product-card__title,
-.fc3d .custom-product-card:hover .custom-product-card__description,
-.fc3d .custom-product-card:active .custom-product-card__description,
-.fc3d .custom-product-card:hover .custom-product-card__footer,
-.fc3d .custom-product-card:active .custom-product-card__footer,
-.fc3d .custom-product-card:hover .custom-product-card__image-container::before,
-.fc3d .custom-product-card:active .custom-product-card__image-container::before {
-  transform: none !important;
-}
-
-/* Main content */
-.fc3d-card__content {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 2;
-  background-color: transparent !important;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  text-align: center;
-  padding: var(--spacing-l) var(--spacing-m) var(--spacing-m);
-}
-
-.fc3d-card__title {
-  font-size: clamp(1.125rem, 2vw, 2rem);
-  font-weight: 900;
-  text-transform: uppercase;
-  line-height: 1.1;
-  color: #ffffff;
-  background-color: transparent !important;
-
-  margin: 0;
-}
-
-.fc3d-card.is-center .fc3d-card__title {
-  color: #000000;
-}
-
-/* Back face content */
-.fc3d-card__back-content {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-  text-align: center;
-  gap: var(--spacing-s);
-  padding: var(--spacing-l) var(--spacing-m) var(--spacing-m);
-}
-
-.fc3d-card__back-title {
-  font-size: clamp(1.25rem, 2vw, 1.75rem);
-  font-weight: 900;
-  text-transform: uppercase;
-  color: #ffffff;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 0 12px rgba(0, 0, 0, 0.6);
-  margin: 0;
-}
-
-.fc3d-card__back-price {
-  font-size: clamp(1.125rem, 1.8vw, 1.5rem);
-  font-weight: 800;
-  color: #ffffff;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 0 12px rgba(0, 0, 0, 0.6);
-  margin: 0;
-}
-
-.fc3d-card__back-text {
-  font-size: clamp(0.75rem, 1.2vw, 1rem);
-  line-height: 1.5;
-  color: #ffffff;
-  max-width: 90%;
-  opacity: 0.95;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.6);
-  margin: 0;
-}
-
-.fc3d-card__back-cta {
-  margin-top: var(--spacing-xs);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--spacing-3) var(--spacing-l);
-  border-radius: var(--radius-pill);
-  border: 2px solid #ffffff;
-  color: #000000;
-  text-decoration: none;
-  text-transform: uppercase;
-  font-weight: 800;
-  font-size: clamp(0.75rem, 1.2vw, 0.875rem);
-  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-.fc3d-card__back-cta:hover {
-  background: #ffffff;
-  color: #000000;
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-}
 
 /* Controls – clear space above so they don’t overlap card content */
 .fc3d__controls {
@@ -321,21 +105,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .fc3d-card__inner {
-    transition: none;
-    animation: none !important;
-  }
-  .fc3d-card,
-  .fc3d-card__link {
-    transition: none;
-  }
+
   .fc3d__rail {
     scroll-behavior: auto;
   }
-  .fc3d-card.is-center:hover .fc3d-card__inner {
-    transform: none;
-    animation: none !important;
-  }
+
 }
 
 @media screen and (max-width: 749px) {
@@ -386,9 +160,7 @@
     padding-inline: 0;
     padding-bottom: 10px;
   }
-  .fc3d-card {
-    width: 100%;
-  }
+
 
   .fc3d__controls {
     margin-top: 10px;

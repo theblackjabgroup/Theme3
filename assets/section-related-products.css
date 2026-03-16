@@ -44,7 +44,7 @@
 
 .related-products-header__title {
   font-family: var(--font-heading-family);
-  font-size: 48px;
+  font-size: 50px;
   font-weight: 900;
   text-transform: uppercase;
   margin: 0;
@@ -192,9 +192,9 @@
 .scroll-nav {
   display: flex;
   justify-content: center;
-  gap: 15px;
+  gap: 16px;
   padding: 10px;
-  margin-top: 32px;
+  margin-top: 16px;
 }
 
 @media screen and (max-width: 749px) {
