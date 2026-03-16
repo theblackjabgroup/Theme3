@@ -1,24 +1,22 @@
 {{ 'card-base.css' | asset_url | stylesheet_tag }}
 {{ 'product-card.css' | asset_url | stylesheet_tag }}
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'collection-card.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
-  assign slide_count = 0
+  assign collection = section.settings.collection
+  if collection == blank
+    assign collection = collections.first
+  endif
+
+  assign slideshow_products = collection.products
+  assign slide_count = slideshow_products.size
+
   assign preview_fallback_product = null
-  if request.design_mode
+  if request.design_mode and slideshow_products.size == 0
     assign preview_fallback_product = collections.first.products.first
   endif
-  for block in section.blocks
-    if block.type == 'slide'
-      assign block_product = block.settings.product
-      if block_product == blank and preview_fallback_product != blank
-        assign block_product = preview_fallback_product
-      endif
-      if block_product != blank
-        assign slide_count = slide_count | plus: 1
-      endif
-    endif
-  endfor
+
   assign product_card_radius = '20px'
   case settings.product_card_radius_token
     when 'radius_small'
@@ -49,12 +47,11 @@
     <div class="bb-slideshow__left">
       <div class="bb-slideshow__left-stage" data-left-stage>
         {%- assign valid_index = 0 -%}
-        {%- for block in section.blocks -%}
-          {%- assign product = block.settings.product -%}
+        {%- for product in slideshow_products -%}
           {%- if request.design_mode and product == blank and preview_fallback_product != blank -%}
             {%- assign product = preview_fallback_product -%}
           {%- endif -%}
-          {%- if block.type == 'slide' and product != blank -%}
+          {%- if product != blank -%}
             {%- assign image_media = product.media[1] -%}
             {%- if image_media == blank -%}
               {%- assign image_media = product.featured_media -%}
@@ -69,40 +66,40 @@
               class="bb-slideshow__left-slide{% if valid_index == 0 %} is-active{% endif %}"
               data-left-slide
               data-slide-index="{{ valid_index }}"
-              data-block-id="{{ block.id }}"
+              data-block-id="slide-{{ valid_index }}"
               style="
-                --left-image-fit: {{ block.settings.left_image_fit }};
-                --left-image-width-desktop: {{ block.settings.left_image_width_desktop }}%;
-                --left-image-height-desktop: {{ block.settings.left_image_height_desktop }}%;
-                --left-image-x-desktop: {{ block.settings.left_image_x_desktop }}%;
-                --left-image-y-desktop: {{ block.settings.left_image_y_desktop }}%;
-                --left-image-width-mobile: {{ block.settings.left_image_width_mobile }}%;
-                --left-image-height-mobile: {{ block.settings.left_image_height_mobile }}%;
-                --left-image-x-mobile: {{ block.settings.left_image_x_mobile }}%;
-                --left-image-y-mobile: {{ block.settings.left_image_y_mobile }}%;
-                --left-image-shadow-x: {{ block.settings.left_image_shadow_x }}px;
-                --left-image-shadow-y: {{ block.settings.left_image_shadow_y }}px;
-                --left-image-shadow-blur: {{ block.settings.left_image_shadow_blur }}px;
-                --left-button-alignment: {{ block.settings.left_button_alignment }};
-                --left-button-text-transform: {{ left_button_text_transform }};
-                --left-button-bottom-desktop: {{ block.settings.left_button_bottom_desktop }}%;
-                --left-button-x-desktop: {{ block.settings.left_button_x_desktop }}%;
-                --left-button-y-desktop: {{ block.settings.left_button_y_desktop }}px;
-                --left-button-min-width-desktop: {{ block.settings.left_button_min_width_desktop }}px;
-                --left-button-height-desktop: {{ block.settings.left_button_height_desktop }}px;
-                --left-button-padding-x-desktop: {{ block.settings.left_button_padding_x_desktop }}px;
-                --left-button-font-size-desktop: {{ block.settings.left_button_font_size_desktop }}px;
-                --left-button-font-size-mobile: {{ block.settings.left_button_font_size_mobile }}px;
-                --left-button-font-weight: {{ block.settings.left_button_font_weight }};
-                --left-button-letter-spacing: {{ block.settings.left_button_letter_spacing }}px;
-                --left-button-radius: {{ block.settings.left_button_radius }}px;
-                --left-button-shadow-offset: {{ block.settings.left_button_shadow_offset }}px;
-                --left-button-bottom-mobile: {{ block.settings.left_button_bottom_mobile }}%;
-                --left-button-x-mobile: {{ block.settings.left_button_x_mobile }}%;
-                --left-button-y-mobile: {{ block.settings.left_button_y_mobile }}px;
-                --left-button-min-width-mobile: {{ block.settings.left_button_min_width_mobile }}px;
-                --left-button-height-mobile: {{ block.settings.left_button_height_mobile }}px;
-                --left-button-padding-x-mobile: {{ block.settings.left_button_padding_x_mobile }}px;
+                --left-image-fit: contain;
+                --left-image-width-desktop: 100%;
+                --left-image-height-desktop: 100%;
+                --left-image-x-desktop: 0%;
+                --left-image-y-desktop: 0%;
+                --left-image-width-mobile: 100%;
+                --left-image-height-mobile: 100%;
+                --left-image-x-mobile: 0%;
+                --left-image-y-mobile: 0%;
+                --left-image-shadow-x: 0px;
+                --left-image-shadow-y: 20px;
+                --left-image-shadow-blur: 18px;
+                --left-button-alignment: center;
+                --left-button-text-transform: uppercase;
+                --left-button-bottom-desktop: 3%;
+                --left-button-x-desktop: 0%;
+                --left-button-y-desktop: 0px;
+                --left-button-min-width-desktop: 208px;
+                --left-button-height-desktop: 48px;
+                --left-button-padding-x-desktop: 20px;
+                --left-button-font-size-desktop: 14px;
+                --left-button-font-size-mobile: 13px;
+                --left-button-font-weight: 700;
+                --left-button-letter-spacing: 1px;
+                --left-button-radius: 16px;
+                --left-button-shadow-offset: 2px;
+                --left-button-bottom-mobile: 3%;
+                --left-button-x-mobile: 0%;
+                --left-button-y-mobile: 0px;
+                --left-button-min-width-mobile: 180px;
+                --left-button-height-mobile: 44px;
+                --left-button-padding-x-mobile: 16px;
               "
               {% if valid_index != 0 %}
                 hidden
@@ -142,7 +139,9 @@
                   render 'global-btn',
                   text: section.settings.shop_now_label | default: 'Shop now',
                   url: product.url,
-                  class: 'bb-slideshow__shop-now'
+                  class: 'bb-slideshow__shop-now',
+                  variant: 'tertiary',
+                  fit_width: false
                 -%}
               </div>
             </article>
@@ -168,81 +167,21 @@
           text: '←',
           type: 'button',
           class: 'bb-slideshow__stage-nav-button bb-slideshow__stage-nav-button--prev',
-          attributes: left_prev_attrs
+          attributes: left_prev_attrs,
+          fit_width: false
         -%}
         {%- render 'global-btn',
           text: '→',
           type: 'button',
           class: 'bb-slideshow__stage-nav-button bb-slideshow__stage-nav-button--next',
-          attributes: left_next_attrs
+          attributes: left_next_attrs,
+          fit_width: false
         -%}
       </div>
     </div>
 
     <div class="bb-slideshow__right">
-      <div class="bb-slideshow__view-more">
-        {%-
-          render 'global-btn',
-          text: 'view more',
-          url: section.settings.view_more_link | default: routes.collections_url,
-          class: 'bb-slideshow__view-more-btn'
-        -%}
-      </div>
-
-      <div class="bb-slideshow__card-stage" data-card-stage>
-        {%- assign valid_index = 0 -%}
-        {%- for block in section.blocks -%}
-          {%- assign product = block.settings.product -%}
-          {%- if request.design_mode and product == blank and preview_fallback_product != blank -%}
-            {%- assign product = preview_fallback_product -%}
-          {%- endif -%}
-          {%- if block.type == 'slide' and product != blank -%}
-            <div
-              class="bb-slideshow__card-slide{% if valid_index == 0 %} is-active{% endif %}"
-              data-card-slide
-              data-slide-index="{{ valid_index }}"
-              data-block-id="{{ block.id }}"
-              {% if valid_index != 0 %}
-                hidden
-              {% endif %}
-              {{ block.shopify_attributes }}
-            >
-              {%
-                render 'card-product',
-                card_product: product,
-                section_id: section.id,
-                quick_add: 'none',
-                show_badge: false,
-                lazy_load: valid_index != 0
-              %}
-            </div>
-            {%- assign valid_index = valid_index | plus: 1 -%}
-          {%- endif -%}
-        {%- endfor -%}
-
-        {%- if slide_count == 0 -%}
-          <div class="bb-slideshow__card-slide is-active" data-card-slide data-slide-index="0">
-            <div class="bb-slideshow__right-placeholder">Select products in section settings.</div>
-          </div>
-        {%- endif -%}
-      </div>
-
-      <div class="bb-slideshow__right-nav">
-        {%- assign right_prev_attrs = 'data-nav="prev" aria-label="Previous product"' -%}
-        {%- assign right_next_attrs = 'data-nav="next" aria-label="Next product"' -%}
-        {%- render 'global-btn',
-          text: '←',
-          type: 'button',
-          class: 'bb-slideshow__right-nav-button',
-          attributes: right_prev_attrs
-        -%}
-        {%- render 'global-btn',
-          text: '→',
-          type: 'button',
-          class: 'bb-slideshow__right-nav-button',
-          attributes: right_next_attrs
-        -%}
-      </div>
+      {% render 'card-collection', collection: collection %}
     </div>
   </div>
 </section>
@@ -259,17 +198,19 @@
     min-height: {{ section.settings.section_height }}px;
   }
 
-  #shopify-section-{{ section.id }} .bb-slideshow__left,
-  #shopify-section-{{ section.id }} .bb-slideshow__card-stage,
-  #shopify-section-{{ section.id }} .bb-slideshow__view-more {
-    border-radius: var(--radius-2xl);
-  }
+
 
   #shopify-section-{{ section.id }} .bb-slideshow__left {
     border: 1px solid var(--color-borders);
     background: var(--color-card-bg);
     padding: 18px;
     position: relative;
+  }
+
+  #shopify-section-{{ section.id }} .bb-slideshow__right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   #shopify-section-{{ section.id }} .bb-slideshow__left-stage {
@@ -503,10 +444,45 @@
     transform: translateY(-1px);
   }
 
-  #shopify-section-{{ section.id }} .bb-slideshow__right {
-    display: grid;
-    grid-template-rows: auto minmax(0, 1fr) auto;
-    gap: 14px;
+
+
+  /* Match collection-list card typography settings */
+  #shopify-section-{{ section.id }} .custom-collection-card__title {
+    font-size: {{ settings.collection_card_title_font_size | default: 32 }}px;
+    font-weight: {{ settings.collection_card_title_font_weight | default: 900 }};
+    line-height: {{ settings.collection_card_title_line_height | default: 1 }};
+    margin-top: {{ settings.collection_card_title_margin_top | default: 0 }}px;
+    margin-bottom: {{ settings.collection_card_title_margin_bottom | default: 12 }}px;
+  }
+
+  #shopify-section-{{ section.id }} .custom-collection-card__description {
+    font-size: {{ settings.collection_card_description_font_size | default: 12 }}px;
+    font-weight: {{ settings.collection_card_description_font_weight | default: 400 }};
+    line-height: {{ settings.collection_card_description_line_height | default: 1.4 }};
+    margin-top: {{ settings.collection_card_description_margin_top | default: 0 }}px;
+    margin-bottom: {{ settings.collection_card_description_margin_bottom | default: 20 }}px;
+  }
+
+  #shopify-section-{{ section.id }} .custom-collection-card__badge {
+    font-size: {{ settings.collection_card_badge_font_size | default: 12 }}px;
+    font-weight: {{ settings.collection_card_badge_font_weight | default: 700 }};
+    padding: {{ settings.collection_card_badge_padding_vertical | default: 4 }}px {{ settings.collection_card_badge_padding_horizontal | default: 16 }}px;
+    margin-bottom: {{ settings.collection_card_badge_margin_bottom | default: 10 }}px;
+    background-color: var(--color-card-bg);
+    color: var(--color-heading);
+    border-color: var(--color-heading);
+    {% if settings.collection_card_badge_border_width != blank %}border-width: {{ settings.collection_card_badge_border_width }}px;{% endif %}
+    {% if settings.collection_card_badge_border_radius != blank %}border-radius: {{ settings.collection_card_badge_border_radius }}px;{% endif %}
+    {% if settings.collection_card_badge_text_transform != blank %}text-transform: {{ settings.collection_card_badge_text_transform }};{% endif %}
+  }
+
+  #shopify-section-{{ section.id }} .custom-collection-card__hover-description {
+    font-size: {{ settings.collection_card_hover_description_font_size | default: 14 }}px;
+    font-weight: {{ settings.collection_card_hover_description_font_weight | default: 400 }};
+  }
+
+  #shopify-section-{{ section.id }} .custom-collection-card__hover-content {
+    gap: {{ settings.collection_card_hover_content_gap | default: 10 }}px;
   }
 
   #shopify-section-{{ section.id }} .bb-slideshow__view-more .bb-slideshow__view-more-btn {
@@ -523,92 +499,7 @@
   }
 
   #shopify-section-{{ section.id }} .bb-slideshow__card-stage {
-    background: var(--color-card-bg);
-    border: 1px solid var(--color-borders);
-    padding: 12px;
     position: relative;
-    overflow: visible;
-  }
-
-  #shopify-section-{{ section.id }} .bb-slideshow__card-stage .custom-product-card {
-    --card-hover-description-font-size: {{ settings.product_card_hover_description_font_size | default: 14 }}px;
-    --card-hover-description-font-weight: {{ settings.product_card_hover_description_font_weight | default: 400 }};
-    --card-hover-button-font-size: {{ settings.product_card_hover_button_font_size | default: 12 }}px;
-    --card-hover-button-font-weight: {{ settings.product_card_hover_button_font_weight | default: 600 }};
-    --card-hover-button-padding-vertical: {{ settings.product_card_hover_button_padding_vertical | default: 10 }}px;
-    --card-hover-button-padding-horizontal: {{ settings.product_card_hover_button_padding_horizontal | default: 20 }}px;
-    --card-hover-content-gap: {{ settings.product_card_hover_content_gap | default: 10 }}px;
-    --card-hover-button-border-radius: {{ settings.product_card_hover_button_border_radius | default: 20 }}px;
-    --card-price-button-border-radius: {{ settings.product_card_price_button_border_radius | default: 12 }}px;
-    --card-price-font-size: {{ settings.product_card_price_font_size | default: 16 }}px;
-    --card-price-font-weight: {{ settings.product_card_price_font_weight | default: 700 }};
-    --card-price-padding-vertical: {{ settings.product_card_price_padding_vertical | default: 10 }}px;
-    --card-price-padding-horizontal: {{ settings.product_card_price_padding_horizontal | default: 18 }}px;
-    --card-price-border-width: {{ settings.product_card_price_border_width | default: 1 }}px;
-    --card-price-border-radius: {{ settings.product_card_price_border_radius | default: 12 }}px;
-    height: 100% !important;
-    min-height: 0;
-    border-radius: {{ product_card_radius }};
-    box-shadow: {{ product_card_shadow }};
-  }
-
-  #shopify-section-{{ section.id }} .bb-slideshow__card-stage .custom-product-card__main-link {
-    height: 100%;
-    min-height: 0;
-  }
-
-  #shopify-section-{{ section.id }} .bb-slideshow__card-stage .custom-product-card__title {
-    font-size: {{ settings.product_card_title_font_size | default: 24 }}px !important;
-    font-weight: {{ settings.product_card_title_font_weight | default: 900 }};
-    line-height: {{ settings.product_card_title_line_height | default: 1 }};
-    margin-top: {{ settings.product_card_title_margin_top | default: 0 }}px;
-    margin-bottom: {{ settings.product_card_title_margin_bottom | default: 12 }}px;
-  }
-
-  #shopify-section-{{ section.id }} .bb-slideshow__card-stage .custom-product-card__description {
-    font-size: {{ settings.product_card_description_font_size | default: 12 }}px;
-    font-weight: {{ settings.product_card_description_font_weight | default: 400 }};
-    line-height: {{ settings.product_card_description_line_height | default: 1.4 }};
-    margin-top: {{ settings.product_card_description_margin_top | default: 0 }}px;
-    margin-bottom: {{ settings.product_card_description_margin_bottom | default: 0 }}px;
-  }
-
-  #shopify-section-{{ section.id }} .bb-slideshow__card-stage .custom-product-card__badge {
-    font-size: {{ settings.product_card_badge_font_size | default: 12 }}px;
-    font-weight: {{ settings.product_card_badge_font_weight | default: 700 }};
-    padding: {{ settings.product_card_badge_padding_vertical | default: 4 }}px {{ settings.product_card_badge_padding_horizontal | default: 16 }}px;
-    margin-bottom: {{ settings.product_card_badge_margin_bottom | default: 10 }}px;
-    background-color: {{ settings.product_card_badge_background_color | default: 'transparent' }};
-    color: {{ settings.product_card_badge_text_color | default: 'inherit' }};
-    border-color: {{ settings.product_card_badge_border_color | default: 'currentColor' }};
-    border-width: {{ settings.product_card_badge_border_width | default: 1 }}px;
-    border-style: solid;
-    border-radius: {{ settings.product_card_badge_border_radius | default: 20 }}px;
-    text-transform: {{ settings.product_card_badge_text_transform | default: 'uppercase' }};
-  }
-
-  #shopify-section-{{ section.id }} .bb-slideshow__card-slide {
-    position: absolute;
-    inset: 12px;
-    opacity: 0;
-    pointer-events: none;
-    transition: none;
-    overflow: visible;
-  }
-
-  #shopify-section-{{ section.id }} .bb-slideshow__card-slide.is-active {
-    opacity: 1;
-    pointer-events: auto;
-    animation: none;
-  }
-
-  #shopify-section-{{ section.id }} .bb-slideshow__card-stage .custom-product-card-wrapper,
-  #shopify-section-{{ section.id }} .bb-slideshow__card-stage .custom-product-card {
-    overflow: visible;
-  }
-
-  #shopify-section-{{ section.id }} .bb-slideshow__card-stage .custom-product-card:hover {
-    border-color: var(--color-borders);
   }
 
   #shopify-section-{{ section.id }} .bb-slideshow__right-placeholder {
@@ -648,24 +539,6 @@
       inset: 0;
     }
 
-    #shopify-section-{{ section.id }} .bb-slideshow__right {
-      height: auto;
-    }
-
-    #shopify-section-{{ section.id }} .bb-slideshow__card-stage {
-      position: relative;
-      overflow: visible;
-    }
-
-    #shopify-section-{{ section.id }} .bb-slideshow__card-slide,
-    #shopify-section-{{ section.id }} .bb-slideshow__card-slide.is-active {
-      position: static;
-      inset: auto;
-      opacity: 1;
-      pointer-events: auto;
-      transition: none;
-    }
-
     #shopify-section-{{ section.id }} .bb-slideshow__left-title {
       font-size: clamp(3rem, 9vw, 5rem);
       top: 14px;
@@ -682,37 +555,14 @@
     top:17%;
     }
 
-    #shopify-section-{{ section.id }} .bb-slideshow__card-stage .custom-product-card {
-      --card-hover-description-font-size: {{ settings.product_card_hover_description_font_size_mobile | default: 12 }}px;
-      --card-hover-button-font-size: {{ settings.product_card_hover_button_font_size_mobile | default: 12 }}px;
-      --card-hover-button-padding-vertical: {{ settings.product_card_hover_button_padding_vertical_mobile | default: 8 }}px;
-      --card-hover-button-padding-horizontal: {{ settings.product_card_hover_button_padding_horizontal_mobile | default: 16 }}px;
-      --card-hover-content-gap: {{ settings.product_card_hover_content_gap_mobile | default: 8 }}px;
-      --card-price-font-size: {{ settings.product_card_price_font_size_mobile | default: 14 }}px;
-      --card-price-padding-vertical: {{ settings.product_card_price_padding_vertical_mobile | default: 8 }}px;
-      --card-price-padding-horizontal: {{ settings.product_card_price_padding_horizontal_mobile | default: 14 }}px;
-    }
-
-    #shopify-section-{{ section.id }} .bb-slideshow__card-stage .custom-product-card__title {
-      font-size: {{ settings.product_card_title_font_size_mobile | default: 24 }}px !important;
+    #shopify-section-{{ section.id }} .bb-slideshow__right {
+      height: auto;
     }
   }
 
   @media screen and (max-width: 1024px) {
-    #shopify-section-{{ section.id }} .bb-slideshow__right {
-      grid-template-rows: auto auto auto;
-    }
-
     #shopify-section-{{ section.id }} .bb-slideshow__card-stage {
       order: 1;
-    }
-
-    #shopify-section-{{ section.id }} .bb-slideshow__view-more {
-      order: 2;
-    }
-
-    #shopify-section-{{ section.id }} .bb-slideshow__right-nav {
-      order: 3;
     }
   }
 
@@ -895,6 +745,12 @@
       "info": "When the theme toggle is in dark mode, use this scheme for this section."
     },
     {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection",
+      "info": "Products from this collection are shown in the left column. The right card shows this collection."
+    },
+    {
       "type": "url",
       "id": "view_more_link",
       "label": "View more link"
@@ -929,7 +785,7 @@
       "min": 480,
       "max": 980,
       "step": 10,
-      "default": 680,
+      "default": 550,
       "label": "Section height (desktop)"
     },
     {
@@ -960,340 +816,7 @@
       "label": "Padding horizontal"
     }
   ],
-  "blocks": [
-    {
-      "type": "slide",
-      "name": "Product",
-      "settings": [
-        {
-          "type": "product",
-          "id": "product",
-          "label": "Product"
-        },
-        {
-          "type": "text",
-          "id": "badge_text",
-          "label": "Badge text",
-          "default": "MATCHA"
-        },
-        {
-          "type": "header",
-          "content": "Left card · Image"
-        },
-        {
-          "type": "select",
-          "id": "left_image_fit",
-          "label": "Image fit",
-          "default": "contain",
-          "options": [
-            {
-              "value": "contain",
-              "label": "Contain"
-            },
-            {
-              "value": "cover",
-              "label": "Cover"
-            }
-          ]
-        },
-        {
-          "type": "range",
-          "id": "left_image_width_desktop",
-          "min": 40,
-          "max": 140,
-          "step": 1,
-          "default": 100,
-          "label": "Image width (desktop %)"
-        },
-        {
-          "type": "range",
-          "id": "left_image_height_desktop",
-          "min": 40,
-          "max": 140,
-          "step": 1,
-          "default": 100,
-          "label": "Image height (desktop %)"
-        },
-        {
-          "type": "range",
-          "id": "left_image_x_desktop",
-          "min": -50,
-          "max": 50,
-          "step": 1,
-          "default": 0,
-          "label": "Image X position (desktop %)"
-        },
-        {
-          "type": "range",
-          "id": "left_image_y_desktop",
-          "min": -50,
-          "max": 50,
-          "step": 1,
-          "default": 0,
-          "label": "Image Y position (desktop %)"
-        },
-        {
-          "type": "range",
-          "id": "left_image_width_mobile",
-          "min": 40,
-          "max": 140,
-          "step": 1,
-          "default": 100,
-          "label": "Image width (mobile %)"
-        },
-        {
-          "type": "range",
-          "id": "left_image_height_mobile",
-          "min": 40,
-          "max": 140,
-          "step": 1,
-          "default": 100,
-          "label": "Image height (mobile %)"
-        },
-        {
-          "type": "range",
-          "id": "left_image_x_mobile",
-          "min": -50,
-          "max": 50,
-          "step": 1,
-          "default": 0,
-          "label": "Image X position (mobile %)"
-        },
-        {
-          "type": "range",
-          "id": "left_image_y_mobile",
-          "min": -50,
-          "max": 50,
-          "step": 1,
-          "default": 0,
-          "label": "Image Y position (mobile %)"
-        },
-        {
-          "type": "header",
-          "content": "Left card · Shadow"
-        },
-        {
-          "type": "range",
-          "id": "left_image_shadow_x",
-          "min": -80,
-          "max": 80,
-          "step": 2,
-          "default": 0,
-          "label": "Shadow X offset (px)"
-        },
-        {
-          "type": "range",
-          "id": "left_image_shadow_y",
-          "min": -80,
-          "max": 80,
-          "step": 2,
-          "default": 20,
-          "label": "Shadow Y offset (px)"
-        },
-        {
-          "type": "range",
-          "id": "left_image_shadow_blur",
-          "min": 0,
-          "max": 120,
-          "step": 2,
-          "default": 18,
-          "label": "Shadow blur (px)"
-        },
-        {
-          "type": "header",
-          "content": "Left card · Button"
-        },
-        {
-          "type": "select",
-          "id": "left_button_alignment",
-          "label": "Button alignment",
-          "default": "center",
-          "options": [
-            {
-              "value": "flex-start",
-              "label": "Left"
-            },
-            {
-              "value": "center",
-              "label": "Center"
-            },
-            {
-              "value": "flex-end",
-              "label": "Right"
-            }
-          ]
-        },
-        {
-          "type": "checkbox",
-          "id": "left_button_uppercase",
-          "label": "Uppercase button text",
-          "default": true
-        },
-        {
-          "type": "range",
-          "id": "left_button_bottom_desktop",
-          "min": 0,
-          "max": 25,
-          "step": 1,
-          "default": 3,
-          "label": "Button bottom (desktop %)"
-        },
-        {
-          "type": "range",
-          "id": "left_button_x_desktop",
-          "min": -50,
-          "max": 50,
-          "step": 1,
-          "default": 0,
-          "label": "Button X position (desktop %)"
-        },
-        {
-          "type": "range",
-          "id": "left_button_y_desktop",
-          "min": -250,
-          "max": 250,
-          "step": 5,
-          "default": 0,
-          "label": "Button Y position (desktop px)"
-        },
-        {
-          "type": "range",
-          "id": "left_button_min_width_desktop",
-          "min": 120,
-          "max": 420,
-          "step": 4,
-          "default": 208,
-          "label": "Button min width (desktop px)"
-        },
-        {
-          "type": "range",
-          "id": "left_button_height_desktop",
-          "min": 36,
-          "max": 90,
-          "step": 2,
-          "default": 48,
-          "label": "Button height (desktop px)"
-        },
-        {
-          "type": "range",
-          "id": "left_button_padding_x_desktop",
-          "min": 8,
-          "max": 56,
-          "step": 2,
-          "default": 20,
-          "label": "Button horizontal padding (desktop px)"
-        },
-        {
-          "type": "range",
-          "id": "left_button_font_size_desktop",
-          "min": 12,
-          "max": 30,
-          "step": 1,
-          "default": 14,
-          "label": "Button font size (desktop px)"
-        },
-        {
-          "type": "range",
-          "id": "left_button_font_size_mobile",
-          "min": 10,
-          "max": 26,
-          "step": 1,
-          "default": 13,
-          "label": "Button font size (mobile px)"
-        },
-        {
-          "type": "range",
-          "id": "left_button_font_weight",
-          "min": 400,
-          "max": 900,
-          "step": 100,
-          "default": 700,
-          "label": "Button font weight"
-        },
-        {
-          "type": "range",
-          "id": "left_button_letter_spacing",
-          "min": 0,
-          "max": 4,
-          "step": 1,
-          "default": 1,
-          "label": "Button letter spacing (px)"
-        },
-        {
-          "type": "range",
-          "id": "left_button_radius",
-          "min": 0,
-          "max": 40,
-          "step": 1,
-          "default": 16,
-          "label": "Button border radius (px)"
-        },
-        {
-          "type": "range",
-          "id": "left_button_shadow_offset",
-          "min": 0,
-          "max": 8,
-          "step": 1,
-          "default": 2,
-          "label": "Button shadow offset (px)"
-        },
-        {
-          "type": "range",
-          "id": "left_button_bottom_mobile",
-          "min": 0,
-          "max": 25,
-          "step": 1,
-          "default": 3,
-          "label": "Button bottom (mobile %)"
-        },
-        {
-          "type": "range",
-          "id": "left_button_x_mobile",
-          "min": -50,
-          "max": 50,
-          "step": 1,
-          "default": 0,
-          "label": "Button X position (mobile %)"
-        },
-        {
-          "type": "range",
-          "id": "left_button_y_mobile",
-          "min": -250,
-          "max": 250,
-          "step": 5,
-          "default": 0,
-          "label": "Button Y position (mobile px)"
-        },
-        {
-          "type": "range",
-          "id": "left_button_min_width_mobile",
-          "min": 100,
-          "max": 320,
-          "step": 4,
-          "default": 180,
-          "label": "Button min width (mobile px)"
-        },
-        {
-          "type": "range",
-          "id": "left_button_height_mobile",
-          "min": 32,
-          "max": 80,
-          "step": 2,
-          "default": 44,
-          "label": "Button height (mobile px)"
-        },
-        {
-          "type": "range",
-          "id": "left_button_padding_x_mobile",
-          "min": 6,
-          "max": 40,
-          "step": 2,
-          "default": 16,
-          "label": "Button horizontal padding (mobile px)"
-        }
-      ]
-    }
-  ],
+  "blocks": [],
   "max_blocks": 5,
   "presets": [
     {

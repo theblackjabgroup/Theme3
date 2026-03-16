@@ -26,7 +26,10 @@
 
 {%- if is_placeholder -%}
   {%- comment -%} Placeholder card with dummy data (same structure as real card) {%- endcomment -%}
-  {%- assign placeholder_desc = placeholder_description | default: fallback_description | default: 'Add a collection in the section settings to display products.' -%}
+  {%- assign placeholder_desc = placeholder_description
+    | default: fallback_description
+    | default: 'Add a collection in the section settings to display products.'
+  -%}
   <div class="custom-product-card-wrapper">
     <div class="custom-product-card">
       <a href="#" class="custom-product-card__main-link" aria-disabled="true" onclick="return false;">
@@ -34,9 +37,11 @@
           {{ 'product-apparel-2' | placeholder_svg_tag: 'custom-product-card__image placeholder-svg' }}
         </div>
         <div class="custom-product-card__content">
-          <div class="custom-product-card__title">{{ placeholder_title | escape }}</div>
+          <div class="custom-product-card__title">
+            {{ placeholder_title | escape | truncate: 12, '…' }}
+          </div>
           <p class="custom-product-card__description">
-            {{ placeholder_desc | strip_html | truncatewords: 12, '....' }}
+            {{ placeholder_desc | strip_html | truncate: 80, '…' }}
           </p>
           <div class="custom-product-card__footer">
             <div class="custom-product-card__price">
@@ -52,7 +57,7 @@
         <div class="custom-product-card__hover-overlay">
           <div class="custom-product-card__hover-content">
             <p class="custom-product-card__hover-description">
-              {{ placeholder_desc | strip_html | truncatewords: 12, '....' | upcase }}
+              {{ placeholder_desc | strip_html | truncate: 160, '…' | upcase }}
             </p>
             <span class="button button--primary" style="pointer-events: none; opacity: 0.8;">
               {{ overlay_button_text | default: 'Check it out' }}
@@ -130,19 +135,21 @@
             </span>
           {%- endif -%}
 
-          <div class="custom-product-card__title">{{ card_product.title | truncatewords: 3 }}</div>
+          <div class="custom-product-card__title">
+            {{ card_product.title | truncate: 12, '…' }}
+          </div>
 
           {%- if card_product.description != blank -%}
             <p class="custom-product-card__description">
-              {{ card_product.description | strip_html | truncatewords: 12, '....' }}
+              {{ card_product.description | strip_html | truncate: 80, '…' }}
             </p>
           {%- elsif fallback_description != blank -%}
             <p class="custom-product-card__description">
-              {{ fallback_description | strip_html | truncatewords: 12, '....' }}
+              {{ fallback_description | strip_html | truncate: 80, '…' }}
             </p>
           {%- else -%}
             <p class="custom-product-card__description">
-              {{ 'Discover our amazing product.' | strip_html | truncatewords: 12, '....' }}
+              {{ 'Discover our amazing product.' | strip_html | truncate: 80, '…' }}
             </p>
           {%- endif -%}
 
@@ -180,7 +187,7 @@
           <div class="custom-product-card__hover-content">
             {%- if card_product.description != blank -%}
               <p class="custom-product-card__hover-description">
-                {{ card_product.description | strip_html | truncatewords: 12, '....' | upcase }}
+                {{ card_product.description | strip_html | truncate: 80, '…' | upcase }}
               </p>
             {%- elsif fallback_description != blank -%}
               <p class="custom-product-card__hover-description">
@@ -188,13 +195,13 @@
                   fallback_description
                   | default: 'Discover our amazing product.'
                   | strip_html
-                  | truncatewords: 12, '....'
+                  | truncate: 80, '…'
                   | upcase
                 }}
               </p>
             {%- else -%}
               <p class="custom-product-card__hover-description">
-                {{ 'Discover our amazing product.' | strip_html | truncatewords: 12, '....' | upcase }}
+                {{ 'Discover our amazing product.' | strip_html | truncate: 80, '…' | upcase }}
               </p>
             {%- endif -%}
             {%- if use_quick_add_overlay -%}

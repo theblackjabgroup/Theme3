@@ -5,31 +5,69 @@
 <script src="{{ 'section-featured-collection.js' | asset_url }}" defer="defer"></script>
 
 {%- style -%}
-  #shopify-section-{{ section.id }} .fc3d-card .custom-product-card .share-story-submit {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--color-primary-button-bg, #365330);
-    color: white;
-    border: 2px solid var(--color-primary-button-border, #365330);
-    padding: 16px 20px;
-    border-radius: var(--card-hover-button-border-radius, var(--radius-l));
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    width: fit-content;
-    box-shadow: 0 4px 0 0 var(--color-shadow, rgba(0,0,0,0.15));
-    transition: all 0.2s ease;
-    margin-top: 8px;
-    text-transform: none;
-    font-family: var(--font-heading-family);
-    letter-spacing: 0.02em;
-    line-height: 1;
-    text-decoration: none;
+  /* Featured collection cards: use global product card settings (match product grid) */
+  #shopify-section-{{ section.id }} .custom-product-card {
+    --card-padding-top: 0px;
+    --card-padding-horizontal: 20px;
+    --card-padding-bottom: 20px;
+    --card-text-align: center;
+    --card-align-items: center;
+    --card-image-height: 300px;
+    --card-image-margin-bottom: 16px;
+    --card-hover-description-font-size: {{ settings.product_card_hover_description_font_size | default: 14 }}px;
+    --card-hover-description-font-weight: {{ settings.product_card_hover_description_font_weight | default: 400 }};
+    --card-hover-button-font-size: {{ settings.product_card_hover_button_font_size | default: 12 }}px;
+    --card-hover-button-font-weight: {{ settings.product_card_hover_button_font_weight | default: 600 }};
+    --card-hover-button-padding-vertical: {{ settings.product_card_hover_button_padding_vertical | default: 10 }}px;
+    --card-hover-button-padding-horizontal: {{ settings.product_card_hover_button_padding_horizontal | default: 20 }}px;
+    --card-hover-content-gap: {{ settings.product_card_hover_content_gap | default: 10 }}px;
+    --card-hover-button-border-radius: {{ settings.product_card_hover_button_border_radius | default: 20 }}px;
+    --card-price-button-border-radius: {{ settings.product_card_price_button_border_radius | default: 12 }}px;
+    --card-price-font-size: {{ settings.product_card_price_font_size | default: 16 }}px;
+    --card-price-font-weight: {{ settings.product_card_price_font_weight | default: 700 }};
+    --card-price-padding-vertical: {{ settings.product_card_price_padding_vertical | default: 10 }}px;
+    --card-price-padding-horizontal: {{ settings.product_card_price_padding_horizontal | default: 18 }}px;
+    --card-price-border-width: {{ settings.product_card_price_border_width | default: 1 }}px;
+    --card-price-border-radius: {{ settings.product_card_price_border_radius | default: 12 }}px;
   }
-  #shopify-section-{{ section.id }} .fc3d-card .custom-product-card .share-story-submit:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 0 0 var(--color-shadow, rgba(0,0,0,0.15));
+
+  #shopify-section-{{ section.id }} .custom-product-card__title {
+    font-size: {{ settings.product_card_title_font_size | default: 24 }}px !important;
+    font-weight: {{ settings.product_card_title_font_weight | default: 900 }};
+    line-height: {{ settings.product_card_title_line_height | default: 1 }};
+    margin-top: {{ settings.product_card_title_margin_top | default: 0 }}px;
+    margin-bottom: {{ settings.product_card_title_margin_bottom | default: 12 }}px;
+  }
+
+  #shopify-section-{{ section.id }} .custom-product-card__description {
+    font-size: {{ settings.product_card_description_font_size | default: 12 }}px;
+    font-weight: {{ settings.product_card_description_font_weight | default: 400 }};
+    line-height: {{ settings.product_card_description_line_height | default: 1.4 }};
+    margin-top: {{ settings.product_card_description_margin_top | default: 0 }}px;
+    margin-bottom: {{ settings.product_card_description_margin_bottom | default: 0 }}px;
+  }
+
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section.id }} .custom-product-card {
+      --card-padding-top: 10px;
+      --card-padding-horizontal: 16px;
+      --card-padding-bottom: 28px;
+      --card-image-height: 300px;
+      --card-image-margin-bottom: 16px;
+      --card-hover-description-font-size: {{ settings.product_card_hover_description_font_size_mobile | default: 12 }}px;
+      --card-hover-button-font-size: {{ settings.product_card_hover_button_font_size_mobile | default: 12 }}px;
+      --card-hover-button-padding-vertical: {{ settings.product_card_hover_button_padding_vertical_mobile | default: 8 }}px;
+      --card-hover-button-padding-horizontal: {{ settings.product_card_hover_button_padding_horizontal_mobile | default: 16 }}px;
+      --card-hover-content-gap: {{ settings.product_card_hover_content_gap_mobile | default: 8 }}px;
+      --card-price-font-size: {{ settings.product_card_price_font_size_mobile | default: 14 }}px;
+      --card-price-padding-vertical: {{ settings.product_card_price_padding_vertical_mobile | default: 8 }}px;
+      --card-price-padding-horizontal: {{ settings.product_card_price_padding_horizontal_mobile | default: 14 }}px;
+    }
+
+    #shopify-section-{{ section.id }} .custom-product-card__title {
+      font-size: {{ settings.product_card_title_font_size_mobile | default: 24 }}px !important;
+      line-height: {{ settings.product_card_title_line_height | default: 1 }};
+    }
   }
 {%- endstyle -%}
 
@@ -82,11 +120,7 @@
                   card_product: product,
                   section_id: section.id,
                   quick_add: 'none',
-                  lazy_load: forloop.index > 3,
-                  show_badge: section.settings.show_card_badge,
-                  badge_text: section.settings.card_badge_text,
-                  overlay_button_text: section.settings.overlay_button_text,
-                  fallback_description: section.settings.fallback_description
+                  lazy_load: forloop.index > 3
                 -%}
               </div>
             </div>
@@ -99,11 +133,7 @@
                   card_product: product,
                   section_id: section.id,
                   quick_add: 'none',
-                  lazy_load: true,
-                  show_badge: section.settings.show_card_badge,
-                  badge_text: section.settings.card_badge_text,
-                  overlay_button_text: section.settings.overlay_button_text,
-                  fallback_description: section.settings.fallback_description
+                  lazy_load: true
                 -%}
               </div>
             </div>
@@ -123,7 +153,6 @@
                   quick_add: 'none',
                   lazy_load: forloop.index > 3,
                   show_badge: false,
-                  overlay_button_text: section.settings.overlay_button_text,
                   fallback_description: placeholder_description_text
                 -%}
               </div>
@@ -146,7 +175,6 @@
                   quick_add: 'none',
                   lazy_load: true,
                   show_badge: false,
-                  overlay_button_text: section.settings.overlay_button_text,
                   fallback_description: placeholder_description_text
                 -%}
               </div>
