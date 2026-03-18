@@ -207,8 +207,12 @@ if (!customElements.get('quick-view-modal')) {
 
           // Update image to show variant featured image
           if (matchingVariant.featured_media) {
-            const mediaIndex = matchingVariant.featured_media.position - 1;
-            this.goToSlide(mediaIndex);
+            const mediaId = matchingVariant.featured_media.id;
+            const slide = this.querySelector(`[data-media-id="${mediaId}"]`);
+            if (slide) {
+              const slideIndex = parseInt(slide.dataset.slideIndex, 10);
+              this.goToSlide(slideIndex);
+            }
           }
         }
       }

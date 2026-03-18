@@ -192,6 +192,25 @@
   }
 }
 
+/* Tablet: disable content transforms from base (overlay removed) */
+@media screen and (max-width: 989px) and (min-width: 750px) {
+  .custom-product-card:hover .custom-product-card__badge,
+  .custom-product-card:hover .custom-product-card__title,
+  .custom-product-card:hover .custom-product-card__description,
+  .custom-product-card:hover .custom-product-card__footer,
+  .custom-product-card:active .custom-product-card__badge,
+  .custom-product-card:active .custom-product-card__title,
+  .custom-product-card:active .custom-product-card__description,
+  .custom-product-card:active .custom-product-card__footer {
+    transform: none !important;
+  }
+
+  .custom-product-card:hover .custom-product-card__image-container::before,
+  .custom-product-card:active .custom-product-card__image-container::before {
+    transform: none !important;
+  }
+}
+
 /* Mobile: disable image hover animation, show buttons always */
 @media screen and (max-width: 749px) {
   .custom-product-card:hover .custom-product-card__image-container::before {
