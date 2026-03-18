@@ -10,9 +10,8 @@
   background-color: var(--btn-primary-bg, #F8F3F8);
   border: 1px solid var(--btn-primary-border, #000000);
   border-radius: 12px;
-  padding: 10px;
+  padding:5px 10px;
   min-width: 44px;
-  gap: 30px;
 }
 
 .qty-selector__btn {

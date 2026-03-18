@@ -14,6 +14,7 @@
   - quick_add_overlay: {Boolean} When true with quick_add standard, overlay and footer buttons add to cart. Default: false (optional)
   - mobile_add_button_text: {String} Mobile add to cart button text. Default: 'Add to cart' (optional)
   - lazy_load: {Boolean} Image should be lazy loaded. Default: true (optional)
+  - skip_quick_view_modal: {Boolean} Skip rendering the quick view modal (use for cloned cards). Default: false (optional)
 {%- endcomment -%}
 {%- comment -%} Card CSS is loaded once at section level (e.g. main-collection-product-grid.liquid). {%- endcomment -%}
 
@@ -205,8 +206,10 @@
       </div>
     </div>
 
-    {%- comment -%} Quick View Modal {%- endcomment -%}
-    {%- render 'quick-view-modal', product: card_product, section_id: section_id -%}
+    {%- comment -%} Quick View Modal (skip for cloned cards to avoid duplicate IDs) {%- endcomment -%}
+    {%- unless skip_quick_view_modal -%}
+      {%- render 'quick-view-modal', product: card_product, section_id: section_id -%}
+    {%- endunless -%}
 
     {%- if quick_add != 'none' and quick_add != blank -%}
       {% if quick_add == 'standard' %}

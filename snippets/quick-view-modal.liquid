@@ -94,9 +94,12 @@
 
         <div class="quick-view-modal__price">
           <span class="quick-view-modal__price-current">{{ product.price | money }}</span>
-          {%- if product.compare_at_price > product.price -%}
-            <span class="quick-view-modal__price-compare">{{ product.compare_at_price | money }}</span>
-          {%- endif -%}
+          <span
+            class="quick-view-modal__price-compare"
+            {% unless product.compare_at_price > product.price %}style="display: none;"{% endunless %}
+          >
+            {{- product.compare_at_price | money -}}
+          </span>
         </div>
 
         <p class="quick-view-modal__stock">
