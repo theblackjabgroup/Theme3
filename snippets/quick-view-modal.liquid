@@ -146,11 +146,11 @@
                     {%- endif -%}
                   {%- endfor -%}
                 </div>
-                <span class="quick-view-modal__option-label" data-variant-label data-option-name="{{ option.name }}">
-                  {{- product.selected_or_first_available_variant.title -}}
-                </span>
               </div>
             {%- endfor -%}
+            <span class="quick-view-modal__option-label" data-variant-label>
+              {{- product.selected_or_first_available_variant.title -}}
+            </span>
           </div>
         {%- endif -%}
 
@@ -208,10 +208,20 @@
                 </button>
               </div>
 
+              {%- liquid
+                assign initial_variant_available = product.selected_or_first_available_variant.available
+                if initial_variant_available
+                  assign atc_text = 'Add to cart'
+                  assign atc_variant = 'tertiary'
+                else
+                  assign atc_text = 'Sold Out'
+                  assign atc_variant = 'disabled'
+                endif
+              -%}
               {%- render 'global-btn',
-                text: 'Add to cart',
+                text: atc_text,
                 type: 'submit',
-                variant: 'tertiary',
+                variant: atc_variant,
                 class: 'quick-view-modal__add-btn',
                 is_add_to_cart: true
               -%}
