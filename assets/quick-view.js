@@ -189,9 +189,11 @@ if (!customElements.get('quick-view-modal')) {
           return selectedOptions.every((opt, index) => variant.options[index] === opt);
         });
 
-        if (matchingVariant && this.variantIdInput) {
-          this.variantIdInput.value = matchingVariant.id;
-          this.variantIdInput.disabled = !matchingVariant.available;
+        if (matchingVariant) {
+          if (this.variantIdInput) {
+            this.variantIdInput.value = matchingVariant.id;
+            this.variantIdInput.disabled = !matchingVariant.available;
+          }
 
           // Update price display
           this.updatePrice(matchingVariant);
@@ -213,6 +215,33 @@ if (!customElements.get('quick-view-modal')) {
               const slideIndex = parseInt(slide.dataset.slideIndex, 10);
               this.goToSlide(slideIndex);
             }
+          }
+        } else {
+          // No matching variant found - disable form submission and show unavailable state
+          if (this.variantIdInput) {
+            this.variantIdInput.disabled = true;
+          }
+
+          // Update stock to show unavailable
+          const stockEl = this.querySelector('.quick-view-modal__stock');
+          if (stockEl) {
+            stockEl.textContent = 'Unavailable';
+          }
+
+          // Disable add to cart button
+          const addBtn = this.querySelector('.quick-view-modal__add-btn');
+          if (addBtn) {
+            const textEl = addBtn.querySelector('.global-btn__text');
+            if (textEl) {
+              textEl.textContent = 'Unavailable';
+            }
+            addBtn.disabled = true;
+          }
+
+          // Update variant label to show selected options
+          const labelEl = this.querySelector('[data-variant-label]');
+          if (labelEl) {
+            labelEl.textContent = selectedOptions.join(' / ');
           }
         }
       }
