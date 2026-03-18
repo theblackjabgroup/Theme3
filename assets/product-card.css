@@ -211,7 +211,7 @@
   }
 }
 
-/* Mobile: disable image hover animation, show buttons always */
+/* Mobile: disable image hover animation, show both price and buttons */
 @media screen and (max-width: 749px) {
   .custom-product-card:hover .custom-product-card__image-container::before {
     transform: none !important;
@@ -221,26 +221,27 @@
     transform: none !important;
   }
 
-  /* On mobile, always show buttons and hide price */
+  /* On mobile, show price (no hover hide) */
   .custom-product-card__price {
-    display: none !important;
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
   }
 
-  .custom-product-card__hover-buttons {
-    position: relative;
-    opacity: 1;
-    visibility: visible;
-    transform: none;
+  .custom-product-card:hover .custom-product-card__price {
+    opacity: 1 !important;
+    visibility: visible !important;
   }
 
-  .custom-product-card__hover-buttons .custom-product-card__atc-btn .global-btn__content {
-    padding: 12px 16px;
-    font-size: 14px;
-  }
-
-
-
+  /* Stack footer items vertically */
   .custom-product-card__footer {
+    flex-direction: column;
+    gap: 8px;
     width: 100%;
+  }
+
+  /* Hide hover buttons on mobile - price is enough */
+  .custom-product-card__hover-buttons {
+    display: none;
   }
 }

@@ -156,13 +156,13 @@ if (!customElements.get('quick-view-modal')) {
           const isSelected = groupBtn === btn;
           groupBtn.classList.toggle('is-selected', isSelected);
 
-          // Update the variant class (primary vs secondary)
+          // Update the variant class (primary vs secondary) and hover state
           if (isSelected) {
             groupBtn.classList.remove('global-btn-2--primary');
-            groupBtn.classList.add('global-btn-2--secondary');
+            groupBtn.classList.add('global-btn-2--secondary', 'global-btn-2--no-hover');
             groupBtn.setAttribute('data-btn-variant', 'secondary');
           } else {
-            groupBtn.classList.remove('global-btn-2--secondary');
+            groupBtn.classList.remove('global-btn-2--secondary', 'global-btn-2--no-hover');
             groupBtn.classList.add('global-btn-2--primary');
             groupBtn.setAttribute('data-btn-variant', 'primary');
           }
