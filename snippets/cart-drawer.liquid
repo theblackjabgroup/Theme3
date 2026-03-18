@@ -913,15 +913,7 @@
             class="drawer__close"
             aria-label="{{ 'accessibility.close' | t }}"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path d="M18 6L6 18M6 6l12 12"/>
-            </svg>
+            {{- 'icon-close.svg' | inline_asset_content -}}
           </button>
         </div>
         <div class="drawer__inner-empty">
@@ -944,15 +936,7 @@
               aria-label="{{ 'accessibility.close' | t }}"
               data-edit-panel-close
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path d="M18 6L6 18M6 6l12 12"/>
-              </svg>
+              {{- 'icon-close.svg' | inline_asset_content -}}
             </button>
           </div>
           <div class="cart-drawer__edit-panel-body">
@@ -994,17 +978,7 @@
               class="drawer__close"
               aria-label="{{ 'accessibility.close' | t }}"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M18 6L6 18M6 6l12 12"/>
-              </svg>
+              {{- 'icon-close.svg' | inline_asset_content -}}
             </button>
           </div>
 
@@ -1125,15 +1099,7 @@
                                   class="cart-drawer__item-remove"
                                   aria-label="{{ 'sections.cart.remove_title' | t: title: item.title | escape }}"
                                 >
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="3"
-                                  >
-                                    <path d="M18 6L6 18M6 6l12 12"/>
-                                  </svg>
+                                  {{- 'icon-close.svg' | inline_asset_content -}}
                                 </a>
                               </cart-remove-button>
                             </div>

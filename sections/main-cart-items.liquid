@@ -170,7 +170,7 @@
                       <ul class="discounts list-unstyled" role="list" aria-label="{{ 'customer.order.discount' | t }}">
                         {%- for discount in item.line_level_discount_allocations -%}
                           <li class="discounts__discount">
-                            {{- 'icon-discount.svg' | inline_asset_content -}}
+                            
                             {{ discount.discount_application.title | escape }}
                           </li>
                         {%- endfor -%}
@@ -232,7 +232,7 @@
                                 aria-expanded="false"
                                 class="quantity-popover__info-button quantity-popover__info-button--icon-only button button--tertiary small-hide medium-hide"
                               >
-                                {{- 'icon-info.svg' | inline_asset_content -}}
+                                {{- 'icon-about.svg' | inline_asset_content -}}
                               </button>
                             {%- endif -%}
                             <quantity-input class="quantity cart-quantity">
@@ -317,7 +317,7 @@
                               aria-label="{{ 'sections.cart.remove_title' | t: title: item.title | escape }}"
                             >
                               <span class="svg-wrapper">
-                                {{- 'icon-remove.svg' | inline_asset_content -}}
+                                {{- 'icon-trash.svg' | inline_asset_content -}}
                               </span>
                             </a>
                           </cart-remove-button>
@@ -328,7 +328,7 @@
                             class="quantity-popover__info-button quantity-popover__info-button--icon-with-label button button--tertiary large-up-hide"
                             aria-expanded="false"
                           >
-                            {{- 'icon-info.svg' | inline_asset_content -}}
+                            {{- 'icon-about.svg' | inline_asset_content -}}
                             <span>
                               {%- if has_vol_pricing -%}
                                 {{ 'products.product.volume_pricing.note' | t }}
@@ -410,7 +410,7 @@
                         <div class="cart-item__error" id="Line-item-error-{{ item.index | plus: 1 }}" role="alert">
                           <small class="cart-item__error-text"></small>
                           <span class="svg-wrapper">
-                            {{- 'icon-error.svg' | inline_asset_content -}}
+                            {{- 'icon-about.svg' | inline_asset_content -}}
                           </span>
                         </div>
                       </quantity-popover>

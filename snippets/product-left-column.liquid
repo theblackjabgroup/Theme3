@@ -249,18 +249,7 @@
                 <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
 
                 <div class="product-form__error-message-wrapper" role="alert" hidden>
-                  <svg
-                    aria-hidden="true"
-                    focusable="false"
-                    class="icon icon-error"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M12 2L1 21H23L12 2Z" fill="#FFA000" stroke="#FFA000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M12 9V13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M12 17H12.01" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
+                  {{- 'icon-about.svg' | inline_asset_content -}}
                   <span class="product-form__error-message"></span>
                 </div>
 
@@ -314,7 +303,7 @@
               <template>
                 <pickup-availability-preview class="pickup-availability-preview">
                   <span class="svg-wrapper">
-                    {{- 'icon-unavailable.svg' | inline_asset_content -}}
+                    
                   </span>
                   <div class="pickup-availability-info">
                     <p class="caption-large">{{ 'products.product.pickup_availability.unavailable' | t }}</p>

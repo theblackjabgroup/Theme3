@@ -60,9 +60,10 @@
             variant: 'secondary',
             class: 'custom-product-card__atc-btn'
           -%}
+          {%- capture eye_icon_svg -%}{{ 'icon-eye.svg' | inline_asset_content }}{%- endcapture -%}
           {%- render 'global-btn-2',
             variant: 'primary',
-            icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/><path d="M2 12C4 7 7.5 4 12 4C16.5 4 20 7 22 12C20 17 16.5 20 12 20C7.5 20 4 17 2 12Z" stroke="currentColor" stroke-width="2"/></svg>',
+            icon: eye_icon_svg,
             icon_only: true,
             fit_width: false,
             class: 'custom-product-card__eye-btn',
@@ -192,10 +193,11 @@
             assign qv_trigger_id = section_id | append: '-' | append: card_product.id
             assign eye_attrs = 'data-quick-view-trigger="' | append: qv_trigger_id | append: '" aria-label="Quick view ' | append: card_product.title | escape | append: '"'
           -%}
+          {%- capture eye_icon_svg2 -%}{{ 'icon-eye.svg' | inline_asset_content }}{%- endcapture -%}
           {%- render 'global-btn-2',
             type: 'button',
             variant: 'primary',
-            icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/><path d="M2 12C4 7 7.5 4 12 4C16.5 4 20 7 22 12C20 17 16.5 20 12 20C7.5 20 4 17 2 12Z" stroke="currentColor" stroke-width="2"/></svg>',
+            icon: eye_icon_svg2,
             icon_only: true,
             fit_width: false,
             hover: false,

@@ -92,7 +92,7 @@
             class="country-filter__reset-button field__button hidden"
             aria-label="{{ 'general.search.reset' | t }}"
           >
-            {{- 'icon-reset.svg' | inline_asset_content -}}
+            {{- 'icon-close.svg' | inline_asset_content -}}
           </button>
           <div class="country-filter__search-icon field__button motion-reduce">
             {{- 'icon-search.svg' | inline_asset_content -}}
@@ -119,7 +119,7 @@
         {%- endfor -%}
       ]
     </script>
-    <template class="country-checkmark-tpl">{{ 'icon-checkmark.svg' | inline_asset_content }}</template>
+    <template class="country-checkmark-tpl">{{ 'icon-tick.svg' | inline_asset_content }}</template>
     <div
       class="disclosure__list country-selector__list{% if show_currencies %} country-selector__list--with-multiple-currencies{% endif %}"
       id="{{ localPosition }}-country-results"
@@ -146,7 +146,7 @@
                     class="visibility-hidden"
                   {% endif %}
                 >
-                  {{- 'icon-checkmark.svg' | inline_asset_content -}}
+                  {{- 'icon-tick.svg' | inline_asset_content -}}
                 </span>
                 <span class="country">
                   {{ country | image_url: width: 32 | image_tag: loading: 'lazy', class: 'localization-flag' }}
