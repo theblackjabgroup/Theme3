@@ -261,10 +261,19 @@ if (!customElements.get('quick-view-modal')) {
       }
 
       formatMoney(cents) {
-        const amount = (cents / 100).toFixed(2);
-        return window.Shopify?.currency?.active
-          ? `${window.Shopify.currency.active} ${amount}`
-          : `$${amount}`;
+        const amount = cents / 100;
+        const currency = window.Shopify?.currency?.active || 'USD';
+        const locale = document.documentElement.lang || 'en';
+
+        try {
+          return new Intl.NumberFormat(locale, {
+            style: 'currency',
+            currency: currency,
+          }).format(amount);
+        } catch (e) {
+          // Fallback if Intl fails (e.g., invalid currency code)
+          return `${currency} ${amount.toFixed(2)}`;
+        }
       }
     }
   );
