@@ -163,14 +163,14 @@
       <div class="bb-slideshow__stage-nav" aria-label="Slideshow controls">
         {%- assign left_prev_attrs = 'data-nav="prev" aria-label="Previous slide"' -%}
         {%- assign left_next_attrs = 'data-nav="next" aria-label="Next slide"' -%}
-        {%- render 'global-btn',
+        {%- render 'global-btn-2',
           text: '←',
           type: 'button',
           class: 'bb-slideshow__stage-nav-button bb-slideshow__stage-nav-button--prev',
           attributes: left_prev_attrs,
           fit_width: false
         -%}
-        {%- render 'global-btn',
+        {%- render 'global-btn-2',
           text: '→',
           type: 'button',
           class: 'bb-slideshow__stage-nav-button bb-slideshow__stage-nav-button--next',

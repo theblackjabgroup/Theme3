@@ -44,27 +44,31 @@
             {{ placeholder_desc | strip_html | truncate: 80, '…' }}
           </p>
           <div class="custom-product-card__footer">
-            <div class="custom-product-card__price">
-              <span class="custom-product-card__price-current">{{ 0 | money }}</span>
+            {%- render 'global-btn-2',
+              text: '0',
+              variant: 'primary',
+              hover: false,
+              class: 'custom-product-card__price'
+            -%}
+            <div class="custom-product-card__hover-buttons">
+              {%- render 'global-btn',
+                text: 'Add to cart',
+                type: 'button',
+                variant: 'secondary',
+                class: 'custom-product-card__atc-btn'
+              -%}
+              {%- render 'global-btn-2',
+                variant: 'primary',
+                icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/><path d="M2 12C4 7 7.5 4 12 4C16.5 4 20 7 22 12C20 17 16.5 20 12 20C7.5 20 4 17 2 12Z" stroke="currentColor" stroke-width="2"/></svg>',
+                icon_only: true,
+                fit_width: false,
+                class: 'custom-product-card__eye-btn',
+                hover: false
+              -%}
             </div>
-            <button type="button" class="custom-product-card__add-to-cart" disabled aria-hidden="true">
-              {{ 'products.product.add_to_cart' | t }}
-            </button>
           </div>
         </div>
       </a>
-      <div class="custom-product-card__overlay-clip">
-        <div class="custom-product-card__hover-overlay">
-          <div class="custom-product-card__hover-content">
-            <p class="custom-product-card__hover-description">
-              {{ placeholder_desc | strip_html | truncate: 160, '…' | upcase }}
-            </p>
-            <span class="button button--primary" style="pointer-events: none; opacity: 0.8;">
-              {{ overlay_button_text | default: 'Check it out' }}
-            </span>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 {%- elsif card_product and card_product != empty -%}
@@ -87,10 +91,6 @@
       assign card_discount_pct = savings | times: 100 | divided_by: card_product.compare_at_price_max
     endif
   -%}
-  {%- assign overlay_btn_text = overlay_button_text | default: 'Check it out' -%}
-  {%- if use_quick_add_overlay -%}
-    {%- assign overlay_btn_text = overlay_button_text | default: 'Love that! (Buy it)' -%}
-  {%- endif -%}
   <div class="custom-product-card-wrapper{% if use_quick_add_overlay %} custom-product-card-wrapper--quick-add-overlay{% endif %}">
     <div class="custom-product-card">
       <a href="{{ card_product.url }}" class="custom-product-card__main-link">
@@ -154,73 +154,58 @@
           {%- endif -%}
 
           <div class="custom-product-card__footer">
-            <div class="custom-product-card__price{% if card_price_compare != blank %} custom-product-card__price--sale{% endif %}">
-              <span class="custom-product-card__price-current">{{ card_price_current | money }}</span>
-              {%- if card_price_compare != blank -%}
-                <span class="custom-product-card__price-compare">{{ card_price_compare | money }}</span>
+            {%- capture price_text -%}
+              {{- card_price_current | money -}}
+              {%- if card_price_compare != blank %} <s class="custom-product-card__price-compare">{{ card_price_compare | money }}</s>{% endif -%}
+            {%- endcapture -%}
+            {%- render 'global-btn-2',
+              text: price_text,
+              url: card_product.url,
+              variant: 'primary',
+              hover: false,
+              class: 'custom-product-card__price'
+            -%}
+            <div class="custom-product-card__hover-buttons">
+              {%- if use_quick_add_overlay -%}
+                {%- liquid
+                  assign quick_add_attrs = 'data-quick-add-trigger="' | append: product_form_id | append: '-submit"'
+                -%}
+                {%- render 'global-btn',
+                  text: 'Add to cart',
+                  type: 'button',
+                  variant: 'secondary',
+                  class: 'custom-product-card__atc-btn',
+                  attributes: quick_add_attrs
+                -%}
+              {%- else -%}
+                {%- render 'global-btn',
+                  text: 'Add to cart',
+                  url: card_product.url,
+                  variant: 'secondary',
+                  class: 'custom-product-card__atc-btn'
+                -%}
               {%- endif -%}
+              {%- liquid
+                assign eye_attrs = 'data-quick-view-trigger="' | append: card_product.id | append: '" aria-label="Quick view ' | append: card_product.title | escape | append: '"'
+              -%}
+              {%- render 'global-btn-2',
+                type: 'button',
+                variant: 'primary',
+                icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/><path d="M2 12C4 7 7.5 4 12 4C16.5 4 20 7 22 12C20 17 16.5 20 12 20C7.5 20 4 17 2 12Z" stroke="currentColor" stroke-width="2"/></svg>',
+                icon_only: true,
+                fit_width: false,
+                hover: false,
+                class: 'custom-product-card__eye-btn',
+                attributes: eye_attrs
+              -%}
             </div>
-            {%- if use_quick_add_overlay -%}
-              <button
-                class="custom-product-card__add-to-cart"
-                type="button"
-                data-quick-add-trigger="{{ product_form_id }}-submit"
-                aria-label="{{ mobile_add_button_text | default: 'Add to cart' }}"
-              >
-                {{ mobile_add_button_text | default: 'Add to cart' }}
-              </button>
-            {%- else -%}
-              <button
-                class="custom-product-card__add-to-cart"
-                type="button"
-                onclick="window.location.href='{{ card_product.url }}'"
-              >
-                Add to cart
-              </button>
-            {%- endif -%}
           </div>
         </div>
       </a>
-
-      <div class="custom-product-card__overlay-clip">
-        <div class="custom-product-card__hover-overlay">
-          <div class="custom-product-card__hover-content">
-            {%- if card_product.description != blank -%}
-              <p class="custom-product-card__hover-description">
-                {{ card_product.description | strip_html | truncate: 80, '…' | upcase }}
-              </p>
-            {%- elsif fallback_description != blank -%}
-              <p class="custom-product-card__hover-description">
-                {{
-                  fallback_description
-                  | default: 'Discover our amazing product.'
-                  | strip_html
-                  | truncate: 80, '…'
-                  | upcase
-                }}
-              </p>
-            {%- else -%}
-              <p class="custom-product-card__hover-description">
-                {{ 'Discover our amazing product.' | strip_html | truncate: 80, '…' | upcase }}
-              </p>
-            {%- endif -%}
-            {%- if use_quick_add_overlay -%}
-              {%- liquid
-                assign quick_add_attrs = 'data-quick-add-trigger="' | append: product_form_id | append: '-submit" aria-label="' | append: overlay_btn_text | escape | append: '"'
-              -%}
-              {%- render 'global-btn',
-                text: overlay_btn_text,
-                type: 'button',
-                variant: 'primary',
-                attributes: quick_add_attrs
-              -%}
-            {%- else -%}
-              {%- render 'global-btn', url: card_product.url, text: overlay_btn_text, variant: 'primary' -%}
-            {%- endif -%}
-          </div>
-        </div>
-      </div>
     </div>
+
+    {%- comment -%} Quick View Modal {%- endcomment -%}
+    {%- render 'quick-view-modal', product: card_product, section_id: section_id -%}
 
     {%- if quick_add != 'none' and quick_add != blank -%}
       {% if quick_add == 'standard' %}

@@ -853,7 +853,7 @@
                         <div class="cart-item-card__actions-separator" aria-hidden="true"></div>
                         <div class="cart-item-card__actions">
                           {% capture edit_btn_attrs %}data-open-cart-drawer-edit data-line-index="{{ item.index | plus: 1 }}" aria-label="Edit {{ item.product.title | escape }}"{% endcapture %}
-                          {% render 'global-btn',
+                          {% render 'global-btn-2',
                             text: 'Edit',
                             type: 'button',
                             variant: 'primary',
@@ -861,7 +861,7 @@
                             attributes: edit_btn_attrs
                           %}
                           {% capture remove_btn_attrs %}data-line-index="{{ item.index | plus: 1 }}" aria-label="Remove {{ item.product.title | escape }}"{% endcapture %}
-                          {% render 'global-btn',
+                          {% render 'global-btn-2',
                             text: 'Remove',
                             variant: 'primary',
                             type: 'button',

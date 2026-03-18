@@ -10,8 +10,20 @@
   - product: The product object.
 {%- endcomment -%}
 <div class="product-media-wrapper">
-  <button class="media-nav prev" aria-label="Previous image">←</button>
-  <button class="media-nav next" aria-label="Next image">→</button>
+  {%- render 'global-btn-2',
+    text: '←',
+    type: 'button',
+    fit_width: false,
+    class: 'media-nav prev',
+    attributes: 'aria-label="Previous image"'
+  -%}
+  {%- render 'global-btn-2',
+    text: '→',
+    type: 'button',
+    fit_width: false,
+    class: 'media-nav next',
+    attributes: 'aria-label="Next image"'
+  -%}
 
   <div class="product-media-track">
     {% assign hero_image_found = false %}

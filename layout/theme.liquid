@@ -331,6 +331,9 @@
 
     {{ 'base.css' | asset_url | stylesheet_tag: preload: true }}
     {{ 'component-global-btn.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'component-global-btn-2.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'component-quantity.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'component-quick-view.css' | asset_url | stylesheet_tag: preload: true }}
 
     {%- if localization.available_countries.size > 1 or localization.available_languages.size > 1 -%}
       <link
@@ -516,6 +519,7 @@
     <script src="{{ 'constants.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'quick-view.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'details-disclosure.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'details-modal.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'search-form.js' | asset_url }}" defer="defer"></script>

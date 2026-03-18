@@ -1,55 +1,124 @@
-/* Default quantity selector (featured-product, main-cart-items, card-product, etc.) */
-.quantity {
-  width: 110px;
-  height: 40px;
-  border-radius: var(--radius-l);
-  border: 1px solid var(--color-black);
-  background: var(--color-primary-button-bg);
-  box-shadow: 0 3px 0 var(--color-shadow, rgba(0, 0, 0, 1));
-  display: flex;
+/* =============================================================
+   Quantity Selector — Clean pill design
+   ============================================================= */
+
+.qty-selector {
+  display: inline-flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 10px;
+  gap: 0;
+  background-color: var(--btn-primary-bg, #F8F3F8);
+  border: 1px solid var(--btn-primary-border, #000000);
+  border-radius: 12px;
+  padding: 10px;
+  min-width: 44px;
+  gap: 30px;
 }
 
-.quantity input {
-  width: 40px;
+.qty-selector__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: transparent;
   border: none;
-  color: var(--color-text);
-  font-size: 12px;
+  cursor: pointer;
+  padding: 0px ;
+  color: var(--btn-primary-text, #1E4ABD);
+  transition: transform 0.15s ease;
+}
+.qty-selector__btn:hover{
+  transform: scale(1.1);
+}
+
+.qty-selector__btn svg {
+  width: 12px;
+  height: 12px;
+}
+
+
+
+.qty-selector__btn:active:not(:disabled) {
+  transform: scale(0.9);
+}
+
+.qty-selector__btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.qty-selector__input {
+  width: 10px;
+  background: transparent;
+  border: none;
+  color: var(--btn-primary-text, #1E4ABD);
+  font-family: var(--font-heading-family, var(--font-body-family, sans-serif));
+  font-size: 16px;
   font-weight: 600;
   text-align: center;
   -moz-appearance: textfield;
   appearance: textfield;
-  cursor: default;
   outline: none;
 }
 
-.quantity input:focus {
+.qty-selector__input:focus {
   outline: none;
 }
 
-.quantity input::-webkit-outer-spin-button,
-.quantity input::-webkit-inner-spin-button {
+.qty-selector__input::-webkit-outer-spin-button,
+.qty-selector__input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
+/* Mobile adjustments */
+@media screen and (max-width: 749px) {
+  .qty-selector {
+    padding: 10px 20px;
+    min-width: 120px;
+  }
+
+  .qty-selector__btn {
+    padding: 6px;
+  }
+
+  .qty-selector__btn svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .qty-selector__input {
+    font-size: 18px;
+    width: 35px;
+  }
+}
+
+
+/* =============================================================
+   Legacy quantity styles (for quantity-input.liquid)
+   ============================================================= */
+
+.quantity {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0;
+  background-color: var(--btn-primary-bg, #F8F3F8);
+  border: 1px solid var(--btn-primary-border, #000000);
+  border-radius: var(--radius-xl);
+  padding: 10px 20px;
+  min-width: 140px;
+}
+
 .quantity__button {
-  width: 30px;
-  height: 100%;
-  border: none;
-  background: transparent;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--btn-primary-text);
-  font-size: 12px;
-  padding: 0;
-  line-height: 1;
-  transition: transform 0.15s ease;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  color: var(--btn-primary-text, #1E4ABD);
+  transition:  transform 0.15s ease;
 }
 
 .quantity__button > * {
@@ -57,201 +126,91 @@
 }
 
 .quantity__button svg {
-  width: 12px;
-  height: 12px;
+  width: 16px;
+  height: 16px;
 }
 
-.quantity__button:hover:not(:disabled) {
-  opacity: 0.9;
-}
+
 
 .quantity__button:active:not(:disabled) {
-  transform: scale(0.96);
+  transform: scale(0.9);
 }
 
 .quantity__button:disabled,
 .quantity__button.disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* Drawer-style quantity: product page (cart drawer has its own styles in cart-drawer.liquid) */
-.quantity.quantity--drawer-style {
-  width: auto;
-  height: auto;
-  min-width: auto;
-  border: none;
-  background: transparent;
-  box-shadow: none;
-  border-radius: 0;
-  gap: 6px;
-  padding: 0;
-}
-
-.quantity.quantity--drawer-style .quantity__button {
-  width: 38px;
-  height: 38px;
-  min-width: 38px;
-  min-height: 38px;
-  background-color: var(--btn-primary-bg);
-  border: 1px solid var(--btn-primary-border, #000);
-  border-radius: var(--radius-m);
-  cursor: pointer;
-  color: var(--btn-primary-text, #000);
-  font-size: 24px;
-  font-weight: 400;
-  padding: 0;
-  box-shadow: 0 2px 0 #000;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.quantity.quantity--drawer-style .quantity__button:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 3px 0 #000;
-}
-
-.quantity.quantity--drawer-style .quantity__button:active:not(:disabled) {
-  transform: translateY(2px);
-  box-shadow: none;
-}
-
-.quantity.quantity--drawer-style .quantity__button svg {
-  width: 18px;
-  height: 18px;
-}
-
-.quantity.quantity--drawer-style .quantity__button:disabled,
-.quantity.quantity--drawer-style .quantity__button.disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.quantity.quantity--drawer-style .quantity__input,
-.quantity.quantity--drawer-style input {
-  width: 35px !important;
-  height: 35px !important;
-  min-width: 35px;
-  min-height: 35px;
-  background: var(--color-header-logo-background) !important;
-  color: var(--color-background) !important;
-  border: 1px solid #000 !important;
-  border-radius: var(--radius-m);
-  text-align: center;
-  font-weight: 700 !important;
-  font-size: 16px !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  -moz-appearance: textfield;
-  appearance: textfield;
-  cursor: text;
-  outline: none;
-  pointer-events: auto;
-  user-select: text;
-  -webkit-user-select: text;
-  -moz-user-select: text;
-}
-
-.quantity.quantity--drawer-style .quantity__input:focus,
-.quantity.quantity--drawer-style input:focus {
-  outline: none;
-}
-
-.quantity.quantity--drawer-style .quantity__input::-webkit-outer-spin-button,
-.quantity.quantity--drawer-style .quantity__input::-webkit-inner-spin-button,
-.quantity.quantity--drawer-style input::-webkit-outer-spin-button,
-.quantity.quantity--drawer-style input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Quantity selector (cart page design) */
-.cart-item__quantity-cell {
-  width: 120px;
-  padding: 20px 0;
-}
-
-.cart-item__quantity-selector {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  border-radius: var(--radius-2xl);
-  padding: 8px 12px;
-  background: transparent;
-  width: fit-content;
-  margin: 0 auto;
-}
-
-.cart-item__quantity-btn {
-  font-family: var(--font-body-family);
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #000;
-  font-size: 18px;
-  font-weight: var(--font-body-weight-bold);
-  width: 24px;
-  height: 24px;
-}
-
-.cart-item__quantity-btn:disabled {
   opacity: 0.3;
   cursor: not-allowed;
 }
 
-.cart-item__quantity-value {
-  font-family: var(--font-body-family);
-  min-width: 30px;
+.quantity__input,
+.quantity input {
+  width: 40px;
+  background: transparent;
+  border: none;
+  color: var(--btn-primary-text, #1E4ABD);
+  font-family: var(--font-heading-family, var(--font-body-family, sans-serif));
+  font-size: 20px;
+  font-weight: 600;
   text-align: center;
-  font-size: 16px;
-  font-weight: var(--font-body-weight-bold);
+  -moz-appearance: textfield;
+  appearance: textfield;
+  outline: none;
 }
 
-.cart-item__quantity-input {
-  display: none;
+.quantity__input:focus,
+.quantity input:focus {
+  outline: none;
+}
+
+.quantity__input::-webkit-outer-spin-button,
+.quantity__input::-webkit-inner-spin-button,
+.quantity input::-webkit-outer-spin-button,
+.quantity input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Drawer-style overrides (same clean design) */
+.quantity.quantity--drawer-style {
+  width: auto;
+  box-shadow: none;
+}
+
+/* Cart page quantity cell */
+.cart-item__quantity-cell {
+  width: 160px;
+  padding: 20px 0;
 }
 
 @media screen and (max-width: 989px) {
   .cart-item__quantity-cell {
-    width: 90px;
+    width: 140px;
     padding: 12px 5px;
   }
 
-  .cart-item__quantity-selector {
-    padding: 6px 8px;
-    gap: 8px;
+  .quantity {
+    padding: 10px 20px;
+    min-width: 120px;
   }
 
-  .cart-item__quantity-btn {
-    width: 20px;
-    height: 20px;
-    font-size: 16px;
+  .quantity__button {
+    padding: 6px;
   }
 
-  .cart-item__quantity-value {
-    font-size: 14px;
-    min-width: 25px;
+  .quantity__button svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .quantity__input,
+  .quantity input {
+    font-size: 18px;
+    width: 35px;
   }
 }
 
 @media screen and (max-width: 749px) {
-  .cart-item__quantity-selector {
-    padding: 5px 6px;
-    gap: 6px;
-  }
-
-  .cart-item__quantity-btn {
-    width: 18px;
-    height: 18px;
-    font-size: 14px;
-  }
-
-  .cart-item__quantity-value {
-    font-size: 12px;
-    min-width: 20px;
+  .cart-item__quantity-cell {
+    width: 120px;
   }
 }

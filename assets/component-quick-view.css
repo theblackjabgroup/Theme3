@@ -1,0 +1,404 @@
+/* =============================================================
+   Quick View Modal — component-quick-view.css
+   Modal that slides from top to center
+   ============================================================= */
+
+.quick-view-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: visibility 0s linear 0.5s;
+}
+
+.quick-view-modal[open] {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: visibility 0s linear 0s;
+}
+
+/* Overlay */
+.quick-view-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.quick-view-modal[open] .quick-view-modal__overlay {
+  opacity: 1;
+}
+
+/* Content container */
+.quick-view-modal__content {
+  position: relative;
+  max-height: 90vh;
+  width: 80vw;
+  background: var(--color-card-bg, #ffffff);
+  border-radius: var(--radius-2xl);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  transform: translateY(-100px);
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+}
+
+.quick-view-modal[open] .quick-view-modal__content {
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
+}
+
+/* Close button */
+.quick-view-modal__close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.quick-view-modal__close:hover {
+  opacity: 0.6;
+}
+
+.quick-view-modal__close svg {
+  width: 24px;
+  height: 24px;
+  color: var(--color-heading, #000000);
+}
+
+/* Inner layout */
+.quick-view-modal__inner {
+  display: grid;
+  grid-template-columns: 0.7fr 1fr;
+  max-height: 90vh;
+}
+
+/* Media/Image section */
+.quick-view-modal__media {
+  position: relative;
+  background: var(--color-bg);
+  overflow: hidden;
+  margin: 16px;
+ border-radius: var(--radius-xl);
+}
+
+.quick-view-modal__slider {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+}
+
+.quick-view-modal__slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.quick-view-modal__slide.is-active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.quick-view-modal__slide img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: var(--radius-xl);
+}
+
+/* Navigation arrows */
+.quick-view-modal__nav {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 5;
+}
+
+.quick-view-modal__nav-btn.global-btn-2 {
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  max-width: 40px !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Info section */
+.quick-view-modal__info {
+  padding: 40px 140px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+}
+
+/* Badge */
+.quick-view-modal__badge {
+  display: inline-block;
+  padding: 6px 16px;
+  background: transparent;
+  border: 1.5px solid var(--btn-primary-text, #1E4ABD);
+  border-radius: 100px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--btn-primary-text, #1E4ABD);
+}
+
+/* Title */
+.quick-view-modal__title {
+  font-family: var(--font-heading-family);
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--btn-primary-text, #1E4ABD);
+  margin: 0;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+/* Price */
+.quick-view-modal__price {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.quick-view-modal__price-current {
+  font-family: var(--font-heading-family);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-heading, #F5A30A);
+}
+
+.quick-view-modal__price-compare {
+  font-size: 16px;
+  color: var(--color-text);
+  opacity: 0.6;
+  text-decoration: line-through;
+}
+
+/* Stock */
+.quick-view-modal__stock {
+  font-family: var(--font-body-family);
+  font-size: 12px;
+  color: var(--color-text);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Variants */
+.quick-view-modal__variants {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+  width: 100%;
+}
+
+.quick-view-modal__option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.quick-view-modal__option-values {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 12px;
+  width: 100%;
+}
+
+.quick-view-modal__option-label {
+  display: block;
+  font-family: var(--font-body-family);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  text-align: center;
+}
+
+.quick-view-modal__variant-btn {
+  flex: 1;
+  min-width: 0 !important;
+  padding: 14px 16px !important;
+  text-align: center;
+  justify-content: center;
+}
+
+.quick-view-modal__variant-btn.is-selected {
+  pointer-events: none;
+}
+
+/* Form */
+.quick-view-modal__form {
+  margin-top: auto;
+  padding-top: 12px;
+  width: 100%;
+}
+
+.quick-view-modal__add-row {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+}
+
+.quick-view-modal__add-row .qty-selector {
+  flex-shrink: 0;
+  min-width: 120px;
+  padding: 10px 16px;
+}
+
+.quick-view-modal__add-btn {
+  flex: 1;
+}
+
+.quick-view-modal__add-btn .global-btn__content {
+  padding: 16px 24px;
+  font-size: 14px;
+  height: 100%;
+}
+
+/* Pickup availability */
+.quick-view-modal__pickup {
+  margin-top: 20px;
+  padding-top: 0;
+  border-top: none;
+  text-align: center;
+  width: 100%;
+}
+
+.quick-view-modal__pickup-availability {
+  display: block;
+  font-family: var(--font-body-family);
+  font-size: 13px;
+  color: var(--color-text);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  text-align: center;
+}
+
+.quick-view-modal__pickup-availability .pickup-availability-preview {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.quick-view-modal__pickup-availability .pickup-availability-preview__title {
+  font-weight: 400;
+  font-size: 13px;
+}
+
+.quick-view-modal__pickup-availability .pickup-availability-preview__title strong,
+.quick-view-modal__pickup-availability .pickup-availability-preview__title b {
+  font-weight: 700;
+}
+
+.quick-view-modal__pickup-availability .pickup-availability-preview__text {
+  opacity: 0.7;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+/* Mobile responsive */
+@media screen and (max-width: 989px) {
+  .quick-view-modal__inner {
+    grid-template-columns: 1fr;
+    max-height: none;
+  }
+
+  .quick-view-modal__content {
+    max-height: 95vh;
+    overflow-y: auto;
+  }
+
+  .quick-view-modal__media {
+    min-height: 300px;
+    max-height: 350px;
+  }
+
+  .quick-view-modal__slider {
+    min-height: 300px;
+  }
+
+  .quick-view-modal__info {
+    padding: 24px;
+  }
+
+  .quick-view-modal__title {
+    font-size: 24px;
+  }
+
+  .quick-view-modal__price-current {
+    font-size: 22px;
+  }
+
+  .quick-view-modal__add-row {
+    flex-direction: column;
+  }
+
+  .quick-view-modal__add-row .qty-selector {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .quick-view-modal__add-btn {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .quick-view-modal__close {
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+  }
+
+  .quick-view-modal__info {
+    padding: 20px 16px;
+    gap: 12px;
+  }
+
+
+}

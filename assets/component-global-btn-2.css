@@ -1,0 +1,289 @@
+/* =============================================================
+   Global Button 2 — component-global-btn-2.css
+   Simple outline/border button with five variants:
+     primary   — primary border/text color
+     secondary — secondary border/text color
+     tertiary  — tertiary border/text color
+     white     — white border/text color
+     disabled  — muted border/text, unclickable
+
+   Modifiers:
+     --no-hover — disables hover effects
+   ============================================================= */
+
+/* ── Base ── */
+.global-btn-2 {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: transparent;
+  padding: 14px 40px;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: var(--border-radius-l, var(--radius-xl));
+  cursor: pointer;
+  text-decoration: none;
+  width: 100%;
+  font-family: var(--font-heading-family, var(--font-body-family, sans-serif));
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: color 0.25s ease, border-color 0.25s ease;
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* ── Hover fill overlay (left to right) ── */
+.global-btn-2::before {
+  content: '';
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  right: 1px;
+  bottom: 1px;
+  background-color: var(--btn2-hover-fill, transparent);
+  transform: translateX(-101%);
+  transition: transform 0.6s ease;
+  z-index: 0;
+  border-radius: inherit;
+}
+
+.global-btn-2:hover::before {
+  transform: translateX(0);
+}
+
+.global-btn-2 * {
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Fit content: width from content instead of full container ── */
+.global-btn-2.global-btn-2--fit-content {
+  width: auto;
+  display: inline-flex;
+  max-width: none;
+}
+
+/* ── Icon ── */
+.global-btn-2__icon {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
+}
+
+.global-btn-2__icon svg {
+  width: 100%;
+  height: 100%;
+  stroke: currentColor;
+  fill: none;
+}
+
+.global-btn-2--icon-only {
+  padding: 14px;
+}
+
+/* ── Badge ── */
+.global-btn-2__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 6px;
+  border-radius: var(--radius-l);
+  font-size: 0.8em;
+  font-weight: 800;
+  line-height: 1;
+  min-width: var(--icon-size-md);
+}
+
+
+/* =============================================================
+   VARIANT: primary  (light bg / blue text / black border)
+   Hover: bg and text swap (blue bg, cream text)
+   ============================================================= */
+.global-btn-2--primary {
+  --btn2-hover-fill: var(--btn-primary-text, #1E4ABD);
+  background-color: var(--btn-primary-bg, #F8F3F8);
+  color: var(--btn-primary-text, #1E4ABD);
+  border-color: var(--btn-primary-border, #000000);
+}
+
+.global-btn-2--primary:hover {
+  color: var(--btn-primary-bg, #F8F3F8);
+  border-color: var(--btn-primary-border, #000000);
+}
+
+.global-btn-2--primary .global-btn-2__badge {
+  background: var(--btn-primary-text, #1E4ABD);
+  color: var(--btn-primary-bg, #F8F3F8);
+}
+
+.global-btn-2--primary:hover .global-btn-2__badge {
+  background: var(--btn-primary-bg, #F8F3F8);
+  color: var(--btn-primary-text, #1E4ABD);
+}
+
+
+/* =============================================================
+   VARIANT: secondary  (blue bg, light text)
+   ============================================================= */
+.global-btn-2--secondary {
+  --btn2-hover-fill: var(--btn-secondary-text, #F8F3F8);
+  background-color: var(--btn-secondary-bg, #1E4ABD);
+  color: var(--btn-secondary-text, #F8F3F8);
+  border-color: var(--btn-secondary-bg, #1E4ABD);
+}
+
+.global-btn-2--secondary:hover {
+  color: var(--btn-secondary-bg, #1E4ABD);
+  border-color: var(--btn-secondary-bg, #1E4ABD);
+}
+
+.global-btn-2--secondary .global-btn-2__badge {
+  background: var(--btn-secondary-text, #F8F3F8);
+  color: var(--btn-secondary-bg, #1E4ABD);
+}
+
+.global-btn-2--secondary:hover .global-btn-2__badge {
+  background: var(--btn-secondary-bg, #1E4ABD);
+  color: var(--btn-secondary-text, #F8F3F8);
+}
+
+
+/* =============================================================
+   VARIANT: tertiary  (gold border/text, fills gold on hover)
+   Hover: fills with tertiary bg from left with settle effect
+   ============================================================= */
+.global-btn-2--tertiary {
+  --btn2-hover-fill: var(--btn-tertiary-bg, #F5A30A);
+  background-color: transparent;
+  color: var(--btn-tertiary-bg, #F5A30A);
+  border-color: var(--btn-tertiary-bg, #F5A30A);
+}
+
+.global-btn-2--tertiary:hover {
+  color: var(--btn-tertiary-text, #000000);
+  border-color: var(--btn-tertiary-bg, #F5A30A);
+}
+
+.global-btn-2--tertiary .global-btn-2__badge {
+  background: var(--btn-tertiary-bg, #F5A30A);
+  color: var(--btn-tertiary-text, #000000);
+}
+
+.global-btn-2--tertiary:hover .global-btn-2__badge {
+  background: var(--btn-tertiary-text, #000000);
+  color: var(--btn-tertiary-bg, #F5A30A);
+}
+
+/* Tertiary during loading (add to cart): show filled state */
+.global-btn-2--tertiary.loading,
+.global-btn-2--tertiary.loading[disabled] {
+  color: var(--btn-tertiary-text, #000000);
+  border-color: var(--btn-tertiary-bg, #F5A30A);
+  cursor: wait;
+  opacity: 1;
+}
+
+.global-btn-2--tertiary.loading::before,
+.global-btn-2--tertiary.loading[disabled]::before {
+  transform: scaleX(1);
+}
+
+
+/* =============================================================
+   VARIANT: disabled
+   ============================================================= */
+.global-btn-2--disabled,
+.global-btn-2[disabled] {
+  cursor: not-allowed;
+  pointer-events: none;
+  background-color: transparent;
+  color: var(--btn-disabled-text, #697FB8);
+  border-color: var(--btn-disabled-text, #697FB8);
+  opacity: 0.5;
+}
+
+.global-btn-2--disabled .global-btn-2__badge,
+.global-btn-2[disabled] .global-btn-2__badge {
+  background: var(--btn-disabled-text, #697FB8);
+  color: var(--btn-disabled-bg, #E6E3E6);
+}
+
+
+/* =============================================================
+   VARIANT: white
+   Hover: fills white from left with settle effect
+   ============================================================= */
+.global-btn-2--white {
+  --btn2-hover-fill: #FFFFFF;
+  background-color: transparent;
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+}
+
+.global-btn-2--white:hover {
+  color: #000000;
+  border-color: #FFFFFF;
+}
+
+.global-btn-2--white .global-btn-2__badge {
+  background: #FFFFFF;
+  color: #000000;
+}
+
+.global-btn-2--white:hover .global-btn-2__badge {
+  background: #000000;
+  color: #FFFFFF;
+}
+
+
+/* =============================================================
+   MODIFIER: no-hover — disables all hover effects
+   ============================================================= */
+.global-btn-2--no-hover::before {
+  display: none;
+}
+
+
+
+.global-btn-2--no-hover.global-btn-2--primary:hover {
+  color: var(--btn-primary-text, #1E4ABD);
+  border-color: var(--btn-primary-border, #000000);
+}
+
+/* Secondary no-hover: keeps filled blue bg with light text */
+.global-btn-2--no-hover.global-btn-2--secondary {
+  background-color: var(--btn-secondary-bg, #1E4ABD);
+  border-color: var(--btn-secondary-bg, #1E4ABD);
+  color: var(--btn-secondary-text, #F8F3F8);
+}
+
+.global-btn-2--no-hover.global-btn-2--secondary:hover {
+  background-color: var(--btn-secondary-bg, #1E4ABD);
+  color: var(--btn-secondary-text, #F8F3F8);
+  border-color: var(--btn-secondary-bg, #1E4ABD);
+}
+
+.global-btn-2--no-hover.global-btn-2--tertiary:hover {
+  color: var(--btn-tertiary-bg, #F5A30A);
+  border-color: var(--btn-tertiary-bg, #F5A30A);
+}
+
+.global-btn-2--no-hover.global-btn-2--white:hover {
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+}
+
+.global-btn-2--no-hover:hover .global-btn-2__badge {
+  background: inherit;
+  color: inherit;
+}

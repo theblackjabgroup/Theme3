@@ -1,5 +1,5 @@
 {% comment %}
-  Quantity selector (cart page design)
+  Quantity selector (clean pill design)
 
   Accepts:
   - item: {Object} Cart item with quantity, variant_id, index (optional when edit_panel is true)
@@ -34,7 +34,7 @@
   endif
 -%}
 <div
-  class="quantity quantity--drawer-style cart-item__quantity-selector"
+  class="qty-selector"
   data-item-index="{{ line_index }}"
   data-variant-id="{{ variant_id }}"
   {% if edit_panel %}
@@ -43,14 +43,14 @@
 >
   <button
     type="button"
-    class="quantity__button cart-item__quantity-btn cart-item__quantity-minus"
+    class="qty-selector__btn qty-selector__btn--minus"
     name="minus"
     aria-label="{{ 'products.product.quantity.decrease' | t | default: 'Decrease quantity' }}"
-    {% if qty_value <= 1 %}
-      disabled
-    {% endif %}
+    {% if qty_value <= 1 %}disabled{% endif %}
   >
-    &minus;
+    <svg width="16" height="2" viewBox="0 0 16 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M1 1H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
   </button>
   <input
     type="number"
@@ -68,7 +68,7 @@
     value="{{ qty_value }}"
     min="1"
     data-min="1"
-    class="quantity__input"
+    class="qty-selector__input"
     aria-label="{{ 'products.product.quantity.input_label' | t: product: product_title | default: 'Quantity' }}"
     {% if max_quantity != null %}
       max="{{ max_quantity }}"
@@ -77,13 +77,13 @@
   >
   <button
     type="button"
-    class="quantity__button cart-item__quantity-btn cart-item__quantity-plus"
+    class="qty-selector__btn qty-selector__btn--plus"
     name="plus"
     aria-label="{{ 'products.product.quantity.increase' | t | default: 'Increase quantity' }}"
-    {% if max_quantity != null and qty_value >= max_quantity %}
-      disabled
-    {% endif %}
+    {% if max_quantity != null and qty_value >= max_quantity %}disabled{% endif %}
   >
-    &plus;
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M8 1V15M1 8H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
   </button>
 </div>

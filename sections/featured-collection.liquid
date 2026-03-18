@@ -185,14 +185,14 @@
     </div>
 
     <div class="fc3d__controls" style="gap: {{ section.settings.nav_button_spacing | default: 16 }}px;">
-      {% render 'global-btn',
+      {% render 'global-btn-2',
         text: '←',
         type: 'button',
         fit_width: false,
         class: 'fc3d__nav fc3d__nav--prev',
         attributes: 'data-fc3d-prev aria-label="Previous"'
       %}
-      {% render 'global-btn',
+      {% render 'global-btn-2',
         text: '→',
         type: 'button',
         fit_width: false,

@@ -1,0 +1,109 @@
+{%- comment -%}
+  Renders a simple outline/border button.
+  Supports five variants: primary, secondary, tertiary, white, disabled.
+
+  Accepts:
+  - text          {String}  Button label (required, default: 'Button')
+  - url           {String}  If provided, renders as <a>, otherwise <button>
+  - type          {String}  Button type: 'button' | 'submit' (default: 'button')
+  - variant       {String}  'primary' | 'secondary' | 'tertiary' | 'white' | 'disabled' (default: 'primary')
+  - class         {String}  Extra CSS classes
+  - icon          {String}  SVG markup to prepend inside the button
+  - badge         {String}  Badge text/number
+  - icon_only     {Boolean} Show icon only, hide text label
+  - fit_width     {Boolean} When true, button takes full width of container; when false, width fits content (default: true)
+  - attributes    {String}  Extra HTML attributes (e.g. aria-label, data-*)
+  - is_add_to_cart {Boolean} Adds sold-out message + loading spinner internals
+  - border_radius {String}  Custom border radius (e.g. '8px', '0', '50%')
+  - hover         {Boolean} Enable/disable hover effect (default: true)
+{%- endcomment -%}
+
+{%- assign btn_text = text | default: 'Button' -%}
+{%- assign btn_variant = variant | default: 'primary' -%}
+{%- assign btn_type = type | default: 'button' -%}
+{%- assign btn_icon_only = icon_only | default: false -%}
+{%- if fit_width == null -%}
+  {%- assign fit_width = true -%}
+{%- endif -%}
+{%- if hover == null -%}
+  {%- assign btn_hover = true -%}
+{%- else -%}
+  {%- assign btn_hover = hover -%}
+{%- endif -%}
+
+{%- if class != blank -%}
+  {%- assign btn_class = 'global-btn-2 global-btn-2--' | append: btn_variant | append: ' ' | append: class -%}
+{%- else -%}
+  {%- assign btn_class = 'global-btn-2 global-btn-2--' | append: btn_variant -%}
+{%- endif -%}
+
+{%- if btn_icon_only -%}
+  {%- assign btn_class = btn_class | append: ' global-btn-2--icon-only' -%}
+{%- endif -%}
+
+{%- unless fit_width -%}
+  {%- assign btn_class = btn_class | append: ' global-btn-2--fit-content' -%}
+{%- endunless -%}
+
+{%- unless btn_hover -%}
+  {%- assign btn_class = btn_class | append: ' global-btn-2--no-hover' -%}
+{%- endunless -%}
+
+{%- if btn_variant == 'disabled' -%}
+  {%- assign is_disabled = true -%}
+{%- else -%}
+  {%- assign is_disabled = false -%}
+{%- endif -%}
+
+{%- capture btn_style -%}
+  {%- if border_radius != blank %}border-radius: {{ border_radius }};{% endif -%}
+{%- endcapture -%}
+
+{%- if url != blank -%}
+  <a
+    class="{{ btn_class }}"
+    href="{{ url }}"
+    data-btn-variant="{{ btn_variant }}"
+    {% if btn_style != blank %}style="{{ btn_style }}"{% endif %}
+    {{ attributes }}
+  >
+    {%- if icon != blank -%}
+      <span class="global-btn-2__icon">{{ icon }}</span>
+    {%- endif -%}
+    {%- if btn_text != blank and btn_icon_only != true -%}
+      <span class="global-btn-2__text">{{ btn_text }}</span>
+    {%- endif -%}
+    {%- if badge != blank and badge != '0' -%}
+      <span class="global-btn-2__badge">{{ badge }}</span>
+    {%- endif -%}
+  </a>
+{%- else -%}
+  <button
+    type="{{ btn_type }}"
+    class="{{ btn_class }}"
+    data-btn-variant="{{ btn_variant }}"
+    {% if btn_style != blank %}style="{{ btn_style }}"{% endif %}
+    {% if is_disabled %}
+      disabled aria-disabled="true"
+    {% endif %}
+    {{ attributes }}
+  >
+    {%- if icon != blank -%}
+      <span class="global-btn-2__icon">{{ icon }}</span>
+    {%- endif -%}
+    {%- if btn_text != blank and btn_icon_only != true -%}
+      <span class="global-btn-2__text">{{ btn_text }}</span>
+    {%- endif -%}
+    {%- if is_add_to_cart -%}
+      <span class="sold-out-message hidden">
+        {{ 'products.product.sold_out' | t | default: 'Sold Out' }}
+      </span>
+    {%- endif -%}
+    {%- if badge != blank and badge != '0' -%}
+      <span class="global-btn-2__badge">{{ badge }}</span>
+    {%- endif -%}
+    {%- if is_add_to_cart -%}
+      {%- render 'loading-spinner' -%}
+    {%- endif -%}
+  </button>
+{%- endif -%}

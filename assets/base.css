@@ -350,7 +350,6 @@ button {
     font-size: var(--button-text-size, var(--body-text-regular));
     font-weight: var(--button-text-weight, var(--font-weight-semibold));
     color: var(--button-text-color, var(--color-text));
-    height: var(--height-button);
     cursor: pointer;
 }
   
