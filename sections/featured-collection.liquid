@@ -133,7 +133,8 @@
                   card_product: product,
                   section_id: section.id,
                   quick_add: 'none',
-                  lazy_load: true
+                  lazy_load: true,
+                  skip_quick_view_modal: true
                 -%}
               </div>
             </div>
@@ -175,7 +176,8 @@
                   quick_add: 'none',
                   lazy_load: true,
                   show_badge: false,
-                  fallback_description: placeholder_description_text
+                  fallback_description: placeholder_description_text,
+                  skip_quick_view_modal: true
                 -%}
               </div>
             </div>
@@ -185,14 +187,14 @@
     </div>
 
     <div class="fc3d__controls" style="gap: {{ section.settings.nav_button_spacing | default: 16 }}px;">
-      {% render 'global-btn',
+      {% render 'global-btn-2',
         text: '←',
         type: 'button',
         fit_width: false,
         class: 'fc3d__nav fc3d__nav--prev',
         attributes: 'data-fc3d-prev aria-label="Previous"'
       %}
-      {% render 'global-btn',
+      {% render 'global-btn-2',
         text: '→',
         type: 'button',
         fit_width: false,

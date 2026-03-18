@@ -1,0 +1,268 @@
+{%- comment -%}
+  Quick View Modal
+  Opens from top to center when clicking the eye icon on product cards.
+
+  Accepts:
+  - product: {Object} Product object
+  - section_id: {String} Section ID
+{%- endcomment -%}
+
+{{ 'component-pickup-availability.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'pickup-availability.js' | asset_url }}" defer="defer"></script>
+
+{%- assign qv_product_form_id = 'quick-view-form-' | append: section_id | append: '-' | append: product.id -%}
+{%- assign qv_modal_id = section_id | append: '-' | append: product.id -%}
+
+<quick-view-modal id="QuickView-{{ qv_modal_id }}" class="quick-view-modal" data-product-id="{{ product.id }}" data-section-id="{{ section_id }}">
+  <div class="quick-view-modal__overlay" data-quick-view-close></div>
+  <div
+    role="dialog"
+    aria-label="Quick view: {{ product.title | escape }}"
+    aria-modal="true"
+    class="quick-view-modal__content"
+    tabindex="-1"
+  >
+    <button
+      type="button"
+      class="quick-view-modal__close"
+      data-quick-view-close
+      aria-label="{{ 'accessibility.close' | t | default: 'Close' }}"
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <div class="quick-view-modal__inner">
+      <div class="quick-view-modal__media">
+        <div class="quick-view-modal__slider" data-quick-view-slider>
+          {%- assign image_index = 0 -%}
+          {%- for media in product.media -%}
+            {%- if media.media_type == 'image' -%}
+              <div
+                class="quick-view-modal__slide{% if image_index == 0 %} is-active{% endif %}"
+                data-slide-index="{{ image_index }}"
+                data-media-id="{{ media.id }}"
+              >
+                <img
+                  src="{{ media | image_url: width: 800 }}"
+                  alt="{{ media.alt | escape }}"
+                  width="800"
+                  height="{{ 800 | divided_by: media.aspect_ratio | round }}"
+                  loading="lazy"
+                >
+              </div>
+              {%- assign image_index = image_index | plus: 1 -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+        {%- assign image_count = product.media | where: 'media_type', 'image' | size -%}
+        {%- if image_count > 1 -%}
+          <div class="quick-view-modal__nav">
+            {%- render 'global-btn-2',
+              text: '←',
+              type: 'button',
+              variant: 'primary',
+              fit_width: false,
+              hover: true,
+              border_radius: '50%',
+              class: 'quick-view-modal__nav-btn quick-view-modal__nav-btn--prev',
+              attributes: 'data-quick-view-prev aria-label="Previous image"'
+            -%}
+            {%- render 'global-btn-2',
+              text: '→',
+              type: 'button',
+              variant: 'primary',
+              fit_width: false,
+              hover: true,
+              border_radius: '100%',
+              class: 'quick-view-modal__nav-btn quick-view-modal__nav-btn--next',
+              attributes: 'data-quick-view-next aria-label="Next image"'
+            -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="quick-view-modal__info">
+        {%- liquid
+          assign qv_badge_text = product.metafields.custom.badge_text
+          if qv_badge_text == blank
+            assign qv_badge_text = product.type
+          endif
+          if qv_badge_text == blank
+            assign qv_badge_text = product.vendor
+          endif
+        -%}
+        {%- if qv_badge_text != blank -%}
+          <span class="quick-view-modal__badge">{{ qv_badge_text }}</span>
+        {%- endif -%}
+
+        <h2 class="quick-view-modal__title">{{ product.title }}</h2>
+
+        <div class="quick-view-modal__price">
+          <span class="quick-view-modal__price-current">{{ product.price | money }}</span>
+          <span
+            class="quick-view-modal__price-compare"
+            {% unless product.compare_at_price > product.price %}style="display: none;"{% endunless %}
+          >
+            {{- product.compare_at_price | money -}}
+          </span>
+        </div>
+
+        <p class="quick-view-modal__stock">
+          {%- if product.available -%}
+            In Stock
+          {%- else -%}
+            Out of Stock
+          {%- endif -%}
+        </p>
+
+        {%- if product.has_only_default_variant == false -%}
+          <div class="quick-view-modal__variants">
+            {%- for option in product.options_with_values -%}
+              {%- assign option_index = forloop.index0 -%}
+              {%- assign selected_option_value = product.selected_or_first_available_variant.options[option_index] -%}
+              <div class="quick-view-modal__option" data-option-index="{{ option_index }}">
+                <div class="quick-view-modal__option-values">
+                  {%- for value in option.values -%}
+                    {%- assign is_selected = false -%}
+                    {%- if value == selected_option_value -%}
+                      {%- assign is_selected = true -%}
+                    {%- endif -%}
+                    {%- capture variant_btn_attrs -%}data-option-value="{{ value | escape }}" data-option-index="{{ option_index }}"{%- endcapture -%}
+                    {%- if is_selected -%}
+                      {%- render 'global-btn-2',
+                        text: value,
+                        type: 'button',
+                        variant: 'secondary',
+                        fit_width: false,
+                        hover: false,
+                        class: 'quick-view-modal__variant-btn is-selected',
+                        attributes: variant_btn_attrs
+                      -%}
+                    {%- else -%}
+                      {%- render 'global-btn-2',
+                        text: value,
+                        type: 'button',
+                        variant: 'primary',
+                        fit_width: false,
+                        hover: true,
+                        class: 'quick-view-modal__variant-btn',
+                        attributes: variant_btn_attrs
+                      -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- endfor -%}
+            <span class="quick-view-modal__option-label" data-variant-label>
+              {{- product.selected_or_first_available_variant.title -}}
+            </span>
+          </div>
+        {%- endif -%}
+
+        <product-form class="quick-view-modal__form" data-section-id="{{ section_id }}">
+          {%- form 'product',
+            product,
+            id: qv_product_form_id,
+            class: 'form',
+            novalidate: 'novalidate',
+            data-type: 'add-to-cart-form'
+          -%}
+            <input
+              type="hidden"
+              name="id"
+              value="{{ product.selected_or_first_available_variant.id }}"
+              class="product-variant-id"
+              data-quick-view-variant-id
+              {% if product.selected_or_first_available_variant.available == false %}
+                disabled
+              {% endif %}
+            >
+
+            <div class="quick-view-modal__add-row">
+              <div class="qty-selector cart-item__quantity-selector" data-quick-view-qty>
+                <button
+                  type="button"
+                  class="qty-selector__btn qty-selector__btn--minus quantity__button"
+                  name="minus"
+                  aria-label="Decrease quantity"
+                  data-quick-view-qty-minus
+                  disabled
+                >
+                  <svg width="16" height="2" viewBox="0 0 16 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 1H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </button>
+                <input
+                  type="number"
+                  name="quantity"
+                  value="1"
+                  min="1"
+                  class="qty-selector__input quantity__input"
+                  aria-label="Quantity"
+                  data-quick-view-qty-input
+                >
+                <button
+                  type="button"
+                  class="qty-selector__btn qty-selector__btn--plus quantity__button"
+                  name="plus"
+                  aria-label="Increase quantity"
+                  data-quick-view-qty-plus
+                >
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 1V15M1 8H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </button>
+              </div>
+
+              {%- liquid
+                assign initial_variant_available = product.selected_or_first_available_variant.available
+                if initial_variant_available
+                  assign atc_text = 'Add to cart'
+                  assign atc_variant = 'tertiary'
+                else
+                  assign atc_text = 'Sold Out'
+                  assign atc_variant = 'disabled'
+                endif
+              -%}
+              {%- render 'global-btn',
+                text: atc_text,
+                type: 'submit',
+                variant: atc_variant,
+                class: 'quick-view-modal__add-btn',
+                is_add_to_cart: true
+              -%}
+            </div>
+          {%- endform -%}
+        </product-form>
+
+        {%- assign pick_up_availabilities = product.selected_or_first_available_variant.store_availabilities | where: 'pick_up_enabled', true -%}
+        <div class="quick-view-modal__pickup">
+          <pickup-availability
+            class="quick-view-modal__pickup-availability"
+            {% if product.selected_or_first_available_variant.available and pick_up_availabilities.size > 0 %}
+              available
+            {% endif %}
+            data-root-url="{{ routes.root_url }}"
+            data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+            data-has-only-default-variant="{{ product.has_only_default_variant }}"
+            data-product-page-color-scheme="color-background-1"
+          >
+            <template>
+              <pickup-availability-preview class="pickup-availability-preview">
+                <div class="pickup-availability-info">
+                  <p class="caption-large">{{ 'products.product.pickup_availability.unavailable' | t | default: 'Pickup not available' }}</p>
+                </div>
+              </pickup-availability-preview>
+            </template>
+          </pickup-availability>
+        </div>
+      </div>
+    </div>
+  </div>
+</quick-view-modal>
+
+<script type="application/json" data-quick-view-variants="{{ qv_modal_id }}">
+  {{ product.variants | json }}
+</script>
