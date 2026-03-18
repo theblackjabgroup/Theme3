@@ -24,9 +24,9 @@ if (!customElements.get('quick-view-modal')) {
       }
 
       getVariants() {
-        // Clean the product ID of any quotes
-        const cleanId = this.productId ? this.productId.replace(/['"]/g, '') : '';
-        const variantScript = document.querySelector(`[data-quick-view-variants="${cleanId}"]`);
+        // Get the modal ID from the element's ID attribute
+        const modalId = this.id.replace('QuickView-', '');
+        const variantScript = document.querySelector(`[data-quick-view-variants="${modalId}"]`);
         if (variantScript) {
           try {
             return JSON.parse(variantScript.textContent);
@@ -60,6 +60,44 @@ if (!customElements.get('quick-view-modal')) {
         this.variantButtons.forEach((btn) => {
           btn.addEventListener('click', () => this.selectVariant(btn));
         });
+
+        // Quantity buttons
+        const qtyMinus = this.querySelector('[data-quick-view-qty-minus]');
+        const qtyPlus = this.querySelector('[data-quick-view-qty-plus]');
+        const qtyInput = this.querySelector('[data-quick-view-qty-input]');
+
+        if (qtyMinus && qtyInput) {
+          qtyMinus.addEventListener('click', () => {
+            const currentQty = parseInt(qtyInput.value, 10) || 1;
+            const newQty = Math.max(1, currentQty - 1);
+            qtyInput.value = newQty;
+            qtyMinus.disabled = newQty <= 1;
+          });
+        }
+
+        if (qtyPlus && qtyInput) {
+          qtyPlus.addEventListener('click', () => {
+            const currentQty = parseInt(qtyInput.value, 10) || 1;
+            const max = qtyInput.getAttribute('max');
+            const maxQty = max ? parseInt(max, 10) : Infinity;
+            const newQty = Math.min(maxQty, currentQty + 1);
+            qtyInput.value = newQty;
+            if (qtyMinus) qtyMinus.disabled = false;
+            if (max) qtyPlus.disabled = newQty >= maxQty;
+          });
+        }
+
+        if (qtyInput) {
+          qtyInput.addEventListener('change', () => {
+            let value = parseInt(qtyInput.value, 10) || 1;
+            const max = qtyInput.getAttribute('max');
+            const maxQty = max ? parseInt(max, 10) : Infinity;
+            value = Math.max(1, Math.min(maxQty, value));
+            qtyInput.value = value;
+            if (qtyMinus) qtyMinus.disabled = value <= 1;
+            if (qtyPlus && max) qtyPlus.disabled = value >= maxQty;
+          });
+        }
       }
 
       show(opener) {
@@ -236,9 +274,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (trigger) {
       e.preventDefault();
       e.stopPropagation();
-      // Remove any quotes that might be in the product ID
-      const productId = trigger.dataset.quickViewTrigger.replace(/['"]/g, '');
-      const modal = document.getElementById(`QuickView-${productId}`);
+      // Get the modal ID (format: section_id-product_id)
+      const modalId = trigger.dataset.quickViewTrigger.replace(/['"]/g, '');
+      const modal = document.getElementById(`QuickView-${modalId}`);
       if (modal) {
         modal.show(trigger);
       }

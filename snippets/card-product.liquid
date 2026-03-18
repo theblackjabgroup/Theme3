@@ -32,7 +32,7 @@
   -%}
   <div class="custom-product-card-wrapper">
     <div class="custom-product-card">
-      <a href="#" class="custom-product-card__main-link" aria-disabled="true" onclick="return false;">
+      <a href="#" class="custom-product-card__main-link" aria-disabled="true" aria-label="{{ placeholder_title | escape }}" onclick="return false;">
         <div class="custom-product-card__image-container">
           {{ 'product-apparel-2' | placeholder_svg_tag: 'custom-product-card__image placeholder-svg' }}
         </div>
@@ -43,32 +43,32 @@
           <p class="custom-product-card__description">
             {{ placeholder_desc | strip_html | truncate: 80, '…' }}
           </p>
-          <div class="custom-product-card__footer">
-            {%- render 'global-btn-2',
-              text: '0',
-              variant: 'primary',
-              hover: false,
-              class: 'custom-product-card__price'
-            -%}
-            <div class="custom-product-card__hover-buttons">
-              {%- render 'global-btn',
-                text: 'Add to cart',
-                type: 'button',
-                variant: 'secondary',
-                class: 'custom-product-card__atc-btn'
-              -%}
-              {%- render 'global-btn-2',
-                variant: 'primary',
-                icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/><path d="M2 12C4 7 7.5 4 12 4C16.5 4 20 7 22 12C20 17 16.5 20 12 20C7.5 20 4 17 2 12Z" stroke="currentColor" stroke-width="2"/></svg>',
-                icon_only: true,
-                fit_width: false,
-                class: 'custom-product-card__eye-btn',
-                hover: false
-              -%}
-            </div>
-          </div>
         </div>
       </a>
+      <div class="custom-product-card__footer">
+        {%- render 'global-btn-2',
+          text: '0',
+          variant: 'primary',
+          hover: false,
+          class: 'custom-product-card__price'
+        -%}
+        <div class="custom-product-card__hover-buttons">
+          {%- render 'global-btn',
+            text: 'Add to cart',
+            type: 'button',
+            variant: 'secondary',
+            class: 'custom-product-card__atc-btn'
+          -%}
+          {%- render 'global-btn-2',
+            variant: 'primary',
+            icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/><path d="M2 12C4 7 7.5 4 12 4C16.5 4 20 7 22 12C20 17 16.5 20 12 20C7.5 20 4 17 2 12Z" stroke="currentColor" stroke-width="2"/></svg>',
+            icon_only: true,
+            fit_width: false,
+            class: 'custom-product-card__eye-btn',
+            hover: false
+          -%}
+        </div>
+      </div>
     </div>
   </div>
 {%- elsif card_product and card_product != empty -%}
@@ -93,7 +93,7 @@
   -%}
   <div class="custom-product-card-wrapper{% if use_quick_add_overlay %} custom-product-card-wrapper--quick-add-overlay{% endif %}">
     <div class="custom-product-card">
-      <a href="{{ card_product.url }}" class="custom-product-card__main-link">
+      <a href="{{ card_product.url }}" class="custom-product-card__main-link" aria-label="{{ card_product.title | escape }}">
         <div class="custom-product-card__image-container">
           {%- if card_price_compare != blank and card_discount_pct > 0 -%}
             <span class="custom-product-card__sale-badge">
@@ -152,56 +152,57 @@
               {{ 'Discover our amazing product.' | strip_html | truncate: 80, '…' }}
             </p>
           {%- endif -%}
-
-          <div class="custom-product-card__footer">
-            {%- capture price_text -%}
-              {{- card_price_current | money -}}
-              {%- if card_price_compare != blank %} <s class="custom-product-card__price-compare">{{ card_price_compare | money }}</s>{% endif -%}
-            {%- endcapture -%}
-            {%- render 'global-btn-2',
-              text: price_text,
-              url: card_product.url,
-              variant: 'primary',
-              hover: false,
-              class: 'custom-product-card__price'
-            -%}
-            <div class="custom-product-card__hover-buttons">
-              {%- if use_quick_add_overlay -%}
-                {%- liquid
-                  assign quick_add_attrs = 'data-quick-add-trigger="' | append: product_form_id | append: '-submit"'
-                -%}
-                {%- render 'global-btn',
-                  text: 'Add to cart',
-                  type: 'button',
-                  variant: 'secondary',
-                  class: 'custom-product-card__atc-btn',
-                  attributes: quick_add_attrs
-                -%}
-              {%- else -%}
-                {%- render 'global-btn',
-                  text: 'Add to cart',
-                  url: card_product.url,
-                  variant: 'secondary',
-                  class: 'custom-product-card__atc-btn'
-                -%}
-              {%- endif -%}
-              {%- liquid
-                assign eye_attrs = 'data-quick-view-trigger="' | append: card_product.id | append: '" aria-label="Quick view ' | append: card_product.title | escape | append: '"'
-              -%}
-              {%- render 'global-btn-2',
-                type: 'button',
-                variant: 'primary',
-                icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/><path d="M2 12C4 7 7.5 4 12 4C16.5 4 20 7 22 12C20 17 16.5 20 12 20C7.5 20 4 17 2 12Z" stroke="currentColor" stroke-width="2"/></svg>',
-                icon_only: true,
-                fit_width: false,
-                hover: false,
-                class: 'custom-product-card__eye-btn',
-                attributes: eye_attrs
-              -%}
-            </div>
-          </div>
         </div>
       </a>
+
+      <div class="custom-product-card__footer">
+        {%- capture price_text -%}
+          {{- card_price_current | money -}}
+          {%- if card_price_compare != blank %} <s class="custom-product-card__price-compare">{{ card_price_compare | money }}</s>{% endif -%}
+        {%- endcapture -%}
+        {%- render 'global-btn-2',
+          text: price_text,
+          url: card_product.url,
+          variant: 'primary',
+          hover: false,
+          class: 'custom-product-card__price'
+        -%}
+        <div class="custom-product-card__hover-buttons">
+          {%- if use_quick_add_overlay -%}
+            {%- liquid
+              assign quick_add_attrs = 'data-quick-add-trigger="' | append: product_form_id | append: '-submit"'
+            -%}
+            {%- render 'global-btn',
+              text: 'Add to cart',
+              type: 'button',
+              variant: 'secondary',
+              class: 'custom-product-card__atc-btn',
+              attributes: quick_add_attrs
+            -%}
+          {%- else -%}
+            {%- render 'global-btn',
+              text: 'Add to cart',
+              url: card_product.url,
+              variant: 'secondary',
+              class: 'custom-product-card__atc-btn'
+            -%}
+          {%- endif -%}
+          {%- liquid
+            assign qv_trigger_id = section_id | append: '-' | append: card_product.id
+            assign eye_attrs = 'data-quick-view-trigger="' | append: qv_trigger_id | append: '" aria-label="Quick view ' | append: card_product.title | escape | append: '"'
+          -%}
+          {%- render 'global-btn-2',
+            type: 'button',
+            variant: 'primary',
+            icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/><path d="M2 12C4 7 7.5 4 12 4C16.5 4 20 7 22 12C20 17 16.5 20 12 20C7.5 20 4 17 2 12Z" stroke="currentColor" stroke-width="2"/></svg>',
+            icon_only: true,
+            fit_width: false,
+            hover: false,
+            class: 'custom-product-card__eye-btn',
+            attributes: eye_attrs
+          -%}
+        </div>
+      </div>
     </div>
 
     {%- comment -%} Quick View Modal {%- endcomment -%}

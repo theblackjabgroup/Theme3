@@ -34,7 +34,7 @@
   endif
 -%}
 <div
-  class="qty-selector"
+  class="qty-selector cart-item__quantity-selector"
   data-item-index="{{ line_index }}"
   data-variant-id="{{ variant_id }}"
   {% if edit_panel %}
@@ -43,7 +43,7 @@
 >
   <button
     type="button"
-    class="qty-selector__btn qty-selector__btn--minus"
+    class="qty-selector__btn qty-selector__btn--minus quantity__button cart-item__quantity-minus"
     name="minus"
     aria-label="{{ 'products.product.quantity.decrease' | t | default: 'Decrease quantity' }}"
     {% if qty_value <= 1 %}disabled{% endif %}
@@ -68,7 +68,7 @@
     value="{{ qty_value }}"
     min="1"
     data-min="1"
-    class="qty-selector__input"
+    class="qty-selector__input quantity__input"
     aria-label="{{ 'products.product.quantity.input_label' | t: product: product_title | default: 'Quantity' }}"
     {% if max_quantity != null %}
       max="{{ max_quantity }}"
@@ -77,7 +77,7 @@
   >
   <button
     type="button"
-    class="qty-selector__btn qty-selector__btn--plus"
+    class="qty-selector__btn qty-selector__btn--plus quantity__button cart-item__quantity-plus"
     name="plus"
     aria-label="{{ 'products.product.quantity.increase' | t | default: 'Increase quantity' }}"
     {% if max_quantity != null and qty_value >= max_quantity %}disabled{% endif %}
