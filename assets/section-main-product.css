@@ -8,6 +8,140 @@
 }
 
 /* =============================
+   BENTO GRID LAYOUT
+============================= */
+.product-bento-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  gap: var(--bento-gap, 16px);
+  padding: var(--bento-gap, 16px);
+  margin-top: var(--section-margin-top, 20px);
+  margin-bottom: var(--section-margin-bottom, 0px);
+  margin-left: var(--section-margin-horizontal, 0px);
+  margin-right: var(--section-margin-horizontal, 0px);
+  background: #e8e8ec;
+  border-radius: var(--section-border-radius, 14px);
+}
+
+.product-bento-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bento-gap, 16px);
+}
+
+.product-bento-col--left {
+  position: sticky;
+  top: var(--bento-gap, 12px);
+  align-self: start;
+}
+
+/* Base card style */
+.product-bento-card {
+  background: var(--color-primary-button-bg, #fff);
+  border-radius: var(--section-border-radius, 14px);
+  border: 1px solid var(--color-borders, rgba(0, 0, 0, 0.08));
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+  overflow: hidden;
+  width: 100%;
+}
+
+/* Left: title card */
+.product-bento-card--title .product-left-inner {
+  max-width: 100%;
+  text-align: center;
+  padding: 28px 24px;
+}
+
+/* Left: purchase card — image sits edge-to-top, rest of content padded */
+.product-bento-card--purchase .product-left-inner {
+  max-width: 100%;
+  text-align: center;
+  padding: 0 0 24px;
+}
+
+/* All purchase card blocks except the image get side padding */
+.product-bento-card--purchase .product-left-inner > *:not(.product-left-image) {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+/* Right: media card — no padding, image fills card */
+.product-bento-card--media {
+  padding: 0;
+}
+
+/* Right: accordion card — white card wrapping each accordion item */
+.product-bento-card--accordion {
+  padding: 0;
+  background: var(--color-primary-button-bg, #fff);
+  border: 1px solid var(--color-borders, rgba(0, 0, 0, 0.08));
+  border-radius: var(--section-border-radius, 14px);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+  overflow: hidden;
+}
+
+/* Remove inner accordion-item's own border so we don't get double borders */
+.product-bento-card--accordion accordion-item {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+}
+
+/* Right: info card — standard padding, left-aligned */
+.product-bento-card--info {
+  padding: 22px 24px;
+  text-align: left;
+}
+
+/* Right: marquee card — no padding */
+.product-bento-card--marquee {
+  padding: 0;
+  overflow: hidden;
+}
+
+.product-bento-card--marquee .marquee-wrapper {
+  margin: 0;
+  width: 100%;
+  border-radius: 0;
+}
+
+/* Generic content cards */
+.product-bento-card:not(.product-bento-card--title):not(.product-bento-card--purchase):not(.product-bento-card--media):not(.product-bento-card--accordion):not(.product-bento-card--info):not(.product-bento-card--marquee) {
+  padding: 20px 24px;
+  text-align: left;
+}
+
+/* Override max-width constraints for bento cards (content fills the card) */
+.product-bento-card .product__description,
+.product-bento-card .accordion,
+.product-bento-card .feature-row,
+.product-bento-card .icon-strip,
+.product-bento-card .product-info-card {
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Media block wrapper: fill card fully, no bleed hack needed */
+.product-bento-card--media .product-media-block-wrapper,
+.product-bento-card--media .product-media-wrapper {
+  width: 100%;
+  margin: 0;
+}
+
+/* Thumbnails inside bento media card */
+.product-bento-card--media .product-media-thumbnails {
+  padding: 10px 12px;
+}
+
+/* Remove bottom margin from last item inside cards */
+.product-bento-card .product-left-inner > *:last-child,
+.product-bento-card > *:last-child {
+  margin-bottom: 0;
+}
+
+/* =============================
    MAIN SPLIT CONTAINER
 ============================= */
 .mobile-product-slider {
@@ -77,8 +211,21 @@
    Desktop: columns expand. Mobile: cards expand.
 ============================= */
 @media (prefers-reduced-motion: no-preference) {
-  /* Desktop: columns expand from small to full */
+  /* Desktop: bento cards pop in */
   @media (min-width: 990px) {
+    .product-bento-card.product-column-appear {
+      animation: product-column-expand-in 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    .product-bento-col--left .product-bento-card.product-column-appear {
+      transform-origin: right center;
+    }
+
+    .product-bento-col--right .product-bento-card.product-column-appear {
+      transform-origin: left center;
+    }
+
+    /* Legacy selectors kept for compatibility */
     .product-split-left.product-column-appear,
     .product-split-right.product-column-appear {
       animation: product-column-expand-in 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
@@ -171,10 +318,9 @@
 
 
 .product-left-inner {
-  max-width: 480px;
+  max-width: 100%;
   width: 100%;
   text-align: center;
-  margin: auto 0;
 }
 
 .product-left-inner > * {
@@ -251,11 +397,13 @@
 }
 
 .product__title h1 {
-  font-size: var(--title-font-size, clamp(2.5rem, 4.5vw, 3.8rem));
-  line-height: 1.1;
-  font-weight: var(--font-weight-semibold);
+  font-size: var(--title-font-size, clamp(2.8rem, 5vw, 4.2rem));
+  line-height: 1.05;
+  font-weight: 900;
   letter-spacing: -1px;
   font-family: var(--font-heading-family);
+  text-transform: uppercase;
+  color: var(--color-heading);
 }
 .product-form__label {
   font-size: var(--font-size-md);
@@ -268,7 +416,8 @@
   display: flex;
   gap: var(--spacing-8);
   flex-wrap: wrap;
-  padding: 0 64px;
+  padding: 0;
+  justify-content: center;
 }
 
 /* Variant option buttons (non-color): grow to fill available width */
@@ -343,7 +492,7 @@
   display: flex;
   align-items: baseline;
   justify-content: center;
-  gap: var(--spacing-m);
+  gap: 10px;
 }
 .price-main {
   font-family: var(--font-heading-family);
@@ -354,19 +503,20 @@
 }
 .price-compare {
   font-family: var(--font-body-family);
-  font-size: var(--sale-price-font-size, 1.2rem);
+  font-size: var(--sale-price-font-size, 1.1rem);
   font-weight: 400;
   text-decoration: line-through;
-  color: color-mix(in srgb, var(--color-text) 50%, transparent);
-  opacity: 0.7;
+  color: color-mix(in srgb, var(--color-text) 40%, transparent);
+  order: -1;
 }
 
 .sale-roasted-text {
   font-family: var(--font-body-family);
-  font-size: var(--promo-font-size, 1.2rem);
+  font-size: var(--promo-font-size, 1rem);
   text-align: center;
   color: var(--color-text);
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
+  font-style: italic;
 }
 
 .product-actions-row {
@@ -374,8 +524,7 @@
   align-items: stretch;
   gap: var(--spacing-m);
   width: 100%;
-  padding: 0 64px;
-
+  padding: 0;
 }
 
 /* Form + Add to Cart take remaining width */
@@ -426,7 +575,6 @@
 }
 
 .stock-badge-wrapper {
-  height: 30px;
   display: flex;
   justify-content: center;
 }
@@ -549,20 +697,34 @@
 }
 
 .product-media-wrapper {
-  position: relative;
-  overflow: hidden;
   width: 100%;
-  max-width: 450px;
-  margin: 0 auto;
 }
 
+/* Aspect-ratio container using padding-top trick (works in all browsers) */
+.product-media-main {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Square ratio = 100%. Matches target design's tall slider frame. */
+.product-media-main::before {
+  content: '';
+  display: block;
+  padding-top: 100%;
+}
+
+/* Track fills the padded box absolutely */
 .product-media-track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
-  gap: var(--spacing-xl);
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
-  padding: 0 2rem;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -572,63 +734,136 @@
 
 .product-media-slide {
   flex: 0 0 100%;
-  max-width: 100%;
-  scroll-snap-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 100%;
+  min-width: 100%;
+  height: 100%;
+  scroll-snap-align: start;
+  overflow: hidden;
 }
+
 .product-media-slide img,
 .product-media-slide video,
 .product-media-slide iframe,
 .product-media-slide model-viewer {
   width: 100%;
-  height: auto;
-  object-fit: cover;
-  aspect-ratio: 1 / 1;
+  height: 100%;
+  object-fit: contain;
+  background: var(--color-primary-button-bg, #fff);
+  display: block;
 }
 
-.product-media-slide .video-slide {
-  width: 100%;
-  height: auto;
+/* Nav arrows row — overlaid at bottom-center of image */
+.media-nav-row {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
 }
 
 .media-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 84px;
+  width: var(--product-media-arrows-height, 38px);
   height: var(--product-media-arrows-height, 38px);
-  min-height: var(--product-media-arrows-height, 38px);
-  border-radius: var(--product-media-arrows-border-radius, var(--radius-l));
-  border: var(--border-width-thin) solid var(--color-primary-button-border);
-  background: var(--color-primary-button-bg);
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-primary-button-text);
+  flex-shrink: 0;
+  border-radius: var(--product-media-arrows-border-radius, 12px);
+  border: 1px solid rgba(0,0,0,0.15);
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text);
   cursor: pointer;
-  z-index: 60;
-  box-shadow: 0 3px 0 var(--color-primary-button-border);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  transition: background 0.15s ease;
+  line-height: 1;
 }
 .media-nav:hover {
-  transform: translateY(-50%) translateY(-4px);
-  box-shadow: 0 7px 0 var(--color-primary-button-border);
-  z-index: 50;
+  background: rgba(255,255,255,1);
 }
-.media-nav:active {
-  transform: translateY(-50%) translateY(1px);
-  box-shadow: 0 2px 0 var(--color-primary-button-border);
+
+/* Thumbnail strip */
+.product-media-thumbnails {
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px 12px;
 }
-.media-nav.prev {
-  left: 0.5rem;
-  z-index: 50;
+
+.product-media-thumb {
+  flex: 1;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  background: var(--color-borders, rgba(0,0,0,0.05));
+  padding: 0;
+  transition: border-color 0.2s ease;
 }
-.media-nav.next {
-  right: 0.5rem;
+
+.product-media-thumb.is-active {
+  border-color: var(--color-primary-button-border, #000);
+}
+
+.product-media-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Product Image block — sits at top of purchase card, centered with padding */
+.product-left-image {
+  width: 100%;
+  padding: 20px 24px 8px;
+}
+
+.product-left-img {
+  width: 100%;
+  max-width: 240px;
+  height: auto;
+  max-height: 260px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  filter: drop-shadow(0px 10px 24px rgba(0, 0, 0, 0.18));
+}
+
+/* Info Card block in Right Column */
+.product-info-card {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  text-align: left;
+}
+
+.product-info-card__heading {
+  font-size: var(--info-card-heading-font-size, 13px);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 10px 0;
+  color: var(--color-text);
+  font-family: var(--font-body-family);
+}
+
+.product-info-card__text {
+  font-size: var(--info-card-content-font-size, 14px);
+  line-height: 1.65;
+  color: var(--color-text);
+}
+
+.product-info-card__text p {
+  margin: 0;
 }
 .product-content-stack {
   width: 100%;
@@ -678,26 +913,32 @@
 
 accordion-item {
   display: block;
-  border-bottom: var(--border-width-thin) solid var(--color-black);
+  border: 1px solid var(--color-borders, rgba(0, 0, 0, 0.1));
+  border-radius: 14px;
+  background: var(--color-primary-button-bg);
+  overflow: hidden;
 }
 
 .accordion__summary {
   cursor: pointer;
   list-style: none;
   font-size: var(--accordion-heading-font-size, var(--body-text-large));
-  font-weight: var(--accordion-heading-font-weight, 400);
+  font-weight: var(--accordion-heading-font-weight, 600);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: var(--spacing-m); /* Keep spacing consistent */
+  padding: 16px 20px;
+  text-align: left;
+  gap: 12px;
 }
 
 
 
 .accordion__icon {
   position: relative;
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
   display: block;
   transition: transform 0.6s ease;
 }
@@ -743,9 +984,12 @@ accordion-item[open] .accordion__wrapper {
 }
 
 .accordion__inner {
-  padding-bottom: var(--spacing-m);
-  font-size: var(--accordion-content-font-size, 16px);
+  padding: 0 20px 16px;
+  font-size: var(--accordion-content-font-size, 14px);
   font-weight: var(--accordion-content-font-weight, 400);
+  text-align: left;
+  line-height: 1.6;
+  color: var(--color-text);
 }
 .marquee-wrapper {
   width: 100%;
@@ -873,20 +1117,31 @@ accordion-item[open] .accordion__wrapper {
   width: 100%;
 }
 
-.is-hero-slide {
-  display: none;
-}
-
 @media (max-width: 1024px) {
   .product-hero-section {
     display: none;
   }
-  .is-hero-slide {
-    display: flex;
-  }
 }
 
 @media (max-width: 989px) {
+  /* Bento grid: single column on mobile */
+  .product-bento-grid {
+    grid-template-columns: 1fr;
+    margin-top: var(--section-margin-top-mobile, 0px);
+    margin-bottom: var(--section-margin-bottom-mobile, 0px);
+    margin-left: var(--section-margin-horizontal-mobile, 0px);
+    margin-right: var(--section-margin-horizontal-mobile, 0px);
+  }
+
+  .product-bento-col--left {
+    position: static;
+  }
+
+  /* Hide right-column media card on mobile (use mobile_slider in left column instead) */
+  .product-bento-col--right .product-bento-card--media {
+    display: none;
+  }
+
   .product-form__submit {
     padding: 0 30px;
   }

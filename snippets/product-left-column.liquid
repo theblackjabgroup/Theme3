@@ -1,321 +1,332 @@
 {%- comment -%}
   Product Left Column Snippet
-  ------------------------------------------------------------------------------
-  Renders the sticky left column containing product info, price, variants, and buy buttons.
-  Now uses blocks for flexible ordering and configuration.
-
-  Usage:
-  {% render 'product-left-column', product: product, section: section, product_form_id: 'product-form-id' %}
-
-  Variables:
-  - product: The product object.
-  - section: The section object (used for block unique IDs and blocks).
-  - product_form_id: The unique ID for the product form.
+  Renders left column blocks, optionally filtered by card_mode:
+    card_mode: 'title'    → product_tag, title, divider, tagline, left_hero_img
+    card_mode: 'purchase' → mobile_slider, price, stock_badge, variant_picker,
+                            promo_text, quantity_selector, pickup_availability
+    card_mode: (blank)    → all blocks (legacy / mobile)
 {%- endcomment -%}
-<div class="product-split-left product-column-appear">
-  <div class="product-left-inner" style="--block-gap: {{ block_gap | default: 24 }}px;">
-    {% assign current_variant = product.selected_or_first_available_variant %}
+<div class="product-left-inner" style="--block-gap: {{ block_gap | default: 24 }}px;">
+  {% assign current_variant = product.selected_or_first_available_variant %}
 
-    {% for block in section.blocks %}
-      {% case block.type %}
-        {% when 'product_tag' %}
-          {% if block.settings.tag_text != blank %}
-            <div
-              class="product-custom-tag"
-              style="
-                --tag-text-color: var(--color-text);
-                --tag-border-color: var(--color-input-border);
-                --tag-bg-color: var(--color-card-bg);
-                --product-tag-border-radius: {{ block.settings.border_radius | default: 50 }}px;
-                --product-tag-border-radius-mobile: {{ block.settings.border_radius_mobile | default: 50 }}px;
-                --tag-font-size: {{ block.settings.font_size | default: 12 }}px;
-                --tag-font-size-mobile: {{ block.settings.font_size_mobile | default: 11 }}px;
-                --tag-font-weight: {{ block.settings.font_weight | default: 500 }};
-                --tag-font-weight-mobile: {{ block.settings.font_weight_mobile | default: 500 }};
-              "
-              {{ block.shopify_attributes }}
-            >
-              {{ block.settings.tag_text }}
-            </div>
-          {% endif %}
+  {% for block in section.blocks %}
+    {%- if card_mode == 'title' -%}
+      {%- unless block.type == 'product_tag' or block.type == 'title' or block.type == 'divider' or block.type == 'tagline' -%}
+        {%- continue -%}
+      {%- endunless -%}
+    {%- elsif card_mode == 'purchase' -%}
+      {%- unless block.type == 'left_hero_img' or block.type == 'mobile_slider' or block.type == 'price' or block.type == 'stock_badge' or block.type == 'variant_picker' or block.type == 'promo_text' or block.type == 'quantity_selector' or block.type == 'pickup_availability' -%}
+        {%- continue -%}
+      {%- endunless -%}
+    {%- endif -%}
 
-        {% when 'title' %}
+    {% case block.type %}
+      {% when 'product_tag' %}
+        {% if block.settings.tag_text != blank %}
           <div
-            class="product__title"
+            class="product-custom-tag"
             style="
-              max-width: {{ block.settings.title_width | default: 500 }}px;
-              margin-left: auto;
-              margin-right: auto;
-              --title-font-size: {{ block.settings.title_font_size | default: 38 }}px;
-              --title-font-size-mobile: {{ block.settings.title_font_size_mobile | default: 28 }}px;
+              --tag-text-color: var(--color-text);
+              --tag-border-color: var(--color-input-border);
+              --tag-bg-color: var(--color-card-bg);
+              --product-tag-border-radius: {{ block.settings.border_radius | default: 50 }}px;
+              --product-tag-border-radius-mobile: {{ block.settings.border_radius_mobile | default: 50 }}px;
+              --tag-font-size: {{ block.settings.font_size | default: 12 }}px;
+              --tag-font-size-mobile: {{ block.settings.font_size_mobile | default: 11 }}px;
+              --tag-font-weight: {{ block.settings.font_weight | default: 500 }};
+              --tag-font-weight-mobile: {{ block.settings.font_weight_mobile | default: 500 }};
             "
             {{ block.shopify_attributes }}
           >
-            <h1>{{ product.title }}</h1>
+            {{ block.settings.tag_text }}
           </div>
+        {% endif %}
 
-        {% when 'divider' %}
+      {% when 'title' %}
+        <div
+          class="product__title"
+          style="
+            max-width: {{ block.settings.title_width | default: 500 }}px;
+            margin-left: auto;
+            margin-right: auto;
+            --title-font-size: {{ block.settings.title_font_size | default: 38 }}px;
+            --title-font-size-mobile: {{ block.settings.title_font_size_mobile | default: 28 }}px;
+          "
+          {{ block.shopify_attributes }}
+        >
+          <h1>{{ product.title }}</h1>
+        </div>
+
+      {% when 'divider' %}
+        <div
+          class="product-divider product-divider--{{ block.settings.style | default: 'solid' }}"
+          style="
+            --divider-width: {{ block.settings.width | default: 1 }}px;
+            --divider-width-mobile: {{ block.settings.width_mobile | default: 1 }}px;
+            --divider-length: {{ block.settings.length | default: 80 }}%;
+            --divider-length-mobile: {{ block.settings.length_mobile | default: 80 }}%;
+            --divider-color: var(--color-input-border);
+            --divider-style: {{ block.settings.style | default: 'solid' }};
+            --divider-spacing: {{ block.settings.spacing | default: 8 }}px;
+          "
+          {{ block.shopify_attributes }}
+        ></div>
+
+      {% when 'tagline' %}
+        {% assign tagline_raw = block.settings.tagline_text | strip %}
+        {% assign tagline_content = tagline_raw | default: product.metafields.custom.tagline %}
+        {% if tagline_content == 'Add your tagline' or tagline_content == 'Add a tagline' %}
+          {% assign tagline_content = product.metafields.custom.tagline %}
+        {% endif %}
+        {% if tagline_content != blank %}
           <div
-            class="product-divider product-divider--{{ block.settings.style | default: 'solid' }}"
+            class="product__tagline product__tagline--customizable"
             style="
-              --divider-width: {{ block.settings.width | default: 1 }}px;
-              --divider-width-mobile: {{ block.settings.width_mobile | default: 1 }}px;
-              --divider-length: {{ block.settings.length | default: 80 }}%;
-              --divider-length-mobile: {{ block.settings.length_mobile | default: 80 }}%;
-              --divider-color: var(--color-input-border);
-              --divider-style: {{ block.settings.style | default: 'solid' }};
-              --divider-spacing: {{ block.settings.spacing | default: 8 }}px;
-            "
-            {{ block.shopify_attributes }}
-          ></div>
-
-        {% when 'tagline' %}
-          {% assign tagline_raw = block.settings.tagline_text | strip %}
-          {% assign tagline_content = tagline_raw | default: product.metafields.custom.tagline %}
-          {% if tagline_content == 'Add your tagline' or tagline_content == 'Add a tagline' %}
-            {% assign tagline_content = product.metafields.custom.tagline %}
-          {% endif %}
-          {% if tagline_content != blank %}
-            <div
-              class="product__tagline product__tagline--customizable"
-              style="
-                max-width: {{ block.settings.tagline_width | default: 500 }}px;
-                --tagline-font-size: {{ block.settings.tagline_font_size | default: 14 }}px;
-                --tagline-font-size-mobile: {{ block.settings.tagline_font_size_mobile | default: 12 }}px;
-                --tagline-font-weight: {{ block.settings.tagline_font_weight | default: 400 }};
-                --tagline-font-weight-mobile: {{ block.settings.tagline_font_weight_mobile | default: 400 }};
-                --tagline-text-color: var(--color-text);
-              "
-              {{ block.shopify_attributes }}
-            >
-              {{ tagline_content }}
-            </div>
-          {% endif %}
-
-        {% when 'mobile_slider' %}
-          <!-- MOBILE SLIDER (Visible only on mobile) -->
-          <div
-            class="mobile-product-slider"
-            style="
-              --product-media-arrows-height: {{ block.settings.arrows_height | default: 38 }}px;
-              --product-media-arrows-border-radius: {{ block.settings.arrows_border_radius | default: 14 }}px;
-            "
-            {{ block.shopify_attributes }}
-          >
-            {% render 'product-image-slider', product: product, section: section %}
-          </div>
-
-        {% when 'price' %}
-          <!-- PRICE DISPLAY -->
-          <div
-            class="product-price-container"
-            style="
-              --price-font-size: {{ block.settings.price_font_size | default: 56 }}px;
-              --price-font-size-mobile: {{ block.settings.price_font_size_mobile | default: 40 }}px;
-              --sale-price-font-size: {{ block.settings.sale_price_font_size | default: 20 }}px;
-              --sale-price-font-size-mobile: {{ block.settings.sale_price_font_size_mobile | default: 16 }}px;
+              max-width: {{ block.settings.tagline_width | default: 500 }}px;
+              --tagline-font-size: {{ block.settings.tagline_font_size | default: 14 }}px;
+              --tagline-font-size-mobile: {{ block.settings.tagline_font_size_mobile | default: 12 }}px;
+              --tagline-font-weight: {{ block.settings.tagline_font_weight | default: 400 }};
+              --tagline-font-weight-mobile: {{ block.settings.tagline_font_weight_mobile | default: 400 }};
+              --tagline-text-color: var(--color-text);
             "
             {{ block.shopify_attributes }}
           >
-            <span class="price-main">{{- current_variant.price | money_without_trailing_zeros -}}</span>
-            <span
-              class="price-compare"
-              {% unless current_variant.compare_at_price > current_variant.price %}
-                style="display:none"
-              {% endunless %}
-            >
-              {{ current_variant.compare_at_price | money_without_trailing_zeros }}
-            </span>
+            {{ tagline_content }}
           </div>
+        {% endif %}
 
-        {% when 'stock_badge' %}
-          <!-- Stock Badge -->
-          <div
-            class="stock-badge-wrapper product-type-badge-wrapper"
-            style="
-              --stock-badge-font-size: {{ block.settings.font_size | default: 14 }}px;
-              --stock-badge-font-size-mobile: {{ block.settings.font_size_mobile | default: 13 }}px;
-              --stock-badge-font-weight: {{ block.settings.font_weight | default: 400 }};
-              --stock-badge-font-weight-mobile: {{ block.settings.font_weight_mobile | default: 400 }};
-            "
-            {{ block.shopify_attributes }}
-          >
-            <span class="stock-badge product-type-badge">
-              {% if product.available %}
-                {% if current_variant.inventory_management == 'shopify'
-                  and current_variant.inventory_quantity > 0
-                  and current_variant.inventory_quantity <= 10
-                %}
-                  Only {{ current_variant.inventory_quantity }} left in stock
-                {% else %}
-                  In stock
-                {% endif %}
-              {% else %}
-                Out of stock
-              {% endif %}
-            </span>
-          </div>
-
-        {% when 'variant_picker' %}
-          {% unless product.has_only_default_variant %}
-            <div class="variant-picker-wrapper" {{ block.shopify_attributes }}>
-              {% for option in product.options_with_values %}
-                <fieldset class="product-form__input product-form__input--{{ option.name | downcase }}">
-                  {% unless option.name == 'Size' %}
-                    <legend class="product-form__label">{{ option.name }}</legend>
-                  {% endunless %}
-                  <div class="variant-options-row">
-                    {% for value in option.values %}
-                      {%- assign radio_id = section.id
-                        | append: '-'
-                        | append: option.position
-                        | append: '-'
-                        | append: forloop.index
-                      -%}
-                      <input
-                        type="radio"
-                        id="{{ radio_id }}"
-                        name="{{ option.name }}"
-                        value="{{ value | escape }}"
-                        form="{{ product_form_id }}"
-                        class="product-form__variant-radio visually-hidden"
-                        {% if option.selected_value == value %}
-                          checked
-                        {% endif %}
-                      >
-                      <label
-                        for="{{ radio_id }}"
-                        class="product-form__variant-option-label{% if option.name == 'Color' %} product-form__variant-option-label--color{% endif %}"
-                        {% if option.name == 'Color' %}
-                          style="--variant-swatch-color: {{ value | downcase | replace: ' ', '' }}"
-                        {% endif %}
-                      >
-                        {% if option.name == 'Color' %}
-                          <span
-                            class="product-form__variant-swatch"
-                            style="background-color: {{ value | downcase | replace: ' ', '' }}"
-                            aria-hidden="true"
-                          ></span>
-                          <span class="visually-hidden">{{ value }}</span>
-                        {% else %}
-                          {% comment %} Always primary; selected state is applied via CSS (:checked + label) so previous selection reverts when user picks another {% endcomment %}
-                          {% render 'global-btn',
-                            text: value,
-                            variant: 'primary',
-                            type: 'button',
-                            class: 'product-form__variant-option-btn'
-                          %}
-                        {% endif %}
-                      </label>
-                    {% endfor %}
-                  </div>
-                </fieldset>
-              {% endfor %}
-            </div>
-          {% endunless %}
-
-        {% when 'promo_text' %}
-          <!-- PROMO TEXT -->
-          {% if block.settings.promo_text != blank %}
-            <div
-              class="sale-roasted-text"
-              style="
-                --promo-font-size: {{ block.settings.promo_font_size | default: 12 }}px;
-                --promo-font-size-mobile: {{ block.settings.promo_font_size_mobile | default: 11 }}px;
-              "
-              {{ block.shopify_attributes }}
-            >
-              {{ block.settings.promo_text }}
-            </div>
-          {% endif %}
-
-        {% when 'quantity_selector' %}
-          <div class="product-actions-row" {{ block.shopify_attributes }}>
-            {% render 'quantity-input',
-              variant: current_variant,
-              min: 1,
-              is_product_form: true,
-              product_form_id: product_form_id
-            %}
-
-            <product-form class="product-form" data-section-id="{{ section.id }}">
-              {% form 'product',
-                product,
-                id: product_form_id,
-                class: 'form',
-                novalidate: 'novalidate',
-                data-type: 'add-to-cart-form'
-              %}
-                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-
-                <div class="product-form__error-message-wrapper" role="alert" hidden>
-                  {{- 'icon-about.svg' | inline_asset_content -}}
-                  <span class="product-form__error-message"></span>
-                </div>
-
-                {% liquid
-                  if product.selected_or_first_available_variant.available
-                    assign btn_text = 'products.product.add_to_cart' | t
-                  else
-                    assign btn_text = 'products.product.sold_out' | t
-                  endif
-                %}
-
-                {% render 'global-btn',
-                  text: btn_text,
-                  type: 'submit',
-                  variant: 'tertiary',
-                  class: 'share-story-submit product-form__submit',
-                  is_add_to_cart: true
-                %}
-              {% endform %}
-            </product-form>
-          </div>
-
-        {% when 'pickup_availability' %}
-          {%- assign pick_up_availabilities = current_variant.store_availabilities | where: 'pick_up_enabled', true -%}
-          {%- assign pickup_scheme = section.settings.color_scheme -%}
-          {%- if pickup_scheme == blank -%}
-            {%- assign pickup_scheme = settings.color_schemes | first -%}
+      {% when 'left_hero_img' %}
+        <div class="product-left-image" {{ block.shopify_attributes }}>
+          {%- assign hero_img = null -%}
+          {%- for media in product.media -%}
+            {%- if media.media_type == 'image' -%}
+              {%- assign hero_img = media -%}
+              {%- break -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if hero_img -%}
+            {{ hero_img | image_url: width: 800 | image_tag: loading: 'eager', alt: hero_img.alt, class: 'product-left-img' }}
           {%- endif -%}
+        </div>
+
+      {% when 'mobile_slider' %}
+        <div
+          class="mobile-product-slider"
+          style="
+            --product-media-arrows-height: {{ block.settings.arrows_height | default: 38 }}px;
+            --product-media-arrows-border-radius: {{ block.settings.arrows_border_radius | default: 14 }}px;
+          "
+          {{ block.shopify_attributes }}
+        >
+          {% render 'product-image-slider', product: product, section: section %}
+        </div>
+
+      {% when 'price' %}
+        <div
+          class="product-price-container"
+          style="
+            --price-font-size: {{ block.settings.price_font_size | default: 56 }}px;
+            --price-font-size-mobile: {{ block.settings.price_font_size_mobile | default: 40 }}px;
+            --sale-price-font-size: {{ block.settings.sale_price_font_size | default: 20 }}px;
+            --sale-price-font-size-mobile: {{ block.settings.sale_price_font_size_mobile | default: 16 }}px;
+          "
+          {{ block.shopify_attributes }}
+        >
+          <span
+            class="price-compare"
+            {% unless current_variant.compare_at_price > current_variant.price %}
+              style="display:none"
+            {% endunless %}
+          >
+            {{- current_variant.compare_at_price | money_without_trailing_zeros -}}
+          </span>
+          <span class="price-main">{{- current_variant.price | money_without_trailing_zeros -}}</span>
+        </div>
+
+      {% when 'stock_badge' %}
+        <div
+          class="stock-badge-wrapper product-type-badge-wrapper"
+          style="
+            --stock-badge-font-size: {{ block.settings.font_size | default: 14 }}px;
+            --stock-badge-font-size-mobile: {{ block.settings.font_size_mobile | default: 13 }}px;
+            --stock-badge-font-weight: {{ block.settings.font_weight | default: 400 }};
+            --stock-badge-font-weight-mobile: {{ block.settings.font_weight_mobile | default: 400 }};
+          "
+          {{ block.shopify_attributes }}
+        >
+          <span class="stock-badge product-type-badge">
+            {% if product.available %}
+              {% if current_variant.inventory_management == 'shopify'
+                and current_variant.inventory_quantity > 0
+                and current_variant.inventory_quantity <= 10
+              %}
+                Only {{ current_variant.inventory_quantity }} left in stock
+              {% else %}
+                In stock
+              {% endif %}
+            {% else %}
+              Out of stock
+            {% endif %}
+          </span>
+        </div>
+
+      {% when 'variant_picker' %}
+        {% unless product.has_only_default_variant %}
+          <div class="variant-picker-wrapper" {{ block.shopify_attributes }}>
+            {% for option in product.options_with_values %}
+              <fieldset class="product-form__input product-form__input--{{ option.name | downcase }}">
+                {% unless option.name == 'Size' %}
+                  <legend class="product-form__label">{{ option.name }}</legend>
+                {% endunless %}
+                <div class="variant-options-row">
+                  {% for value in option.values %}
+                    {%- assign radio_id = section.id
+                      | append: '-'
+                      | append: option.position
+                      | append: '-'
+                      | append: forloop.index
+                    -%}
+                    <input
+                      type="radio"
+                      id="{{ radio_id }}"
+                      name="{{ option.name }}"
+                      value="{{ value | escape }}"
+                      form="{{ product_form_id }}"
+                      class="product-form__variant-radio visually-hidden"
+                      {% if option.selected_value == value %}
+                        checked
+                      {% endif %}
+                    >
+                    <label
+                      for="{{ radio_id }}"
+                      class="product-form__variant-option-label{% if option.name == 'Color' %} product-form__variant-option-label--color{% endif %}"
+                      {% if option.name == 'Color' %}
+                        style="--variant-swatch-color: {{ value | downcase | replace: ' ', '' }}"
+                      {% endif %}
+                    >
+                      {% if option.name == 'Color' %}
+                        <span
+                          class="product-form__variant-swatch"
+                          style="background-color: {{ value | downcase | replace: ' ', '' }}"
+                          aria-hidden="true"
+                        ></span>
+                        <span class="visually-hidden">{{ value }}</span>
+                      {% else %}
+                        {% render 'global-btn',
+                          text: value,
+                          variant: 'primary',
+                          type: 'button',
+                          class: 'product-form__variant-option-btn'
+                        %}
+                      {% endif %}
+                    </label>
+                  {% endfor %}
+                </div>
+              </fieldset>
+            {% endfor %}
+          </div>
+        {% endunless %}
+
+      {% when 'promo_text' %}
+        {% if block.settings.promo_text != blank %}
           <div
-            class="product-pickup-availability-wrapper"
+            class="sale-roasted-text"
             style="
-              --pickup-font-size: {{ block.settings.font_size | default: 14 }}px;
-              --pickup-font-size-mobile: {{ block.settings.font_size_mobile | default: 13 }}px;
-              --pickup-font-weight: {{ block.settings.font_weight | default: 400 }};
-              --pickup-font-weight-mobile: {{ block.settings.font_weight_mobile | default: 400 }};
-              --pickup-location-font-weight: {{ block.settings.location_font_weight | default: 700 }};
-              --pickup-location-font-weight-mobile: {{ block.settings.location_font_weight_mobile | default: 700 }};
-              --pickup-spacing: {{ block.settings.spacing | default: 8 }}px;
+              --promo-font-size: {{ block.settings.promo_font_size | default: 12 }}px;
+              --promo-font-size-mobile: {{ block.settings.promo_font_size_mobile | default: 11 }}px;
             "
             {{ block.shopify_attributes }}
           >
-            <pickup-availability
-              class="product__pickup-availabilities"
-              {% if current_variant.available and pick_up_availabilities.size > 0 %}
-                available
-              {% endif %}
-              data-root-url="{{ routes.root_url }}"
-              data-variant-id="{{ current_variant.id }}"
-              data-product-page-color-scheme="gradient color-{{ pickup_scheme.id }}"
-            >
-              <template>
-                <pickup-availability-preview class="pickup-availability-preview">
-                  <span class="svg-wrapper">
-                    
-                  </span>
-                  <div class="pickup-availability-info">
-                    <p class="caption-large">{{ 'products.product.pickup_availability.unavailable' | t }}</p>
-                    <button class="pickup-availability-button link link--text underlined-link">
-                      {{ 'products.product.pickup_availability.refresh' | t }}
-                    </button>
-                  </div>
-                </pickup-availability-preview>
-              </template>
-            </pickup-availability>
+            {{ block.settings.promo_text }}
           </div>
-      {% endcase %}
-    {% endfor %}
-  </div>
+        {% endif %}
+
+      {% when 'quantity_selector' %}
+        <div class="product-actions-row" {{ block.shopify_attributes }}>
+          {% render 'quantity-input',
+            variant: current_variant,
+            min: 1,
+            is_product_form: true,
+            product_form_id: product_form_id
+          %}
+
+          <product-form class="product-form" data-section-id="{{ section.id }}">
+            {% form 'product',
+              product,
+              id: product_form_id,
+              class: 'form',
+              novalidate: 'novalidate',
+              data-type: 'add-to-cart-form'
+            %}
+              <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+              <div class="product-form__error-message-wrapper" role="alert" hidden>
+                {{- 'icon-about.svg' | inline_asset_content -}}
+                <span class="product-form__error-message"></span>
+              </div>
+
+              {% liquid
+                if product.selected_or_first_available_variant.available
+                  assign btn_text = 'products.product.add_to_cart' | t
+                else
+                  assign btn_text = 'products.product.sold_out' | t
+                endif
+              %}
+
+              {% render 'global-btn',
+                text: btn_text,
+                type: 'submit',
+                variant: 'tertiary',
+                class: 'share-story-submit product-form__submit',
+                is_add_to_cart: true
+              %}
+            {% endform %}
+          </product-form>
+        </div>
+
+      {% when 'pickup_availability' %}
+        {%- assign pick_up_availabilities = current_variant.store_availabilities | where: 'pick_up_enabled', true -%}
+        {%- assign pickup_scheme = section.settings.color_scheme -%}
+        {%- if pickup_scheme == blank -%}
+          {%- assign pickup_scheme = settings.color_schemes | first -%}
+        {%- endif -%}
+        <div
+          class="product-pickup-availability-wrapper"
+          style="
+            --pickup-font-size: {{ block.settings.font_size | default: 14 }}px;
+            --pickup-font-size-mobile: {{ block.settings.font_size_mobile | default: 13 }}px;
+            --pickup-font-weight: {{ block.settings.font_weight | default: 400 }};
+            --pickup-font-weight-mobile: {{ block.settings.font_weight_mobile | default: 400 }};
+            --pickup-location-font-weight: {{ block.settings.location_font_weight | default: 700 }};
+            --pickup-location-font-weight-mobile: {{ block.settings.location_font_weight_mobile | default: 700 }};
+            --pickup-spacing: {{ block.settings.spacing | default: 8 }}px;
+          "
+          {{ block.shopify_attributes }}
+        >
+          <pickup-availability
+            class="product__pickup-availabilities"
+            {% if current_variant.available and pick_up_availabilities.size > 0 %}
+              available
+            {% endif %}
+            data-root-url="{{ routes.root_url }}"
+            data-variant-id="{{ current_variant.id }}"
+            data-product-page-color-scheme="gradient color-{{ pickup_scheme.id }}"
+          >
+            <template>
+              <pickup-availability-preview class="pickup-availability-preview">
+                <span class="svg-wrapper">
+
+                </span>
+                <div class="pickup-availability-info">
+                  <p class="caption-large">{{ 'products.product.pickup_availability.unavailable' | t }}</p>
+                  <button class="pickup-availability-button link link--text underlined-link">
+                    {{ 'products.product.pickup_availability.refresh' | t }}
+                  </button>
+                </div>
+              </pickup-availability-preview>
+            </template>
+          </pickup-availability>
+        </div>
+    {% endcase %}
+  {% endfor %}
 </div>

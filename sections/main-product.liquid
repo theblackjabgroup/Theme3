@@ -7,6 +7,13 @@
     {%- break -%}
   {%- endif -%}
 {%- endfor -%}
+{%- assign has_left_hero_img_block = false -%}
+{%- for block in section.blocks -%}
+  {%- if block.type == 'left_hero_img' -%}
+    {%- assign has_left_hero_img_block = true -%}
+    {%- break -%}
+  {%- endif -%}
+{%- endfor -%}
 {%- if has_pickup_block -%}
   {{ 'component-pickup-availability.css' | asset_url | stylesheet_tag }}
   <script src="{{ 'pickup-availability.js' | asset_url }}" defer="defer"></script>
@@ -75,12 +82,8 @@
 -%}
 
 <div
-  class="product-split-container color-{{ scheme.id }} gradient{% if product.selected_or_first_available_variant.available == false %} product-variant-sold-out{% endif %}"
+  class="product-bento-grid color-{{ scheme.id }} gradient{% if product.selected_or_first_available_variant.available == false %} product-variant-sold-out{% endif %}"
   id="ProductSection-{{ section.id }}"
-  {% if settings.animations_reveal_on_scroll %}
-    data-page-load-animate
-    data-page-load-selector=".product-hero-section, .product-split-left, .product-split-right, .product-mobile-card--left, .product-mobile-card--right"
-  {% endif %}
   style="
     --hero-image-max-width: {{ section.settings.hero_image_max_width }}px;
     --section-margin-top: {{ section.settings.margin_top }}px;
@@ -96,8 +99,7 @@
     --section-padding-horizontal: {{ section.settings.padding_horizontal }}px;
     --section-padding-horizontal-mobile: {{ section.settings.padding_horizontal_mobile }}px;
     --section-border-radius: {{ section.settings.border_radius }}px;
-    --mobile-column-gap: {{ section.settings.mobile_column_gap | default: 16 }}px;
-    --mobile-column-border-radius: {{ section.settings.mobile_column_border_radius | default: 12 }}px;
+    --bento-gap: {{ section.settings.mobile_column_gap | default: 12 }}px;
     --product-add-to-cart-height: {{ add_to_cart_height }}px;
     --product-quantity-height: {{ quantity_height }}px;
     --product-variant-height: {{ variant_height }}px;
@@ -123,22 +125,37 @@
     --product-add-to-cart-font-weight-mobile: {{ add_to_cart_font_weight_mobile }};
   "
 >
-  <!-- HERO SECTION (Floating Absolute) -->
-  {% render 'product-hero-image', product: product, section: section %}
-
-  <!-- CARD 1: LEFT COLUMN -->
-  <div class="product-mobile-card product-mobile-card--left product-column-appear">
-    {% render 'product-left-column',
-      product: product,
-      section: section,
-      product_form_id: product_form_id,
-      block_gap: section.settings.block_gap
-    %}
+  <!-- LEFT BENTO COLUMN -->
+  <div class="product-bento-col product-bento-col--left">
+    <!-- TITLE CARD: tag, title, divider, tagline, product image -->
+    <div class="product-bento-card product-bento-card--title product-column-appear">
+      {% render 'product-left-column',
+        product: product,
+        section: section,
+        product_form_id: product_form_id,
+        block_gap: section.settings.block_gap,
+        card_mode: 'title'
+      %}
+    </div>
+    <!-- PURCHASE CARD: price, stock, variants, qty+atc, pickup -->
+    <div class="product-bento-card product-bento-card--purchase product-column-appear">
+      {% render 'product-left-column',
+        product: product,
+        section: section,
+        product_form_id: product_form_id,
+        block_gap: section.settings.block_gap,
+        card_mode: 'purchase'
+      %}
+    </div>
   </div>
 
-  <!-- CARD 2: RIGHT COLUMN -->
-  <div class="product-mobile-card product-mobile-card--right product-column-appear">
-    {% render 'product-right-column', product: product, section: section, block_gap: section.settings.right_block_gap %}
+  <!-- RIGHT BENTO COLUMN -->
+  <div class="product-bento-col product-bento-col--right">
+    {% render 'product-right-column',
+      product: product,
+      section: section,
+      block_gap: section.settings.right_block_gap
+    %}
   </div>
 </div>
 
@@ -155,9 +172,17 @@
       const track = wrapper.querySelector('.product-media-track');
       if (!track) return;
 
-      const getSlides = () => Array.from(track.children).filter(slide => slide.offsetParent !== null);
-      
+      const getSlides = () => Array.from(track.children);
+      const getThumbs = () => Array.from(wrapper.querySelectorAll('.product-media-thumb'));
+
       let index = 0;
+
+      function updateActiveThumb() {
+        getThumbs().forEach(thumb => {
+          const thumbIdx = parseInt(thumb.dataset.index, 10);
+          thumb.classList.toggle('is-active', thumbIdx === index);
+        });
+      }
 
       function updateButtons() {
         const slides = getSlides();
@@ -165,58 +190,55 @@
         const nextBtn = wrapper.querySelector('.media-nav.next');
 
         if (prevBtn) {
-          if (index <= 0) {
-            prevBtn.style.opacity = '0.3';
-            prevBtn.style.pointerEvents = 'none';
-          } else {
-            prevBtn.style.opacity = '1';
-            prevBtn.style.pointerEvents = 'auto';
-          }
+          prevBtn.style.opacity = index <= 0 ? '0.3' : '1';
+          prevBtn.style.pointerEvents = index <= 0 ? 'none' : 'auto';
         }
         if (nextBtn) {
-          // If slides are empty or index at end
           const maxIdx = slides.length > 0 ? slides.length - 1 : 0;
-          if (index >= maxIdx) {
-            nextBtn.style.opacity = '0.3';
-            nextBtn.style.pointerEvents = 'none';
-          } else {
-            nextBtn.style.opacity = '1';
-            nextBtn.style.pointerEvents = 'auto';
-          }
+          nextBtn.style.opacity = index >= maxIdx ? '0.3' : '1';
+          nextBtn.style.pointerEvents = index >= maxIdx ? 'none' : 'auto';
         }
       }
 
       function scrollToSlide(i) {
         const slides = getSlides();
         const maxIdx = slides.length > 0 ? slides.length - 1 : 0;
-        
+
         if (i < 0) i = 0;
         if (i > maxIdx) i = maxIdx;
-        
+
         index = i;
-        
-        if (slides[index]) {
-          slides[index].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-        }
+
+        const slideWidth = track.offsetWidth;
+        track.scrollTo({ left: slideWidth * index, behavior: 'smooth' });
+
         updateButtons();
+        updateActiveThumb();
       }
 
       const prevBtn = wrapper.querySelector('.media-nav.prev');
       const nextBtn = wrapper.querySelector('.media-nav.next');
 
-      prevBtn?.addEventListener('click', () => {
-        scrollToSlide(index - 1);
-      });
-      nextBtn?.addEventListener('click', () => {
-        scrollToSlide(index + 1);
-      });
+      prevBtn?.addEventListener('click', () => scrollToSlide(index - 1));
+      nextBtn?.addEventListener('click', () => scrollToSlide(index + 1));
 
-      // Update on resize
+      // Thumbnail click
+      const thumbsContainer = wrapper.querySelector('.product-media-thumbnails');
+      if (thumbsContainer) {
+        thumbsContainer.addEventListener('click', (e) => {
+          const thumb = e.target.closest('.product-media-thumb');
+          if (!thumb) return;
+          scrollToSlide(parseInt(thumb.dataset.index, 10));
+        });
+      }
+
       window.addEventListener('resize', () => {
-        scrollToSlide(index);
+        const slideWidth = track.offsetWidth;
+        track.scrollTo({ left: slideWidth * index, behavior: 'instant' });
       });
 
       updateButtons();
+      updateActiveThumb();
     });
 
     const leftCol = sectionContainer.querySelector('.product-split-left');
@@ -1862,9 +1884,56 @@
       ]
     },
     {
+      "type": "left_hero_img",
+      "name": "Product Image",
+      "limit": 1
+    },
+    {
+      "type": "info_card",
+      "name": "Info Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Card Heading",
+          "default": "THE PROMISE"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Card Content",
+          "default": "<p>Every cup we make is traceable to its source. We work directly with small farms, pay fair prices, and roast in small batches so nothing goes to waste.</p>"
+        },
+        {
+          "type": "header",
+          "content": "Typography"
+        },
+        {
+          "type": "range",
+          "id": "heading_font_size",
+          "min": 10,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "label": "Heading Font Size",
+          "default": 13
+        },
+        {
+          "type": "range",
+          "id": "content_font_size",
+          "min": 10,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "label": "Content Font Size",
+          "default": 14
+        }
+      ]
+    },
+    {
       "type": "collapsible_tab",
       "name": "Accordion Tab",
-      "limit": 2,
+      "limit": 10,
       "settings": [
         {
           "type": "text",
