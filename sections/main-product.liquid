@@ -1,659 +1,379 @@
-{% assign product_form_id = 'product-form-' | append: section.id %}
 {{ 'section-main-product.css' | asset_url | stylesheet_tag }}
-{%- assign has_pickup_block = false -%}
-{%- for block in section.blocks -%}
-  {%- if block.type == 'pickup_availability' -%}
-    {%- assign has_pickup_block = true -%}
-    {%- break -%}
-  {%- endif -%}
-{%- endfor -%}
-{%- assign has_left_hero_img_block = false -%}
-{%- for block in section.blocks -%}
-  {%- if block.type == 'left_hero_img' -%}
-    {%- assign has_left_hero_img_block = true -%}
-    {%- break -%}
-  {%- endif -%}
-{%- endfor -%}
-{%- if has_pickup_block -%}
-  {{ 'component-pickup-availability.css' | asset_url | stylesheet_tag }}
-  <script src="{{ 'pickup-availability.js' | asset_url }}" defer="defer"></script>
-{%- endif -%}
-<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
 
-{%- liquid
-  assign scheme = section.settings.color_scheme
-  if scheme == blank
-    assign scheme = settings.color_schemes | first
-  endif
+<div class="product-page-container">
+  <!-- Left Column (50% Width) -->
+  <div class="product-left-column">
+    <!-- Card 1 (Header) -->
+    <div class="product-bento-card product-header-card">
+      {% if product.metafields.custom.tag != blank %}
+        <div class="product-tag-pill">{{ product.metafields.custom.tag }}</div>
+      {% else %}
+        <div class="product-tag-pill">BEAR WITH ME</div>
+      {% endif %}
 
-  assign add_to_cart_height = 38
-  assign quantity_height = 44
-  assign variant_height = 46
-  assign media_arrows_height = 38
-  assign variant_border_radius = 14
-  assign variant_border_radius_mobile = 14
-  assign variant_font_size = 14
-  assign variant_font_size_mobile = 14
-  assign variant_font_weight = 600
-  assign variant_font_weight_mobile = 600
-  assign variant_padding_vertical = 13
-  assign variant_padding_vertical_mobile = 12
-  assign variant_padding_horizontal = 28
-  assign variant_padding_horizontal_mobile = 20
-  assign quantity_border_radius = 10
-  assign quantity_border_radius_mobile = 10
-  assign add_to_cart_border_radius = 14
-  assign add_to_cart_border_radius_mobile = 14
-  assign arrows_border_radius = 14
-  assign add_to_cart_font_size = 14
-  assign add_to_cart_font_size_mobile = 14
-  assign add_to_cart_font_weight = 700
-  assign add_to_cart_font_weight_mobile = 700
-
-  for block in section.blocks
-    if block.type == 'quantity_selector'
-      assign add_to_cart_height = block.settings.add_to_cart_height | default: 38
-      assign quantity_height = block.settings.quantity_height | default: 44
-      assign quantity_border_radius = block.settings.quantity_border_radius | default: 10
-      assign quantity_border_radius_mobile = block.settings.quantity_border_radius_mobile | default: 10
-      assign add_to_cart_border_radius = block.settings.add_to_cart_border_radius | default: 14
-      assign add_to_cart_border_radius_mobile = block.settings.add_to_cart_border_radius_mobile | default: 14
-      assign add_to_cart_font_size = block.settings.add_to_cart_font_size | default: 14
-      assign add_to_cart_font_size_mobile = block.settings.add_to_cart_font_size_mobile | default: 14
-      assign add_to_cart_font_weight = block.settings.add_to_cart_font_weight | default: 700
-      assign add_to_cart_font_weight_mobile = block.settings.add_to_cart_font_weight_mobile | default: 700
-    elsif block.type == 'variant_picker'
-      assign variant_height = block.settings.variant_height | default: 46
-      assign variant_border_radius = block.settings.border_radius | default: 14
-      assign variant_border_radius_mobile = block.settings.border_radius_mobile | default: 14
-      assign variant_font_size = block.settings.font_size | default: 14
-      assign variant_font_size_mobile = block.settings.font_size_mobile | default: 14
-      assign variant_font_weight = block.settings.font_weight | default: 600
-      assign variant_font_weight_mobile = block.settings.font_weight_mobile | default: 600
-      assign variant_padding_vertical = block.settings.padding_vertical | default: 13
-      assign variant_padding_vertical_mobile = block.settings.padding_vertical_mobile | default: 12
-      assign variant_padding_horizontal = block.settings.padding_horizontal | default: 28
-      assign variant_padding_horizontal_mobile = block.settings.padding_horizontal_mobile | default: 20
-    elsif block.type == 'product_media'
-      assign media_arrows_height = block.settings.media_arrows_height | default: 38
-      assign arrows_border_radius = block.settings.arrows_border_radius | default: 14
-    endif
-  endfor
--%}
-
-<div
-  class="product-bento-grid color-{{ scheme.id }} gradient{% if product.selected_or_first_available_variant.available == false %} product-variant-sold-out{% endif %}"
-  id="ProductSection-{{ section.id }}"
-  style="
-    --hero-image-max-width: {{ section.settings.hero_image_max_width }}px;
-    --section-margin-top: {{ section.settings.margin_top }}px;
-    --section-margin-top-mobile: {{ section.settings.margin_top_mobile }}px;
-    --section-margin-bottom: {{ section.settings.margin_bottom }}px;
-    --section-margin-bottom-mobile: {{ section.settings.margin_bottom_mobile }}px;
-    --section-margin-horizontal: {{ section.settings.margin_horizontal }}px;
-    --section-margin-horizontal-mobile: {{ section.settings.margin_horizontal_mobile }}px;
-    --section-padding-top: {{ section.settings.padding_top }}px;
-    --section-padding-top-mobile: {{ section.settings.padding_top_mobile }}px;
-    --section-padding-bottom: {{ section.settings.padding_bottom }}px;
-    --section-padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
-    --section-padding-horizontal: {{ section.settings.padding_horizontal }}px;
-    --section-padding-horizontal-mobile: {{ section.settings.padding_horizontal_mobile }}px;
-    --section-border-radius: {{ section.settings.border_radius }}px;
-    --bento-gap: {{ section.settings.mobile_column_gap | default: 12 }}px;
-    --product-add-to-cart-height: {{ add_to_cart_height }}px;
-    --product-quantity-height: {{ quantity_height }}px;
-    --product-variant-height: {{ variant_height }}px;
-    --product-media-arrows-height: {{ media_arrows_height }}px;
-    --product-variant-border-radius: {{ variant_border_radius }}px;
-    --product-variant-border-radius-mobile: {{ variant_border_radius_mobile }}px;
-    --product-variant-font-size: {{ variant_font_size }}px;
-    --product-variant-font-size-mobile: {{ variant_font_size_mobile }}px;
-    --product-variant-font-weight: {{ variant_font_weight }};
-    --product-variant-font-weight-mobile: {{ variant_font_weight_mobile }};
-    --product-variant-padding-vertical: {{ variant_padding_vertical }}px;
-    --product-variant-padding-vertical-mobile: {{ variant_padding_vertical_mobile }}px;
-    --product-variant-padding-horizontal: {{ variant_padding_horizontal }}px;
-    --product-variant-padding-horizontal-mobile: {{ variant_padding_horizontal_mobile }}px;
-    --product-quantity-border-radius: {{ quantity_border_radius }}px;
-    --product-quantity-border-radius-mobile: {{ quantity_border_radius_mobile }}px;
-    --product-add-to-cart-border-radius: {{ add_to_cart_border_radius }}px;
-    --product-add-to-cart-border-radius-mobile: {{ add_to_cart_border_radius_mobile }}px;
-    --product-media-arrows-border-radius: {{ arrows_border_radius }}px;
-    --product-add-to-cart-font-size: {{ add_to_cart_font_size }}px;
-    --product-add-to-cart-font-size-mobile: {{ add_to_cart_font_size_mobile }}px;
-    --product-add-to-cart-font-weight: {{ add_to_cart_font_weight }};
-    --product-add-to-cart-font-weight-mobile: {{ add_to_cart_font_weight_mobile }};
-  "
->
-  <!-- LEFT BENTO COLUMN -->
-  <div class="product-bento-col product-bento-col--left">
-    <!-- TITLE CARD: tag, title, divider, tagline, product image -->
-    <div class="product-bento-card product-bento-card--title product-column-appear">
-      {% render 'product-left-column',
-        product: product,
-        section: section,
-        product_form_id: product_form_id,
-        block_gap: section.settings.block_gap,
-        card_mode: 'title'
-      %}
+      <h1 class="product-main-title">{{ product.title }}</h1>
+      <!-- Image overlapping -->
+      {% if product.featured_image %}
+        <img
+          src="{{ product.featured_image | image_url: width: 600 }}"
+          width="600"
+          height="600"
+          class="product-hero-image"
+          alt="{{ product.title | escape }}"
+          loading="lazy"
+        >
+      {% else %}
+        <img
+          src="https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-product-1_large.png"
+          width="600"
+          height="600"
+          class="product-hero-image"
+          alt="Placeholder"
+          loading="lazy"
+        >
+      {% endif %}
     </div>
-    <!-- PURCHASE CARD: price, stock, variants, qty+atc, pickup -->
-    <div class="product-bento-card product-bento-card--purchase product-column-appear">
-      {% render 'product-left-column',
-        product: product,
-        section: section,
-        product_form_id: product_form_id,
-        block_gap: section.settings.block_gap,
-        card_mode: 'purchase'
-      %}
+
+    <!-- Card 2 (Product Purchase) -->
+    {% assign current_variant = product.selected_or_first_available_variant %}
+    {% assign product_form_id = 'product-form-' | append: section.id %}
+    <div class="product-bento-card product-purchase-card">
+      <!-- Price -->
+      <div class="product-price-container">
+        <span class="price-compare">
+          {% if current_variant.compare_at_price > current_variant.price %}
+            {{ current_variant.compare_at_price | money_without_trailing_zeros }}
+          {% endif %}
+        </span>
+        <span class="price-main">{{ current_variant.price | money_without_trailing_zeros }}</span>
+      </div>
+
+      <!-- Stock Badge -->
+      <div class="stock-badge-wrapper">
+        <span class="stock-badge">
+          {% if product.available %}
+            {% if current_variant.inventory_management == 'shopify'
+              and current_variant.inventory_quantity > 0
+              and current_variant.inventory_quantity <= 10
+            %}
+              Only {{ current_variant.inventory_quantity }} left in stock
+            {% else %}
+              In stock
+            {% endif %}
+          {% else %}
+            Out of stock
+          {% endif %}
+        </span>
+      </div>
+
+      <!-- Variants -->
+      {% unless product.has_only_default_variant %}
+        <div class="variant-picker-wrapper">
+          {% for option in product.options_with_values %}
+            <fieldset class="product-form__input product-form__input--{{ option.name | downcase }}">
+              <div class="variant-options-row">
+                {% for value in option.values %}
+                  {%- assign radio_id = section.id
+                    | append: '-'
+                    | append: option.position
+                    | append: '-'
+                    | append: forloop.index
+                  -%}
+                  {%- if option.selected_value == value -%}
+                    {%- assign btn_variant = 'secondary' -%}
+                  {%- else -%}
+                    {%- assign btn_variant = 'primary' -%}
+                  {%- endif -%}
+                  <input
+                    type="radio"
+                    id="{{ radio_id }}"
+                    name="{{ option.name }}"
+                    value="{{ value | escape }}"
+                    form="{{ product_form_id }}"
+                    class="product-form__variant-radio visually-hidden"
+                    style="display: none;"
+                    {% if option.selected_value == value %}
+                      checked
+                    {% endif %}
+                  >
+                  <label for="{{ radio_id }}" class="product-form__variant-option-label">
+                    {% render 'global-btn-2',
+                      text: value,
+                      variant: btn_variant,
+                      type: 'button',
+                      class: 'product-form__variant-option-btn',
+                      fit_width: false
+                    %}
+                  </label>
+                {% endfor %}
+              </div>
+            </fieldset>
+          {% endfor %}
+        </div>
+      {% endunless %}
+
+      <!-- Promo Text -->
+      <div class="sale-roasted-text">
+        {{ product.metafields.custom.tagline | default: 'Single Origin · Cold Pressed' }}
+      </div>
+
+      <!-- Quantity and Add to Cart -->
+      <div class="product-actions-row">
+        {% render 'quantity-input',
+          variant: current_variant,
+          min: 1,
+          is_product_form: true,
+          product_form_id: product_form_id
+        %}
+
+        <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+        <product-form class="product-form">
+          {% form 'product',
+            product,
+            id: product_form_id,
+            class: 'form',
+            novalidate: 'novalidate',
+            data-type: 'add-to-cart-form'
+          %}
+            <input type="hidden" name="id" value="{{ current_variant.id }}">
+            {% liquid
+              if current_variant.available
+                assign btn_text = 'products.product.add_to_cart' | t
+                if btn_text contains 'Translation missing'
+                  assign btn_text = 'ADD TO CART'
+                endif
+              else
+                assign btn_text = 'products.product.sold_out' | t
+                if btn_text contains 'Translation missing'
+                  assign btn_text = 'SOLD OUT'
+                endif
+              endif
+            %}
+            {% render 'global-btn',
+              text: btn_text,
+              type: 'submit',
+              variant: 'tertiary',
+              class: 'product-form__submit',
+              is_add_to_cart: true,
+              fit_width: true
+            %}
+          {% endform %}
+        </product-form>
+      </div>
+
+      <!-- Store Availability Link -->
+      <button class="pickup-availability-button link link--text underlined-link">
+        CHECK AVAILABILITY AT OTHER STORES
+      </button>
     </div>
   </div>
 
-  <!-- RIGHT BENTO COLUMN -->
-  <div class="product-bento-col product-bento-col--right">
-    {% render 'product-right-column',
-      product: product,
-      section: section,
-      block_gap: section.settings.right_block_gap
-    %}
+  <!-- Right Column (Media Gallery) -->
+  <div class="product-right-column">
+    <div class="product-media-gallery">
+      <!-- Main Image -->
+      <div class="product-main-media">
+        {% assign right_main_media = product.featured_media %}
+
+        {% if right_main_media %}
+          {{
+            right_main_media
+            | image_url: width: 1000
+            | image_tag: class: 'main-media-img', id: 'ProductMainImage', loading: 'lazy'
+          }}
+        {% else %}
+          <img
+            src="https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-product-1_large.png"
+            width="1000"
+            height="1000"
+            class="main-media-img"
+            id="ProductMainImage"
+            alt="Placeholder"
+          >
+        {% endif %}
+
+        <div class="media-nav-buttons">
+          {%- capture prev_icon -%}
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          {%- endcapture -%}
+          {%- capture next_icon -%}
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          {%- endcapture -%}
+          {% render 'global-btn-2',
+            icon: prev_icon,
+            icon_only: true,
+            fit_width: false,
+            variant: 'white',
+            class: 'media-nav-btn prev'
+          %}
+          {% render 'global-btn-2',
+            icon: next_icon,
+            icon_only: true,
+            fit_width: false,
+            variant: 'white',
+            class: 'media-nav-btn next'
+          %}
+        </div>
+      </div>
+
+      <!-- Thumbnails -->
+      <div class="product-thumbnails">
+        {% for media in product.media limit: 3 %}
+          <div class="thumbnail-item" data-media-url="{{ media.preview_image | image_url: width: 1000 }}">
+            {{ media.preview_image | image_url: width: 300 | image_tag: class: 'thumbnail-img', loading: 'lazy' }}
+          </div>
+        {% else %}
+          <!-- Placeholders if no media -->
+          <div class="thumbnail-item"><div class="placeholder-thumb"></div></div>
+          <div class="thumbnail-item"><div class="placeholder-thumb"></div></div>
+          <div class="thumbnail-item"><div class="placeholder-thumb"></div></div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- FAQ List -->
+    <div class="product-faq-list">
+      <div class="faq-accordion-item">
+        <div class="faq-accordion-header">
+          <span>Q1. What makes KOKO cold brew different?</span>
+          <span class="faq-accordion-icon">+</span>
+        </div>
+        <div class="faq-accordion-body">
+          <p>
+            We cold press for 18 hours at low temperature, extracting a smoother, less acidic brew that keeps its
+            natural sweetness without any added sugar.
+          </p>
+        </div>
+      </div>
+      <div class="faq-accordion-item">
+        <div class="faq-accordion-header">
+          <span>Q2. How should I store it?</span>
+          <span class="faq-accordion-icon">+</span>
+        </div>
+        <div class="faq-accordion-body">
+          <p>Keep it refrigerated at all times. Once opened, consume within 7 days for best taste. Do not freeze.</p>
+        </div>
+      </div>
+      <div class="faq-accordion-item">
+        <div class="faq-accordion-header">
+          <span>Q3. Is this available for subscription?</span>
+          <span class="faq-accordion-icon">+</span>
+        </div>
+        <div class="faq-accordion-body">
+          <p>
+            Yes! Save 15% with a weekly or bi-weekly subscription. You can pause or cancel anytime from your account
+            dashboard.
+          </p>
+        </div>
+      </div>
+      <div class="faq-accordion-item">
+        <div class="faq-accordion-header">
+          <span>Q4. Do you ship internationally?</span>
+          <span class="faq-accordion-icon">+</span>
+        </div>
+        <div class="faq-accordion-body">
+          <p>
+            Currently we ship within India only. International shipping is coming soon — sign up for our newsletter to
+            be the first to know.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Info Text Block -->
+    <div class="product-info-card">
+      <h3>THE KOKO PROMISE</h3>
+      <p>
+        Every cup we make is traceable to its source. We work directly with small farms, pay fair prices, and roast in
+        small batches so nothing goes to waste. Good coffee shouldn't cost the planet.
+      </p>
+    </div>
   </div>
-</div>
 
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const sectionContainer = document.getElementById('ProductSection-{{ section.id }}');
-    if (!sectionContainer) return;
-
-    // ---------------------------------------------------------
-    // IMAGE SLIDER LOGIC
-    // ---------------------------------------------------------
-    const wrappers = sectionContainer.querySelectorAll('.product-media-wrapper');
-    wrappers.forEach(wrapper => {
-      const track = wrapper.querySelector('.product-media-track');
-      if (!track) return;
-
-      const getSlides = () => Array.from(track.children);
-      const getThumbs = () => Array.from(wrapper.querySelectorAll('.product-media-thumb'));
-
-      let index = 0;
-
-      function updateActiveThumb() {
-        getThumbs().forEach(thumb => {
-          const thumbIdx = parseInt(thumb.dataset.index, 10);
-          thumb.classList.toggle('is-active', thumbIdx === index);
-        });
-      }
-
-      function updateButtons() {
-        const slides = getSlides();
-        const prevBtn = wrapper.querySelector('.media-nav.prev');
-        const nextBtn = wrapper.querySelector('.media-nav.next');
-
-        if (prevBtn) {
-          prevBtn.style.opacity = index <= 0 ? '0.3' : '1';
-          prevBtn.style.pointerEvents = index <= 0 ? 'none' : 'auto';
-        }
-        if (nextBtn) {
-          const maxIdx = slides.length > 0 ? slides.length - 1 : 0;
-          nextBtn.style.opacity = index >= maxIdx ? '0.3' : '1';
-          nextBtn.style.pointerEvents = index >= maxIdx ? 'none' : 'auto';
-        }
-      }
-
-      function scrollToSlide(i) {
-        const slides = getSlides();
-        const maxIdx = slides.length > 0 ? slides.length - 1 : 0;
-
-        if (i < 0) i = 0;
-        if (i > maxIdx) i = maxIdx;
-
-        index = i;
-
-        const slideWidth = track.offsetWidth;
-        track.scrollTo({ left: slideWidth * index, behavior: 'smooth' });
-
-        updateButtons();
-        updateActiveThumb();
-      }
-
-      const prevBtn = wrapper.querySelector('.media-nav.prev');
-      const nextBtn = wrapper.querySelector('.media-nav.next');
-
-      prevBtn?.addEventListener('click', () => scrollToSlide(index - 1));
-      nextBtn?.addEventListener('click', () => scrollToSlide(index + 1));
-
-      // Thumbnail click
-      const thumbsContainer = wrapper.querySelector('.product-media-thumbnails');
-      if (thumbsContainer) {
-        thumbsContainer.addEventListener('click', (e) => {
-          const thumb = e.target.closest('.product-media-thumb');
-          if (!thumb) return;
-          scrollToSlide(parseInt(thumb.dataset.index, 10));
-        });
-      }
-
-      window.addEventListener('resize', () => {
-        const slideWidth = track.offsetWidth;
-        track.scrollTo({ left: slideWidth * index, behavior: 'instant' });
-      });
-
-      updateButtons();
-      updateActiveThumb();
-    });
-
-    const leftCol = sectionContainer.querySelector('.product-split-left');
-    const rightCol = sectionContainer.querySelector('.product-split-right');
-
-    // ---------------------------------------------------------
-    // SCROLL EXPAND ANIMATION
-    // Elements start smaller, expand to full when scrolled into view
-    // Mobile: viewport root (page scrolls). Desktop: column root (column scrolls)
-    // ---------------------------------------------------------
-    const isMobile = window.innerWidth < 990;
-
-    function createScrollExpandObserver(root) {
-      return new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('product-scroll-expand--visible');
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Variant button active state
+      document.querySelectorAll('.product-form__input').forEach(function (fieldset) {
+        fieldset.querySelectorAll('.product-form__variant-radio').forEach(function (radio) {
+          radio.addEventListener('change', function () {
+            fieldset.querySelectorAll('.product-form__variant-option-btn').forEach(function (btn) {
+              btn.classList.remove('global-btn-2--secondary');
+              btn.classList.add('global-btn-2--primary');
+              btn.setAttribute('data-btn-variant', 'primary');
+            });
+            var activeBtn = radio.nextElementSibling.querySelector('.product-form__variant-option-btn');
+            if (activeBtn) {
+              activeBtn.classList.remove('global-btn-2--primary');
+              activeBtn.classList.add('global-btn-2--secondary');
+              activeBtn.setAttribute('data-btn-variant', 'secondary');
             }
           });
-        },
-        {
-          root: root ?? null,
-          rootMargin: isMobile ? '0px 0px 80px 0px' : '0px 0px -20px 0px',
-          threshold: isMobile ? 0.6 : 0.8
-        }
-      );
-    }
-
-    const leftTargets = leftCol ? leftCol.querySelectorAll('.product-left-inner > *:not(.product-actions-row)') : [];
-    const rightTargets = rightCol ? new Set([
-      rightCol.querySelector('.product-media-block-wrapper'),
-      rightCol.querySelector('.product__description'),
-      ...rightCol.querySelectorAll('.product-content-stack > *:not(.marquee-wrapper)'),
-      ...rightCol.querySelectorAll('accordion-item')
-    ]) : new Set();
-
-    if (leftCol) {
-      const leftObserver = createScrollExpandObserver(isMobile ? null : leftCol);
-      leftTargets.forEach((el) => {
-        el.classList.add('product-scroll-expand');
-        leftObserver.observe(el);
-      });
-    }
-
-    if (rightCol) {
-      const rightObserver = createScrollExpandObserver(isMobile ? null : rightCol);
-      rightTargets.forEach((el) => {
-        if (el) {
-          el.classList.add('product-scroll-expand');
-          rightObserver.observe(el);
-        }
-      });
-    }
-
-    // ---------------------------------------------------------
-    // SCROLL HIJACKING (Desktop Only)
-    // ---------------------------------------------------------
-    const desktopContainer = document.querySelector('.product-split-container');
-    const rightColumn = document.querySelector('.product-split-right');
-    
-    if (desktopContainer && rightColumn) {
-      desktopContainer.addEventListener('wheel', (e) => {
-        // Only active on desktop
-        if (window.innerWidth < 990) return;
-
-        // Allow zooming (Ctrl/Cmd + Scroll)
-        if (e.ctrlKey || e.metaKey) return;
-
-        const scrollTop = rightColumn.scrollTop;
-        const scrollHeight = rightColumn.scrollHeight;
-        const clientHeight = rightColumn.clientHeight;
-        const delta = e.deltaY;
-        const isScrollDown = delta > 0;
-
-        // Determine if we can scroll the element
-        // 1px buffer to account for rounding errors
-        const canScrollDown = scrollTop + clientHeight < scrollHeight - 1;
-        const canScrollUp = scrollTop > 0;
-
-        if ((isScrollDown && canScrollDown) || (!isScrollDown && canScrollUp)) {
-            // We can scroll the inner content, so prevent window scroll
-            e.preventDefault();
-            rightColumn.scrollTop += delta;
-        }
-          // Else: let the event bubble to window (default behavior)
-      }, { passive: false }); // Passive false required for preventDefault
-    }
-
-    // ---------------------------------------------------------
-    // VARIANT SELECTION LOGIC
-    // ---------------------------------------------------------
-    const productVariants = {{ product.variants | json }};
-    const productOptions = {{ product.options_with_values | json }};
-    const moneyFormat = {{ shop.money_with_currency_format | json }};
-    
-    // Create a map of inventory quantities since they aren't in the default JSON
-    const inventoryInfo = {
-      {% for variant in product.variants %}
-        "{{ variant.id }}": {
-        "quantity": {{ variant.inventory_quantity | default: 0 }},
-          "management": "{{ variant.inventory_management }}",
-          "policy": "{{ variant.inventory_policy }}"
-        }{% unless forloop.last %},{% endunless %}
-      {% endfor %}
-    };
-
-    function formatMoney(cents, format) {
-      if (typeof cents == 'string') { cents = cents.replace('.',''); }
-      let value = '';
-      const placeholderRegex = /\{\{\s*(\w+)\s*\}\}/;
-      const formatString = format || moneyFormat;
-
-      function defaultOption(opt, def) {
-         return (typeof opt == 'undefined' ? def : opt);
-      }
-
-      function formatWithDelimiters(number, precision, thousands, decimal) {
-        precision = defaultOption(precision, 2);
-        thousands = defaultOption(thousands, ',');
-        decimal   = defaultOption(decimal, '.');
-
-        if (isNaN(number) || number == null) { return 0; }
-
-        number = (number/100.0).toFixed(precision);
-
-        var parts   = number.split('.'),
-            dollars = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1' + thousands),
-            cents   = parts[1] ? (decimal + parts[1]) : '';
-
-        return dollars + cents;
-      }
-
-      const match = formatString.match(placeholderRegex);
-      if (!match) return formatString; // Fallback
-
-      switch(match[1]) {
-        case 'amount':
-          value = formatWithDelimiters(cents, 2);
-          break;
-        case 'amount_no_decimals':
-          value = formatWithDelimiters(cents, 0);
-          break;
-        case 'amount_with_comma_separator':
-          value = formatWithDelimiters(cents, 2, '.', ',');
-          break;
-        case 'amount_no_decimals_with_comma_separator':
-          value = formatWithDelimiters(cents, 0, '.', ',');
-          break;
-      }
-
-      return formatString.replace(placeholderRegex, value);
-    }
-    
-    // Select all radio inputs for variants WITHIN this section
-    const variantRadios = sectionContainer.querySelectorAll('.product-form__input input[type="radio"]');
-    
-    // Function to get currently selected options
-    function getSelectedOptions() {
-      const fieldsets = Array.from(sectionContainer.querySelectorAll('.product-form__input'));
-      // Map each fieldset to its selected radio value
-      return fieldsets.map(fieldset => {
-        const checkedInput = fieldset.querySelector('input:checked');
-        return checkedInput ? checkedInput.value : null;
-      });
-    }
-
-    // Function to find matching variant
-    function findMatchingVariant(selectedOptions) {
-      return productVariants.find(variant => {
-        return variant.options.every((option, index) => {
-          return option === selectedOptions[index];
         });
       });
-    }
 
-    // Update Form State
-    function updateProductState() {
-      const selectedOptions = getSelectedOptions();
-      const currentVariant = findMatchingVariant(selectedOptions);
-
-      // Select specific elements within THIS section using the unique ID
-      const formInputId = sectionContainer.querySelector('input[name="id"]');
-      const submitBtn = sectionContainer.querySelector('.product-form__submit');
-      
-      if (!currentVariant) {
-        sectionContainer.classList.add('product-variant-sold-out');
-        // Variant doesn't exist
-        if (submitBtn) {
-          const btnText = submitBtn.querySelector('.global-btn__text') || submitBtn.querySelector('.submit-button__text');
-          if (btnText) btnText.textContent = 'Unavailable';
-          submitBtn.disabled = true;
-          submitBtn.style.opacity = '0.8';
-          submitBtn.style.cursor = 'not-allowed';
-        }
-        // Clear pickup availability for invalid variant combination
-        const pickupAvailability = sectionContainer.querySelector('pickup-availability');
-        if (pickupAvailability) {
-          if (typeof pickupAvailability.update === 'function') {
-            pickupAvailability.update(null);
-          } else {
-            pickupAvailability.removeAttribute('available');
-            pickupAvailability.innerHTML = '';
+      // FAQ Accordion
+      document.querySelectorAll('.faq-accordion-item').forEach(function (item) {
+        item.querySelector('.faq-accordion-header').addEventListener('click', function () {
+          const isOpen = item.classList.contains('is-open');
+          // Close all
+          document.querySelectorAll('.faq-accordion-item.is-open').forEach(function (open) {
+            open.classList.remove('is-open');
+            open.querySelector('.faq-accordion-body').style.maxHeight = '0';
+          });
+          // Open clicked if it was closed
+          if (!isOpen) {
+            const body = item.querySelector('.faq-accordion-body');
+            item.classList.add('is-open');
+            body.style.maxHeight = body.scrollHeight + 'px';
           }
-        }
-      } else {
-        // Variant exists
-        // 1. Update hidden ID input
-        if (formInputId) {
-          formInputId.value = currentVariant.id;
-        }
-
-        // 2. Update URL (HISTORY API)
-        const newUrl = new URL(window.location);
-        newUrl.searchParams.set('variant', currentVariant.id);
-        window.history.replaceState({ path: newUrl.toString() }, '', newUrl);
-
-        // 3. Update sold-out state (variant + quantity styling)
-        if (currentVariant.available) {
-          sectionContainer.classList.remove('product-variant-sold-out');
-        } else {
-          sectionContainer.classList.add('product-variant-sold-out');
-        }
-
-        // 4. Update Button State (text only – do not replace innerHTML so global-btn styling stays)
-        if (submitBtn) {
-           const btnText = submitBtn.querySelector('.global-btn__text') || submitBtn.querySelector('.submit-button__text');
-
-           if (currentVariant.available) {
-             if (btnText) btnText.textContent = 'ADD TO CART';
-             submitBtn.disabled = false;
-             submitBtn.style.opacity = '1';
-             submitBtn.style.cursor = 'pointer';
-           } else {
-             if (btnText) btnText.textContent = 'Sold Out';
-             submitBtn.disabled = true;
-             submitBtn.style.opacity = '0.8';
-             submitBtn.style.cursor = 'not-allowed';
-           }
-        }
-
-        // 5. Update Price Display
-        const priceMain = sectionContainer.querySelector('.price-main');
-        const priceCompare = sectionContainer.querySelector('.price-compare');
-        
-        if (priceMain) {
-            priceMain.innerHTML = formatMoney(currentVariant.price, moneyFormat);
-        }
-        
-        if (priceCompare) {
-            if (currentVariant.compare_at_price > currentVariant.price) {
-                priceCompare.innerHTML = formatMoney(currentVariant.compare_at_price, moneyFormat);
-                priceCompare.style.display = 'inline';
-            } else {
-                priceCompare.style.display = 'none';
-            }
-        }
-
-        // 6. Update Stock Badge
-        const stockBadge = sectionContainer.querySelector('.stock-badge');
-        const invStats = inventoryInfo[currentVariant.id];
-
-        if (stockBadge) {
-           stockBadge.style.display = 'inline-block';
-           
-           if (currentVariant.available) {
-             if (invStats && invStats.management === 'shopify' && invStats.quantity > 0 && invStats.quantity <= 10) {
-               stockBadge.textContent = `Only ${invStats.quantity} left in stock`;
-             } else {
-               stockBadge.textContent = 'In stock';
-             }
-           } else {
-             stockBadge.textContent = 'Out of stock';
-           }
-        }
-
-        // 7. Update Quantity Max
-        const qtyInput = sectionContainer.querySelector('.quantity__input');
-        if (qtyInput) {
-          let maxQty = null;
-          
-          // Check inventory policy
-          if (invStats && invStats.management === 'shopify' && invStats.policy === 'deny') {
-             maxQty = invStats.quantity;
-          }
-
-          // Check quantity rules (if available in variant object)
-          if (currentVariant.quantity_rule && currentVariant.quantity_rule.max) {
-             if (maxQty === null || currentVariant.quantity_rule.max < maxQty) {
-                maxQty = currentVariant.quantity_rule.max;
-             }
-          }
-
-          if (maxQty !== null) {
-            qtyInput.max = maxQty;
-            qtyInput.dataset.max = maxQty;
-            // Optional: Clamp current value if it exceeds new max
-            if (parseInt(qtyInput.value) > maxQty) {
-              qtyInput.value = maxQty;
-            }
-          } else {
-            qtyInput.removeAttribute('max');
-            delete qtyInput.dataset.max;
-          }
-
-          // 8. Update Quantity Min & Step
-          if (currentVariant.quantity_rule) {
-             const minQty = currentVariant.quantity_rule.min || 1;
-             const stepQty = currentVariant.quantity_rule.increment || 1;
-
-             qtyInput.min = minQty;
-             qtyInput.dataset.min = minQty;
-             qtyInput.step = stepQty;
-
-             // Ensure current value satisfies min
-             if (parseInt(qtyInput.value) < minQty) {
-               qtyInput.value = minQty;
-             }
-          }
-        }
-
-        // 9. Update Pickup Availability
-        const pickupAvailability = sectionContainer.querySelector('pickup-availability');
-        if (pickupAvailability) {
-          pickupAvailability.dataset.variantId = currentVariant.id;
-          if (typeof pickupAvailability.update === 'function') {
-            pickupAvailability.update(currentVariant);
-          }
-        }
-      }
-    }
-
-    // Attach listeners
-    variantRadios.forEach(radio => {
-      radio.addEventListener('change', updateProductState);
-    });
-
-    // When variant option is the global-btn snippet (button inside label), sync click to radio
-    sectionContainer.addEventListener('click', (e) => {
-      const btn = e.target.closest('.product-form__variant-option-btn');
-      if (!btn) return;
-      const label = btn.closest('label[for]');
-      if (!label?.htmlFor) return;
-      const radio = document.getElementById(label.htmlFor);
-      if (radio && radio.type === 'radio') {
-        e.preventDefault();
-        radio.checked = true;
-        radio.dispatchEvent(new Event('change', { bubbles: true }));
-      }
-    });
-
-    // Initial call to set correct initial state
-    updateProductState();
-  });
-</script>
-
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const spriteContainer = document.querySelector('.product-hero-sprite-container');
-    if (!spriteContainer) return;
-
-    const img = spriteContainer.querySelector('.product-hero-sprite-img');
-    const frames = parseInt(spriteContainer.dataset.frames || 1, 10);
-
-    if (!img || frames <= 1) return;
-
-    // Function to update aspect ratio
-    function updateAspectRatio() {
-      if (img.naturalWidth && img.naturalHeight) {
-        const frameWidth = img.naturalWidth / frames;
-        const aspectRatio = frameWidth / img.naturalHeight;
-        spriteContainer.style.aspectRatio = `${aspectRatio}`;
-      }
-    }
-
-    img.onload = updateAspectRatio;
-    if (img.complete) {
-      updateAspectRatio();
-    }
-
-    // Interaction Logic: Scroll Based
-    const scrollTarget = document.querySelector('.product-split-right');
-
-    function updateFrame() {
-      if (!scrollTarget) return;
-
-      const scrollTop = scrollTarget.scrollTop;
-      const maxScroll = scrollTarget.scrollHeight - scrollTarget.clientHeight;
-
-      // Avoid division by zero
-      if (maxScroll <= 0) return;
-
-      const scrollPercent = scrollTop / maxScroll;
-
-      // Calculate index
-      let index = Math.floor(scrollPercent * frames);
-
-      // Clamp
-      if (index < 0) index = 0;
-      if (index >= frames) index = frames - 1;
-
-      // Translate
-      const translatePercent = (index / frames) * 100;
-      img.style.transform = `translateX(-${translatePercent}%)`;
-    }
-
-    if (scrollTarget) {
-      scrollTarget.addEventListener('scroll', () => {
-        window.requestAnimationFrame(updateFrame);
+        });
       });
-      // Initial call to set starting frame
-      updateFrame();
-    }
-  });
-</script>
+
+      const mainImage = document.getElementById('ProductMainImage');
+      const thumbnails = document.querySelectorAll('.thumbnail-item[data-media-url]');
+      const prevBtn = document.querySelector('.media-nav-btn.prev');
+      const nextBtn = document.querySelector('.media-nav-btn.next');
+
+      if (!mainImage || thumbnails.length === 0) return;
+
+      let currentIndex = 0;
+
+      function updateMainImage(index) {
+        if (index < 0) index = thumbnails.length - 1;
+        if (index >= thumbnails.length) index = 0;
+        currentIndex = index;
+        const newSrc = thumbnails[currentIndex].getAttribute('data-media-url');
+        if (!newSrc) return;
+        mainImage.style.opacity = '0';
+        setTimeout(function () {
+          mainImage.src = newSrc;
+          mainImage.srcset = newSrc;
+          mainImage.style.opacity = '1';
+        }, 300);
+      }
+
+      thumbnails.forEach((thumb, index) => {
+        thumb.addEventListener('click', function () {
+          updateMainImage(index);
+        });
+      });
+
+      if (prevBtn) {
+        prevBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          updateMainImage(currentIndex - 1);
+        });
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          updateMainImage(currentIndex + 1);
+        });
+      }
+    });
+  </script>
+</div>
 
 {% schema %}
 {
