@@ -7,7 +7,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 0;
-  background-color: var(--btn-primary-bg, #F8F3F8);
+  background-color: transparent;
   border: 1px solid var(--btn-primary-border, #000000);
   border-radius: 12px;
   padding:5px 10px;

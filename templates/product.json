@@ -121,6 +121,10 @@
             "arrows_border_radius": 14
           }
         },
+        "left_hero_img": {
+          "type": "left_hero_img",
+          "settings": {}
+        },
         "price": {
           "type": "price",
           "settings": {
@@ -160,7 +164,7 @@
         "promo_text": {
           "type": "promo_text",
           "settings": {
-            "promo_text": "Sale Roasted Kaffeebohnen",
+            "promo_text": "Single Origin · Cold Pressed",
             "promo_font_size": 12,
             "promo_font_size_mobile": 11
           }
@@ -190,17 +194,74 @@
         "collapsible_tab_1": {
           "type": "collapsible_tab",
           "settings": {
-            "heading": "Geeky Details",
+            "heading": "Q1. What makes KOKO cold brew different?",
             "content": "<p>Here are the technical details of the product.</p>",
             "custom_liquid": "",
-            "heading_font_size": 18,
-            "heading_font_size_mobile": 16,
-            "heading_font_weight": "400",
-            "heading_font_weight_mobile": "400",
-            "content_font_size": 16,
-            "content_font_size_mobile": 15,
+            "heading_font_size": 16,
+            "heading_font_size_mobile": 15,
+            "heading_font_weight": "600",
+            "heading_font_weight_mobile": "600",
+            "content_font_size": 14,
+            "content_font_size_mobile": 14,
             "content_font_weight": "400",
             "content_font_weight_mobile": "400"
+          }
+        },
+        "collapsible_tab_2": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Q2. How should I store it?",
+            "content": "<p>Keep refrigerated and consume within 14 days of opening. Best enjoyed cold straight from the bottle.</p>",
+            "custom_liquid": "",
+            "heading_font_size": 16,
+            "heading_font_size_mobile": 15,
+            "heading_font_weight": "600",
+            "heading_font_weight_mobile": "600",
+            "content_font_size": 14,
+            "content_font_size_mobile": 14,
+            "content_font_weight": "400",
+            "content_font_weight_mobile": "400"
+          }
+        },
+        "collapsible_tab_3": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Q3. Is this available for subscription?",
+            "content": "<p>Yes! Subscribe and save 15% on every order. Cancel anytime — no strings attached.</p>",
+            "custom_liquid": "",
+            "heading_font_size": 16,
+            "heading_font_size_mobile": 15,
+            "heading_font_weight": "600",
+            "heading_font_weight_mobile": "600",
+            "content_font_size": 14,
+            "content_font_size_mobile": 14,
+            "content_font_weight": "400",
+            "content_font_weight_mobile": "400"
+          }
+        },
+        "collapsible_tab_4": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Q4. Do you ship internationally?",
+            "content": "<p>Currently we ship within Canada and the US. International shipping is coming soon.</p>",
+            "custom_liquid": "",
+            "heading_font_size": 16,
+            "heading_font_size_mobile": 15,
+            "heading_font_weight": "600",
+            "heading_font_weight_mobile": "600",
+            "content_font_size": 14,
+            "content_font_size_mobile": 14,
+            "content_font_weight": "400",
+            "content_font_weight_mobile": "400"
+          }
+        },
+        "info_card_1": {
+          "type": "info_card",
+          "settings": {
+            "heading": "THE KOKO PROMISE",
+            "content": "<p>Every cup we make is traceable to its source. We work directly with small farms, pay fair prices, and roast in small batches so nothing goes to waste. Good coffee shouldn't cost the planet.</p>",
+            "heading_font_size": 13,
+            "content_font_size": 14
           }
         },
         "description": {
@@ -313,6 +374,7 @@
         "divider",
         "tagline",
         "mobile_slider",
+        "left_hero_img",
         "price",
         "stock_badge",
         "variant_picker",
@@ -320,6 +382,10 @@
         "quantity_selector",
         "product_media",
         "collapsible_tab_1",
+        "collapsible_tab_2",
+        "collapsible_tab_3",
+        "collapsible_tab_4",
+        "info_card_1",
         "description",
         "icon_strip_1",
         "feature_row_1",

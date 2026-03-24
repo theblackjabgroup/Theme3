@@ -135,9 +135,7 @@
 
           <div class="scroll-nav">
             {%- capture prev_arrow_icon -%}
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+              {{- 'icon-arrow-left.svg' | inline_asset_content -}}
             {%- endcapture -%}
             {%- render 'global-btn-2',
               icon: prev_arrow_icon,
@@ -149,9 +147,7 @@
               fit_width: false
             -%}
             {%- capture next_arrow_icon -%}
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+              {{- 'icon-arrow-right.svg' | inline_asset_content -}}
             {%- endcapture -%}
             {%- render 'global-btn-2',
               icon: next_arrow_icon,

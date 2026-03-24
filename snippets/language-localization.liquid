@@ -11,7 +11,7 @@
     {%- if localization.language.iso_code == 'en' -%}
       <img src="https://cdn.shopify.com/static/images/flags/gb.svg?width=32" alt="" class="localization-flag" width="32" height="24" loading="lazy">
     {%- else -%}
-      {{ localization.country | image_url: width: 32 | image_tag: loading: 'lazy', class: 'localization-flag' }}
+      {{ localization.country | image_url: width: 32 | image_tag: loading: 'lazy', class: 'localization-flag', alt: '' }}
     {%- endif -%}
   {%- endcapture -%}
   {%- capture caret -%}
@@ -73,7 +73,7 @@
           class="country-filter__reset-button field__button hidden"
           aria-label="{{ 'general.search.reset' | t }}"
         >
-          {{- 'icon-reset.svg' | inline_asset_content -}}
+          {{- 'icon-close.svg' | inline_asset_content -}}
         </button>
         <div class="country-filter__search-icon field__button motion-reduce">
           {{- 'icon-search.svg' | inline_asset_content -}}

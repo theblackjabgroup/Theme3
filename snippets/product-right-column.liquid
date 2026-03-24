@@ -1,75 +1,59 @@
 {%- comment -%}
   Product Right Column Snippet
-  ------------------------------------------------------------------------------
-  Renders the scrollable right column with image slider and detail blocks.
-  Desktop image slider is rendered from the Product Media Gallery block when present.
-
-  Usage:
-  {% render 'product-right-column', product: product, section: section %}
-
-  Variables:
-  - product: The product object.
-  - section: The section object (to iterate over blocks).
+  Renders each block as its own bento card in the right column.
 {%- endcomment -%}
-<div class="product-split-right product-column-appear" style="--block-gap: {{ block_gap | default: 24 }}px;">
-  {%- assign accordion_count = 0 -%}
-  {%- assign in_content_stack = false -%}
-  {%- for block in section.blocks -%}
-    {%- case block.type -%}
-      {%- when 'product_media' -%}
-        {%- if in_content_stack -%}
-          </div>
-          {%- assign in_content_stack = false -%}
-        {%- endif -%}
-        <div class="product-media-block-wrapper" {{ block.shopify_attributes }}>
-          {% render 'product-image-slider', product: product, section: section, block: block %}
-        </div>
+{%- for block in section.blocks -%}
+  {%- case block.type -%}
+    {%- when 'product_media' -%}
+      <div class="product-bento-card product-bento-card--media product-column-appear" {{ block.shopify_attributes }}>
+        {% render 'product-image-slider', product: product, section: section, block: block %}
+      </div>
 
-      {%- when 'collapsible_tab' -%}
-        {%- unless in_content_stack -%}
-          <div class="product-content-stack" style="--block-gap: {{ block_gap | default: 24 }}px;">
-          {%- assign in_content_stack = true -%}
-        {%- endunless -%}
-        {%- if accordion_count < 2 -%}
-          {% render 'block-accordion', block: block %}
-          {%- assign accordion_count = accordion_count | plus: 1 -%}
-        {%- endif -%}
+    {%- when 'collapsible_tab' -%}
+      <div class="product-bento-card product-bento-card--accordion product-column-appear" {{ block.shopify_attributes }}>
+        {% render 'block-accordion', block: block %}
+      </div>
 
-      {%- when 'description' -%}
-        {%- unless in_content_stack -%}
-          <div class="product-content-stack" style="--block-gap: {{ block_gap | default: 24 }}px;">
-          {%- assign in_content_stack = true -%}
-        {%- endunless -%}
+    {%- when 'description' -%}
+      <div class="product-bento-card product-column-appear" {{ block.shopify_attributes }}>
         <div class="product__description product__description--customizable" style="
           --description-font-size: {{ block.settings.font_size | default: 18 }}px;
           --description-font-size-mobile: {{ block.settings.font_size_mobile | default: 16 }}px;
           --description-font-weight: {{ block.settings.font_weight | default: 400 }};
           --description-font-weight-mobile: {{ block.settings.font_weight_mobile | default: 400 }};
-        " {{ block.shopify_attributes }}>{{ product.description }}</div>
+        ">{{ product.description }}</div>
+      </div>
 
-      {%- when 'marquee' -%}
-        {%- unless in_content_stack -%}
-          <div class="product-content-stack" style="--block-gap: {{ block_gap | default: 24 }}px;">
-          {%- assign in_content_stack = true -%}
-        {%- endunless -%}
+    {%- when 'marquee' -%}
+      <div class="product-bento-card product-bento-card--marquee product-column-appear" {{ block.shopify_attributes }}>
         {% render 'block-marquee', block: block %}
+      </div>
 
-      {%- when 'feature_row' -%}
-        {%- unless in_content_stack -%}
-          <div class="product-content-stack" style="--block-gap: {{ block_gap | default: 24 }}px;">
-          {%- assign in_content_stack = true -%}
-        {%- endunless -%}
+    {%- when 'feature_row' -%}
+      <div class="product-bento-card product-column-appear" {{ block.shopify_attributes }}>
         {% render 'block-feature-row', block: block %}
+      </div>
 
-      {%- when 'icon_strip' -%}
-        {%- unless in_content_stack -%}
-          <div class="product-content-stack" style="--block-gap: {{ block_gap | default: 24 }}px;">
-          {%- assign in_content_stack = true -%}
-        {%- endunless -%}
+    {%- when 'icon_strip' -%}
+      <div class="product-bento-card product-column-appear" {{ block.shopify_attributes }}>
         {% render 'block-icon-strip', block: block %}
-    {%- endcase -%}
-  {%- endfor -%}
-  {%- if in_content_stack -%}
-    </div>
-  {%- endif -%}
-</div>
+      </div>
+
+    {%- when 'info_card' -%}
+      <div
+        class="product-bento-card product-bento-card--info product-column-appear"
+        style="
+          --info-card-heading-font-size: {{ block.settings.heading_font_size | default: 13 }}px;
+          --info-card-content-font-size: {{ block.settings.content_font_size | default: 14 }}px;
+        "
+        {{ block.shopify_attributes }}
+      >
+        {%- if block.settings.heading != blank -%}
+          <p class="product-info-card__heading">{{ block.settings.heading }}</p>
+        {%- endif -%}
+        {%- if block.settings.content != blank -%}
+          <div class="product-info-card__text">{{ block.settings.content }}</div>
+        {%- endif -%}
+      </div>
+  {%- endcase -%}
+{%- endfor -%}

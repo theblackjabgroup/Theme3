@@ -1,91 +1,104 @@
 {%- comment -%}
   Product Image Slider Snippet
   ------------------------------------------------------------------------------
-  Renders the horizontal image slider for product media (excluding the first image).
+  Renders the horizontal image slider with bottom-right nav and thumbnail strip.
 
   Usage:
-  {% render 'product-image-slider', product: product %}
-
-  Variables:
-  - product: The product object.
+  {% render 'product-image-slider', product: product, section: section %}
 {%- endcomment -%}
 <div class="product-media-wrapper">
-  {%- render 'global-btn-2',
-    text: '←',
-    type: 'button',
-    fit_width: false,
-    class: 'media-nav prev',
-    attributes: 'aria-label="Previous image"'
-  -%}
-  {%- render 'global-btn-2',
-    text: '→',
-    type: 'button',
-    fit_width: false,
-    class: 'media-nav next',
-    attributes: 'aria-label="Next image"'
-  -%}
-
-  <div class="product-media-track">
-    {% assign hero_image_found = false %}
-    {% for media in product.media %}
-      <div class="product-media-slide {% if media.media_type == 'image' and hero_image_found == false %}is-hero-slide{% endif %}">
-        {% case media.media_type %}
-          {% when 'image' %}
-            {% if hero_image_found == false
-              and section.settings.enable_sprite_sheet
-              and section.settings.sprite_sheet_frames > 1
-              and media.aspect_ratio > 2.0
-            %}
-              {% assign frames = section.settings.sprite_sheet_frames | times: 1.0 %}
-              {% assign frame_aspect = media.aspect_ratio | divided_by: frames %}
-              <div
-                class="product-media-static-sprite"
-                style="--frames: {{ frames }}; --aspect-ratio: {{ frame_aspect }};"
+  <div class="product-media-main">
+    <div class="product-media-track">
+      {% for media in product.media %}
+        <div class="product-media-slide" data-index="{{ forloop.index0 }}">
+          {% case media.media_type %}
+            {% when 'image' %}
+              {% if forloop.first
+                and section.settings.enable_sprite_sheet
+                and section.settings.sprite_sheet_frames > 1
+                and media.aspect_ratio > 2.0
+              %}
+                {% assign frames = section.settings.sprite_sheet_frames | times: 1.0 %}
+                {% assign frame_aspect = media.aspect_ratio | divided_by: frames %}
+                <div
+                  class="product-media-static-sprite"
+                  style="--frames: {{ frames }}; --aspect-ratio: {{ frame_aspect }};"
+                >
+                  {{
+                    media
+                    | image_url: width: media.width
+                    | image_tag:
+                      loading: 'eager',
+                      alt: media.alt,
+                      class: 'static-sprite-img',
+                      widths: '2000, 3000, 4000, 5000',
+                      sizes: 'calc(100vw * 10)'
+                  }}
+                </div>
+              {% elsif forloop.first %}
+                {{ media | image_url: width: 1200 | image_tag: loading: 'eager', alt: media.alt }}
+              {% else %}
+                {{ media | image_url: width: 1200 | image_tag: loading: 'lazy', alt: media.alt }}
+              {% endif %}
+            {% when 'external_video' %}
+              {{ media | external_video_tag: class: 'video-slide' }}
+            {% when 'video' %}
+              <video
+                playsinline
+                controls
+                class="video-slide"
+                poster="{{ media.preview_image | image_url: width: 1200 }}"
+                aria-label="{{ media.alt | default: product.title }}"
               >
-                {{
-                  media
-                  | image_url: width: media.width
-                  | image_tag:
-                    loading: 'eager',
-                    alt: media.alt,
-                    class: 'static-sprite-img',
-                    widths: '2000, 3000, 4000, 5000',
-                    sizes: 'calc(100vw * 10)'
-                }}
-              </div>
-            {% else %}
-              {{ media | image_url: width: 1200 | image_tag: loading: 'lazy', alt: media.alt }}
-            {% endif %}
-            {% if hero_image_found == false %}
-              {% assign hero_image_found = true %}
-            {% endif %}
-          {% when 'external_video' %}
-            {{ media | external_video_tag: class: 'video-slide' }}
-          {% when 'video' %}
-            <video
-              playsinline
-              controls
-              class="video-slide"
-              poster="{{ media.preview_image | image_url: width: 1200 }}"
-              aria-label="{{ media.alt | default: product.title }}"
-            >
-              {% for source in media.sources %}
-                <source src="{{ source.url }}" type="{{ source.mime_type }}">
-              {% endfor %}
-              <track kind="captions" srclang="en" label="English" src="data:text/vtt;base64,V0VCVlRUCg==">
-            </video>
-          {% when 'model' %}
-            {{
-              media
-              | model_viewer_tag:
-                image_size: '1200x',
-                reveal: 'interaction',
-                toggleable: true,
-                data-model-id: media.id,
-                alt: media.alt
-            }}
-        {% endcase %}
-      </div>
-    {% endfor %}
+                {% for source in media.sources %}
+                  <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                {% endfor %}
+                <track kind="captions" srclang="en" label="English" src="data:text/vtt;base64,V0VCVlRUCg==">
+              </video>
+            {% when 'model' %}
+              {{
+                media
+                | model_viewer_tag:
+                  image_size: '1200x',
+                  reveal: 'interaction',
+                  toggleable: true,
+                  data-model-id: media.id,
+                  alt: media.alt
+              }}
+          {% endcase %}
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="media-nav-row">
+      <button type="button" class="media-nav prev" aria-label="Previous image">←</button>
+      <button type="button" class="media-nav next" aria-label="Next image">→</button>
+    </div>
   </div>
+
+  {%- assign image_count = 0 -%}
+  {%- for media in product.media -%}
+    {%- if media.media_type == 'image' -%}
+      {%- assign image_count = image_count | plus: 1 -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {% if image_count > 1 %}
+    <div class="product-media-thumbnails">
+      {%- assign first_img = true -%}
+      {%- for media in product.media -%}
+        {%- if media.media_type == 'image' -%}
+          <button
+            class="product-media-thumb{% if first_img %} is-active{% endif %}"
+            data-index="{{ forloop.index0 }}"
+            type="button"
+            aria-label="View image {{ forloop.index }}"
+          >
+            {{ media | image_url: width: 300 | image_tag: loading: 'lazy', alt: media.alt }}
+          </button>
+          {%- assign first_img = false -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  {% endif %}
 </div>
