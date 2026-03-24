@@ -28,7 +28,7 @@
 
 <div class="disclosure">
   {%- capture flag -%}
-    {{ localization.country | image_url: width: 32 | image_tag: loading: 'lazy', class: 'localization-flag' }}
+    {{ localization.country | image_url: width: 32 | image_tag: loading: 'lazy', class: 'localization-flag', alt: '' }}
   {%- endcapture -%}
   {%- capture button_text -%}
     {{- localization.country.name -}}
@@ -149,7 +149,7 @@
                   {{- 'icon-tick.svg' | inline_asset_content -}}
                 </span>
                 <span class="country">
-                  {{ country | image_url: width: 32 | image_tag: loading: 'lazy', class: 'localization-flag' }}
+                  {{ country | image_url: width: 32 | image_tag: loading: 'lazy', class: 'localization-flag', alt: '' }}
                   {{- country.name }}
                 </span>
                 <span class="localization-form__currency motion-reduce{% unless show_currencies %} hidden{% endunless %}">

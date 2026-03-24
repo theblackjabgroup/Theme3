@@ -11,7 +11,7 @@
     {%- if localization.language.iso_code == 'en' -%}
       <img src="https://cdn.shopify.com/static/images/flags/gb.svg?width=32" alt="" class="localization-flag" width="32" height="24" loading="lazy">
     {%- else -%}
-      {{ localization.country | image_url: width: 32 | image_tag: loading: 'lazy', class: 'localization-flag' }}
+      {{ localization.country | image_url: width: 32 | image_tag: loading: 'lazy', class: 'localization-flag', alt: '' }}
     {%- endif -%}
   {%- endcapture -%}
   {%- capture caret -%}
