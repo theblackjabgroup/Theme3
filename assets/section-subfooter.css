@@ -11,21 +11,8 @@
   box-sizing: border-box;
 }
 
-@media (min-width: 1025px) {
-  .subfooter-section {
-    margin-left: calc(var(--header-width, 230px) + var(--margin-horizontal, 0));
-    margin-right: var(--margin-horizontal, 0);
-    width: calc(100% - var(--header-width, 230px) - var(--margin-horizontal, 0) * 2);
-  }
-}
 
-@media (max-width: 1024px) {
-  .subfooter-section {
-    margin-left: var(--margin-horizontal, 0);
-    margin-right: var(--margin-horizontal, 0);
-    width: calc(100% - var(--margin-horizontal, 0) * 2);
-  }
-}
+
 
 .subfooter-container {
   max-width: 1400px;

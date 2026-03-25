@@ -13,17 +13,17 @@
 }
 
 /* ============================================
-   VERTICAL SIDEBAR HEADER (Desktop)
+   VERTICAL SIDEBAR (Desktop)
    ============================================ */
 
 .vertical-sidebar-header {
-  position: fixed;
+  position: sticky;
   top: 0;
-  left: 0;
-  width: var(--header-width, 230px);
+  width: 100%; /* fills its grid column */
   height: 100vh;
-  z-index: 1100; /* Higher than announcement bar */
+  z-index: 10; /* in-flow, only needs to stack above mega-menu overlay */
   display: flex;
+  min-width: 180px;
   flex-direction: column;
   background: var(--color-bg);
   backdrop-filter: blur(20px) saturate(180%);
@@ -35,8 +35,6 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: var(--page-layout-padding, 24px);
-  padding-right: 0 !important;
   gap: var(--header-gap, var(--page-layout-gap, 10px));
   min-height: 0;
   overflow-y: auto;
@@ -649,7 +647,7 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--nav-gap, var(--page-layout-gap, 10px));
+  gap: var(--bento-gap);
 }
 
 .vertical-sidebar-nav-item {
@@ -1068,11 +1066,7 @@ predictive-search[results="true"] .mega-menu-predictive-search {
   background: color-mix(in srgb, var(--color-card-bg, var(--color-card-bg)) 85%, transparent) !important;
   border: 1px solid color-mix(in srgb, var(--color-card-bg, var(--color-card-bg)) 20%, transparent);
   border-radius: var(--radius-2xl);
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  right: 10px;
-  width: calc(100% - 20px);
+  
   z-index: 1000;
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -1113,7 +1107,7 @@ predictive-search[results="true"] .mega-menu-predictive-search {
 .mobile-logo-text {
   font-size: var(--mobile-logo-font-size, 20px);
   font-weight: var(--mobile-logo-font-weight, 700);
-  color: var(--color-text);
+  color: var(--color-heading);
   line-height: 1;
 }
 
@@ -1783,17 +1777,43 @@ body.mobile-menu-open .mobile-menu-content > *:not(.mobile-menu-close) {
 }
 
 
-/* Main Content Adjustment - align with vertical header
-   Use media query so padding does not depend on JS (avoids content stuck under sidebar) */
+/* ── Body flex layout (desktop) ──────────────────────────────────────
+   body is a flex row: sidebar + .page-content.
+   .page-content is a flex column: main stacks above footer.
+   No padding-left hack — the sidebar flex item reserves its own space.
+   ──────────────────────────────────────────────────────────────────── */
 @media (min-width: 1025px) {
+  body {
+    display: flex;
+    align-items: flex-start;
+    min-height: 100vh;
+  }
+
+  /* Sidebar: fixed width, sticky so it stays visible as page scrolls */
+  #shopify-section-group-header-group {
+    flex-shrink: 0;
+    width: var(--header-width, 230px);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    z-index: 10;
+    overflow: hidden;
+  }
+
+  /* Content column: fills remaining width, main + footer stack vertically */
+  .page-content {
+    flex: 1;
+    min-width: 0;
+    padding-left:var(--bento-gap);
+    display: flex;
+    flex-direction: column;
+  }
+
   #MainContent,
   main {
-    padding: var(--page-layout-padding, 24px);
-    padding-left: calc(var(--header-width, 230px) + var(--bento-gap, 24px));
-    padding-bottom: var(--page-layout-padding, 24px);
+    padding-left: 0;
     margin-left: 0 !important;
     width: 100% !important;
-    transition: padding-left var(--transition-medium);
   }
 }
 
@@ -1807,8 +1827,8 @@ body.header-disabled .vertical-sidebar-header {
 
 /* Responsive */
 @media (max-width: 1024px) {
-  /* Hide desktop header on tablet and mobile */
-  .desktop-header {
+  /* Hide desktop sidebar on tablet and mobile */
+  .desktop-sidebar {
     display: none !important;
   }
 
@@ -1863,7 +1883,15 @@ body.header-disabled .vertical-sidebar-header {
     z-index: 1;
   }
 
-  /* Reset main content margin, width and sidebar padding on mobile */
+  /* Mobile: revert to normal block flow */
+  body {
+    display: block;
+  }
+
+  .page-content {
+    display: block;
+  }
+
   #MainContent,
   main {
     padding-left: 0;
@@ -1972,10 +2000,8 @@ body.header-disabled .vertical-sidebar-header {
 @media (max-width: 749px) {
   #MainContent,
   main {
-    padding-top: calc(var(--header-height-mobile, 50px) + 20px);
     margin-left: 0 !important;
     width: 100% !important;
-    transition: padding-left var(--transition-medium);
   }
   .mega-menu {
     position: fixed;

@@ -34,9 +34,9 @@
     grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
     gap: var(--bento-gap);
     list-style: none;
-    padding: 0;
     margin: 0;
     align-items: stretch;
+    padding-left:var(--bento-gap);
   }
 
   #product-grid-{{ section.id }} .grid__item {
@@ -378,7 +378,7 @@
       "default": "scheme-4",
       "info": "When the theme toggle is in dark mode, use this scheme for this section."
     },
-    
+
     {
       "type": "header",
       "content": "Grid · Products per row"
@@ -479,7 +479,7 @@
       "id": "enable_sorting",
       "default": true,
       "label": "t:sections.main-collection-product-grid.settings.enable_sorting.label"
-    },
+    }
   ],
   "blocks": [
     {

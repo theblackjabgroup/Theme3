@@ -9,7 +9,6 @@
 .bento-grid {
   display: grid;
   gap: 0 !important; /* Gap removed to prevent large minimum width from 120 columns */
-  margin: calc(var(--bento-gap, 12px) / -2); /* Compensate for item padding */
   max-width: none; /* Allow margin to pull grid slightly wider than container */
   width: calc(100% + var(--bento-gap, 12px));
   min-width: 0;
