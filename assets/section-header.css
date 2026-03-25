@@ -1535,12 +1535,12 @@ body.mobile-menu-open .mobile-menu-content > *:not(.mobile-menu-close) {
   border-top: 1px solid color-mix(in srgb, var(--color-heading) 15%, transparent);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .mobile-menu-footer-row {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   align-items: stretch;
 }
 
@@ -1562,8 +1562,8 @@ body.mobile-menu-open .mobile-menu-content > *:not(.mobile-menu-close) {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 56px;
-  padding: 12px 16px;
+  min-height: 38px;
+  padding: 8px 12px;
   background: color-mix(in srgb, var(--color-heading) 12%, var(--color-bg));
   border-radius: var(--radius-xl);
   border: none !important;
@@ -1573,6 +1573,14 @@ body.mobile-menu-open .mobile-menu-content > *:not(.mobile-menu-close) {
   transition: background-color 0.2s ease, border-color 0.2s ease;
   position: relative;
   font: inherit;
+}
+
+.mobile-menu-footer-row--top .mobile-menu-footer-btn {
+  border-radius: 12px;
+}
+
+.mobile-menu-footer-row--bottom .mobile-menu-footer-btn {
+  border-radius: 10px;
 }
 
 .mobile-menu-footer-btn:hover {

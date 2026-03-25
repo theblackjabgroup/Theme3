@@ -34,7 +34,7 @@
 .subfooter-left {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 30px;
   flex-wrap: wrap;
 }
 
@@ -56,8 +56,8 @@
 .subfooter-copyright,
 .subfooter-powered {
   font-family: var(--font-body-family);
-  font-size: var(--font-size, 11px);
-  font-weight: 500;
+  font-size: var(--font-size, 12px);
+  font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: var(--text-transform, uppercase);
 }

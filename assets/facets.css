@@ -39,8 +39,8 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 0.25rem 1.5rem;
-  padding: 1rem 1.25rem;
+  gap: 0.25rem 45px;
+  padding: 1rem 16px;
   background: var(--color-card-bg);
   border-radius: var(--radius-xl);
   max-width: 100%;
@@ -50,8 +50,8 @@
 .facets-links-bar__link {
   color: var(--color-heading);
   text-decoration: none;
-  font-weight: 700;
-  font-size: 0.9rem;
+  font-weight: 400;
+  font-size: 16px;
   text-transform: uppercase;
   letter-spacing: 0.03em;
   transition: color 0.2s ease;
@@ -182,7 +182,7 @@ body.facets-drawer-open .facets-drawer * {
   z-index: 9999;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 20px;
+  padding: 28px 20px 20px;
   box-sizing: border-box;
   border-radius: var(--radius-2xl);
   box-shadow: -4px 0 24px rgba(0, 0, 0, 0.05);
@@ -302,8 +302,8 @@ body.facets-drawer-open .facets-drawer * {
   }
 
   .facets-links-bar__inner {
-    padding: 0.75rem 1rem;
-    gap: 0.25rem 1rem;
+    padding: 0.75rem 16px;
+    gap: 0.25rem 45px;
   }
 
   .facets-buttons-drawers {
@@ -360,7 +360,7 @@ body.facets-drawer-open .facets-drawer * {
 .facets-drawer__title {
   font-family: var(--font-heading-family, serif);
   font-weight: 800;
-  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  font-size: 46px;
   margin: 0;
   color: var(--color-headings);
   line-height: 1;
@@ -372,14 +372,17 @@ body.facets-drawer-open .facets-drawer * {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 44px;
-  min-height: 44px;
-  padding: 12px;
+  min-width: 0;
+  min-height: 0;
+  width: 24px;
+  height: 24px;
+  padding: 0;
   background: transparent;
   border: none;
   cursor: pointer;
   color: var(--color-headings);
   transition: opacity 0.2s ease;
+  flex-shrink: 0;
 }
 
 .facets-drawer__close:hover {
@@ -387,8 +390,8 @@ body.facets-drawer-open .facets-drawer * {
 }
 
 .facets-drawer__close svg {
-  width: var(--icon-size-md);
-  height: var(--icon-size-md);
+  width: 24px;
+  height: 24px;
   display: block;
 }
 
@@ -432,9 +435,7 @@ body.facets-drawer-open .facets-drawer * {
   letter-spacing: var(--collection-filter-tag-letter-spacing, 0.03em);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.facets-drawer__apply-button .global-btn__shadow{
-  top:9px !important;
-}
+
 .facets-drawer .active-facets__button:hover {
   transform: translateY(-1px);
   box-shadow: 0 2px 8px color-mix(in srgb, var(--color-headings) 20%, transparent);
@@ -459,7 +460,7 @@ body.facets-drawer-open .facets-drawer * {
   color: var(--color-headings);
   text-decoration: none;
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 14px;
   letter-spacing: 0.05em;
   margin-left: 6px;
 }
@@ -474,8 +475,8 @@ body.facets-drawer-open .facets-drawer * {
   margin: 0 0 12px 0;
   padding: 0;
   font-family: var(--font-family-mono);
-  font-size: 1.2rem;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 600;
   color: var(--color-text);
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -493,28 +494,28 @@ body.facets-drawer-open .facets-drawer * {
 .facets-drawer .facet-checkbox {
   padding: 0;
   background: transparent !important;
+  gap: 8px;
 }
 
 .facets-drawer .facet-checkbox input[type="checkbox"] {
   display: none;
 }
 
-/* Filter checkboxes: 3D like global-btn (shadow below face), no hover/click effects */
+/* Filter checkboxes: flat, no shadow */
 .facets-drawer .facet-checkbox__custom {
-  width: 28px;
-  height: 20px;
-  border: 1.5px solid var(--btn-primary-border, var(--color-btn-shadow, #000000));
+  width: 32px;
+  height: 24px;
+  border: 1px solid var(--btn-primary-border, var(--color-btn-shadow, #000000));
   border-radius: var(--radius-m);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   background: var(--btn-primary-bg, #F8F3F8);
-  margin-right: 10px;
+  margin-right: 0;
   position: relative;
   box-sizing: border-box;
-  /* Shadow below the face (3D lift), not above */
-  box-shadow: 0 3px 0 0 var(--btn-primary-shadow, var(--color-btn-shadow, #000000));
+  box-shadow: none;
 }
 
 .facets-drawer .facet-checkbox input[type="checkbox"]:checked + .facet-checkbox__custom {
@@ -536,7 +537,7 @@ body.facets-drawer-open .facets-drawer * {
 
 .facets-drawer .facet-checkbox__text {
   font-family: var(--font-family-mono);
-  font-size: 1.05rem;
+  font-size: 14px;
   color: var(--color-text);
   font-weight: 400;
 }
@@ -662,7 +663,7 @@ body.facets-drawer-open .facets-drawer * {
   flex: 1;
   border: 1px solid var(--color-text);
   border-radius: 12px;
-  padding: 8px 12px;
+  padding: 10px 18px;
   display: flex;
   align-items: center;
 }
@@ -708,14 +709,14 @@ body.facets-drawer-open .facets-drawer * {
 .facets-drawer--sort .facets-drawer__sort-option {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
   padding: 8px 12px;
   background: transparent;
   border: 2px solid transparent;
   border-radius: 12px;
   font-family: var(--font-family-mono);
-  font-size: 1.05rem;
+  font-size: 14px;
   font-weight: 500;
   color: var(--color-text);
   text-align: left;
@@ -726,18 +727,17 @@ body.facets-drawer-open .facets-drawer * {
   background: transparent;
 }
 
-/* Sort options: 3D like global-btn (shadow below face), no hover/click effects */
+/* Sort options: flat radio-style box, no shadow */
 .facets-drawer--sort .facet-radio__custom {
-  width: 28px;
-  height: 20px;
-  border: 1.5px solid var(--btn-primary-border, var(--color-btn-shadow, #000000));
+  width: 32px;
+  height: 24px;
+  border: 1px solid var(--btn-primary-border, var(--color-btn-shadow, #000000));
   border-radius: var(--radius-m);
   background: var(--btn-primary-bg, #F8F3F8);
   flex-shrink: 0;
   position: relative;
   box-sizing: border-box;
-  /* Shadow below the face (3D lift), not above */
-  box-shadow: 0 2px 0 0 var(--btn-primary-shadow, var(--color-btn-shadow, #000000));
+  box-shadow: none;
 }
 
 .facets-drawer--sort .facets-drawer__sort-option--active .facet-radio__custom {

@@ -7,9 +7,9 @@
 {%- style -%}
   /* Featured collection cards: use global product card settings (match product grid) */
   #shopify-section-{{ section.id }} .custom-product-card {
-    --card-padding-top: 0px;
-    --card-padding-horizontal: 20px;
-    --card-padding-bottom: 20px;
+    --card-padding-top: 16px;
+    --card-padding-horizontal: 16px;
+    --card-padding-bottom: 16px;
     --card-text-align: center;
     --card-align-items: center;
     --card-image-height: 300px;
@@ -28,15 +28,71 @@
     --card-price-padding-vertical: {{ settings.product_card_price_padding_vertical | default: 10 }}px;
     --card-price-padding-horizontal: {{ settings.product_card_price_padding_horizontal | default: 18 }}px;
     --card-price-border-width: {{ settings.product_card_price_border_width | default: 1 }}px;
-    --card-price-border-radius: {{ settings.product_card_price_border_radius | default: 12 }}px;
+    --card-price-border-radius: 14px;
   }
 
   #shopify-section-{{ section.id }} .custom-product-card__title {
-    font-size: {{ settings.product_card_title_font_size | default: 24 }}px !important;
+    font-size: 24px !important;
     font-weight: {{ settings.product_card_title_font_weight | default: 900 }};
     line-height: {{ settings.product_card_title_line_height | default: 1 }};
     margin-top: {{ settings.product_card_title_margin_top | default: 0 }}px;
     margin-bottom: {{ settings.product_card_title_margin_bottom | default: 12 }}px;
+  }
+
+  #shopify-section-{{ section.id }} .custom-product-card__badge {
+    font-size: 10px;
+    font-weight: 400;
+    border-radius: 24px;
+  }
+
+  #shopify-section-{{ section.id }} .custom-product-card__hover-buttons {
+    gap: 8px;
+  }
+
+  #shopify-section-{{ section.id }} .custom-product-card__price.global-btn-2 {
+    border-radius: 14px;
+  }
+
+  /* Sale badge: pill (featured collection only; card still outputs SVG + text) */
+  #shopify-section-{{ section.id }} .custom-product-card__sale-badge {
+    top: 10px;
+    left: 10px;
+    width: auto;
+    height: auto;
+    min-height: 0;
+    padding: 6px 12px;
+    background: var(--sale-badge-bg, #f5a30a);
+    border-radius: 9999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+
+  #shopify-section-{{ section.id }} .custom-product-card__sale-badge-icon {
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .custom-product-card__sale-badge-text {
+    position: static;
+    inset: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+    transform: none;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--sale-badge-text, #000000);
+  }
+
+  #shopify-section-{{ section.id }} .custom-product-card__sale-badge-text span:first-child {
+    font-size: 13px;
+  }
+
+  #shopify-section-{{ section.id }} .custom-product-card__sale-badge-text span:last-child {
+    font-size: 11px;
+    margin-top: 0;
   }
 
   #shopify-section-{{ section.id }} .custom-product-card__description {
@@ -49,9 +105,9 @@
 
   @media screen and (max-width: 749px) {
     #shopify-section-{{ section.id }} .custom-product-card {
-      --card-padding-top: 10px;
+      --card-padding-top: 16px;
       --card-padding-horizontal: 16px;
-      --card-padding-bottom: 28px;
+      --card-padding-bottom: 16px;
       --card-image-height: 300px;
       --card-image-margin-bottom: 16px;
       --card-hover-description-font-size: {{ settings.product_card_hover_description_font_size_mobile | default: 12 }}px;
@@ -65,7 +121,7 @@
     }
 
     #shopify-section-{{ section.id }} .custom-product-card__title {
-      font-size: {{ settings.product_card_title_font_size_mobile | default: 24 }}px !important;
+      font-size: 24px !important;
       line-height: {{ settings.product_card_title_line_height | default: 1 }};
     }
   }
@@ -120,7 +176,11 @@
                   card_product: product,
                   section_id: section.id,
                   quick_add: 'none',
-                  lazy_load: forloop.index > 3
+                  lazy_load: forloop.index > 3,
+                  show_badge: section.settings.show_card_badge,
+                  badge_text: section.settings.card_badge_text,
+                  fallback_description: section.settings.fallback_description,
+                  overlay_button_text: section.settings.overlay_button_text
                 -%}
               </div>
             </div>
@@ -134,7 +194,11 @@
                   section_id: section.id,
                   quick_add: 'none',
                   lazy_load: true,
-                  skip_quick_view_modal: true
+                  skip_quick_view_modal: true,
+                  show_badge: section.settings.show_card_badge,
+                  badge_text: section.settings.card_badge_text,
+                  fallback_description: section.settings.fallback_description,
+                  overlay_button_text: section.settings.overlay_button_text
                 -%}
               </div>
             </div>

@@ -1692,12 +1692,12 @@
       {
         "type": "range",
         "id": "selector_font_size",
-        "min": 11,
+        "min": 8,
         "max": 22,
         "step": 1,
         "unit": "px",
         "label": "Font size",
-        "default": 16
+        "default": 10
       },
       {
         "type": "select",
@@ -1794,7 +1794,7 @@
         "step": 2,
         "unit": "px",
         "label": "Border radius",
-        "default": 12
+        "default": 8
       },
       {
         "type": "range",
