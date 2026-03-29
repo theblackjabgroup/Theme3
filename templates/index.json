@@ -61,7 +61,7 @@
         "card_3": { 
           "type": "video_card", 
           "settings": { 
-            "column_span": 2.8, 
+            "column_span": 2.7, 
             "row_span": 4.4,
             "mobile_column_span": 1.0,
             "mobile_row_span": 0.2,
@@ -121,7 +121,7 @@
         "card_7": { 
           "type": "content_card", 
           "settings": { 
-            "column_span": 3.3, 
+            "column_span": 3.2, 
             "row_span":2.8,
             "card_background_color": "#306030",
             "mobile_column_span": 2.0,

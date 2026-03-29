@@ -99,6 +99,10 @@
       ? card.classList.contains('toggle-card--mobile-horizontal')
       : card.classList.contains('toggle-card--horizontal');
 
+    // Suppress transition before any style changes so getBoundingClientRect
+    // measures the static position, not a mid-transition value
+    knob.style.transition = 'none';
+
     // Reset transforms to measure clean coordinates
     const prevKnobTransform = knob.style.transform;
     const prevTopTransform = labelsTop.style.transform;
@@ -138,6 +142,10 @@
       ui.style.setProperty('--toggle-knob-start-y', startY + 'px');
       ui.style.setProperty('--toggle-knob-end-y', endY + 'px');
     }
+
+    // Force reflow so the position snaps instantly, then re-enable transition
+    knob.offsetHeight; // eslint-disable-line no-unused-expressions
+    knob.style.transition = '';
   }
 
   function initToggleCards() {
@@ -148,7 +156,7 @@
       if (!toggleInput) return;
 
       setToggleSlideDistance(card);
-      const ro = new ResizeObserver(() => setToggleSlideDistance(card));
+      const ro = new ResizeObserver(() => requestAnimationFrame(() => setToggleSlideDistance(card)));
       ro.observe(card);
 
       const schemeOn = toggleInput.dataset.schemeOn;
@@ -202,7 +210,9 @@
     });
 
     window.addEventListener('resize', () => {
-      document.querySelectorAll('[data-toggle-card]').forEach(setToggleSlideDistance);
+      requestAnimationFrame(() => {
+        document.querySelectorAll('[data-toggle-card]').forEach(setToggleSlideDistance);
+      });
     });
   }
 

@@ -24,13 +24,18 @@
     border-radius: 20px;
     overflow: hidden;
     transform: translateX(110%);
-    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    visibility: hidden;
+    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1),
+                visibility 0s linear 1.2s;
     pointer-events: none;
   }
 
   cart-drawer.active {
     pointer-events: auto;
     transform: translateX(0);
+    visibility: visible;
+    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1),
+                visibility 0s linear 0s;
   }
 
 

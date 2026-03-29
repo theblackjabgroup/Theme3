@@ -67,7 +67,7 @@
   /* Responsive */
   @media (max-width: 749px) {
     #bento-grid-{{ section.id }}.bento-grid-container {
-      padding: {{ section.settings.mobile_padding_vertical | default: 16 }}px {{ section.settings.mobile_padding_horizontal | default: 16 }}px {{ section.settings.mobile_padding_vertical | default: 16 }}px {{ section.settings.mobile_padding_horizontal | default: 16 }}px !important;
+      padding: {{ section.settings.mobile_padding_vertical | default: 1 }}px {{ section.settings.mobile_padding_horizontal | default: 1 }}px {{ section.settings.mobile_padding_vertical | default: 1 }}px {{ section.settings.mobile_padding_horizontal | default: 1 }}px !important;
     }
 
     .bento-grid {
@@ -1103,7 +1103,7 @@
       "id": "mobile_padding_vertical",
       "min": 0,
       "max": 80,
-      "step": 2,
+      "step": 1,
       "unit": "px",
       "label": "Mobile padding (vertical)",
       "default": 16
@@ -1113,12 +1113,11 @@
       "id": "mobile_padding_horizontal",
       "min": 0,
       "max": 80,
-      "step": 2,
+      "step": 1,
       "unit": "px",
       "label": "Mobile padding (horizontal)",
-      "default": 16
-    },
-   
+      "default": 5
+    }
   ],
   "blocks": [
     {

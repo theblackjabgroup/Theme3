@@ -73,7 +73,7 @@
     --button-padding-right: {{ section.settings.button_padding_right | default: 16 }}px;
     --button-padding: var(--button-padding-top) var(--button-padding-right) var(--button-padding-bottom) var(--button-padding-left);
     --button-font-size: {{ section.settings.button_font_size | default: 16 }}px;
-    --button-icon-size: {{ section.settings.button_icon_size | default: 16 }}px;
+    --button-icon-size: {{ section.settings.button_icon_size | default: 25 }}px;
 
     /* Navigation */
     --nav-gap: {{ settings.header_nav_item_gap | default: 8 }}px;
@@ -167,9 +167,9 @@
 <!-- Mega Menu Overlay -->
 <div class="mega-menu-overlay"></div>
 
-<!-- Desktop Header (Vertical Left Sidebar) -->
+<!-- Desktop Sidebar (Vertical Left) -->
 <header
-  class="vertical-sidebar-header desktop-header color-{{ section.settings.color_scheme }} gradient"
+  class="vertical-sidebar-header desktop-sidebar color-{{ section.settings.color_scheme }} gradient"
   id="shopify-section-header"
 >
   <div class="vertical-sidebar-inner">
@@ -1031,7 +1031,7 @@
             data-mobile-menu-toggle
             {{ block.shopify_attributes }}
           >
-            {{- 'icon-shop.svg' | inline_asset_content -}}
+            {{- 'icon-hamburger.svg' | inline_asset_content -}}
           </button>
         {%- endif -%}
       {%- endfor -%}
@@ -1793,10 +1793,10 @@
       "id": "button_icon_size",
       "min": 16,
       "max": 32,
-      "step": 2,
+      "step": 1,
       "unit": "px",
       "label": "Button Icon Size",
-      "default": 16
+      "default": 25
     },
     {
       "type": "header",
