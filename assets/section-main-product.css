@@ -669,11 +669,11 @@
   transform: scale(1.1);
 }
 
-.sticky-qty-count {
+.sticky-qty-display {
   font-family: var(--font-heading-family, 'Inter', sans-serif);
   font-size: 16px;
   font-weight: 900;
-  color: #F8F3F8;
+  color: var(--color-text, #F8F3F8);
   min-width: 20px;
   text-align: center;
 }
@@ -723,11 +723,11 @@
     gap: 16px;
   }
 
-  .product-atc-btn {
+  .product-form__submit {
     height: 50px;
   }
 
-  .product-atc-btn__shadow {
+  .product-form__submit .global-btn__shadow {
     height: 46px;
   }
 
