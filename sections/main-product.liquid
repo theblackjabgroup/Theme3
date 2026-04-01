@@ -625,24 +625,30 @@
       var checkAvailBtn = document.getElementById('CheckAvailabilityBtn');
       var pickupDrawer = document.getElementById('PickupDrawer');
       var drawerClose = document.getElementById('PickupDrawerClose');
-      var drawerBackdrop = document.getElementById('PickupDrawerBackdrop');
+      var drawerOverlay = document.getElementById('PickupDrawerOverlay');
 
       function openPickupDrawer() {
+        if (!pickupDrawer) return;
         pickupDrawer.setAttribute('aria-hidden', 'false');
+        pickupDrawer.classList.add('active');
+        document.body.classList.add('pickup-drawer-open');
         document.body.style.overflow = 'hidden';
-        drawerClose.focus();
+        if (drawerClose) drawerClose.focus();
       }
 
       function closePickupDrawer() {
+        if (!pickupDrawer) return;
         pickupDrawer.setAttribute('aria-hidden', 'true');
+        pickupDrawer.classList.remove('active');
+        document.body.classList.remove('pickup-drawer-open');
         document.body.style.overflow = '';
         if (checkAvailBtn) checkAvailBtn.focus();
       }
 
       if (checkAvailBtn && pickupDrawer) {
         checkAvailBtn.addEventListener('click', openPickupDrawer);
-        drawerClose.addEventListener('click', closePickupDrawer);
-        drawerBackdrop.addEventListener('click', closePickupDrawer);
+        if (drawerClose) drawerClose.addEventListener('click', closePickupDrawer);
+        if (drawerOverlay) drawerOverlay.addEventListener('click', closePickupDrawer);
         pickupDrawer.addEventListener('keydown', function (e) {
           if (e.key === 'Escape') closePickupDrawer();
         });
@@ -650,8 +656,6 @@
     });
   </script>
 </div>
-
-{% render 'pickup-availability-drawer', product: product, variant: current_variant %}
 
 <!-- Sticky Add to Cart Bar -->
 <div class="sticky-cart-bar" id="StickyCartBar">
