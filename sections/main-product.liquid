@@ -234,10 +234,13 @@
 
         {% unless product.gift_card? %}
           <!-- Pickup Info -->
-          <div class="product-pickup-info">
-            <p class="product-pickup-store">Pickup available at Toronto-King street</p>
-            <p class="product-pickup-time">Usually ready in 24 hours</p>
-          </div>
+          {%- assign pickup_store = product.metafields.custom.store_locations.value | first -%}
+          {%- if pickup_store != blank -%}
+            <div class="product-pickup-info">
+              <p class="product-pickup-store">Pickup available at {{ pickup_store.store_name }}{% if pickup_store.city != blank %}, {{ pickup_store.city }}{% endif %}</p>
+              <p class="product-pickup-time">{{ pickup_store.availability | default: 'Usually ready in 24 hours' }}</p>
+            </div>
+          {%- endif -%}
 
           <!-- Check Availability -->
           <button class="product-availability-link" id="CheckAvailabilityBtn">Check availability at other stores</button>
@@ -405,46 +408,48 @@
         });
       });
 
-      // Image gallery
-      var mainImage = document.getElementById('ProductMainImage');
-      var thumbnails = document.querySelectorAll('.thumbnail-item[data-media-url]');
-      var prevBtn = document.querySelector('.media-nav-btn.prev');
-      var nextBtn = document.querySelector('.media-nav-btn.next');
+      // Image gallery — scoped so an early exit doesn't block code below
+      (function () {
+        var mainImage = document.getElementById('ProductMainImage');
+        var thumbnails = document.querySelectorAll('.thumbnail-item[data-media-url]');
+        var prevBtn = document.querySelector('.media-nav-btn.prev');
+        var nextBtn = document.querySelector('.media-nav-btn.next');
 
-      if (!mainImage || thumbnails.length === 0) return;
+        if (!mainImage || thumbnails.length === 0) return;
 
-      var currentIndex = 0;
+        var currentIndex = 0;
 
-      function updateMainImage(index) {
-        if (index < 0) index = thumbnails.length - 1;
-        if (index >= thumbnails.length) index = 0;
-        currentIndex = index;
-        var newSrc = thumbnails[currentIndex].getAttribute('data-media-url');
-        if (!newSrc) return;
-        mainImage.style.opacity = '0';
-        setTimeout(function () {
-          mainImage.src = newSrc;
-          mainImage.srcset = newSrc;
-          mainImage.style.opacity = '1';
-        }, 300);
-      }
+        function updateMainImage(index) {
+          if (index < 0) index = thumbnails.length - 1;
+          if (index >= thumbnails.length) index = 0;
+          currentIndex = index;
+          var newSrc = thumbnails[currentIndex].getAttribute('data-media-url');
+          if (!newSrc) return;
+          mainImage.style.opacity = '0';
+          setTimeout(function () {
+            mainImage.src = newSrc;
+            mainImage.srcset = newSrc;
+            mainImage.style.opacity = '1';
+          }, 300);
+        }
 
-      thumbnails.forEach(function (thumb, index) {
-        thumb.addEventListener('click', function () {
-          updateMainImage(index);
+        thumbnails.forEach(function (thumb, index) {
+          thumb.addEventListener('click', function () {
+            updateMainImage(index);
+          });
         });
-      });
 
-      if (prevBtn)
-        prevBtn.addEventListener('click', function (e) {
-          e.preventDefault();
-          updateMainImage(currentIndex - 1);
-        });
-      if (nextBtn)
-        nextBtn.addEventListener('click', function (e) {
-          e.preventDefault();
-          updateMainImage(currentIndex + 1);
-        });
+        if (prevBtn)
+          prevBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            updateMainImage(currentIndex - 1);
+          });
+        if (nextBtn)
+          nextBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            updateMainImage(currentIndex + 1);
+          });
+      }());
 
       // Sticky bar scroll trigger
       var stickyBar = document.getElementById('StickyCartBar');
@@ -467,18 +472,24 @@
           return parseInt(stickyQtyDisplay.textContent, 10) || 1;
         }
 
+        function syncMainQty(q) {
+          if (!mainQtyInput) return;
+          mainQtyInput.value = q;
+          mainQtyInput.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+
         if (stickyDecrement) {
           stickyDecrement.addEventListener('click', function () {
             var q = Math.max(1, getStickyQty() - 1);
             stickyQtyDisplay.textContent = q;
-            if (mainQtyInput) mainQtyInput.value = q;
+            syncMainQty(q);
           });
         }
         if (stickyIncrement) {
           stickyIncrement.addEventListener('click', function () {
             var q = getStickyQty() + 1;
             stickyQtyDisplay.textContent = q;
-            if (mainQtyInput) mainQtyInput.value = q;
+            syncMainQty(q);
           });
         }
 
