@@ -322,10 +322,11 @@
             data-id="{{ section.id }}"
           >
             <div class="collection-empty-card">
-              <h2 class="collection-empty-heading">UH OH, NO PRODUCTS FOUND.</h2>
-              <p class="collection-empty-subtext">Use fewer filters or</p>
+              <h2 class="collection-empty-heading">{{ 'sections.collection_template.empty' | t }}</h2>
+              <p class="collection-empty-subtext">{{ 'sections.collection_template.use_fewer_filters_html' | t: class: 'collection-empty-link', link: collection.url }}</p>
+              {%- assign _go_home_text = 'general.continue_shopping' | t -%}
               {%- render 'global-btn',
-                text: 'GO TO HOME',
+                text: _go_home_text,
                 url: routes.root_url,
                 variant: 'secondary',
                 class: 'collection-empty-btn',
@@ -385,21 +386,6 @@
                   See More
                 </button>
               </div>
-
-              <script>
-                (function () {
-                  var btn = document.querySelector('[data-product-grid-see-more]');
-                  var grid = document.getElementById('product-grid-{{ section.id }}');
-                  if (!btn || !grid) return;
-
-                  btn.addEventListener('click', function () {
-                    grid.querySelectorAll('.product-grid__see-more-hidden').forEach(function (el) {
-                      el.classList.remove('product-grid__see-more-hidden');
-                    });
-                    btn.parentElement && btn.parentElement.remove();
-                  });
-                })();
-              </script>
             {%- endif -%}
 
             {%- if paginate.pages > 1 -%}
@@ -411,6 +397,29 @@
     </div>
   {%- endpaginate -%}
 </div>
+
+<script>
+  (function () {
+    // Delegated "See More" handler — survives FacetFiltersForm AJAX re-renders because
+    // it is attached to the document rather than to the (replaced) ProductGridContainer.
+    if (document._productGridSeeMoreDelegated) return;
+    document._productGridSeeMoreDelegated = true;
+
+    document.addEventListener('click', function (event) {
+      var btn = event.target.closest('[data-product-grid-see-more]');
+      if (!btn) return;
+      var gridId = btn.getAttribute('aria-controls');
+      var grid = gridId ? document.getElementById(gridId) : null;
+      if (grid) {
+        grid.querySelectorAll('.product-grid__see-more-hidden').forEach(function (el) {
+          el.classList.remove('product-grid__see-more-hidden');
+        });
+      }
+      var wrap = btn.parentElement;
+      if (wrap) wrap.remove();
+    });
+  })();
+</script>
 
 {% schema %}
 {
