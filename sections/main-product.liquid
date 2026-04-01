@@ -1,183 +1,17 @@
 {{ 'section-main-product.css' | asset_url | stylesheet_tag }}
 
+{% assign current_variant = product.selected_or_first_available_variant %}
+{% assign product_form_id = 'product-form-' | append: section.id %}
+
 <div class="product-page-container">
-  <!-- Left Column (50% Width) -->
+  <!-- LEFT COLUMN: Image Gallery -->
   <div class="product-left-column">
-    <!-- Card 1 (Header) -->
-    <div class="product-bento-card product-header-card">
-      {% if product.metafields.custom.tag != blank %}
-        <div class="product-tag-pill">{{ product.metafields.custom.tag }}</div>
-      {% else %}
-        <div class="product-tag-pill">BEAR WITH ME</div>
-      {% endif %}
-
-      <h1 class="product-main-title">{{ product.title }}</h1>
-      <!-- Image overlapping -->
-      {% if product.featured_image %}
-        <img
-          src="{{ product.featured_image | image_url: width: 600 }}"
-          width="600"
-          height="600"
-          class="product-hero-image"
-          alt="{{ product.title | escape }}"
-          loading="lazy"
-        >
-      {% else %}
-        <img
-          src="https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-product-1_large.png"
-          width="600"
-          height="600"
-          class="product-hero-image"
-          alt="Placeholder"
-          loading="lazy"
-        >
-      {% endif %}
-    </div>
-
-    <!-- Card 2 (Product Purchase) -->
-    {% assign current_variant = product.selected_or_first_available_variant %}
-    {% assign product_form_id = 'product-form-' | append: section.id %}
-    <div class="product-bento-card product-purchase-card">
-      <!-- Price -->
-      <div class="product-price-container">
-        <span class="price-compare">
-          {% if current_variant.compare_at_price > current_variant.price %}
-            {{ current_variant.compare_at_price | money_without_trailing_zeros }}
-          {% endif %}
-        </span>
-        <span class="price-main">{{ current_variant.price | money_without_trailing_zeros }}</span>
-      </div>
-
-      <!-- Stock Badge -->
-      <div class="stock-badge-wrapper">
-        <span class="stock-badge">
-          {% if product.available %}
-            {% if current_variant.inventory_management == 'shopify'
-              and current_variant.inventory_quantity > 0
-              and current_variant.inventory_quantity <= 10
-            %}
-              Only {{ current_variant.inventory_quantity }} left in stock
-            {% else %}
-              In stock
-            {% endif %}
-          {% else %}
-            Out of stock
-          {% endif %}
-        </span>
-      </div>
-
-      <!-- Variants -->
-      {% unless product.has_only_default_variant %}
-        <div class="variant-picker-wrapper">
-          {% for option in product.options_with_values %}
-            <fieldset class="product-form__input product-form__input--{{ option.name | downcase }}">
-              <div class="variant-options-row">
-                {% for value in option.values %}
-                  {%- assign radio_id = section.id
-                    | append: '-'
-                    | append: option.position
-                    | append: '-'
-                    | append: forloop.index
-                  -%}
-                  {%- if option.selected_value == value -%}
-                    {%- assign btn_variant = 'secondary' -%}
-                  {%- else -%}
-                    {%- assign btn_variant = 'primary' -%}
-                  {%- endif -%}
-                  <input
-                    type="radio"
-                    id="{{ radio_id }}"
-                    name="{{ option.name }}"
-                    value="{{ value | escape }}"
-                    form="{{ product_form_id }}"
-                    class="product-form__variant-radio visually-hidden"
-                    style="display: none;"
-                    {% if option.selected_value == value %}
-                      checked
-                    {% endif %}
-                  >
-                  <label for="{{ radio_id }}" class="product-form__variant-option-label">
-                    {% render 'global-btn-2',
-                      text: value,
-                      variant: btn_variant,
-                      type: 'button',
-                      class: 'product-form__variant-option-btn',
-                      fit_width: false
-                    %}
-                  </label>
-                {% endfor %}
-              </div>
-            </fieldset>
-          {% endfor %}
-        </div>
-      {% endunless %}
-
-      <!-- Promo Text -->
-      <div class="sale-roasted-text">
-        {{ product.metafields.custom.tagline | default: 'Single Origin · Cold Pressed' }}
-      </div>
-
-      <!-- Quantity and Add to Cart -->
-      <div class="product-actions-row">
-        {% render 'quantity-input',
-          variant: current_variant,
-          min: 1,
-          is_product_form: true,
-          product_form_id: product_form_id
-        %}
-
-        <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
-        <product-form class="product-form">
-          {% form 'product',
-            product,
-            id: product_form_id,
-            class: 'form',
-            novalidate: 'novalidate',
-            data-type: 'add-to-cart-form'
-          %}
-            <input type="hidden" name="id" value="{{ current_variant.id }}">
-            {% liquid
-              if current_variant.available
-                assign btn_text = 'products.product.add_to_cart' | t
-                if btn_text contains 'Translation missing'
-                  assign btn_text = 'ADD TO CART'
-                endif
-              else
-                assign btn_text = 'products.product.sold_out' | t
-                if btn_text contains 'Translation missing'
-                  assign btn_text = 'SOLD OUT'
-                endif
-              endif
-            %}
-            {% render 'global-btn',
-              text: btn_text,
-              type: 'submit',
-              variant: 'tertiary',
-              class: 'product-form__submit',
-              is_add_to_cart: true,
-              fit_width: true
-            %}
-          {% endform %}
-        </product-form>
-      </div>
-
-      <!-- Store Availability Link -->
-      <button class="pickup-availability-button link link--text underlined-link">
-        CHECK AVAILABILITY AT OTHER STORES
-      </button>
-    </div>
-  </div>
-
-  <!-- Right Column (Media Gallery) -->
-  <div class="product-right-column">
-    <div class="product-media-gallery">
+    <div class="product-media-gallery{% if product.gift_card? %} product-media-gallery--gift-card{% endif %}">
       <!-- Main Image -->
       <div class="product-main-media">
-        {% assign right_main_media = product.featured_media %}
-
-        {% if right_main_media %}
+        {% if product.featured_media %}
           {{
-            right_main_media
+            product.featured_media
             | image_url: width: 1000
             | image_tag: class: 'main-media-img', id: 'ProductMainImage', loading: 'lazy'
           }}
@@ -192,52 +26,244 @@
           >
         {% endif %}
 
-        <div class="media-nav-buttons">
-          {%- capture prev_icon -%}
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-          {%- endcapture -%}
-          {%- capture next_icon -%}
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          {%- endcapture -%}
-          {% render 'global-btn-2',
-            icon: prev_icon,
-            icon_only: true,
-            fit_width: false,
-            variant: 'white',
-            class: 'media-nav-btn prev',
-            attributes: 'aria-label="Previous image"'
-          %}
-          {% render 'global-btn-2',
-            icon: next_icon,
-            icon_only: true,
-            fit_width: false,
-            variant: 'white',
-            class: 'media-nav-btn next',
-            attributes: 'aria-label="Next image"'
-          %}
-        </div>
+        {% unless product.gift_card? %}
+          <div class="media-nav-buttons">
+            {%- capture prev_icon -%}
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            {%- endcapture -%}
+            {%- capture next_icon -%}
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            {%- endcapture -%}
+            {% render 'global-btn-2',
+              icon: prev_icon,
+              icon_only: true,
+              fit_width: false,
+              variant: 'primary',
+              class: 'media-nav-btn prev',
+              attributes: 'aria-label="Previous image"',
+              no_border: true
+            %}
+            {% render 'global-btn-2',
+              icon: next_icon,
+              icon_only: true,
+              fit_width: false,
+              variant: 'primary',
+              class: 'media-nav-btn next',
+              attributes: 'aria-label="Next image"',
+              no_border: true
+            %}
+          </div>
+        {% endunless %}
       </div>
 
-      <!-- Thumbnails -->
-      <div class="product-thumbnails">
-        {% for media in product.media limit: 3 %}
-          <div class="thumbnail-item" data-media-url="{{ media.preview_image | image_url: width: 1000 }}">
-            {{ media.preview_image | image_url: width: 300 | image_tag: class: 'thumbnail-img', loading: 'lazy' }}
+      {% unless product.gift_card? %}
+        <!-- Thumbnails -->
+        <div class="product-thumbnails">
+          {% for media in product.media limit: 3 %}
+            <div class="thumbnail-item" data-media-url="{{ media.preview_image | image_url: width: 1000 }}">
+              {{ media.preview_image | image_url: width: 300 | image_tag: class: 'thumbnail-img', loading: 'lazy' }}
+            </div>
+          {% else %}
+            <div class="thumbnail-item"><div class="placeholder-thumb"></div></div>
+            <div class="thumbnail-item"><div class="placeholder-thumb"></div></div>
+            <div class="thumbnail-item"><div class="placeholder-thumb"></div></div>
+          {% endfor %}
+        </div>
+      {% endunless %}
+    </div>
+  </div>
+
+  <!-- RIGHT COLUMN: Product Details + FAQ + Info -->
+  <div class="product-right-column">
+    <!-- Product Details Card -->
+    <div class="product-details-card">
+      <!-- Title Section -->
+      <div class="product-details-header">
+        <div class="product-badge-pill">
+          {%- if product.gift_card? -%}
+            GIFT CARD
+          {%- else -%}
+            {{- product.metafields.custom.tag | default: 'BEAR WITH ME' -}}
+          {%- endif -%}
+        </div>
+
+        <h1 class="product-main-title">{{ product.title }}</h1>
+
+        <div class="product-price-row">
+          <span class="product-price-main">{{ current_variant.price | money_without_trailing_zeros }}</span>
+          <span
+            class="product-price-compare"
+            {% unless current_variant.compare_at_price > current_variant.price %}
+              style="display: none;"
+            {% endunless %}
+          >
+            {%- if current_variant.compare_at_price > current_variant.price -%}
+              {{- current_variant.compare_at_price | money_without_trailing_zeros -}}
+            {%- endif -%}
+          </span>
+        </div>
+
+        <!-- Star Rating -->
+        <div class="product-rating-row">
+          <div class="product-stars" aria-label="5 out of 5 stars">
+            {% for i in (1..5) %}
+              <svg width="17" height="17" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#F5A30A"/>
+              </svg>
+            {% endfor %}
           </div>
-        {% else %}
-          <!-- Placeholders if no media -->
-          <div class="thumbnail-item"><div class="placeholder-thumb"></div></div>
-          <div class="thumbnail-item"><div class="placeholder-thumb"></div></div>
-          <div class="thumbnail-item"><div class="placeholder-thumb"></div></div>
-        {% endfor %}
+          <span class="product-review-count">
+            {{- product.metafields.reviews.rating_count | default: '3' }} reviews
+          </span>
+        </div>
+
+        <p class="product-description">
+          {{ product.description | strip_html | truncate: 200 }}
+        </p>
+      </div>
+
+      <!-- Purchase Section -->
+      <div class="product-purchase-section">
+        <!-- Stock Status -->
+        <div class="product-stock-row">
+          <span class="product-stock-dot{% unless product.available %} product-stock-dot--out{% endunless %}"></span>
+          <span class="product-stock-text">
+            {% if product.available %}
+              {% if current_variant.inventory_management == 'shopify'
+                and current_variant.inventory_quantity > 0
+                and current_variant.inventory_quantity <= 10
+              %}
+                Only {{ current_variant.inventory_quantity }} left in stock
+              {% else %}
+                In stock
+              {% endif %}
+            {% else %}
+              Out of stock
+            {% endif %}
+          </span>
+        </div>
+
+        <!-- Variant Weight Options -->
+        {% unless product.has_only_default_variant %}
+          <div class="variant-picker-wrapper">
+            {% for option in product.options_with_values %}
+              <fieldset class="product-form__input product-form__input--{{ option.name | downcase }}">
+                <div class="product-weight-options">
+                  {% for value in option.values %}
+                    {%- assign radio_id = section.id
+                      | append: '-'
+                      | append: option.position
+                      | append: '-'
+                      | append: forloop.index
+                    -%}
+                    {%- if option.selected_value == value -%}
+                      {%- assign btn_variant = 'secondary' -%}
+                    {%- else -%}
+                      {%- assign btn_variant = 'primary' -%}
+                    {%- endif -%}
+                    <input
+                      type="radio"
+                      id="{{ radio_id }}"
+                      name="{{ option.name }}"
+                      value="{{ value | escape }}"
+                      form="{{ product_form_id }}"
+                      class="product-form__variant-radio visually-hidden"
+                      style="display: none;"
+                      {% if option.selected_value == value %}
+                        checked
+                      {% endif %}
+                    >
+                    <label for="{{ radio_id }}" class="product-form__variant-option-label">
+                      {% render 'global-btn-2',
+                        text: value,
+                        variant: btn_variant,
+                        type: 'button',
+                        class: 'product-form__variant-option-btn',
+                        fit_width: true
+                      %}
+                    </label>
+                  {% endfor %}
+                </div>
+              </fieldset>
+            {% endfor %}
+          </div>
+        {% endunless %}
+
+        <!-- Quantity + Add to Cart -->
+        <div class="product-atc-row">
+          {% render 'quantity-input',
+            variant: current_variant,
+            min: 1,
+            is_product_form: true,
+            product_form_id: product_form_id
+          %}
+
+          <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+          <product-form class="product-form product-form--full">
+            {% form 'product',
+              product,
+              id: product_form_id,
+              class: 'form',
+              novalidate: 'novalidate',
+              data-type: 'add-to-cart-form'
+            %}
+              <input type="hidden" name="id" value="{{ current_variant.id }}">
+              {%- liquid
+                if current_variant.available
+                  assign btn_text = 'products.product.add_to_cart' | t
+                  if btn_text contains 'Translation missing'
+                    assign btn_text = 'ADD TO CART'
+                  endif
+                  assign btn_variant = 'tertiary'
+                else
+                  assign btn_text = 'products.product.sold_out' | t
+                  if btn_text contains 'Translation missing'
+                    assign btn_text = 'SOLD OUT'
+                  endif
+                  assign btn_variant = 'disabled'
+                endif
+              -%}
+              {% render 'global-btn',
+                text: btn_text,
+                type: 'submit',
+                variant: btn_variant,
+                class: 'product-form__submit',
+                is_add_to_cart: true,
+                fit_width: true
+              %}
+            {% endform %}
+          </product-form>
+        </div>
+
+        {% unless product.gift_card? %}
+          <!-- Pickup Info -->
+          <div class="product-pickup-info">
+            <p class="product-pickup-store">Pickup available at Toronto-King street</p>
+            <p class="product-pickup-time">Usually ready in 24 hours</p>
+          </div>
+
+          <!-- Check Availability -->
+          <button class="product-availability-link" id="CheckAvailabilityBtn">
+            Check availability at other stores
+          </button>
+        {% endunless %}
       </div>
     </div>
 
-    <!-- FAQ List -->
+    <!-- FAQ Accordion -->
     <div class="product-faq-list">
       <div class="faq-accordion-item">
         <div class="faq-accordion-header">
-          <span>Q1. What makes KOKO cold brew different?</span>
+          <span>About Product</span>
+          <span class="faq-accordion-icon">+</span>
+        </div>
+        <div class="faq-accordion-body">
+          <p>{{ product.description | strip_html }}</p>
+        </div>
+      </div>
+      <div class="faq-accordion-item">
+        <div class="faq-accordion-header">
+          <span>What makes KOKO cold brew different?</span>
           <span class="faq-accordion-icon">+</span>
         </div>
         <div class="faq-accordion-body">
@@ -249,7 +275,7 @@
       </div>
       <div class="faq-accordion-item">
         <div class="faq-accordion-header">
-          <span>Q2. How should I store it?</span>
+          <span>How should I store it?</span>
           <span class="faq-accordion-icon">+</span>
         </div>
         <div class="faq-accordion-body">
@@ -258,19 +284,7 @@
       </div>
       <div class="faq-accordion-item">
         <div class="faq-accordion-header">
-          <span>Q3. Is this available for subscription?</span>
-          <span class="faq-accordion-icon">+</span>
-        </div>
-        <div class="faq-accordion-body">
-          <p>
-            Yes! Save 15% with a weekly or bi-weekly subscription. You can pause or cancel anytime from your account
-            dashboard.
-          </p>
-        </div>
-      </div>
-      <div class="faq-accordion-item">
-        <div class="faq-accordion-header">
-          <span>Q4. Do you ship internationally?</span>
+          <span>Do you ship internationally?</span>
           <span class="faq-accordion-icon">+</span>
         </div>
         <div class="faq-accordion-body">
@@ -282,69 +296,260 @@
       </div>
     </div>
 
-    <!-- Info Text Block -->
+    <!-- Product Info Card -->
     <div class="product-info-card">
-      <h3>THE KOKO PROMISE</h3>
-      <p>
-        Every cup we make is traceable to its source. We work directly with small farms, pay fair prices, and roast in
-        small batches so nothing goes to waste. Good coffee shouldn't cost the planet.
-      </p>
+      <div class="product-promise-section">
+        <h3 class="product-info-heading">THE KOKO PROMISE</h3>
+        <p class="product-info-body">
+          Every cup we make is traceable to its source. We work directly with small farms, pay fair prices, and roast in
+          small batches so nothing goes to waste. Good coffee shouldn't cost the planet.
+        </p>
+      </div>
+
+      <div class="product-info-section">
+        <div class="product-info-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
+          </svg>
+        </div>
+        <div class="product-info-content">
+          <h4 class="product-info-subheading">Delivery</h4>
+          <p class="product-info-body">
+            We haven't yet figured out how to make delivery teleport to your doorstep. So, while we'll do our best to
+            get your order to you as quickly as possible, please be patient and remember that good things come to those
+            who wait.
+          </p>
+          <a href="#" class="product-discover-link">Discover more</a>
+        </div>
+      </div>
+
+      <div class="product-info-section">
+        <div class="product-info-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+        </div>
+        <div class="product-info-content">
+          <h4 class="product-info-subheading">Customs and Import Duties</h4>
+          <p class="product-info-body">
+            Dealing with customs and import duties is as enjoyable as instant coffee, but it's necessary. The customer
+            is solely responsible for any charges or delays. We're sorry, but we can't control the customs process.
+          </p>
+        </div>
+      </div>
     </div>
+
+    <!-- Scrolling Free Shipping Banner -->
+    {% render 'scrolling-text-item',
+      id: 'product-shipping-marquee',
+      text: 'FREE SHIPPING WORLDWIDE',
+      speed: 30,
+      direction: 'normal',
+      bg_color: 'var(--color-card-bg)',
+      border_radius: 12,
+      padding: 8,
+      text_size: 24,
+      text_weight: '700',
+      pill_bg: 'var(--btn-secondary-bg)',
+      pill_color: 'var(--btn-secondary-text)',
+      pill_height: 44,
+      pill_radius: 14,
+      item_gap: 16,
+      orbit_text: 'KOKO',
+      orbit_speed: 20,
+      orbit_font_size: 10,
+      orbit_color: 'var(--btn-secondary-text)',
+      circle_bg: 'var(--btn-tertiary-bg)',
+      pause_on_hover: false
+    %}
   </div>
 
   <script>
+    // Expose variants for option -> variant resolution on the PDP.
+    // (Shopify variant JSON includes `options: []`, `price`, `compare_at_price`, `available`, etc.)
+    var productVariants = {{ product.variants | json }};
+
+    function formatMoney(cents) {
+      var amount = (cents || 0) / 100;
+      var currency = (window.Shopify && window.Shopify.currency && window.Shopify.currency.active) || 'USD';
+      var locale = document.documentElement.lang || 'en';
+
+      try {
+        return new Intl.NumberFormat(locale, {
+          style: 'currency',
+          currency: currency,
+        }).format(amount);
+      } catch (e) {
+        return currency + ' ' + amount.toFixed(2);
+      }
+    }
+
+    function getSelectedVariant() {
+      var selectedOptions = Array.prototype.slice
+        .call(document.querySelectorAll('.product-form__variant-radio:checked'))
+        .map(function (r) {
+          return r.value;
+        });
+
+      if (!selectedOptions.length) return null;
+
+      return productVariants.find(function (v) {
+        if (!v || !v.options) return false;
+        if (v.options.length !== selectedOptions.length) return false;
+        return v.options.every(function (opt, idx) {
+          return opt === selectedOptions[idx];
+        });
+      });
+    }
+
+    function setAtcButtonState(btn, available) {
+      if (!btn) return;
+      var textEl = btn.querySelector('.global-btn__text');
+
+      if (available) {
+        if (textEl) textEl.textContent = 'ADD TO CART';
+        btn.disabled = false;
+        btn.classList.remove('global-btn--disabled');
+        btn.classList.add('global-btn--tertiary');
+        btn.setAttribute('data-btn-variant', 'tertiary');
+      } else {
+        if (textEl) textEl.textContent = 'SOLD OUT';
+        btn.disabled = true;
+        btn.classList.remove('global-btn--tertiary');
+        btn.classList.add('global-btn--disabled');
+        btn.setAttribute('data-btn-variant', 'disabled');
+      }
+    }
+
+    function updateMainProductCardVariant(variant) {
+      if (!variant) return;
+
+      var priceMainEl = document.querySelector('.product-price-main');
+      if (priceMainEl) priceMainEl.textContent = formatMoney(variant.price);
+
+      var compareEl = document.querySelector('.product-price-compare');
+      if (compareEl) {
+        if (variant.compare_at_price && variant.compare_at_price > variant.price) {
+          compareEl.textContent = formatMoney(variant.compare_at_price);
+          compareEl.style.display = '';
+        } else {
+          compareEl.style.display = 'none';
+        }
+      }
+
+      var stockTextEl = document.querySelector('.product-stock-text');
+      var stockDotEl = document.querySelector('.product-stock-dot');
+      if (stockTextEl) {
+        if (!variant.available) {
+          stockTextEl.textContent = 'Out of stock';
+        } else if (
+          variant.inventory_management === 'shopify' &&
+          typeof variant.inventory_quantity === 'number' &&
+          variant.inventory_quantity > 0 &&
+          variant.inventory_quantity <= 10
+        ) {
+          stockTextEl.textContent = 'Only ' + variant.inventory_quantity + ' left in stock';
+        } else {
+          stockTextEl.textContent = 'In stock';
+        }
+      }
+      if (stockDotEl) {
+        stockDotEl.classList.toggle('product-stock-dot--out', !variant.available);
+      }
+
+      var mainAtcBtn = document.querySelector('#{{ product_form_id }} .product-form__submit');
+      setAtcButtonState(mainAtcBtn, !!variant.available);
+    }
+
+    function updateStickyBarVariant(variant) {
+      if (!variant) return;
+
+      var variantEl = document.querySelector('.sticky-cart-bar__variant .global-btn-2__text');
+      var priceEl = document.querySelector('.sticky-cart-bar__price');
+      var hiddenInput = document.querySelector('#{{ product_form_id }} input[name="id"]');
+      var atcBtn = document.getElementById('StickyAddToCart');
+
+      if (priceEl) priceEl.textContent = formatMoney(variant.price);
+      if (variantEl && variant.title && variant.title !== 'Default Title') variantEl.textContent = variant.title;
+      if (hiddenInput) hiddenInput.value = variant.id;
+      setAtcButtonState(atcBtn, !!variant.available);
+    }
+
+    function updateSelectedVariantUI() {
+      var variant = getSelectedVariant();
+      if (!variant) return;
+      updateStickyBarVariant(variant);
+      updateMainProductCardVariant(variant);
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
-      // Variant button active state
-      document.querySelectorAll('.product-form__input').forEach(function (fieldset) {
-        fieldset.querySelectorAll('.product-form__variant-radio').forEach(function (radio) {
-          radio.addEventListener('change', function () {
-            fieldset.querySelectorAll('.product-form__variant-option-btn').forEach(function (btn) {
-              btn.classList.remove('global-btn-2--secondary');
-              btn.classList.add('global-btn-2--primary');
-              btn.setAttribute('data-btn-variant', 'primary');
-            });
-            var activeBtn = radio.nextElementSibling.querySelector('.product-form__variant-option-btn');
-            if (activeBtn) {
-              activeBtn.classList.remove('global-btn-2--primary');
-              activeBtn.classList.add('global-btn-2--secondary');
-              activeBtn.setAttribute('data-btn-variant', 'secondary');
-            }
+      // Ensure initial UI matches the selected/first variant.
+      updateSelectedVariantUI();
+
+      // Keep UI in sync when radios change (click handler below only sets checked + dispatches change).
+      document.querySelectorAll('.product-form__variant-radio').forEach(function (radio) {
+        radio.addEventListener('change', updateSelectedVariantUI);
+      });
+
+      // Variant active state
+      // Buttons inside <label> don't trigger the radio's for-association in browsers,
+      // so we manually check the radio and dispatch change on click.
+      document.querySelectorAll('.product-form__variant-option-btn').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          e.preventDefault();
+          var label = btn.closest('label');
+          if (!label) return;
+          var radioId = label.getAttribute('for');
+          var radio = radioId ? document.getElementById(radioId) : null;
+          if (!radio || radio.checked) return;
+          radio.checked = true;
+          radio.dispatchEvent(new Event('change', { bubbles: true }));
+
+          // Update button styles within this fieldset
+          var fieldset = label.closest('fieldset');
+          if (!fieldset) return;
+          fieldset.querySelectorAll('.product-form__variant-option-btn').forEach(function (b) {
+            b.classList.remove('global-btn-2--secondary');
+            b.classList.add('global-btn-2--primary');
+            b.setAttribute('data-btn-variant', 'primary');
           });
+          btn.classList.remove('global-btn-2--primary');
+          btn.classList.add('global-btn-2--secondary');
+          btn.setAttribute('data-btn-variant', 'secondary');
         });
       });
 
       // FAQ Accordion
       document.querySelectorAll('.faq-accordion-item').forEach(function (item) {
         item.querySelector('.faq-accordion-header').addEventListener('click', function () {
-          const isOpen = item.classList.contains('is-open');
-          // Close all
+          var isOpen = item.classList.contains('is-open');
           document.querySelectorAll('.faq-accordion-item.is-open').forEach(function (open) {
             open.classList.remove('is-open');
             open.querySelector('.faq-accordion-body').style.maxHeight = '0';
           });
-          // Open clicked if it was closed
           if (!isOpen) {
-            const body = item.querySelector('.faq-accordion-body');
+            var body = item.querySelector('.faq-accordion-body');
             item.classList.add('is-open');
             body.style.maxHeight = body.scrollHeight + 'px';
           }
         });
       });
 
-      const mainImage = document.getElementById('ProductMainImage');
-      const thumbnails = document.querySelectorAll('.thumbnail-item[data-media-url]');
-      const prevBtn = document.querySelector('.media-nav-btn.prev');
-      const nextBtn = document.querySelector('.media-nav-btn.next');
+      // Image gallery
+      var mainImage = document.getElementById('ProductMainImage');
+      var thumbnails = document.querySelectorAll('.thumbnail-item[data-media-url]');
+      var prevBtn = document.querySelector('.media-nav-btn.prev');
+      var nextBtn = document.querySelector('.media-nav-btn.next');
 
       if (!mainImage || thumbnails.length === 0) return;
 
-      let currentIndex = 0;
+      var currentIndex = 0;
 
       function updateMainImage(index) {
         if (index < 0) index = thumbnails.length - 1;
         if (index >= thumbnails.length) index = 0;
         currentIndex = index;
-        const newSrc = thumbnails[currentIndex].getAttribute('data-media-url');
+        var newSrc = thumbnails[currentIndex].getAttribute('data-media-url');
         if (!newSrc) return;
         mainImage.style.opacity = '0';
         setTimeout(function () {
@@ -354,27 +559,168 @@
         }, 300);
       }
 
-      thumbnails.forEach((thumb, index) => {
+      thumbnails.forEach(function (thumb, index) {
         thumb.addEventListener('click', function () {
           updateMainImage(index);
         });
       });
 
-      if (prevBtn) {
+      if (prevBtn)
         prevBtn.addEventListener('click', function (e) {
           e.preventDefault();
           updateMainImage(currentIndex - 1);
         });
-      }
-
-      if (nextBtn) {
+      if (nextBtn)
         nextBtn.addEventListener('click', function (e) {
           e.preventDefault();
           updateMainImage(currentIndex + 1);
         });
+
+      // Sticky bar scroll trigger
+      var stickyBar = document.getElementById('StickyCartBar');
+      if (stickyBar) {
+        window.addEventListener(
+          'scroll',
+          function () {
+            stickyBar.classList.toggle('sticky-cart-bar--visible', window.scrollY > 400);
+          },
+          { passive: true }
+        );
+
+        // Sync sticky qty with main qty
+        var mainQtyInput = document.querySelector('#product-form-{{ section.id }} .quantity__input');
+        var stickyQtyDisplay = document.getElementById('StickyQtyDisplay');
+        var stickyDecrement = document.getElementById('StickyDecrement');
+        var stickyIncrement = document.getElementById('StickyIncrement');
+
+        function getStickyQty() {
+          return parseInt(stickyQtyDisplay.textContent, 10) || 1;
+        }
+
+        if (stickyDecrement) {
+          stickyDecrement.addEventListener('click', function () {
+            var q = Math.max(1, getStickyQty() - 1);
+            stickyQtyDisplay.textContent = q;
+            if (mainQtyInput) mainQtyInput.value = q;
+          });
+        }
+        if (stickyIncrement) {
+          stickyIncrement.addEventListener('click', function () {
+            var q = getStickyQty() + 1;
+            stickyQtyDisplay.textContent = q;
+            if (mainQtyInput) mainQtyInput.value = q;
+          });
+        }
+
+        var stickyAtcBtn = document.getElementById('StickyAddToCart');
+        if (stickyAtcBtn) {
+          stickyAtcBtn.addEventListener('click', function () {
+            var mainSubmit = document.querySelector('#{{ product_form_id }} [type="submit"]');
+            if (mainSubmit) mainSubmit.click();
+          });
+        }
+      }
+
+      // Pickup Availability Drawer
+      var checkAvailBtn = document.getElementById('CheckAvailabilityBtn');
+      var pickupDrawer = document.getElementById('PickupDrawer');
+      var drawerClose = document.getElementById('PickupDrawerClose');
+      var drawerOverlay = document.getElementById('PickupDrawerOverlay');
+
+      function openPickupDrawer() {
+        if (!pickupDrawer) return;
+        pickupDrawer.setAttribute('aria-hidden', 'false');
+        pickupDrawer.classList.add('active');
+        document.body.classList.add('pickup-drawer-open');
+        document.body.style.overflow = 'hidden';
+        if (drawerClose) drawerClose.focus();
+      }
+
+      function closePickupDrawer() {
+        if (!pickupDrawer) return;
+        pickupDrawer.setAttribute('aria-hidden', 'true');
+        pickupDrawer.classList.remove('active');
+        document.body.classList.remove('pickup-drawer-open');
+        document.body.style.overflow = '';
+        if (checkAvailBtn) checkAvailBtn.focus();
+      }
+
+      if (checkAvailBtn && pickupDrawer) {
+        checkAvailBtn.addEventListener('click', openPickupDrawer);
+        if (drawerClose) drawerClose.addEventListener('click', closePickupDrawer);
+        if (drawerOverlay) drawerOverlay.addEventListener('click', closePickupDrawer);
+        pickupDrawer.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape') closePickupDrawer();
+        });
       }
     });
   </script>
+</div>
+
+<!-- Sticky Add to Cart Bar -->
+<div class="sticky-cart-bar" id="StickyCartBar">
+  <div class="sticky-cart-bar__inner">
+    <div class="sticky-cart-bar__product">
+      {% if product.featured_image %}
+        <img
+          src="{{ product.featured_image | image_url: width: 160 }}"
+          width="80"
+          height="68"
+          class="sticky-cart-bar__img"
+          alt="{{ product.title | escape }}"
+          loading="lazy"
+        >
+      {% endif %}
+      <div class="sticky-cart-bar__info">
+        <p class="sticky-cart-bar__name">{{ product.title }}</p>
+        <div class="sticky-cart-bar__meta">
+          {% if current_variant.title != 'Default Title' %}
+            {% render 'global-btn-2',
+              text: current_variant.title,
+              variant: 'primary',
+              type: 'button',
+              class: 'sticky-cart-bar__variant',
+              fit_width: false
+            %}
+          {% endif %}
+          <span class="sticky-cart-bar__price">{{ current_variant.price | money_without_trailing_zeros }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sticky-cart-bar__actions">
+      <!-- Standalone qty selector — NOT bound to the main product form -->
+      <div class="sticky-qty-selector">
+        <button type="button" class="sticky-qty-btn" id="StickyDecrement" aria-label="Decrease quantity">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+        </button>
+        <span class="sticky-qty-display" id="StickyQtyDisplay">1</span>
+        <button type="button" class="sticky-qty-btn" id="StickyIncrement" aria-label="Increase quantity">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+        </button>
+      </div>
+      {%- liquid
+        if current_variant.available
+          assign sticky_btn_text = 'ADD TO CART'
+          assign sticky_btn_variant = 'tertiary'
+        else
+          assign sticky_btn_text = 'SOLD OUT'
+          assign sticky_btn_variant = 'disabled'
+        endif
+      -%}
+      {% render 'global-btn',
+        text: sticky_btn_text,
+        type: 'button',
+        variant: sticky_btn_variant,
+        fit_width: true,
+        attributes: 'id="StickyAddToCart"'
+      %}
+    </div>
+  </div>
 </div>
 
 {% schema %}
@@ -576,1815 +922,7 @@
       "step": 2,
       "unit": "px",
       "label": "Card Border Radius",
-      "default": 12
-    },
-    {
-      "type": "header",
-      "content": "Left Column Blocks"
-    },
-    {
-      "type": "range",
-      "id": "block_gap",
-      "min": 0,
-      "max": 80,
-      "step": 4,
-      "unit": "px",
-      "label": "Gap Between Blocks",
       "default": 16
-    },
-    {
-      "type": "header",
-      "content": "Right Column Blocks"
-    },
-    {
-      "type": "range",
-      "id": "right_block_gap",
-      "min": 0,
-      "max": 80,
-      "step": 4,
-      "unit": "px",
-      "label": "Gap Between Blocks",
-      "default": 16
-    }
-  ],
-  "blocks": [
-    {
-      "type": "product_tag",
-      "name": "Product Tag",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "tag_text",
-          "label": "Tag Text",
-          "default": "LOREM"
-        },
-        {
-          "type": "range",
-          "id": "border_radius",
-          "min": 0,
-          "max": 50,
-          "step": 2,
-          "unit": "px",
-          "label": "Border radius (Desktop)",
-          "default": 50
-        },
-        {
-          "type": "range",
-          "id": "border_radius_mobile",
-          "min": 0,
-          "max": 50,
-          "step": 2,
-          "unit": "px",
-          "label": "Border radius (Mobile)",
-          "default": 50
-        },
-        {
-          "type": "header",
-          "content": "Typography"
-        },
-        {
-          "type": "range",
-          "id": "font_size",
-          "min": 8,
-          "max": 24,
-          "step": 1,
-          "unit": "px",
-          "label": "Font Size (Desktop)",
-          "default": 12
-        },
-        {
-          "type": "range",
-          "id": "font_size_mobile",
-          "min": 8,
-          "max": 20,
-          "step": 1,
-          "unit": "px",
-          "label": "Font Size (Mobile)",
-          "default": 11
-        },
-        {
-          "type": "select",
-          "id": "font_weight",
-          "label": "Font Weight (Desktop)",
-          "options": [
-            {
-              "value": "300",
-              "label": "Light"
-            },
-            {
-              "value": "400",
-              "label": "Normal"
-            },
-            {
-              "value": "500",
-              "label": "Medium"
-            },
-            {
-              "value": "600",
-              "label": "Semi Bold"
-            },
-            {
-              "value": "700",
-              "label": "Bold"
-            }
-          ],
-          "default": "500"
-        },
-        {
-          "type": "select",
-          "id": "font_weight_mobile",
-          "label": "Font Weight (Mobile)",
-          "options": [
-            {
-              "value": "300",
-              "label": "Light"
-            },
-            {
-              "value": "400",
-              "label": "Normal"
-            },
-            {
-              "value": "500",
-              "label": "Medium"
-            },
-            {
-              "value": "600",
-              "label": "Semi Bold"
-            },
-            {
-              "value": "700",
-              "label": "Bold"
-            }
-          ],
-          "default": "500"
-        }
-      ]
-    },
-    {
-      "type": "title",
-      "name": "Product Title",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "range",
-          "id": "title_width",
-          "min": 200,
-          "max": 800,
-          "step": 10,
-          "unit": "px",
-          "label": "Title Max Width",
-          "default": 300
-        },
-        {
-          "type": "range",
-          "id": "title_font_size",
-          "min": 20,
-          "max": 100,
-          "step": 1,
-          "unit": "px",
-          "label": "Title Font Size (Desktop)",
-          "default": 44
-        },
-        {
-          "type": "range",
-          "id": "title_font_size_mobile",
-          "min": 16,
-          "max": 60,
-          "step": 1,
-          "unit": "px",
-          "label": "Title Font Size (Mobile)",
-          "default": 28
-        }
-      ]
-    },
-    {
-      "type": "tagline",
-      "name": "Product Tagline",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "tagline_text",
-          "label": "Tagline Text",
-          "info": "Leave blank to use product metafield tagline"
-        },
-        {
-          "type": "range",
-          "id": "tagline_width",
-          "min": 200,
-          "max": 500,
-          "step": 10,
-          "unit": "px",
-          "label": "Tagline Max Width",
-          "default": 300
-        },
-        {
-          "type": "range",
-          "id": "tagline_font_size",
-          "min": 8,
-          "max": 40,
-          "step": 1,
-          "unit": "px",
-          "label": "Tagline Font Size (Desktop)",
-          "default": 14
-        },
-        {
-          "type": "range",
-          "id": "tagline_font_size_mobile",
-          "min": 8,
-          "max": 32,
-          "step": 1,
-          "unit": "px",
-          "label": "Tagline Font Size (Mobile)",
-          "default": 12
-        },
-        {
-          "type": "select",
-          "id": "tagline_font_weight",
-          "label": "Font Weight (Desktop)",
-          "options": [
-            {
-              "value": "300",
-              "label": "Light"
-            },
-            {
-              "value": "400",
-              "label": "Normal"
-            },
-            {
-              "value": "500",
-              "label": "Medium"
-            },
-            {
-              "value": "600",
-              "label": "Semi Bold"
-            },
-            {
-              "value": "700",
-              "label": "Bold"
-            }
-          ],
-          "default": "400"
-        },
-        {
-          "type": "select",
-          "id": "tagline_font_weight_mobile",
-          "label": "Font Weight (Mobile)",
-          "options": [
-            {
-              "value": "300",
-              "label": "Light"
-            },
-            {
-              "value": "400",
-              "label": "Normal"
-            },
-            {
-              "value": "500",
-              "label": "Medium"
-            },
-            {
-              "value": "600",
-              "label": "Semi Bold"
-            },
-            {
-              "value": "700",
-              "label": "Bold"
-            }
-          ],
-          "default": "400"
-        }
-      ]
-    },
-    {
-      "type": "divider",
-      "name": "Divider Line",
-      "limit": 3,
-      "settings": [
-        {
-          "type": "range",
-          "id": "width",
-          "min": 1,
-          "max": 8,
-          "step": 1,
-          "unit": "px",
-          "label": "Line Thickness (Desktop)",
-          "default": 1
-        },
-        {
-          "type": "range",
-          "id": "width_mobile",
-          "min": 1,
-          "max": 6,
-          "step": 1,
-          "unit": "px",
-          "label": "Line Thickness (Mobile)",
-          "default": 1
-        },
-        {
-          "type": "range",
-          "id": "length",
-          "min": 20,
-          "max": 100,
-          "step": 5,
-          "unit": "%",
-          "label": "Line Length (Desktop)",
-          "default": 80
-        },
-        {
-          "type": "range",
-          "id": "length_mobile",
-          "min": 20,
-          "max": 100,
-          "step": 5,
-          "unit": "%",
-          "label": "Line Length (Mobile)",
-          "default": 80
-        },
-        {
-          "type": "select",
-          "id": "style",
-          "label": "Line Style",
-          "options": [
-            {
-              "value": "solid",
-              "label": "Solid"
-            },
-            {
-              "value": "dashed",
-              "label": "Dashed"
-            },
-            {
-              "value": "dotted",
-              "label": "Dotted"
-            }
-          ],
-          "default": "solid"
-        },
-        {
-          "type": "range",
-          "id": "spacing",
-          "min": 4,
-          "max": 32,
-          "step": 2,
-          "unit": "px",
-          "label": "Spacing (Dashed/Dotted)",
-          "default": 8,
-          "info": "Gap between dashes or dots. Only applies to dashed and dotted styles."
-        }
-      ]
-    },
-    {
-      "type": "mobile_slider",
-      "name": "Mobile Image Slider",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "range",
-          "id": "arrows_height",
-          "min": 28,
-          "max": 64,
-          "step": 2,
-          "unit": "px",
-          "label": "Arrows height",
-          "default": 38
-        },
-        {
-          "type": "range",
-          "id": "arrows_border_radius",
-          "min": 0,
-          "max": 50,
-          "step": 2,
-          "unit": "px",
-          "label": "Arrows border radius",
-          "default": 14
-        }
-      ]
-    },
-    {
-      "type": "product_media",
-      "name": "Desktop Image Slider",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "range",
-          "id": "media_arrows_height",
-          "min": 28,
-          "max": 64,
-          "step": 2,
-          "unit": "px",
-          "label": "Media Slider Arrows Height",
-          "default": 38
-        },
-        {
-          "type": "range",
-          "id": "arrows_border_radius",
-          "min": 0,
-          "max": 50,
-          "step": 2,
-          "unit": "px",
-          "label": "Arrows border radius",
-          "default": 14
-        }
-      ]
-    },
-    {
-      "type": "price",
-      "name": "Product Price",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "range",
-          "id": "price_font_size",
-          "min": 0,
-          "max": 100,
-          "step": 1,
-          "unit": "px",
-          "label": "Main Price Font Size (Desktop)",
-          "default": 14
-        },
-        {
-          "type": "range",
-          "id": "price_font_size_mobile",
-          "min": 0,
-          "max": 72,
-          "step": 1,
-          "unit": "px",
-          "label": "Main Price Font Size (Mobile)",
-          "default": 14
-        },
-        {
-          "type": "range",
-          "id": "sale_price_font_size",
-          "min": 10,
-          "max": 100,
-          "step": 1,
-          "unit": "px",
-          "label": "Sale Price (MRP) Font Size (Desktop)",
-          "default": 14
-        },
-        {
-          "type": "range",
-          "id": "sale_price_font_size_mobile",
-          "min": 10,
-          "max": 40,
-          "step": 1,
-          "unit": "px",
-          "label": "Sale Price Font Size (Mobile)",
-          "default": 14
-        }
-      ]
-    },
-    {
-      "type": "stock_badge",
-      "name": "Stock Badge",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "header",
-          "content": "Typography"
-        },
-        {
-          "type": "range",
-          "id": "font_size",
-          "min": 10,
-          "max": 24,
-          "step": 1,
-          "unit": "px",
-          "label": "Font Size (Desktop)",
-          "default": 14
-        },
-        {
-          "type": "range",
-          "id": "font_size_mobile",
-          "min": 10,
-          "max": 20,
-          "step": 1,
-          "unit": "px",
-          "label": "Font Size (Mobile)",
-          "default": 13
-        },
-        {
-          "type": "select",
-          "id": "font_weight",
-          "label": "Font Weight (Desktop)",
-          "options": [
-            {
-              "value": "300",
-              "label": "Light"
-            },
-            {
-              "value": "400",
-              "label": "Normal"
-            },
-            {
-              "value": "500",
-              "label": "Medium"
-            },
-            {
-              "value": "600",
-              "label": "Semi Bold"
-            },
-            {
-              "value": "700",
-              "label": "Bold"
-            }
-          ],
-          "default": "400"
-        },
-        {
-          "type": "select",
-          "id": "font_weight_mobile",
-          "label": "Font Weight (Mobile)",
-          "options": [
-            {
-              "value": "300",
-              "label": "Light"
-            },
-            {
-              "value": "400",
-              "label": "Normal"
-            },
-            {
-              "value": "500",
-              "label": "Medium"
-            },
-            {
-              "value": "600",
-              "label": "Semi Bold"
-            },
-            {
-              "value": "700",
-              "label": "Bold"
-            }
-          ],
-          "default": "400"
-        }
-      ]
-    },
-    {
-      "type": "variant_picker",
-      "name": "Variant Picker",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "range",
-          "id": "variant_height",
-          "min": 32,
-          "max": 64,
-          "step": 2,
-          "unit": "px",
-          "label": "Variant Buttons Height",
-          "default": 46
-        },
-        {
-          "type": "range",
-          "id": "border_radius",
-          "min": 0,
-          "max": 50,
-          "step": 2,
-          "unit": "px",
-          "label": "Border radius (Desktop)",
-          "default": 14
-        },
-        {
-          "type": "range",
-          "id": "border_radius_mobile",
-          "min": 0,
-          "max": 50,
-          "step": 2,
-          "unit": "px",
-          "label": "Border radius (Mobile)",
-          "default": 14
-        },
-        {
-          "type": "header",
-          "content": "Typography"
-        },
-        {
-          "type": "range",
-          "id": "font_size",
-          "min": 10,
-          "max": 24,
-          "step": 1,
-          "unit": "px",
-          "label": "Font Size (Desktop)",
-          "default": 14
-        },
-        {
-          "type": "range",
-          "id": "font_size_mobile",
-          "min": 10,
-          "max": 22,
-          "step": 1,
-          "unit": "px",
-          "label": "Font Size (Mobile)",
-          "default": 14
-        },
-        {
-          "type": "select",
-          "id": "font_weight",
-          "label": "Font Weight (Desktop)",
-          "options": [
-            {
-              "value": "300",
-              "label": "Light"
-            },
-            {
-              "value": "400",
-              "label": "Normal"
-            },
-            {
-              "value": "500",
-              "label": "Medium"
-            },
-            {
-              "value": "600",
-              "label": "Semi Bold"
-            },
-            {
-              "value": "700",
-              "label": "Bold"
-            }
-          ],
-          "default": "600"
-        },
-        {
-          "type": "select",
-          "id": "font_weight_mobile",
-          "label": "Font Weight (Mobile)",
-          "options": [
-            {
-              "value": "300",
-              "label": "Light"
-            },
-            {
-              "value": "400",
-              "label": "Normal"
-            },
-            {
-              "value": "500",
-              "label": "Medium"
-            },
-            {
-              "value": "600",
-              "label": "Semi Bold"
-            },
-            {
-              "value": "700",
-              "label": "Bold"
-            }
-          ],
-          "default": "600"
-        },
-        {
-          "type": "header",
-          "content": "Spacing"
-        },
-        {
-          "type": "range",
-          "id": "padding_vertical",
-          "min": 4,
-          "max": 40,
-          "step": 1,
-          "unit": "px",
-          "label": "Button Padding Vertical (Desktop)",
-          "default": 13
-        },
-        {
-          "type": "range",
-          "id": "padding_vertical_mobile",
-          "min": 4,
-          "max": 32,
-          "step": 1,
-          "unit": "px",
-          "label": "Button Padding Vertical (Mobile)",
-          "default": 12
-        },
-        {
-          "type": "range",
-          "id": "padding_horizontal",
-          "min": 8,
-          "max": 60,
-          "step": 1,
-          "unit": "px",
-          "label": "Button Padding Horizontal (Desktop)",
-          "default": 28
-        },
-        {
-          "type": "range",
-          "id": "padding_horizontal_mobile",
-          "min": 8,
-          "max": 48,
-          "step": 1,
-          "unit": "px",
-          "label": "Button Padding Horizontal (Mobile)",
-          "default": 20
-        }
-      ]
-    },
-    {
-      "type": "promo_text",
-      "name": "Promo Text",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "promo_text",
-          "label": "Promotional Text",
-          "default": "Sale Roasted Kaffeebohnen"
-        },
-        {
-          "type": "range",
-          "id": "promo_font_size",
-          "min": 8,
-          "max": 40,
-          "step": 1,
-          "unit": "px",
-          "label": "Promo Text Font Size (Desktop)",
-          "default": 12
-        },
-        {
-          "type": "range",
-          "id": "promo_font_size_mobile",
-          "min": 8,
-          "max": 32,
-          "step": 1,
-          "unit": "px",
-          "label": "Promo Text Font Size (Mobile)",
-          "default": 11
-        }
-      ]
-    },
-    {
-      "type": "pickup_availability",
-      "name": "Pickup Availability",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "range",
-          "id": "font_size",
-          "min": 10,
-          "max": 24,
-          "step": 1,
-          "unit": "px",
-          "label": "Font size (Desktop)",
-          "default": 14
-        },
-        {
-          "type": "range",
-          "id": "font_size_mobile",
-          "min": 10,
-          "max": 20,
-          "step": 1,
-          "unit": "px",
-          "label": "Font size (Mobile)",
-          "default": 13
-        },
-        {
-          "type": "select",
-          "id": "font_weight",
-          "label": "Font weight (Desktop)",
-          "options": [
-            {
-              "value": "300",
-              "label": "Light"
-            },
-            {
-              "value": "400",
-              "label": "Normal"
-            },
-            {
-              "value": "500",
-              "label": "Medium"
-            },
-            {
-              "value": "600",
-              "label": "Semi Bold"
-            },
-            {
-              "value": "700",
-              "label": "Bold"
-            }
-          ],
-          "default": "400"
-        },
-        {
-          "type": "select",
-          "id": "font_weight_mobile",
-          "label": "Font weight (Mobile)",
-          "options": [
-            {
-              "value": "300",
-              "label": "Light"
-            },
-            {
-              "value": "400",
-              "label": "Normal"
-            },
-            {
-              "value": "500",
-              "label": "Medium"
-            },
-            {
-              "value": "600",
-              "label": "Semi Bold"
-            },
-            {
-              "value": "700",
-              "label": "Bold"
-            }
-          ],
-          "default": "400"
-        },
-        {
-          "type": "select",
-          "id": "location_font_weight",
-          "label": "Location name font weight (Desktop)",
-          "options": [
-            {
-              "value": "400",
-              "label": "Normal"
-            },
-            {
-              "value": "500",
-              "label": "Medium"
-            },
-            {
-              "value": "600",
-              "label": "Semi Bold"
-            },
-            {
-              "value": "700",
-              "label": "Bold"
-            }
-          ],
-          "default": "700"
-        },
-        {
-          "type": "select",
-          "id": "location_font_weight_mobile",
-          "label": "Location name font weight (Mobile)",
-          "options": [
-            {
-              "value": "400",
-              "label": "Normal"
-            },
-            {
-              "value": "500",
-              "label": "Medium"
-            },
-            {
-              "value": "600",
-              "label": "Semi Bold"
-            },
-            {
-              "value": "700",
-              "label": "Bold"
-            }
-          ],
-          "default": "700"
-        },
-        {
-          "type": "range",
-          "id": "spacing",
-          "min": 0,
-          "max": 24,
-          "step": 2,
-          "unit": "px",
-          "label": "Spacing between lines",
-          "default": 8
-        }
-      ]
-    },
-    {
-      "type": "quantity_selector",
-      "name": "Quantity & Buy Button",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "range",
-          "id": "add_to_cart_height",
-          "min": 36,
-          "max": 80,
-          "step": 2,
-          "unit": "px",
-          "label": "Add to Cart Button Height",
-          "default": 38
-        },
-        {
-          "type": "range",
-          "id": "quantity_height",
-          "min": 32,
-          "max": 64,
-          "step": 2,
-          "unit": "px",
-          "label": "Quantity Selector Height",
-          "default": 44
-        },
-        {
-          "type": "range",
-          "id": "quantity_border_radius",
-          "min": 0,
-          "max": 50,
-          "step": 2,
-          "unit": "px",
-          "label": "Quantity selector border radius (Desktop)",
-          "default": 10
-        },
-        {
-          "type": "range",
-          "id": "quantity_border_radius_mobile",
-          "min": 0,
-          "max": 50,
-          "step": 2,
-          "unit": "px",
-          "label": "Quantity selector border radius (Mobile)",
-          "default": 10
-        },
-        {
-          "type": "range",
-          "id": "add_to_cart_border_radius",
-          "min": 0,
-          "max": 50,
-          "step": 2,
-          "unit": "px",
-          "label": "Add to cart border radius (Desktop)",
-          "default": 14
-        },
-        {
-          "type": "range",
-          "id": "add_to_cart_border_radius_mobile",
-          "min": 0,
-          "max": 50,
-          "step": 2,
-          "unit": "px",
-          "label": "Add to cart border radius (Mobile)",
-          "default": 14
-        },
-        {
-          "type": "header",
-          "content": "Add to Cart Typography"
-        },
-        {
-          "type": "range",
-          "id": "add_to_cart_font_size",
-          "min": 10,
-          "max": 24,
-          "step": 1,
-          "unit": "px",
-          "label": "Font Size (Desktop)",
-          "default": 14
-        },
-        {
-          "type": "range",
-          "id": "add_to_cart_font_size_mobile",
-          "min": 10,
-          "max": 22,
-          "step": 1,
-          "unit": "px",
-          "label": "Font Size (Mobile)",
-          "default": 14
-        },
-        {
-          "type": "select",
-          "id": "add_to_cart_font_weight",
-          "label": "Font Weight (Desktop)",
-          "options": [
-            {
-              "value": "300",
-              "label": "Light"
-            },
-            {
-              "value": "400",
-              "label": "Normal"
-            },
-            {
-              "value": "500",
-              "label": "Medium"
-            },
-            {
-              "value": "600",
-              "label": "Semi Bold"
-            },
-            {
-              "value": "700",
-              "label": "Bold"
-            }
-          ],
-          "default": "700"
-        },
-        {
-          "type": "select",
-          "id": "add_to_cart_font_weight_mobile",
-          "label": "Font Weight (Mobile)",
-          "options": [
-            {
-              "value": "300",
-              "label": "Light"
-            },
-            {
-              "value": "400",
-              "label": "Normal"
-            },
-            {
-              "value": "500",
-              "label": "Medium"
-            },
-            {
-              "value": "600",
-              "label": "Semi Bold"
-            },
-            {
-              "value": "700",
-              "label": "Bold"
-            }
-          ],
-          "default": "700"
-        }
-      ]
-    },
-    {
-      "type": "left_hero_img",
-      "name": "Product Image",
-      "limit": 1
-    },
-    {
-      "type": "info_card",
-      "name": "Info Card",
-      "settings": [
-        {
-          "type": "text",
-          "id": "heading",
-          "label": "Card Heading",
-          "default": "THE PROMISE"
-        },
-        {
-          "type": "richtext",
-          "id": "content",
-          "label": "Card Content",
-          "default": "<p>Every cup we make is traceable to its source. We work directly with small farms, pay fair prices, and roast in small batches so nothing goes to waste.</p>"
-        },
-        {
-          "type": "header",
-          "content": "Typography"
-        },
-        {
-          "type": "range",
-          "id": "heading_font_size",
-          "min": 10,
-          "max": 24,
-          "step": 1,
-          "unit": "px",
-          "label": "Heading Font Size",
-          "default": 13
-        },
-        {
-          "type": "range",
-          "id": "content_font_size",
-          "min": 10,
-          "max": 24,
-          "step": 1,
-          "unit": "px",
-          "label": "Content Font Size",
-          "default": 14
-        }
-      ]
-    },
-    {
-      "type": "collapsible_tab",
-      "name": "Accordion Tab",
-      "limit": 10,
-      "settings": [
-        {
-          "type": "text",
-          "id": "heading",
-          "label": "Heading"
-        },
-        {
-          "type": "richtext",
-          "id": "content",
-          "label": "Content"
-        },
-        {
-          "type": "liquid",
-          "id": "custom_liquid",
-          "label": "Custom Liquid",
-          "info": "Add app snippets or other Liquid code to create advanced customizations."
-        },
-        {
-          "type": "header",
-          "content": "Typography"
-        },
-        {
-          "type": "range",
-          "id": "heading_font_size",
-          "min": 12,
-          "max": 48,
-          "step": 1,
-          "unit": "px",
-          "label": "Heading Font Size (Desktop)",
-          "default": 16
-        },
-        {
-          "type": "range",
-          "id": "heading_font_size_mobile",
-          "min": 12,
-          "max": 36,
-          "step": 1,
-          "unit": "px",
-          "label": "Heading Font Size (Mobile)",
-          "default": 16
-        },
-        {
-          "type": "select",
-          "id": "heading_font_weight",
-          "label": "Heading Font Weight (Desktop)",
-          "options": [
-            {
-              "value": "300",
-              "label": "Light"
-            },
-            {
-              "value": "400",
-              "label": "Normal"
-            },
-            {
-              "value": "500",
-              "label": "Medium"
-            },
-            {
-              "value": "600",
-              "label": "Semi Bold"
-            },
-            {
-              "value": "700",
-              "label": "Bold"
-            }
-          ],
-          "default": "600"
-        },
-        {
-          "type": "select",
-          "id": "heading_font_weight_mobile",
-          "label": "Heading Font Weight (Mobile)",
-          "options": [
-            {
-              "value": "300",
-              "label": "Light"
-            },
-            {
-              "value": "400",
-              "label": "Normal"
-            },
-            {
-              "value": "500",
-              "label": "Medium"
-            },
-            {
-              "value": "600",
-              "label": "Semi Bold"
-            },
-            {
-              "value": "700",
-              "label": "Bold"
-            }
-          ],
-          "default": "400"
-        },
-        {
-          "type": "range",
-          "id": "content_font_size",
-          "min": 12,
-          "max": 32,
-          "step": 1,
-          "unit": "px",
-          "label": "Content Font Size (Desktop)",
-          "default": 14
-        },
-        {
-          "type": "range",
-          "id": "content_font_size_mobile",
-          "min": 12,
-          "max": 28,
-          "step": 1,
-          "unit": "px",
-          "label": "Content Font Size (Mobile)",
-          "default": 15
-        },
-        {
-          "type": "select",
-          "id": "content_font_weight",
-          "label": "Content Font Weight (Desktop)",
-          "options": [
-            {
-              "value": "300",
-              "label": "Light"
-            },
-            {
-              "value": "400",
-              "label": "Normal"
-            },
-            {
-              "value": "500",
-              "label": "Medium"
-            },
-            {
-              "value": "600",
-              "label": "Semi Bold"
-            },
-            {
-              "value": "700",
-              "label": "Bold"
-            }
-          ],
-          "default": "400"
-        },
-        {
-          "type": "select",
-          "id": "content_font_weight_mobile",
-          "label": "Content Font Weight (Mobile)",
-          "options": [
-            {
-              "value": "300",
-              "label": "Light"
-            },
-            {
-              "value": "400",
-              "label": "Normal"
-            },
-            {
-              "value": "500",
-              "label": "Medium"
-            },
-            {
-              "value": "600",
-              "label": "Semi Bold"
-            },
-            {
-              "value": "700",
-              "label": "Bold"
-            }
-          ],
-          "default": "400"
-        }
-      ]
-    },
-    {
-      "type": "description",
-      "name": "Description",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "range",
-          "id": "font_size",
-          "min": 12,
-          "max": 32,
-          "step": 1,
-          "unit": "px",
-          "label": "Font Size (Desktop)",
-          "default": 14
-        },
-        {
-          "type": "range",
-          "id": "font_size_mobile",
-          "min": 12,
-          "max": 28,
-          "step": 1,
-          "unit": "px",
-          "label": "Font Size (Mobile)",
-          "default": 16
-        },
-        {
-          "type": "select",
-          "id": "font_weight",
-          "label": "Font Weight (Desktop)",
-          "options": [
-            {
-              "value": "300",
-              "label": "Light"
-            },
-            {
-              "value": "400",
-              "label": "Normal"
-            },
-            {
-              "value": "500",
-              "label": "Medium"
-            },
-            {
-              "value": "600",
-              "label": "Semi Bold"
-            },
-            {
-              "value": "700",
-              "label": "Bold"
-            }
-          ],
-          "default": "400"
-        },
-        {
-          "type": "select",
-          "id": "font_weight_mobile",
-          "label": "Font Weight (Mobile)",
-          "options": [
-            {
-              "value": "300",
-              "label": "Light"
-            },
-            {
-              "value": "400",
-              "label": "Normal"
-            },
-            {
-              "value": "500",
-              "label": "Medium"
-            },
-            {
-              "value": "600",
-              "label": "Semi Bold"
-            },
-            {
-              "value": "700",
-              "label": "Bold"
-            }
-          ],
-          "default": "400"
-        }
-      ]
-    },
-    {
-      "type": "marquee",
-      "name": "Marquee",
-      "limit": 2,
-      "settings": [
-        {
-          "type": "text",
-          "id": "text",
-          "label": "Marquee Text",
-          "default": "FREE SHIPPING WORLDWIDE"
-        },
-        {
-          "type": "image_picker",
-          "id": "separator_image",
-          "label": "Separator Image"
-        },
-        {
-          "type": "range",
-          "id": "speed",
-          "min": 5,
-          "max": 60,
-          "step": 1,
-          "unit": "s",
-          "label": "Speed",
-          "default": 20
-        },
-        {
-          "type": "select",
-          "id": "direction",
-          "label": "Direction",
-          "options": [
-            {
-              "value": "normal",
-              "label": "Left"
-            },
-            {
-              "value": "reverse",
-              "label": "Right"
-            }
-          ],
-          "default": "normal"
-        },
-        {
-          "type": "header",
-          "content": "Typography"
-        },
-        {
-          "type": "range",
-          "id": "font_size",
-          "min": 12,
-          "max": 48,
-          "step": 1,
-          "unit": "px",
-          "label": "Font Size (Desktop)",
-          "default": 16
-        },
-        {
-          "type": "range",
-          "id": "font_size_mobile",
-          "min": 12,
-          "max": 36,
-          "step": 1,
-          "unit": "px",
-          "label": "Font Size (Mobile)",
-          "default": 16
-        },
-        {
-          "type": "select",
-          "id": "font_weight",
-          "label": "Font Weight (Desktop)",
-          "options": [
-            {
-              "value": "300",
-              "label": "Light"
-            },
-            {
-              "value": "400",
-              "label": "Normal"
-            },
-            {
-              "value": "500",
-              "label": "Medium"
-            },
-            {
-              "value": "600",
-              "label": "Semi Bold"
-            },
-            {
-              "value": "700",
-              "label": "Bold"
-            }
-          ],
-          "default": "700"
-        },
-        {
-          "type": "select",
-          "id": "font_weight_mobile",
-          "label": "Font Weight (Mobile)",
-          "options": [
-            {
-              "value": "300",
-              "label": "Light"
-            },
-            {
-              "value": "400",
-              "label": "Normal"
-            },
-            {
-              "value": "500",
-              "label": "Medium"
-            },
-            {
-              "value": "600",
-              "label": "Semi Bold"
-            },
-            {
-              "value": "700",
-              "label": "Bold"
-            }
-          ],
-          "default": "600"
-        },
-        {
-          "type": "header",
-          "content": "Style Customization"
-        },
-        {
-          "type": "checkbox",
-          "id": "show_border",
-          "label": "Show Borders",
-          "default": true
-        }
-      ]
-    },
-    {
-      "type": "feature_row",
-      "name": "Feature Row",
-      "limit": 4,
-      "settings": [
-        {
-          "type": "image_picker",
-          "id": "icon",
-          "label": "Icon"
-        },
-        {
-          "type": "text",
-          "id": "heading",
-          "label": "Heading",
-          "default": "Delivery"
-        },
-        {
-          "type": "richtext",
-          "id": "text",
-          "label": "Text",
-          "default": "<p>We haven't yet figured out how to make delivery teleport to your doorstep. So, while we'll do our best to get your order to you as quickly as possible, please be patient and remember that good things come to those who wait.</p>"
-        },
-        {
-          "type": "text",
-          "id": "button_label",
-          "label": "Button Label",
-          "default": "Discover more"
-        },
-        {
-          "type": "url",
-          "id": "button_link",
-          "label": "Button Link"
-        },
-        {
-          "type": "header",
-          "content": "Typography"
-        },
-        {
-          "type": "range",
-          "id": "heading_font_size",
-          "min": 12,
-          "max": 48,
-          "step": 1,
-          "unit": "px",
-          "label": "Heading Font Size (Desktop)",
-          "default": 16
-        },
-        {
-          "type": "range",
-          "id": "heading_font_size_mobile",
-          "min": 12,
-          "max": 36,
-          "step": 1,
-          "unit": "px",
-          "label": "Heading Font Size (Mobile)",
-          "default": 20
-        },
-        {
-          "type": "select",
-          "id": "heading_font_weight",
-          "label": "Heading Font Weight (Desktop)",
-          "options": [
-            {
-              "value": "300",
-              "label": "Light"
-            },
-            {
-              "value": "400",
-              "label": "Normal"
-            },
-            {
-              "value": "500",
-              "label": "Medium"
-            },
-            {
-              "value": "600",
-              "label": "Semi Bold"
-            },
-            {
-              "value": "700",
-              "label": "Bold"
-            }
-          ],
-          "default": "700"
-        },
-        {
-          "type": "select",
-          "id": "heading_font_weight_mobile",
-          "label": "Heading Font Weight (Mobile)",
-          "options": [
-            {
-              "value": "300",
-              "label": "Light"
-            },
-            {
-              "value": "400",
-              "label": "Normal"
-            },
-            {
-              "value": "500",
-              "label": "Medium"
-            },
-            {
-              "value": "600",
-              "label": "Semi Bold"
-            },
-            {
-              "value": "700",
-              "label": "Bold"
-            }
-          ],
-          "default": "700"
-        },
-        {
-          "type": "range",
-          "id": "text_font_size",
-          "min": 12,
-          "max": 32,
-          "step": 1,
-          "unit": "px",
-          "label": "Text Font Size (Desktop)",
-          "default": 14
-        },
-        {
-          "type": "range",
-          "id": "text_font_size_mobile",
-          "min": 12,
-          "max": 28,
-          "step": 1,
-          "unit": "px",
-          "label": "Text Font Size (Mobile)",
-          "default": 16
-        },
-        {
-          "type": "select",
-          "id": "text_font_weight",
-          "label": "Text Font Weight (Desktop)",
-          "options": [
-            {
-              "value": "300",
-              "label": "Light"
-            },
-            {
-              "value": "400",
-              "label": "Normal"
-            },
-            {
-              "value": "500",
-              "label": "Medium"
-            },
-            {
-              "value": "600",
-              "label": "Semi Bold"
-            },
-            {
-              "value": "700",
-              "label": "Bold"
-            }
-          ],
-          "default": "400"
-        },
-        {
-          "type": "select",
-          "id": "text_font_weight_mobile",
-          "label": "Text Font Weight (Mobile)",
-          "options": [
-            {
-              "value": "300",
-              "label": "Light"
-            },
-            {
-              "value": "400",
-              "label": "Normal"
-            },
-            {
-              "value": "500",
-              "label": "Medium"
-            },
-            {
-              "value": "600",
-              "label": "Semi Bold"
-            },
-            {
-              "value": "700",
-              "label": "Bold"
-            }
-          ],
-          "default": "400"
-        }
-      ]
-    },
-    {
-      "type": "icon_strip",
-      "name": "Icon Strip",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "header",
-          "content": "Item 1"
-        },
-        {
-          "type": "image_picker",
-          "id": "icon_1",
-          "label": "Icon"
-        },
-        {
-          "type": "text",
-          "id": "text_1",
-          "label": "Text",
-          "default": "Designed in Milan with Love"
-        },
-        {
-          "type": "header",
-          "content": "Item 2"
-        },
-        {
-          "type": "image_picker",
-          "id": "icon_2",
-          "label": "Icon"
-        },
-        {
-          "type": "text",
-          "id": "text_2",
-          "label": "Text",
-          "default": "Conversation Starter"
-        },
-        {
-          "type": "header",
-          "content": "Item 3"
-        },
-        {
-          "type": "image_picker",
-          "id": "icon_3",
-          "label": "Icon"
-        },
-        {
-          "type": "text",
-          "id": "text_3",
-          "label": "Text",
-          "default": "Hug Magnet"
-        },
-        {
-          "type": "header",
-          "content": "Item 4"
-        },
-        {
-          "type": "image_picker",
-          "id": "icon_4",
-          "label": "Icon"
-        },
-        {
-          "type": "text",
-          "id": "text_4",
-          "label": "Text",
-          "default": "Supporting Non-Profit"
-        },
-        {
-          "type": "header",
-          "content": "Typography"
-        },
-        {
-          "type": "range",
-          "id": "font_size",
-          "min": 8,
-          "max": 24,
-          "step": 1,
-          "unit": "px",
-          "label": "Font Size (Desktop)",
-          "default": 12
-        },
-        {
-          "type": "range",
-          "id": "font_size_mobile",
-          "min": 8,
-          "max": 20,
-          "step": 1,
-          "unit": "px",
-          "label": "Font Size (Mobile)",
-          "default": 11
-        },
-        {
-          "type": "select",
-          "id": "font_weight",
-          "label": "Font Weight (Desktop)",
-          "options": [
-            {
-              "value": "300",
-              "label": "Light"
-            },
-            {
-              "value": "400",
-              "label": "Normal"
-            },
-            {
-              "value": "500",
-              "label": "Medium"
-            },
-            {
-              "value": "600",
-              "label": "Semi Bold"
-            },
-            {
-              "value": "700",
-              "label": "Bold"
-            }
-          ],
-          "default": "700"
-        },
-        {
-          "type": "select",
-          "id": "font_weight_mobile",
-          "label": "Font Weight (Mobile)",
-          "options": [
-            {
-              "value": "300",
-              "label": "Light"
-            },
-            {
-              "value": "400",
-              "label": "Normal"
-            },
-            {
-              "value": "500",
-              "label": "Medium"
-            },
-            {
-              "value": "600",
-              "label": "Semi Bold"
-            },
-            {
-              "value": "700",
-              "label": "Bold"
-            }
-          ],
-          "default": "600"
-        }
-      ]
     }
   ]
 }
