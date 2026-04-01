@@ -181,6 +181,10 @@
         {%- liquid
           assign header_title = block.settings.title | default: collection.title | default: 'Products'
           assign header_description = block.settings.header_description | default: collection.description | strip_html | default: 'Shop our collection.'
+          assign resolved_header_image = block.settings.header_image
+          if resolved_header_image == blank and block.settings.show_header_image
+            assign resolved_header_image = collection.image
+          endif
         -%}
         {% render 'section-header',
           id: block.id,
@@ -214,7 +218,7 @@
           description_font_size_mobile: block.settings.header_description_font_size_mobile,
           border_radius: block.settings.header_border_radius,
           show_image: block.settings.show_header_image,
-          header_image: block.settings.header_image,
+          header_image: resolved_header_image,
           image_alignment: block.settings.header_image_alignment,
           image_width_percent: block.settings.header_image_width_percent,
           image_width_percent_mobile: block.settings.header_image_width_percent_mobile,
@@ -313,32 +317,33 @@
       >
         {%- if collection.products.size == 0 or visible_products_count == 0 -%}
           <div
-            class="collection collection--empty"
+            class="collection collection--empty collection--empty-custom"
             id="product-grid-{{ section.id }}"
             data-id="{{ section.id }}"
           >
-            <div class="loading-overlay gradient"></div>
-            <div class="title-wrapper center">
-              <h2 class="title title--primary">
-                {{ 'sections.collection_template.empty' | t -}}
-                <br>
-                {{
-                  'sections.collection_template.use_fewer_filters_html'
-                  | t: link: collection.url, class: 'underlined-link link'
-                }}
-              </h2>
+            <div class="collection-empty-card">
+              <h2 class="collection-empty-heading">{{ 'sections.collection_template.empty' | t }}</h2>
+              <p class="collection-empty-subtext">{{ 'sections.collection_template.use_fewer_filters_html' | t: class: 'collection-empty-link', link: collection.url }}</p>
+              {%- assign _go_home_text = 'general.continue_shopping' | t -%}
+              {%- render 'global-btn',
+                text: _go_home_text,
+                url: routes.root_url,
+                variant: 'secondary',
+                class: 'collection-empty-btn',
+                border_radius: '12px'
+              -%}
             </div>
           </div>
         {%- else -%}
           <div
             class="collection{% if section.settings.filter_type != 'vertical' %}  {% endif %}"
           >
-            <div class="loading-overlay gradient"></div>
             <ul
               id="product-grid-{{ section.id }}"
               data-id="{{ section.id }}"
               class="grid product-grid"
             >
+              {%- assign visible_index = 0 -%}
               {%- for product in collection.products -%}
                 {%- liquid
                   assign product_visible = true
@@ -350,8 +355,9 @@
                   endif
                 -%}
                 {%- if product_visible -%}
+                  {%- assign visible_index = visible_index | plus: 1 -%}
                   <li
-                    class="grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+                    class="grid__item{% if visible_index > 8 %} product-grid__see-more-hidden{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
                     {% if settings.animations_reveal_on_scroll %}
                       data-cascade
                       style="--animation-order: {{ forloop.index }};"
@@ -369,6 +375,19 @@
               {%- endfor -%}
             </ul>
 
+            {%- if visible_index > 8 -%}
+              <div class="product-grid__see-more-wrap">
+                <button
+                  type="button"
+                  class="product-grid__see-more"
+                  data-product-grid-see-more
+                  aria-controls="product-grid-{{ section.id }}"
+                >
+                  {{ 'products.facets.show_more' | t }}
+                </button>
+              </div>
+            {%- endif -%}
+
             {%- if paginate.pages > 1 -%}
               {% render 'pagination', paginate: paginate, anchor: '' %}
             {%- endif -%}
@@ -378,6 +397,29 @@
     </div>
   {%- endpaginate -%}
 </div>
+
+<script>
+  (function () {
+    // Delegated "See More" handler — survives FacetFiltersForm AJAX re-renders because
+    // it is attached to the document rather than to the (replaced) ProductGridContainer.
+    if (document._productGridSeeMoreDelegated) return;
+    document._productGridSeeMoreDelegated = true;
+
+    document.addEventListener('click', function (event) {
+      var btn = event.target.closest('[data-product-grid-see-more]');
+      if (!btn) return;
+      var gridId = btn.getAttribute('aria-controls');
+      var grid = gridId ? document.getElementById(gridId) : null;
+      if (grid) {
+        grid.querySelectorAll('.product-grid__see-more-hidden').forEach(function (el) {
+          el.classList.remove('product-grid__see-more-hidden');
+        });
+      }
+      var wrap = btn.parentElement;
+      if (wrap) wrap.remove();
+    });
+  })();
+</script>
 
 {% schema %}
 {

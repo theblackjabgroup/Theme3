@@ -2,7 +2,7 @@
 .custom-footer {
   background-color: var(--color-bg);
   color: var(--color-text);
-  padding: var(--bento-gap);
+  padding: var(--bento-gap) 0;
   width: 100%;
   box-sizing: border-box;
   overflow: visible;
@@ -14,7 +14,6 @@
   .custom-footer {
     margin-left: 0;
     width: 100%;
-    padding: 0 5px;
   }
 }
 
