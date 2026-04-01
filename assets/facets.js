@@ -481,9 +481,14 @@
     form.querySelectorAll('.price-facet-slider').forEach((sliderEl) => {
       const minRange = sliderEl.querySelector('.price-facet-slider__input--min');
       const maxRange = sliderEl.querySelector('.price-facet-slider__input--max');
+      const fill = sliderEl.querySelector('.price-facet-slider__fill');
       const maxCents = Number(sliderEl.dataset.priceRangeMax) || 0;
       if (minRange) minRange.value = String(minRange.min || 0);
       if (maxRange) maxRange.value = String(maxRange.max || maxCents);
+      if (fill && maxCents) {
+        fill.style.left = '0%';
+        fill.style.width = '100%';
+      }
     });
 
     form.querySelectorAll('details.js-filter .facets__selected').forEach((countEl) => {
@@ -657,29 +662,42 @@
         return Math.round(Math.max(0, Math.min(maxCents, n * 100)));
       }
 
+      const fill = sliderEl.querySelector('.price-facet-slider__fill');
+      function updateFill() {
+        if (!fill || !maxCents) return;
+        const minPct = (Number(minRange.value) / maxCents) * 100;
+        const maxPct = (Number(maxRange.value) / maxCents) * 100;
+        fill.style.left = minPct + '%';
+        fill.style.width = (maxPct - minPct) + '%';
+      }
+
       function updateMinInput() {
         const v = Math.min(Number(minRange.value), Number(maxRange.value));
         minRange.value = v;
         minInput.value = centsToDisplay(v);
         minInput.dispatchEvent(new Event('change', { bubbles: true }));
+        updateFill();
       }
       function updateMaxInput() {
         const v = Math.max(Number(maxRange.value), Number(minRange.value));
         maxRange.value = v;
         maxInput.value = centsToDisplay(v);
         maxInput.dispatchEvent(new Event('change', { bubbles: true }));
+        updateFill();
       }
       function syncMinFromInput() {
         const raw = String(minInput.value).trim();
         if (raw === '') return;
         const cents = displayToCents(minInput.value);
         minRange.value = Math.min(cents, Number(maxRange.value));
+        updateFill();
       }
       function syncMaxFromInput() {
         const raw = String(maxInput.value).trim();
         if (raw === '') return;
         const cents = displayToCents(maxInput.value);
         maxRange.value = Math.max(cents, Number(minRange.value) || 0);
+        updateFill();
       }
 
       minRange.addEventListener('input', updateMinInput);
@@ -695,6 +713,7 @@
          When empty (no price filter), leave sliders at Liquid-rendered values to avoid resetting max to 0. */
       syncMinFromInput();
       syncMaxFromInput();
+      updateFill();
     });
   }
 

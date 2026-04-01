@@ -313,32 +313,32 @@
       >
         {%- if collection.products.size == 0 or visible_products_count == 0 -%}
           <div
-            class="collection collection--empty"
+            class="collection collection--empty collection--empty-custom"
             id="product-grid-{{ section.id }}"
             data-id="{{ section.id }}"
           >
-            <div class="loading-overlay gradient"></div>
-            <div class="title-wrapper center">
-              <h2 class="title title--primary">
-                {{ 'sections.collection_template.empty' | t -}}
-                <br>
-                {{
-                  'sections.collection_template.use_fewer_filters_html'
-                  | t: link: collection.url, class: 'underlined-link link'
-                }}
-              </h2>
+            <div class="collection-empty-card">
+              <h2 class="collection-empty-heading">UH OH, NO PRODUCTS FOUND.</h2>
+              <p class="collection-empty-subtext">Use fewer filters or</p>
+              {%- render 'global-btn',
+                text: 'GO TO HOME',
+                url: routes.root_url,
+                variant: 'secondary',
+                class: 'collection-empty-btn',
+                border_radius: '12px'
+              -%}
             </div>
           </div>
         {%- else -%}
           <div
             class="collection{% if section.settings.filter_type != 'vertical' %}  {% endif %}"
           >
-            <div class="loading-overlay gradient"></div>
             <ul
               id="product-grid-{{ section.id }}"
               data-id="{{ section.id }}"
               class="grid product-grid"
             >
+              {%- assign visible_index = 0 -%}
               {%- for product in collection.products -%}
                 {%- liquid
                   assign product_visible = true
@@ -350,8 +350,9 @@
                   endif
                 -%}
                 {%- if product_visible -%}
+                  {%- assign visible_index = visible_index | plus: 1 -%}
                   <li
-                    class="grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+                    class="grid__item{% if visible_index > 8 %} product-grid__see-more-hidden{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
                     {% if settings.animations_reveal_on_scroll %}
                       data-cascade
                       style="--animation-order: {{ forloop.index }};"
@@ -368,6 +369,34 @@
                 {%- endif -%}
               {%- endfor -%}
             </ul>
+
+            {%- if visible_index > 8 -%}
+              <div class="product-grid__see-more-wrap">
+                <button
+                  type="button"
+                  class="product-grid__see-more"
+                  data-product-grid-see-more
+                  aria-controls="product-grid-{{ section.id }}"
+                >
+                  See More
+                </button>
+              </div>
+
+              <script>
+                (function () {
+                  var btn = document.querySelector('[data-product-grid-see-more]');
+                  var grid = document.getElementById('product-grid-{{ section.id }}');
+                  if (!btn || !grid) return;
+
+                  btn.addEventListener('click', function () {
+                    grid.querySelectorAll('.product-grid__see-more-hidden').forEach(function (el) {
+                      el.classList.remove('product-grid__see-more-hidden');
+                    });
+                    btn.parentElement && btn.parentElement.remove();
+                  });
+                })();
+              </script>
+            {%- endif -%}
 
             {%- if paginate.pages > 1 -%}
               {% render 'pagination', paginate: paginate, anchor: '' %}
