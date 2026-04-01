@@ -16,6 +16,7 @@
   - is_add_to_cart {Boolean} Adds sold-out message + loading spinner internals
   - border_radius {String}  Custom border radius (e.g. '8px', '0', '50%')
   - hover         {Boolean} Enable/disable hover effect (default: true)
+  - no_border     {Boolean} When true, removes the border (default: false)
 {%- endcomment -%}
 
 {%- assign btn_text = text | default: 'Button' -%}
@@ -48,6 +49,10 @@
 {%- unless btn_hover -%}
   {%- assign btn_class = btn_class | append: ' global-btn-2--no-hover' -%}
 {%- endunless -%}
+
+{%- if no_border -%}
+  {%- assign btn_class = btn_class | append: ' global-btn-2--no-border' -%}
+{%- endif -%}
 
 {%- if btn_variant == 'disabled' -%}
   {%- assign is_disabled = true -%}

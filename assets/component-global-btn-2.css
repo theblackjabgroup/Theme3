@@ -287,3 +287,11 @@
   background: inherit;
   color: inherit;
 }
+
+
+/* =============================================================
+   MODIFIER: no-border — removes the border
+   ============================================================= */
+.global-btn-2--no-border {
+  border-color: transparent !important;
+}
