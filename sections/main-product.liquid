@@ -6,7 +6,7 @@
 <div class="product-page-container">
   <!-- LEFT COLUMN: Image Gallery -->
   <div class="product-left-column">
-    <div class="product-media-gallery">
+    <div class="product-media-gallery{% if product.gift_card? %} product-media-gallery--gift-card{% endif %}">
       <!-- Main Image -->
       <div class="product-main-media">
         {% if product.featured_media %}
@@ -26,48 +26,52 @@
           >
         {% endif %}
 
-        <div class="media-nav-buttons">
-          {%- capture prev_icon -%}
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-          {%- endcapture -%}
-          {%- capture next_icon -%}
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          {%- endcapture -%}
-          {%
-            render 'global-btn-2',
-            icon: prev_icon,
-            icon_only: true,
-            fit_width: false,
-            variant: 'primary',
-            class: 'media-nav-btn prev',
-            attributes: 'aria-label="Previous image",
-            no_border: true
-          %}
-          {%
-            render 'global-btn-2',
-            icon: next_icon,
-            icon_only: true,
-            fit_width: false,
-            variant: 'primary',
-            class: 'media-nav-btn next',
-            attributes: 'aria-label="Next image",
-            no_border: true
-          %}
-        </div>
+        {% unless product.gift_card? %}
+          <div class="media-nav-buttons">
+            {%- capture prev_icon -%}
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            {%- endcapture -%}
+            {%- capture next_icon -%}
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            {%- endcapture -%}
+            {%
+              render 'global-btn-2',
+              icon: prev_icon,
+              icon_only: true,
+              fit_width: false,
+              variant: 'primary',
+              class: 'media-nav-btn prev',
+              attributes: 'aria-label="Previous image"',
+              no_border: true
+            %}
+            {%
+              render 'global-btn-2',
+              icon: next_icon,
+              icon_only: true,
+              fit_width: false,
+              variant: 'primary',
+              class: 'media-nav-btn next',
+              attributes: 'aria-label="Next image"',
+              no_border: true
+            %}
+          </div>
+        {% endunless %}
       </div>
 
-      <!-- Thumbnails -->
-      <div class="product-thumbnails">
-        {% for media in product.media limit: 3 %}
-          <div class="thumbnail-item" data-media-url="{{ media.preview_image | image_url: width: 1000 }}">
-            {{ media.preview_image | image_url: width: 300 | image_tag: class: 'thumbnail-img', loading: 'lazy' }}
-          </div>
-        {% else %}
-          <div class="thumbnail-item"><div class="placeholder-thumb"></div></div>
-          <div class="thumbnail-item"><div class="placeholder-thumb"></div></div>
-          <div class="thumbnail-item"><div class="placeholder-thumb"></div></div>
-        {% endfor %}
-      </div>
+      {% unless product.gift_card? %}
+        <!-- Thumbnails -->
+        <div class="product-thumbnails">
+          {% for media in product.media limit: 3 %}
+            <div class="thumbnail-item" data-media-url="{{ media.preview_image | image_url: width: 1000 }}">
+              {{ media.preview_image | image_url: width: 300 | image_tag: class: 'thumbnail-img', loading: 'lazy' }}
+            </div>
+          {% else %}
+            <div class="thumbnail-item"><div class="placeholder-thumb"></div></div>
+            <div class="thumbnail-item"><div class="placeholder-thumb"></div></div>
+            <div class="thumbnail-item"><div class="placeholder-thumb"></div></div>
+          {% endfor %}
+        </div>
+      {% endunless %}
     </div>
   </div>
 
@@ -78,7 +82,11 @@
       <!-- Title Section -->
       <div class="product-details-header">
         <div class="product-badge-pill">
-          {{- product.metafields.custom.tag | default: 'BEAR WITH ME' -}}
+          {%- if product.gift_card? -%}
+            GIFT CARD
+          {%- else -%}
+            {{- product.metafields.custom.tag | default: 'BEAR WITH ME' -}}
+          {%- endif -%}
         </div>
 
         <h1 class="product-main-title">{{ product.title }}</h1>
@@ -224,14 +232,16 @@
           </product-form>
         </div>
 
-        <!-- Pickup Info -->
-        <div class="product-pickup-info">
-          <p class="product-pickup-store">Pickup available at Toronto-King street</p>
-          <p class="product-pickup-time">Usually ready in 24 hours</p>
-        </div>
+        {% unless product.gift_card? %}
+          <!-- Pickup Info -->
+          <div class="product-pickup-info">
+            <p class="product-pickup-store">Pickup available at Toronto-King street</p>
+            <p class="product-pickup-time">Usually ready in 24 hours</p>
+          </div>
 
-        <!-- Check Availability -->
-        <button class="product-availability-link">Check availability at other stores</button>
+          <!-- Check Availability -->
+          <button class="product-availability-link" id="CheckAvailabilityBtn">Check availability at other stores</button>
+        {% endunless %}
       </div>
     </div>
 
@@ -480,6 +490,33 @@
           });
         }
       }
+
+      // Pickup Availability Drawer
+      var checkAvailBtn = document.getElementById('CheckAvailabilityBtn');
+      var pickupDrawer = document.getElementById('PickupDrawer');
+      var drawerClose = document.getElementById('PickupDrawerClose');
+      var drawerOverlay = document.getElementById('PickupDrawerOverlay');
+
+      function openPickupDrawer() {
+        pickupDrawer.classList.add('active');
+        document.body.classList.add('pickup-drawer-open');
+        drawerClose.focus();
+      }
+
+      function closePickupDrawer() {
+        pickupDrawer.classList.remove('active');
+        document.body.classList.remove('pickup-drawer-open');
+        if (checkAvailBtn) checkAvailBtn.focus();
+      }
+
+      if (checkAvailBtn && pickupDrawer) {
+        checkAvailBtn.addEventListener('click', openPickupDrawer);
+        drawerClose.addEventListener('click', closePickupDrawer);
+        if (drawerOverlay) drawerOverlay.addEventListener('click', closePickupDrawer);
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && document.body.classList.contains('pickup-drawer-open')) closePickupDrawer();
+        });
+      }
     });
   </script>
 </div>
@@ -516,16 +553,29 @@
     </div>
 
     <div class="sticky-cart-bar__actions">
-      {% render 'quantity-input',
-        variant: current_variant,
-        min: 1,
-        is_product_form: true,
-        product_form_id: product_form_id
-      %}
+      <!-- Standalone qty selector — NOT bound to the main product form -->
+      <div class="sticky-qty-selector">
+        <button type="button" class="sticky-qty-btn" id="StickyDecrement" aria-label="Decrease quantity">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <span class="sticky-qty-display" id="StickyQtyDisplay">1</span>
+        <button type="button" class="sticky-qty-btn" id="StickyIncrement" aria-label="Increase quantity">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+      </div>
+      {%- liquid
+        if current_variant.available
+          assign sticky_btn_text = 'ADD TO CART'
+          assign sticky_btn_variant = 'tertiary'
+        else
+          assign sticky_btn_text = 'SOLD OUT'
+          assign sticky_btn_variant = 'disabled'
+        endif
+      -%}
       {% render 'global-btn',
-        text: 'ADD TO CART',
+        text: sticky_btn_text,
         type: 'button',
-        variant: 'tertiary',
+        variant: sticky_btn_variant,
         fit_width: true,
         attributes: 'id="StickyAddToCart"'
       %}

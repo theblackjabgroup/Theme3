@@ -379,6 +379,9 @@
     {%- if settings.cart_type == 'drawer' -%}
       {%- render 'cart-drawer' -%}
     {%- endif -%}
+    {%- if template.name == 'product' -%}
+      {%- render 'pickup-availability-drawer', product: product, variant: product.selected_or_first_available_variant -%}
+    {%- endif -%}
 
     {% sections 'header-group' %}
 
