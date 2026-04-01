@@ -181,6 +181,10 @@
         {%- liquid
           assign header_title = block.settings.title | default: collection.title | default: 'Products'
           assign header_description = block.settings.header_description | default: collection.description | strip_html | default: 'Shop our collection.'
+          assign resolved_header_image = block.settings.header_image
+          if resolved_header_image == blank and block.settings.show_header_image
+            assign resolved_header_image = collection.image
+          endif
         -%}
         {% render 'section-header',
           id: block.id,
@@ -214,7 +218,7 @@
           description_font_size_mobile: block.settings.header_description_font_size_mobile,
           border_radius: block.settings.header_border_radius,
           show_image: block.settings.show_header_image,
-          header_image: block.settings.header_image,
+          header_image: resolved_header_image,
           image_alignment: block.settings.header_image_alignment,
           image_width_percent: block.settings.header_image_width_percent,
           image_width_percent_mobile: block.settings.header_image_width_percent_mobile,
