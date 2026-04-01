@@ -78,7 +78,7 @@
   border: 0;
   padding: 0;
   cursor: pointer;
-  color: #ffffff;
+  color: var(--color-heading);
   font-family: var(--font-heading-family);
   font-size: clamp(2rem, 4vw, 4rem);
   font-weight: 300;
