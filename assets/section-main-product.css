@@ -80,16 +80,12 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: transform 0.2s !important;
   flex-shrink: 0;
 }
 
 .media-nav-btn::before {
   display: none;
-}
-
-.media-nav-btn {
-  transition: transform 0.2s !important;
 }
 
 .media-nav-btn:hover {

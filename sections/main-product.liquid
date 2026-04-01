@@ -374,6 +374,8 @@
   </div>
 
   <script>
+    var productVariants = {{ product.variants | json }};
+
     document.addEventListener('DOMContentLoaded', function () {
       // Variant active state
       // Buttons inside <label> don't trigger the radio's for-association in browsers,
@@ -400,8 +402,58 @@
           btn.classList.remove('global-btn-2--primary');
           btn.classList.add('global-btn-2--secondary');
           btn.setAttribute('data-btn-variant', 'secondary');
+
+          // Sync sticky bar with selected variant
+          updateStickyBarVariant();
         });
       });
+
+      function getSelectedVariant() {
+        var selectedOptions = [];
+        document.querySelectorAll('.product-form__variant-radio:checked').forEach(function (r) {
+          selectedOptions.push(r.value);
+        });
+        return productVariants.find(function (v) {
+          return v.options.every(function (opt, i) { return opt === selectedOptions[i]; });
+        });
+      }
+
+      function updateStickyBarVariant() {
+        var variant = getSelectedVariant();
+        if (!variant) return;
+
+        var priceEl = document.querySelector('.sticky-cart-bar__price');
+        var variantEl = document.querySelector('.sticky-cart-bar__variant .global-btn-2__text');
+        var atcBtn = document.getElementById('StickyAddToCart');
+        var hiddenInput = document.querySelector('#{{ product_form_id }} input[name="id"]');
+
+        if (priceEl) {
+          priceEl.textContent = formatMoney(variant.price);
+        }
+        if (variantEl && variant.title !== 'Default Title') {
+          variantEl.textContent = variant.title;
+        }
+        if (hiddenInput) {
+          hiddenInput.value = variant.id;
+        }
+        if (atcBtn) {
+          if (variant.available) {
+            atcBtn.classList.remove('global-btn--disabled');
+            atcBtn.classList.add('global-btn--tertiary');
+            atcBtn.setAttribute('data-btn-variant', 'tertiary');
+            atcBtn.querySelector('.global-btn__text') && (atcBtn.querySelector('.global-btn__text').textContent = 'ADD TO CART');
+          } else {
+            atcBtn.classList.remove('global-btn--tertiary');
+            atcBtn.classList.add('global-btn--disabled');
+            atcBtn.setAttribute('data-btn-variant', 'disabled');
+            atcBtn.querySelector('.global-btn__text') && (atcBtn.querySelector('.global-btn__text').textContent = 'SOLD OUT');
+          }
+        }
+      }
+
+      function formatMoney(cents) {
+        return '$' + (cents / 100).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      }
 
       // FAQ Accordion
       document.querySelectorAll('.faq-accordion-item').forEach(function (item) {
