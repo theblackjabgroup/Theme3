@@ -55,15 +55,18 @@
     background: color-mix(in srgb, var(--color-text) 5%, transparent);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
-    z-index: 0;
+    z-index: 9998;
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease, visibility 0s linear 0.3s;
   }
 
   body.pickup-drawer-open .pickup-drawer__overlay {
     opacity: 1;
+    visibility: visible;
     pointer-events: auto;
+    transition: opacity 0.3s ease, visibility 0s linear 0s;
   }
 
   .pickup-drawer__inner {
@@ -252,9 +255,10 @@
   }
 </style>
 
+<div class="pickup-drawer__overlay" id="PickupDrawerOverlay"></div>
+
 <pickup-drawer id="PickupDrawer">
   <div class="pickup-drawer__wrap">
-    <div class="pickup-drawer__overlay" id="PickupDrawerOverlay"></div>
     <div class="pickup-drawer__inner">
 
       <div class="pickup-drawer__header">

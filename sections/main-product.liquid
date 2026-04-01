@@ -101,18 +101,29 @@
         </div>
 
         <!-- Star Rating -->
+        {%- assign review_rating = product.metafields.reviews.rating.value -%}
+        {%- assign review_count = product.metafields.reviews.rating_count -%}
+        {%- if review_rating != blank and review_count != blank and review_count > 0 -%}
         <div class="product-rating-row">
-          <div class="product-stars" aria-label="5 out of 5 stars">
+          {%- assign rating_floor = review_rating.rating | floor -%}
+          <div class="product-stars" aria-label="{{ review_rating.rating }} out of {{ review_rating.scale_max }} stars">
             {% for i in (1..5) %}
-              <svg width="17" height="17" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#F5A30A"/>
-              </svg>
+              {%- if i <= rating_floor -%}
+                <svg width="17" height="17" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#F5A30A"/>
+                </svg>
+              {%- else -%}
+                <svg width="17" height="17" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="none" stroke="#F5A30A" stroke-width="1.5"/>
+                </svg>
+              {%- endif -%}
             {% endfor %}
           </div>
           <span class="product-review-count">
-            {{- product.metafields.reviews.rating_count | default: '3' }} reviews
+            {{- review_count }} reviews
           </span>
         </div>
+        {%- endif -%}
 
         <p class="product-description">
           {{ product.description | strip_html | truncate: 200 }}
@@ -463,7 +474,8 @@
         );
 
         // Sync sticky qty with main qty
-        var mainQtyInput = document.querySelector('#product-form-{{ section.id }} .quantity__input');
+        var mainQtyInput = document.querySelector('.quantity__input[form="{{ product_form_id }}"]')
+          || document.querySelector('quantity-input .quantity__input');
         var stickyQtyDisplay = document.getElementById('StickyQtyDisplay');
         var stickyDecrement = document.getElementById('StickyDecrement');
         var stickyIncrement = document.getElementById('StickyIncrement');
