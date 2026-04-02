@@ -1,5 +1,12 @@
 {
   "sections": {
+    "breadcrumbs": {
+      "type": "breadcrumbs",
+      "settings": {
+        "padding_horizontal": 16,
+        "padding_horizontal_mobile": 16
+      }
+    },
     "product-grid": {
       "type": "main-collection-product-grid",
       "settings": {
@@ -27,5 +34,5 @@
       "block_order": ["section_header"]
     }
   },
-  "order": ["product-grid"]
+  "order": ["breadcrumbs", "product-grid"]
 }

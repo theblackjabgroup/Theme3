@@ -557,7 +557,12 @@
           mainImage.srcset = newSrc;
           mainImage.style.opacity = '1';
         }, 300);
+        thumbnails.forEach(function (t, i) {
+          t.classList.toggle('active', i === currentIndex);
+        });
       }
+
+      if (thumbnails.length > 0) thumbnails[0].classList.add('active');
 
       thumbnails.forEach(function (thumb, index) {
         thumb.addEventListener('click', function () {

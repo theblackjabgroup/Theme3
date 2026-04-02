@@ -2,7 +2,6 @@
 
 .marquee-scroll {
   overflow: hidden;
-  padding: var(--section-padding-top, 12px) var(--section-margin-right, 0) var(--section-padding-bottom, 12px) var(--section-margin-left, 0);
   background: var(--color-background);
   box-sizing: border-box;
 }
@@ -10,7 +9,6 @@
 .marquee-scroll__strip {
   display: flex;
   overflow: hidden;
-  padding: var(--marquee-padding, 16px) 0;
   background: var(--marquee-bg, #4a4a4a);
   border-radius: var(--strip-border-radius, 0);
   margin-bottom: var(--section-gap, 24px);

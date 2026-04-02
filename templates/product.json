@@ -1,5 +1,12 @@
 {
   "sections": {
+    "breadcrumbs": {
+      "type": "breadcrumbs",
+      "settings": {
+        "padding_horizontal": 16,
+        "padding_horizontal_mobile": 16
+      }
+    },
     "scrolling_text": {
       "type": "scrolling-text",
       "blocks": {
@@ -128,6 +135,7 @@
     }
   },
   "order": [
+    "breadcrumbs",
     "scrolling_text",
     "main",
     "related_products"
