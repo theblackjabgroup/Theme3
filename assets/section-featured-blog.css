@@ -25,7 +25,7 @@
 .featured-blog-v2__primary {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  background: color-mix(in srgb, var(--color-link) 85%, var(--color-card-bg));
+  background: var(--color-accent);
   color: var(--color-heading);
 }
 
