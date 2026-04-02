@@ -25,7 +25,7 @@
         "collection_title": "Dessert Jars",
         "collection_desc": "Layers of cake, cream, and pure happiness.",
         "text_card_heading": "Brewed for Good Days",
-        "text_card_body": "From your first sip to your last crumb, KOKO is all about feel-good flavors and unforgettable café moments.Every cup is brewed with care, every treat baked with warmth, and every visit slow things down just enough for you to savor it. Bold coffees, smooth lattes, and indulgent sweet treats come together with cozy café vibes to create a space where good conversations, comforting aromas, and beautiful little moments happen every day.",
+        "text_card_body": "From your first sip to your last crumb, KOKO is all about feel-good flavors and unforgettable café moments.Every cup is brewed with care, every treat baked with warmth, and every visit slow things down just enough for you to savor it. Bold coffees, smooth lattes, and indulgent sweet treats come together with cozy café vibes to create a space where good conversations, comforting aromas, and beautiful little moments happen every day.",
         "quote_heading": "\"A COLD BREW THAT TAKES SHORTCUTS IS JUST COLD COFFEE \"",
         "quote_highlight": "COLD COFFEE",
         "quote_subtext": "Crafted for slow mornings, long nights, and everything in between.",
@@ -36,9 +36,128 @@
         "padding_bottom_mobile": 12,
         "padding_horizontal_mobile": 12
       }
+    },
+    "featured_product": {
+      "type": "featured-product",
+      "settings": {
+        "product_pill_label": "BEAR WITH ME",
+        "title_text": "ARCTIC COLD BREW",
+        "description_text": "Bold, smooth, and clean. A bright cold brew designed for long days, late nights, and everything in between.",
+        "promo_pill_label": "LIMITED COLLECTION",
+        "promo_heading": "6 BLENDS\n1 STANDARDS",
+        "promo_description": "Discover the complete lineup crafted for consistency, character, and everyday brewing rituals.",
+        "color_scheme": "scheme-1",
+        "secondary_background": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "featured_collection": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Featured collection",
+        "products_to_show": 9,
+        "show_shop_all": true,
+        "shop_all_label": "Shop all",
+        "show_card_badge": true,
+        "card_badge_text": "BEST SELLER",
+        "overlay_button_text": "ADD TO CART",
+        "fallback_description": "Choose a collection in section settings to display products.",
+        "color_scheme": "scheme-1",
+        "dark_mode_color_scheme": "scheme-4",
+        "nav_button_spacing": 16,
+        "nav_button_width": 44,
+        "nav_button_height": 44,
+        "nav_button_padding": 18,
+        "nav_button_font_size": 18
+      }
+    },
+    "featured_blog": {
+      "type": "featured-blog",
+      "settings": {
+        "post_limit": 3,
+        "heading": "Blog posts",
+        "heading_size": "h1",
+        "columns_desktop": 3,
+        "show_view_all": true,
+        "show_image": true,
+        "show_date": true,
+        "show_author": false,
+        "color_scheme": "scheme-1",
+        "dark_mode_color_scheme": "scheme-4",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "why_us": {
+      "type": "why-us",
+      "blocks": {
+        "why_us_feature_1": {
+          "type": "feature",
+          "settings": {
+            "icon_tone": "amber",
+            "title": "NO SUGAR ADDED",
+            "text": "Clean energy, zero crash. Just the natural sweetness of properly extracted arabica."
+          }
+        },
+        "why_us_feature_2": {
+          "type": "feature",
+          "settings": {
+            "icon_tone": "blue",
+            "title": "72H EXTRACTION",
+            "text": "Time is the only ingredient you can't rush. 72 hours of cold steeping unlocks what heat destroys."
+          }
+        },
+        "why_us_feature_3": {
+          "type": "feature",
+          "settings": {
+            "icon_tone": "green",
+            "title": "SINGLE ORIGIN",
+            "text": "We know exactly which farm, which region, which harvest. Traceable to the source, every time."
+          }
+        },
+        "why_us_feature_4": {
+          "type": "feature",
+          "settings": {
+            "icon_tone": "neutral",
+            "title": "SPECIALTY GRADE",
+            "text": "Top 1% arabica only. Sourced from elevation farms. If it scores below 80, it doesn't make the cut."
+          }
+        }
+      },
+      "block_order": [
+        "why_us_feature_1",
+        "why_us_feature_2",
+        "why_us_feature_3",
+        "why_us_feature_4"
+      ],
+      "settings": {
+        "pill": "WHY US",
+        "heading": "WE'RE OBSESSED WITH GETTING IT RIGHT.",
+        "description": "Most cold brew is rushed. Diluted. Compromised. KOKO exists because we refused to accept that. Every decision we make - sourcing, steeping, bottling - starts with one question: is this the best it can be?",
+        "cta_text": "OUR STANDARDS",
+        "color_scheme": "scheme-1",
+        "dark_mode_color_scheme": "scheme-4",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "dark_mode_color_scheme": "scheme-4",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
     }
   },
   "order": [
     "bento_grid",
+    "featured_product",
+    "featured_collection",
+    "featured_blog",
+    "why_us",
+    "newsletter"
   ]
 }
