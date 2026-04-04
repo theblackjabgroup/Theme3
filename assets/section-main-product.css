@@ -699,6 +699,53 @@
     position: static;
   }
 
+  /* ── Gallery ── */
+  .product-main-media {
+    border-radius: 20px;
+  }
+
+  /* Thumbnails visible on mobile, horizontal strip below main image */
+  .product-thumbnails {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .product-thumbnails .thumbnail-item {
+    border-radius: 12px;
+    opacity: 0.55;
+    transition: opacity 0.2s;
+  }
+
+  .product-thumbnails .thumbnail-item.active,
+  .product-thumbnails .thumbnail-item:hover {
+    opacity: 1;
+    outline: 2px solid var(--color-text, #F8F3F8);
+    outline-offset: -2px;
+  }
+
+  /* Nav arrows: bottom-right corner, overlapping the thumbnail row */
+  .media-nav-buttons {
+    position: absolute;
+    bottom: -22px;
+    right: 0;
+    left: auto;
+    top: auto;
+    transform: none;
+    width: auto;
+    display: flex;
+    justify-content: flex-end;
+    gap: 4px;
+    z-index: 2;
+  }
+
+  .media-nav-btn {
+    width: 38px !important;
+    min-width: 38px !important;
+    height: 38px !important;
+  }
+
+  /* ── Product details card ── */
   .product-main-title {
     font-size: clamp(28px, 8vw, 40px);
     letter-spacing: -1px;
@@ -708,102 +755,110 @@
     font-size: 26px;
   }
 
+  /* Keep ATC row horizontal: qty selector fixed width, button fills rest */
   .product-atc-row {
-    flex-direction: column;
-    align-items: stretch;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
   }
 
   .product-details-card .quantity {
-    width: 100%;
+    width: auto;
+    flex-shrink: 0;
     justify-content: center;
-    gap: 16px;
+    gap: 14px;
+    padding: 10px 14px;
+    min-width: 120px;
+  }
+
+  .product-form--full {
+    flex: 1;
+    min-width: 0;
   }
 
   .product-form__submit {
-    height: 50px;
+    height: 46px;
+    width: 100%;
   }
 
   .product-form__submit .global-btn__shadow {
-    height: 46px;
+    height: 42px;
   }
 
-  .product-thumbnails {
-    display: none;
-  }
-
-  .media-nav-buttons {
-    position: absolute;
-    top: 50%;
-    left: 16px;
-    right: 16px;
-    bottom: auto;
-    transform: translateY(-50%);
-    width: auto;
-    display: flex;
-    justify-content: space-between;
-    gap: 0;
-  }
-
+  /* ── Sticky bar: single horizontal row ── */
   .sticky-cart-bar {
-    bottom: 8px;
-    left: 8px;
-    right: 8px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 16px 16px 0 0;
+    padding: 10px 12px 14px;
   }
 
   .sticky-cart-bar__inner {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* Show product image in sticky bar on mobile */
+  .sticky-cart-bar__img {
+    display: block;
+    width: 52px;
+    height: 52px;
+    border-radius: 10px;
+    flex-shrink: 0;
   }
 
   .sticky-cart-bar__product {
-    display: flex;
-    flex: unset;
+    flex: 1;
     min-width: 0;
-  }
-
-  .sticky-cart-bar__img {
-    display: none;
+    gap: 8px;
   }
 
   .sticky-cart-bar__info {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    width: auto;
   }
 
   .sticky-cart-bar__name {
-    font-size: 14px;
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 120px;
+  }
+
+  .sticky-cart-bar__meta {
+    gap: 8px;
   }
 
   .sticky-cart-bar__variant {
-    display: none;
+    display: flex;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 6px;
   }
 
   .sticky-cart-bar__price {
-    font-size: 16px;
+    font-size: 15px;
   }
 
   .sticky-cart-bar__actions {
-    width: 100%;
+    flex-shrink: 0;
     min-width: 0;
-    justify-content: stretch;
-    gap: 12px;
+    gap: 8px;
   }
 
   .sticky-cart-bar__actions .global-btn {
-    flex: 1;
     min-width: 0;
+    flex: unset;
   }
 
   .sticky-qty-selector {
     flex-shrink: 0;
-    gap: 16px;
-    padding: 10px 14px;
-  }
-
-  .sticky-atc-btn {
-    flex: 1;
+    gap: 12px;
+    padding: 8px 12px;
   }
 }

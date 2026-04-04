@@ -7,13 +7,124 @@ jobs:
     name: Lighthouse (PF_TESTING)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - name: Lighthouse
-        uses: shopify/lighthouse-ci-action@v1
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          access_token: ${{ secrets.APIKEY }}
-          store: 'theme3testing.myshopify.com'
-          lhci_min_score_accessibility: 0.9
-          lhci_min_score_performance: 0.7
-          password: 'blackbytt'
+          node-version: 20
+
+      - name: Install Shopify CLI and LHCI
+        run: |
+          npm install -g @shopify/cli @lhci/cli
+          # Ensure chrome is available for puppeteer
+          sudo apt-get update && sudo apt-get install -y google-chrome-stable
+
+      - name: Lighthouse Audit
+        shell: bash
+        env:
+          SHOPIFY_SHOP: 'theme3testing.myshopify.com'
+          SHOPIFY_FLAG_STORE: 'theme3testing.myshopify.com'
+          SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.APIKEY }}
+          SHOPIFY_PASSWORD: ${{ secrets.APIKEY }}
+          SHOP_PASSWORD: 'blackbytt'
+          SHOPIFY_CLI_TTY: 0
+          CI: 1
+          CHROME_PATH: /usr/bin/google-chrome
+          PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome
+        run: |
+          echo "=============================="
+          echo "Creating development theme"
+          echo "=============================="
+          # Create development theme and capture JSON output
+          theme_push_log=$(mktemp)
+          shopify theme push --development --json --store "$SHOPIFY_SHOP" > "$theme_push_log"
+          
+          # Extract theme details
+          preview_url=$(jq -r '.theme.preview_url' "$theme_push_log")
+          preview_id=$(jq -r '.theme.id' "$theme_push_log")
+          
+          echo "Theme created with ID: $preview_id"
+          echo "Preview URL: $preview_url"
+
+          echo "=============================="
+          echo "Configuring Lighthouse CI"
+          echo "=============================="
+          
+          # Fetch product and collection handles for audit
+          # We'll use the ones from the logs we saw earlier to keep it simple, 
+          # but we could also use curl/api if needed.
+          product_handle="coffee-gift-card"
+          collection_handle="ceremonial-premium-matcha"
+          
+          # Disable redirects + preview bar
+          query_string="?preview_theme_id=${preview_id}&_fd=0&pb=0"
+          
+          # Create setPreviewCookies.js
+          cat <<-EOF > setPreviewCookies.js
+          module.exports = async (browser) => {
+            console.error('Getting a new page...');
+            const page = await browser.newPage();
+            
+            if ('$SHOP_PASSWORD' !== '') {
+              console.error('Getting password cookie...');
+              await page.goto('https://$SHOPIFY_SHOP/password$query_string');
+              await page.waitForSelector('form[action*=password] input[type="password"]');
+              await page.\$eval('form[action*=password] input[type="password"]', input => input.value = '$SHOP_PASSWORD');
+              await Promise.all([
+                page.waitForNavigation(),
+                page.\$eval('form[action*=password]', form => form.submit()),
+              ]);
+            }
+            
+            console.error('Getting preview cookie...');
+            await page.goto('$preview_url');
+            await page.close();
+          };
+          EOF
+
+          # Create lighthouserc.yml
+          cat <<-EOF > lighthouserc.yml
+          ci:
+            collect:
+              url:
+                - "https://$SHOPIFY_SHOP/$query_string"
+                - "https://$SHOPIFY_SHOP/products/$product_handle$query_string"
+                - "https://$SHOPIFY_SHOP/collections/$collection_handle$query_string"
+              puppeteerScript: './setPreviewCookies.js'
+              puppeteerLaunchOptions:
+                args:
+                  - "--no-sandbox"
+                  - "--disable-setuid-sandbox"
+                  - "--disable-dev-shm-usage"
+                  - "--disable-gpu"
+            upload:
+              target: temporary-public-storage
+            assert:
+              assertions:
+                "categories:performance":
+                  - error
+                  - minScore: 0.7
+                    aggregationMethod: median-run
+                "categories:accessibility":
+                  - error
+                  - minScore: 0.9
+                    aggregationMethod: median-run
+          EOF
+
+          echo "=============================="
+          echo "Running Lighthouse CI"
+          echo "=============================="
+          lhci autorun
+
+      - name: Cleanup Theme
+        if: always()
+        env:
+          SHOPIFY_SHOP: 'theme3testing.myshopify.com'
+          SHOPIFY_FLAG_STORE: 'theme3testing.myshopify.com'
+          SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.APIKEY }}
+          SHOPIFY_PASSWORD: ${{ secrets.APIKEY }}
+          SHOPIFY_CLI_TTY: 0
+        run: |
+          echo "Disposing development theme"
+          shopify theme delete --development --force --store "$SHOPIFY_SHOP" || true

@@ -11,147 +11,204 @@
   "sections": {
     "bento_grid": {
       "type": "bento-grid",
+      "settings": {
+        "strip_text": "FREE SHIPPING WORLDWIDE",
+        "strip_speed": 28,
+        "hero_pill": "Coffee",
+        "hero_heading": "BUILT FOR THE MOMENTS IN BETWEEN.",
+        "hero_heading_highlight": "MOMENTS",
+        "hero_subtext": "Crafted for slow mornings, long nights, and everything in between.",
+        "btn1_text": "SHOP COFFEE",
+        "btn2_text": "OUR STORY",
+        "orbit_text": "KOKO",
+        "collection_pill": "SHOP COLLECTION",
+        "collection_title": "Dessert Jars",
+        "collection_desc": "Layers of cake, cream, and pure happiness.",
+        "text_card_heading": "Brewed for Good Days",
+        "text_card_body": "From your first sip to your last crumb, KOKO is all about feel-good flavors and unforgettable café moments.Every cup is brewed with care, every treat baked with warmth, and every visit slow things down just enough for you to savor it. Bold coffees, smooth lattes, and indulgent sweet treats come together with cozy café vibes to create a space where good conversations, comforting aromas, and beautiful little moments happen every day.",
+        "quote_heading": "\"A COLD BREW THAT TAKES SHORTCUTS IS JUST COLD COFFEE \"",
+        "quote_highlight": "COLD COFFEE",
+        "quote_subtext": "Crafted for slow mornings, long nights, and everything in between.",
+        "padding_top": 16,
+        "padding_bottom": 16,
+        "padding_horizontal": 16,
+        "padding_top_mobile": 12,
+        "padding_bottom_mobile": 12,
+        "padding_horizontal_mobile": 12
+      }
+    },
+    "featured_product": {
+      "type": "featured-product",
+      "settings": {
+        "product_pill_label": "BEAR WITH ME",
+        "title_text": "ARCTIC COLD BREW",
+        "description_text": "Bold, smooth, and clean. A bright cold brew designed for long days, late nights, and everything in between.",
+        "promo_pill_label": "LIMITED COLLECTION",
+        "promo_heading": "6 BLENDS\n1 STANDARDS",
+        "promo_description": "Discover the complete lineup crafted for consistency, character, and everyday brewing rituals.",
+        "color_scheme": "scheme-1",
+        "secondary_background": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "featured_collection": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Featured collection",
+        "products_to_show": 9,
+        "show_shop_all": true,
+        "shop_all_label": "Shop all",
+        "show_card_badge": true,
+        "card_badge_text": "BEST SELLER",
+        "overlay_button_text": "ADD TO CART",
+        "fallback_description": "Choose a collection in section settings to display products.",
+        "color_scheme": "scheme-1",
+        "dark_mode_color_scheme": "scheme-4",
+        "nav_button_spacing": 16,
+        "nav_button_width": 44,
+        "nav_button_height": 44,
+        "nav_button_padding": 18,
+        "nav_button_font_size": 18
+      }
+    },
+    "featured_blog": {
+      "type": "featured-blog",
+      "settings": {
+        "post_limit": 3,
+        "heading": "Blog posts",
+        "heading_size": "h1",
+        "columns_desktop": 3,
+        "show_view_all": true,
+        "show_image": true,
+        "show_date": true,
+        "show_author": false,
+        "color_scheme": "scheme-1",
+        "dark_mode_color_scheme": "scheme-4",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "why_us": {
+      "type": "why-us",
       "blocks": {
-        "card_toggle": {
-          "type": "toggle_card",
+        "why_us_feature_1": {
+          "type": "feature",
           "settings": {
-            "column_span": 0.7,
-            "row_span": 2.2,
-            "toggle_orientation": "vertical",
-            "label_on": "DARK MODE",
-            "label_off": "LIGHT MODE",
-            "mobile_column_span": 0.6,
-            "mobile_row_span": 0.3,
-            "color_scheme": "scheme-1"
+            "icon_tone": "amber",
+            "title": "NO SUGAR ADDED",
+            "text": "Clean energy, zero crash. Just the natural sweetness of properly extracted arabica."
           }
         },
-        "card_1": { 
-        "type": "tag_card", 
-          "settings": { 
-            "column_span": 2.5, 
-            "row_span": 2.2,
-            "mobile_column_span": 1.4,
-            "mobile_row_span": 0.3,
-            "show_image_strip": true,
-            "card_background_color": "#E5E1DA",
-            "card_border_color": "#E5E1DA",
-            "tag_text_color": "#306030",
-            "tag_border_color": "#306030",
-            "main_text_color": "#306030",
-"mobile_layout_direction": "column",
-            "reverse_colors": true,
-            "color_scheme": "scheme-2",
-            "dark_mode_color_scheme": "scheme-2"
+        "why_us_feature_2": {
+          "type": "feature",
+          "settings": {
+            "icon_tone": "blue",
+            "title": "72H EXTRACTION",
+            "text": "Time is the only ingredient you can't rush. 72 hours of cold steeping unlocks what heat destroys."
           }
         },
-        "card_2": { 
-          "type": "text_card", 
-          "settings": { 
-            "heading": "Card Heading",
-            "paragraph": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem</p>",
-            "button_text": "Button Text",
-            "column_span": 2, 
-            "row_span":4.4,
-            "mobile_column_span": 2.0,
-            "mobile_row_span": 0.5,
-            "card_background_color": "#E5E1DA",
-            "heading_text_color": "#306030"
-          } 
-        },
-        "card_3": { 
-          "type": "video_card", 
-          "settings": { 
-            "column_span": 2.7, 
-            "row_span": 4.4,
-            "mobile_column_span": 1.0,
-            "mobile_row_span": 0.2,
-            "card_background_color": "#E598A9"
-            
-          } 
-        },
-        "card_4": { 
-          "type": "product_card", 
-          "settings": { 
-            "column_span": 1.7, 
-            "row_span": 5,
-            "mobile_column_span": 1.0,
-            "mobile_row_span": 0.4,
-            "layout_direction": "column",
-            "card_background_color": "#E5E1DA",
-            "title_text_color": "#306030"
-          } 
-        },
-        "card_5": { 
-          "type": "tag_card", 
-          "settings": { 
-            "column_span": 1.5, 
-            "row_span": 2.2,
-            "mobile_column_span": 1,
-            "mobile_row_span": 0.2,
-            "show_image_strip": false,
-            "card_background_color": "#E598A9",
-            "card_border_color": "#E598A9",
-            "tag_text_color": "#306030",
-            "tag_border_color": "#306030",
-            "main_text_color": "#306030",
-            "show_icon": true,
-            "mobile_layout_direction": "column",
-                            "color_scheme": "scheme-1",
-            "dark_mode_color_scheme": "scheme-4"
-          } 
-        },
-        "card_6": { 
-          "type": "tag_card", 
-          "settings": { 
-            "column_span": 3, 
-            "row_span": 2.8,
-            "mobile_column_span": 2,
-            "mobile_row_span": 0.2,
-            "card_background_color": "#E5E1DA",
-            "card_border_color": "#E5E1DA",
-            "tag_text_color": "#306030",
-            "tag_border_color": "#306030",
-"main_text_color": "#306030",
-            "mobile_layout_direction": "column",
-            "reverse_colors": true,
-            "color_scheme": "scheme-2",
-            "dark_mode_color_scheme": "scheme-2"
+        "why_us_feature_3": {
+          "type": "feature",
+          "settings": {
+            "icon_tone": "green",
+            "title": "SINGLE ORIGIN",
+            "text": "We know exactly which farm, which region, which harvest. Traceable to the source, every time."
           }
         },
-        "card_7": { 
-          "type": "content_card", 
-          "settings": { 
-            "column_span": 3.2, 
-            "row_span":2.8,
-            "card_background_color": "#306030",
-            "mobile_column_span": 2.0,
-            "mobile_row_span": 0.5,
-            "layout_direction": "row",
-            "hide_on_mobile": true
-          } 
+        "why_us_feature_4": {
+          "type": "feature",
+          "settings": {
+            "icon_tone": "neutral",
+            "title": "SPECIALTY GRADE",
+            "text": "Top 1% arabica only. Sourced from elevation farms. If it scores below 80, it doesn't make the cut."
+          }
         }
-
       },
       "block_order": [
-        "card_toggle",
-        "card_1",
-        "card_2",
-        "card_3",
-        "card_4",
-        "card_5",
-        "card_6",
-        "card_7"
+        "why_us_feature_1",
+        "why_us_feature_2",
+        "why_us_feature_3",
+        "why_us_feature_4"
       ],
       "settings": {
-        "color_scheme": "",
-        "grid_columns": 8,
-        "row_height": 100,
-        "grid_gap": 20,
-        "card_border_radius": 20
+        "pill": "WHY US",
+        "heading": "WE'RE OBSESSED WITH GETTING IT RIGHT.",
+        "description": "Most cold brew is rushed. Diluted. Compromised. KOKO exists because we refused to accept that. Every decision we make - sourcing, steeping, bottling - starts with one question: is this the best it can be?",
+        "cta_text": "OUR STANDARDS",
+        "color_scheme": "scheme-1",
+        "dark_mode_color_scheme": "scheme-4",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "reviews": {
+      "type": "reviews",
+      "blocks": {
+        "review_1": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "\"I've tried every cold brew on the market. Nothing comes close. It's smooth in a way that makes you slow down. Worth every cent.\"",
+            "reviewer_name": "Sarah M.",
+            "product_name": "Arctic Cold Brew",
+            "review_date": "March 2025"
+          }
+        },
+        "review_2": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "\"I've sampled every cold brew available, but none compare. It's so smooth that it encourages you to take a moment to savor it.\"",
+            "reviewer_name": "Emily R.",
+            "product_name": "Glacial Brew",
+            "review_date": "April 2025"
+          }
+        },
+        "review_3": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "\"I've been a barista for over 15 years, and this cold brew is in a class of its own. Incredibly smooth with a unique flavor profile.\"",
+            "reviewer_name": "Jamie K.",
+            "product_name": "Midnight Sun Blend",
+            "review_date": "May 2025"
+          }
+        }
+      },
+      "block_order": [
+        "review_1",
+        "review_2",
+        "review_3"
+      ],
+      "settings": {
+        "title": "What They're Saying",
+        "view_all_text": "View All",
+        "reviews_source": "blocks",
+        "average_rating": "4.9",
+        "total_reviews_text": "Based on 127 verified reviews",
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "dark_mode_color_scheme": "scheme-4",
+        "padding_top": 36,
+        "padding_bottom": 36
       }
     }
   },
   "order": [
     "bento_grid",
+    "featured_product",
+    "featured_collection",
+    "featured_blog",
+    "why_us",
+    "reviews",
+    "newsletter"
   ]
 }

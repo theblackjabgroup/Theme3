@@ -1,0 +1,317 @@
+{{ 'section-reviews.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  comment
+    Pull live aggregate data straight from Judge.me metafields.
+    Falls back to the section settings values if the app isn't installed.
+  endcomment
+  comment
+    Force numeric conversion with | plus: 0 so string/object metafields
+    don't slip through the > 0 guard as truthy non-numbers.
+  endcomment
+  assign jm_rating_val = shop.metafields.judgeme.all_reviews_rating | plus: 0
+  assign jm_count_val = shop.metafields.judgeme.all_reviews_count | plus: 0
+
+  if jm_rating_val > 0
+    assign avg_rating = jm_rating_val
+  else
+    assign avg_rating = section.settings.average_rating | default: '4.9'
+  endif
+
+  if jm_count_val > 0
+    assign reviews_count_text = 'Based on ' | append: jm_count_val | append: ' verified reviews'
+  else
+    assign reviews_count_text = section.settings.total_reviews_text | default: 'Based on verified reviews'
+  endif
+
+  assign avg_rating_rounded = avg_rating | round
+-%}
+
+<section class="reviews color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+  {%- comment -%} ── Header bar ── {%- endcomment -%}
+  <div class="reviews__header">
+    <h2 class="reviews__title">{{ section.settings.title | default: "What They're Saying" }}</h2>
+    {%- if section.settings.view_all_link != blank -%}
+      <a href="{{ section.settings.view_all_link }}" class="reviews__view-all">
+        {{- section.settings.view_all_text | default: 'View All' -}}
+      </a>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} ── Body: aggregate card + reviews ── {%- endcomment -%}
+  <div class="reviews__body">
+    {%- comment -%} Blue aggregate / rating card {%- endcomment -%}
+    <div class="reviews__aggregate">
+      <span class="reviews__aggregate-label">AVERAGE RATING</span>
+      <span class="reviews__average-number">{{ avg_rating | round: 1 }}</span>
+      <div class="reviews__stars" role="img" aria-label="{{ avg_rating }} out of 5 stars">
+        {%- for i in (1..5) -%}
+          <svg
+            class="reviews__star{% if i <= avg_rating_rounded %} reviews__star--filled{% endif %}"
+            viewBox="0 0 17 17"
+            width="17"
+            height="17"
+            aria-hidden="true"
+          >
+            <path d="M8.5 0.5L10.6 6.8H17.2L11.8 10.5L13.9 16.8L8.5 13.1L3.1 16.8L5.2 10.5L-0.2 6.8H6.4Z"/>
+          </svg>
+        {%- endfor -%}
+      </div>
+      <p class="reviews__aggregate-count">{{ reviews_count_text }}</p>
+    </div>
+
+    {%- comment -%}
+      reviews_source values:
+        "blocks"   – manually-entered section blocks (default)
+        "judgeme"  – live Judge.me all-reviews widget
+    {%- endcomment -%}
+    {%- assign reviews_source = section.settings.reviews_source | default: 'blocks' -%}
+
+    <div class="reviews__cards-wrap">
+      {%- if reviews_source == 'judgeme' -%}
+        <div class="reviews__jdgm-wrap">
+          {% render 'judgeme_widgets',
+            widget_type: 'judgeme_all_reviews_widget',
+            jm_style: '',
+            concierge_install: true
+          %}
+        </div>
+      {%- else -%}
+        <div class="reviews__cards">
+          {%- for block in section.blocks -%}
+            {%- assign star_count = block.settings.rating | default: 5 | times: 1 | round -%}
+            <article class="reviews__card" {{ block.shopify_attributes }}>
+              <div class="reviews__card-top">
+                <div class="reviews__stars" role="img" aria-label="{{ star_count }} out of 5 stars">
+                  {%- for i in (1..5) -%}
+                    <svg
+                      class="reviews__star{% if i <= star_count %} reviews__star--filled{% endif %}"
+                      viewBox="0 0 17 17"
+                      width="17"
+                      height="17"
+                      aria-hidden="true"
+                    >
+                      <path d="M8.5 0.5L10.6 6.8H17.2L11.8 10.5L13.9 16.8L8.5 13.1L3.1 16.8L5.2 10.5L-0.2 6.8H6.4Z"/>
+                    </svg>
+                  {%- endfor -%}
+                </div>
+                {%- if block.settings.review_text != blank -%}
+                  <p class="reviews__text">{{ block.settings.review_text | escape }}</p>
+                {%- endif -%}
+              </div>
+              <div class="reviews__card-footer">
+                <div class="reviews__divider" aria-hidden="true"></div>
+                <div class="reviews__attribution">
+                  {%- if block.settings.reviewer_name != blank -%}
+                    <span class="reviews__reviewer-name">{{ block.settings.reviewer_name }}</span>
+                  {%- endif -%}
+                  <div class="reviews__meta">
+                    {%- if block.settings.product_name != blank -%}
+                      <span class="reviews__product">{{ block.settings.product_name }}</span>
+                    {%- endif -%}
+                    {%- if block.settings.product_name != blank and block.settings.review_date != blank -%}
+                      <span class="reviews__dot" aria-hidden="true"></span>
+                    {%- endif -%}
+                    {%- if block.settings.review_date != blank -%}
+                      <span class="reviews__date">{{ block.settings.review_date }}</span>
+                    {%- endif -%}
+                  </div>
+                </div>
+              </div>
+            </article>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Reviews",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "What They're Saying"
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "\"View All\" link text",
+      "default": "View All"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "\"View All\" link URL"
+    },
+    {
+      "type": "header",
+      "content": "Reviews Source"
+    },
+    {
+      "type": "select",
+      "id": "reviews_source",
+      "label": "Show reviews from",
+      "default": "blocks",
+      "info": "Average rating and count are always pulled live from Judge.me when the app is installed.",
+      "options": [
+        {
+          "value": "blocks",
+          "label": "Manual blocks (add reviews below)"
+        },
+        {
+          "value": "judgeme",
+          "label": "Judge.me – real customer reviews"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Aggregate Rating (fallback)"
+    },
+    {
+      "type": "text",
+      "id": "average_rating",
+      "label": "Average rating (e.g. 4.9)",
+      "default": "4.9",
+      "info": "Used only if Judge.me metafields are unavailable."
+    },
+    {
+      "type": "text",
+      "id": "total_reviews_text",
+      "label": "Review count label",
+      "default": "Based on 127 verified reviews",
+      "info": "Used only if Judge.me metafields are unavailable."
+    },
+    {
+      "type": "header",
+      "content": "Colors & Spacing"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Star rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "review_text",
+          "label": "Review text",
+          "default": "\"An incredible product that exceeded all my expectations. Highly recommend!\""
+        },
+        {
+          "type": "text",
+          "id": "reviewer_name",
+          "label": "Reviewer name",
+          "default": "Customer Name"
+        },
+        {
+          "type": "text",
+          "id": "product_name",
+          "label": "Product name",
+          "default": "Product Name"
+        },
+        {
+          "type": "text",
+          "id": "review_date",
+          "label": "Date (e.g. March 2025)",
+          "default": "March 2025"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Reviews",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "\"I've tried every cold brew on the market. Nothing comes close. It's smooth in a way that makes you slow down. Worth every cent.\"",
+            "reviewer_name": "Sarah M.",
+            "product_name": "Arctic Cold Brew",
+            "review_date": "March 2025"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "\"I've sampled every cold brew available, but none compare. It's so smooth that it encourages you to take a moment to savor it.\"",
+            "reviewer_name": "Emily R.",
+            "product_name": "Glacial Brew",
+            "review_date": "April 2025"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "\"I've been a barista for over 15 years, and this cold brew is in a class of its own. Incredibly smooth with a unique flavor profile.\"",
+            "reviewer_name": "Jamie K.",
+            "product_name": "Midnight Sun Blend",
+            "review_date": "May 2025"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

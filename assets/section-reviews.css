@@ -1,0 +1,361 @@
+/* ============================================================
+   REVIEWS SECTION
+   ============================================================ */
+
+.reviews {
+  width: 100%;
+}
+
+/* ── Header bar ─────────────────────────────────────────── */
+.reviews__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-card-bg);
+  border-radius: var(--radius-xl, 16px);
+  padding: 24px;
+  gap: 16px;
+  margin-bottom: var(--bento-gap, 16px);
+}
+
+.reviews__title {
+  margin: 0;
+  color: var(--color-heading);
+  font-family: var(--font-heading-family);
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+.reviews__view-all {
+  flex-shrink: 0;
+  color: var(--color-heading);
+  font-family: var(--font-body-family);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18px;
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-heading);
+  padding-bottom: 1px;
+  white-space: nowrap;
+  transition: opacity var(--transition-short);
+}
+
+.reviews__view-all:hover {
+  opacity: 0.7;
+}
+
+/* ── Body layout (aggregate card + reviews side by side) ── */
+.reviews__body {
+  display: grid;
+  grid-template-columns: 312px 1fr;
+  gap: var(--bento-gap, 16px);
+  align-items: start;
+}
+
+/* ── Aggregate / rating card ────────────────────────────── */
+.reviews__aggregate {
+  background: var(--color-accent);
+  border-radius: var(--radius-2xl, 20px);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 8px;
+  min-height: 231px;
+}
+
+.reviews__aggregate-label {
+  color: var(--color-card-bg);
+  font-family: var(--font-body-family);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 18px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.reviews__average-number {
+  display: block;
+  color: var(--color-card-bg);
+  font-family: var(--font-heading-family);
+  font-size: 48px;
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+}
+
+.reviews__aggregate .reviews__stars {
+  display: flex;
+  gap: 2px;
+}
+
+.reviews__aggregate-count {
+  margin: 0;
+  color: var(--color-card-bg);
+  font-family: var(--font-body-family);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  opacity: 0.85;
+}
+
+/* ── Manual review cards ────────────────────────────────── */
+.reviews__cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--bento-gap, 16px);
+  align-items: stretch;
+}
+
+.reviews__card {
+  background: var(--color-card-bg);
+  border-radius: var(--radius-2xl, 20px);
+  padding: 24px;
+  min-height: 231px;
+
+  display: flex;
+  flex-direction: column;
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+}
+
+
+
+.reviews__card-top {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.reviews__card .reviews__stars {
+  display: flex;
+  gap: 2px;
+}
+
+.reviews__text {
+  margin: 0;
+  color: var(--color-text);
+  font-family: var(--font-body-family);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+}
+
+.reviews__card-footer {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.reviews__divider {
+  height: 1px;
+  background: color-mix(in srgb, var(--color-text) 12%, transparent);
+}
+
+.reviews__attribution {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.reviews__reviewer-name {
+  color: var(--color-text);
+  font-family: var(--font-body-family);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 18px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.reviews__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.reviews__product,
+.reviews__date {
+  color: var(--color-text);
+  font-family: var(--font-body-family);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  opacity: 0.55;
+}
+
+.reviews__dot {
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--color-text);
+  opacity: 0.4;
+  flex-shrink: 0;
+}
+
+/* ── Stars ──────────────────────────────────────────────── */
+.reviews__star path {
+  fill: color-mix(in srgb, var(--color-link-hover) 15%, transparent);
+}
+
+.reviews__star--filled path {
+  fill: var(--color-link-hover, #F5A30A);
+}
+
+/* ============================================================
+   JUDGE.ME WIDGET OVERRIDES
+   These override Judge.me's default styles so their review
+   list matches the card design above.
+   ============================================================ */
+
+.reviews__jdgm-wrap {
+  width: 100%;
+}
+
+/* Hide Judge.me's own aggregate header — we have our own blue card */
+.reviews__jdgm-wrap .jdgm-widget-header,
+.reviews__jdgm-wrap .jdgm-all-reviews-header,
+.reviews__jdgm-wrap .jdgm-histogram,
+.reviews__jdgm-wrap .jdgm-write-rev-link,
+.reviews__jdgm-wrap .jdgm-rev__info,
+.reviews__jdgm-wrap .jdgm-rev__photo,
+.reviews__jdgm-wrap .jdgm-rev__verified-badge,
+.reviews__jdgm-wrap .jdgm-rev__actions {
+  display: none !important;
+}
+
+/* Reviews list: horizontal scrollable row */
+.reviews__jdgm-wrap .jdgm-rev-widg__reviews {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: var(--bento-gap, 16px) !important;
+  align-items: start !important;
+}
+
+/* Each review: card style */
+.reviews__jdgm-wrap .jdgm-rev {
+  background: var(--color-card-bg) !important;
+  border: none !important;
+  border-radius: var(--radius-2xl, 20px) !important;
+  padding: 24px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  box-shadow: none !important;
+  transition: box-shadow 0.3s ease, transform 0.3s ease !important;
+}
+
+.reviews__jdgm-wrap .jdgm-rev:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08) !important;
+  transform: translateY(-3px) !important;
+}
+
+/* Stars: gold */
+.reviews__jdgm-wrap .jdgm-rev__rating {
+  margin: 0 0 4px !important;
+}
+
+.reviews__jdgm-wrap .jdgm-star {
+  color: var(--color-card-bg) !important;
+  font-size: 16px !important;
+}
+
+.reviews__jdgm-wrap .jdgm-star.jdgm--on {
+  color: var(--color-accent, #F5A30A) !important;
+}
+
+/* Hide review title (design has no title) */
+.reviews__jdgm-wrap .jdgm-rev__title {
+  display: none !important;
+}
+
+/* Review body text */
+.reviews__jdgm-wrap .jdgm-rev__body {
+  color: var(--color-text) !important;
+  font-family: var(--font-body-family) !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  line-height: 18px !important;
+  margin: 0 !important;
+  flex: 1 !important;
+}
+
+/* Divider before author */
+.reviews__jdgm-wrap .jdgm-rev__footer {
+  border-top: 1px solid color-mix(in srgb, var(--color-text) 12%, transparent) !important;
+  padding-top: 16px !important;
+  margin-top: 16px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+}
+
+/* Reviewer name */
+.reviews__jdgm-wrap .jdgm-rev__author {
+  color: var(--color-text) !important;
+  font-family: var(--font-body-family) !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.02em !important;
+  line-height: 18px !important;
+}
+
+/* Date */
+.reviews__jdgm-wrap .jdgm-rev__timestamp {
+  color: var(--color-text) !important;
+  font-family: var(--font-body-family) !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  opacity: 0.55 !important;
+}
+
+/* Pagination: keep visible but minimal */
+.reviews__jdgm-wrap .jdgm-paginate {
+  margin-top: 16px !important;
+  text-align: center !important;
+}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media screen and (max-width: 1100px) {
+  .reviews__body {
+    grid-template-columns: 1fr;
+  }
+
+  .reviews__aggregate {
+    flex-direction: row;
+    align-items: center;
+    min-height: unset;
+    gap: 24px;
+  }
+
+  .reviews__cards,
+  .reviews__jdgm-wrap .jdgm-rev-widg__reviews {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .reviews__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .reviews__aggregate {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .reviews__cards,
+  .reviews__jdgm-wrap .jdgm-rev-widg__reviews {
+    grid-template-columns: 1fr !important;
+  }
+}

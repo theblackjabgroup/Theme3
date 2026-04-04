@@ -1,5 +1,12 @@
 {
   "sections": {
+    "breadcrumbs": {
+      "type": "breadcrumbs",
+      "settings": {
+        "padding_horizontal": 16,
+        "padding_horizontal_mobile": 16
+      }
+    },
     "main": {
       "type": "main-page",
       "settings": {
@@ -9,6 +16,7 @@
     }
   },
   "order": [
+    "breadcrumbs",
     "main"
   ]
 }

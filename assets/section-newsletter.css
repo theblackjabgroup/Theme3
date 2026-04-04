@@ -2,7 +2,7 @@
 
 .newsletter-section {
   width: 100%;
-  background: var(--color-card-bg);
+  background: var(--color-accent);
   border-radius: var(--radius-xl);
   padding: 80px 24px;
 }
@@ -16,7 +16,7 @@
 .newsletter-section__title {
   font-size: var(--newsletter-heading-size, 1.5rem);
   font-weight: 700;
-  color: var(--color-heading);
+  color: var(--color-accent-2);
   margin: 0 0 0.5rem 0;
   font-family: var(--font-heading-family), sans-serif;
 }
@@ -24,7 +24,7 @@
 .newsletter-section__desc {
   font-size: var(--newsletter-desc-size, 0.9375rem);
   font-weight: 400;
-  color: var(--color-text);
+  color: var(--color-accent-2);
   margin: 0 0 1.5rem 0;
   line-height: 1.45;
 }
@@ -54,18 +54,7 @@
   overflow: visible;
 }
 
-.newsletter-section__input-shadow {
-  position: absolute;
-  top: 3px;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: var(--color-btn-shadow, var(--btn-primary-shadow, #000000));
-  border-radius: var(--radius-m);
-  z-index: 0;
-  pointer-events: none;
-  transition: transform 0.2s ease;
-}
+
 
 .newsletter-section__input {
   position: relative;
@@ -91,6 +80,26 @@
   transform: translateY(1px);
 }
 
+/* Submit: icon-only circle button */
+.newsletter-section__submit-btn {
+  width: 52px !important;
+  height: 52px !important;
+  padding: 0 !important;
+}
+
+.newsletter-section__submit-btn .global-btn-2__icon svg {
+  fill: currentColor;
+  stroke: none;
+}
+
+.newsletter-section__submit-btn.global-btn-2::before {
+  transform: translateX(-120%);
+}
+
+.newsletter-section__submit-btn.global-btn-2:hover::before {
+  transform: translateX(0);
+}
+
 /* Submit: global-btn uses scheme; legacy submit-button overrides use scheme vars */
 .newsletter-section__submit-wrap {
   flex-shrink: 0;
@@ -105,10 +114,7 @@
   border-color: var(--btn-primary-border, var(--color-btn-border, #000000));
 }
 
-.newsletter-section__submit-wrap .global-btn__shadow {
-  background-color: var(--btn-primary-shadow, var(--color-btn-shadow, #000000));
-  top: 8px !important;
-}
+
 
 .newsletter-section__success {
   margin: 1rem 0 0 0;

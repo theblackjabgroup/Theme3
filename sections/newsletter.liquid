@@ -10,8 +10,7 @@
   #shopify-section-{{ section.id }} {
     margin-top: {{ section.settings.margin_top }}px;
     margin-bottom: {{ section.settings.margin_bottom }}px;
-    margin-left: {{ section.settings.margin_left }}px;
-    margin-right: {{ section.settings.margin_right }}px;
+
   }
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
@@ -53,7 +52,17 @@
           </div>
         </div>
         <div class="newsletter-section__submit-wrap">
-          {%- render 'global-btn', text: section.settings.button_text | default: 'Subscribe', type: 'submit', class: 'newsletter-section__submit-btn' -%}
+          {%- capture submit_icon -%}{{ 'icon-caret-right.svg' | inline_asset_content }}{%- endcapture -%}
+          {%- render 'global-btn-2',
+            icon: submit_icon,
+            icon_only: true,
+            type: 'submit',
+            fit_width: false,
+            class: 'newsletter-section__submit-btn',
+            variant: 'tertiary',
+            border_radius: '50%',
+            attributes: 'aria-label="Subscribe"'
+          -%}
         </div>
       </div>
       {%- if form.posted_successfully? -%}

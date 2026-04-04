@@ -1,0 +1,230 @@
+{{ 'section-why-us.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<section class="why-us color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+  <div class="why-us__grid">
+    <article class="why-us__intro">
+      {%- if section.settings.pill != blank -%}
+        <span class="why-us__pill">{{ section.settings.pill }}</span>
+      {%- endif -%}
+
+      {%- if section.settings.heading != blank -%}
+        <h2 class="why-us__title">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.description != blank -%}
+        <p class="why-us__description">{{ section.settings.description }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.cta_text != blank -%}
+        <div class="why-us__cta">
+          {% render 'global-btn',
+            text: section.settings.cta_text,
+            url: section.settings.cta_link,
+            variant: 'tertiary',
+            fit_width: false
+          %}
+        </div>
+      {%- endif -%}
+    </article>
+
+    <div class="why-us__features">
+      {%- for block in section.blocks -%}
+        <article class="why-us__feature" {{ block.shopify_attributes }}>
+          {%- if block.settings.icon_image != blank -%}
+            <div class="why-us__feature-icon why-us__feature-icon--image">
+              {{
+                block.settings.icon_image
+                | image_url: width: 84
+                | image_tag: alt: '', loading: 'lazy', class: 'why-us__feature-icon-img'
+              }}
+            </div>
+          {%- else -%}
+            <div
+              class="why-us__feature-icon why-us__feature-icon--{{ block.settings.icon_tone }}"
+              aria-hidden="true"
+            ></div>
+          {%- endif -%}
+
+          {%- if block.settings.title != blank -%}
+            <h3 class="why-us__feature-title">{{ block.settings.title }}</h3>
+          {%- endif -%}
+
+          {%- if block.settings.text != blank -%}
+            <p class="why-us__feature-text">{{ block.settings.text }}</p>
+          {%- endif -%}
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Why Us",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "pill",
+      "label": "Pill label",
+      "default": "WHY US"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "WE'RE OBSESSED WITH GETTING IT RIGHT."
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Most cold brew is rushed. Diluted. Compromised. KOKO exists because we refused to accept that. Every decision we make - sourcing, steeping, bottling - starts with one question: is this the best it can be?"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Button text",
+      "default": "OUR STANDARDS"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Button link"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "color_scheme",
+      "id": "dark_mode_color_scheme",
+      "label": "Dark mode color scheme",
+      "default": "scheme-4",
+      "info": "When the theme toggle is in dark mode, use this scheme for this section."
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Icon image (SVG or PNG)",
+          "info": "Upload a custom icon. If left empty, the color dot below is used as the icon."
+        },
+        {
+          "type": "select",
+          "id": "icon_tone",
+          "label": "Icon tone",
+          "default": "amber",
+          "options": [
+            { "value": "amber", "label": "Amber" },
+            { "value": "blue", "label": "Blue" },
+            { "value": "green", "label": "Green" },
+            { "value": "neutral", "label": "Neutral" }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "NO SUGAR ADDED"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Clean energy, zero crash. Just the natural sweetness of properly extracted arabica."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Why Us",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "icon_tone": "amber",
+            "title": "NO SUGAR ADDED",
+            "text": "Clean energy, zero crash. Just the natural sweetness of properly extracted arabica."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon_tone": "blue",
+            "title": "72H EXTRACTION",
+            "text": "Time is the only ingredient you can't rush. 72 hours of cold steeping unlocks what heat destroys."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon_tone": "green",
+            "title": "SINGLE ORIGIN",
+            "text": "We know exactly which farm, which region, which harvest. Traceable to the source, every time."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon_tone": "neutral",
+            "title": "SPECIALTY GRADE",
+            "text": "Top 1% arabica only. Sourced from elevation farms. If it scores below 80, it doesn't make the cut."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

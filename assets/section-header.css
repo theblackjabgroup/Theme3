@@ -17,11 +17,12 @@
    ============================================ */
 
 .vertical-sidebar-header {
-  position: sticky;
-  top: 0;
-  width: 100%; /* fills its grid column */
-  height: 100vh;
-  z-index: 10; /* in-flow, only needs to stack above mega-menu overlay */
+  position: fixed;
+  left: var(--bento-gap, 12px);
+  top: var(--bento-gap, 12px);
+  width: var(--header-width, 230px);
+  height: calc(100vh - var(--bento-gap, 12px));
+  z-index: 10;
   display: flex;
   min-width: 180px;
   flex-direction: column;
@@ -1792,29 +1793,23 @@ body.mobile-menu-open .mobile-menu-content > *:not(.mobile-menu-close) {
    ──────────────────────────────────────────────────────────────────── */
 @media (min-width: 1025px) {
   body {
-    display: flex;
-    align-items: flex-start;
     min-height: 100vh;
   }
 
-  /* Sidebar: fixed width, sticky so it stays visible as page scrolls */
+  /* Sidebar wrapper: its only child (.vertical-sidebar-header) is position:fixed
+     so this wrapper has no in-flow content — it collapses to nothing.
+     All spacing is handled by margin-left on .page-content below. */
   #shopify-section-group-header-group {
-    flex-shrink: 0;
-    width: var(--header-width, 230px);
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    z-index: 10;
-    overflow: hidden;
+    display: block;
   }
 
-  /* Content column: fills remaining width, main + footer stack vertically */
+  /* Content column: pushed right by left-gap + sidebar width */
   .page-content {
-    flex: 1;
-    min-width: 0;
-    padding-left:var(--bento-gap);
+    margin-left: var(--header-width, 230px);
+    padding-left: var(--bento-gap);
     display: flex;
     flex-direction: column;
+    min-width: 0;
   }
 
   #MainContent,

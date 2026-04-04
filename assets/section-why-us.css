@@ -1,0 +1,194 @@
+.why-us {
+  width: 100%;
+}
+
+.why-us__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--gap-m);
+}
+
+.why-us__intro,
+.why-us__feature {
+  background: color-mix(in srgb, var(--color-card-bg) 92%, var(--color-bg));
+  border: 1px solid var(--color-borders);
+  border-radius: var(--radius-2xl);
+  transition:
+    border-color 0.35s ease,
+    box-shadow 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.why-us__intro:hover,
+.why-us__feature:hover {
+  border-color: var(--color-header-border, var(--color-headings));
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  transform: translateY(-4px);
+}
+
+.why-us__intro {
+  padding: var(--padding-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-m);
+}
+
+.why-us__pill {
+  display: inline-flex;
+  align-self: flex-start;
+  border-radius: var(--radius-pill);
+  padding: 6px 16px;
+  background: var(--btn-tertiary-bg);
+  color: var(--btn-tertiary-text);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.why-us__title {
+  margin: 0;
+  color: var(--color-heading);
+  font-family: var(--font-heading-family);
+  font-size: clamp(2rem, 3.2vw, 3.25rem);
+  line-height: 0.94;
+  letter-spacing: var(--letter-spacing-tight);
+  text-transform: uppercase;
+  max-width: 14ch;
+}
+
+.why-us__description {
+  margin: 0;
+  max-width: 58ch;
+  color: var(--color-text);
+  font-size: var(--font-size-xl);
+  line-height: 1.65;
+  opacity: 0.9;
+}
+
+.why-us__cta {
+  margin-top: var(--margin-s);
+}
+
+.why-us__features {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--gap-m);
+}
+
+.why-us__feature {
+  padding: var(--padding-l);
+}
+
+.why-us__feature-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-l);
+  margin-bottom: var(--margin-m);
+  position: relative;
+  background: color-mix(in srgb, var(--color-bg) 70%, var(--color-card-bg));
+}
+
+.why-us__feature-icon::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  border-radius: var(--radius-pill);
+  transform: translate(-50%, -50%);
+  background: var(--color-accent);
+}
+
+.why-us__feature-icon--image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+
+.why-us__feature-icon--image::after {
+  display: none;
+}
+
+.why-us__feature-icon-img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  display: block;
+}
+
+.why-us__feature-icon--amber::after {
+  background: var(--btn-tertiary-bg);
+}
+
+.why-us__feature-icon--blue::after {
+  background: var(--color-link);
+}
+
+.why-us__feature-icon--green::after {
+  background: color-mix(in srgb, var(--color-accent-2) 80%, var(--color-link));
+}
+
+.why-us__feature-icon--neutral::after {
+  background: color-mix(in srgb, var(--color-text) 80%, var(--color-bg));
+}
+
+.why-us__feature-title {
+  margin: 0;
+  color: var(--color-heading);
+  font-family: var(--font-heading-family);
+  font-size: clamp(1.45rem, 1.7vw, 1.9rem);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.why-us__feature-text {
+  margin: var(--margin-m) 0 0;
+  color: var(--color-text);
+  font-size: var(--font-size-lg);
+  line-height: 1.55;
+  opacity: 0.9;
+}
+
+@media screen and (min-width: 990px) {
+  .why-us__grid {
+    grid-template-columns: minmax(0, 1.03fr) minmax(0, 1fr);
+    gap: var(--gap-l);
+  }
+
+  .why-us__features {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .why-us__intro {
+    min-height: 100%;
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .why-us__intro,
+  .why-us__feature {
+    border-radius: var(--radius-xl);
+  }
+
+  .why-us__intro {
+    padding: var(--padding-l);
+  }
+
+  .why-us__feature {
+    padding: var(--padding-m);
+  }
+
+  .why-us__title {
+    font-size: clamp(1.7rem, 9vw, 2.4rem);
+  }
+
+  .why-us__description,
+  .why-us__feature-text {
+    font-size: var(--font-size-md);
+  }
+}
