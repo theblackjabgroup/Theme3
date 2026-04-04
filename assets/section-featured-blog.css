@@ -11,7 +11,7 @@
 .featured-blog-v2__layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: 470px;
+  grid-template-rows: 500px;
   gap: var(--bento-gap);
 }
 

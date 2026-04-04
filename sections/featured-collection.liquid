@@ -7,9 +7,9 @@
 {%- style -%}
   /* Featured collection cards: use global product card settings (match product grid) */
   #shopify-section-{{ section.id }} .custom-product-card {
-    --card-padding-top: 16px;
-    --card-padding-horizontal: 16px;
-    --card-padding-bottom: 16px;
+    --card-padding-top: 0px;
+    --card-padding-horizontal: 20px;
+    --card-padding-bottom: 20px;
     --card-text-align: center;
     --card-align-items: center;
     --card-image-height: 300px;
@@ -40,9 +40,10 @@
   }
 
   #shopify-section-{{ section.id }} .custom-product-card__badge {
-    font-size: 10px;
-    font-weight: 400;
+    font-size: 12px;
+    font-weight: 700;
     border-radius: 24px;
+    margin-bottom: 10px;
   }
 
   #shopify-section-{{ section.id }} .custom-product-card__hover-buttons {
@@ -51,48 +52,6 @@
 
   #shopify-section-{{ section.id }} .custom-product-card__price.global-btn-2 {
     border-radius: 14px;
-  }
-
-  /* Sale badge: pill (featured collection only; card still outputs SVG + text) */
-  #shopify-section-{{ section.id }} .custom-product-card__sale-badge {
-    top: 10px;
-    left: 10px;
-    width: auto;
-    height: auto;
-    min-height: 0;
-    padding: 6px 12px;
-    background: var(--sale-badge-bg, #f5a30a);
-    border-radius: 9999px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-  }
-
-  #shopify-section-{{ section.id }} .custom-product-card__sale-badge-icon {
-    display: none;
-  }
-
-  #shopify-section-{{ section.id }} .custom-product-card__sale-badge-text {
-    position: static;
-    inset: auto;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 4px;
-    transform: none;
-    font-weight: 700;
-    line-height: 1.2;
-    color: var(--sale-badge-text, #000000);
-  }
-
-  #shopify-section-{{ section.id }} .custom-product-card__sale-badge-text span:first-child {
-    font-size: 13px;
-  }
-
-  #shopify-section-{{ section.id }} .custom-product-card__sale-badge-text span:last-child {
-    font-size: 11px;
-    margin-top: 0;
   }
 
   #shopify-section-{{ section.id }} .custom-product-card__description {
@@ -154,13 +113,9 @@
       {%- endif -%}
 
       {%- if section.settings.show_shop_all and featured_collection != blank and featured_collection.url != blank -%}
-        {%-
-          render 'global-btn',
-          text: section.settings.shop_all_label | default: 'Shop all',
-          url: section.settings.shop_all_link | default: featured_collection.url,
-          fit_width: false,
-          class: 'fc3d__shop-all'
-        -%}
+        <a href="{{ section.settings.shop_all_link | default: featured_collection.url }}" class="fc3d__view-all">
+          {{- section.settings.shop_all_label | default: 'View All' -}}
+        </a>
       {%- endif -%}
     </div>
 
@@ -205,12 +160,16 @@
           {%- endfor -%}
         {%- else -%}
           {%- comment -%} Default placeholder cards using card-product snippet with dummy data {%- endcomment -%}
-          {%- assign placeholder_description_text = 'sections.featured_collection.placeholder_description' | t | default: 'Add a collection in the section settings. By default the first collection is used.' -%}
+          {%- assign placeholder_description_text = 'sections.featured_collection.placeholder_description'
+            | t
+            | default: 'Add a collection in the section settings. By default the first collection is used.'
+          -%}
           {%- for i in (1..products_to_show) -%}
             <div class="fc3d-card fc3d-card--custom fc3d-card--placeholder" data-fc3d-card role="listitem">
               <div class="fc3d-card__custom">
                 {%- capture placeholder_card_title -%}{{ 'sections.featured_collection.placeholder_title' | t | default: 'Product' }} {{ i }}{%- endcapture -%}
-                {%- render 'card-product',
+                {%-
+                  render 'card-product',
                   card_product: nil,
                   placeholder_title: placeholder_card_title,
                   placeholder_description: placeholder_description_text,
@@ -233,7 +192,7 @@
               <div class="fc3d-card__custom">
                 {%- capture placeholder_card_title -%}{{ 'sections.featured_collection.placeholder_title' | t | default: 'Product' }} {{ i }}{%- endcapture -%}
                 {%- render 'card-product',
-                  card_product: nil,
+                  card_product: null,
                   placeholder_title: placeholder_card_title,
                   placeholder_description: placeholder_description_text,
                   section_id: section.id,
@@ -332,7 +291,7 @@
       "type": "text",
       "id": "shop_all_label",
       "label": "Shop all label",
-      "default": "Shop all"
+      "default": "View All"
     },
     {
       "type": "header",
