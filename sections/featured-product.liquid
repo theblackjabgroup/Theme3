@@ -89,9 +89,15 @@
 
         <div class="featured__media">
           <div class="featured__slider" data-featured-slider>
-            <button class="featured__arrow featured__arrow--prev" type="button" aria-label="Previous image">
-              {{ 'icon-caret-left.svg' | inline_asset_content }}
-            </button>
+            {%- render 'global-btn-2',
+              text: '←',
+              type: 'button',
+              fit_width: false,
+              class: 'featured__arrow featured__arrow--prev',
+              attributes: 'aria-label="Previous image"',
+              border_radius: '50%',
+              no_border: true
+            -%}
 
             <div class="featured__slider-track">
               {%- if featured_product != blank and featured_product.media.size > 0 -%}
@@ -118,9 +124,15 @@
               {%- endif -%}
             </div>
 
-            <button class="featured__arrow featured__arrow--next" type="button" aria-label="Next image">
-              {{ 'icon-caret-right.svg' | inline_asset_content }}
-            </button>
+            {%- render 'global-btn-2',
+              text: '→',
+              type: 'button',
+              fit_width: false,
+              class: 'featured__arrow featured__arrow--next',
+              attributes: 'aria-label="Next image"',
+              border_radius: '50%',
+              no_border: true
+            -%}
           </div>
         </div>
       </article>

@@ -5,21 +5,20 @@
 <script src="{{ 'section-bento-grid.js' | asset_url }}" defer></script>
 
 {%- style -%}
-  #bento-hero-{{ section.id }} {
-    --bento-hero-pt:   {{ section.settings.padding_top   | default: 16 }}px;
-    --bento-hero-pb:   {{ section.settings.padding_bottom | default: 16 }}px;
-    --bento-hero-px:   {{ section.settings.padding_horizontal | default: 16 }}px;
-    --bento-hero-pt-m: {{ section.settings.padding_top_mobile   | default: 12 }}px;
-    --bento-hero-pb-m: {{ section.settings.padding_bottom_mobile | default: 12 }}px;
-    --bento-hero-px-m: {{ section.settings.padding_horizontal_mobile | default: 12 }}px;
-}
+    #bento-hero-{{ section.id }} {
+
+      --bento-hero-pt-m: {{ section.settings.padding_top_mobile   | default: 12 }}px;
+      --bento-hero-pb-m: {{ section.settings.padding_bottom_mobile | default: 12 }}px;
+      --bento-hero-px-m: {{ section.settings.padding_horizontal_mobile | default: 12 }}px;
+  }
 {%- endstyle -%}
 
 <section id="bento-hero-{{ section.id }}" class="bento-hero">
-
-  <!-- ══════════════════════════════════════════
-       1. SCROLLING STRIP
-       ══════════════════════════════════════════ -->
+  <!--
+    ══════════════════════════════════════════
+    1. SCROLLING STRIP
+    ══════════════════════════════════════════
+  -->
   {%- liquid
     assign strip_speed = section.settings.strip_speed | default: 28
     assign strip_orbit_text = section.settings.orbit_text | default: 'KOKO'
@@ -45,11 +44,12 @@
     -%}
   </div>
 
-  <!-- ══════════════════════════════════════════
-       2. 4 BENTO CARDS
-       ══════════════════════════════════════════ -->
+  <!--
+    ══════════════════════════════════════════
+    2. 4 BENTO CARDS
+    ══════════════════════════════════════════
+  -->
   <div class="bento-grid">
-
     <!-- Card 1: Blue hero text -->
     <div class="bento-card bento-card--hero">
       <div class="bento-hero-content">
@@ -65,7 +65,9 @@
             {%- assign highlight = section.settings.hero_heading_highlight | default: 'MOMENTS' -%}
             {%- if highlight != blank and heading contains highlight -%}
               {%- assign parts = heading | split: highlight -%}
-              {{- parts[0] -}}<mark>{{- highlight -}}</mark>{{- parts[1] -}}
+              {{- parts[0] -}}
+              <mark>{{- highlight -}}</mark>
+              {{- parts[1] -}}
             {%- else -%}
               {{- heading -}}
             {%- endif -%}
@@ -78,7 +80,8 @@
 
         <div class="bento-hero-buttons">
           {%- if section.settings.btn1_text != blank -%}
-            {%- render 'global-btn',
+            {%-
+              render 'global-btn',
               text: section.settings.btn1_text,
               url: section.settings.btn1_url | default: '#',
               variant: 'tertiary',
@@ -86,7 +89,8 @@
             -%}
           {%- endif -%}
           {%- if section.settings.btn2_text != blank -%}
-            {%- render 'global-btn-2',
+            {%-
+              render 'global-btn-2',
               text: section.settings.btn2_text,
               url: section.settings.btn2_url | default: '#',
               variant: 'white',
@@ -104,10 +108,8 @@
         {{
           hero_product.featured_image
           | image_url: width: 900
-          | image_tag:
-            class: 'bento-product-img',
-            loading: 'eager',
-            alt: hero_product.featured_image.alt | default: hero_product.title
+          | image_tag: class: 'bento-product-img', loading: 'eager', alt: hero_product.featured_image.alt
+          | default: hero_product.title
         }}
       {%- else -%}
         {{ 'product-1' | placeholder_svg_tag: 'bento-product-img' }}
@@ -126,14 +128,15 @@
           </text>
         </svg>
         <a href="{{ section.settings.btn1_url | default: '#' }}" class="bento-orbit__arrow" aria-label="Shop now">
-          <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          <svg viewBox="0 0 24 24">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
         </a>
       </div>
     </div>
 
     <!-- Cards 3 + 4: Right column -->
     <div class="bento-col-right">
-
       <!-- Card 3: Collection -->
       {%- assign col = section.settings.collection -%}
       {%- assign col_url = col.url | default: '#' -%}
@@ -191,20 +194,25 @@
           </div>
         </div>
       </div>
+    </div>
+    <!-- /bento-col-right -->
+  </div>
+  <!-- /bento-grid -->
 
-    </div><!-- /bento-col-right -->
-  </div><!-- /bento-grid -->
-
-  <!-- ══════════════════════════════════════════
-       3. QUOTE RICH TEXT
-       ══════════════════════════════════════════ -->
+  <!--
+    ══════════════════════════════════════════
+    3. QUOTE RICH TEXT
+    ══════════════════════════════════════════
+  -->
   {%- if section.settings.quote_heading != blank -%}
     <div class="bento-quote">
       <p class="bento-quote__heading">
         {%- assign q_highlight = section.settings.quote_highlight | default: '' -%}
         {%- if q_highlight != blank and section.settings.quote_heading contains q_highlight -%}
           {%- assign q_parts = section.settings.quote_heading | split: q_highlight -%}
-          {{- q_parts[0] -}}<mark>{{- q_highlight -}}</mark>{{- q_parts[1] -}}
+          {{- q_parts[0] -}}
+          <mark>{{- q_highlight -}}</mark>
+          {{- q_parts[1] -}}
         {%- else -%}
           {{- section.settings.quote_heading -}}
         {%- endif -%}
@@ -214,7 +222,6 @@
       {%- endif -%}
     </div>
   {%- endif -%}
-
 </section>
 
 {% schema %}
@@ -382,42 +389,60 @@
     {
       "type": "range",
       "id": "padding_top",
-      "min": 0, "max": 80, "step": 4, "unit": "px",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
       "label": "Top padding",
       "default": 0
     },
     {
       "type": "range",
       "id": "padding_bottom",
-      "min": 0, "max": 80, "step": 4, "unit": "px",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
       "label": "Bottom padding",
       "default": 0
     },
     {
       "type": "range",
       "id": "padding_horizontal",
-      "min": 0, "max": 60, "step": 4, "unit": "px",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
       "label": "Horizontal padding",
       "default": 0
     },
     {
       "type": "range",
       "id": "padding_top_mobile",
-      "min": 0, "max": 60, "step": 4, "unit": "px",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
       "label": "Top padding (mobile)",
       "default": 0
     },
     {
       "type": "range",
       "id": "padding_bottom_mobile",
-      "min": 0, "max": 60, "step": 4, "unit": "px",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
       "label": "Bottom padding (mobile)",
       "default": 0
     },
     {
       "type": "range",
       "id": "padding_horizontal_mobile",
-      "min": 0, "max": 60, "step": 4, "unit": "px",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
       "label": "Horizontal padding (mobile)",
       "default": 12
     }

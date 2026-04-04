@@ -184,12 +184,22 @@
     </div>
 
     <div class="featured-blog-v2__nav" aria-hidden="true">
-      <button class="featured-blog-v2__nav-btn" type="button">
-        {{ 'icon-caret-left.svg' | inline_asset_content }}
-      </button>
-      <button class="featured-blog-v2__nav-btn" type="button">
-        {{ 'icon-caret-right.svg' | inline_asset_content }}
-      </button>
+      {%- render 'global-btn-2',
+        text: '←',
+        type: 'button',
+        fit_width: false,
+        class: 'featured-blog-v2__nav-btn',
+        border_radius: '50%',
+        no_border: true
+      -%}
+      {%- render 'global-btn-2',
+        text: '→',
+        type: 'button',
+        fit_width: false,
+        class: 'featured-blog-v2__nav-btn',
+        border_radius: '50%',
+        no_border: true
+      -%}
     </div>
   </div>
 </section>

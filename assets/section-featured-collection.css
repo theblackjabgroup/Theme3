@@ -97,6 +97,17 @@
 
 .fc3d__nav {
   flex-shrink: 0;
+  width: 44px !important;
+  height: 44px !important;
+  padding: 0 !important;
+}
+
+.fc3d__nav.global-btn-2::before {
+  transform: translateX(-120%);
+}
+
+.fc3d__nav.global-btn-2:hover::before {
+  transform: translateX(0);
 }
 
 .fc3d__nav:disabled {

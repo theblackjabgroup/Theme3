@@ -142,6 +142,56 @@
         "padding_bottom": 36
       }
     },
+    "reviews": {
+      "type": "reviews",
+      "blocks": {
+        "review_1": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "\"I've tried every cold brew on the market. Nothing comes close. It's smooth in a way that makes you slow down. Worth every cent.\"",
+            "reviewer_name": "Sarah M.",
+            "product_name": "Arctic Cold Brew",
+            "review_date": "March 2025"
+          }
+        },
+        "review_2": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "\"I've sampled every cold brew available, but none compare. It's so smooth that it encourages you to take a moment to savor it.\"",
+            "reviewer_name": "Emily R.",
+            "product_name": "Glacial Brew",
+            "review_date": "April 2025"
+          }
+        },
+        "review_3": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "\"I've been a barista for over 15 years, and this cold brew is in a class of its own. Incredibly smooth with a unique flavor profile.\"",
+            "reviewer_name": "Jamie K.",
+            "product_name": "Midnight Sun Blend",
+            "review_date": "May 2025"
+          }
+        }
+      },
+      "block_order": [
+        "review_1",
+        "review_2",
+        "review_3"
+      ],
+      "settings": {
+        "title": "What They're Saying",
+        "view_all_text": "View All",
+        "reviews_source": "blocks",
+        "average_rating": "4.9",
+        "total_reviews_text": "Based on 127 verified reviews",
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
     "newsletter": {
       "type": "newsletter",
       "settings": {
@@ -158,6 +208,7 @@
     "featured_collection",
     "featured_blog",
     "why_us",
+    "reviews",
     "newsletter"
   ]
 }

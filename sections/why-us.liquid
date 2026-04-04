@@ -31,7 +31,12 @@
 
       {%- if section.settings.cta_text != blank -%}
         <div class="why-us__cta">
-          {% render 'global-btn', text: section.settings.cta_text, url: section.settings.cta_link, variant: 'tertiary', fit_width: false %}
+          {% render 'global-btn',
+            text: section.settings.cta_text,
+            url: section.settings.cta_link,
+            variant: 'tertiary',
+            fit_width: false
+          %}
         </div>
       {%- endif -%}
     </article>
@@ -39,7 +44,20 @@
     <div class="why-us__features">
       {%- for block in section.blocks -%}
         <article class="why-us__feature" {{ block.shopify_attributes }}>
-          <div class="why-us__feature-icon why-us__feature-icon--{{ block.settings.icon_tone }}" aria-hidden="true"></div>
+          {%- if block.settings.icon_image != blank -%}
+            <div class="why-us__feature-icon why-us__feature-icon--image">
+              {{
+                block.settings.icon_image
+                | image_url: width: 84
+                | image_tag: alt: '', loading: 'lazy', class: 'why-us__feature-icon-img'
+              }}
+            </div>
+          {%- else -%}
+            <div
+              class="why-us__feature-icon why-us__feature-icon--{{ block.settings.icon_tone }}"
+              aria-hidden="true"
+            ></div>
+          {%- endif -%}
 
           {%- if block.settings.title != blank -%}
             <h3 class="why-us__feature-title">{{ block.settings.title }}</h3>
@@ -135,6 +153,12 @@
       "type": "feature",
       "name": "Feature card",
       "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Icon image (SVG or PNG)",
+          "info": "Upload a custom icon. If left empty, the color dot below is used as the icon."
+        },
         {
           "type": "select",
           "id": "icon_tone",

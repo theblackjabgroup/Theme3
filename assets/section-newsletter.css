@@ -80,6 +80,26 @@
   transform: translateY(1px);
 }
 
+/* Submit: icon-only circle button */
+.newsletter-section__submit-btn {
+  width: 52px !important;
+  height: 52px !important;
+  padding: 0 !important;
+}
+
+.newsletter-section__submit-btn .global-btn-2__icon svg {
+  fill: currentColor;
+  stroke: none;
+}
+
+.newsletter-section__submit-btn.global-btn-2::before {
+  transform: translateX(-120%);
+}
+
+.newsletter-section__submit-btn.global-btn-2:hover::before {
+  transform: translateX(0);
+}
+
 /* Submit: global-btn uses scheme; legacy submit-button overrides use scheme vars */
 .newsletter-section__submit-wrap {
   flex-shrink: 0;

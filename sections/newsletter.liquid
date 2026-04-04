@@ -52,7 +52,16 @@
           </div>
         </div>
         <div class="newsletter-section__submit-wrap">
-          {%- render 'global-btn-2', text: section.settings.button_text | default: 'Subscribe', type: 'submit', class: 'newsletter-section__submit-btn', variant:"tertiary" -%}
+          {%- capture submit_icon -%}{{ 'icon-caret-right.svg' | inline_asset_content }}{%- endcapture -%}
+          {%- render 'global-btn-2',
+            icon: submit_icon,
+            icon_only: true,
+            type: 'submit',
+            fit_width: false,
+            class: 'newsletter-section__submit-btn',
+            variant: 'tertiary',
+            border_radius: '50%'
+          -%}
         </div>
       </div>
       {%- if form.posted_successfully? -%}
