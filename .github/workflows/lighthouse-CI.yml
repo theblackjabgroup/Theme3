@@ -24,7 +24,9 @@ jobs:
         shell: bash
         env:
           SHOPIFY_SHOP: 'theme3testing.myshopify.com'
+          SHOPIFY_FLAG_STORE: 'theme3testing.myshopify.com'
           SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.APIKEY }}
+          SHOPIFY_PASSWORD: ${{ secrets.APIKEY }}
           SHOP_PASSWORD: 'blackbytt'
           SHOPIFY_CLI_TTY: 0
           CI: 1
@@ -34,7 +36,7 @@ jobs:
           echo "=============================="
           # Create development theme and capture JSON output
           theme_push_log=$(mktemp)
-          shopify theme push --development --json > "$theme_push_log"
+          shopify theme push --development --json --store "$SHOPIFY_SHOP" > "$theme_push_log"
           
           # Extract theme details
           preview_url=$(jq -r '.theme.preview_url' "$theme_push_log")
@@ -117,7 +119,9 @@ jobs:
         if: always()
         env:
           SHOPIFY_SHOP: 'theme3testing.myshopify.com'
+          SHOPIFY_FLAG_STORE: 'theme3testing.myshopify.com'
           SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.APIKEY }}
+          SHOPIFY_PASSWORD: ${{ secrets.APIKEY }}
           SHOPIFY_CLI_TTY: 0
         run: |
           echo "Disposing development theme"
