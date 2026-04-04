@@ -172,6 +172,15 @@
     padding-bottom: 10px;
   }
 
+  .fc3d-card {
+    min-width: calc(100vw - 28px);
+    scroll-snap-align: start;
+  }
+
+  .fc3d-card__custom {
+    min-width: 100%;
+    height: 460px;
+  }
 
   .fc3d__controls {
     margin-top: 10px;
