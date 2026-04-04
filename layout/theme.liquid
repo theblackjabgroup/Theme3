@@ -332,8 +332,9 @@
     {{ 'base.css' | asset_url | stylesheet_tag: preload: true }}
     {{ 'component-global-btn.css' | asset_url | stylesheet_tag: preload: true }}
     {{ 'component-global-btn-2.css' | asset_url | stylesheet_tag: preload: true }}
-    {{ 'component-quantity.css' | asset_url | stylesheet_tag: preload: true }}
     {{ 'component-quick-view.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'component-quantity.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'animations.css' | asset_url | stylesheet_tag: preload: true }}
 
     {%- if localization.available_countries.size > 1 or localization.available_languages.size > 1 -%}
       <link
@@ -366,7 +367,7 @@
   </head>
 
   {%- assign default_scheme = settings.color_schemes | first -%}
-  <body class="color-{{ default_scheme.id }}">
+  <body class="color-{{ default_scheme.id }}{% if settings.animations_disable_on_mobile %} animations--disabled-on-mobile{% endif %}">
     <script>
       (function () {
         const savedScheme = localStorage.getItem('global-theme-scheme');

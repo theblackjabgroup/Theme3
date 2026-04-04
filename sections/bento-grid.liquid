@@ -19,30 +19,6 @@
     1. SCROLLING STRIP
     ══════════════════════════════════════════
   -->
-  {%- liquid
-    assign strip_speed = section.settings.strip_speed | default: 28
-    assign strip_orbit_text = section.settings.orbit_text | default: 'KOKO'
-  -%}
-  {%- capture bento_strip_text -%}<p>{{ section.settings.strip_text | default: 'FREE SHIPPING WORLDWIDE' }}</p>{%- endcapture -%}
-  <div class="marquee-scroll">
-    {%- render 'scrolling-text-item',
-      id: section.id,
-      speed: strip_speed,
-      direction: 'normal',
-      pause_on_hover: true,
-      pill_bg: 'var(--btn-secondary-bg)',
-      pill_color: 'var(--btn-secondary-text)',
-      pill_height: 44,
-      pill_radius: 12,
-      item_gap: 16,
-      circle_bg: 'var(--btn-tertiary-bg)',
-      orbit_color: 'var(--btn-secondary-text)',
-      orbit_text: strip_orbit_text,
-      text: bento_strip_text,
-      text_size: 20,
-      text_weight: '900'
-    -%}
-  </div>
 
   <!--
     ══════════════════════════════════════════
@@ -205,7 +181,7 @@
     ══════════════════════════════════════════
   -->
   {%- if section.settings.quote_heading != blank -%}
-    <div class="bento-quote">
+    <div class="bento-quote scroll-trigger scroll-trigger--offscreen reveal-up" style="--animation-order: 15;">
       <p class="bento-quote__heading">
         {%- assign q_highlight = section.settings.quote_highlight | default: '' -%}
         {%- if q_highlight != blank and section.settings.quote_heading contains q_highlight -%}

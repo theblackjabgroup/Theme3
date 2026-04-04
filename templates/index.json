@@ -9,6 +9,30 @@
  */
 {
   "sections": {
+    "scrolling_text_standalone": {
+      "type": "scrolling-text",
+      "blocks": {
+        "scrolling_strip": {
+          "type": "scrolling_strip",
+          "settings": {
+            "text": "<p>FREE SHIPPING WORLDWIDE<\/p>",
+            "orbit_text": "KOKO",
+            "speed": 28,
+          }
+        }
+      },
+      "block_order": [
+        "scrolling_strip"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "margin_left": 0,
+        "margin_right": 0,
+        "vertical_gap": 24,
+        "padding_top": 0,
+        "padding_bottom": 16
+      }
+    },
     "bento_grid": {
       "type": "bento-grid",
       "settings": {
@@ -203,6 +227,7 @@
     }
   },
   "order": [
+    "scrolling_text_standalone",
     "bento_grid",
     "featured_product",
     "featured_collection",

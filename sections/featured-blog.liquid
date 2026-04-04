@@ -50,7 +50,7 @@
 <section class="featured-blog-v2 color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
   <div class="featured-blog-v2__wrap">
     <div class="featured-blog-v2__layout">
-      <article class="featured-blog-v2__primary">
+      <article class="featured-blog-v2__primary scroll-trigger reveal-up" style="--animation-order: 1;">
         <div class="featured-blog-v2__primary-main">
           <span class="featured-blog-v2__index">01</span>
 
@@ -119,7 +119,7 @@
         </div>
       </article>
 
-      <article class="featured-blog-v2__secondary">
+      <article class="featured-blog-v2__secondary scroll-trigger reveal-up" style="--animation-order: 2;">
         <a
           class="featured-blog-v2__secondary-image-wrap"
           href="{% if secondary_article != blank %}{{ secondary_article.url }}{% elsif primary_article != blank %}{{ primary_article.url }}{% else %}#{% endif %}"
@@ -183,7 +183,7 @@
       </article>
     </div>
 
-    <div class="featured-blog-v2__nav">
+    <div class="featured-blog-v2__nav scroll-trigger reveal-up" style="--animation-order: 3;">
       {%- render 'global-btn-2',
         text: '←',
         type: 'button',

@@ -36,7 +36,7 @@
   <div class="section-{{ section.id }}-padding{% if section.settings.secondary_background %} isolate{% endif %}">
     <div class="featured__grid">
       <article class="featured__primary">
-        <div class="featured__product">
+        <div class="featured__product scroll-trigger reveal-left" style="--animation-order: 1;">
           <span class="featured__pill">{{ section.settings.product_pill_label }}</span>
 
           <h2 class="featured__title">{{ product_title | default: 'ARCTIC COLD BREW' }}</h2>
@@ -87,7 +87,7 @@
           </div>
         </div>
 
-        <div class="featured__media">
+        <div class="featured__media scroll-trigger reveal-scale" style="--animation-order: 2;">
           <div class="featured__slider" data-featured-slider>
             {%- render 'global-btn-2',
               text: '←',
@@ -137,7 +137,7 @@
         </div>
       </article>
 
-      <aside class="featured__promo">
+      <aside class="featured__promo scroll-trigger reveal-up" style="--animation-order: 3;">
         <span class="featured__pill">{{ section.settings.promo_pill_label }}</span>
 
         <h3 class="featured__promo-title">{{ section.settings.promo_heading | default: '6 BLENDS\n1 STANDARDS' | newline_to_br }}</h3>

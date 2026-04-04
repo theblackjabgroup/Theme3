@@ -107,7 +107,7 @@
   style="{% if background_image != blank %}background-image: url('{{ background_image_url }}'); background-size: {{ section.settings.background_image_size }}; background-position: {{ section.settings.background_image_position }}; background-repeat: {{ section.settings.background_image_repeat }};{% else %}background-color: {{ scheme.settings.background }};{% endif %} color: {{ scheme.settings.text }};"
 >
   <div class="fc3d__container">
-    <div class="fc3d__header">
+    <div class="fc3d__header scroll-trigger reveal-up">
       {%- if section.settings.title != blank -%}
         <h2 class="fc3d__title">{{ section.settings.title }}</h2>
       {%- endif -%}
@@ -124,7 +124,7 @@
         {%- if featured_collection != blank and featured_collection.products_count > 0 -%}
           {%- comment -%} First set: custom product cards {%- endcomment -%}
           {%- for product in featured_collection.products limit: products_to_show -%}
-            <div class="fc3d-card fc3d-card--custom" data-fc3d-card role="listitem">
+            <div class="fc3d-card fc3d-card--custom scroll-trigger reveal-up" data-fc3d-card role="listitem" style="--animation-order: {{ forloop.index }};">
               <div class="fc3d-card__custom">
                 {%-
                   render 'card-product',
@@ -209,7 +209,7 @@
       </div>
     </div>
 
-    <div class="fc3d__controls" style="gap: {{ section.settings.nav_button_spacing | default: 16 }}px;">
+    <div class="fc3d__controls scroll-trigger reveal-up" style="gap: {{ section.settings.nav_button_spacing | default: 16 }}px; --animation-order: {{ products_to_show | plus: 1 }};">
       {% render 'global-btn-2',
         text: '←',
         type: 'button',

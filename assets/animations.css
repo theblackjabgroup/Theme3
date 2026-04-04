@@ -1,0 +1,60 @@
+/* --- Reveal Animations (Scroll & Load) --- */
+
+.reveal-up,
+.reveal-left,
+.reveal-right,
+.reveal-scale,
+.scroll-trigger {
+  opacity: 0;
+  transition: opacity var(--animation-duration, 0.7s) ease-out,
+              transform var(--animation-duration, 0.7s) ease-out;
+  will-change: opacity, transform;
+}
+
+/* Specific Transforms */
+.reveal-up { transform: translateY(60px); }
+.reveal-left { transform: translateX(-44px); }
+.reveal-right { transform: translateX(44px); }
+.reveal-scale { transform: scale(var(--animation-scale, 0.94)); }
+
+/* Scroll Trigger Offscreen State (matches animations.js logic) */
+.scroll-trigger--offscreen {
+  opacity: 0;
+}
+
+.scroll-trigger--offscreen.reveal-up { transform: translateY(60px); }
+.scroll-trigger--offscreen.reveal-left { transform: translateX(-44px); }
+.scroll-trigger--offscreen.reveal-right { transform: translateX(44px); }
+.scroll-trigger--offscreen.reveal-scale { transform: scale(var(--animation-scale, 0.94)); }
+
+/* Visible State */
+.visible,
+.scroll-trigger:not(.scroll-trigger--offscreen) {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Stagger Logic support */
+[style*="--animation-order"] {
+  transition-delay: calc(var(--animation-order) * 0.1s);
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-up, .reveal-left, .reveal-right, .reveal-scale, .scroll-trigger {
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Mobile Disable */
+body.animations--disabled-on-mobile {
+  @media screen and (max-width: 749px) {
+    .reveal-up, .reveal-left, .reveal-right, .reveal-scale, .scroll-trigger {
+      transition: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+}
