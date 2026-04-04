@@ -270,7 +270,10 @@
     border-radius: var(--radius-xl);
   }
 
-  .featured__slider-track,
+  .featured__slider-track {
+    padding: var(--padding-m) calc(var(--padding-l) + var(--spacing-12));
+  }
+
   .featured__slide {
     inset: var(--padding-m) calc(var(--padding-l) + var(--spacing-12));
   }

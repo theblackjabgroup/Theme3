@@ -164,9 +164,9 @@
    ============================================================= */
 .global-btn-2--tertiary {
   --btn2-hover-fill: var(--btn-tertiary-bg, #F5A30A);
-  background-color: var(--btn-tertiary-bg);
-  color: var(--color-text, #F5A30A);
-  border-color: var(--color-text, #F5A30A);
+  background-color: transparent;
+  color: var(--color-text, #000000);
+  border-color: var(--color-text, #000000);
 }
 
 .global-btn-2--tertiary:hover {

@@ -420,6 +420,7 @@
   /* Right column spans both columns as a full-width row */
   .bento-col-right {
     grid-column: 1 / -1;
+    display: flex;
     flex-direction: row;
   }
 
@@ -457,6 +458,7 @@
 
   .bento-grid {
     grid-template-columns: 1fr;
+    grid-template-rows: auto;
     gap: 12px;
   }
 
