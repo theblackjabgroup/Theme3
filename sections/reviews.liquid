@@ -57,7 +57,7 @@
     <div class="reviews__aggregate">
       <span class="reviews__aggregate-label">AVERAGE RATING</span>
       <span class="reviews__average-number">{{ avg_rating | round: 1 }}</span>
-      <div class="reviews__stars" aria-label="{{ avg_rating }} out of 5 stars">
+      <div class="reviews__stars" role="img" aria-label="{{ avg_rating }} out of 5 stars">
         {%- for i in (1..5) -%}
           <svg
             class="reviews__star{% if i <= avg_rating_rounded %} reviews__star--filled{% endif %}"
@@ -95,7 +95,7 @@
             {%- assign star_count = block.settings.rating | default: 5 | times: 1 | round -%}
             <article class="reviews__card" {{ block.shopify_attributes }}>
               <div class="reviews__card-top">
-                <div class="reviews__stars" aria-label="{{ star_count }} out of 5 stars">
+                <div class="reviews__stars" role="img" aria-label="{{ star_count }} out of 5 stars">
                   {%- for i in (1..5) -%}
                     <svg
                       class="reviews__star{% if i <= star_count %} reviews__star--filled{% endif %}"

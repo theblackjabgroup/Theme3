@@ -183,14 +183,15 @@
       </article>
     </div>
 
-    <div class="featured-blog-v2__nav" aria-hidden="true">
+    <div class="featured-blog-v2__nav">
       {%- render 'global-btn-2',
         text: '←',
         type: 'button',
         fit_width: false,
         class: 'featured-blog-v2__nav-btn',
         border_radius: '50%',
-        no_border: true
+        no_border: true,
+        attributes: 'aria-label="Previous article"'
       -%}
       {%- render 'global-btn-2',
         text: '→',
@@ -198,7 +199,8 @@
         fit_width: false,
         class: 'featured-blog-v2__nav-btn',
         border_radius: '50%',
-        no_border: true
+        no_border: true,
+        attributes: 'aria-label="Next article"'
       -%}
     </div>
   </div>
