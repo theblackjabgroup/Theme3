@@ -30,6 +30,8 @@ jobs:
           SHOP_PASSWORD: 'blackbytt'
           SHOPIFY_CLI_TTY: 0
           CI: 1
+          CHROME_PATH: /usr/bin/google-chrome
+          PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome
         run: |
           echo "=============================="
           echo "Creating development theme"
