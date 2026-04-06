@@ -1129,7 +1129,7 @@
     function initQuantitySelectors() {
       if (initialized) return;
 
-      const quantitySelectors = document.querySelectorAll('.cart-item-card__quantity .cart-item__quantity-selector');
+      const quantitySelectors = document.querySelectorAll('.cart-item-card__qty-row .cart-item__quantity-selector');
       const cartSubtotal = document.getElementById('cart-subtotal');
 
       if (!quantitySelectors.length) {
@@ -1184,7 +1184,7 @@
       function updateUIOnly(itemIndex, newQuantity) {
         // Find the item row
         const selector = document.querySelector(
-          `.cart-item-card__quantity .cart-item__quantity-selector[data-item-index="${itemIndex}"]`
+          `.cart-item-card__qty-row .cart-item__quantity-selector[data-item-index="${itemIndex}"]`
         );
         if (!selector) return;
 
@@ -1208,32 +1208,40 @@
         // Update quantity display
         quantityInput.value = newQuantity;
 
-        // Update item total
-        const formattedPrice = formatMoney(newLineTotal);
-        const currentPriceSpan = itemTotalCell.querySelector('.cart-item-card__current-price');
-        let oldPriceSpan = itemTotalCell.querySelector('.cart-item-card__old-price');
-        if (currentPriceSpan) {
-          currentPriceSpan.textContent = formattedPrice;
-        } else {
-          itemTotalCell.textContent = formattedPrice;
+        // Helper: update a price container (desktop total or mobile price row)
+        function updatePriceContainer(container) {
+          if (!container) return;
+          const currentSpan = container.querySelector('.cart-item-card__current-price');
+          let oldSpan = container.querySelector('.cart-item-card__old-price');
+          const formattedPrice = formatMoney(newLineTotal);
+          if (currentSpan) {
+            currentSpan.textContent = formattedPrice;
+          } else {
+            container.textContent = formattedPrice;
+          }
+          if (showOldPrice) {
+            const originalFormat = oldSpan ? oldSpan.textContent.trim() : null;
+            const formattedOld = formatMoney(newOriginalLineTotal, originalFormat);
+            if (oldSpan) {
+              oldSpan.textContent = formattedOld;
+            } else {
+              const s = document.createElement('s');
+              s.className = 'cart-item-card__old-price';
+              s.setAttribute('aria-label', 'Original price');
+              s.textContent = formattedOld;
+              container.insertBefore(s, currentSpan || container.firstChild);
+            }
+          } else if (oldSpan) {
+            oldSpan.remove();
+          }
         }
 
-        // Update or add strikethrough (original/compare_at) line price when discounted
-        if (showOldPrice) {
-          const originalFormat = oldPriceSpan ? oldPriceSpan.textContent.trim() : null;
-          const formattedOld = formatMoney(newOriginalLineTotal, originalFormat);
-          if (oldPriceSpan) {
-            oldPriceSpan.textContent = formattedOld;
-          } else {
-            const s = document.createElement('s');
-            s.className = 'cart-item-card__old-price';
-            s.setAttribute('aria-label', 'Original price');
-            s.textContent = formattedOld;
-            itemTotalCell.insertBefore(s, currentPriceSpan || itemTotalCell.firstChild);
-          }
-        } else if (oldPriceSpan) {
-          oldPriceSpan.remove();
-        }
+        // Update desktop price column
+        updatePriceContainer(itemTotalCell);
+
+        // Update mobile price row (same item card)
+        const mobilePriceRow = itemCard.querySelector('.cart-item-card__price-mobile');
+        updatePriceContainer(mobilePriceRow);
 
         // Recalculate cart totals
         recalculateCartTotals();
