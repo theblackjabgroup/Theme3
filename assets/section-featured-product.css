@@ -5,7 +5,7 @@
 .featured__grid {
   display: grid;
   grid-template-columns: minmax(0, 7fr) minmax(0, 3fr);
-  gap: var(--gap-l);
+  gap: var(--bento-gap);
 }
 
 .featured__primary,
@@ -247,7 +247,7 @@
 
 @media screen and (max-width: 749px) {
   .featured__grid {
-    gap: var(--gap-m);
+    gap: var(--bento-gap);
   }
 
   .featured__primary,
@@ -259,6 +259,10 @@
   .featured__primary {
     grid-template-columns: 1fr;
     gap: var(--gap-m);
+  }
+
+  .featured__media {
+    order: -1;
   }
 
   .featured__title {

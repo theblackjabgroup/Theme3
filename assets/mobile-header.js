@@ -154,7 +154,13 @@ class MobileHeader {
         }
         document.body.classList.add('mobile-menu-open');
         document.documentElement.classList.add('mobile-menu-open');
+
+        // Fix background scroll on iOS Safari: position:fixed + save scroll pos
+        this._savedScrollY = window.scrollY;
         document.body.style.overflow = 'hidden';
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${this._savedScrollY}px`;
+        document.body.style.width = '100%';
       });
     }
   }
@@ -193,7 +199,16 @@ class MobileHeader {
 
         document.body.classList.remove('mobile-menu-open');
         document.documentElement.classList.remove('mobile-menu-open');
+
+        // Restore scroll — must remove position:fixed before scrollTo
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
         document.body.style.overflow = '';
+        if (this._savedScrollY !== undefined) {
+          window.scrollTo(0, this._savedScrollY);
+          this._savedScrollY = undefined;
+        }
 
         this.closeTransitionHandler = null;
         this.isClosing = false;

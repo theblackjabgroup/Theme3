@@ -137,3 +137,10 @@
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
+@media screen and (max-width:765px){
+  .marquee-scroll{
+
+    padding-bottom:0;
+  }
+  
+}

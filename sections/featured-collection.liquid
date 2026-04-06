@@ -5,6 +5,22 @@
 <script src="{{ 'section-featured-collection.js' | asset_url }}" defer="defer"></script>
 
 {%- style -%}
+  #shopify-section-{{ section.id }} .fc3d {
+    padding-top: {{ section.settings.padding_top | default: 16 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | default: 0 }}px;
+  }
+
+  #shopify-section-{{ section.id }} .fc3d__header {
+    padding: {{ section.settings.header_padding_vertical | default: 20 }}px {{ section.settings.header_padding_horizontal | default: 20 }}px;
+    border-radius: {{ section.settings.header_border_radius | default: 16 }}px;
+  }
+
+  #shopify-section-{{ section.id }} .fc3d__title {
+    font-size: {{ section.settings.header_title_size | default: 32 }}px;
+    font-weight: {{ section.settings.header_title_weight | default: 900 }};
+    letter-spacing: {{ section.settings.header_title_letter_spacing | default: -0.5 }}px;
+  }
+
   /* Featured collection cards: use global product card settings (match product grid) */
   #shopify-section-{{ section.id }} .custom-product-card {
     --card-padding-top: 0px;
@@ -486,6 +502,93 @@
       "id": "nav_button_next_image",
       "label": "Next button image",
       "info": "Upload a custom image for the next button. If not set, default arrow will be used."
+    },
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "range",
+      "id": "header_title_size",
+      "min": 16,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Title font size",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "header_title_weight",
+      "min": 100,
+      "max": 900,
+      "step": 100,
+      "label": "Title font weight",
+      "default": 900
+    },
+    {
+      "type": "range",
+      "id": "header_title_letter_spacing",
+      "min": -5,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Title letter spacing",
+      "default": -1
+    },
+    {
+      "type": "range",
+      "id": "header_padding_vertical",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Header padding (top & bottom)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "header_padding_horizontal",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Header padding (left & right)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "header_border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Header border radius",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 0
     }
   ],
   "presets": [

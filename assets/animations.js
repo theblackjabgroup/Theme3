@@ -56,10 +56,18 @@ function onIntersection(elements, observer) {
 
 function initializeScrollAnimationTrigger(rootEl = document, isDesignModeEvent = false) {
   const scrollSettings = getThemeScrollAnimationSettings();
-  if (!scrollSettings.enabled) return;
-  if (scrollSettings.disableOnMobile && isMobileViewport()) return;
-
   const animationTriggerElements = Array.from(rootEl.getElementsByClassName(SCROLL_ANIMATION_TRIGGER_CLASSNAME));
+
+  if (!scrollSettings.enabled || (scrollSettings.disableOnMobile && isMobileViewport())) {
+    animationTriggerElements.forEach((el) => {
+      el.style.transition = 'none';
+      el.style.opacity = '';
+      el.style.transform = '';
+      el.classList.remove(SCROLL_ANIMATION_OFFSCREEN_CLASSNAME);
+    });
+    return;
+  }
+
   if (animationTriggerElements.length === 0) return;
 
   if (isDesignModeEvent) {

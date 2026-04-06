@@ -540,18 +540,16 @@
         mobileTriggerPoint: {{ settings.scroll_animation_mobile_trigger_point | default: 5 | json }},
       };
     </script>
-    {%- if settings.animations_reveal_on_scroll -%}
-      <script>
-        (function(){
-          var url = {{ 'animations.js' | asset_url | json }};
-          var load = function(){ var s=document.createElement('script'); s.src=url; s.defer=true; document.body.appendChild(s); };
-          if (document.readyState === 'loading') {
-            window.addEventListener('DOMContentLoaded', load);
-          } else {
-            (window.requestIdleCallback || function(fn) { setTimeout(fn, 0); })(load);
-          }
-        })();
-      </script>
-    {%- endif -%}
+    <script>
+      (function(){
+        var url = {{ 'animations.js' | asset_url | json }};
+        var load = function(){ var s=document.createElement('script'); s.src=url; s.defer=true; document.body.appendChild(s); };
+        if (document.readyState === 'loading') {
+          window.addEventListener('DOMContentLoaded', load);
+        } else {
+          (window.requestIdleCallback || function(fn) { setTimeout(fn, 0); })(load);
+        }
+      })();
+    </script>
   </body>
 </html>

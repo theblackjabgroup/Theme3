@@ -18,6 +18,7 @@
             "text": "<p>FREE SHIPPING WORLDWIDE<\/p>",
             "orbit_text": "KOKO",
             "speed": 28,
+            "padding_bottom_mobile":16
           }
         }
       },
@@ -72,8 +73,8 @@
         "promo_description": "Discover the complete lineup crafted for consistency, character, and everyday brewing rituals.",
         "color_scheme": "scheme-1",
         "secondary_background": false,
-        "padding_top": 36,
-        "padding_bottom": 36
+        "padding_top": 16,
+        "padding_bottom": 0
       }
     },
     "featured_collection": {
@@ -93,7 +94,8 @@
         "nav_button_width": 44,
         "nav_button_height": 44,
         "nav_button_padding": 18,
-        "nav_button_font_size": 18
+        "nav_button_font_size": 18,
+        "padding_top":16
       }
     },
     "featured_blog": {
@@ -109,8 +111,8 @@
         "show_author": false,
         "color_scheme": "scheme-1",
         "dark_mode_color_scheme": "scheme-4",
-        "padding_top": 36,
-        "padding_bottom": 36
+        "padding_top": 16,
+        "padding_bottom": 0
       }
     },
     "why_us": {
@@ -162,8 +164,8 @@
         "cta_text": "OUR STANDARDS",
         "color_scheme": "scheme-1",
         "dark_mode_color_scheme": "scheme-4",
-        "padding_top": 36,
-        "padding_bottom": 36
+        "padding_top": 16,
+        "padding_bottom": 0
       }
     },
     "reviews": {
@@ -212,8 +214,8 @@
         "average_rating": "4.9",
         "total_reviews_text": "Based on 127 verified reviews",
         "color_scheme": "scheme-1",
-        "padding_top": 36,
-        "padding_bottom": 36
+        "padding_top": 16,
+        "padding_bottom": 16
       }
     },
     "newsletter": {

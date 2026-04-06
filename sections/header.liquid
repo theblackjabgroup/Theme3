@@ -234,6 +234,25 @@
           {%- endif -%}
         </a>
       {%- endif -%}
+      {%- if section.settings.dark_mode_color_scheme != blank -%}
+        <div
+          class="header-theme-toggle"
+          data-dark-scheme="color-{{ header_dark_scheme_id }}"
+          data-mode="light"
+        >
+          <span class="header-theme-toggle__label header-theme-toggle__label--dark">DARK</span>
+          <button
+            class="header-theme-toggle__btn"
+            type="button"
+            role="switch"
+            aria-checked="false"
+            aria-label="Toggle dark/light mode"
+          >
+            <span class="header-theme-toggle__knob"></span>
+          </button>
+          <span class="header-theme-toggle__label header-theme-toggle__label--light">LIGHT</span>
+        </div>
+      {%- endif -%}
     </div>
 
     <!-- Profile and Cart Row -->
@@ -1317,6 +1336,40 @@
               {%- endif -%}
             {%- endfor -%}
           </div>
+        </div>
+
+        <!-- Mobile menu logo card with theme toggle -->
+        <div class="mobile-menu-logo-card">
+          <a href="{{ routes.root_url }}" class="mobile-menu-logo-card__link">
+            {%- if section.settings.mobile_logo != blank -%}
+              {{
+                section.settings.mobile_logo
+                | image_url: width: 120
+                | image_tag: loading: 'lazy', alt: shop.name, class: 'mobile-menu-logo-card__img'
+              }}
+            {%- else -%}
+              <span class="mobile-menu-logo-card__text">{{ section.settings.mobile_logo_text | default: shop.name }}</span>
+            {%- endif -%}
+          </a>
+          {%- if section.settings.dark_mode_color_scheme != blank -%}
+            <div
+              class="header-theme-toggle mobile-menu-theme-toggle"
+              data-dark-scheme="color-{{ header_dark_scheme_id }}"
+              data-mode="light"
+            >
+              <span class="header-theme-toggle__label header-theme-toggle__label--dark">DARK</span>
+              <button
+                class="header-theme-toggle__btn"
+                type="button"
+                role="switch"
+                aria-checked="false"
+                aria-label="Toggle dark/light mode"
+              >
+                <span class="header-theme-toggle__knob"></span>
+              </button>
+              <span class="header-theme-toggle__label header-theme-toggle__label--light">LIGHT</span>
+            </div>
+          {%- endif -%}
         </div>
       </nav>
     </div>
