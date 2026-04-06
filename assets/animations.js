@@ -85,6 +85,9 @@ function initializeScrollAnimationTrigger(rootEl = document, isDesignModeEvent =
   const scale = scrollSettings.startScalePercent / 100;
 
   animationTriggerElements.forEach((element) => {
+    // Mark all as offscreen synchronously so no element is visible before
+    // the observer has had a chance to confirm it is in the viewport.
+    element.classList.add(SCROLL_ANIMATION_OFFSCREEN_CLASSNAME);
     element.style.setProperty('--animation-duration', duration);
     element.style.setProperty('--animation-scale', scale);
     observer.observe(element);
