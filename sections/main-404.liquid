@@ -30,14 +30,14 @@
 
   /* Right panel */
   .s404-right {
-    background: #1e4abd;
+    background: var(--btn-secondary-bg, #1e4abd);
     border-radius: 20px;
     display: flex;
     flex-direction: column;
     padding: var(--bento-gap, 16px);
     padding-bottom: calc(var(--bento-gap, 16px) * 1.5);
     gap: 0;
-    color: #fff;
+    color: var(--btn-secondary-text, #fff);
   }
 
   .s404-right__top {
@@ -64,7 +64,8 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: rgba(255, 255, 255, 0.75);
+    color: var(--btn-secondary-text, #fff);
+    opacity: 0.75;
     margin: 0;
   }
 
@@ -74,7 +75,7 @@
     line-height: 1.0;
     letter-spacing: -0.03em;
     text-transform: uppercase;
-    color: #fff;
+    color: var(--btn-secondary-text, #fff);
     margin: 0;
   }
 
@@ -82,13 +83,15 @@
     font-size: 15px;
     font-weight: 400;
     line-height: 1.55;
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--btn-secondary-text, #fff);
+    opacity: 0.8;
     margin: 0;
   }
 
   .s404-right__divider {
     border: none;
-    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    border-top: 1px solid var(--btn-secondary-text, #fff);
+    opacity: 0.3;
     margin: calc(var(--bento-gap, 16px) * 0.25) 0;
     width: 100%;
     align-self: stretch;
@@ -103,7 +106,7 @@
   .s404-stat__value {
     font-size: 28px;
     font-weight: 900;
-    color: #fff;
+    color: var(--btn-secondary-text, #fff);
     line-height: 1;
     display: block;
   }
@@ -113,7 +116,8 @@
     font-weight: 500;
     text-transform: none;
     letter-spacing: 0;
-    color: rgba(255, 255, 255, 0.65);
+    color: var(--btn-secondary-text, #fff);
+    opacity: 0.65;
     margin-top: 4px;
     display: block;
   }
