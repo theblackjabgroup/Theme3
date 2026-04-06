@@ -5,11 +5,27 @@
 <script src="{{ 'section-featured-collection.js' | asset_url }}" defer="defer"></script>
 
 {%- style -%}
+  #shopify-section-{{ section.id }} .fc3d {
+    padding-top: {{ section.settings.padding_top | default: 16 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | default: 0 }}px;
+  }
+
+  #shopify-section-{{ section.id }} .fc3d__header {
+    padding: {{ section.settings.header_padding_vertical | default: 20 }}px {{ section.settings.header_padding_horizontal | default: 20 }}px;
+    border-radius: {{ section.settings.header_border_radius | default: 16 }}px;
+  }
+
+  #shopify-section-{{ section.id }} .fc3d__title {
+    font-size: {{ section.settings.header_title_size | default: 32 }}px;
+    font-weight: {{ section.settings.header_title_weight | default: 900 }};
+    letter-spacing: {{ section.settings.header_title_letter_spacing | default: -0.5 }}px;
+  }
+
   /* Featured collection cards: use global product card settings (match product grid) */
   #shopify-section-{{ section.id }} .custom-product-card {
-    --card-padding-top: 16px;
-    --card-padding-horizontal: 16px;
-    --card-padding-bottom: 16px;
+    --card-padding-top: 0px;
+    --card-padding-horizontal: 20px;
+    --card-padding-bottom: 20px;
     --card-text-align: center;
     --card-align-items: center;
     --card-image-height: 300px;
@@ -40,9 +56,10 @@
   }
 
   #shopify-section-{{ section.id }} .custom-product-card__badge {
-    font-size: 10px;
-    font-weight: 400;
+    font-size: 12px;
+    font-weight: 700;
     border-radius: 24px;
+    margin-bottom: 10px;
   }
 
   #shopify-section-{{ section.id }} .custom-product-card__hover-buttons {
@@ -51,48 +68,6 @@
 
   #shopify-section-{{ section.id }} .custom-product-card__price.global-btn-2 {
     border-radius: 14px;
-  }
-
-  /* Sale badge: pill (featured collection only; card still outputs SVG + text) */
-  #shopify-section-{{ section.id }} .custom-product-card__sale-badge {
-    top: 10px;
-    left: 10px;
-    width: auto;
-    height: auto;
-    min-height: 0;
-    padding: 6px 12px;
-    background: var(--sale-badge-bg, #f5a30a);
-    border-radius: 9999px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-  }
-
-  #shopify-section-{{ section.id }} .custom-product-card__sale-badge-icon {
-    display: none;
-  }
-
-  #shopify-section-{{ section.id }} .custom-product-card__sale-badge-text {
-    position: static;
-    inset: auto;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 4px;
-    transform: none;
-    font-weight: 700;
-    line-height: 1.2;
-    color: var(--sale-badge-text, #000000);
-  }
-
-  #shopify-section-{{ section.id }} .custom-product-card__sale-badge-text span:first-child {
-    font-size: 13px;
-  }
-
-  #shopify-section-{{ section.id }} .custom-product-card__sale-badge-text span:last-child {
-    font-size: 11px;
-    margin-top: 0;
   }
 
   #shopify-section-{{ section.id }} .custom-product-card__description {
@@ -148,19 +123,15 @@
   style="{% if background_image != blank %}background-image: url('{{ background_image_url }}'); background-size: {{ section.settings.background_image_size }}; background-position: {{ section.settings.background_image_position }}; background-repeat: {{ section.settings.background_image_repeat }};{% else %}background-color: {{ scheme.settings.background }};{% endif %} color: {{ scheme.settings.text }};"
 >
   <div class="fc3d__container">
-    <div class="fc3d__header">
+    <div class="fc3d__header scroll-trigger reveal-up">
       {%- if section.settings.title != blank -%}
         <h2 class="fc3d__title">{{ section.settings.title }}</h2>
       {%- endif -%}
 
       {%- if section.settings.show_shop_all and featured_collection != blank and featured_collection.url != blank -%}
-        {%-
-          render 'global-btn',
-          text: section.settings.shop_all_label | default: 'Shop all',
-          url: section.settings.shop_all_link | default: featured_collection.url,
-          fit_width: false,
-          class: 'fc3d__shop-all'
-        -%}
+        <a href="{{ section.settings.shop_all_link | default: featured_collection.url }}" class="fc3d__view-all">
+          {{- section.settings.shop_all_label | default: 'View All' -}}
+        </a>
       {%- endif -%}
     </div>
 
@@ -169,7 +140,7 @@
         {%- if featured_collection != blank and featured_collection.products_count > 0 -%}
           {%- comment -%} First set: custom product cards {%- endcomment -%}
           {%- for product in featured_collection.products limit: products_to_show -%}
-            <div class="fc3d-card fc3d-card--custom" data-fc3d-card role="listitem">
+            <div class="fc3d-card fc3d-card--custom scroll-trigger reveal-up" data-fc3d-card role="listitem" style="--animation-order: {{ forloop.index }};">
               <div class="fc3d-card__custom">
                 {%-
                   render 'card-product',
@@ -205,12 +176,16 @@
           {%- endfor -%}
         {%- else -%}
           {%- comment -%} Default placeholder cards using card-product snippet with dummy data {%- endcomment -%}
-          {%- assign placeholder_description_text = 'sections.featured_collection.placeholder_description' | t | default: 'Add a collection in the section settings. By default the first collection is used.' -%}
+          {%- assign placeholder_description_text = 'sections.featured_collection.placeholder_description'
+            | t
+            | default: 'Add a collection in the section settings. By default the first collection is used.'
+          -%}
           {%- for i in (1..products_to_show) -%}
             <div class="fc3d-card fc3d-card--custom fc3d-card--placeholder" data-fc3d-card role="listitem">
               <div class="fc3d-card__custom">
                 {%- capture placeholder_card_title -%}{{ 'sections.featured_collection.placeholder_title' | t | default: 'Product' }} {{ i }}{%- endcapture -%}
-                {%- render 'card-product',
+                {%-
+                  render 'card-product',
                   card_product: nil,
                   placeholder_title: placeholder_card_title,
                   placeholder_description: placeholder_description_text,
@@ -233,7 +208,7 @@
               <div class="fc3d-card__custom">
                 {%- capture placeholder_card_title -%}{{ 'sections.featured_collection.placeholder_title' | t | default: 'Product' }} {{ i }}{%- endcapture -%}
                 {%- render 'card-product',
-                  card_product: nil,
+                  card_product: null,
                   placeholder_title: placeholder_card_title,
                   placeholder_description: placeholder_description_text,
                   section_id: section.id,
@@ -250,7 +225,7 @@
       </div>
     </div>
 
-    <div class="fc3d__controls" style="gap: {{ section.settings.nav_button_spacing | default: 16 }}px;">
+    <div class="fc3d__controls scroll-trigger reveal-up" style="gap: {{ section.settings.nav_button_spacing | default: 16 }}px; --animation-order: {{ products_to_show | plus: 1 }};">
       {% render 'global-btn-2',
         text: '←',
         type: 'button',
@@ -332,7 +307,7 @@
       "type": "text",
       "id": "shop_all_label",
       "label": "Shop all label",
-      "default": "Shop all"
+      "default": "View All"
     },
     {
       "type": "header",
@@ -527,6 +502,93 @@
       "id": "nav_button_next_image",
       "label": "Next button image",
       "info": "Upload a custom image for the next button. If not set, default arrow will be used."
+    },
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "range",
+      "id": "header_title_size",
+      "min": 16,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Title font size",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "header_title_weight",
+      "min": 100,
+      "max": 900,
+      "step": 100,
+      "label": "Title font weight",
+      "default": 900
+    },
+    {
+      "type": "range",
+      "id": "header_title_letter_spacing",
+      "min": -5,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Title letter spacing",
+      "default": -1
+    },
+    {
+      "type": "range",
+      "id": "header_padding_vertical",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Header padding (top & bottom)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "header_padding_horizontal",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Header padding (left & right)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "header_border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Header border radius",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 0
     }
   ],
   "presets": [

@@ -332,8 +332,9 @@
     {{ 'base.css' | asset_url | stylesheet_tag: preload: true }}
     {{ 'component-global-btn.css' | asset_url | stylesheet_tag: preload: true }}
     {{ 'component-global-btn-2.css' | asset_url | stylesheet_tag: preload: true }}
-    {{ 'component-quantity.css' | asset_url | stylesheet_tag: preload: true }}
     {{ 'component-quick-view.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'component-quantity.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'animations.css' | asset_url | stylesheet_tag: preload: true }}
 
     {%- if localization.available_countries.size > 1 or localization.available_languages.size > 1 -%}
       <link
@@ -366,7 +367,7 @@
   </head>
 
   {%- assign default_scheme = settings.color_schemes | first -%}
-  <body class="color-{{ default_scheme.id }}">
+  <body class="color-{{ default_scheme.id }}{% if settings.animations_disable_on_mobile %} animations--disabled-on-mobile{% endif %}">
     <script>
       (function () {
         const savedScheme = localStorage.getItem('global-theme-scheme');
@@ -539,18 +540,16 @@
         mobileTriggerPoint: {{ settings.scroll_animation_mobile_trigger_point | default: 5 | json }},
       };
     </script>
-    {%- if settings.animations_reveal_on_scroll -%}
-      <script>
-        (function(){
-          var url = {{ 'animations.js' | asset_url | json }};
-          var load = function(){ var s=document.createElement('script'); s.src=url; s.defer=true; document.body.appendChild(s); };
-          if (document.readyState === 'loading') {
-            window.addEventListener('DOMContentLoaded', load);
-          } else {
-            (window.requestIdleCallback || function(fn) { setTimeout(fn, 0); })(load);
-          }
-        })();
-      </script>
-    {%- endif -%}
+    <script>
+      (function(){
+        var url = {{ 'animations.js' | asset_url | json }};
+        var load = function(){ var s=document.createElement('script'); s.src=url; s.defer=true; document.body.appendChild(s); };
+        if (document.readyState === 'loading') {
+          window.addEventListener('DOMContentLoaded', load);
+        } else {
+          (window.requestIdleCallback || function(fn) { setTimeout(fn, 0); })(load);
+        }
+      })();
+    </script>
   </body>
 </html>

@@ -56,10 +56,18 @@ function onIntersection(elements, observer) {
 
 function initializeScrollAnimationTrigger(rootEl = document, isDesignModeEvent = false) {
   const scrollSettings = getThemeScrollAnimationSettings();
-  if (!scrollSettings.enabled) return;
-  if (scrollSettings.disableOnMobile && isMobileViewport()) return;
-
   const animationTriggerElements = Array.from(rootEl.getElementsByClassName(SCROLL_ANIMATION_TRIGGER_CLASSNAME));
+
+  if (!scrollSettings.enabled || (scrollSettings.disableOnMobile && isMobileViewport())) {
+    animationTriggerElements.forEach((el) => {
+      el.style.transition = 'none';
+      el.style.opacity = '';
+      el.style.transform = '';
+      el.classList.remove(SCROLL_ANIMATION_OFFSCREEN_CLASSNAME);
+    });
+    return;
+  }
+
   if (animationTriggerElements.length === 0) return;
 
   if (isDesignModeEvent) {
@@ -72,7 +80,18 @@ function initializeScrollAnimationTrigger(rootEl = document, isDesignModeEvent =
   const observer = new IntersectionObserver(onIntersection, {
     rootMargin: `0px 0px -${scrollSettings.triggerPoint}% 0px`,
   });
-  animationTriggerElements.forEach((element) => observer.observe(element));
+
+  const duration = `${scrollSettings.speed}ms`;
+  const scale = scrollSettings.startScalePercent / 100;
+
+  animationTriggerElements.forEach((element) => {
+    // Mark all as offscreen synchronously so no element is visible before
+    // the observer has had a chance to confirm it is in the viewport.
+    element.classList.add(SCROLL_ANIMATION_OFFSCREEN_CLASSNAME);
+    element.style.setProperty('--animation-duration', duration);
+    element.style.setProperty('--animation-scale', scale);
+    observer.observe(element);
+  });
 }
 
 // Zoom in animation logic
@@ -154,7 +173,7 @@ function animatePageLoadTargets(targets, options = {}) {
     duration = 1000,
     stagger = 90,
     delay = 0,
-    easing = 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+    easing = 'ease-out',
     startOpacity = 0.7,
     startScale = 0.88,
     transformOrigin = 'center center',
@@ -241,6 +260,8 @@ function isPageLoadSectionExcluded(section) {
     sectionIdentity.includes('announcement') ||
     sectionIdentity.includes('footer') ||
     sectionIdentity.includes('header') ||
+    sectionIdentity.includes('bento') ||
+    sectionIdentity.includes('scrolling') ||
     sectionIdentity.includes('email-popup') ||
     sectionIdentity.includes('email_popup') ||
     sectionIdentity.includes('back-to-top') ||
@@ -271,7 +292,7 @@ function buildPageLoadAnimationJobs(rootEl = document) {
     const duration = Number(container.dataset.pageLoadDuration || scrollSettings.speed);
     const stagger = Number(container.dataset.pageLoadStagger || 90);
     const delay = Number(container.dataset.pageLoadDelay || 0);
-    const easing = container.dataset.pageLoadEasing || 'cubic-bezier(0.34, 1.56, 0.64, 1)';
+    const easing = container.dataset.pageLoadEasing || 'ease-out';
     const startOpacity = Number(container.dataset.pageLoadOpacity || 0.7);
     const startScale = Number(container.dataset.pageLoadScale || scrollSettings.startScalePercent / 100);
     const transformOrigin = container.dataset.pageLoadOrigin || 'center center';
@@ -324,7 +345,7 @@ function buildPageLoadAnimationJobs(rootEl = document) {
       duration: scrollSettings.speed,
       stagger: 0,
       delay: 0,
-      easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+      easing: 'ease-out',
       startOpacity: 0.7,
       startScale: scrollSettings.startScalePercent / 100,
       transformOrigin: 'center bottom',

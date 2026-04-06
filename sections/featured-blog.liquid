@@ -47,36 +47,68 @@
   endif
 -%}
 
-<section class="featured-blog-v2 color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+{%- comment -%} Serialize all articles as JSON for JS navigation {%- endcomment -%}
+<script>
+(function() {
+  var articles = [];
+  {%- if blog_handle != blank -%}
+    {%- for article in blog_handle.articles limit: 20 -%}
+      {%- assign a_words = article.content | strip_html | split: ' ' | size -%}
+      {%- assign a_minutes = a_words | divided_by: 200 -%}
+      {%- if a_minutes < 1 -%}{%- assign a_minutes = 1 -%}{%- endif -%}
+      articles.push({
+        title: {{ article.title | json }},
+        url: {{ article.url | json }},
+        excerpt: {{ article.excerpt | default: article.content | strip_html | truncate: 180 | json }},
+        tags: [{% for tag in article.tags limit: 3 %}{{ tag | json }}{% unless forloop.last %},{% endunless %}{% endfor %}],
+        image: {% if article.image != blank %}{{ article.image | image_url: width: 900 | json }}{% else %}null{% endif %},
+        imageAlt: {{ article.title | json }},
+        date: {{ article.published_at | date: '%-d %B %Y' | upcase | json }},
+        author: {{ article.author | json }},
+        readMinutes: {{ a_minutes }}
+      });
+    {%- endfor -%}
+  {%- endif -%}
+  window['__featuredBlogData_{{ section.id }}'] = {
+    articles: articles,
+    authorRole: {{ section.settings.author_role | json }}
+  };
+})();
+</script>
+
+<section
+  class="featured-blog-v2 color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding"
+  data-featured-blog-section="{{ section.id }}"
+>
   <div class="featured-blog-v2__wrap">
     <div class="featured-blog-v2__layout">
-      <article class="featured-blog-v2__primary">
+      <article class="featured-blog-v2__primary scroll-trigger reveal-up" style="--animation-order: 1;" data-fb-article="primary">
         <div class="featured-blog-v2__primary-main">
-          <span class="featured-blog-v2__index">01</span>
+          <span class="featured-blog-v2__index" data-fb-field="index">01</span>
 
           <p class="featured-blog-v2__meta">
             <span>FEATURED</span>
             <span>•</span>
-            <span>{{ meta_date }}</span>
+            <span data-fb-field="meta-date">{{ meta_date }}</span>
           </p>
 
           <h2 class="featured-blog-v2__title">
             {%- if primary_article != blank -%}
-              <a href="{{ primary_article.url }}">{{ primary_article.title }}</a>
+              <a href="{{ primary_article.url }}" data-fb-field="title-link">{{ primary_article.title }}</a>
             {%- else -%}
-              KOKO X TWO BIRDS: A MATCHA COLLAB
+              <a href="#" data-fb-field="title-link">KOKO X TWO BIRDS: A MATCHA COLLAB</a>
             {%- endif -%}
           </h2>
 
-          <p class="featured-blog-v2__excerpt">
+          <p class="featured-blog-v2__excerpt" data-fb-field="excerpt">
             {%- if primary_article != blank -%}
               {{ primary_article.excerpt | default: primary_article.content | strip_html | truncate: 180 }}
             {%- else -%}
-              We partnered with two birds to create something neither of us could have made alone. Here’s the full story behind the collab - from first call to final blend.
+              We partnered with two birds to create something neither of us could have made alone. Here's the full story behind the collab - from first call to final blend.
             {%- endif -%}
           </p>
 
-          <div class="featured-blog-v2__tags">
+          <div class="featured-blog-v2__tags" data-fb-field="tags">
             {%- if primary_article != blank and primary_article.tags.size > 0 -%}
               {%- for tag in primary_article.tags limit: 3 -%}
                 <span class="featured-blog-v2__tag">{{ tag }}</span>
@@ -90,40 +122,41 @@
         </div>
 
         <div class="featured-blog-v2__primary-side">
-          <p class="featured-blog-v2__read-time">{{ read_minutes }} MIN READ • {{ meta_date }}</p>
+          <p class="featured-blog-v2__read-time" data-fb-field="read-time">{{ read_minutes }} MIN READ • {{ meta_date }}</p>
 
-          <p class="featured-blog-v2__quote">
+          <p class="featured-blog-v2__quote" data-fb-field="quote">
             {%- if secondary_article != blank -%}
-              “{{ secondary_article.title }}”
+              "{{ secondary_article.title }}"
             {%- elsif primary_article != blank -%}
-              “{{ primary_article.title }}”
+              "{{ primary_article.title }}"
             {%- else -%}
-              “Two brands, one obsession: doing something the right way regardless of how long it takes.”
+              "Two brands, one obsession: doing something the right way regardless of how long it takes."
             {%- endif -%}
           </p>
 
           <div class="featured-blog-v2__author-row">
-            <span>{{ author_name }}</span>
+            <span data-fb-field="author-name">{{ author_name }}</span>
             <span>•</span>
-            <span>{{ section.settings.author_role }}</span>
+            <span data-fb-field="author-role">{{ section.settings.author_role }}</span>
             {%- if primary_article != blank -%}
-              <a class="featured-blog-v2__inline-arrow" href="{{ primary_article.url }}" aria-label="Read featured article">
+              <a class="featured-blog-v2__inline-arrow" href="{{ primary_article.url }}" aria-label="Read featured article" data-fb-field="article-link">
                 {{ 'icon-caret-right.svg' | inline_asset_content }}
               </a>
             {%- else -%}
-              <span class="featured-blog-v2__inline-arrow" aria-hidden="true">
+              <a class="featured-blog-v2__inline-arrow" href="#" aria-label="Read featured article" data-fb-field="article-link">
                 {{ 'icon-caret-right.svg' | inline_asset_content }}
-              </span>
+              </a>
             {%- endif -%}
           </div>
         </div>
       </article>
 
-      <article class="featured-blog-v2__secondary">
+      <article class="featured-blog-v2__secondary scroll-trigger reveal-up" style="--animation-order: 2;" data-fb-article="secondary">
         <a
           class="featured-blog-v2__secondary-image-wrap"
           href="{% if secondary_article != blank %}{{ secondary_article.url }}{% elsif primary_article != blank %}{{ primary_article.url }}{% else %}#{% endif %}"
           aria-label="Open secondary article"
+          data-fb-field="image-link"
         >
           {%- if secondary_article != blank and secondary_article.image != blank -%}
             {{
@@ -155,27 +188,28 @@
         <p class="featured-blog-v2__meta">
           <span>FEATURED</span>
           <span>•</span>
-          <span>{{ meta_date }}</span>
+          <span data-fb-field="meta-date">{{ meta_date }}</span>
         </p>
 
         <h3 class="featured-blog-v2__secondary-title">
           {%- if secondary_article != blank -%}
-            <a href="{{ secondary_article.url }}">{{ secondary_article.title }}</a>
+            <a href="{{ secondary_article.url }}" data-fb-field="title-link">{{ secondary_article.title }}</a>
           {%- elsif primary_article != blank -%}
-            <a href="{{ primary_article.url }}">{{ primary_article.title }}</a>
+            <a href="{{ primary_article.url }}" data-fb-field="title-link">{{ primary_article.title }}</a>
           {%- else -%}
-            KOKO X TWO BIRDS: A MATCHA COLLAB
+            <a href="#" data-fb-field="title-link">KOKO X TWO BIRDS: A MATCHA COLLAB</a>
           {%- endif -%}
         </h3>
 
         <div class="featured-blog-v2__secondary-footer">
-          <span>{{ author_name }}</span>
+          <span data-fb-field="author-name">{{ author_name }}</span>
           <span>•</span>
-          <span>{{ section.settings.author_role }}</span>
+          <span data-fb-field="author-role">{{ section.settings.author_role }}</span>
           <a
             class="featured-blog-v2__inline-arrow"
             href="{% if secondary_article != blank %}{{ secondary_article.url }}{% elsif primary_article != blank %}{{ primary_article.url }}{% else %}#{% endif %}"
             aria-label="Read article"
+            data-fb-field="article-link"
           >
             {{ 'icon-caret-right.svg' | inline_asset_content }}
           </a>
@@ -183,7 +217,7 @@
       </article>
     </div>
 
-    <div class="featured-blog-v2__nav">
+    <div class="featured-blog-v2__nav scroll-trigger reveal-up" style="--animation-order: 3;">
       {%- render 'global-btn-2',
         text: '←',
         type: 'button',
@@ -191,7 +225,7 @@
         class: 'featured-blog-v2__nav-btn',
         border_radius: '50%',
         no_border: true,
-        attributes: 'aria-label="Previous article"'
+        attributes: 'aria-label="Previous article" data-fb-nav="prev"'
       -%}
       {%- render 'global-btn-2',
         text: '→',
@@ -200,11 +234,13 @@
         class: 'featured-blog-v2__nav-btn',
         border_radius: '50%',
         no_border: true,
-        attributes: 'aria-label="Next article"'
+        attributes: 'aria-label="Next article" data-fb-nav="next"'
       -%}
     </div>
   </div>
 </section>
+
+<script src="{{ 'featured-blog-nav.js' | asset_url }}" defer></script>
 
 {% schema %}
 {

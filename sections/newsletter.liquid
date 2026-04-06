@@ -25,7 +25,7 @@
 {%- endstyle -%}
 
 <div class="newsletter-section newsletter-section-{{ section.id }} color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
-  <div class="newsletter-section__inner ">
+  <div class="newsletter-section__inner scroll-trigger reveal-scale">
     {%- if section.settings.heading != blank -%}
       <h2 class="newsletter-section__title">{{ section.settings.heading }}</h2>
     {%- endif -%}

@@ -16,7 +16,7 @@
 
 <section class="why-us color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
   <div class="why-us__grid">
-    <article class="why-us__intro">
+    <article class="why-us__intro scroll-trigger reveal-left">
       {%- if section.settings.pill != blank -%}
         <span class="why-us__pill">{{ section.settings.pill }}</span>
       {%- endif -%}
@@ -43,7 +43,7 @@
 
     <div class="why-us__features">
       {%- for block in section.blocks -%}
-        <article class="why-us__feature" {{ block.shopify_attributes }}>
+        <article class="why-us__feature scroll-trigger reveal-up" {{ block.shopify_attributes }} style="--animation-order: {{ forloop.index }};">
           {%- if block.settings.icon_image != blank -%}
             <div class="why-us__feature-icon why-us__feature-icon--image">
               {{

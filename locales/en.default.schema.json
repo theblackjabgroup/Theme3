@@ -691,7 +691,7 @@
       }
     },
     "featured-blog": {
-      "name": "Blog posts",
+      "name": "Featured blogs",
       "settings": {
         "heading": {
           "default": "Blog posts",

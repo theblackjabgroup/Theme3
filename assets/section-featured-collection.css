@@ -8,9 +8,22 @@
   padding-top: calc(var(--page-layout-gap) * 1.75);
   padding-bottom:var(--page-layout-gap);
 }
-.fc3d-card__custom{
+.fc3d-card {
+  display: flex !important;
+  flex-direction: column !important;
+  height: auto !important; /* Allow rail to determine height */
+  align-self: stretch !important;
+}
+
+.fc3d-card__custom,
+.fc3d-card__custom > div,
+.fc3d-card__custom .custom-product-card-wrapper,
+.fc3d-card__custom .custom-product-card {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 auto !important;
+  height: 100% !important;
   min-width: 300px;
-    height: 500px;
 }
 
 .fc3d--has-background {
@@ -30,7 +43,7 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--gap-section);
-  margin-bottom: calc(var(--bento-gap) * 2);
+  margin-bottom: var(--bento-gap);
   background-color: var(--color-card-bg);
   border-radius: var(--radius-2xl);
   padding:  20px;
@@ -44,20 +57,19 @@
   text-transform: uppercase;
 }
 
-/* Shop all button uses primary-button snippet */
-.fc3d__shop-all {
+.fc3d__view-all {
+  color: var(--color-heading);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 6px;
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  transition: opacity 0.3s ease;
   flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
 }
 
-.fc3d__shop-all .submit-button__content {
-  background-color: pink;
-}
-
-.fc3d__header .primary-button {
-  margin: 0;
-  vertical-align: middle;
+.fc3d__view-all:hover {
+  opacity: 0.7;
 }
 
 .fc3d__viewport {
@@ -69,6 +81,7 @@
   align-items: stretch;
   gap: var(--page-layout-gap);
   overflow-x: auto;
+  overflow-y: hidden;
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
   scroll-padding: 25vw;
@@ -128,12 +141,11 @@
     padding: 12px 0 18px;
   }
   .fc3d__container {
-    padding: 0 14px;
+    padding: 0; /* Remove padding from container to allow rail to overflow correctly if needed, or manage it in rail */
   }
   .fc3d__header {
-    margin-bottom: 18px;
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
     gap: 14px;
     padding: 18px 16px;
     border-radius: var(--radius-xl);
@@ -145,41 +157,26 @@
     letter-spacing: -0.02em;
   }
 
-  .fc3d__shop-all {
-    width: 100%;
-  }
-
-  .fc3d__shop-all .submit-button {
-    width: 100%;
-  }
-
-  .fc3d__shop-all .submit-button__content {
-    width: 100%;
-    justify-content: center;
-    font-size: clamp(1.2rem, 6vw, 1.65rem);
-    line-height: 1.05;
-    padding: 12px 18px !important;
-  }
-  
-  .fc3d__header .primary-button {
-    width: 100%;
-    min-width: unset;
+  .fc3d__view-all {
+    width: auto;
+    font-size: 0.8rem;
   }
   .fc3d__rail {
-    gap: 0;
-    scroll-padding: 0;
-    padding-inline: 0;
-    padding-bottom: 10px;
+    gap: 14px;
+    scroll-padding: 0 14px;
+    padding-left: 14px;
+    padding-right: 14px;
+    padding-bottom: 20px;
   }
 
   .fc3d-card {
-    min-width: calc(100vw - 28px);
+    min-width: calc(100vw - 80px);
     scroll-snap-align: start;
   }
 
   .fc3d-card__custom {
     min-width: 100%;
-    height: 460px;
+    height: 440px;
   }
 
   .fc3d__controls {

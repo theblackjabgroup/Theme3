@@ -42,7 +42,7 @@
 
 <section class="reviews color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
   {%- comment -%} ── Header bar ── {%- endcomment -%}
-  <div class="reviews__header">
+  <div class="reviews__header scroll-trigger reveal-up">
     <h2 class="reviews__title">{{ section.settings.title | default: "What They're Saying" }}</h2>
     {%- if section.settings.view_all_link != blank -%}
       <a href="{{ section.settings.view_all_link }}" class="reviews__view-all">
@@ -54,7 +54,7 @@
   {%- comment -%} ── Body: aggregate card + reviews ── {%- endcomment -%}
   <div class="reviews__body">
     {%- comment -%} Blue aggregate / rating card {%- endcomment -%}
-    <div class="reviews__aggregate">
+    <div class="reviews__aggregate scroll-trigger reveal-left" style="--animation-order: 1;">
       <span class="reviews__aggregate-label">AVERAGE RATING</span>
       <span class="reviews__average-number">{{ avg_rating | round: 1 }}</span>
       <div class="reviews__stars" role="img" aria-label="{{ avg_rating }} out of 5 stars">
@@ -93,7 +93,7 @@
         <div class="reviews__cards">
           {%- for block in section.blocks -%}
             {%- assign star_count = block.settings.rating | default: 5 | times: 1 | round -%}
-            <article class="reviews__card" {{ block.shopify_attributes }}>
+            <article class="reviews__card scroll-trigger reveal-up" {{ block.shopify_attributes }} style="--animation-order: {{ forloop.index | plus: 1 }};">
               <div class="reviews__card-top">
                 <div class="reviews__stars" role="img" aria-label="{{ star_count }} out of 5 stars">
                   {%- for i in (1..5) -%}

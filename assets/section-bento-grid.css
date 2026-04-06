@@ -453,13 +453,16 @@
 @media (max-width: 749px) {
   .bento-hero {
     gap: 12px;
-    padding: var(--bento-hero-pt-m, 0px) var(--bento-hero-px-m, 0px) var(--bento-hero-pb-m, 0px);
+    padding: var(--bento-hero-pt-m, 0px) 0 0;
+  }
+  .bento-quote__heading{
+    max-width: 100%;
   }
 
   .bento-grid {
     grid-template-columns: 1fr;
     grid-template-rows: auto;
-    gap: 12px;
+    gap: var(--bento-gap);
   }
 
   .bento-card--hero {
@@ -501,7 +504,6 @@
   .bento-collection-desc,
   .bento-text-copy        { font-size: 14px; line-height: 18px; }
 
-  .bento-quote { padding: 12px; }
   .bento-quote__heading { font-size: clamp(20px, 6.5vw, 28px); }
   .bento-quote__sub     { font-size: 14px; }
 }
