@@ -1,7 +1,7 @@
 <style>
   .s404-bento {
     display: grid;
-    grid-template-columns: 1fr 1.6fr;
+    grid-template-columns: 1.2fr 1fr;
     gap: var(--bento-gap, 16px);
     min-height: 90vh;
     box-sizing: border-box;
@@ -12,20 +12,28 @@
     background: var(--color-card-bg);
     border-radius: 20px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: var(--bento-gap, 16px);
+    gap: calc(var(--bento-gap, 16px) * 0.75);
+  }
+
+  .s404-left__bear {
+    width: 55%;
+    max-width: 280px;
+    height: auto;
+    display: block;
   }
 
   .s404-left__number {
-    position: absolute;
-    font-size: 4rem;
-    bottom:300px;
+    font-size: clamp(64px, 8vw, 120px);
     font-weight: 900;
     line-height: 1;
     color: var(--color-text);
     letter-spacing: -0.04em;
     user-select: none;
+    text-align: center;
   }
 
   /* Right panel */
@@ -43,7 +51,7 @@
   .s404-right__top {
     display: flex;
     flex-direction: column;
-    max-width:400px;
+    max-width: 400px;
     gap: calc(var(--bento-gap, 16px) * 0.6);
   }
 
@@ -72,7 +80,7 @@
   .s404-right__heading {
     font-size: clamp(36px, 5.5vw, 80px);
     font-weight: 900;
-    line-height: 1.0;
+    line-height: 1;
     letter-spacing: -0.03em;
     text-transform: uppercase;
     color: var(--btn-secondary-text, #fff);
@@ -125,27 +133,22 @@
   /* Mobile */
 
   @media (max-width: 749px) {
-    .s404-left__number {
-      position: relative;
-      font-size: 4rem;
-      bottom:unset;
-      font-weight: 900;
-      line-height: 1;
-      color: var(--color-text);
-      letter-spacing: -0.04em;
-      user-select: none;
-    }
     .s404-bento {
       grid-template-columns: 1fr;
       min-height: auto;
     }
 
     .s404-left {
-      min-height: 220px;
+      min-height: 300px;
+    }
+
+    .s404-left__bear {
+      width: 45%;
+      max-width: 180px;
     }
 
     .s404-left__number {
-      font-size: clamp(100px, 30vw, 160px);
+      font-size: clamp(64px, 20vw, 100px);
     }
 
     .s404-right__heading {
@@ -165,7 +168,7 @@
   assign label_text = section.settings.label_text | default: 'HOUSTON, WE BREWED A PROBLEM'
   assign body_text = section.settings.body_text
   assign stat_1_value = section.settings.stat_1_value | default: '72h'
-  assign stat_1_label = section.settings.stat_1_label | default: "Our brew time. Where to next?"
+  assign stat_1_label = section.settings.stat_1_label | default: 'Our brew time. Where to next?'
   assign stat_2_value = section.settings.stat_2_value | default: '0s'
   assign stat_2_label = section.settings.stat_2_label | default: "This page's lifespan"
   assign stat_3_value = section.settings.stat_3_value | default: '404'
@@ -174,6 +177,7 @@
 
 <div class="s404-bento">
   <div class="s404-left">
+    <img class="s404-left__bear" src="{{ 'bear.png' | asset_url }}" alt="Bear" width="280" height="280">
     <span class="s404-left__number">404</span>
   </div>
 
@@ -185,7 +189,9 @@
         {%- if body_text != blank -%}
           {{ body_text }}
         {%- else -%}
-          This page doesn't exist.<br>The URL you followed went cold.<br>Its not coming back.
+          This page doesn't exist.<br>
+          The URL you followed went cold.<br>
+          Its not coming back.
         {%- endif -%}
       </p>
     </div>
@@ -210,12 +216,7 @@
         </div>
       </div>
 
-      {%- render 'global-btn',
-        text: button_text,
-        url: button_link,
-        variant: 'tertiary',
-        fit_width:false,
-      -%}
+      {%- render 'global-btn', text: button_text, url: button_link, variant: 'tertiary', fit_width: false -%}
     </div>
   </div>
 </div>
