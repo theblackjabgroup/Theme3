@@ -760,7 +760,7 @@
 
                 <!-- STYLED COMMENTS LIST CARD -->
                 <div class="article-comment-card article-comments-list-card">
-                  <p class="article-comments-count">{{ article.comments_count }} COMMENTS</p>
+                  <p class="article-comments-count">{{ 'blogs.article.comments' | t: count: article.comments_count | upcase }}</p>
                   {%- assign anchor_id = '#Comments-' | append: article.id -%}
                   {% paginate article.comments by 2 %}
                     <div class="article-template__comments" id="Comments-{{ article.id }}" tabindex="-1">
