@@ -723,6 +723,14 @@ body.mega-menu-open .dock-actions * {
   pointer-events: auto !important;
 }
 
+/* Keep desktop/mobile headers sharp and fixed while mega menu/search popup is open */
+body.mega-menu-open #shopify-section-header,
+body.mega-menu-open .vertical-sidebar-header,
+body.mega-menu-open .mobile-header {
+  filter: none !important;
+  transform: none !important;
+}
+
 /* Mega Menu */
 .mega-menu {
   position: fixed;

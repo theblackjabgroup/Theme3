@@ -76,13 +76,11 @@
   background: transparent;
   border: 1.5px solid var(--color-heading);
   border-radius: var(--radius-xl);
-  box-shadow: 0 3px 0 0 color-mix(in srgb, var(--color-heading) 100%, transparent);
   box-sizing: border-box;
 }
 
 .main-search-page-header__field:focus-within {
   outline: none;
-  box-shadow: 0 2px 0 0 color-mix(in srgb, var(--color-heading) 60%, transparent);
 }
 
 .main-search-page-header__submit {
