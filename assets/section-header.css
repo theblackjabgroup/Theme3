@@ -1343,10 +1343,10 @@ body.mobile-menu-open .mobile-menu-content > *:not(.mobile-menu-close) {
 
 .mobile-menu-close {
   position: absolute !important;
-  bottom: var(--bento-gap) !important;
-  top: auto !important;
+  bottom: auto !important;
+  top: 10px !important;
   left: 50% !important;
-  transform: translateX(-50%) translateY(10px) !important;
+  transform: translateX(-50%) !important;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -1375,7 +1375,7 @@ body.mobile-menu-open .mobile-menu-content > *:not(.mobile-menu-close) {
 
 .mobile-menu-nav {
   flex: 1;
-  padding: var(--bento-gap) var(--bento-gap) 0 var(--bento-gap);
+  padding: 70px var(--bento-gap) 0 var(--bento-gap);
   display: flex;
   flex-direction: column;
   pointer-events: none;
@@ -1675,6 +1675,38 @@ body.mobile-menu-open .mobile-menu-content > *:not(.mobile-menu-close) {
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-bold);
   line-height: 1;
+}
+
+/* Mobile menu footer theme toggle row */
+.mobile-menu-footer-row--theme {
+  width: 100%;
+}
+
+.mobile-menu-footer-row--theme .header-theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+  min-height: 38px;
+  padding: 0 16px;
+  background: color-mix(in srgb, var(--color-heading) 12%, var(--color-bg));
+  border-radius: 10px;
+  border-top: none;
+}
+
+.mobile-menu-footer-row--theme .header-theme-toggle__label {
+  color: var(--color-heading);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  opacity: 0.45;
+  transition: opacity 0.2s ease;
+}
+
+.mobile-menu-footer-row--theme .header-theme-toggle[data-mode="dark"] .header-theme-toggle__label--dark,
+.mobile-menu-footer-row--theme .header-theme-toggle[data-mode="light"] .header-theme-toggle__label--light {
+  opacity: 1;
 }
 
 /* Mobile Mega Menu Rich Content Styles */

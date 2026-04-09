@@ -84,8 +84,8 @@
       },
       "scheme-2": {
         "settings": {
-          "color_bg": "#F5F0E8",
-          "color_heading": "#FFFFFF",
+          "color_bg": "#E6E3E6",
+          "color_heading": "#1E4ABD",
           "color_text": "#3D2B1F",
           "color_link": "#8B4513",
           "color_link_hover": "#D4872A",
@@ -110,8 +110,8 @@
           "btn_disabled_text": "#A08070",
           "btn_disabled_border": "#3D2B1F",
           "btn_disabled_shadow": "#3D2B1F",
-          "color_card_bg": "#1E4ABD",
-          "color_card_text": "#F8F3F8"
+          "color_card_bg": "#F8F3F8",
+          "color_card_text": "#1E4ABD"
         }
       },
       "scheme-3": {

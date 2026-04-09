@@ -6,6 +6,7 @@
       background-color: var(--color-bg);
       min-height: 100vh;
       color: var(--color-text);
+      overflow-x: hidden;
     }
 
     .cart-layout-container {
@@ -102,12 +103,13 @@
       display: flex;
       padding: 25px;
       align-items: center;
-      gap: 30px;
+      gap: 20px;
+      min-height: 150px;
     }
 
     .cart-item-card__image-wrap {
       position: relative;
-      width: 180px;
+      width: 140px;
       flex-shrink: 0;
     }
 
@@ -122,8 +124,9 @@
 
     .cart-item-card__image {
       max-width: 100%;
-      height: auto;
-      object-fit: contain;
+      height: 100%;
+      border-radius:12px;
+      object-fit: cover;
     }
 
     /* Sale badge - sale icon with X% off centered */
@@ -171,40 +174,26 @@
     .cart-item-card__info {
       flex: 1;
       display: flex;
-      flex-wrap: wrap;
-      align-items: flex-start;
-      gap: 20px;
-    }
-
-    /* First row: product name, variant, quantity, price – full width */
-    .cart-item-card__top-row {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      width: 100%;
-      flex-basis: 100%;
+      flex-direction: column;
+      gap: 15px;
       min-width: 0;
     }
 
     .cart-item-card__details {
-      flex: 1;
-      min-width: 0;
-      max-width: 200px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
+      gap: 6px;
+      min-width: 0;
     }
 
     .cart-item-card__name {
       display: block;
       font-family: var(--font-heading-family);
-      font-size: 16px;
+      font-size: 22px;
       font-weight: 900;
       color: var(--color-text);
       text-decoration: none;
       line-height: 1.1;
-      margin-bottom: 5px;
     }
 
     .cart-item-card__variant {
@@ -214,75 +203,86 @@
       display: block;
     }
 
-    /* Separator above Edit/Remove – full width under quantity and price */
-    .cart-item-card__actions-separator {
-      flex-basis: 100%;
-      width: 100%;
-
-      border-top: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
-      order: 10;
-    }
-
-    /* Buttons handling – Edit and Remove match */
-    .cart-item-card__actions {
-      flex-basis: 100%;
-      width: 100%;
-      display: flex;
-      gap: 10px;
-      order: 11;
-    }
-
-    /* Edit / Remove: global-btn primary – fill flex space so face and shadow match */
-    .cart-item-card__actions .cart-item-action-btn.global-btn {
-      flex: 1;
-      min-width: 0;
-      width: 100%;
-      display: flex;
-    }
-
-    .cart-item-action-btn.global-btn .global-btn__content {
-      width: 100%;
-      padding: 12px 20px;
-      font-size: 15px;
-      border-radius: 14px;
-    }
-
-    .cart-item-action-btn.global-btn .global-btn__shadow {
-      border-radius: 14px;
-    }
-
-    /* Quantity selector (snippet) – using snippet defaults */
-    .cart-item-card__quantity {
+    /* Quantity + edit icon row */
+    .cart-item-card__qty-row {
       display: flex;
       align-items: center;
+      gap: 10px;
     }
 
+    /* Edit icon button – matches qty-selector pill style */
+    .cart-item-edit-icon-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      background: transparent;
+      border: 1px solid var(--btn-primary-border, rgba(255,255,255,0.3));
+      color: var(--color-text);
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: opacity 0.15s ease;
+    }
+
+    .cart-item-edit-icon-btn:hover {
+      opacity: 0.7;
+    }
+
+    /* Price – inline row: cut price first (small), current price second (large) */
     .cart-item-card__total {
-      width: fit-content;
-      max-width: 100%;
-      margin-left: auto;
-      text-align: right;
-      font-size: 18px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      flex-shrink: 0;
+      gap: 8px;
+    }
+
+    .cart-item-card__total .cart-item-card__old-price {
+      font-size: 13px;
+      font-weight: 400;
+      text-decoration: line-through;
+      opacity: 0.6;
+      white-space: nowrap;
+    }
+
+    .cart-item-card__total .cart-item-card__current-price {
+      font-size: 22px;
+      font-weight: 900;
       color: var(--color-text);
       white-space: nowrap;
     }
 
-    .cart-item-card__total .cart-item-card__current-price,
-    .cart-item-card__total .cart-item-card__old-price {
-      white-space: nowrap;
+    /* Mobile price row — hidden on desktop */
+    .cart-item-card__price-mobile {
+      display: none;
     }
 
-    .cart-item-card__total .cart-item-card__old-price {
-      font-size: 12px;
-      font-weight: 400;
-      text-decoration: line-through;
-      opacity: 0.8;
-      margin-right: 0.4em;
+    /* Edit button label — hidden on desktop, shows EDIT text on mobile */
+    .cart-item-edit__label {
+      display: none;
     }
 
-    .cart-item-card__total .cart-item-card__current-price {
-      font-size: 16px;
-      font-weight: 700;
+    /* Remove X button */
+    .cart-item-remove-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      background: none;
+      border: none;
+      color: var(--color-text);
+      cursor: pointer;
+      opacity: 0.7;
+      padding: 0;
+      transition: opacity 0.15s ease;
+    }
+
+    .cart-item-remove-btn:hover {
+      opacity: 1;
     }
 
     /* Summary Card */
@@ -311,28 +311,21 @@
       text-decoration: underline;
     }
 
-    /* Continue Shopping – global-btn tertiary icon-only, layout only */
-    .continue-shopping-btn.global-btn.global-btn--tertiary {
+    /* Continue Shopping – global-btn-2 circular icon-only */
+    .continue-shopping-btn.global-btn-2 {
       width: 42px;
       height: 42px;
+      min-width: 42px;
+      padding: 0;
       flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .continue-shopping-btn.global-btn .global-btn__content {
-      padding: 10px;
-      width: 42px;
-      height: 42px;
-      border-radius: 14px;
-      box-sizing: border-box;
-    }
-
-    .continue-shopping-btn.global-btn .global-btn__shadow {
-      border-radius: 14px;
-    }
-
-    .continue-shopping-btn.global-btn .global-btn__icon svg {
-      width: 20px;
-      height: 20px;
+    .continue-shopping-btn.global-btn-2 .global-btn-2__icon svg {
+      width: 18px;
+      height: 18px;
     }
 
     .cart-summary__note {
@@ -341,10 +334,12 @@
 
     .cart-summary__note label {
       display: block;
-      font-size: 16px;
-      font-weight: 700;
+      font-size: 12px;
+      font-weight: 800;
       color: var(--color-text);
       margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
     }
 
     /* Order note – input-box snippet (no shadow) */
@@ -516,9 +511,7 @@
         .header-label-quantity {
       flex: 0.35;
     }
-      .custom-cart-section {
-        padding: 16px 20px;
-      }
+
       .cart-layout-container {
         max-width: 100%;
       }
@@ -584,9 +577,7 @@
     }
 
     @media screen and (max-width: 749px) {
-      .custom-cart-section {
-        padding: 12px 16px;
-      }
+
       .cart-grid {
         gap: 20px;
       }
@@ -606,49 +597,107 @@
       .cart-subtitle-text {
         font-size: 14px;
       }
+      /* ── Mobile cart item: matches Figma mobile drawer design ── */
+
+      /* Inner: image (left) + info (right), qty row below */
       .cart-item-card__inner {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 20px;
-        padding: 16px;
-      }
-      .cart-item-card__image-wrap {
-        width: 100%;
-        max-width: 200px;
-      }
-      .cart-item-card__info {
-        width: 100%;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
-      }
-      .cart-item-card__top-row {
-        width: 100%;
+        flex-direction: row;
         flex-wrap: wrap;
+        align-items: flex-start;
         gap: 12px;
+        padding: 16px;
+        min-height: auto;
+        position: relative;
       }
-      .cart-item-card__details {
-        max-width: none;
-        flex: 1 1 100%;
+
+      /* Image: small square on the left */
+      .cart-item-card__image-wrap {
+        width: 97px;
+        flex-shrink: 0;
       }
+
+      /* Info: takes remaining width next to image; leaves space for X */
+      .cart-item-card__info {
+        flex: 1;
+        min-width: 0;
+        gap: 6px;
+        padding-right: 30px;
+      }
+
+      /* Name */
       .cart-item-card__name {
-        font-size: 18px;
+        font-size: 16px;
       }
+
+      /* Variant: small uppercase */
       .cart-item-card__variant {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      /* Mobile price row: show */
+      .cart-item-card__price-mobile {
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
+        flex-wrap: nowrap;
+      }
+
+      .cart-item-price-mobile__label {
         font-size: 12px;
+        opacity: 0.8;
       }
-      .cart-item-card__quantity {
-        width: 100%;
-        max-width: 140px;
+
+      .cart-item-card__price-mobile .cart-item-card__old-price {
+        font-size: 10px;
+        opacity: 0.6;
       }
-      .cart-item-card__total {
-        width: 100%;
-        text-align: left;
-        font-size: 18px;
-      }
-      .cart-item-card__actions .cart-item-action-btn.global-btn .global-btn__content {
-        padding: 12px 16px;
+
+      .cart-item-card__price-mobile .cart-item-card__current-price {
         font-size: 14px;
+        font-weight: 700;
+      }
+
+      /* Desktop price column: hide on mobile */
+      .cart-item-card__total {
+        display: none;
+      }
+
+      /* X button: absolute at top-right of card */
+      .cart-item-remove-btn {
+        position: absolute;
+        top: 16px;
+        right: 0;
+      }
+
+      /* Qty row: full width below image+info */
+      .cart-item-card__qty-row {
+        flex: 0 0 100%;
+        width: 100%;
+        gap: 8px;
+      }
+
+      /* Qty selector: fixed width */
+      .cart-item-card__qty-row .qty-selector {
+        flex-shrink: 0;
+        min-width: 131px;
+        padding: 10px 20px;
+      }
+
+      /* Edit button: icon-only on mobile, same as desktop */
+      .cart-item-edit-icon-btn {
+        flex: none;
+        width: 46px;
+        height: 46px;
+      }
+
+      .cart-item-edit__icon {
+        display: block;
+      }
+
+      .cart-item-edit__label {
+        display: none;
       }
       .cart-items-header-row {
         display: none;
@@ -798,78 +847,81 @@
                         </div>
                       </div>
 
+                      <!-- Compute prices early (used in both desktop and mobile) -->
+                      {%- liquid
+                        assign show_old_price = false
+                        assign old_line_price = item.original_line_price
+                        if item.variant.compare_at_price != blank and item.variant.compare_at_price > item.final_price
+                          assign compare_at_line = item.variant.compare_at_price | times: item.quantity
+                          assign show_old_price = true
+                          assign old_line_price = compare_at_line
+                        elsif item.original_line_price > item.final_line_price
+                          assign show_old_price = true
+                          assign old_line_price = item.original_line_price
+                        endif
+                      -%}
+
                       <!-- Content Section -->
                       <div class="cart-item-card__info">
-                        <div class="cart-item-card__top-row">
-                          <div class="cart-item-card__details">
-                            <div class="cart-item-card__title-row">
-                              <a href="{{ item.url }}" class="cart-item-card__name">
-                                {{- item.product.title | upcase -}}
-                              </a>
-                              {%- unless item.product.has_only_default_variant -%}
-                                <span class="cart-item-card__variant">{{ item.variant.title }}</span>
-                              {%- endunless -%}
-                            </div>
-                          </div>
-
-                          <!-- Quantity Selector -->
-                          <div class="cart-item-card__quantity">
-                            {% render 'quantity-selector', item: item %}
-                          </div>
-
-                          <!-- Total Price (strikethrough original/compare_at when sale or discounted) -->
-                          {%- liquid
-                            assign show_old_price = false
-                            assign old_line_price = item.original_line_price
-                            if item.variant.compare_at_price != blank and item.variant.compare_at_price > item.final_price
-                              assign compare_at_line = item.variant.compare_at_price | times: item.quantity
-                              assign show_old_price = true
-                              assign old_line_price = compare_at_line
-                            elsif item.original_line_price > item.final_line_price
-                              assign show_old_price = true
-                              assign old_line_price = item.original_line_price
-                            endif
-                          -%}
-                          <div
-                            class="cart-item-card__total"
-                            data-item-index="{{ item.index | plus: 1 }}"
-                            data-unit-price="{{ item.final_price }}"
-                            data-original-unit-price="{{ item.original_price }}"
-                            {% if item.variant.compare_at_price != blank
-                              and item.variant.compare_at_price > item.final_price
-                            %}
-                              data-compare-at-unit-price="{{ item.variant.compare_at_price }}"
-                            {% endif %}
-                          >
-                            {%- if show_old_price -%}
-                              <s class="cart-item-card__old-price" aria-label="Original price">
-                                {{- old_line_price | money -}}
-                              </s>
-                            {%- endif -%}
-                            <span class="cart-item-card__current-price">{{ item.final_line_price | money }}</span>
-                          </div>
+                        <div class="cart-item-card__details">
+                          <a href="{{ item.url }}" class="cart-item-card__name">
+                            {{- item.product.title | upcase -}}
+                          </a>
+                          {%- unless item.product.has_only_default_variant -%}
+                            <span class="cart-item-card__variant">{{ item.variant.title }}</span>
+                          {%- endunless -%}
                         </div>
 
-                        <div class="cart-item-card__actions-separator" aria-hidden="true"></div>
-                        <div class="cart-item-card__actions">
-                          {% capture edit_btn_attrs %}data-open-cart-drawer-edit data-line-index="{{ item.index | plus: 1 }}" aria-label="Edit {{ item.product.title | escape }}"{% endcapture %}
-                          {% render 'global-btn-2',
-                            text: 'Edit',
-                            type: 'button',
-                            variant: 'primary',
-                            class: 'cart-item-action-btn cart-item-edit-btn',
-                            attributes: edit_btn_attrs
-                          %}
-                          {% capture remove_btn_attrs %}data-line-index="{{ item.index | plus: 1 }}" aria-label="Remove {{ item.product.title | escape }}"{% endcapture %}
-                          {% render 'global-btn-2',
-                            text: 'Remove',
-                            variant: 'primary',
-                            type: 'button',
-                            class: 'cart-item-action-btn cart-item-remove-btn',
-                            attributes: remove_btn_attrs
-                          %}
+                        <!-- Mobile-only price row: "Price: $old $new" -->
+                        <div class="cart-item-card__price-mobile">
+                          <span class="cart-item-price-mobile__label">Price:</span>
+                          {%- if show_old_price -%}
+                            <s class="cart-item-card__old-price">{{- old_line_price | money -}}</s>
+                          {%- endif -%}
+                          <span class="cart-item-card__current-price">{{ item.final_line_price | money }}</span>
+                        </div>
+
+                        <!-- Quantity + Edit -->
+                        <div class="cart-item-card__qty-row">
+                          {% render 'quantity-selector', item: item %}
+                          <button
+                            type="button"
+                            class="cart-item-edit-icon-btn"
+                            data-open-cart-drawer-edit
+                            data-line-index="{{ item.index | plus: 1 }}"
+                            aria-label="Edit {{ item.product.title | escape }}"
+                          >
+                            <svg class="cart-item-edit__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                            <span class="cart-item-edit__label">EDIT</span>
+                          </button>
                         </div>
                       </div>
+
+                      <!-- Desktop-only: price column -->
+                      <div
+                        class="cart-item-card__total"
+                        data-item-index="{{ item.index | plus: 1 }}"
+                        data-unit-price="{{ item.final_price }}"
+                        data-original-unit-price="{{ item.original_price }}"
+                        {% if item.variant.compare_at_price != blank and item.variant.compare_at_price > item.final_price %}
+                          data-compare-at-unit-price="{{ item.variant.compare_at_price }}"
+                        {% endif %}
+                      >
+                        <s class="cart-item-card__old-price" aria-label="Original price" {% unless show_old_price %}style="display:none"{% endunless %}>
+                          {{- old_line_price | money -}}
+                        </s>
+                        <span class="cart-item-card__current-price">{{ item.final_line_price | money }}</span>
+                      </div>
+
+                      <!-- Remove X button -->
+                      <button
+                        type="button"
+                        class="cart-item-remove-btn"
+                        data-line-index="{{ item.index | plus: 1 }}"
+                        aria-label="Remove {{ item.product.title | escape }}"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                      </button>
                     </div>
                   </div>
                 {%- endfor -%}
@@ -885,14 +937,14 @@
                 {%- capture continue_arrow_svg -%}
                   {{- 'icon-arrow.svg' | inline_asset_content -}}
                 {%- endcapture -%}
-                {% render 'global-btn',
-                  text: '',
+                {% render 'global-btn-2',
                   url: routes.all_products_collection_url,
                   variant: 'primary',
                   class: 'continue-shopping-btn',
                   icon: continue_arrow_svg,
                   icon_only: true,
-                  fit_width: false
+                  fit_width: false,
+                  border_radius: '50%'
                 %}
               </div>
 
@@ -901,7 +953,7 @@
                   id: 'Cart-note',
                   name: 'note',
                   form: 'cart',
-                  placeholder: 'Order Note',
+                  placeholder: 'Special instructions, gift message, delivery notes...',
                   value: cart.note,
                   label: 'Add a note to your order',
                   rows: 4
@@ -918,7 +970,7 @@
                 </div>
 
                 {% render 'global-btn',
-                  text: 'Proceed To Checkout',
+                  text: 'Checkout',
                   type: 'submit',
                   variant: 'tertiary',
                   class: 'checkout-btn-3d',
@@ -1077,7 +1129,7 @@
     function initQuantitySelectors() {
       if (initialized) return;
 
-      const quantitySelectors = document.querySelectorAll('.cart-item-card__quantity .cart-item__quantity-selector');
+      const quantitySelectors = document.querySelectorAll('.cart-item-card__qty-row .cart-item__quantity-selector');
       const cartSubtotal = document.getElementById('cart-subtotal');
 
       if (!quantitySelectors.length) {
@@ -1132,7 +1184,7 @@
       function updateUIOnly(itemIndex, newQuantity) {
         // Find the item row
         const selector = document.querySelector(
-          `.cart-item-card__quantity .cart-item__quantity-selector[data-item-index="${itemIndex}"]`
+          `.cart-item-card__qty-row .cart-item__quantity-selector[data-item-index="${itemIndex}"]`
         );
         if (!selector) return;
 
@@ -1156,32 +1208,40 @@
         // Update quantity display
         quantityInput.value = newQuantity;
 
-        // Update item total
-        const formattedPrice = formatMoney(newLineTotal);
-        const currentPriceSpan = itemTotalCell.querySelector('.cart-item-card__current-price');
-        let oldPriceSpan = itemTotalCell.querySelector('.cart-item-card__old-price');
-        if (currentPriceSpan) {
-          currentPriceSpan.textContent = formattedPrice;
-        } else {
-          itemTotalCell.textContent = formattedPrice;
+        // Helper: update a price container (desktop total or mobile price row)
+        function updatePriceContainer(container) {
+          if (!container) return;
+          const currentSpan = container.querySelector('.cart-item-card__current-price');
+          let oldSpan = container.querySelector('.cart-item-card__old-price');
+          const formattedPrice = formatMoney(newLineTotal);
+          if (currentSpan) {
+            currentSpan.textContent = formattedPrice;
+          } else {
+            container.textContent = formattedPrice;
+          }
+          if (showOldPrice) {
+            const originalFormat = oldSpan ? oldSpan.textContent.trim() : null;
+            const formattedOld = formatMoney(newOriginalLineTotal, originalFormat);
+            if (oldSpan) {
+              oldSpan.textContent = formattedOld;
+            } else {
+              const s = document.createElement('s');
+              s.className = 'cart-item-card__old-price';
+              s.setAttribute('aria-label', 'Original price');
+              s.textContent = formattedOld;
+              container.insertBefore(s, currentSpan || container.firstChild);
+            }
+          } else if (oldSpan) {
+            oldSpan.remove();
+          }
         }
 
-        // Update or add strikethrough (original/compare_at) line price when discounted
-        if (showOldPrice) {
-          const originalFormat = oldPriceSpan ? oldPriceSpan.textContent.trim() : null;
-          const formattedOld = formatMoney(newOriginalLineTotal, originalFormat);
-          if (oldPriceSpan) {
-            oldPriceSpan.textContent = formattedOld;
-          } else {
-            const s = document.createElement('s');
-            s.className = 'cart-item-card__old-price';
-            s.setAttribute('aria-label', 'Original price');
-            s.textContent = formattedOld;
-            itemTotalCell.insertBefore(s, currentPriceSpan || itemTotalCell.firstChild);
-          }
-        } else if (oldPriceSpan) {
-          oldPriceSpan.remove();
-        }
+        // Update desktop price column
+        updatePriceContainer(itemTotalCell);
+
+        // Update mobile price row (same item card)
+        const mobilePriceRow = itemCard.querySelector('.cart-item-card__price-mobile');
+        updatePriceContainer(mobilePriceRow);
 
         // Recalculate cart totals
         recalculateCartTotals();

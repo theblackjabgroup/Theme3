@@ -1,397 +1,222 @@
-{{ 'section-scrolling-text.css' | asset_url | stylesheet_tag }}
-
-{%- liquid
-  assign bg_text = section.settings.background_text | default: "OOPS! YOU'RE"
-  assign bg_color = 'var(--color-bg)'
-  assign message_text = section.settings.message_text | default: "This is a 404 error, which means you've clicked on a bad link or entered an invalid URL. Maybe what you are looking for can be found on the homepage."
-  assign button_text = section.settings.button_text | default: 'Take me to Home'
-
-  assign hero_media_type = section.settings.hero_media_type | default: 'image'
-  assign hero_image = section.settings.product_image
-  if hero_media_type == 'image' and hero_image == blank and collections.all.products.size > 0
-    assign first_product = collections.all.products.first
-    if first_product.featured_media != blank
-      assign hero_image = first_product.featured_media
-    endif
-  endif
-  if hero_media_type == 'image' and hero_image == blank
-    assign hero_image_placeholder = true
-  endif
-  assign hero_image_width = section.settings.image_max_width | default: 400 | times: 2
-
-  assign youtube_url = section.settings.youtube_url | default: ''
-  assign yt_id = ''
-  if youtube_url != blank
-    if youtube_url contains 'youtu.be/'
-      assign yt_id = youtube_url | split: '/' | last | split: '?' | first
-    elsif youtube_url contains 'watch?v='
-      assign yt_id = youtube_url | split: 'v=' | last | split: '&' | first
-    endif
-  endif
--%}
-
-{%- style -%}
-  {%- if section.settings.scrolling_text_font != blank -%}
-    {{ section.settings.scrolling_text_font | font_face: font_display: 'swap' }}
-  {%- endif -%}
-  {%- if section.settings.message_font != blank -%}
-    {{ section.settings.message_font | font_face: font_display: 'swap' }}
-  {%- endif -%}
-{%- endstyle -%}
-
 <style>
-  .template-404 {
-    height: 96vh;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    background: {{ bg_color }};
-    position: relative;
-    overflow: hidden;
-    padding: 20px;
-    margin: 20px;
+  .s404-bento {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: var(--bento-gap, 16px);
+    min-height: 90vh;
+    box-sizing: border-box;
+  }
+
+  /* Left panel */
+  .s404-left {
+    background: var(--color-card-bg);
     border-radius: 20px;
-  }
-
-  .template-404__scrolling-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 0;
-    pointer-events: none;
-    overflow: hidden;
-  }
-
-  .template-404__scrolling-bg .marquee-scroll--404 {
-    position: absolute;
-    top: {{ section.settings.scrolling_text_vertical_position | default: 0 }}%;
-    left: {{ section.settings.scrolling_text_horizontal_position | default: 50 }}%;
-    transform: translateX(-50%);
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    --section-gap: 24px;
-    background: transparent;
-    padding: 12px 0;
-  }
-
-  {%- if section.settings.scrolling_text_font != blank -%}
-  .template-404__scrolling-bg .marquee-scroll__pill {
-    font-family: {{ section.settings.scrolling_text_font.family }}, {{ section.settings.scrolling_text_font.fallback_families }};
-  }
-  {%- endif -%}
-  .template-404__scrolling-bg .marquee-scroll__pill {
-    letter-spacing: {{ section.settings.scrolling_text_letter_spacing | default: '-0.02em' }};
-  }
-
-  .template-404__content {
-    text-align: center;
-    z-index: 10;
-    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.5rem;
-    max-width: 560px;
-  }
-
-  .template-404__image {
-    width: 100%;
-    max-width: {{ section.settings.image_max_width | default: 400 }}px;
-    margin: 0 auto;
-    {%- if section.settings.image_max_height and section.settings.image_max_height > 0 -%}
-    max-height: {{ section.settings.image_max_height }}px;
-    {%- endif -%}
-  }
-
-  .template-404__image img,
-  .template-404__image .template-404__placeholder {
-    width: 100%;
-    height: auto;
-    display: block;
-    object-fit: {{ section.settings.image_object_fit | default: 'contain' }};
-    {%- if section.settings.image_border_radius and section.settings.image_border_radius > 0 -%}
-    border-radius: {{ section.settings.image_border_radius }}px;
-    {%- endif -%}
-  }
-
-  .template-404__image video {
-    width: 100%;
-    height: auto;
-    display: block;
-    object-fit: {{ section.settings.image_object_fit | default: 'contain' }};
-    {%- if section.settings.image_border_radius and section.settings.image_border_radius > 0 -%}
-    border-radius: {{ section.settings.image_border_radius }}px;
-    {%- endif -%}
-  }
-
-  .template-404__image .template-404__video-wrap {
-    position: relative;
-    width: 100%;
-    padding-bottom: 56.25%;
-    height: 0;
-    overflow: hidden;
-    {%- if section.settings.image_border_radius and section.settings.image_border_radius > 0 -%}
-    border-radius: {{ section.settings.image_border_radius }}px;
-    {%- endif -%}
-  }
-
-  .template-404__image .template-404__video-wrap iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: 0;
-  }
-
-  .template-404__video-placeholder {
-    min-height: 200px;
-    display: flex;
-    align-items: center;
     justify-content: center;
-    padding: 1.5rem;
-    text-align: center;
-    color: var(--color-text);
-    font-size: 0.9rem;
-    background: var(--color-card-bg);
-    border-radius: 12px;
+    padding: var(--bento-gap, 16px);
+    gap: calc(var(--bento-gap, 16px) * 0.75);
   }
 
-  .template-404__message {
-    font-family: {% if section.settings.message_font != blank %}{{ section.settings.message_font.family }}, {{ section.settings.message_font.fallback_families }}{% else %}var(--font-body-family), sans-serif{% endif %};
-    font-style: {% if section.settings.message_font != blank %}{{ section.settings.message_font.style }}{% else %}normal{% endif %};
-    font-size: {{ section.settings.message_font_size | default: 16 }}px;
-    font-weight: {{ section.settings.message_font_weight | default: 400 }};
-    line-height: {{ section.settings.message_line_height | default: 1.6 }};
+  .s404-left__bear {
+    width: 55%;
+    max-width: 280px;
+    height: auto;
+    display: block;
+  }
+
+  .s404-left__number {
+    font-size: clamp(64px, 8vw, 120px);
+    font-weight: 900;
+    line-height: 1;
     color: var(--color-text);
+    letter-spacing: -0.04em;
+    user-select: none;
+    text-align: center;
+  }
+
+  /* Right panel */
+  .s404-right {
+    background: var(--btn-secondary-bg, #1e4abd);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    padding: var(--bento-gap, 16px);
+    padding-bottom: calc(var(--bento-gap, 16px) * 1.5);
+    gap: 0;
+    color: var(--btn-secondary-text, #fff);
+  }
+
+  .s404-right__top {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    gap: calc(var(--bento-gap, 16px) * 0.6);
+  }
+
+  .s404-right__spacer {
+    flex: 1;
+    min-height: calc(var(--bento-gap, 16px) * 2);
+  }
+
+  .s404-right__bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: calc(var(--bento-gap, 16px) * 0.75);
+  }
+
+  .s404-right__label {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--btn-secondary-text, #fff);
+    opacity: 0.75;
     margin: 0;
   }
 
-  .template-404__button {
-    margin-top: {{ section.settings.button_margin_top | default: 4 }}px;
-    margin-bottom: {{ section.settings.button_margin_bottom | default: 0 }}px;
-    max-width: {% if section.settings.button_max_width and section.settings.button_max_width > 0 %}{{ section.settings.button_max_width }}px{% else %}100%{% endif %};
+  .s404-right__heading {
+    font-size: clamp(36px, 5.5vw, 80px);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    color: var(--btn-secondary-text, #fff);
+    margin: 0;
   }
 
-  .template-404__button .share-story-submit {
-    width: {% if section.settings.button_width == 'full' %}100%{% else %}fit-content{% endif %};
+  .s404-right__body {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.55;
+    color: var(--btn-secondary-text, #fff);
+    opacity: 0.8;
+    margin: 0;
   }
 
-  .template-404__button .share-story-submit .submit-button__content,
-  .template-404__button .share-story-submit .submit-button__shadow {
-    font-size: {{ section.settings.button_font_size | default: 16 }}px;
-    font-weight: {{ section.settings.button_font_weight | default: 700 }};
-    padding: {{ section.settings.button_padding_vertical | default: 16 }}px {{ section.settings.button_padding_horizontal | default: 28 }}px;
-    border-radius: {{ section.settings.button_border_radius | default: 20 }}px;
-    border-width: {{ section.settings.button_border_width | default: 2 }}px;
-    letter-spacing: {{ section.settings.button_letter_spacing | default: '0.02em' }};
+  .s404-right__divider {
+    border: none;
+    border-top: 1px solid var(--btn-secondary-text, #fff);
+    opacity: 0.3;
+    margin: calc(var(--bento-gap, 16px) * 0.25) 0;
+    width: 100%;
+    align-self: stretch;
   }
 
-  .template-404__button .share-story-submit .submit-button__content {
-    border-style: solid;
-    background-color: var(--btn-primary-bg);
-    color: var(--btn-primary-text);
-    border-color: var(--btn-primary-border);
+  .s404-stats {
+    display: flex;
+    align-self: stretch;
+    gap: calc(var(--bento-gap, 16px) * 1.5);
   }
 
-  .template-404__button .share-story-submit .submit-button__shadow {
-    background-color: var(--btn-primary-shadow);
+  .s404-stat__value {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--btn-secondary-text, #fff);
+    line-height: 1;
+    display: block;
   }
+
+  .s404-stat__label {
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--btn-secondary-text, #fff);
+    opacity: 0.65;
+    margin-top: 4px;
+    display: block;
+  }
+
+  /* Mobile */
 
   @media (max-width: 749px) {
-    .template-404 {
-      height: auto;
-      min-height: 100vh;
-      min-height: 100dvh;
-      padding: 16px;
-      margin: 12px;
-      border-radius: 16px;
-      align-items: {{ section.settings.content_vertical_position_mobile | default: 'center' }};
-      padding-bottom: 2rem;
+    .s404-bento {
+      grid-template-columns: 1fr;
+      min-height: auto;
     }
 
-    .template-404__content {
-      gap: 1.25rem;
-      max-width: 100%;
-      padding: 0 0.5rem;
+    .s404-left {
+      min-height: 300px;
     }
 
-    .template-404__image {
-      max-width: min({{ section.settings.image_max_width | default: 400 }}px, 100%);
+    .s404-left__bear {
+      width: 45%;
+      max-width: 180px;
     }
 
-    .template-404__scrolling-bg .marquee-scroll--404 {
-      top: {{ section.settings.scrolling_text_vertical_position_mobile | default: 0 }}%;
-      left: {{ section.settings.scrolling_text_horizontal_position_mobile | default: 50 }}%;
-      transform: translateX(-50%);
+    .s404-left__number {
+      font-size: clamp(64px, 20vw, 100px);
     }
 
-    .template-404__message {
-      font-size: {{ section.settings.message_font_size_mobile | default: 15 }}px;
-      line-height: 1.5;
+    .s404-right__heading {
+      font-size: clamp(32px, 9vw, 52px);
     }
 
-    .template-404__button {
-      width: 100%;
-      max-width: {% if section.settings.button_max_width_mobile and section.settings.button_max_width_mobile > 0 %}{{ section.settings.button_max_width_mobile }}px{% else %}320px{% endif %};
-      margin-top: {{ section.settings.button_margin_top_mobile | default: 4 }}px;
-      margin-bottom: {{ section.settings.button_margin_bottom_mobile | default: 0 }}px;
-    }
-
-    .template-404__button .share-story-submit {
-      width: 100%;
-    }
-
-    .template-404__button .share-story-submit .submit-button__content,
-    .template-404__button .share-story-submit .submit-button__shadow {
-      font-size: {{ section.settings.button_font_size_mobile | default: 15 }}px;
-      padding: {{ section.settings.button_padding_vertical_mobile | default: 14 }}px {{ section.settings.button_padding_horizontal_mobile | default: 24 }}px;
-      border-radius: {{ section.settings.button_border_radius_mobile | default: 20 }}px;
-    }
-
-    .template-404__video-placeholder {
-      min-height: 160px;
-      padding: 1rem;
-      font-size: 0.85rem;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .template-404__scrolling-bg .marquee-scroll__track,
-    .template-404__scrolling-bg .marquee-scroll__orbit-track {
-      animation: none;
+    .s404-stats {
+      gap: var(--bento-gap, 16px);
     }
   }
 </style>
 
-<div class="template-404 color-{{ section.settings.color_scheme }}">
-  <div class="template-404__scrolling-bg" aria-hidden="true">
-    <div class="marquee-scroll marquee-scroll--404">
-      {% render 'scrolling-text-item',
-        id: section.id,
-        shopify_attributes: '',
-        speed: section.settings.background_text_speed | default: 30,
-        direction: 'normal',
-        pause_on_hover: false,
-        bg_color: 'var(--color-card-bg)',
-        border_radius: 0,
-        padding: 8,
-        text_size: section.settings.scrolling_text_font_size | default: 24,
-        text_weight: section.settings.scrolling_text_font_weight | default: 700,
-        pill_bg: 'var(--btn-secondary-bg)',
-        pill_color: 'var(--btn-secondary-text)',
-        pill_height: 44,
-        pill_width: 0,
-        pill_radius: 14,
-        item_gap: 16,
-        orbit_speed: 20,
-        orbit_direction: 'normal',
-        orbit_font_size: 10,
-        orbit_text_gap: 8,
-        orbit_color: 'var(--btn-secondary-text)',
-        orbit_text_transform: 'uppercase',
-        circle_width: 56,
-        circle_height: 56,
-        circle_bg: 'var(--btn-tertiary-bg)',
-        icon_width: 58,
-        icon_height: 58,
-        circle_icon: section.settings.scrolling_icon,
-        orbit_text: section.settings.background_orbit_text | default: '404',
-        text_transform: section.settings.scrolling_text_text_transform | default: 'uppercase',
-        text: bg_text | append: ' LOST'
-      %}
-      {% render 'scrolling-text-item',
-        id: section.id | append: '-2',
-        shopify_attributes: '',
-        speed: section.settings.background_text_speed | default: 30,
-        direction: 'reverse',
-        pause_on_hover: false,
-        bg_color: 'var(--color-card-bg)',
-        border_radius: 0,
-        padding: 8,
-        text_size: section.settings.scrolling_text_font_size | default: 24,
-        text_weight: section.settings.scrolling_text_font_weight | default: 700,
-        pill_bg: 'var(--btn-secondary-bg)',
-        pill_color: 'var(--btn-secondary-text)',
-        pill_height: 44,
-        pill_width: 0,
-        pill_radius: 14,
-        item_gap: 16,
-        orbit_speed: 20,
-        orbit_direction: 'reverse',
-        orbit_font_size: 10,
-        orbit_text_gap: 8,
-        orbit_color: 'var(--btn-secondary-text)',
-        orbit_text_transform: 'uppercase',
-        circle_width: 56,
-        circle_height: 56,
-        circle_bg: 'var(--btn-tertiary-bg)',
-        icon_width: 58,
-        icon_height: 58,
-        circle_icon: section.settings.scrolling_icon,
-        orbit_text: section.settings.background_orbit_text | default: '404',
-        text_transform: section.settings.scrolling_text_text_transform | default: 'uppercase',
-        text: bg_text | append: ' LOST'
-      %}
-    </div>
+{%- liquid
+  assign button_text = section.settings.button_text | default: 'TAKE ME TO HOME'
+  assign button_link = section.settings.button_link | default: routes.root_url
+  assign heading_text = section.settings.heading_text | default: 'GONE COLDER THAN US.'
+  assign label_text = section.settings.label_text | default: 'HOUSTON, WE BREWED A PROBLEM'
+  assign body_text = section.settings.body_text
+  assign stat_1_value = section.settings.stat_1_value | default: '72h'
+  assign stat_1_label = section.settings.stat_1_label | default: 'Our brew time. Where to next?'
+  assign stat_2_value = section.settings.stat_2_value | default: '0s'
+  assign stat_2_label = section.settings.stat_2_label | default: "This page's lifespan"
+  assign stat_3_value = section.settings.stat_3_value | default: '404'
+  assign stat_3_label = section.settings.stat_3_label | default: 'Not Our Finest'
+-%}
+
+<div class="s404-bento">
+  <div class="s404-left">
+    <img class="s404-left__bear" src="{{ 'bear.png' | asset_url }}" alt="Bear" width="280" height="280">
+    <span class="s404-left__number">404</span>
   </div>
 
-  <div class="template-404__content">
-    <div class="template-404__image">
-      {%- case hero_media_type -%}
-        {%- when 'image' -%}
-          {%- if hero_image != blank -%}
-            <img
-              src="{{ hero_image | image_url: width: hero_image_width }}"
-              alt=""
-              width="{{ hero_image.width }}"
-              height="{{ hero_image.height }}"
-              loading="eager"
-            >
-          {%- elsif hero_image_placeholder -%}
-            {{ 'product-1' | placeholder_svg_tag: 'template-404__placeholder' }}
-          {%- endif -%}
-        {%- when 'shopify_video' -%}
-          {%- if section.settings.hero_video != blank -%}
-            {{
-              section.settings.hero_video
-              | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: true
-            }}
-          {%- else -%}
-            <div class="template-404__placeholder template-404__video-placeholder">
-              Add a Shopify video in the section settings
-            </div>
-          {%- endif -%}
-        {%- when 'youtube' -%}
-          {%- if yt_id != '' -%}
-            {%- assign yt_embed_url = 'https://www.youtube.com/embed/' | append: yt_id -%}
-            <div class="template-404__video-wrap">
-              <iframe
-                src="{{ yt_embed_url }}?rel=0&modestbranding=1"
-                title="YouTube video"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
-              ></iframe>
-            </div>
-          {%- else -%}
-            <div class="template-404__placeholder template-404__video-placeholder">
-              Add a YouTube URL in the section settings
-            </div>
-          {%- endif -%}
-      {%- endcase -%}
+  <div class="s404-right">
+    <div class="s404-right__top">
+      <p class="s404-right__label">{{ label_text }}</p>
+      <h1 class="s404-right__heading">{{ heading_text }}</h1>
+      <p class="s404-right__body">
+        {%- if body_text != blank -%}
+          {{ body_text }}
+        {%- else -%}
+          This page doesn't exist.<br>
+          The URL you followed went cold.<br>
+          Its not coming back.
+        {%- endif -%}
+      </p>
     </div>
 
-    <p class="template-404__message">{{ message_text }}</p>
+    <div class="s404-right__spacer"></div>
 
-    <div class="template-404__button">
-      {%-
-        render 'global-btn',
-        text: button_text,
-        url: section.settings.button_link | default: routes.root_url
-      -%}
+    <div class="s404-right__bottom">
+      <hr class="s404-right__divider">
+
+      <div class="s404-stats">
+        <div class="s404-stat">
+          <span class="s404-stat__value">{{ stat_1_value }}</span>
+          <span class="s404-stat__label">{{ stat_1_label }}</span>
+        </div>
+        <div class="s404-stat">
+          <span class="s404-stat__value">{{ stat_2_value }}</span>
+          <span class="s404-stat__label">{{ stat_2_label }}</span>
+        </div>
+        <div class="s404-stat">
+          <span class="s404-stat__value">{{ stat_3_value }}</span>
+          <span class="s404-stat__label">{{ stat_3_label }}</span>
+        </div>
+      </div>
+
+      {%- render 'global-btn', text: button_text, url: button_link, variant: 'tertiary', fit_width: false -%}
     </div>
   </div>
 </div>
@@ -404,335 +229,65 @@
   "settings": [
     {
       "type": "header",
-      "content": "Background"
-    },
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Color scheme",
-      "default": "scheme-1"
-    },
-    {
-      "type": "color_scheme",
-      "id": "dark_mode_color_scheme",
-      "label": "Dark mode color scheme",
-      "default": "scheme-4",
-      "info": "When the theme toggle is in dark mode, use this scheme for this section."
-    },
-    {
-      "type": "header",
-      "content": "Scrolling background text"
+      "content": "Right panel copy"
     },
     {
       "type": "text",
-      "id": "background_text",
-      "label": "Background text",
-      "default": "OOPS! YOU'RE"
+      "id": "label_text",
+      "label": "Small label",
+      "default": "HOUSTON, WE BREWED A PROBLEM"
     },
     {
       "type": "text",
-      "id": "background_orbit_text",
-      "label": "Orbit text",
-      "default": "404"
-    },
-    {
-      "type": "image_picker",
-      "id": "scrolling_icon",
-      "label": "Orbit icon image",
-      "info": "Optional. Uses the same circular icon style as the Scrolling Text section."
-    },
-    {
-      "type": "range",
-      "id": "background_text_speed",
-      "min": 15,
-      "max": 60,
-      "step": 1,
-      "unit": "s",
-      "label": "Scroll speed",
-      "default": 30
-    },
-    {
-      "type": "range",
-      "id": "scrolling_text_vertical_position",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "%",
-      "label": "Scrolling text vertical position",
-      "info": "0 = top, 100 = bottom",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "scrolling_text_horizontal_position",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "%",
-      "label": "Scrolling text horizontal position",
-      "info": "50 = centered",
-      "default": 50
-    },
-    {
-      "type": "header",
-      "content": "Mobile positioning"
-    },
-    {
-      "type": "paragraph",
-      "content": "These apply only on screens 749px wide and below (mobile tier)."
-    },
-    {
-      "type": "range",
-      "id": "scrolling_text_vertical_position_mobile",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "%",
-      "label": "Scrolling text vertical position (mobile)",
-      "info": "0 = top, 100 = bottom",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "scrolling_text_horizontal_position_mobile",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "%",
-      "label": "Scrolling text horizontal position (mobile)",
-      "info": "50 = centered",
-      "default": 50
-    },
-    {
-      "type": "select",
-      "id": "content_vertical_position_mobile",
-      "label": "Content vertical position (mobile)",
-      "options": [
-        {
-          "value": "flex-start",
-          "label": "Top"
-        },
-        {
-          "value": "center",
-          "label": "Center"
-        },
-        {
-          "value": "flex-end",
-          "label": "Bottom"
-        }
-      ],
-      "default": "center",
-      "info": "Where the message and button sit vertically on mobile."
-    },
-    {
-      "type": "header",
-      "content": "Scrolling text typography"
-    },
-    {
-      "type": "range",
-      "id": "scrolling_text_font_size",
-      "min": 14,
-      "max": 48,
-      "step": 2,
-      "unit": "px",
-      "label": "Scrolling text font size",
-      "default": 24
-    },
-    {
-      "type": "font_picker",
-      "id": "scrolling_text_font",
-      "label": "Font",
-      "default": "assistant_n4"
-    },
-    {
-      "type": "range",
-      "id": "scrolling_text_font_weight",
-      "min": 400,
-      "max": 900,
-      "step": 100,
-      "label": "Font weight",
-      "default": 700
-    },
-    {
-      "type": "text",
-      "id": "scrolling_text_letter_spacing",
-      "label": "Letter spacing",
-      "default": "-0.02em"
-    },
-    {
-      "type": "select",
-      "id": "scrolling_text_text_transform",
-      "label": "Text transform",
-      "options": [
-        {
-          "value": "none",
-          "label": "None"
-        },
-        {
-          "value": "uppercase",
-          "label": "Uppercase"
-        },
-        {
-          "value": "lowercase",
-          "label": "Lowercase"
-        },
-        {
-          "value": "capitalize",
-          "label": "Capitalize"
-        }
-      ],
-      "default": "uppercase"
-    },
-    {
-      "type": "header",
-      "content": "Content"
-    },
-    {
-      "type": "select",
-      "id": "hero_media_type",
-      "label": "Hero media type",
-      "options": [
-        {
-          "value": "image",
-          "label": "Image"
-        },
-        {
-          "value": "shopify_video",
-          "label": "Shopify video"
-        },
-        {
-          "value": "youtube",
-          "label": "YouTube video"
-        }
-      ],
-      "default": "image"
-    },
-    {
-      "type": "image_picker",
-      "id": "product_image",
-      "label": "Product / hero image",
-      "info": "Used when Hero media type is Image. Leave blank to use the first product's image."
-    },
-    {
-      "type": "video",
-      "id": "hero_video",
-      "label": "Shopify video",
-      "info": "Used when Hero media type is Shopify video. Upload or select a video from Settings > Files."
-    },
-    {
-      "type": "text",
-      "id": "youtube_url",
-      "label": "YouTube video URL",
-      "info": "Used when Hero media type is YouTube. Paste a full URL (e.g. youtube.com/watch?v=... or youtu.be/...)"
-    },
-    {
-      "type": "header",
-      "content": "Image / video style"
-    },
-    {
-      "type": "range",
-      "id": "image_max_width",
-      "min": 120,
-      "max": 600,
-      "step": 20,
-      "unit": "px",
-      "label": "Image max width",
-      "default": 400
-    },
-    {
-      "type": "range",
-      "id": "image_max_height",
-      "min": 0,
-      "max": 800,
-      "step": 20,
-      "unit": "px",
-      "label": "Image max height",
-      "info": "0 = no limit",
-      "default": 0
-    },
-    {
-      "type": "select",
-      "id": "image_object_fit",
-      "label": "Image fit",
-      "options": [
-        {
-          "value": "contain",
-          "label": "Contain"
-        },
-        {
-          "value": "cover",
-          "label": "Cover"
-        },
-        {
-          "value": "fill",
-          "label": "Fill"
-        }
-      ],
-      "default": "contain"
-    },
-    {
-      "type": "range",
-      "id": "image_border_radius",
-      "min": 0,
-      "max": 80,
-      "step": 4,
-      "unit": "px",
-      "label": "Image border radius",
-      "default": 0
-    },
-    {
-      "type": "header",
-      "content": "Message text (above button)"
+      "id": "heading_text",
+      "label": "Heading",
+      "default": "GONE COLDER THAN US."
     },
     {
       "type": "textarea",
-      "id": "message_text",
-      "label": "404 message",
-      "default": "This is a 404 error, which means you've clicked on a bad link or entered an invalid URL. Maybe what you are looking for can be found on the homepage."
+      "id": "body_text",
+      "label": "Body text",
+      "default": "This page does not exist. The URL you followed went cold. Its not coming back."
     },
     {
-      "type": "font_picker",
-      "id": "message_font",
-      "label": "Message font",
-      "default": "assistant_n4"
+      "type": "header",
+      "content": "Stats row"
     },
     {
-      "type": "range",
-      "id": "message_font_size",
-      "min": 12,
-      "max": 24,
-      "step": 1,
-      "unit": "px",
-      "label": "Message font size",
-      "default": 16
+      "type": "text",
+      "id": "stat_1_value",
+      "label": "Stat 1 value",
+      "default": "72h"
     },
     {
-      "type": "range",
-      "id": "message_font_size_mobile",
-      "min": 12,
-      "max": 22,
-      "step": 1,
-      "unit": "px",
-      "label": "Message font size (mobile)",
-      "default": 15
+      "type": "text",
+      "id": "stat_1_label",
+      "label": "Stat 1 label",
+      "default": "Our brew time. Where to next?"
     },
     {
-      "type": "range",
-      "id": "message_font_weight",
-      "min": 300,
-      "max": 700,
-      "step": 100,
-      "label": "Message font weight",
-      "default": 400
+      "type": "text",
+      "id": "stat_2_value",
+      "label": "Stat 2 value",
+      "default": "0s"
     },
     {
-      "type": "range",
-      "id": "message_line_height",
-      "min": 1.2,
-      "max": 2.2,
-      "step": 0.1,
-      "label": "Message line height",
-      "default": 1.6
+      "type": "text",
+      "id": "stat_2_label",
+      "label": "Stat 2 label",
+      "default": "This page's lifespan"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_value",
+      "label": "Stat 3 value",
+      "default": "404"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_label",
+      "label": "Stat 3 label",
+      "default": "Not Our Finest"
     },
     {
       "type": "header",
@@ -742,204 +297,13 @@
       "type": "text",
       "id": "button_text",
       "label": "Button text",
-      "default": "Take me to Home"
+      "default": "TAKE ME TO HOME"
     },
     {
       "type": "url",
       "id": "button_link",
       "label": "Button link",
       "default": "/"
-    },
-    {
-      "type": "header",
-      "content": "Button styling"
-    },
-    {
-      "type": "range",
-      "id": "button_font_size",
-      "min": 12,
-      "max": 24,
-      "step": 1,
-      "unit": "px",
-      "label": "Font size",
-      "default": 16
-    },
-    {
-      "type": "range",
-      "id": "button_font_weight",
-      "min": 400,
-      "max": 900,
-      "step": 100,
-      "label": "Font weight",
-      "default": 700
-    },
-    {
-      "type": "range",
-      "id": "button_padding_vertical",
-      "min": 8,
-      "max": 36,
-      "step": 2,
-      "unit": "px",
-      "label": "Padding (vertical)",
-      "default": 16
-    },
-    {
-      "type": "range",
-      "id": "button_padding_horizontal",
-      "min": 12,
-      "max": 56,
-      "step": 2,
-      "unit": "px",
-      "label": "Padding (horizontal)",
-      "default": 28
-    },
-    {
-      "type": "range",
-      "id": "button_border_radius",
-      "min": 0,
-      "max": 100,
-      "step": 2,
-      "unit": "px",
-      "label": "Border radius",
-      "default": 20
-    },
-    {
-      "type": "range",
-      "id": "button_border_width",
-      "min": 0,
-      "max": 4,
-      "step": 1,
-      "unit": "px",
-      "label": "Border width",
-      "default": 2
-    },
-    {
-      "type": "text",
-      "id": "button_letter_spacing",
-      "label": "Letter spacing",
-      "default": "0.02em"
-    },
-    {
-      "type": "select",
-      "id": "button_width",
-      "label": "Button width",
-      "options": [
-        {
-          "value": "auto",
-          "label": "Auto (fit content)"
-        },
-        {
-          "value": "full",
-          "label": "Full width"
-        }
-      ],
-      "default": "auto"
-    },
-    {
-      "type": "range",
-      "id": "button_max_width",
-      "min": 0,
-      "max": 600,
-      "step": 20,
-      "unit": "px",
-      "label": "Max width",
-      "info": "0 = no limit",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "button_margin_top",
-      "min": 0,
-      "max": 48,
-      "step": 2,
-      "unit": "px",
-      "label": "Margin top (spacing above button)",
-      "default": 4
-    },
-    {
-      "type": "range",
-      "id": "button_margin_bottom",
-      "min": 0,
-      "max": 48,
-      "step": 2,
-      "unit": "px",
-      "label": "Margin bottom",
-      "default": 0
-    },
-    {
-      "type": "header",
-      "content": "Button styling (mobile)"
-    },
-    {
-      "type": "range",
-      "id": "button_font_size_mobile",
-      "min": 12,
-      "max": 22,
-      "step": 1,
-      "unit": "px",
-      "label": "Font size (mobile)",
-      "default": 15
-    },
-    {
-      "type": "range",
-      "id": "button_padding_vertical_mobile",
-      "min": 8,
-      "max": 32,
-      "step": 2,
-      "unit": "px",
-      "label": "Padding vertical (mobile)",
-      "default": 14
-    },
-    {
-      "type": "range",
-      "id": "button_padding_horizontal_mobile",
-      "min": 12,
-      "max": 48,
-      "step": 2,
-      "unit": "px",
-      "label": "Padding horizontal (mobile)",
-      "default": 24
-    },
-    {
-      "type": "range",
-      "id": "button_border_radius_mobile",
-      "min": 0,
-      "max": 100,
-      "step": 2,
-      "unit": "px",
-      "label": "Border radius (mobile)",
-      "default": 20
-    },
-    {
-      "type": "range",
-      "id": "button_max_width_mobile",
-      "min": 0,
-      "max": 400,
-      "step": 20,
-      "unit": "px",
-      "label": "Max width (mobile)",
-      "info": "0 = use 320px default",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "button_margin_top_mobile",
-      "min": 0,
-      "max": 40,
-      "step": 2,
-      "unit": "px",
-      "label": "Margin top (mobile)",
-      "default": 4
-    },
-    {
-      "type": "range",
-      "id": "button_margin_bottom_mobile",
-      "min": 0,
-      "max": 40,
-      "step": 2,
-      "unit": "px",
-      "label": "Margin bottom (mobile)",
-      "default": 0
     }
   ]
 }
