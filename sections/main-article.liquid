@@ -2,12 +2,21 @@
 
 {%- liquid
   assign has_sidebar = false
+  assign has_section_header = false
   for block in section.blocks
     if block.type == 'image_and_socials'
       assign has_sidebar = true
-      break
+    endif
+    if block.type == 'section_header'
+      assign has_section_header = true
     endif
   endfor
+
+  assign article_word_count = article.content | strip_html | split: ' ' | size
+  assign article_read_minutes = article_word_count | divided_by: 200
+  if article_read_minutes < 1
+    assign article_read_minutes = 1
+  endif
 -%}
 
 {%- style -%}
@@ -33,9 +42,48 @@
     }
   }
 
-  /* Dynamic Design Overrides - from heading block */
+  /* Dynamic Design Overrides - per block type */
   {%- for block in section.blocks -%}
-    {%- if block.type == 'heading' -%}
+    {%- if block.type == 'section_header' -%}
+  #shopify-section-{{ section.id }} .section-header-snippet-{{ block.id }} {
+    padding-top: {{ block.settings.header_padding_top | default: 20 }}px;
+    padding-bottom: {{ block.settings.header_padding_bottom | default: 20 }}px;
+    padding-left: {{ block.settings.header_padding_horizontal | default: 20 }}px;
+    padding-right: {{ block.settings.header_padding_horizontal | default: 20 }}px;
+    border-radius: {{ block.settings.header_border_radius | default: 20 }}px;
+  }
+  #shopify-section-{{ section.id }} .section-header-snippet-{{ block.id }} .section-header-snippet__title {
+    font-size: {{ block.settings.title_font_size | default: 3.2 }}rem;
+    font-weight: {{ block.settings.title_font_weight | default: 700 }};
+    line-height: {{ block.settings.title_line_height | default: 1.2 }};
+    letter-spacing: {{ block.settings.title_letter_spacing | default: 0 }}px;
+    text-transform: {{ block.settings.title_text_transform | default: 'none' }};
+    margin-bottom: {{ block.settings.title_margin_bottom | default: 20 }}px;
+  }
+  #shopify-section-{{ section.id }} .section-header-snippet-{{ block.id }} .section-header-snippet__badge {
+    font-size: {{ block.settings.header_badge_font_size | default: 14 }}px;
+    font-weight: {{ block.settings.header_badge_font_weight | default: 600 }};
+    padding: {{ block.settings.header_badge_padding_vertical | default: 4 }}px {{ block.settings.header_badge_padding_horizontal | default: 16 }}px;
+    margin-bottom: {{ block.settings.header_badge_margin_bottom | default: 14 }}px;
+    border-width: {{ block.settings.header_badge_border_width | default: 1 }}px;
+    border-radius: {{ block.settings.header_badge_border_radius | default: 20 }}px;
+    text-transform: {{ block.settings.header_badge_text_transform | default: 'uppercase' }};
+  }
+  #shopify-section-{{ section.id }} .section-header-snippet-{{ block.id }} .section-header-snippet__description {
+    font-size: {{ block.settings.header_description_font_size | default: 16 }}px;
+    font-weight: {{ block.settings.header_description_font_weight | default: 400 }};
+    line-height: {{ block.settings.header_description_line_height | default: 1.5 }};
+    margin-top: {{ block.settings.header_description_margin_top | default: 10 }}px;
+  }
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section.id }} .section-header-snippet-{{ block.id }} .section-header-snippet__title {
+      font-size: {{ block.settings.title_font_size_mobile | default: 2.5 }}rem;
+    }
+    #shopify-section-{{ section.id }} .section-header-snippet-{{ block.id }} .section-header-snippet__description {
+      font-size: {{ block.settings.header_description_font_size_mobile | default: 14 }}px;
+    }
+  }
+    {%- elsif block.type == 'heading' -%}
   #shopify-section-{{ section.id }} .article-category-pill {
     border: 1px solid var(--color-link);
     color: var(--color-link);
@@ -93,14 +141,14 @@
     text-align: {{ block.settings.value_alignment_mobile }};
   }
   #shopify-section-{{ section.id }} .article-sidebar .tag-pill {
-    border-radius: {{ block.settings.tag_border_radius_mobile }}px;
-    border-color: var(--color-link);
-    color: var(--color-link);
-    background: var(--color-card-bg);
+    border-radius: {{ block.settings.tag_border_radius_mobile | default: 24 }}px;
+    border-color: var(--color-text);
+    color: var(--color-text);
+    background: transparent;
   }
   #shopify-section-{{ section.id }} .article-sidebar .tag-pill:hover {
-    background: var(--color-link);
-    color: var(--btn-primary-text);
+    background: color-mix(in srgb, var(--color-text) 15%, transparent);
+    color: var(--color-text);
   }
   #shopify-section-{{ section.id }} .article-sidebar .article-meta-group {
     display: flex;
@@ -108,9 +156,9 @@
     align-items: {% if block.settings.value_alignment_mobile == 'left' %}flex-start{% elsif block.settings.value_alignment_mobile == 'right' %}flex-end{% else %}center{% endif %};
   }
   #shopify-section-{{ section.id }} .article-sidebar .article-tags-container {
-    display: grid;
-    grid-template-columns: repeat({{ block.settings.tags_per_row_mobile | default: 2 }}, 1fr);
-    justify-content: {% if block.settings.value_alignment_mobile == 'left' %}start{% elsif block.settings.value_alignment_mobile == 'right' %}end{% else %}center{% endif %};
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
   }
   #shopify-section-{{ section.id }} .article-sidebar .custom-share-icons {
     gap: {{ block.settings.social_icon_gap_mobile }}px;
@@ -128,8 +176,9 @@
       align-items: {% if block.settings.value_alignment_mobile == 'left' %}flex-start{% elsif block.settings.value_alignment_mobile == 'right' %}flex-end{% else %}center{% endif %} !important;
     }
     #shopify-section-{{ section.id }} .article-sidebar .article-tags-container {
-      grid-template-columns: repeat({{ block.settings.tags_per_row_mobile | default: 2 }}, 1fr);
-      justify-content: {% if block.settings.value_alignment_mobile == 'left' %}start{% elsif block.settings.value_alignment_mobile == 'right' %}end{% else %}center{% endif %} !important;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
     }
     #shopify-section-{{ section.id }} .article-sidebar .custom-share-icons {
       justify-content: {% if block.settings.value_alignment_mobile == 'left' %}flex-start{% elsif block.settings.value_alignment_mobile == 'right' %}flex-end{% else %}center{% endif %} !important;
@@ -173,8 +222,9 @@
       align-self: {% if block.settings.label_alignment_desktop == 'left' %}flex-start{% elsif block.settings.label_alignment_desktop == 'right' %}flex-end{% else %}center{% endif %};
     }
     #shopify-section-{{ section.id }} .article-sidebar .article-tags-container {
-      grid-template-columns: repeat({{ block.settings.tags_per_row_desktop | default: 2 }}, 1fr);
-      justify-content: {% if block.settings.value_alignment_desktop == 'left' %}start{% elsif block.settings.value_alignment_desktop == 'right' %}end{% else %}center{% endif %};
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
     }
     #shopify-section-{{ section.id }} .article-sidebar .custom-share-icons {
       gap: {{ block.settings.social_icon_gap_desktop }}px;
@@ -298,7 +348,44 @@
 <div class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }}">
   <article class="article-template" itemscope itemtype="http://schema.org/BlogPosting">
     {%- for block in section.blocks -%}
-      {%- if block.type == 'heading' -%}
+      {%- if block.type == 'section_header' -%}
+        {%- render 'section-header',
+          id: block.id,
+          show_badge: block.settings.show_badge,
+          badge_text: block.settings.badge_text,
+          title: article.title,
+          description: block.settings.header_box_description,
+          title_alignment: block.settings.title_alignment,
+          title_font_size: block.settings.title_font_size,
+          title_font_weight: block.settings.title_font_weight,
+          title_line_height: block.settings.title_line_height,
+          title_letter_spacing: block.settings.title_letter_spacing,
+          title_text_transform: block.settings.title_text_transform,
+          title_margin_bottom: block.settings.title_margin_bottom,
+          header_padding_top: block.settings.header_padding_top,
+          header_padding_bottom: block.settings.header_padding_bottom,
+          header_padding_horizontal: block.settings.header_padding_horizontal,
+          badge_font_size: block.settings.header_badge_font_size,
+          badge_font_weight: block.settings.header_badge_font_weight,
+          badge_padding_vertical: block.settings.header_badge_padding_vertical,
+          badge_padding_horizontal: block.settings.header_badge_padding_horizontal,
+          badge_margin_bottom: block.settings.header_badge_margin_bottom,
+          badge_text_color: block.settings.header_badge_text_color,
+          badge_border_color: block.settings.header_badge_border_color,
+          badge_border_width: block.settings.header_badge_border_width,
+          badge_border_radius: block.settings.header_badge_border_radius,
+          badge_text_transform: block.settings.header_badge_text_transform,
+          description_font_size: block.settings.header_description_font_size,
+          description_font_weight: block.settings.header_description_font_weight,
+          description_line_height: block.settings.header_description_line_height,
+          description_margin_top: block.settings.header_description_margin_top,
+          title_font_size_mobile: block.settings.title_font_size_mobile,
+          description_font_size_mobile: block.settings.header_description_font_size_mobile,
+          border_radius: block.settings.header_border_radius
+        -%}
+      {%- endif -%}
+
+      {%- if block.type == 'heading' and has_section_header == false -%}
         <header class="article-header" {{ block.shopify_attributes }}>
           {%- if block.settings.show_category_pill -%}
             <span class="article-category-pill">{{ block.settings.category_pill_text }}</span>
@@ -312,153 +399,180 @@
       {%- for block in section.blocks -%}
         {%- if block.type == 'image_and_socials' -%}
           <aside class="article-sidebar" {{ block.shopify_attributes }}>
-            {%- if article.image -%}
-              <div class="article-image-wrapper">
+            <!-- Brand / Article Image Circle -->
+            <div class="article-brand-circle">
+              {%- if article.image -%}
                 <img
-                  srcset="
-                    {% if article.image.width >= 350 %}{{ article.image | image_url: width: 350 }} 350w,{% endif %}
-                    {% if article.image.width >= 750 %}{{ article.image | image_url: width: 750 }} 750w,{% endif %}
-                    {{ article.image | image_url: width: 1100 }} 1100w
-                  "
-                  sizes="(min-width: 990px) 350px, 100vw"
-                  src="{{ article.image | image_url: width: 750 }}"
-                  loading="eager"
-                  width="{{ article.image.width }}"
-                  height="{{ article.image.height }}"
+                  src="{{ article.image | image_url: width: 300 }}"
                   alt="{{ article.image.alt | escape }}"
-                  class="article-image"
+                  class="article-brand-circle__img"
+                  loading="eager"
+                  height="100"
+                  width="100"
                 >
-              </div>
-            {%- endif -%}
+              {%- else -%}
+                <span class="article-brand-circle__fallback">{{ shop.name | truncate: 4, '' | upcase }}</span>
+              {%- endif -%}
+            </div>
 
-            {%- if block.settings.show_author or block.settings.show_date -%}
-              <div class="article-meta-group">
-                <span class="article-meta-label">
-                  {%- if block.settings.show_author -%}BY {{ article.author | upcase }}{%- endif -%}
-                </span>
-                {%- if block.settings.show_date -%}
-                  <span class="article-meta-value">{{ article.published_at | time_tag: format: 'date' }}</span>
-                {%- endif -%}
-              </div>
-            {%- endif -%}
-
-            {%- if block.settings.show_tags and article.tags.size > 0 -%}
-              <div class="article-meta-group">
-                <span class="article-meta-label">TAGS</span>
-                <div class="article-tags-container">
-                  {%- for tag in article.tags -%}
-                    <span class="article-meta-value tag-pill">{{ tag | upcase }}</span>
-                  {%- endfor -%}
-                </div>
-              </div>
-            {%- endif -%}
-
-            {%- if block.settings.show_share -%}
-              <div class="article-meta-group">
-                <span class="article-meta-label">SHARE</span>
-                <div class="custom-share-icons">
-                  {%- if block.settings.link_instagram != blank -%}
-                    <a
-                      href="{{ block.settings.link_instagram }}"
-                      class="custom-share-link"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label="Instagram"
-                    >
-                      {%- if block.settings.icon_instagram != blank -%}
-                        {{
-                          block.settings.icon_instagram
-                          | image_url: width: 40
-                          | image_tag: class: 'custom-share-icon', loading: 'lazy'
-                        }}
-                      {%- else -%}
-                        {{- 'icon-send.svg' | inline_asset_content -}}
-                      {%- endif -%}
-                    </a>
+            <div class="article-sidebar__meta">
+              {%- if block.settings.show_author or block.settings.show_date -%}
+                <div class="article-meta-group">
+                  {%- if block.settings.show_author -%}
+                    <span class="article-meta-label">BY {{ article.author | upcase }}</span>
                   {%- endif -%}
-
-                  {%- if block.settings.link_facebook != blank -%}
-                    <a
-                      href="{{ block.settings.link_facebook }}"
-                      class="custom-share-link"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label="Facebook"
-                    >
-                      {%- if block.settings.icon_facebook != blank -%}
-                        {{
-                          block.settings.icon_facebook
-                          | image_url: width: 40
-                          | image_tag: class: 'custom-share-icon', loading: 'lazy'
-                        }}
-                      {%- else -%}
-                        {{- 'icon-send.svg' | inline_asset_content -}}
-                      {%- endif -%}
-                    </a>
-                  {%- endif -%}
-
-                  {%- if block.settings.link_twitter != blank -%}
-                    <a
-                      href="{{ block.settings.link_twitter }}"
-                      class="custom-share-link"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label="Twitter"
-                    >
-                      {%- if block.settings.icon_twitter != blank -%}
-                        {{
-                          block.settings.icon_twitter
-                          | image_url: width: 40
-                          | image_tag: class: 'custom-share-icon', loading: 'lazy'
-                        }}
-                      {%- else -%}
-                        {{- 'icon-send.svg' | inline_asset_content -}}
-                      {%- endif -%}
-                    </a>
-                  {%- endif -%}
-
-                  {%- if block.settings.link_whatsapp != blank -%}
-                    <a
-                      href="{{ block.settings.link_whatsapp }}"
-                      class="custom-share-link"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label="WhatsApp"
-                    >
-                      {%- if block.settings.icon_whatsapp != blank -%}
-                        {{
-                          block.settings.icon_whatsapp
-                          | image_url: width: 40
-                          | image_tag: class: 'custom-share-icon', loading: 'lazy'
-                        }}
-                      {%- else -%}
-                        {{- 'icon-send.svg' | inline_asset_content -}}
-                      {%- endif -%}
-                    </a>
-                  {%- endif -%}
-
-                  {%- if block.settings.link_telegram != blank -%}
-                    <a
-                      href="{{ block.settings.link_telegram }}"
-                      class="custom-share-link"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label="Telegram"
-                    >
-                      {%- if block.settings.icon_telegram != blank -%}
-                        {{
-                          block.settings.icon_telegram
-                          | image_url: width: 40
-                          | image_tag: class: 'custom-share-icon', loading: 'lazy'
-                        }}
-                      {%- else -%}
-                        {{- 'icon-send.svg' | inline_asset_content -}}
-                      {%- endif -%}
-                    </a>
+                  {%- if block.settings.show_date -%}
+                    <span class="article-meta-value">{{ article.published_at | date: '%-d %B %Y' | upcase }}</span>
                   {%- endif -%}
                 </div>
-              </div>
-            {%- endif -%}
+              {%- endif -%}
+
+              {%- if block.settings.show_tags and article.tags.size > 0 -%}
+                <div class="article-meta-group">
+                  <span class="article-meta-label">TAGS</span>
+                  <div class="article-tags-container">
+                    {%- for tag in article.tags -%}
+                      <span class="tag-pill">{{ tag | upcase }}</span>
+                    {%- endfor -%}
+                  </div>
+                </div>
+              {%- endif -%}
+
+              {%- if block.settings.show_share -%}
+                <div class="article-meta-group">
+                  <span class="article-meta-label">SHARE</span>
+                  <div class="custom-share-icons">
+                    {%- if block.settings.link_instagram != blank -%}
+                      <a
+                        href="{{ block.settings.link_instagram }}"
+                        class="custom-share-link"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Instagram"
+                      >
+                        {%- if block.settings.icon_instagram != blank -%}
+                          {{
+                            block.settings.icon_instagram
+                            | image_url: width: 40
+                            | image_tag: class: 'custom-share-icon', loading: 'lazy'
+                          }}
+                        {%- else -%}
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          >
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+                          </svg>
+                        {%- endif -%}
+                      </a>
+                    {%- endif -%}
+                    {%- if block.settings.link_facebook != blank -%}
+                      <a
+                        href="{{ block.settings.link_facebook }}"
+                        class="custom-share-link"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Facebook"
+                      >
+                        {%- if block.settings.icon_facebook != blank -%}
+                          {{
+                            block.settings.icon_facebook
+                            | image_url: width: 40
+                            | image_tag: class: 'custom-share-icon', loading: 'lazy'
+                          }}
+                        {%- else -%}
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          >
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                          </svg>
+                        {%- endif -%}
+                      </a>
+                    {%- endif -%}
+                    {%- if block.settings.link_twitter != blank -%}
+                      <a
+                        href="{{ block.settings.link_twitter }}"
+                        class="custom-share-link"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="X / Twitter"
+                      >
+                        {%- if block.settings.icon_twitter != blank -%}
+                          {{
+                            block.settings.icon_twitter
+                            | image_url: width: 40
+                            | image_tag: class: 'custom-share-icon', loading: 'lazy'
+                          }}
+                        {%- else -%}
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                          </svg>
+                        {%- endif -%}
+                      </a>
+                    {%- endif -%}
+                    {%- if block.settings.link_whatsapp != blank -%}
+                      <a
+                        href="{{ block.settings.link_whatsapp }}"
+                        class="custom-share-link"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="WhatsApp"
+                      >
+                        {%- if block.settings.icon_whatsapp != blank -%}
+                          {{
+                            block.settings.icon_whatsapp
+                            | image_url: width: 40
+                            | image_tag: class: 'custom-share-icon', loading: 'lazy'
+                          }}
+                        {%- else -%}
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+                          </svg>
+                        {%- endif -%}
+                      </a>
+                    {%- endif -%}
+                    {%- if block.settings.link_telegram != blank -%}
+                      <a
+                        href="{{ block.settings.link_telegram }}"
+                        class="custom-share-link"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Telegram"
+                      >
+                        {%- if block.settings.icon_telegram != blank -%}
+                          {{
+                            block.settings.icon_telegram
+                            | image_url: width: 40
+                            | image_tag: class: 'custom-share-icon', loading: 'lazy'
+                          }}
+                        {%- else -%}
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                          </svg>
+                        {%- endif -%}
+                      </a>
+                    {%- endif -%}
+                  </div>
+                </div>
+              {%- endif -%}
+
+              {%- if block.settings.show_read_time -%}
+                <div class="article-meta-group--read-time">
+                  <span class="article-read-time-pill">{{ article_read_minutes }} MIN READ</span>
+                </div>
+              {%- endif -%}
+            </div>
           </aside>
         {%- endif -%}
       {%- endfor -%}
@@ -482,6 +596,28 @@
             {%- endcase -%}
           {%- endfor -%}
         </div>
+
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'author_card' -%}
+            <div class="article-author-card" {{ block.shopify_attributes }}>
+              <div class="article-author-avatar">
+                {{- article.author | slice: 0, 2 | upcase -}}
+              </div>
+              <div class="article-author-info">
+                <div class="article-author-meta">
+                  <span class="article-author-label">WRITTEN BY</span>
+                  <span class="article-author-name">{{ article.author }}</span>
+                  {%- if block.settings.author_role != blank -%}
+                    <span class="article-author-role">{{ block.settings.author_role }}</span>
+                  {%- endif -%}
+                </div>
+                {%- if block.settings.author_bio != blank -%}
+                  <p class="article-author-bio">{{ block.settings.author_bio }}</p>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
 
         {%- for block in section.blocks -%}
           {%- if block.type == 'comment_box' and blog.comments_enabled? -%}
@@ -606,54 +742,62 @@
                       {%- endif -%}
                     </div>
 
-                    {%- if blog.moderated? -%}
-                      <p class="article-template__comment-warning caption">{{ 'blogs.article.moderated' | t }}</p>
-                    {%- endif -%}
-
-                    {%- assign button_text = 'blogs.article.post' | t -%}
-                    {% render 'global-btn', text: button_text, type: 'submit', class: 'share-story-submit' %}
+                    <div class="article-comment-submit-row">
+                      {%- assign button_text = 'blogs.article.post' | t -%}
+                      {% render 'global-btn',
+                        text: button_text,
+                        type: 'submit',
+                        variant: 'secondary',
+                        fit_width: false,
+                        class: 'share-story-submit'
+                      %}
+                      {%- if blog.moderated? -%}
+                        <p class="article-comment-moderation-note">{{ 'blogs.article.moderated' | t }}</p>
+                      {%- endif -%}
+                    </div>
                   </div>
                 {% endform %}
 
-                {%- if article.comments_count > 0 -%}
-                  <!-- STYLED COMMENTS LIST CARD -->
-                  <div class="article-comment-card">
-                    {%- assign anchor_id = '#Comments-' | append: article.id -%}
-                    <h4 id="Comments-{{ article.id }}" tabindex="-1">
-                      {{ 'blogs.article.comments' | t: count: article.comments_count }}
-                    </h4>
-                    {% paginate article.comments by 5 %}
-                      <div class="article-template__comments">
-                        {%- if comment.status == 'pending' and comment.content -%}
-                          <article
-                            id="{{ comment.id }}"
-                            class="article-template__comments-comment article-posted-comment-card"
-                          >
-                            {{ comment.content }}
-                            <footer class="right">
-                              <span class="circle-divider caption-with-letter-spacing">{{ comment.author }}</span>
-                            </footer>
-                          </article>
-                        {%- endif -%}
-                        {%- for comment in article.comments -%}
-                          <article
-                            id="{{ comment.id }}"
-                            class="article-template__comments-comment article-posted-comment-card"
-                          >
-                            {{ comment.content }}
-                            <footer class="right">
-                              <span class="circle-divider caption-with-letter-spacing">{{ comment.author }}</span>
-                              <span class="caption-with-letter-spacing">
-                                {{- comment.created_at | time_tag: format: 'date' -}}
-                              </span>
-                            </footer>
-                          </article>
-                        {%- endfor -%}
-                        {% render 'pagination', paginate: paginate, anchor: anchor_id %}
-                      </div>
-                    {% endpaginate %}
-                  </div>
-                {%- endif -%}
+                <!-- STYLED COMMENTS LIST CARD -->
+                <div class="article-comment-card article-comments-list-card">
+                  <p class="article-comments-count">{{ 'blogs.article.comments' | t: count: article.comments_count | upcase }}</p>
+                  {%- assign anchor_id = '#Comments-' | append: article.id -%}
+                  {% paginate article.comments by 2 %}
+                    <div class="article-template__comments" id="Comments-{{ article.id }}" tabindex="-1">
+                      {%- if comment.status == 'pending' and comment.content -%}
+                        <article id="{{ comment.id }}" class="article-posted-comment-card">
+                          <div class="article-posted-comment-body">{{ comment.content }}</div>
+                          <footer class="article-posted-comment-footer">
+                            <span class="article-posted-comment-author">{{ comment.author | upcase }}</span>
+                          </footer>
+                        </article>
+                      {%- endif -%}
+                      {%- for comment in article.comments -%}
+                        <article id="{{ comment.id }}" class="article-posted-comment-card">
+                          <div class="article-posted-comment-body">{{ comment.content }}</div>
+                          <footer class="article-posted-comment-footer">
+                            <span class="article-posted-comment-author">{{ comment.author | upcase }}</span>
+                            <span class="article-posted-comment-date">
+                              {{- comment.created_at | date: '%B %-d, %Y' | upcase -}}
+                            </span>
+                          </footer>
+                        </article>
+                      {%- endfor -%}
+                      {% render 'pagination', paginate: paginate, anchor: anchor_id %}
+                    </div>
+                  {% endpaginate %}
+                  {%- if article.comments_count > 2 -%}
+                    <div class="article-comments-footer">
+                      {%-
+                        render 'global-btn',
+                        text: 'SEE ALL COMMENTS',
+                        url: article.url | append: '?page=all#Comments-' | append: article.id,
+                        variant: 'secondary',
+                        fit_width: false
+                      -%}
+                    </div>
+                  {%- endif -%}
+                </div>
               </div>
             </div>
           {%- endif -%}
@@ -698,7 +842,7 @@
       "step": 4,
       "unit": "px",
       "label": "t:sections.all.padding.padding_top",
-      "default": 36
+      "default": 0
     },
     {
       "type": "range",
@@ -718,7 +862,7 @@
       "step": 2,
       "unit": "px",
       "label": "Mobile Padding Top",
-      "default": 10
+      "default": 0
     },
     {
       "type": "range",
@@ -762,7 +906,7 @@
       "step": 10,
       "unit": "px",
       "label": "Desktop Margin Horizontal",
-      "default": 10
+      "default": 0
     },
     {
       "type": "header",
@@ -776,7 +920,7 @@
       "step": 1,
       "unit": "px",
       "label": "Mobile Margin Left",
-      "default": 10
+      "default": 0
     },
     {
       "type": "range",
@@ -786,10 +930,284 @@
       "step": 1,
       "unit": "px",
       "label": "Mobile Margin Right",
-      "default": 10
+      "default": 0
     }
   ],
   "blocks": [
+    {
+      "type": "section_header",
+      "name": "Section Header",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_badge",
+          "label": "Show Badge in Header",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Header Badge Text",
+          "default": "Blog"
+        },
+        {
+          "type": "textarea",
+          "id": "header_box_description",
+          "label": "Header Box Description",
+          "default": "Share with us"
+        },
+        {
+          "type": "select",
+          "id": "title_alignment",
+          "label": "Title Alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "range",
+          "id": "title_font_size",
+          "label": "Title Font Size (rem)",
+          "min": 1,
+          "max": 10,
+          "step": 0.1,
+          "default": 3.2
+        },
+        {
+          "type": "range",
+          "id": "title_font_weight",
+          "label": "Title Font Weight",
+          "min": 100,
+          "max": 900,
+          "step": 100,
+          "default": 700
+        },
+        {
+          "type": "range",
+          "id": "title_line_height",
+          "label": "Title Line Height",
+          "min": 0.8,
+          "max": 2,
+          "step": 0.1,
+          "default": 1.2
+        },
+        {
+          "type": "range",
+          "id": "title_letter_spacing",
+          "label": "Title Letter Spacing (px)",
+          "min": -5,
+          "max": 10,
+          "step": 1,
+          "default": 0
+        },
+        {
+          "type": "select",
+          "id": "title_text_transform",
+          "label": "Title Text Transform",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "uppercase", "label": "Uppercase" },
+            { "value": "lowercase", "label": "Lowercase" },
+            { "value": "capitalize", "label": "Capitalize" }
+          ],
+          "default": "none"
+        },
+        {
+          "type": "range",
+          "id": "title_margin_bottom",
+          "label": "Title Bottom Margin (px)",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "default": 20
+        },
+        {
+          "type": "header",
+          "content": "Badge Styling"
+        },
+        {
+          "type": "range",
+          "id": "header_badge_font_size",
+          "label": "Badge Font Size (px)",
+          "min": 10,
+          "max": 24,
+          "step": 1,
+          "default": 14
+        },
+        {
+          "type": "range",
+          "id": "header_badge_font_weight",
+          "label": "Badge Font Weight",
+          "min": 100,
+          "max": 900,
+          "step": 100,
+          "default": 600
+        },
+        {
+          "type": "range",
+          "id": "header_badge_padding_vertical",
+          "label": "Badge Padding Vertical (px)",
+          "min": 0,
+          "max": 20,
+          "step": 1,
+          "default": 4
+        },
+        {
+          "type": "range",
+          "id": "header_badge_padding_horizontal",
+          "label": "Badge Padding Horizontal (px)",
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "header_badge_margin_bottom",
+          "label": "Badge Margin Bottom (px)",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "default": 14
+        },
+        {
+          "type": "range",
+          "id": "header_badge_border_width",
+          "label": "Badge Border Width (px)",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "default": 1
+        },
+        {
+          "type": "range",
+          "id": "header_badge_border_radius",
+          "label": "Badge Border Radius (px)",
+          "min": 0,
+          "max": 50,
+          "step": 2,
+          "default": 20
+        },
+        {
+          "type": "select",
+          "id": "header_badge_text_transform",
+          "label": "Badge Text Transform",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "uppercase", "label": "Uppercase" },
+            { "value": "lowercase", "label": "Lowercase" },
+            { "value": "capitalize", "label": "Capitalize" }
+          ],
+          "default": "uppercase"
+        },
+        {
+          "type": "header",
+          "content": "Description Settings"
+        },
+        {
+          "type": "range",
+          "id": "header_description_font_size",
+          "label": "Description Font Size (px)",
+          "min": 12,
+          "max": 24,
+          "step": 1,
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "header_description_font_weight",
+          "label": "Description Font Weight",
+          "min": 300,
+          "max": 700,
+          "step": 100,
+          "default": 400
+        },
+        {
+          "type": "range",
+          "id": "header_description_line_height",
+          "label": "Description Line Height",
+          "min": 1,
+          "max": 2,
+          "step": 0.1,
+          "default": 1.5
+        },
+        {
+          "type": "range",
+          "id": "header_description_margin_top",
+          "label": "Description Margin Top (px)",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "header_border_radius",
+          "label": "Header border radius (px)",
+          "min": 0,
+          "max": 100,
+          "step": 2,
+          "default": 20
+        },
+        {
+          "type": "header",
+          "content": "Container Spacing"
+        },
+        {
+          "type": "range",
+          "id": "header_padding_top",
+          "label": "Header Padding Top (px)",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "default": 20
+        },
+        {
+          "type": "range",
+          "id": "header_padding_bottom",
+          "label": "Header Padding Bottom (px)",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "default": 20
+        },
+        {
+          "type": "range",
+          "id": "header_padding_horizontal",
+          "label": "Header Padding Horizontal (px)",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "default": 20
+        },
+        {
+          "type": "header",
+          "content": "Mobile Settings"
+        },
+        {
+          "type": "range",
+          "id": "title_font_size_mobile",
+          "label": "Title Font Size - Mobile (rem)",
+          "min": 1,
+          "max": 5,
+          "step": 0.1,
+          "default": 2.5
+        },
+        {
+          "type": "range",
+          "id": "header_description_font_size_mobile",
+          "label": "Description Font Size - Mobile (px)",
+          "min": 10,
+          "max": 20,
+          "step": 1,
+          "default": 14
+        }
+      ]
+    },
     {
       "type": "heading",
       "name": "Heading",
@@ -1164,6 +1582,12 @@
           "type": "checkbox",
           "id": "show_share",
           "label": "Show social icons",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_read_time",
+          "label": "Show read time",
           "default": true
         },
         {
@@ -1929,6 +2353,25 @@
           "unit": "px",
           "label": "Card Padding Horizontal",
           "default": 24
+        }
+      ]
+    },
+    {
+      "type": "author_card",
+      "name": "Author Card",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "author_role",
+          "label": "Author Role",
+          "default": "Head of Product, KOKO"
+        },
+        {
+          "type": "textarea",
+          "id": "author_bio",
+          "label": "Author Bio",
+          "default": "Mia oversees every aspect of the KOKO product from bean selection to bottling. She's been making cold brew for nine years. Previously at Blue Bottle and Onyx Coffee Lab."
         }
       ]
     },

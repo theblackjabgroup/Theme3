@@ -1,15 +1,16 @@
 {
   "sections": {
-    "breadcrumbs": {
-      "type": "breadcrumbs",
-      "settings": {
-        "padding_horizontal": 16,
-        "padding_horizontal_mobile": 16
-      }
-    },
     "main": {
       "type": "main-article",
       "blocks": {
+        "section_header": {
+          "type": "section_header",
+          "settings": {
+            "show_badge": true,
+            "badge_text": "Blog",
+            "header_box_description": "Share with us"
+          }
+        },
         "heading": {
           "type": "heading",
           "settings": {
@@ -25,6 +26,7 @@
             "show_date": true,
             "show_tags": true,
             "show_share": true,
+            "show_read_time": true,
             "link_instagram": "/",
             "link_facebook": "/",
             "link_twitter": "/",
@@ -36,14 +38,42 @@
           "type": "content",
           "settings": {}
         },
+        "author_card": {
+          "type": "author_card",
+          "settings": {
+            "author_role": "Head of Product, KOKO",
+            "author_bio": "Mia oversees every aspect of the KOKO product from bean selection to bottling. She's been making cold brew for nine years. Previously at Blue Bottle and Onyx Coffee Lab."
+          }
+        },
         "comment_box": {
           "type": "comment_box",
           "settings": {}
         }
       },
-      "block_order": ["heading", "image_and_socials", "content", "comment_box"],
-      "settings": {}
+      "block_order": ["section_header", "heading", "image_and_socials", "content", "author_card", "comment_box"],
+      "settings": {
+        "padding_top": 0,
+        "padding_mobile_top": 0,
+        "margin_horizontal": 0,
+        "margin_mobile_left": 0,
+        "margin_mobile_right": 0,
+        "padding_bottom":16
+      }
+    },
+    "featured_blog": {
+      "type": "featured-blog",
+      "settings": {
+        "heading": "More Stories",
+        "heading_size": "h1",
+        "author_role": "Head of Product",
+        "show_image": true,
+        "show_date": true,
+        "show_author": true,
+        "color_scheme": "scheme-1",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
     }
   },
-  "order": ["breadcrumbs", "main"]
+  "order": ["main", "featured_blog"]
 }
