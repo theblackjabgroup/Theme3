@@ -552,10 +552,6 @@
   color: var(--color-text);
 }
 
-.article-comments-footer {
-  margin-top: var(--spacing-4);
-}
-
 .article-comment-submit-row {
   display: flex;
   align-items: center;

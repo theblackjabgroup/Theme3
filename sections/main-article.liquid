@@ -142,13 +142,13 @@
   }
   #shopify-section-{{ section.id }} .article-sidebar .tag-pill {
     border-radius: {{ block.settings.tag_border_radius_mobile | default: 24 }}px;
-    border-color: #f8f3f8;
-    color: #f8f3f8;
+    border-color: var(--color-text);
+    color: var(--color-text);
     background: transparent;
   }
   #shopify-section-{{ section.id }} .article-sidebar .tag-pill:hover {
-    background: rgba(248, 243, 248, 0.15);
-    color: #f8f3f8;
+    background: color-mix(in srgb, var(--color-text) 15%, transparent);
+    color: var(--color-text);
   }
   #shopify-section-{{ section.id }} .article-sidebar .article-meta-group {
     display: flex;
@@ -751,7 +751,9 @@
                         fit_width: false,
                         class: 'share-story-submit'
                       %}
-                      <p class="article-comment-moderation-note">{{ 'blogs.article.moderated' | t }}</p>
+                      {%- if blog.moderated? -%}
+                        <p class="article-comment-moderation-note">{{ 'blogs.article.moderated' | t }}</p>
+                      {%- endif -%}
                     </div>
                   </div>
                 {% endform %}
@@ -781,17 +783,20 @@
                           </footer>
                         </article>
                       {%- endfor -%}
+                      {% render 'pagination', paginate: paginate, anchor: anchor_id %}
                     </div>
                   {% endpaginate %}
-                  <div class="article-comments-footer">
-                    {%-
-                      render 'global-btn',
-                      text: 'SEE ALL COMMENTS',
-                      url: article.url | append: '#Comments-' | append: article.id,
-                      variant: 'secondary',
-                      fit_width: false
-                    -%}
-                  </div>
+                  {%- if article.comments_count > 2 -%}
+                    <div class="article-comments-footer">
+                      {%-
+                        render 'global-btn',
+                        text: 'SEE ALL COMMENTS',
+                        url: article.url | append: '?page=all#Comments-' | append: article.id,
+                        variant: 'secondary',
+                        fit_width: false
+                      -%}
+                    </div>
+                  {%- endif -%}
                 </div>
               </div>
             </div>
@@ -934,12 +939,6 @@
       "name": "Section Header",
       "limit": 1,
       "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Section Title",
-          "default": "Your Stories"
-        },
         {
           "type": "checkbox",
           "id": "show_badge",
