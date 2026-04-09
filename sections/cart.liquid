@@ -917,7 +917,7 @@
 
                       <!-- Quantity + Edit (mobile only — full width below image+info) -->
                       <div class="cart-item-card__qty-row cart-item-card__qty-row--mobile">
-                        {% render 'quantity-selector', item: item %}
+                        {% render 'quantity-selector', item: item, submit_input: false %}
                         <button
                           type="button"
                           class="cart-item-edit-icon-btn"
@@ -1214,18 +1214,33 @@
         return 'Rs. ' + amount;
       }
 
-      function updateUIOnly(itemIndex, newQuantity) {
-        // Find the item row
-        const selector = document.querySelector(
+      function getQuantitySelectorsForItem(itemIndex) {
+        return document.querySelectorAll(
           `.cart-item-card__qty-row .cart-item__quantity-selector[data-item-index="${itemIndex}"]`
         );
-        if (!selector) return;
+      }
 
-        const itemCard = selector.closest('.cart-item-card');
-        const itemTotalCell = itemCard.querySelector(`.cart-item-card__total[data-item-index="${itemIndex}"]`);
+      function updateSelectorButtonStates(selector, quantityValue) {
+        const plusBtn = selector.querySelector('.cart-item__quantity-plus');
+        const minusBtn = selector.querySelector('.cart-item__quantity-minus');
         const quantityInput = selector.querySelector('.quantity__input');
+        if (!quantityInput) return;
 
-        if (!itemTotalCell || !quantityInput) return;
+        const currentQty = quantityValue ?? (parseInt(quantityInput.value.trim(), 10) || MIN_QUANTITY);
+        const maxQty = quantityInput.getAttribute('data-max');
+        const max = maxQty != null ? parseInt(maxQty, 10) : null;
+
+        if (plusBtn) plusBtn.disabled = max != null && currentQty >= max;
+        if (minusBtn) minusBtn.disabled = currentQty <= MIN_QUANTITY;
+      }
+
+      function updateUIOnly(itemIndex, newQuantity) {
+        const selectors = getQuantitySelectorsForItem(itemIndex);
+        if (!selectors.length) return;
+
+        const itemCard = selectors[0].closest('.cart-item-card');
+        const itemTotalCell = itemCard.querySelector(`.cart-item-card__total[data-item-index="${itemIndex}"]`);
+        if (!itemTotalCell) return;
 
         // Get unit price and original/compare-at from data attributes
         const unitPrice = parseInt(itemTotalCell.getAttribute('data-unit-price')) || 0;
@@ -1238,8 +1253,12 @@
         const newOriginalLineTotal = oldUnitPrice * newQuantity;
         const showOldPrice = oldUnitPrice > 0 && oldUnitPrice !== unitPrice;
 
-        // Update quantity display
-        quantityInput.value = newQuantity;
+        // Keep desktop + mobile selectors in sync (desktop one is the submitting input).
+        selectors.forEach((selector) => {
+          const input = selector.querySelector('.quantity__input');
+          if (input) input.value = newQuantity;
+          updateSelectorButtonStates(selector, newQuantity);
+        });
 
         // Helper: update a price container (desktop total or mobile price row)
         function updatePriceContainer(container) {
@@ -1286,7 +1305,9 @@
 
         allTotalCells.forEach((cell) => {
           const unitPrice = parseInt(cell.getAttribute('data-unit-price')) || 0;
-          const quantityInput = cell.closest('.cart-item-card').querySelector('.quantity__input');
+          const quantityInput =
+            cell.closest('.cart-item-card').querySelector('input[name="updates[]"]') ||
+            cell.closest('.cart-item-card').querySelector('.quantity__input');
           const quantity = parseInt(quantityInput?.value) || 0;
           totalPrice += unitPrice * quantity;
         });
@@ -1300,24 +1321,6 @@
 
       const MIN_QUANTITY = 1;
 
-      function updatePlusButtonState(selector) {
-        const plusBtn = selector.querySelector('.cart-item__quantity-plus');
-        const quantityInput = selector.querySelector('.quantity__input');
-        if (!plusBtn || !quantityInput) return;
-        const currentQty = parseInt(quantityInput.value.trim(), 10) || MIN_QUANTITY;
-        const maxQty = quantityInput.getAttribute('data-max');
-        const max = maxQty != null ? parseInt(maxQty, 10) : null;
-        plusBtn.disabled = max != null && currentQty >= max;
-      }
-
-      function updateMinusButtonState(selector) {
-        const minusBtn = selector.querySelector('.cart-item__quantity-minus');
-        const quantityInput = selector.querySelector('.quantity__input');
-        if (!minusBtn || !quantityInput) return;
-        const currentQty = parseInt(quantityInput.value.trim(), 10) || MIN_QUANTITY;
-        minusBtn.disabled = currentQty <= MIN_QUANTITY;
-      }
-
       quantitySelectors.forEach((selector) => {
         const minusBtn = selector.querySelector('.cart-item__quantity-minus');
         const plusBtn = selector.querySelector('.cart-item__quantity-plus');
@@ -1328,8 +1331,7 @@
           return;
         }
 
-        updatePlusButtonState(selector);
-        updateMinusButtonState(selector);
+        updateSelectorButtonStates(selector);
 
         // Add event listeners
         minusBtn.addEventListener(
@@ -1341,8 +1343,6 @@
             const newQty = Math.max(MIN_QUANTITY, currentQty - 1);
             if (newQty !== currentQty) {
               updateUIOnly(itemIndex, newQty);
-              updatePlusButtonState(selector);
-              updateMinusButtonState(selector);
             }
           },
           false
@@ -1359,8 +1359,6 @@
             const newQty = max != null ? Math.min(currentQty + 1, max) : currentQty + 1;
             if (newQty !== currentQty) {
               updateUIOnly(itemIndex, newQty);
-              updatePlusButtonState(selector);
-              updateMinusButtonState(selector);
             }
           },
           false
@@ -1374,8 +1372,6 @@
           if (max != null && val > max) val = max;
           quantityInput.value = val;
           updateUIOnly(itemIndex, val);
-          updatePlusButtonState(selector);
-          updateMinusButtonState(selector);
         });
       });
     }

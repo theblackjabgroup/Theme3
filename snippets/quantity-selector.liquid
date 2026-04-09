@@ -4,6 +4,7 @@
   Accepts:
   - item: {Object} Cart item with quantity, variant_id, index (optional when edit_panel is true)
   - edit_panel: {Boolean} If true, output for cart drawer edit panel (name="edit_quantity", data-edit-qty-input)
+  - submit_input: {Boolean} If false, renders a display-only quantity input (no updates[] submission)
 
   Usage:
   {% render 'quantity-selector', item: item %}
@@ -11,6 +12,10 @@
 {% endcomment %}
 {%- liquid
   assign max_quantity = null
+  assign should_submit_input = submit_input
+  if should_submit_input == blank
+    assign should_submit_input = true
+  endif
   unless edit_panel
     if item.variant.inventory_management == 'shopify' and item.variant.inventory_policy == 'deny'
       assign max_quantity = item.variant.inventory_quantity
@@ -57,10 +62,15 @@
       data-edit-qty-input
       id="EditPanel-quantity"
     {% else %}
-      name="updates[]"
-      {%- assign prefix = id_prefix | default: 'Quantity-' -%}
-      id="{{ prefix }}{{ line_index }}"
-      data-index="{{ line_index }}"
+      {% if should_submit_input %}
+        name="updates[]"
+        {%- assign prefix = id_prefix | default: 'Quantity-' -%}
+        id="{{ prefix }}{{ line_index }}"
+        data-index="{{ line_index }}"
+      {% else %}
+        name="quantity_display"
+        data-display-only="true"
+      {% endif %}
       data-variant-id="{{ variant_id }}"
     {% endif %}
     value="{{ qty_value }}"

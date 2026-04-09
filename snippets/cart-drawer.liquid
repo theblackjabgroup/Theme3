@@ -52,12 +52,20 @@
   body.cart-drawer-open main,
   body.cart-drawer-open #MainContent,
   body.cart-drawer-open footer,
-  body.cart-drawer-open [id^='shopify-section-']:not(cart-drawer),
-  body.cart-drawer-open .floating-dock-header,
-  body.cart-drawer-open .mobile-header,
-  body.cart-drawer-open header {
+  body.cart-drawer-open [id^='shopify-section-']:not([id*='header']):not(cart-drawer) {
     filter: blur(4px);
     transition: filter 0.3s ease;
+    pointer-events: none;
+  }
+
+  /* Keep header sharp while cart drawer is open */
+  body.cart-drawer-open #shopify-section-header,
+  body.cart-drawer-open .vertical-sidebar-header,
+  body.cart-drawer-open .mobile-header {
+    filter: none !important;
+  }
+
+  body.cart-drawer-open header {
     pointer-events: none;
   }
 

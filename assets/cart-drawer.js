@@ -556,6 +556,14 @@ class CartDrawer extends HTMLElement {
     if (triggeredBy) this.setActiveElement(triggeredBy);
     const cartDrawerNote = this.querySelector('[id^="Details-"] summary');
     if (cartDrawerNote && !cartDrawerNote.hasAttribute('role')) this.setSummaryAccessibility(cartDrawerNote);
+    
+    // Calculate and apply scrollbar width to prevent layout shift
+    try {
+      this.calculateScrollbarWidth();
+    } catch (e) {
+      console.error('Scrollbar compensation error:', e);
+    }
+    
     // here the animation doesn't seem to always get triggered. A timeout seem to help
     setTimeout(() => {
       this.classList.add('animate', 'active');
@@ -564,6 +572,7 @@ class CartDrawer extends HTMLElement {
     this.addEventListener(
       'transitionend',
       () => {
+        if (!this.classList.contains('active')) return;
         const containerToTrapFocusOn = this.classList.contains('is-empty')
           ? this.querySelector('.drawer__inner-empty')
           : document.getElementById('CartDrawer');
@@ -581,6 +590,29 @@ class CartDrawer extends HTMLElement {
     this.classList.remove('active');
     removeTrapFocus(this.activeElement);
     document.body.classList.remove('overflow-hidden', 'cart-drawer-open');
+    
+    // Reset scrollbar compensation
+    try {
+      this.removeScrollbarWidth();
+    } catch (e) {
+      console.error('Scrollbar reset error:', e);
+    }
+  }
+
+  calculateScrollbarWidth() {
+    // Only calculate if not already calculated to avoid duplicate padding
+    if (document.documentElement.style.getPropertyValue('--scrollbar-width')) return;
+
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    if (scrollbarWidth > 0) {
+      document.documentElement.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
+      document.body.style.setProperty('padding-right', `${scrollbarWidth}px`, 'important');
+    }
+  }
+
+  removeScrollbarWidth() {
+    document.body.style.removeProperty('padding-right');
+    document.documentElement.style.removeProperty('--scrollbar-width');
   }
 
   setSummaryAccessibility(cartDrawerNote) {

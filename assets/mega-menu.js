@@ -6,22 +6,8 @@ document.addEventListener('DOMContentLoaded', function () {
   const dockLinks = document.querySelectorAll('.dock-link');
   let isTriggerClick = false;
 
-  // Delay (ms) for menu exit transform – keep overlay/blur until after this to avoid lag
-  const MEGA_MENU_EXIT_DURATION = 1200;
-
-  // Single pending timer for deferred state check; cleared on open or when scheduling a new close to avoid race on rapid close/reopen
-  let megaMenuStateCheckTimer = null;
-
   // Search popup focus timer; cleared on close so stale focus does not fire after popup is closed
   let searchPopupFocusTimer = null;
-
-  function scheduleDeferredStateCheck() {
-    if (megaMenuStateCheckTimer) clearTimeout(megaMenuStateCheckTimer);
-    megaMenuStateCheckTimer = setTimeout(() => {
-      checkMegaMenuState();
-      megaMenuStateCheckTimer = null;
-    }, MEGA_MENU_EXIT_DURATION);
-  }
 
   function cancelSearchPopupFocusTimer() {
     if (searchPopupFocusTimer) {
@@ -31,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Close all mega menus
-  function closeAllMegaMenus(skipStateCheck = false) {
+  function closeAllMegaMenus() {
     cancelSearchPopupFocusTimer();
     megaMenuTriggers.forEach((trigger) => {
       trigger.setAttribute('aria-expanded', 'false');
@@ -40,11 +26,8 @@ document.addEventListener('DOMContentLoaded', function () {
     megaMenus.forEach((menu) => {
       menu.setAttribute('aria-hidden', 'true');
     });
-
-    // Defer body class removal until after exit animation so overlay/blur don't animate during transform (avoids lag)
-    if (!skipStateCheck) {
-      scheduleDeferredStateCheck();
-    }
+    // Remove blur/overlay state immediately so it animates out with the panel close animation.
+    checkMegaMenuState();
   }
 
   // Check if any mega menu is open
@@ -86,14 +69,8 @@ document.addEventListener('DOMContentLoaded', function () {
         cancelSearchPopupFocusTimer();
         this.setAttribute('aria-expanded', 'false');
         menu.setAttribute('aria-hidden', 'true');
-        scheduleDeferredStateCheck();
+        checkMegaMenuState();
         return;
-      }
-
-      // Opening a menu: cancel any pending close timer so an old timer can't remove mega-menu-open during this menu's lifecycle
-      if (megaMenuStateCheckTimer) {
-        clearTimeout(megaMenuStateCheckTimer);
-        megaMenuStateCheckTimer = null;
       }
 
       // Close all other menus first - do this synchronously to prevent race conditions
