@@ -21,7 +21,7 @@
 }
 
 /* Hide breadcrumbs in sidebar if any */
-.cart__footer-wrapper  {
+.cart__footer-wrapper .cart__footer {
     padding: 0 !important;
     max-width: 100% !important;
 }
@@ -32,7 +32,7 @@
   background-color: #fff !important;
 }
 
-#shopify-section-cart-items .  {
+#shopify-section-cart-items .cart__contents {
     padding: 0 !important;
     max-width: 100% !important;
 }
@@ -354,6 +354,5 @@
         flex-wrap: wrap;
     }
 }
-
 
 
