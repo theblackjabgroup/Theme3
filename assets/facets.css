@@ -40,7 +40,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.25rem 45px;
-  padding: 1rem 16px;
+  padding: 0.75rem 16px;
   background: var(--color-card-bg);
   border-radius: var(--radius-xl);
   max-width: 100%;
@@ -302,15 +302,21 @@ body.facets-drawer-open .facets-drawer * {
   }
 
   .facets-links-bar__inner {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
     padding: 0.75rem 16px;
-    gap: 0.25rem 45px;
+    gap: 0.25rem 20px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .facets-links-bar__inner::-webkit-scrollbar {
+    display: none;
   }
 
   .facets-buttons-drawers {
-    padding: 0.5rem 0.75rem;
-    gap: 0.5rem;
-    min-width: 0;
-    overflow: hidden;
+    display: none;
   }
 
   /* Allow Filter and Sort buttons to shrink so row fits on screen */

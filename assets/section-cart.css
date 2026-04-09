@@ -21,7 +21,7 @@
 }
 
 /* Hide breadcrumbs in sidebar if any */
-.cart__footer-wrapper .  {
+.cart__footer-wrapper  {
     padding: 0 !important;
     max-width: 100% !important;
 }

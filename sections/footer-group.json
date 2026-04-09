@@ -52,7 +52,7 @@
       "type": "subfooter",
       "settings": {
         "margin_top": 0,
-        "margin_bottom": 24,
+        "margin_bottom": 0,
         "margin_horizontal": 24,
         "padding_top": 20,
         "padding_bottom": 20,

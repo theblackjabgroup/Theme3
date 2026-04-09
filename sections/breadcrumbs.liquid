@@ -1,13 +1,11 @@
 <nav class="breadcrumbs" aria-label="Breadcrumb">
   <ol class="breadcrumbs__list">
-
     {%- comment -%} HOME — always first {%- endcomment -%}
     <li class="breadcrumbs__item">
       <a class="breadcrumbs__link" href="{{ routes.root_url }}">Home</a>
     </li>
 
     {%- if request.page_type == 'product' -%}
-
       {%- comment -%} Product: Home / Collection / Product Title {%- endcomment -%}
       {%- if collection -%}
         <li class="breadcrumbs__item breadcrumbs__item--sep" aria-hidden="true">/</li>
@@ -26,7 +24,6 @@
       </li>
 
     {%- elsif request.page_type == 'collection' -%}
-
       {%- comment -%} Collection: Home / Category / Subcollection {%- endcomment -%}
       {%- assign parent_handle = collection.metafields.custom.parent_collection -%}
       {%- if parent_handle != blank -%}
@@ -49,7 +46,6 @@
       </li>
 
     {%- elsif request.page_type == 'article' -%}
-
       {%- comment -%} Article: Home / Blog Title / Article Title {%- endcomment -%}
       <li class="breadcrumbs__item breadcrumbs__item--sep" aria-hidden="true">/</li>
       <li class="breadcrumbs__item">
@@ -61,7 +57,6 @@
       </li>
 
     {%- elsif request.page_type == 'blog' -%}
-
       {%- comment -%} Blog: Home / Blog Title {%- endcomment -%}
       <li class="breadcrumbs__item breadcrumbs__item--sep" aria-hidden="true">/</li>
       <li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">
@@ -69,15 +64,12 @@
       </li>
 
     {%- elsif request.page_type == 'page' -%}
-
       {%- comment -%} Static page: Home / Page Title {%- endcomment -%}
       <li class="breadcrumbs__item breadcrumbs__item--sep" aria-hidden="true">/</li>
       <li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">
         {{ page.title }}
       </li>
-
     {%- endif -%}
-
   </ol>
 </nav>
 
@@ -105,22 +97,22 @@
   }
 
   .breadcrumbs__item--sep {
-    color: var(--crossed-grey, #8A8A8A);
+    color: var(--crossed-grey, #8a8a8a);
     user-select: none;
   }
 
   .breadcrumbs__link {
-    color: var(--crossed-grey, #8A8A8A);
+    color: var(--crossed-grey, #8a8a8a);
     text-decoration: none;
     transition: color 0.15s;
   }
 
   .breadcrumbs__link:hover {
-    color: var(--color-text, #F8F3F8);
+    color: var(--color-text, #f8f3f8);
   }
 
   .breadcrumbs__item--current {
-    color: var(--color-text, #F8F3F8);
+    color: var(--color-text, #f8f3f8);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -129,7 +121,7 @@
 
   @media (max-width: 749px) {
     .breadcrumbs {
-      padding: 10px var(--breadcrumbs-px-mobile, 16px);
+      padding: 0 var(--breadcrumbs-px-mobile, 16px) var(--bento-gap) var(--breadcrumbs-px-mobile, 16px);
     }
   }
 </style>

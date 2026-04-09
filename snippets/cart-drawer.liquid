@@ -6,6 +6,7 @@
 {{ 'quantity-popover.css' | asset_url | stylesheet_tag }}
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
 {{ 'component-global-btn.css' | asset_url | stylesheet_tag }}
+{{ 'component-global-btn-2.css' | asset_url | stylesheet_tag }}
 
 <script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
 {% comment %} cart-drawer.js is loaded by theme.liquid (idle/on cart click) {% endcomment %}
@@ -18,7 +19,7 @@
     width: 30vw;
     min-width: 360px;
     max-width: 440px;
-    height: 95vh;
+    height: 100vh;
     z-index: 9999;
     margin: 20px;
     border-radius: 20px;
@@ -169,7 +170,6 @@
   .cart-drawer__items {
     display: flex;
     flex-direction: column;
-    gap: 32px;
   }
 
   /* Product card: layout + separator to match first image */
@@ -179,6 +179,7 @@
     gap: 12px;
     padding-bottom: 20px;
     margin-bottom: 20px;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
   }
 
   .cart-drawer__item:last-child {
@@ -375,19 +376,15 @@
     color: var(--color-text);
   }
 
-  /* Quantity selector: [-] [1] [+] + Edit – match first image layout & 3D */
+  /* Quantity selector: [-] [1] [+] + Edit – match Figma layout */
   .cart-drawer__quantity-row {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-top: 0;
-    padding-top: 16px;
-    border-top: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
-    margin-left: -24px;
-    margin-right: -24px;
-    padding-left: 24px;
-    padding-right: 24px;
+    gap: 8px;
+  }
+
+  .cart-drawer__quantity-selector-wrap {
+    flex-shrink: 0;
   }
 
   .cart-drawer__quantity-selector {
@@ -487,15 +484,11 @@
     margin: 0;
   }
 
-  /* Edit button: global-btn tertiary – layout only; ensure 3D shadow not clipped */
-  .cart-drawer__quantity-row {
-    overflow: visible;
-  }
-
-  .cart-drawer__edit-btn.global-btn {
-    flex-shrink: 0;
-    min-width: 100px;
-    overflow: visible;
+  /* Edit button: global-btn-2 primary – flex-fill to the right of qty selector */
+  .cart-drawer__edit-btn.global-btn-2 {
+    flex: 1;
+    min-width: 0;
+    justify-content: center;
   }
 
   /* Fixed footer: subtotal + checkout + GO TO BAG (does not scroll) */
@@ -628,7 +621,7 @@
       top: 0;
       right: 0;
       margin: 0;
-      height: 90vh;
+      height: 100vh;
       border-radius: 0 0 20px 20px;
       transform: translateY(-100%);
       transition:  transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1115,10 +1108,6 @@
                                 {{ item.final_price | money_without_trailing_zeros }}
                               </span>
                             </div>
-                            <div class="cart-drawer__item-qty-row">
-                              <span class="cart-drawer__item-qty-label">Quantity:</span>
-                              <span class="cart-drawer__item-qty-value">{{ item.quantity }}</span>
-                            </div>
                           </div>
                         </div>
                         {%- liquid
@@ -1133,11 +1122,11 @@
                           endif
                         -%}
                         <div class="cart-drawer__quantity-row">
-                          <div class="cart-drawer__quantity-selector-wrap cart-drawer__quantity-selector">
+                          <div class="">
                             {% render 'quantity-selector', item: item, id_prefix: 'Drawer-quantity-' %}
                           </div>
                           {% capture edit_btn_attrs %}data-edit-trigger data-line-index="{{ item.index | plus: 1 }}" aria-label="Edit {{ item.product.title | escape }}"{% endcapture %}
-                          {% render 'global-btn',
+                          {% render 'global-btn-2',
                             text: 'Edit',
                             type: 'button',
                             variant: 'primary',
