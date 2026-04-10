@@ -140,6 +140,9 @@ try {
 }
 
 function focusVisiblePolyfill() {
+  if (window._focusPolyfillActive) return;
+  window._focusPolyfillActive = true;
+
   const navKeys = [
     'ARROWUP',
     'ARROWDOWN',
@@ -157,28 +160,26 @@ function focusVisiblePolyfill() {
   let currentFocusedElement = null;
   let mouseClick = null;
 
-  window.addEventListener('keydown', (event) => {
+  function onKeydown(event) {
     if (navKeys.includes(event.code.toUpperCase())) {
       mouseClick = false;
     }
-  });
+  }
 
-  window.addEventListener('mousedown', (event) => {
+  function onMousedown() {
     mouseClick = true;
-  });
+  }
 
-  window.addEventListener(
-    'focus',
-    () => {
-      if (currentFocusedElement) currentFocusedElement.classList.remove('focused');
+  function onFocus() {
+    if (currentFocusedElement) currentFocusedElement.classList.remove('focused');
+    if (mouseClick) return;
+    currentFocusedElement = document.activeElement;
+    currentFocusedElement.classList.add('focused');
+  }
 
-      if (mouseClick) return;
-
-      currentFocusedElement = document.activeElement;
-      currentFocusedElement.classList.add('focused');
-    },
-    true,
-  );
+  window.addEventListener('keydown', onKeydown);
+  window.addEventListener('mousedown', onMousedown);
+  window.addEventListener('focus', onFocus, true);
 }
 
 function pauseAllMedia() {
@@ -435,21 +436,37 @@ Shopify.CountryProvinceSelector.prototype = {
 class MenuDrawer extends HTMLElement {
   constructor() {
     super();
-
     this.mainDetailsToggle = this.querySelector('details');
+    this._onKeyUp = this.onKeyUp.bind(this);
+    this._onFocusOut = this.onFocusOut.bind(this);
+    this._onSummaryClick = this.onSummaryClick.bind(this);
+    this._onCloseButtonClick = this.onCloseButtonClick.bind(this);
+  }
 
-    this.addEventListener('keyup', this.onKeyUp.bind(this));
-    this.addEventListener('focusout', this.onFocusOut.bind(this));
+  connectedCallback() {
+    this.addEventListener('keyup', this._onKeyUp);
+    this.addEventListener('focusout', this._onFocusOut);
     this.bindEvents();
+  }
+
+  disconnectedCallback() {
+    this.removeEventListener('keyup', this._onKeyUp);
+    this.removeEventListener('focusout', this._onFocusOut);
+    this.querySelectorAll('summary').forEach((summary) =>
+      summary.removeEventListener('click', this._onSummaryClick),
+    );
+    this.querySelectorAll(
+      'button:not(.localization-selector):not(.country-selector__close-button):not(.country-filter__reset-button)',
+    ).forEach((button) => button.removeEventListener('click', this._onCloseButtonClick));
   }
 
   bindEvents() {
     this.querySelectorAll('summary').forEach((summary) =>
-      summary.addEventListener('click', this.onSummaryClick.bind(this)),
+      summary.addEventListener('click', this._onSummaryClick),
     );
     this.querySelectorAll(
       'button:not(.localization-selector):not(.country-selector__close-button):not(.country-filter__reset-button)',
-    ).forEach((button) => button.addEventListener('click', this.onCloseButtonClick.bind(this)));
+    ).forEach((button) => button.addEventListener('click', this._onCloseButtonClick));
   }
 
   onKeyUp(event) {
@@ -615,26 +632,45 @@ customElements.define('header-drawer', HeaderDrawer);
 class ModalDialog extends HTMLElement {
   constructor() {
     super();
-    this.querySelector('[id^="ModalClose-"]').addEventListener('click', this.hide.bind(this, false));
-    this.addEventListener('keyup', (event) => {
-      if (event.code.toUpperCase() === 'ESCAPE') this.hide();
-    });
+    this._onCloseClick = this.hide.bind(this, false);
+    this._onKeyUp = (event) => { if (event.code.toUpperCase() === 'ESCAPE') this.hide(); };
     if (this.classList.contains('media-modal')) {
-      this.addEventListener('pointerup', (event) => {
+      this._onPointerUp = (event) => {
         if (event.pointerType === 'mouse' && !event.target.closest('deferred-media, product-model')) this.hide();
-      });
+      };
     } else {
-      this.addEventListener('click', (event) => {
-        if (event.target === this) this.hide();
-      });
+      this._onOverlayClick = (event) => { if (event.target === this) this.hide(); };
     }
   }
 
   connectedCallback() {
-    if (this.moved) return;
+    if (this.moved) {
+      this._setupListeners();
+      return;
+    }
     this.moved = true;
     this.dataset.section = this.closest('.shopify-section').id.replace('shopify-section-', '');
     document.body.appendChild(this);
+  }
+
+  _setupListeners() {
+    if (this._listenersAdded) return;
+    this._listenersAdded = true;
+    const closeBtn = this.querySelector('[id^="ModalClose-"]');
+    if (closeBtn) closeBtn.addEventListener('click', this._onCloseClick);
+    this.addEventListener('keyup', this._onKeyUp);
+    if (this._onPointerUp) this.addEventListener('pointerup', this._onPointerUp);
+    if (this._onOverlayClick) this.addEventListener('click', this._onOverlayClick);
+  }
+
+  disconnectedCallback() {
+    if (!this._listenersAdded) return;
+    this._listenersAdded = false;
+    const closeBtn = this.querySelector('[id^="ModalClose-"]');
+    if (closeBtn) closeBtn.removeEventListener('click', this._onCloseClick);
+    this.removeEventListener('keyup', this._onKeyUp);
+    if (this._onPointerUp) this.removeEventListener('pointerup', this._onPointerUp);
+    if (this._onOverlayClick) this.removeEventListener('click', this._onOverlayClick);
   }
 
   show(opener) {

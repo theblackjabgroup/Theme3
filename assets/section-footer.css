@@ -103,6 +103,11 @@
   opacity: 0.6;
 }
 
+.newsletter-input:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
 .social-box {
   flex: 1 1 0;
   min-width: calc((100% - (var(--footer-social-icons-per-row, 4) - 1) * var(--footer-social-gap, 8px)) / var(--footer-social-icons-per-row, 4));
@@ -126,7 +131,7 @@
   }
 
   .social-box {
-    border-radius: var(--footer-social-border-radius-mobile, 10px);
+    border-radius: var(--footer-social-border-radius-mobile, var(--radius-l));
   }
 }
 
@@ -320,7 +325,7 @@
   height: 20px;
   flex-shrink: 0;
   overflow: hidden;
-  border-radius: 2px;
+  border-radius: var(--radius-s);
 }
 .custom-footer .localization-form__select.global-btn .localization-flag {
   width: 100%;

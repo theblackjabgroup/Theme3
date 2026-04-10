@@ -10,7 +10,7 @@
       {%- if collection -%}
         <li class="breadcrumbs__item breadcrumbs__item--sep" aria-hidden="true">/</li>
         <li class="breadcrumbs__item">
-          <a class="breadcrumbs__link" href="{{ collection.url }}">{{ collection.title }}</a>
+          <a class="breadcrumbs__link" href="{{ collection.url }}">{{ collection.title | escape }}</a>
         </li>
       {%- else -%}
         <li class="breadcrumbs__item breadcrumbs__item--sep" aria-hidden="true">/</li>
@@ -20,7 +20,7 @@
       {%- endif -%}
       <li class="breadcrumbs__item breadcrumbs__item--sep" aria-hidden="true">/</li>
       <li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">
-        {{ product.title }}
+        {{ product.title | escape }}
       </li>
 
     {%- elsif request.page_type == 'collection' -%}
@@ -31,7 +31,7 @@
         {%- if parent_col -%}
           <li class="breadcrumbs__item breadcrumbs__item--sep" aria-hidden="true">/</li>
           <li class="breadcrumbs__item">
-            <a class="breadcrumbs__link" href="{{ parent_col.url }}">{{ parent_col.title }}</a>
+            <a class="breadcrumbs__link" href="{{ parent_col.url }}">{{ parent_col.title | escape }}</a>
           </li>
         {%- endif -%}
       {%- else -%}
@@ -42,32 +42,32 @@
       {%- endif -%}
       <li class="breadcrumbs__item breadcrumbs__item--sep" aria-hidden="true">/</li>
       <li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">
-        {{ collection.title }}
+        {{ collection.title | escape }}
       </li>
 
     {%- elsif request.page_type == 'article' -%}
       {%- comment -%} Article: Home / Blog Title / Article Title {%- endcomment -%}
       <li class="breadcrumbs__item breadcrumbs__item--sep" aria-hidden="true">/</li>
       <li class="breadcrumbs__item">
-        <a class="breadcrumbs__link" href="{{ blog.url }}">{{ blog.title }}</a>
+        <a class="breadcrumbs__link" href="{{ blog.url }}">{{ blog.title | escape }}</a>
       </li>
       <li class="breadcrumbs__item breadcrumbs__item--sep" aria-hidden="true">/</li>
       <li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">
-        {{ article.title }}
+        {{ article.title | escape }}
       </li>
 
     {%- elsif request.page_type == 'blog' -%}
       {%- comment -%} Blog: Home / Blog Title {%- endcomment -%}
       <li class="breadcrumbs__item breadcrumbs__item--sep" aria-hidden="true">/</li>
       <li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">
-        {{ blog.title }}
+        {{ blog.title | escape }}
       </li>
 
     {%- elsif request.page_type == 'page' -%}
       {%- comment -%} Static page: Home / Page Title {%- endcomment -%}
       <li class="breadcrumbs__item breadcrumbs__item--sep" aria-hidden="true">/</li>
       <li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">
-        {{ page.title }}
+        {{ page.title | escape }}
       </li>
     {%- endif -%}
   </ol>

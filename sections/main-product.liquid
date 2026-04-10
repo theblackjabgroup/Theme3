@@ -16,24 +16,13 @@
             | image_tag: class: 'main-media-img', id: 'ProductMainImage', loading: 'lazy'
           }}
         {% else %}
-          <img
-            src="https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-product-1_large.png"
-            width="1000"
-            height="1000"
-            class="main-media-img"
-            id="ProductMainImage"
-            alt="Placeholder"
-          >
+          {{ 'product-1' | placeholder_svg_tag: 'main-media-img' }}
         {% endif %}
 
         {% unless product.gift_card? %}
           <div class="media-nav-buttons">
-            {%- capture prev_icon -%}
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-            {%- endcapture -%}
-            {%- capture next_icon -%}
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            {%- endcapture -%}
+            {%- capture prev_icon -%}{{- 'icon-arrow-left.svg' | inline_asset_content -}}{%- endcapture -%}
+            {%- capture next_icon -%}{{- 'icon-arrow-right.svg' | inline_asset_content -}}{%- endcapture -%}
             {% render 'global-btn-2',
               icon: prev_icon,
               icon_only: true,
@@ -79,15 +68,17 @@
     <div class="product-details-card">
       <!-- Title Section -->
       <div class="product-details-header">
-        <div class="product-badge-pill">
-          {%- if product.gift_card? -%}
-            GIFT CARD
-          {%- else -%}
-            {{- product.metafields.custom.tag | default: 'BEAR WITH ME' -}}
-          {%- endif -%}
-        </div>
+        {%- if product.gift_card? or product.metafields.custom.tag != blank -%}
+          <div class="product-badge-pill">
+            {%- if product.gift_card? -%}
+              GIFT CARD
+            {%- else -%}
+              {{- product.metafields.custom.tag | escape -}}
+            {%- endif -%}
+          </div>
+        {%- endif -%}
 
-        <h1 class="product-main-title">{{ product.title }}</h1>
+        <h1 class="product-main-title">{{ product.title | escape }}</h1>
 
         <div class="product-price-row">
           <span class="product-price-main">{{ current_variant.price | money_without_trailing_zeros }}</span>
@@ -107,8 +98,8 @@
         <div class="product-rating-row">
           <div class="product-stars" aria-label="5 out of 5 stars">
             {% for i in (1..5) %}
-              <svg width="17" height="17" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#F5A30A"/>
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6.43328 20L7.90996 13.7129L3 9.48594L9.46762 8.92976L12.0006 3L14.5336 8.92858L21 9.48476L16.09 13.7117L17.5679 19.9988L12.0006 16.6618L6.43328 20Z" fill="#F5A30A"/>
               </svg>
             {% endfor %}
           </div>
@@ -325,9 +316,7 @@
 
       <div class="product-info-section">
         <div class="product-info-icon">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-          </svg>
+          {{- 'icon-about.svg' | inline_asset_content -}}
         </div>
         <div class="product-info-content">
           <h4 class="product-info-subheading">Customs and Import Duties</h4>
@@ -677,7 +666,7 @@
         >
       {% endif %}
       <div class="sticky-cart-bar__info">
-        <p class="sticky-cart-bar__name">{{ product.title }}</p>
+        <p class="sticky-cart-bar__name">{{ product.title | escape }}</p>
         <div class="sticky-cart-bar__meta">
           {% if current_variant.title != 'Default Title' %}
             {% render 'global-btn-2',
@@ -697,15 +686,11 @@
       <!-- Standalone qty selector — NOT bound to the main product form -->
       <div class="sticky-qty-selector">
         <button type="button" class="sticky-qty-btn" id="StickyDecrement" aria-label="Decrease quantity">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="5" y1="12" x2="19" y2="12"/>
-          </svg>
+          {{- 'icon-minus.svg' | inline_asset_content -}}
         </button>
         <span class="sticky-qty-display" id="StickyQtyDisplay">1</span>
         <button type="button" class="sticky-qty-btn" id="StickyIncrement" aria-label="Increase quantity">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-          </svg>
+          {{- 'icon-plus.svg' | inline_asset_content -}}
         </button>
       </div>
       {%- liquid

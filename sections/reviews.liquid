@@ -61,12 +61,14 @@
         {%- for i in (1..5) -%}
           <svg
             class="reviews__star{% if i <= avg_rating_rounded %} reviews__star--filled{% endif %}"
-            viewBox="0 0 17 17"
+            viewBox="0 0 24 24"
             width="17"
             height="17"
             aria-hidden="true"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            <path d="M8.5 0.5L10.6 6.8H17.2L11.8 10.5L13.9 16.8L8.5 13.1L3.1 16.8L5.2 10.5L-0.2 6.8H6.4Z"/>
+            <path d="M6.43328 20L7.90996 13.7129L3 9.48594L9.46762 8.92976L12.0006 3L14.5336 8.92858L21 9.48476L16.09 13.7117L17.5679 19.9988L12.0006 16.6618L6.43328 20Z"/>
           </svg>
         {%- endfor -%}
       </div>
@@ -99,12 +101,14 @@
                   {%- for i in (1..5) -%}
                     <svg
                       class="reviews__star{% if i <= star_count %} reviews__star--filled{% endif %}"
-                      viewBox="0 0 17 17"
+                      viewBox="0 0 24 24"
                       width="17"
                       height="17"
                       aria-hidden="true"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      <path d="M8.5 0.5L10.6 6.8H17.2L11.8 10.5L13.9 16.8L8.5 13.1L3.1 16.8L5.2 10.5L-0.2 6.8H6.4Z"/>
+                      <path d="M6.43328 20L7.90996 13.7129L3 9.48594L9.46762 8.92976L12.0006 3L14.5336 8.92858L21 9.48476L16.09 13.7117L17.5679 19.9988L12.0006 16.6618L6.43328 20Z"/>
                     </svg>
                   {%- endfor -%}
                 </div>

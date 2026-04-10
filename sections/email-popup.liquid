@@ -200,7 +200,7 @@
             {%- if section.settings.submit_icon != blank -%}
               <img src="{{ section.settings.submit_icon | image_url: width: 80 }}" alt="" width="20" height="20" loading="eager">
             {%- else -%}
-              {%- assign icon_name = section.settings.submit_icon_name | default: 'plane' -%}
+              {%- assign icon_name = section.settings.submit_icon_name | default: 'send' -%}
               {%- assign icon_asset = 'icon-' | append: icon_name | append: '.svg' -%}
               {{ icon_asset | inline_asset_content }}
             {%- endif -%}
@@ -829,23 +829,27 @@
       "info": "Used when no custom icon is uploaded.",
       "options": [
         {
-          "value": "plane",
-          "label": "Plane (send)"
+          "value": "send",
+          "label": "Send"
         },
         {
           "value": "arrow",
           "label": "Arrow"
         },
         {
-          "value": "checkmark",
-          "label": "Checkmark"
+          "value": "arrow-right",
+          "label": "Arrow Right"
         },
         {
           "value": "tick",
           "label": "Tick"
+        },
+        {
+          "value": "mail",
+          "label": "Mail"
         }
       ],
-      "default": "plane"
+      "default": "send"
     },
     {
       "type": "header",
@@ -1048,12 +1052,8 @@
           "label": "Close (X)"
         },
         {
-          "value": "close-small",
-          "label": "Close small"
-        },
-        {
-          "value": "remove",
-          "label": "Remove"
+          "value": "minus",
+          "label": "Minus"
         }
       ],
       "default": "close"

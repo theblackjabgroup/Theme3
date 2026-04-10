@@ -40,7 +40,7 @@
           {%- endif -%}
 
           <h3 class="custom-collection-card__title">
-            {{ collection.title }}
+            {{ collection.title | escape }}
           </h3>
 
           {%- if collection.description != blank -%}

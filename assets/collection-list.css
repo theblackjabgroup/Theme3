@@ -27,7 +27,7 @@
 .custom-collection-list__header-box-title {
   font-family: var(--font-heading-family);
   font-size: 3.8rem !important;
-  color: #306030;
+  color: var(--color-success);
   margin: 0;
 }
 

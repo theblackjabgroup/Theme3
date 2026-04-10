@@ -19,7 +19,7 @@
 
 .collection-empty-card {
   background-color: var(--color-card-bg, #313131);
-  border-radius: 20px;
+  border-radius: var(--radius-2xl);
   flex: 1;
   min-height: 351px;
   display: flex;

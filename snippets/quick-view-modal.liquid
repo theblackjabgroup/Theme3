@@ -95,7 +95,7 @@
           <span class="quick-view-modal__badge">{{ qv_badge_text }}</span>
         {%- endif -%}
 
-        <h2 class="quick-view-modal__title">{{ product.title }}</h2>
+        <h2 class="quick-view-modal__title">{{ product.title | escape }}</h2>
 
         <div class="quick-view-modal__price">
           <span class="quick-view-modal__price-current">{{ product.price | money }}</span>
