@@ -940,7 +940,7 @@
                           data-compare-at-unit-price="{{ item.variant.compare_at_price }}"
                         {% endif %}
                       >
-                        <s class="cart-item-card__old-price{% unless show_old_price %} hidden{% endunless %}" aria-label="Original price">
+                        <s class="cart-item-card__old-price" aria-label="Original price" {% unless show_old_price %}style="display:none"{% endunless %}>
                           {{- old_line_price | money -}}
                         </s>
                         <span class="cart-item-card__current-price">{{ item.final_line_price | money }}</span>
