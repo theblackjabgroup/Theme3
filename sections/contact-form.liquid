@@ -74,7 +74,6 @@
     --contact-detail-icon-size: {{ section.settings.detail_icon_size | default: 40 }}px;
     --contact-detail-icon-radius: {{ section.settings.detail_icon_radius | default: 14 }}px;
     --contact-form-field-gap: {{ section.settings.form_field_gap | default: 16 }}px;
-    --contact-grid-gap: {{ section.settings.grid_gap | default: 20 }}px;
     --contact-heading-size: {{ section.settings.heading_font_size | default: 22 }}px;
     --contact-body-size: {{ section.settings.body_font_size | default: 16 }}px;
     --contact-greeting-title-size: {{ section.settings.greeting_title_size | default: 28 }}px;
@@ -651,16 +650,6 @@
       "unit": "px",
       "label": "Gap between form fields",
       "default": 16
-    },
-    {
-      "type": "range",
-      "id": "grid_gap",
-      "min": 12,
-      "max": 48,
-      "step": 2,
-      "unit": "px",
-      "label": "Gap between columns",
-      "default": 20
     },
     {
       "type": "header",
