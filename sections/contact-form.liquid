@@ -504,8 +504,8 @@
               tile.className = 'osm-tile';
               tile.style.backgroundImage = 'url(' + tileUrl + ')';
 
-              var pixelX = (x - extent.centerX + 0.5) * 256 + width / 2;
-              var pixelY = (y - extent.centerY + 0.5) * 256 + height / 2;
+              var pixelX = (x - extent.centerX) * 256 + width / 2;
+              var pixelY = (y - extent.centerY) * 256 + height / 2;
 
               tile.style.left = pixelX + 'px';
               tile.style.top = pixelY + 'px';

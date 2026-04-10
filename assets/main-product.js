@@ -1,6 +1,7 @@
 // Expose variants for option -> variant resolution on the PDP.
 // (Shopify variant JSON includes `options: []`, `price`, `compare_at_price`, `available`, etc.)
 var productVariants = window.productVariants || [];
+var productFormId = window.productFormId || 'product-form';
 
 function formatMoney(cents) {
   var amount = (cents || 0) / 100;
@@ -64,9 +65,9 @@ function updateMainProductCardVariant(variant) {
   if (compareEl) {
     if (variant.compare_at_price && variant.compare_at_price > variant.price) {
       compareEl.textContent = formatMoney(variant.compare_at_price);
-      compareEl.classList.remove('hidden');
+      compareEl.style.display = '';
     } else {
-      compareEl.classList.add('hidden');
+      compareEl.style.display = 'none';
     }
   }
 
@@ -90,7 +91,7 @@ function updateMainProductCardVariant(variant) {
     stockDotEl.classList.toggle('product-stock-dot--out', !variant.available);
   }
 
-  var mainAtcBtn = document.querySelector('[data-product-form] .product-form__submit');
+  var mainAtcBtn = document.querySelector('#' + productFormId + ' .product-form__submit');
   setAtcButtonState(mainAtcBtn, !!variant.available);
 }
 
@@ -99,7 +100,7 @@ function updateStickyBarVariant(variant) {
 
   var variantEl = document.querySelector('.sticky-cart-bar__variant .global-btn-2__text');
   var priceEl = document.querySelector('.sticky-cart-bar__price');
-  var hiddenInput = document.querySelector('[data-product-form] input[name="id"]');
+  var hiddenInput = document.querySelector('#' + productFormId + ' input[name="id"]');
   var atcBtn = document.getElementById('StickyAddToCart');
 
   if (priceEl) priceEl.textContent = formatMoney(variant.price);
@@ -152,16 +153,21 @@ function initProductPage() {
 
   // FAQ Accordion
   document.querySelectorAll('.faq-accordion-item').forEach(function (item) {
-    item.querySelector('.faq-accordion-header').addEventListener('click', function () {
+    var header = item.querySelector('.faq-accordion-header');
+    if (!header) return;
+    header.addEventListener('click', function () {
       var isOpen = item.classList.contains('is-open');
       document.querySelectorAll('.faq-accordion-item.is-open').forEach(function (open) {
         open.classList.remove('is-open');
-        open.querySelector('.faq-accordion-body').style.maxHeight = '0';
+        var body = open.querySelector('.faq-accordion-body');
+        if (body) body.style.maxHeight = '0';
       });
       if (!isOpen) {
         var body = item.querySelector('.faq-accordion-body');
-        item.classList.add('is-open');
-        body.style.maxHeight = body.scrollHeight + 'px';
+        if (body) {
+          item.classList.add('is-open');
+          body.style.maxHeight = body.scrollHeight + 'px';
+        }
       }
     });
   });
@@ -220,11 +226,11 @@ function initProductPage() {
       function () {
         stickyBar.classList.toggle('sticky-cart-bar--visible', window.scrollY > 400);
       },
-      { passive: true }
+      { passive: true },
     );
 
     // Sync sticky qty with main qty
-    var mainQtyInput = document.querySelector('[data-product-form] .quantity__input');
+    var mainQtyInput = document.querySelector('#' + productFormId + ' .quantity__input');
     var stickyQtyDisplay = document.getElementById('StickyQtyDisplay');
     var stickyDecrement = document.getElementById('StickyDecrement');
     var stickyIncrement = document.getElementById('StickyIncrement');
@@ -251,7 +257,7 @@ function initProductPage() {
     var stickyAtcBtn = document.getElementById('StickyAddToCart');
     if (stickyAtcBtn) {
       stickyAtcBtn.addEventListener('click', function () {
-        var mainSubmit = document.querySelector('[data-product-form] [type="submit"]');
+        var mainSubmit = document.querySelector('#' + productFormId + ' [type="submit"]');
         if (mainSubmit) mainSubmit.click();
       });
     }
