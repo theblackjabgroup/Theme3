@@ -6,7 +6,6 @@
 
 .contact-page__inner {
   margin: 0 auto;
-  padding: 0 20px;
 }
 
 /* Mobile: form before map, tighter padding */
@@ -17,9 +16,7 @@
 
 
   }
-      .contact-page {
-  margin-top: 70px;
-}
+
 
   .contact-page__left {
     order: 2;
@@ -33,9 +30,7 @@
     min-height: 0;
   }
 
-  .contact-page__inner {
-    padding: 0 16px;
-  }
+
 
   .contact-page__left-card {
     min-height: 0;
@@ -116,14 +111,14 @@
 .contact-page__grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--contact-grid-gap, 20px);
+  gap: var(--bento-gap, 16px);
   margin: 0 auto;
 }
 
 @media (min-width: 750px) {
   .contact-page__grid {
     grid-template-columns: 1fr 2fr;
-    gap: var(--contact-grid-gap, 20px);
+    gap: var(--bento-gap, 16px);
     align-items: stretch;
   }
 
