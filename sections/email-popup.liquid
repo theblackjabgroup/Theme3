@@ -148,7 +148,7 @@
     <div class="email-popup__content">
       {%- if section.settings.logo != blank -%}
         <div class="email-popup__logo">
-          <img src="{{ section.settings.logo | image_url: width: 120 }}" alt="" width="80" height="80" loading="eager">
+          <img src="{{ section.settings.logo | image_url: width: 120 }}" alt="{{ shop.name }} logo" width="80" height="80" loading="eager">
         </div>
       {%- else -%}
         <div class="email-popup__envelope" aria-hidden="true">

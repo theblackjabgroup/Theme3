@@ -37,14 +37,7 @@
 {%- capture newline -%}
 {%- endcapture -%}
 {%- assign map_address = section.settings.contact_address | strip | replace: newline, ', ' -%}
-{%- unless use_google_maps -%}
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-    crossorigin=""
-  >
-{%- endunless -%}
+
 
 {%- style -%}
   .section-{{ section.id }}-padding {
@@ -360,28 +353,194 @@
       })();
     </script>
   {%- else -%}
-    <script
-      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-      crossorigin=""
-      defer
-    ></script>
+    <style>
+      #contact-map-{{ section.id }} {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+        overflow: hidden;
+      }
+
+      .osm-map-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background: #e0e0e0;
+      }
+
+      .osm-tile-layer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .osm-tile {
+        position: absolute;
+        background: #e0e0e0;
+        border: 1px solid #d0d0d0;
+        background-size: cover;
+        background-position: center;
+      }
+
+      .osm-marker {
+        position: absolute;
+        transform: translate(-50%, -100%);
+        cursor: pointer;
+        z-index: 10;
+      }
+
+      .osm-marker-icon {
+        width: 32px;
+        height: 40px;
+        background: #FF6B6B;
+        border: 2px solid white;
+        border-radius: 50% 50% 50% 0%;
+        transform: rotate(-45deg);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .osm-marker-icon::after {
+        content: '';
+        width: 8px;
+        height: 8px;
+        background: white;
+        border-radius: 50%;
+        transform: rotate(45deg);
+      }
+
+      .osm-attribution {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.8);
+        padding: 4px 6px;
+        font-size: 11px;
+        z-index: 5;
+        border-radius: 2px;
+      }
+
+      .osm-attribution a {
+        color: #0078a8;
+        text-decoration: none;
+      }
+
+      .osm-attribution a:hover {
+        text-decoration: underline;
+      }
+    </style>
+
     <script defer>
       (function () {
         var mapEl = document.getElementById('contact-map-{{ section.id }}');
         if (!mapEl || !mapEl.dataset.address) return;
+
         var address = mapEl.dataset.address;
         var zoom = parseInt(mapEl.dataset.zoom, 10) || 13;
         var fallbackLat = 40.7484;
         var fallbackLon = -73.9857;
-        function initMap(lat, lon) {
-          if (typeof L === 'undefined') return;
-          var map = L.map('contact-map-{{ section.id }}').setView([lat, lon], zoom);
-          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-          }).addTo(map);
-          L.marker([lat, lon]).addTo(map);
+
+        // Constrain zoom level
+        zoom = Math.max(1, Math.min(18, zoom));
+
+        function deg2tile(lat, lon, z) {
+          var n = Math.pow(2, z);
+          var x = Math.floor((lon + 180) / 360 * n);
+          var y = Math.floor((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * n);
+          return { x: x, y: y, z: z };
         }
+
+        function tile2deg(x, y, z) {
+          var n = Math.pow(2, z);
+          var lon = x / n * 360 - 180;
+          var lat = Math.atan(Math.sinh(Math.PI * (1 - 2 * y / n))) * 180 / Math.PI;
+          return { lat: lat, lon: lon };
+        }
+
+        function getMapExtent(lat, lon, z, width, height) {
+          var tileSize = 256;
+          var tile = deg2tile(lat, lon, z);
+          var centerX = tile.x + 0.5;
+          var centerY = tile.y + 0.5;
+
+          var tilesX = Math.ceil(width / tileSize) + 2;
+          var tilesY = Math.ceil(height / tileSize) + 2;
+
+          var startX = Math.floor(centerX - tilesX / 2);
+          var startY = Math.floor(centerY - tilesY / 2);
+          var endX = startX + tilesX;
+          var endY = startY + tilesY;
+
+          return { startX: startX, startY: startY, endX: endX, endY: endY, centerX: centerX, centerY: centerY, tileSize: tileSize };
+        }
+
+        function initSimpleMap(lat, lon) {
+          mapEl.innerHTML = '';
+          var container = document.createElement('div');
+          container.className = 'osm-map-container';
+          container.style.width = '100%';
+          container.style.height = '100%';
+
+          var width = mapEl.offsetWidth || 400;
+          var height = mapEl.offsetHeight || 300;
+
+          var extent = getMapExtent(lat, lon, zoom, width, height);
+
+          var tileLayer = document.createElement('div');
+          tileLayer.className = 'osm-tile-layer';
+          tileLayer.style.width = width + 'px';
+          tileLayer.style.height = height + 'px';
+
+          // Load visible tiles
+          for (var x = extent.startX; x < extent.endX; x++) {
+            for (var y = extent.startY; y < extent.endY; y++) {
+              var tileUrl = 'https://tile.openstreetmap.org/' + zoom + '/' + x + '/' + y + '.png';
+              var tile = document.createElement('div');
+              tile.className = 'osm-tile';
+              tile.style.backgroundImage = 'url(' + tileUrl + ')';
+
+              var pixelX = (x - extent.centerX + 0.5) * 256 + width / 2;
+              var pixelY = (y - extent.centerY + 0.5) * 256 + height / 2;
+
+              tile.style.left = pixelX + 'px';
+              tile.style.top = pixelY + 'px';
+              tile.style.width = '256px';
+              tile.style.height = '256px';
+
+              tileLayer.appendChild(tile);
+            }
+          }
+
+          // Add marker
+          var markerPixelX = width / 2;
+          var markerPixelY = height / 2;
+
+          var marker = document.createElement('div');
+          marker.className = 'osm-marker';
+          marker.style.left = markerPixelX + 'px';
+          marker.style.top = markerPixelY + 'px';
+
+          var markerIcon = document.createElement('div');
+          markerIcon.className = 'osm-marker-icon';
+          marker.appendChild(markerIcon);
+
+          // Add attribution
+          var attribution = document.createElement('div');
+          attribution.className = 'osm-attribution';
+          attribution.innerHTML = '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>';
+
+          container.appendChild(tileLayer);
+          container.appendChild(marker);
+          container.appendChild(attribution);
+          mapEl.appendChild(container);
+        }
+
+        // Fetch coordinates using Komoot Photon API
         fetch('https://photon.komoot.io/api/?q=' + encodeURIComponent(address) + '&limit=1')
           .then(function (r) {
             return r.json();
@@ -396,10 +555,10 @@
                 lat = parseFloat(coords[1]);
               }
             }
-            initMap(lat, lon);
+            initSimpleMap(lat, lon);
           })
           .catch(function () {
-            initMap(fallbackLat, fallbackLon);
+            initSimpleMap(fallbackLat, fallbackLon);
           });
       })();
     </script>
