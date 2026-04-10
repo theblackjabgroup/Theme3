@@ -27,10 +27,11 @@
 
 {%- if is_placeholder -%}
   {%- comment -%} Placeholder card with dummy data (same structure as real card) {%- endcomment -%}
-  {%- assign placeholder_desc = placeholder_description
-    | default: fallback_description
-    | default: 'sections.card_product.placeholder_description' | t
-  -%}
+  {%- if placeholder_description or fallback_description -%}
+    {%- assign placeholder_desc = placeholder_description | default: fallback_description -%}
+  {%- else -%}
+    {%- assign placeholder_desc = 'sections.card_product.placeholder_description' | t -%}
+  {%- endif -%}
   <div class="custom-product-card-wrapper">
     <div class="custom-product-card">
       <a href="#" class="custom-product-card__main-link" aria-disabled="true" aria-label="{{ placeholder_title | escape }}" onclick="return false;">
