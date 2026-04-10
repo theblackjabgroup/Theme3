@@ -490,9 +490,13 @@
           tileLayer.style.height = height + 'px';
 
           // Load visible tiles
+          var maxTile = Math.pow(2, zoom);
           for (var x = extent.startX; x < extent.endX; x++) {
             for (var y = extent.startY; y < extent.endY; y++) {
-              var tileUrl = 'https://tile.openstreetmap.org/' + zoom + '/' + x + '/' + y + '.png';
+              var wx = ((x % maxTile) + maxTile) % maxTile;
+              var wy = y;
+              if (wy < 0 || wy >= maxTile) continue;
+              var tileUrl = 'https://tile.openstreetmap.org/' + zoom + '/' + wx + '/' + wy + '.png';
               var tile = document.createElement('div');
               tile.className = 'osm-tile';
               tile.style.backgroundImage = 'url(' + tileUrl + ')';
