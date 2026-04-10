@@ -175,6 +175,12 @@
   opacity: 1;
 }
 
+.share-story-input:focus-visible,
+.share-story-textarea:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
 .share-story-textarea::placeholder {
   color: var(--color-input-text);
   font-size: var(--share-story-placeholder-font-size, var(--font-size-lg));

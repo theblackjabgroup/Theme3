@@ -645,14 +645,14 @@
               <div class="mega-menu-column">
                 <h3 class="mega-menu-featured-header">
                   <span class="mega-menu-featured-bullet"></span>
-                  {{ nav_link.title }}
+                  {{ nav_link.title | escape }}
                 </h3>
                 {%- if nav_link.links != blank -%}
                   <ul class="mega-menu-column-list">
                     {%- for nav_childlink in nav_link.links limit: 6 -%}
                       <li class="mega-menu-column-item">
                         <a href="{{ nav_childlink.url }}" class="mega-menu-column-link">
-                          {{ nav_childlink.title }}
+                          {{ nav_childlink.title | escape }}
                         </a>
                       </li>
                     {%- endfor -%}
@@ -671,14 +671,14 @@
               <div class="mega-menu-column">
                 <h3 class="mega-menu-featured-header">
                   <span class="mega-menu-featured-bullet"></span>
-                  {{ childlink.title }}
+                  {{ childlink.title | escape }}
                 </h3>
                 {%- if childlink.links != blank -%}
                   <ul class="mega-menu-column-list">
                     {%- for grandlink in childlink.links limit: 6 -%}
                       <li class="mega-menu-column-item">
                         <a href="{{ grandlink.url }}" class="mega-menu-column-link">
-                          {{ grandlink.title }}
+                          {{ grandlink.title | escape }}
                         </a>
                       </li>
                     {%- endfor -%}
@@ -862,14 +862,14 @@
                 <div class="mega-menu-column">
                   <h3 class="mega-menu-featured-header">
                     <span class="mega-menu-featured-bullet"></span>
-                    {{ link.title }}
+                    {{ link.title | escape }}
                   </h3>
                   {%- if link.links != blank -%}
                     <ul class="mega-menu-column-list">
                       {%- for childlink in link.links limit: 6 -%}
                         <li class="mega-menu-column-item">
                           <a href="{{ childlink.url }}" class="mega-menu-column-link">
-                            {{ childlink.title }}
+                            {{ childlink.title | escape }}
                           </a>
                         </li>
                       {%- endfor -%}
@@ -931,14 +931,14 @@
                 <div class="mobile-mega-menu-column">
                   <h4 class="mobile-mega-menu-column-title">
                     <span class="mobile-mega-menu-bullet"></span>
-                    {{ m_link.title }}
+                    {{ m_link.title | escape }}
                   </h4>
                   {%- if m_link.links != blank -%}
                     <ul class="mobile-mega-menu-column-list">
                       {%- for m_childlink in m_link.links limit: 6 -%}
                         <li class="mobile-mega-menu-column-item">
                           <a href="{{ m_childlink.url }}" class="mobile-mega-menu-column-link">
-                            {{ m_childlink.title }}
+                            {{ m_childlink.title | escape }}
                           </a>
                         </li>
                       {%- endfor -%}
@@ -1087,7 +1087,7 @@
                     data-mobile-submenu-toggle
                     data-parent-link="{{ link_handle }}"
                     aria-expanded="false"
-                    aria-label="Toggle {{ link.title }} submenu"
+                    aria-label="Toggle {{ link.title | escape }} submenu"
                   >
                     {{- 'icon-caret-right.svg' | inline_asset_content -}}
                   </button>
@@ -1120,14 +1120,14 @@
                               <div class="mobile-mega-menu-column">
                                 <h4 class="mobile-mega-menu-column-title">
                                   <span class="mobile-mega-menu-bullet"></span>
-                                  {{ m_link.title }}
+                                  {{ m_link.title | escape }}
                                 </h4>
                                 {%- if m_link.links != blank -%}
                                   <ul class="mobile-mega-menu-column-list">
                                     {%- for m_childlink in m_link.links limit: 6 -%}
                                       <li class="mobile-mega-menu-column-item">
                                         <a href="{{ m_childlink.url }}" class="mobile-mega-menu-column-link">
-                                          {{ m_childlink.title }}
+                                          {{ m_childlink.title | escape }}
                                         </a>
                                       </li>
                                     {%- endfor -%}
@@ -1146,14 +1146,14 @@
                               <div class="mobile-mega-menu-column">
                                 <h4 class="mobile-mega-menu-column-title">
                                   <span class="mobile-mega-menu-bullet"></span>
-                                  {{ m_child.title }}
+                                  {{ m_child.title | escape }}
                                 </h4>
                                 {%- if m_child.links != blank -%}
                                   <ul class="mobile-mega-menu-column-list">
                                     {%- for m_grand in m_child.links limit: 6 -%}
                                       <li class="mobile-mega-menu-column-item">
                                         <a href="{{ m_grand.url }}" class="mobile-mega-menu-column-link">
-                                          {{ m_grand.title }}
+                                          {{ m_grand.title | escape }}
                                         </a>
                                       </li>
                                     {%- endfor -%}

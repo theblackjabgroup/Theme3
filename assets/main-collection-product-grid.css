@@ -25,7 +25,7 @@
 .product-grid-header__title {
   font-family: var(--font-heading-family);
   font-size: 3.8rem;
-  color: #306030;
+  color: var(--color-success);
   margin: 0;
 }
 
@@ -99,6 +99,6 @@
 .product-grid__see-more:focus-visible {
   outline: 2px solid #1f5cff;
   outline-offset: 8px;
-  border-radius: 6px;
+  border-radius: var(--radius-m);
 }
 

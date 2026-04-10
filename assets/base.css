@@ -93,6 +93,7 @@
   --color-pink: #FFE5E5;
   --color-off-white: #FAFAFA;
   --color-light-grey: #F3F3F3;
+  --color-success: #306030;
   
   /* Semantic color aliases (use theme variables when available) */
   --color-text-secondary: var(--color-gray-700);
@@ -261,6 +262,7 @@
   --z-index-modal: 1050;
   --z-index-popover: 1060;
   --z-index-tooltip: 1070;
+  --z-index-toast: 1080;
   
   /* ============================================
      LAYOUT TOKENS

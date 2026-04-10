@@ -30,7 +30,7 @@
 
 /* ── Card base ── */
 .bento-card {
-  border-radius: 20px;
+  border-radius: var(--radius-2xl);
   overflow: hidden;
   position: relative;
 }
@@ -61,14 +61,14 @@
   display: inline-flex;
   align-items: center;
   border: 0.7px solid var(--color-accent-2, #F8F3F8);
-  border-radius: 55px;
+  border-radius: var(--radius-pill);
   padding: 4px 16px;
   width: fit-content;
 }
 
 .bento-hero-pill-text {
   font-family: var(--font-heading-family, 'Inter', sans-serif);
-  font-size: 10px;
+  font-size: var(--font-size-xs);
   font-weight: 600;
   color: var(--color-accent-2, #F8F3F8);
   text-transform: uppercase;
@@ -121,7 +121,7 @@
   position: relative;
   min-height: 0;
   background: var(--color-card-bg, #313131);
-  border-radius: 20px;
+  border-radius: var(--radius-2xl);
   overflow: hidden;
 }
 
@@ -197,7 +197,7 @@
 .bento-card--collection,
 .bento-card--text {
   background: var(--color-card-bg, #313131);
-  border-radius: 16px;
+  border-radius: var(--radius-xl);
   padding: 24px;
 }
 
@@ -221,14 +221,14 @@
 .bento-collection-pill {
   display: inline-flex;
   border: 0.7px solid var(--color-text, #F8F3F8);
-  border-radius: 55px;
+  border-radius: var(--radius-pill);
   padding: 4px 16px;
   width: fit-content;
 }
 
 .bento-collection-pill-text {
   font-family: var(--font-heading-family, 'Inter', sans-serif);
-  font-size: 10px;
+  font-size: var(--font-size-xs);
   font-weight: 600;
   color: var(--color-text, #F8F3F8);
   text-transform: uppercase;
@@ -285,7 +285,7 @@
 }
 
 .bento-collection-img-wrap {
-  border-radius: 12px;
+  border-radius: var(--radius-l);
   overflow: hidden;
   background: var(--color-accent, #313131);
   flex-shrink: 0;
@@ -350,7 +350,7 @@
 /* Scroll indicator bar */
 .bento-scroll-indicator {
   width: 5px;
-  border-radius: 27px;
+  border-radius: var(--radius-pill);
   background: var(--color-bg, #222);
   position: relative;
   flex-shrink: 0;
@@ -364,7 +364,7 @@
   width: 100%;
   height: 40px;
   background: var(--color-heading, #F8F3F8);
-  border-radius: 27px;
+  border-radius: var(--radius-pill);
   transition: top 0.1s ease, height 0.1s ease;
   will-change: top, height;
 }

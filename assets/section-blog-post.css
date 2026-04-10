@@ -67,7 +67,7 @@
 
 .article-sidebar {
   background: var(--color-card-bg);
-  border-radius: 15px;
+  border-radius: var(--radius-xl);
   padding: 40px 48px;
   margin-bottom: var(--spacing-8);
 }
@@ -146,7 +146,7 @@
   display: inline-block;
   padding: 4px 16px;
   border: 1px solid var(--color-text);
-  border-radius: 24px;
+  border-radius: var(--radius-pill);
   font-family: var(--font-family-base);
   font-size: 10px;
   font-weight: 600;
@@ -172,14 +172,14 @@
 .article-content img {
   max-width: 100%;
   height: auto;
-  border-radius: 15px;
+  border-radius: var(--radius-xl);
   display: block;
 }
 
 .article-content-card {
   width: 100%;
   background: var(--color-card-bg);
-  border-radius: 15px;
+  border-radius: var(--radius-xl);
   padding: 24px;
   margin-bottom: var(--spacing-8);
 }
@@ -237,7 +237,7 @@
 /* Pull quote blockquote */
 .article-content blockquote {
   background: var(--color-accent);
-  border-radius: 20px;
+  border-radius: var(--radius-2xl);
   padding: 24px;
   margin: 32px 0;
   position: relative;
@@ -289,7 +289,7 @@
 
 .article-content .article-stat-card {
   background: color-mix(in srgb, var(--color-card-bg) 70%, black);
-  border-radius: 16px;
+  border-radius: var(--radius-xl);
   height: 134px;
   flex: 1;
   padding: 24px;
@@ -514,7 +514,7 @@
 
 .article-posted-comment-card {
   background: transparent;
-  border-radius: 8px;
+  border-radius: var(--radius-m);
   padding: 16px 20px;
   border: 1px solid color-mix(in srgb, var(--color-text) 25%, transparent);
 }
@@ -593,6 +593,12 @@
   outline: none;
 }
 
+.article-comment-input:focus-visible,
+.article-comment-textarea:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
 .article-comment-label,
 .article-posted-comment-card {
   color: var(--color-text);
@@ -640,7 +646,7 @@
   display: inline-block;
   padding: 5px 20px;
   border: 1px solid color-mix(in srgb, var(--color-text) 50%, transparent);
-  border-radius: 100px;
+  border-radius: var(--radius-pill);
   font-family: var(--font-family-mono);
   font-size: 11px;
   font-weight: 400;

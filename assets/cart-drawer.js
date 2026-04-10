@@ -108,37 +108,48 @@ class CartDrawer extends HTMLElement {
         if (plusBtn) plusBtn.disabled = max != null && qty >= max;
       }
     });
-    // Handle clicks outside the drawer content to close it
-    document.addEventListener('click', (e) => {
-      if (
-        this.classList.contains('active') &&
-        !e.target.closest('.drawer__inner') &&
-        !e.target.closest('#cart-icon-bubble') &&
-        !e.target.closest('.cart-drawer-trigger') &&
-        !e.target.closest('[data-open-cart-drawer-edit]')
-      ) {
-        this.close();
-      }
-      // Close when clicking on overlay
-      if (e.target.classList.contains('cart-drawer__overlay')) {
-        this.close();
-      }
-    });
     this.setHeaderCartIconAccessibility();
+  }
 
-    // Cart page: when Edit is clicked, open drawer and show edit panel for that line (bound ref so it works after close/reopen)
-    const drawerEl = this;
-    document.addEventListener('click', (e) => {
-      const trigger = e.target.closest('[data-open-cart-drawer-edit]');
-      if (!trigger) return;
-      e.preventDefault();
-      e.stopPropagation();
-      const lineIndex = trigger.getAttribute('data-line-index');
-      if (lineIndex && typeof drawerEl.open === 'function' && typeof drawerEl.openEditPanel === 'function') {
-        drawerEl.open();
-        drawerEl.openEditPanel(parseInt(lineIndex, 10));
-      }
-    }, true);
+  connectedCallback() {
+    if (!this._handleOutsideClick) {
+      this._handleOutsideClick = this._onOutsideClick.bind(this);
+      this._handleEditClick = this._onEditClick.bind(this);
+    }
+    document.addEventListener('click', this._handleOutsideClick);
+    document.addEventListener('click', this._handleEditClick, true);
+  }
+
+  disconnectedCallback() {
+    document.removeEventListener('click', this._handleOutsideClick);
+    document.removeEventListener('click', this._handleEditClick, true);
+  }
+
+  _onOutsideClick(e) {
+    if (
+      this.classList.contains('active') &&
+      !e.target.closest('.drawer__inner') &&
+      !e.target.closest('#cart-icon-bubble') &&
+      !e.target.closest('.cart-drawer-trigger') &&
+      !e.target.closest('[data-open-cart-drawer-edit]')
+    ) {
+      this.close();
+    }
+    if (e.target.classList.contains('cart-drawer__overlay')) {
+      this.close();
+    }
+  }
+
+  _onEditClick(e) {
+    const trigger = e.target.closest('[data-open-cart-drawer-edit]');
+    if (!trigger) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const lineIndex = trigger.getAttribute('data-line-index');
+    if (lineIndex && typeof this.open === 'function' && typeof this.openEditPanel === 'function') {
+      this.open();
+      this.openEditPanel(parseInt(lineIndex, 10));
+    }
   }
 
   openEditPanel(lineIndex) {

@@ -29,7 +29,7 @@
   {%- comment -%} Placeholder card with dummy data (same structure as real card) {%- endcomment -%}
   {%- assign placeholder_desc = placeholder_description
     | default: fallback_description
-    | default: 'Add a collection in the section settings to display products.'
+    | default: 'sections.card_product.placeholder_description' | t
   -%}
   <div class="custom-product-card-wrapper">
     <div class="custom-product-card">
@@ -139,7 +139,7 @@
             </p>
           {%- else -%}
             <p class="custom-product-card__description">
-              {{ 'Discover our amazing product.' | strip_html | truncate: 80, '…' }}
+              {{ 'sections.card_product.placeholder_description' | t | truncate: 80, '…' }}
             </p>
           {%- endif -%}
         </div>

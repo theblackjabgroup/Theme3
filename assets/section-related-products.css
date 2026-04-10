@@ -177,13 +177,13 @@
 
 .related-products .custom-product-card {
   --card-padding-top: 0px;
-  --card-padding-horizontal: 24px;
-  --card-padding-bottom: 24px;
+  --card-padding-horizontal: 20px;
+  --card-padding-bottom: 20px;
   --card-text-align: center;
   --card-align-items: center;
-  --card-image-height: 250px;
-  --card-image-margin-bottom: 20px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+  --card-image-height: 300px;
+  --card-image-margin-bottom: 16px;
+  transition: all 0.3s ease;
   height: 100%;
   flex: 1;
 }
@@ -259,27 +259,9 @@
   overflow: visible !important;
 }
 
-/* Ensure hover animation works - Desktop only */
+/* Hover animation — matches product grid (product-card.css) */
 @media screen and (min-width: 750px) {
   .related-products .custom-product-card:hover .custom-product-card__image {
-    transform: translateY(-48px) rotate(5deg) scale(1.2) !important;
-  }
-
-  .related-products .custom-product-card:hover .custom-product-card__badge,
-  .related-products .custom-product-card:hover .custom-product-card__title,
-  .related-products .custom-product-card:hover .custom-product-card__description,
-  .related-products .custom-product-card-wrapper:hover .custom-product-card__footer {
-    transform: translateY(-52px) !important;
-  }
-}
-
-/* Disable hover animation on mobile */
-@media screen and (max-width: 749px) {
-  .related-products .custom-product-card:hover .custom-product-card__image,
-  .related-products .custom-product-card:hover .custom-product-card__badge,
-  .related-products .custom-product-card:hover .custom-product-card__title,
-  .related-products .custom-product-card:hover .custom-product-card__description,
-  .related-products .custom-product-card-wrapper:hover .custom-product-card__footer {
-    transform: none !important;
+    transform: translateY(-40px) rotate(-10deg) scale(1.3) !important;
   }
 }
