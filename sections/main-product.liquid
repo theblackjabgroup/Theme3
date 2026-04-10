@@ -13,7 +13,7 @@
           {{
             product.featured_media
             | image_url: width: 1000
-            | image_tag: class: 'main-media-img', id: 'ProductMainImage', loading: 'lazy'
+            | image_tag: class: 'main-media-img', id: 'ProductMainImage', loading: 'eager', fetchpriority: 'high'
           }}
         {% else %}
           {{ 'product-1' | placeholder_svg_tag: 'main-media-img' }}
