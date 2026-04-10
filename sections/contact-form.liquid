@@ -455,13 +455,6 @@
           return { x: x, y: y, z: z };
         }
 
-        function tile2deg(x, y, z) {
-          var n = Math.pow(2, z);
-          var lon = x / n * 360 - 180;
-          var lat = Math.atan(Math.sinh(Math.PI * (1 - 2 * y / n))) * 180 / Math.PI;
-          return { lat: lat, lon: lon };
-        }
-
         function getMapExtent(lat, lon, z, width, height) {
           var tileSize = 256;
           var tile = deg2tile(lat, lon, z);

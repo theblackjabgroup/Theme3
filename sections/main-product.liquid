@@ -201,10 +201,16 @@
               <input type="hidden" name="id" value="{{ current_variant.id }}">
               {%- liquid
                 if current_variant.available
-                  assign btn_text = 'products.product.add_to_cart' | t | default: 'ADD TO CART'
+                  assign btn_text = 'products.product.add_to_cart' | t
+                  if btn_text contains 'Translation missing'
+                    assign btn_text = 'ADD TO CART'
+                  endif
                   assign btn_variant = 'tertiary'
                 else
-                  assign btn_text = 'products.product.sold_out' | t | default: 'SOLD OUT'
+                  assign btn_text = 'products.product.sold_out' | t
+                  if btn_text contains 'Translation missing'
+                    assign btn_text = 'SOLD OUT'
+                  endif
                   assign btn_variant = 'disabled'
                 endif
               -%}
@@ -350,6 +356,7 @@
   <script>
     // Make variant data available to external script
     window.productVariants = {{ product.variants | json }};
+    window.productFormId = {{ product_form_id | json }};
   </script>
   <script src="{{ 'main-product.js' | asset_url }}" defer></script>
 </div>
