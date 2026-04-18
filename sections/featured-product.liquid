@@ -205,6 +205,30 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+  #shopify-section-{{ section.id }} {
+    --featured-title-size: {{ section.settings.title_font_size | default: 48 }}px;
+    --featured-title-weight: {{ section.settings.title_font_weight | default: 600 }};
+    --featured-title-letter-spacing: {{ section.settings.title_letter_spacing | default: -2 }}px;
+    --featured-price-size: {{ section.settings.price_font_size | default: 32 }}px;
+    --featured-price-weight: {{ section.settings.price_font_weight | default: 900 }};
+    --featured-price-letter-spacing: {{ section.settings.price_letter_spacing | default: -2 }}px;
+    --featured-atc-width: {{ section.settings.atc_width | default: 278 }}px;
+    --featured-atc-height: {{ section.settings.atc_height | default: 44 }}px;
+    --featured-atc-radius: {{ section.settings.atc_radius | default: 12 }}px;
+    --featured-gap-lg: {{ section.settings.spacing_lg | default: 24 }}px;
+    --featured-gap-md: {{ section.settings.spacing_md | default: 16 }}px;
+    --featured-gap-sm: {{ section.settings.spacing_sm | default: 8 }}px;
+    --featured-product-min-width: {{ section.settings.product_col_min_width | default: 479 }}px;
+    --featured-arrow-width: {{ section.settings.arrow_width | default: 40 }}px;
+    --featured-arrow-height: {{ section.settings.arrow_height | default: 39 }}px;
+    --featured-arrow-offset: {{ section.settings.arrow_offset | default: 0 }}px;
+    --featured-promo-padding-top: {{ section.settings.promo_padding_top | default: 120 }}px;
+    --featured-promo-pill-padding-y: {{ section.settings.promo_pill_padding_y | default: 6 }}px;
+    --featured-promo-pill-padding-x: {{ section.settings.promo_pill_padding_x | default: 16 }}px;
+    --featured-promo-pill-radius: {{ section.settings.promo_pill_radius | default: 55 }}px;
+    --featured-vc-width: {{ section.settings.vc_width | default: 226 }}px;
+  }
 {%- endstyle -%}
 
 {% schema %}
@@ -294,6 +318,241 @@
       "unit": "px",
       "label": "Padding bottom",
       "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size",
+      "min": 24,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Title font size",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "title_font_weight",
+      "min": 100,
+      "max": 1000,
+      "step": 50,
+      "label": "Title font weight",
+      "default": 600,
+      "info": "Supports variable font weights"
+    },
+    {
+      "type": "range",
+      "id": "title_letter_spacing",
+      "min": -5,
+      "max": 5,
+      "step": 0.5,
+      "unit": "px",
+      "label": "Title letter spacing",
+      "default": -2
+    },
+    {
+      "type": "range",
+      "id": "price_font_size",
+      "min": 16,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "label": "Price font size",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "price_font_weight",
+      "min": 100,
+      "max": 1000,
+      "step": 50,
+      "label": "Price font weight",
+      "default": 900,
+      "info": "Supports variable font weights"
+    },
+    {
+      "type": "range",
+      "id": "price_letter_spacing",
+      "min": -5,
+      "max": 5,
+      "step": 0.5,
+      "unit": "px",
+      "label": "Price letter spacing",
+      "default": -2
+    },
+    {
+      "type": "header",
+      "content": "Add to Cart Button"
+    },
+    {
+      "type": "range",
+      "id": "atc_width",
+      "min": 240,
+      "max": 340,
+      "step": 2,
+      "unit": "px",
+      "label": "Button width",
+      "default": 278
+    },
+    {
+      "type": "range",
+      "id": "atc_height",
+      "min": 36,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Button height",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "atc_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Button corner radius",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "spacing_lg",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "label": "Large spacing",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "spacing_md",
+      "min": 4,
+      "max": 32,
+      "step": 4,
+      "unit": "px",
+      "label": "Medium spacing",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "spacing_sm",
+      "min": 0,
+      "max": 24,
+      "step": 4,
+      "unit": "px",
+      "label": "Small spacing",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Slider Arrows"
+    },
+    {
+      "type": "range",
+      "id": "arrow_width",
+      "min": 28,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "label": "Arrow width",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "arrow_height",
+      "min": 28,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "label": "Arrow height",
+      "default": 39
+    },
+    {
+      "type": "range",
+      "id": "arrow_offset",
+      "min": 0,
+      "max": 32,
+      "step": 4,
+      "unit": "px",
+      "label": "Arrow edge offset",
+      "info": "Distance from slider edge. 0 = arrows at edges (~288px apart)",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "product_col_min_width",
+      "min": 400,
+      "max": 500,
+      "step": 1,
+      "unit": "px",
+      "label": "Product info min width",
+      "default": 479
+    },
+    {
+      "type": "header",
+      "content": "Promo Card"
+    },
+    {
+      "type": "range",
+      "id": "promo_padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Promo top padding",
+      "default": 120
+    },
+    {
+      "type": "range",
+      "id": "promo_pill_padding_y",
+      "min": 2,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Promo pill vertical padding",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "promo_pill_padding_x",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Promo pill horizontal padding",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "promo_pill_radius",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Promo pill corner radius",
+      "default": 55
+    },
+    {
+      "type": "range",
+      "id": "vc_width",
+      "min": 180,
+      "max": 280,
+      "step": 2,
+      "unit": "px",
+      "label": "View Collection button width",
+      "default": 226
     }
   ],
   "presets": [
