@@ -39,12 +39,13 @@
 
     --header-width: {{ section.settings.header_width | default: 200 }}px;
     --header-gap: {{ settings.page_layout_gap | default: 16 }}px;
+    --sidebar-offset: {{ section.settings.sidebar_offset | default: 24 }}px;
 
     /* Logo */
-    --logo-padding-top: {{ section.settings.logo_padding_top | default: 24 }}px;
-    --logo-padding-bottom: {{ section.settings.logo_padding_bottom | default: 24 }}px;
-    --logo-padding-left: {{ section.settings.logo_padding_left | default: 24 }}px;
-    --logo-padding-right: {{ section.settings.logo_padding_right | default: 24 }}px;
+    --logo-padding-top: {{ section.settings.logo_padding_top | default: 4 }}px;
+    --logo-padding-bottom: {{ section.settings.logo_padding_bottom | default: 4 }}px;
+    --logo-padding-left: {{ section.settings.logo_padding_left | default: 18 }}px;
+    --logo-padding-right: {{ section.settings.logo_padding_right | default: 18 }}px;
     --logo-padding: var(--logo-padding-top) var(--logo-padding-right) var(--logo-padding-bottom) var(--logo-padding-left);
     --logo-border-radius: {{ section.settings.logo_border_radius | default: 16 }}px;
     --logo-font-size: {{ section.settings.logo_font_size | default: 16 }}px;
@@ -73,7 +74,12 @@
     --button-padding-right: {{ section.settings.button_padding_right | default: 16 }}px;
     --button-padding: var(--button-padding-top) var(--button-padding-right) var(--button-padding-bottom) var(--button-padding-left);
     --button-font-size: {{ section.settings.button_font_size | default: 16 }}px;
-    --button-icon-size: {{ section.settings.button_icon_size | default: 25 }}px;
+    --button-icon-size: {{ section.settings.button_icon_size | default: 19 }}px;
+    --search-button-icon-size: {{ section.settings.search_icon_size | default: 24 }}px;
+    --header-action-button-min-height: {{ section.settings.button_min_height | default: 36 }}px;
+    --header-action-button-radius: {{ section.settings.button_border_radius | default: 10 }}px;
+    --profile-cart-button-padding: var(--button-padding-top) var(--button-padding-right) var(--button-padding-bottom) var(--button-padding-left);
+    --search-button-padding: var(--button-padding-top) var(--button-padding-right) var(--button-padding-bottom) var(--button-padding-left);
 
     /* Navigation */
     --nav-gap: {{ settings.header_nav_item_gap | default: 8 }}px;
@@ -85,9 +91,11 @@
     --nav-item-padding-left: {{ section.settings.nav_item_padding_left | default: 16 }}px;
     --nav-item-padding-right: {{ section.settings.nav_item_padding_right | default: 16 }}px;
     --nav-item-padding: var(--nav-item-padding-top) var(--nav-item-padding-right) var(--nav-item-padding-bottom) var(--nav-item-padding-left);
-    --nav-font-size: {{ section.settings.nav_font_size | default: 14 }}px;
+    --nav-font-size: {{ section.settings.nav_font_size | default: 16 }}px;
     --nav-font-weight: {{ section.settings.nav_font_weight | default: 500 }};
-    --nav-letter-spacing: {{ section.settings.nav_letter_spacing | default: 0 }}px;
+    --nav-letter-spacing: {{ section.settings.nav_letter_spacing | default: -0.6 }}px;
+    --nav-button-min-height: {{ section.settings.nav_button_min_height | default: 97 }}px;
+    --nav-icon-label-gap: {{ section.settings.nav_icon_label_gap | default: 8 }}px;
     --nav-icon-size: {{ section.settings.nav_icon_size | default: 24 }}px;
     --nav-caret-size: {{ section.settings.nav_caret_size | default: 12 }}px;
 
@@ -1422,13 +1430,24 @@
     {
       "type": "range",
       "id": "header_width",
-      "min": 200,
+      "min": 180,
       "max": 400,
       "step": 10,
       "unit": "px",
       "label": "Header Width",
       "default": 200,
       "info": "Width of the vertical sidebar header"
+    },
+    {
+      "type": "range",
+      "id": "sidebar_offset",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Sidebar Edge Gap",
+      "default": 24,
+      "info": "Gap between the sidebar and the screen edge"
     },
     {
       "type": "range",
@@ -1469,42 +1488,42 @@
     {
       "type": "range",
       "id": "logo_padding_top",
-      "min": 8,
+      "min": 4,
       "max": 40,
       "step": 2,
       "unit": "px",
       "label": "Logo Padding Top",
-      "default": 24
+      "default": 4
     },
     {
       "type": "range",
       "id": "logo_padding_bottom",
-      "min": 8,
+      "min": 4,
       "max": 40,
       "step": 2,
       "unit": "px",
       "label": "Logo Padding Bottom",
-      "default": 24
+      "default": 4
     },
     {
       "type": "range",
       "id": "logo_padding_left",
-      "min": 8,
+      "min": 4,
       "max": 40,
       "step": 2,
       "unit": "px",
       "label": "Logo Padding Left",
-      "default": 24
+      "default": 18
     },
     {
       "type": "range",
       "id": "logo_padding_right",
-      "min": 8,
+      "min": 4,
       "max": 40,
       "step": 2,
       "unit": "px",
       "label": "Logo Padding Right",
-      "default": 24
+      "default": 18
     },
     {
       "type": "range",
@@ -1831,12 +1850,42 @@
     {
       "type": "range",
       "id": "button_icon_size",
-      "min": 16,
+      "min": 14,
       "max": 32,
       "step": 1,
       "unit": "px",
-      "label": "Button Icon Size",
-      "default": 25
+      "label": "Button Icon Size (Account / Cart)",
+      "default": 19
+    },
+    {
+      "type": "range",
+      "id": "search_icon_size",
+      "min": 14,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Button Icon Size (Search)",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "button_min_height",
+      "min": 28,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "label": "Button Min Height",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Button Border Radius",
+      "default": 10
     },
     {
       "type": "header",
@@ -1932,7 +1981,7 @@
       "step": 1,
       "unit": "px",
       "label": "Navigation Font Size",
-      "default": 14
+      "default": 16
     },
     {
       "type": "select",
@@ -1965,12 +2014,32 @@
     {
       "type": "range",
       "id": "nav_letter_spacing",
-      "min": 0,
+      "min": -2,
       "max": 2,
       "step": 0.1,
       "unit": "px",
       "label": "Navigation Letter Spacing",
-      "default": 0
+      "default": -0.6
+    },
+    {
+      "type": "range",
+      "id": "nav_button_min_height",
+      "min": 60,
+      "max": 160,
+      "step": 1,
+      "unit": "px",
+      "label": "Navigation Card Min Height",
+      "default": 97
+    },
+    {
+      "type": "range",
+      "id": "nav_icon_label_gap",
+      "min": 2,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Navigation Card Icon/Label Gap",
+      "default": 8
     },
     {
       "type": "range",

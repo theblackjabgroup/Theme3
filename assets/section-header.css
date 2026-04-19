@@ -18,10 +18,10 @@
 
 .vertical-sidebar-header {
   position: fixed;
-  left: var(--bento-gap, 12px);
-  top: var(--bento-gap, 12px);
-  width: var(--header-width, 230px);
-  height: calc(100vh - var(--bento-gap, 12px));
+  left: var(--bento-gap);
+  top: var(--bento-gap);
+  width: var(--header-width, 200px);
+  height: 100vh;
   z-index: 10;
   display: flex;
   min-width: 180px;
@@ -227,12 +227,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 48px;
+  min-height: var(--header-action-button-min-height, 36px);
   gap: 8px;
   padding: var(--button-padding, 14px 18px);
   background: var(--color-card-bg);
   border: none;
-  border-radius: var(--radius-l);
+  border-radius: var(--header-action-button-radius, var(--radius-l));
   color: var(--color-heading);
   text-decoration: none;
   font-size: var(--button-font-size, 16px);
@@ -281,6 +281,21 @@
   height: var(--button-icon-size, var(--icon-size-md));
   position: relative;
   overflow: visible;
+}
+
+/* Bug 3: Separate padding for search row vs account/cart row */
+.vertical-sidebar-actions-row.profile-cart-row .header-action-button {
+  padding: var(--profile-cart-button-padding, var(--button-padding));
+}
+
+.vertical-sidebar-actions-row.search-row .header-action-button {
+  padding: var(--search-button-padding, var(--button-padding));
+}
+
+/* Bug 4: Search icon uses its own size variable */
+.vertical-sidebar-actions-row.search-row .header-action-button-icon {
+  width: var(--search-button-icon-size, var(--icon-size-lg));
+  height: var(--search-button-icon-size, var(--icon-size-lg));
 }
 
 .header-action-button {
@@ -443,9 +458,9 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-end;
-  gap: 10px;
+  gap: var(--nav-icon-label-gap, 8px);
   padding: var(--nav-item-padding, var(--nav-item-padding-top, 16px) var(--nav-item-padding-right, 16px) var(--nav-item-padding-bottom, 16px) var(--nav-item-padding-left, 16px));
-  min-height: 100px;
+  min-height: var(--nav-button-min-height, 97px);
   height: auto;
   background: var(--color-card-bg);
   border: var(--nav-border, none);
@@ -481,7 +496,7 @@
   background: var(--color-card-bg);
   color: var(--color-heading);
   border: var(--nav-border, none);
-  min-height: 100px;
+  min-height: var(--nav-button-min-height, 97px);
   padding: var(--nav-item-padding, 16px);
   justify-content:flex-end;
 }
@@ -1888,10 +1903,10 @@ body.mobile-menu-open .mobile-menu-content > *:not(.mobile-menu-close) {
     display: block;
   }
 
-  /* Content column: pushed right by left-gap + sidebar width */
+  /* Content column: pushed right by sidebar-offset + sidebar width */
   .page-content {
-    margin-left: var(--header-width, 230px);
-    padding-left: var(--bento-gap);
+    margin-left: calc(var(--header-width, 200px) + var(--bento-gap, 16px));
+    padding-left: 0;
     display: flex;
     flex-direction: column;
     min-width: 0;

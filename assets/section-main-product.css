@@ -543,7 +543,7 @@
 .sticky-cart-bar {
   position: fixed;
   bottom: 16px;
-  left: calc(var(--header-width, 230px) + var(--bento-gap, 16px));
+  left: calc(var(--sidebar-offset, 24px) + var(--header-width, 200px) + var(--bento-gap, 16px));
   right: var(--bento-gap, 16px);
   background: var(--color-card-bg, #313131) !important;
   border-top: 2px solid #F5A30A;

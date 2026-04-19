@@ -6,10 +6,13 @@
 
 {%- style -%}
     #bento-hero-{{ section.id }} {
-
       --bento-hero-pt-m: {{ section.settings.padding_top_mobile   | default: 12 }}px;
       --bento-hero-pb-m: {{ section.settings.padding_bottom_mobile | default: 12 }}px;
       --bento-hero-px-m: {{ section.settings.padding_horizontal_mobile | default: 12 }}px;
+      --bento-hero-heading-size: {{ section.settings.hero_heading_size | default: 38 }}px;
+      --bento-hero-buttons-gap: {{ section.settings.hero_buttons_gap | default: 16 }}px;
+      --bento-hero-pill-radius: {{ section.settings.hero_pill_radius | default: 55 }}px;
+      --bento-hero-pill-font-size: {{ section.settings.hero_pill_font_size | default: 10 }}px;
   }
 {%- endstyle -%}
 
@@ -276,6 +279,50 @@
       "type": "url",
       "id": "btn2_url",
       "label": "Secondary button link"
+    },
+    {
+      "type": "header",
+      "content": "Hero Typography & Style"
+    },
+    {
+      "type": "range",
+      "id": "hero_heading_size",
+      "min": 24,
+      "max": 56,
+      "step": 1,
+      "unit": "px",
+      "label": "Hero Heading Font Size",
+      "default": 38
+    },
+    {
+      "type": "range",
+      "id": "hero_buttons_gap",
+      "min": 4,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Hero Buttons Gap",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "hero_pill_radius",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Hero Pill Border Radius",
+      "default": 55
+    },
+    {
+      "type": "range",
+      "id": "hero_pill_font_size",
+      "min": 8,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Hero Pill Font Size",
+      "default": 10
     },
     {
       "type": "header",

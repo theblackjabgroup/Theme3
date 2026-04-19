@@ -56,7 +56,7 @@
   }
 
   #shopify-section-{{ section.id }} .custom-product-card__badge {
-    font-size: 12px;
+    font-size: 10px;
     font-weight: 700;
     border-radius: 24px;
     margin-bottom: 10px;
@@ -64,6 +64,14 @@
 
   #shopify-section-{{ section.id }} .custom-product-card__hover-buttons {
     gap: 8px;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+  }
+
+  #shopify-section-{{ section.id }} .custom-product-card__price {
+    opacity: 0 !important;
+    visibility: hidden !important;
   }
 
   #shopify-section-{{ section.id }} .custom-product-card__price.global-btn-2 {

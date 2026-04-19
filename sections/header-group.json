@@ -78,7 +78,20 @@
       ],
       "settings": {
         "menu": "main-menu",
-        "header_padding": 20
+        "header_padding": 20,
+        "sidebar_offset": 24,
+        "button_min_height": 36,
+        "button_border_radius": 10,
+        "button_icon_size": 19,
+        "search_icon_size": 24,
+        "logo_padding_top": 4,
+        "logo_padding_bottom": 4,
+        "logo_padding_left": 18,
+        "logo_padding_right": 18,
+        "nav_font_size": 16,
+        "nav_letter_spacing": -0.6,
+        "nav_button_min_height": 97,
+        "nav_icon_label_gap": 8
       }
     }
   },

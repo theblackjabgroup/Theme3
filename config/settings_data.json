@@ -42,6 +42,7 @@
     "predictive_search_enabled": true,
     "swatch_shape_token": "radius_small",
     "variant_pill_radius_token": "radius_pill",
+    "header_nav_item_gap": 18,
     "custom_css": "",
     "theme_style": "light",
     "color_background_token": "white",
