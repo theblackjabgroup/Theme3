@@ -66,6 +66,7 @@
     --collection-card-hover-button-border-radius: {{ settings.collection_card_hover_button_border_radius | default: 20 }}px;
     --collection-card-hover-button-font-size: {{ settings.collection_card_hover_button_font_size | default: 14 }}px;
     --collection-card-hover-button-font-weight: {{ settings.collection_card_hover_button_font_weight | default: 700 }};
+    --collection-grid-gap: {{ section.settings.grid_gap | default: 16 }}px;
     background-color: var(--color-bg);
   }
 
@@ -74,7 +75,7 @@
   }
 
   .custom-collection-card {
-    padding: 0px 24px 24px;
+    padding: var(--padding-m) var(--padding-l);
     text-align: center;
     align-items: center;
   }
@@ -140,7 +141,6 @@
   @media screen and (max-width: 989px) {
     .custom-collection-list__grid {
       grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr);
-      gap: 16px;
     }
 
     .custom-collection-list {
@@ -257,7 +257,7 @@
 {%- endif -%}
 
 <div class="custom-collection-list color-{{ list_scheme_id | default: section.settings.color_scheme }} gradient">
-  <div>
+  <div class="custom-collection-list__frame">
     {%- for block in section.blocks -%}
       {%- if block.type == 'header' -%}
         {%- liquid

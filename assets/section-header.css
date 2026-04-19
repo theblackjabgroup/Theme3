@@ -1099,7 +1099,6 @@ predictive-search[results="true"] .mega-menu-predictive-search {
   background: color-mix(in srgb, var(--color-card-bg, var(--color-card-bg)) 85%, transparent) !important;
   border: 1px solid color-mix(in srgb, var(--color-card-bg, var(--color-card-bg)) 20%, transparent);
   border-radius: var(--radius-2xl);
-  margin-bottom: var(--bento-gap);
   
   z-index: 1000;
   backdrop-filter: blur(20px) saturate(180%);
@@ -1938,6 +1937,7 @@ body.header-disabled .vertical-sidebar-header {
   /* Show mobile header on tablet and mobile */
   .mobile-header {
     display: block;
+    margin-bottom: var(--bento-gap);
   }
 
   /* Mobile logo orbit */
