@@ -248,11 +248,7 @@
   margin-top: var(--margin-s);
 }
 
-.featured__promo .global-btn .global-btn__content {
-  box-shadow: var(--featured-vc-shadow, 2px 2px 0px 0px black);
-  width: var(--featured-vc-width, 220px);
-  border-radius: var(--featured-atc-radius, 12px);
-}
+
 
 @media screen and (max-width: 989px) {
   .featured__grid {
