@@ -1,0 +1,119 @@
+name: Claude Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: "Pull Request number (e.g. 42)"
+        required: true
+        type: number
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get PR diff
+        id: diff
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const owner = context.repo.owner;
+            const repo  = context.repo.repo;
+
+            let prNumber;
+            if (context.eventName === "workflow_dispatch") {
+              prNumber = Number(context.payload.inputs.pr_number);
+            } else {
+              prNumber = context.payload.pull_request.number;
+            }
+
+            core.exportVariable("PR_NUMBER", prNumber);
+
+            const { data: files } = await github.rest.pulls.listFiles({
+              owner, repo, pull_number: prNumber, per_page: 100,
+            });
+
+            // Build a compact diff string (cap at ~120 KB to stay inside API limits)
+            const MAX = 120_000;
+            let diff = "";
+            for (const f of files) {
+              if (diff.length >= MAX) break;
+              const patch = f.patch ?? "(binary or no patch)";
+              diff += `\n\n### ${f.filename} (${f.status})\n\`\`\`diff\n${patch}\n\`\`\``;
+              if (diff.length > MAX) diff = diff.slice(0, MAX) + "\n...(truncated)";
+            }
+
+            // Write to a temp file so we don't hit env-var size limits
+            const fs = require("fs");
+            fs.writeFileSync("/tmp/pr_diff.txt", diff, "utf8");
+
+            core.info(`Diff written: ${diff.length} chars across ${files.length} file(s)`);
+
+      - name: Review with Claude
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          DIFF=$(cat /tmp/pr_diff.txt)
+
+          PAYLOAD=$(jq -n \
+            --arg diff "$DIFF" \
+            '{
+              model: "claude-opus-4-7",
+              max_tokens: 4096,
+              messages: [{
+                role: "user",
+                content: ("You are an expert code reviewer acting like Cursor Bugbot. Review the following pull-request diff and identify real bugs, logic errors, security issues, and breaking changes.\n\nRules:\n- Only report genuine problems, not style nits.\n- For each issue give: severity (🔴 Critical / 🟠 High / 🟡 Medium / 🔵 Low), file + line range, a one-sentence description, and a concrete fix suggestion.\n- If there are no bugs, say so clearly.\n- Format your response as Markdown so it renders well in a GitHub PR comment.\n- End with a short overall summary.\n\nDiff:\n" + $diff)
+              }]
+            }')
+
+          RESPONSE=$(curl -sf https://api.anthropic.com/v1/messages \
+            -H "x-api-key: $ANTHROPIC_API_KEY" \
+            -H "anthropic-version: 2023-06-01" \
+            -H "content-type: application/json" \
+            -d "$PAYLOAD")
+
+          echo "$RESPONSE" | jq -r '.content[0].text' > /tmp/review.md
+          echo "--- Review preview (first 500 chars) ---"
+          head -c 500 /tmp/review.md
+
+      - name: Post review comment
+        uses: actions/github-script@v7
+        env:
+          PR_NUMBER: ${{ env.PR_NUMBER }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs   = require("fs");
+            const body = fs.readFileSync("/tmp/review.md", "utf8").trim();
+
+            const header = [
+              "## 🤖 Claude Code Review",
+              "",
+              "> Automated review powered by [Claude](https://www.anthropic.com). " +
+              "This is AI-generated — use your judgement before acting on findings.",
+              "",
+            ].join("\n");
+
+            const prNumber = Number(process.env.PR_NUMBER ||
+              context.payload.pull_request?.number);
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo:  context.repo.repo,
+              issue_number: prNumber,
+              body: header + body,
+            });
+
+            core.info("Review comment posted.");
