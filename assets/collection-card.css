@@ -1,7 +1,7 @@
 /* Collection card overrides. Base styles: custom-card-base.css */
 
 .custom-collection-card {
-  padding: 24px !important;
+  padding: var(--padding-m) var(--padding-l) !important;
   transition: border-color 0.35s ease, box-shadow 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -34,6 +34,7 @@
   display: block !important;
   top: 0;
   background-color: var(--color-bg) !important;
+  border-radius: var(--radius-xl) !important;
   transition: transform 1s ease-out;
 }
 
@@ -89,6 +90,10 @@
 
 /* Mobile: disable all hover effects */
 @media screen and (max-width: 749px) {
+  .custom-collection-card {
+    border-radius: var(--radius-2xl) !important;
+  }
+
   .custom-collection-card:hover {
     transform: none !important;
     box-shadow: none;

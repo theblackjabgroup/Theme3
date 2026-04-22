@@ -193,8 +193,8 @@
 
 .reviews__dot {
   display: inline-block;
-  width: 4px;
-  height: 4px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: var(--color-text);
   opacity: 0.4;

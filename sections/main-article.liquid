@@ -58,13 +58,11 @@
     line-height: {{ block.settings.title_line_height | default: 1.2 }};
     letter-spacing: {{ block.settings.title_letter_spacing | default: 0 }}px;
     text-transform: {{ block.settings.title_text_transform | default: 'none' }};
-    margin-bottom: {{ block.settings.title_margin_bottom | default: 20 }}px;
   }
   #shopify-section-{{ section.id }} .section-header-snippet-{{ block.id }} .section-header-snippet__badge {
     font-size: {{ block.settings.header_badge_font_size | default: 14 }}px;
     font-weight: {{ block.settings.header_badge_font_weight | default: 600 }};
     padding: {{ block.settings.header_badge_padding_vertical | default: 4 }}px {{ block.settings.header_badge_padding_horizontal | default: 16 }}px;
-    margin-bottom: {{ block.settings.header_badge_margin_bottom | default: 14 }}px;
     border-width: {{ block.settings.header_badge_border_width | default: 1 }}px;
     border-radius: {{ block.settings.header_badge_border_radius | default: 20 }}px;
     text-transform: {{ block.settings.header_badge_text_transform | default: 'uppercase' }};
@@ -734,7 +732,9 @@
 
                 <!-- STYLED COMMENTS LIST CARD -->
                 <div class="article-comment-card article-comments-list-card">
-                  <p class="article-comments-count">{{ 'blogs.article.comments' | t: count: article.comments_count | upcase }}</p>
+                  <p class="article-comments-count">
+                    {{ 'blogs.article.comments' | t: count: article.comments_count | upcase }}
+                  </p>
                   {%- assign anchor_id = '#Comments-' | append: article.id -%}
                   {% paginate article.comments by 2 %}
                     <div class="article-template__comments" id="Comments-{{ article.id }}" tabindex="-1">
@@ -862,16 +862,7 @@
       "label": "Margin Top",
       "default": 0
     },
-    {
-      "type": "range",
-      "id": "margin_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Margin Bottom",
-      "default": 0
-    },
+
     {
       "type": "range",
       "id": "margin_horizontal",

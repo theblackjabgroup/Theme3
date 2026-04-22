@@ -67,13 +67,13 @@
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 12px;
+  gap: 4px;
 }
 
 .media-nav-btn {
-  width: 44px !important;
-  min-width: 44px !important;
-  height: 44px !important;
+  width: 40px !important;
+  min-width: 40px !important;
+  height: 40px !important;
   padding: 0 !important;
   border-radius: 50% !important;
   display: flex;
@@ -111,7 +111,7 @@
 
 .thumbnail-item {
   flex: 1;
-  border-radius: var(--radius-xl);
+  border-radius: 13px;
   overflow: hidden;
   background: var(--color-card-bg, #313131);
   aspect-ratio: 1 / 1;
@@ -152,7 +152,7 @@
 .product-details-header {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--gap-m);
 }
 
 /* Badge pill */
@@ -291,7 +291,7 @@
 .product-weight-options {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--gap-m);
   width: 100%;
 }
 
@@ -352,7 +352,7 @@
 .product-pickup-info {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
 }
 
 .product-pickup-store {
@@ -401,12 +401,12 @@
 
 .faq-accordion-item {
   background: var(--color-card-bg, #313131);
-  border-radius: var(--radius-l);
+  border-radius: var(--radius-xl);
   overflow: hidden;
 }
 
 .faq-accordion-header {
-  padding: 18px 20px;
+  padding: var(--padding-m) var(--padding-l);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -416,8 +416,8 @@
 
 .faq-accordion-header span:first-child {
   font-family: var(--font-body-family, 'Red Hat Mono', monospace);
-  font-size: 14px;
-  font-weight: 400;
+  font-size: var(--font-size-md);
+  font-weight: 500;
   color: var(--color-text, #F8F3F8);
 }
 
@@ -478,7 +478,7 @@
 .product-promise-section {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 20px;
 }
 
 .product-info-heading {
@@ -641,7 +641,7 @@
 /* Sticky quantity */
 .sticky-qty-selector {
   display: flex;
-  gap: 24px;
+  gap: 30px;
   align-items: center;
   padding: 10px 20px;
   border: 1px solid var(--color-text, #F8F3F8);

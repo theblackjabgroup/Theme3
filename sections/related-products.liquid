@@ -144,7 +144,8 @@
               type: 'button',
               class: 'scroll-nav-button scroll-prev',
               attributes: 'aria-label="Previous products"',
-              fit_width: false
+              fit_width: false,
+              border_radius: '100px'
             -%}
             {%- capture next_arrow_icon -%}
               {{- 'icon-arrow-right.svg' | inline_asset_content -}}
@@ -156,7 +157,8 @@
               type: 'button',
               class: 'scroll-nav-button scroll-next',
               attributes: 'aria-label="Next products"',
-              fit_width: false
+              fit_width: false,
+              border_radius: '100px'
             -%}
           </div>
         </div>
